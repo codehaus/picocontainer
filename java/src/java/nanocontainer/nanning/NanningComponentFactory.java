@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Jon Tirsén                                               *
+ * Original code by Jon Tirs?n                                               *
  *****************************************************************************/
 
 package nanocontainer.nanning;
@@ -29,15 +29,12 @@ public class NanningComponentFactory extends DefaultComponentFactory {
     public Object createComponent(Class compType, Constructor constructor, Object[] args)
             throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object component = super.createComponent(compType, constructor, args);
-        Class[] interfaces = compType.getInterfaces();
 
-        // Nanning will only aspectify stuff that has one and only one interface
-        if (interfaces.length == 1) {
-            Class interfaze = interfaces[0];
-
+        // Nanning will only aspectify stuff when its type is an interface
+        if (compType.isInterface()) {
             // the trick: set up first mixin manually with the component as target
             AspectInstance aspectInstance = new AspectInstance();
-            MixinInstance mixin = new MixinInstance(interfaze, component);
+            MixinInstance mixin = new MixinInstance(compType, component);
             aspectInstance.addMixin(mixin);
 
             // let the aspects do it's work

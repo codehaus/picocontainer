@@ -5,22 +5,23 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Jon Tirsén                                               *
+ * Original code by Jon Tirs?n                                               *
  *****************************************************************************/
 
 package nanocontainer.nanning;
 
+import com.tirsen.nanning.Aspects;
 import com.tirsen.nanning.Invocation;
 import com.tirsen.nanning.MethodInterceptor;
 import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.PicoContainer;
-import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Jon Tirsen
@@ -44,7 +45,23 @@ public class NanningComponentFactoryTestCase extends TestCase {
         }
     }
 
-    private ArrayList log = new ArrayList();
+    private StringBuffer log = new StringBuffer();
+
+    public void testComponentsWithInterfaceAsTypeAreAspected()
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
+        Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class.getConstructors()[0], null);
+        assertTrue(Aspects.isAspectObject(component));
+    }
+
+    public void testComponentsWithoutInterfaceAsTypeAreNotAspected()
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
+        Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class.getConstructors()[0],
+                null);
+        assertFalse(Aspects.isAspectObject(component));
+    }
+
 
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
@@ -54,33 +71,32 @@ public class NanningComponentFactoryTestCase extends TestCase {
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {
             public Object invoke(Invocation invocation) throws Throwable {
-                log.add(invocation.getMethod().getName());
+                log.append(invocation.getMethod().getName() + " ");
                 return invocation.invokeNext();
             }
         }));
 
         NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem);
-        PicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(componentFactory);
-        nanningEnabledPicoContainer.registerComponent(WilmaImpl.class);
+        PicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
+                componentFactory);
+        nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponent(FredImpl.class);
 
-        assertEquals(0, log.size());
+        assertEquals("", log.toString());
 
         nanningEnabledPicoContainer.start();
 
         // fred says hello to wilma, even the interceptor knows
-        assertEquals(1, log.size());
-        assertEquals("hello", log.get(0));
+        assertEquals("hello ", log.toString());
 
-        Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponent(WilmaImpl.class);
+        Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponent(Wilma.class);
 
         assertNotNull(wilma);
 
         wilma.hello();
 
         // another entry in the log
-        assertEquals(2, log.size());
-        assertEquals("hello", log.get(1));
+        assertEquals("hello hello ", log.toString());
 
     }
 

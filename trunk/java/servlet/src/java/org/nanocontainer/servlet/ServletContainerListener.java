@@ -11,7 +11,7 @@ package org.picoextras.servlet;
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

@@ -12,7 +12,7 @@ import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionProxy;
 import com.opensymphony.xwork.DefaultActionInvocation;
 import com.opensymphony.webwork.WebWorkStatics;
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;

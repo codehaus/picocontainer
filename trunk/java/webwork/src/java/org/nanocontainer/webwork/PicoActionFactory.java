@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.picoextras.webwork;
 
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;

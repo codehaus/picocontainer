@@ -16,23 +16,42 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.extras.DecoratingComponentAdapter;
 
+import java.io.Serializable;
+
 /**
  * This ComponentAdapter caches the instance.
  * @version $Revision$
  */
 public class CachingComponentAdapter extends DecoratingComponentAdapter {
 
-    private Object componentInstance;
+    private ObjectReference instanceReference;
 
     public CachingComponentAdapter(ComponentAdapter delegate) {
+        this(delegate, new SimpleReference());
+    }
+
+    public CachingComponentAdapter(ComponentAdapter delegate, ObjectReference instanceReference) {
         super(delegate);
+        this.instanceReference = instanceReference;
     }
 
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (componentInstance == null) {
-            componentInstance = super.getComponentInstance(picoContainer);
+        if (instanceReference.get() == null) {
+            instanceReference.set(super.getComponentInstance(picoContainer));
         }
-        return componentInstance;
+        return instanceReference.get();
+    }
+
+    private static class SimpleReference implements ObjectReference, Serializable {
+        private Object instance;
+
+        public Object get() {
+            return instance;
+        }
+
+        public void set(Object item) {
+            this.instance = item;
+        }
     }
 }

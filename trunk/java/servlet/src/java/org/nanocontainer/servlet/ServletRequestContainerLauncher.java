@@ -10,7 +10,7 @@ package org.picoextras.servlet;
 
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.servlet.ApplicationScopeObjectReference;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;

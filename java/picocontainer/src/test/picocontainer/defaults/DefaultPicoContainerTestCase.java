@@ -214,7 +214,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
+    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -244,7 +244,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsLifecycleOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
+    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -274,7 +274,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertEquals("C.wash()", recorder.getWhatHappened(0));
         assertEquals("B.wash()", recorder.getWhatHappened(1));
         assertTrue(
-                "Unmanaged components should not be called by an asLifecycle() proxy",
+                "Unmanaged components should not be called by an getAggregateComponentProxy() proxy",
                 !recorder.thingsThatHappened.contains("A.wash()"));
     }
 

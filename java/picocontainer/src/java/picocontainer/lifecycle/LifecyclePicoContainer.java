@@ -1,3 +1,13 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the license.html file.                                                    *
+ *                                                                           *
+ * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
+ *****************************************************************************/
+
 package picocontainer.lifecycle;
 
 import picocontainer.ComponentFactory;
@@ -10,8 +20,8 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 public class LifecyclePicoContainer extends HierarchicalPicoContainer implements Startable, Stoppable, Disposable {
 
     private Startable startableAggregatedComponent;
-    private Stoppable stoppingAggregatedComponent;
-    private Disposable disposingAggregatedComponent;
+    private Stoppable stoppableAggregatedComponent;
+    private Disposable disposableAggregatedComponent;
     private boolean started;
     private boolean disposed;
 
@@ -33,12 +43,12 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
         }
         try {
 
-            stoppingAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
+            stoppableAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
         } catch (ClassCastException e) {
         }
         try {
 
-            disposingAggregatedComponent = (Disposable) getAggregateComponentProxy(false, false);
+            disposableAggregatedComponent = (Disposable) getAggregateComponentProxy(false, false);
         } catch (ClassCastException e) {
         }
 
@@ -61,8 +71,16 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
             throw new IllegalStateException("Already stopped.");
         }
         started = false;
-        if (stoppingAggregatedComponent != null) {
-            stoppingAggregatedComponent.stop();
+        if (stoppableAggregatedComponent != null) {
+            stoppableAggregatedComponent.stop();
+        }
+    }
+
+    public void dispose() throws Exception {
+        checkDisposed();
+        disposed = true;
+        if (disposableAggregatedComponent != null) {
+            disposableAggregatedComponent.dispose();
         }
     }
 
@@ -72,12 +90,5 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
         }
     }
 
-    public void dispose() throws Exception {
-        checkDisposed();
-        disposed = true;
-        if (disposingAggregatedComponent != null) {
-            disposingAggregatedComponent.dispose();
-        }
-    }
 }
 

@@ -1,4 +1,4 @@
-package picocontainer.hierarchical;
+package picocontainer.lifecycle;
 
 import junit.framework.TestCase;
 import picocontainer.defaults.DefaultPicoContainer;
@@ -12,7 +12,7 @@ import picocontainer.testmodel.WilmaImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassicLifecycleTestCase extends TestCase {
+public class LifecyclePicoContainerTestCase extends TestCase {
 
     public static class One implements Startable, Stoppable, Disposable {
 

@@ -24,12 +24,13 @@ import java.util.Collections;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author and dozens of others before Aslak removed their names :-)
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
 
     // WeakReferences to aid GC and avoid circular references.
-    private final List parentWeakReferences = new ArrayList();
+    private transient final List parentWeakReferences = new ArrayList();
 
     // Child containers.
     private final Collection children = new ArrayList();

@@ -16,7 +16,7 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-RC-1-SNAPSHOT</version>
+            <version>1.0-final-SNAPSHOT</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

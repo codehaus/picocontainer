@@ -68,9 +68,14 @@
     <dependencies>
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-RC-1-SNAPSHOT</version>
+            <version>1.0-final-SNAPSHOT</version>
         </dependency>
-        
+        <!-- It might be worthwhile to get rid of this dependency.
+        Only needed in one line of code in Type1Util. AH. -->
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <id>avalon-framework</id>
             <version>4.1.5</version>

@@ -56,16 +56,16 @@
     <delete file="site.tar"/>
 
     <!-- Make sure the destination directory exists before trying to copy -->
-    <exec dir="." executable="plink">
+    <exec dir="." executable="${maven.ssh.executable}">
       <arg line="codehaus.org -l ${maven.username} 'mkdir -p /www/picocontainer.codehaus.org'"/>
     </exec>
 
-    <exec dir="." executable="pscp">
+    <exec dir="." executable="${maven.scp.executable}">
       <arg value="site.tar.gz"/>
       <arg value="${maven.username}@codehaus.org:/www/picocontainer.codehaus.org"/>
     </exec>
 
-    <exec dir="." executable="plink">
+    <exec dir="." executable="${maven.ssh.executable}">
       <arg line="codehaus.org -l ${maven.username} 'cd /www/picocontainer.codehaus.org;gunzip site.tar.gz;tar xUvf site.tar;chmod -R g+u *;rm site.tar'"/>
     </exec>
 

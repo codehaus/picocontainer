@@ -1,7 +1,12 @@
-/*
- * Copyright (C) 2005 Elsag-Solutions AG.
- * Created on 17.03.2005 by Jörg Schaible.
- */
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Michael Rettig                                           *
+ *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
 import org.picocontainer.defaults.DefaultPicoContainer;

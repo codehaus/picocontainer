@@ -23,7 +23,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
     private Runner runner2;
 
     class Runner implements Runnable {
-        public Exception exception;
+        public CyclicDependencyException exception;
         public Blocker blocker;
         private PicoContainer pico;
 
@@ -34,7 +34,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         public void run() {
             try {
                 blocker = (Blocker) pico.getComponentInstance("key");
-            } catch (Exception e) {
+            } catch (CyclicDependencyException e) {
                 exception = e;
             }
         }

@@ -15,6 +15,7 @@ import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request
@@ -37,14 +38,8 @@ public class PicoServletDispatcher extends ServletDispatcher {
             containerLauncher.startContainer();
             // process the servlet using webwork2
             super.service(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
         } finally {
-            try {
-                containerLauncher.killContainer();
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
+            containerLauncher.killContainer();
         }
     }
 }

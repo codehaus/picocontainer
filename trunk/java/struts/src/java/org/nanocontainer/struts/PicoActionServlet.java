@@ -10,6 +10,7 @@ package org.nanocontainer.struts;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServlet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @see PicoRequestProcessor
  * @see PicoTilesRequestProcessor
  */
-public class PicoActionServlet extends org.apache.struts.action.ActionServlet {
+public class PicoActionServlet extends ActionServlet {
 
     private final ActionFactory actionFactory = new ActionFactory();
 

@@ -9,6 +9,7 @@
 package org.nanocontainer.servlet;
 
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.reflection.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
@@ -79,14 +80,14 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             // Not all servlet containers print the nested exception. Do it here.
             event.getServletContext().log(e.getMessage(), e);
             throw new PicoCompositionException(e);
         }
     }
 
-    private ContainerBuilder createBuilder(ServletContext context) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    private ContainerBuilder createBuilder(ServletContext context) throws ClassNotFoundException {
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();
@@ -106,7 +107,10 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             }
             if (initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
-                ContainerComposer containerComposer = (ContainerComposer) Thread.currentThread().getContextClassLoader().loadClass(containerComposerClassName).newInstance();
+                // disposable
+                SoftCompositionPicoContainer softPico = new SoftCompositionPicoContainer();
+                softPico.setClassLoader(Thread.currentThread().getContextClassLoader());
+                ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance();
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }

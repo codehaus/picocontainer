@@ -73,17 +73,9 @@ public class XStreamContainerComposer implements ContainerComposer {
             XStreamContainerBuilder appBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(APPLICATION_CONFIG)), Thread.currentThread().getContextClassLoader());
             appBuilder.populateContainer(container);
         } else if (scope instanceof HttpSession) {
-            try {
-                sessionRecorder.replay(container);
-            } catch (Exception ex) {
-                throw new PicoCompositionException("session container composition failed", ex);
-            }
+            sessionRecorder.replay(container);
         } else if (scope instanceof HttpServletRequest) {
-            try {
-                requestRecorder.replay(container);
-            } catch (Exception ex) {
-                throw new PicoCompositionException("request container composition failed", ex);
-            }
+            requestRecorder.replay(container);
         }
     }
 }

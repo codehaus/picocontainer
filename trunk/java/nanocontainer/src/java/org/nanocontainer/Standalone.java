@@ -17,6 +17,7 @@ import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -75,8 +76,14 @@ public class Standalone {
 
         try {
             buildAndStartContainer(composition);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             System.out.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("NanoContainer has failed to start application, for IO reasons. Exception message : " + e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("NanoContainer has failed to start application. A Class was not found. Exception message : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -101,7 +108,7 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(String compositionFileName) throws Exception {
+    private static void buildAndStartContainer(String compositionFileName) throws IOException, ClassNotFoundException {
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
@@ -114,7 +121,7 @@ public class Standalone {
                 System.out.println("Shutting Down NanoContainer");
                 try {
                     nanoContainer.getContainerBuilder().killContainer(containerRef);
-                } catch (Exception e) {
+                } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
                     System.out.println("Exiting VM");

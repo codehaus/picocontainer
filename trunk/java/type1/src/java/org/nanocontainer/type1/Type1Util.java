@@ -315,7 +315,9 @@ public class Type1Util {
                 // never happens!
                 //throw new ConfigurationException("Unable to convert the bean " + containerProvidedConfig +
                 //        " to a Configuration object using XStream.", e);
-            } catch (Exception e) {
+            } catch (ConfigurationException e) {
+                // does this happen? -PH
+            } catch (RuntimeException e) {
                 // never happens!
                 //if (e instanceof ConfigurationException)
                 //    throw (ConfigurationException) e;

@@ -57,16 +57,12 @@ public class ContainerTreePanel extends JPanel {
                 final TreePath selPath = evt.getNewLeadSelectionPath();
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        try {
-                            ComponentAdapter componentAdapter = (ComponentAdapter) selPath.getLastPathComponent();
+                        ComponentAdapter componentAdapter = (ComponentAdapter) selPath.getLastPathComponent();
 
-                            TableModel model = ComponentAdapterTableModel.getInstance(componentAdapter);
-                            table.setModel(model);
+                        TableModel model = ComponentAdapterTableModel.getInstance(componentAdapter);
+                        table.setModel(model);
 
-                            validate();
-                        } catch (Exception e) {
-                            // Ignore it
-                        }
+                        validate();
                     }
                 });
             }
@@ -78,21 +74,17 @@ public class ContainerTreePanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     TreePath path = tree.getSelectionPath();
-                    try {
-                        ComponentAdapter obj = (ComponentAdapter) path.getLastPathComponent();
+                    ComponentAdapter obj = (ComponentAdapter) path.getLastPathComponent();
 
-                        ComponentAdapterModel model = ComponentAdapterModel.getInstance(obj);
-                        BeanProperty bp = model.getProperty(table.getSelectedRow());
+                    ComponentAdapterModel model = ComponentAdapterModel.getInstance(obj);
+                    BeanProperty bp = model.getProperty(table.getSelectedRow());
 
-                        // Only display the dialog if we can set the value
-                        // through its editor
-                        if (bp.isWritable() && (bp.getPropertyEditor() != null)) {
-                            BeanPropertyEditDialog dialog = new BeanPropertyEditDialog(bp);
-                            dialog.show();
-                            table.repaint();
-                        }
-                    } catch (Exception ex) {
-                        // Ignore it
+                    // Only display the dialog if we can set the value
+                    // through its editor
+                    if (bp.isWritable() && (bp.getPropertyEditor() != null)) {
+                        BeanPropertyEditDialog dialog = new BeanPropertyEditDialog(bp);
+                        dialog.show();
+                        table.repaint();
                     }
                 }
             }

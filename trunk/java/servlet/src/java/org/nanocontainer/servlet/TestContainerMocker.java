@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
  * @author Konstantin Pribluda
  * @version $Revision$
  */
+// TODO move to src/test packager?  "Mocker" and "fake" are the clues - PH
 public class TestContainerMocker implements KeyConstants {
 
     private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);

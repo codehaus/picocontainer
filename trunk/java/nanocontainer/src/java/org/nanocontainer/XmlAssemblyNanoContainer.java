@@ -9,18 +9,17 @@
 package org.nanocontainer;
 
 import org.nanocontainer.xml.DefaultXmlFrontEnd;
-import org.nanocontainer.xml.XmlFrontEnd;
 import org.nanocontainer.xml.EmptyXmlConfigurationException;
-import org.picocontainer.PicoContainer;
+import org.nanocontainer.xml.XmlFrontEnd;
 import org.picocontainer.PicoConfigurationException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;

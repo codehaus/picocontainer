@@ -13,6 +13,8 @@ import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.picocontainer.extras.DefaultLifecyclePicoContainer;
 import org.xml.sax.SAXException;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -100,6 +102,26 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         Object a = nano.getRootContainer().getComponentInstances().get(0);
 
         assertFalse("A Should not be apparent from proxied A component",Xxx.A.class.equals(a.getClass()));
+    }
+
+    public void donot_testInstantiateWithComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        BespokeXmlFrontEnd.used = false;
+
+        NanoContainer nano = null;
+            nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                        "<container>" +
+                        "    <component impl='org.nanocontainer.testmodel.WebServerConfigBean'>" +
+                        "       <host>foobar.com</host> " +
+                        "       <port>4321</port> " +
+                        "    </component>" +
+                        "    <component typekey='org.nanocontainer.testmodel.WebServer' impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "</container>"), new MockMonitor());
+
+        Object a = nano.getRootContainer().getComponentInstances().get(0);
+
+        //TODO - implement !  Kinda justifies the named-params metadata feature raised recently.
+
     }
 
 

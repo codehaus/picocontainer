@@ -26,13 +26,13 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
     private final Class collectionClass;
 
     public GenericCollectionComponentAdapter(Object componentKey, Class keyType, Class valueType, Class collectionType) {
-        super(componentKey, HashMap.class);
+        super(componentKey, collectionType);
         this.keyType = keyType;
         this.valueType = valueType;
         this.collectionType = collectionType;
 
         // The order of tests are significant. The least generic types last.
-        if (Array.class.isAssignableFrom(collectionType)) {
+        if (collectionType.isArray()) {
             collectionClass = Array.class;
             // TODO: uncomment when we start supporting generics
 //        } else if (List.class.isAssignableFrom(collectionType)) {

@@ -3,6 +3,7 @@ package org.picocontainer.defaults;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.Array;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class GenericCollectionComponentAdapterTestCase extends MockObjectTestCase {
     public void testShouldInstantiateArrayOfStrings() {
-        GenericCollectionComponentAdapter ca = new GenericCollectionComponentAdapter("x", null, String.class, Array.class);
+        GenericCollectionComponentAdapter ca = new GenericCollectionComponentAdapter("x", null, String.class, String[].class);
 
         Mock containerMock = mock(PicoContainer.class);
         containerMock.expects(once()).
@@ -30,6 +31,38 @@ public class GenericCollectionComponentAdapterTestCase extends MockObjectTestCas
         List expected = Arrays.asList(new String[]{"Hello", "World"});
         List actual = Arrays.asList((Object[]) ca.getComponentInstance());
         assertEquals(expected, actual);
+    }
+    
+    static public interface Fish {
+    }
+    static public class Cod implements Fish {
+        public String toString() {
+            return "Cod";
+        }
+    }
+    static public class Shark implements Fish {
+        public String toString() {
+            return "Shark";
+        }
+    }
+    static public class Bowl {
+        private final Cod[] cods;
+        private final Fish[] fishes;
+
+        public Bowl(Cod cods[], Fish fishes[]) {
+            this.cods = cods;
+            this.fishes = fishes;
+        }
+    }
+    
+    public void testNativeArrays() {
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponentImplementation(Bowl.class);
+        mpc.registerComponentImplementation(Cod.class);
+        mpc.registerComponentImplementation(Shark.class);
+        Bowl bowl = (Bowl)mpc.getComponentInstance(Bowl.class);
+        assertEquals(1,bowl.cods.length);
+        assertEquals(2,bowl.fishes.length);
     }
 
     // todo similar tests for generic collections

@@ -90,7 +90,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 if (adapter == null) {
                     // perhaps it is an array or a generic collection
                     if (parameterTypes[j].getComponentType() != null) {
-                        ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j].getComponentType());
+                        ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j]);
                         if (genericCollectionComponentAdapter != null) {
                             genericCollectionComponentAdapter.setContainer(getContainer());
                             adapterDependencies.add(genericCollectionComponentAdapter);
@@ -150,12 +150,13 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    private ComponentAdapter getGenericCollectionComponentAdapter(Class componentType) {
+    private ComponentAdapter getGenericCollectionComponentAdapter(Class expectedType) {
+        Class componentType = expectedType.getComponentType();
         if (getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
             return null;
         } else {
             Object componentKey = new Object[]{this, componentType};
-            return new GenericCollectionComponentAdapter(componentKey, null, componentType, Array.class);
+            return new GenericCollectionComponentAdapter(componentKey, null, componentType, expectedType);
         }
     }
 

@@ -14,21 +14,18 @@ import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class PoolingComponentAdapterTestCase extends TestCase {
     private PoolingComponentAdapter componentAdapter;
-    private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
         componentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class));
-        pico = new DefaultPicoContainer();
     }
 
     public void testNewIsInstantiatedOnEachRequest() {
@@ -52,6 +49,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         assertSame(borrowed1, borrowed);
     }
 
+    // TODO: Why? This is an implementation detail, that does not matter for the caller.
     public void testPoolIsFifo() {
         Object borrowed0 = componentAdapter.getComponentInstance();
         Object borrowed1 = componentAdapter.getComponentInstance();

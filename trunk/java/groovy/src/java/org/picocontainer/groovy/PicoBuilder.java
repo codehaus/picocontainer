@@ -21,7 +21,6 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.groovy.PicoBuilderException;
 
 /**
  * Builds trees of Pico containers and Pico components using GroovyMarkup

@@ -110,7 +110,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
             fail();
         } catch (TooManySatisfiableConstructorsException e) {
             assertTrue(e.getMessage().indexOf("Three") == -1);
-            assertEquals(2, e.getConstructors().size());
+            assertEquals(3, e.getConstructors().size());
             assertEquals(Multi.class, e.getForImplementationClass());
         }
     }

@@ -2,10 +2,10 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
   <id>nanocontainer-swt</id>
   <name>nanocontainer-swt</name>
   <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
-
 
   <dependencies>
   

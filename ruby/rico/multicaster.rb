@@ -1,5 +1,3 @@
-require 'rico/container'
-
 module Rico
   #
   # Simple dynamic proxy that passes on any method invocations to a container

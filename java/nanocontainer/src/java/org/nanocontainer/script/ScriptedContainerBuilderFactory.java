@@ -9,7 +9,6 @@
 
 package org.nanocontainer.script;
 
-import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;

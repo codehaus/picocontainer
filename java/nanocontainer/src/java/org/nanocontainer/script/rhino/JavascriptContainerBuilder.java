@@ -18,8 +18,8 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
 import java.io.IOException;

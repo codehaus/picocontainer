@@ -25,6 +25,7 @@ import java.io.IOException;
 import picocontainer.Container;
 import picocontainer.NullContainer;
 import picocontainer.PicoRegistrationException;
+import nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
         implements InputSourceRegistrationNanoContainer{
@@ -32,7 +33,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
     private final DocumentBuilder documentBuilder;
 
     public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, Container parentContainer, ClassLoader classLoader) {
-        super(parentContainer, classLoader);
+        super(parentContainer, classLoader, new StringToObjectConverter());
         this.documentBuilder = documentBuilder;
     }
 

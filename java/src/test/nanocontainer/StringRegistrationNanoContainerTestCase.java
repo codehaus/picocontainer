@@ -42,8 +42,21 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         } catch (ClassNotFoundException e) {
             // expected
         }
+    }
 
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoStartException {
+        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
+        String className = ThingThatTakesParamsInConstructor.class.getName();
 
+        nc.registerComponent(className);
+        nc.addParameterToComponent(className, "java.lang.String", "hello");
+        nc.addParameterToComponent(className, "java.lang.Integer", "22");
+
+        nc.start();
+
+        ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
+        assertNotNull("component not present", thing);
+        assertEquals("hello22", thing.getValue());
     }
 
 }

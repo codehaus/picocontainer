@@ -81,11 +81,11 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         picoContainer.instantiateComponents();
     }
 
-    public boolean hasComponent(Class clazz) {
+    public boolean hasComponent(Object clazz) {
         return picoContainer.hasComponent(clazz);
     }
 
-    public Object getComponent(Class clazz) {
+    public Object getComponent(Object clazz) {
         return picoContainer.getComponent(clazz);
     }
 

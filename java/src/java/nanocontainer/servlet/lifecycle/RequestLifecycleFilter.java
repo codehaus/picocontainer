@@ -1,15 +1,14 @@
 package nanocontainer.servlet.lifecycle;
 
+
+
 import nanocontainer.servlet.holder.SessionScopeObjectHolder;
 import nanocontainer.servlet.holder.RequestScopeObjectHolder;
-import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
 import nanocontainer.servlet.ObjectHolder;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
 import picocontainer.Container;
 
 public class RequestLifecycleFilter extends BaseLifecycleListener implements Filter {
@@ -31,15 +30,11 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
         holder.put(container);
 
         try {
-
             // process the incoming request
             filterChain.doFilter(request, response);
-
         } finally {
-
             // shutdown container
             destroyContainer(context, holder);
-
         }
     }
 
@@ -48,4 +43,6 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
     public void destroy() {
     }
+
 }
+

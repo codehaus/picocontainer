@@ -1,15 +1,14 @@
 package nanocontainer.servlet.lifecycle;
 
+
+
 import nanocontainer.servlet.holder.ApplicationScopeObjectHolder;
 import nanocontainer.servlet.holder.SessionScopeObjectHolder;
-import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
 import nanocontainer.servlet.ObjectHolder;
-
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
 import picocontainer.Container;
 
 public class SessionLifecycleListener extends BaseLifecycleListener implements HttpSessionListener {
@@ -39,3 +38,4 @@ public class SessionLifecycleListener extends BaseLifecycleListener implements H
     }
 
 }
+

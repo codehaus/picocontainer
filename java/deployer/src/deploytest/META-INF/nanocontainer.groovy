@@ -1,3 +1,5 @@
-pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
-pico.registerComponentInstance("Groovy")
-pico.registerComponentImplementation("zap", foo.bar.Zap)
+builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()
+pico = builder.container(parent:parent) {
+ component(instance:'Groovy')
+ component(key:'zap', class:foo.bar.Zap)
+}

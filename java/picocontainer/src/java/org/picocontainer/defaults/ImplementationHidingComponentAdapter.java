@@ -68,7 +68,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
             interfaces = new Class[] {(Class) getDelegate().getComponentKey()};
         } else {
-            interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
+            interfaces = interfaceFinder.getAllInterfaces(getDelegate().getComponentImplementation());
         }
         Class[] swappableAugmentedInterfaces = new Class[interfaces.length + 1];
         swappableAugmentedInterfaces[interfaces.length] = Swappable.class;

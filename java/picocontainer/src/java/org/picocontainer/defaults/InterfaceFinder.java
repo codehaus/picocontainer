@@ -46,7 +46,7 @@ public class InterfaceFinder implements Serializable {
      * Get all the interfaces implemented by a list of objects.
      * @return an array of interfaces.
      */
-    public Class[] getInterfaces(List objects) {
+    public Class[] getAllInterfaces(List objects) {
         Set interfaces = new HashSet();
         for (Iterator iterator = objects.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
@@ -57,13 +57,16 @@ public class InterfaceFinder implements Serializable {
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
-    public Class[] getInterfaces(Class clazz) {
+    public Class[] getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private static void getInterfaces(Class clazz, Set interfaces) {
+        if(clazz.isInterface()) {
+            interfaces.add(clazz);
+        }
         // Strangely enough Class.getInterfaces() does not include the interfaces
         // implemented by superclasses. So we must loop up the hierarchy.
         while (clazz != null) {
@@ -72,5 +75,30 @@ public class InterfaceFinder implements Serializable {
             interfaces.addAll(implementedList);
             clazz = clazz.getSuperclass();
         }
+    }
+
+    public Class getClass(Object[] objects) {
+        Class clazz = null;
+        boolean found = false;
+        while (!found) {
+            for (int i = 0; i < objects.length; i++) {
+                found = true;
+                if (objects[i] != null) {
+                    Class currentClazz = objects[i].getClass();
+                    if(clazz == null) {
+                        clazz = currentClazz;
+                    }
+                    if(!clazz.isAssignableFrom(currentClazz)) {
+                        clazz = currentClazz.getSuperclass();
+                        found = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(clazz == null) {
+            clazz = Void.class;
+        }
+        return clazz;
     }
 }

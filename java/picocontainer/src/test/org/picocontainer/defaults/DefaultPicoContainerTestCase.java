@@ -14,11 +14,18 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
+import java.awt.Button;
+import java.awt.Panel;
+import java.io.Serializable;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -77,12 +84,30 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testComponentsCanBeRemovedByInstance() {
         MutablePicoContainer pico = createPicoContainer(null);
+        pico.registerComponentImplementation(HashMap.class);
         pico.registerComponentImplementation(ArrayList.class);
         List list = (List) pico.getComponentInstanceOfType(List.class);
         pico.unregisterComponentByInstance(list);
-        assertEquals(0, pico.getComponentAdapters().size());
-        assertEquals(0, pico.getComponentInstances().size());
-        assertNull(pico.getComponentInstanceOfType(List.class));
+        assertEquals(1, pico.getComponentAdapters().size());
+        assertEquals(1, pico.getComponentInstances().size());
+        assertEquals(HashMap.class, pico.getComponentInstanceOfType(Serializable.class).getClass());
     }
 
+    /*
+    When pico tries to instantiate ArrayList, it will attempt to use the constructor that takes a
+    java.util.Collection. Since both the ArrayList and LinkedList are Collection, it will fail with
+    AmbiguousComponentResolutionException.
+
+    Pico should be smart enough to figure out that it shouldn't consider a component as a candidate parameter for
+    its own instantiation. This may be fixed by adding an additional parameter to ComponentParameter.resolveAdapter -
+    namely the ComponentAdapter instance that should be excluded.
+
+    AH
+     */
+    public void TODOtestComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        pico.registerComponentImplementation(LinkedList.class);
+        pico.registerComponentImplementation(ArrayList.class);
+        assertEquals(ArrayList.class, pico.getComponentInstanceOfType(ArrayList.class).getClass());
+    }
 }

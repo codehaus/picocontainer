@@ -42,6 +42,6 @@ public class DefaultComponentRegistryTestCase extends TestCase {
     }
 
     private ComponentAdapter createComponentAdapter() throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorComponentAdapter(Touchable.class, SimpleTouchable.class);
+        return new ConstructorInjectionComponentAdapter(Touchable.class, SimpleTouchable.class);
     }
 }

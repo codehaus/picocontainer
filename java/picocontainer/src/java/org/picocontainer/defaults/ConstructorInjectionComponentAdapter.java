@@ -17,6 +17,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,26 +26,27 @@ import java.util.Arrays;
 
 /**
  * {@inheritDoc}
- * Instantiates components using Constructor-Based Dependency Injection.
+ * Instantiates components using Constructor Injection.
  * <p>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
  * </em>
  *
- * @author Aslak Helles&oslash;y
  * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @author Zohar Melamed
  * @version $Revision$
  */
-public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
+public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
+    private boolean instantiating;
 
     /**
      * Explicitly specifies parameters, if null uses default parameters.
      * {@inheritDoc}
      */
-    public ConstructorComponentAdapter(final Object componentKey,
+    public ConstructorInjectionComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
                                        Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
@@ -54,19 +56,19 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
      * Use default parameters.
      * {@inheritDoc}
      */
-    public ConstructorComponentAdapter(Object componentKey,
+    public ConstructorInjectionComponentAdapter(Object componentKey,
                                        Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
-    protected Class[] getMostSatisfiableDependencyTypes(PicoContainer dependencyContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Constructor constructor = getGreediestSatisifableConstructor(dependencyContainer);
+    protected Class[] getMostSatisfiableDependencyTypes() throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Constructor constructor = getGreediestSatisifableConstructor();
         return constructor.getParameterTypes();
     }
 
-    protected Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisifableConstructor() throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor[] allConstructors = getComponentImplementation().getConstructors();
-        List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, dependencyContainer);
+        List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, getContainer());
 
         int arity = parameters == null ? -1 : parameters.length; 
         
@@ -81,7 +83,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
                 if (arity == parameterTypes.length) {
                     int j;
                     for (j = 0; j < arity; j++) {
-                        ComponentAdapter adapter = parameters[j].resolveAdapter(dependencyContainer, parameterTypes[j]);
+                        ComponentAdapter adapter = parameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
                         if (adapter == null) {
                             nonMatching.add(currentConstructor);
                             break;
@@ -158,5 +160,31 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
             result[i] = adapterDependency.getComponentInstance();
         }
         return result;
+    }
+
+    protected Object instantiateComponent(ComponentAdapter[] adapterDependencies) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        try {
+            Constructor constructor = getGreediestSatisifableConstructor();
+            if (instantiating) {
+                throw new CyclicDependencyException(constructor.getParameterTypes());
+            }
+            instantiating = true;
+            Object[] parameters = getConstructorArguments(adapterDependencies);
+
+            return constructor.newInstance(parameters);
+        } catch (InvocationTargetException e) {
+            if (e.getTargetException() instanceof RuntimeException) {
+                throw (RuntimeException) e.getTargetException();
+            } else if (e.getTargetException() instanceof Error) {
+                throw (Error) e.getTargetException();
+            }
+            throw new PicoInvocationTargetInitializationException(e.getTargetException());
+        } catch (InstantiationException e) {
+            throw new PicoInvocationTargetInitializationException(e);
+        } catch (IllegalAccessException e) {
+            throw new PicoInvocationTargetInitializationException(e);
+        } finally {
+            instantiating = false;
+        }
     }
 }

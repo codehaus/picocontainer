@@ -90,8 +90,9 @@ public interface MutablePicoContainer extends PicoContainer {
      *
      * @param componentAdapter the adapter
      * @throws PicoRegistrationException if registration fails.
+     * @return the same adapter that was passed as an argument.
      */
-    void registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException;
+    ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException;
 
     /**
      * Unregisters a component by key.

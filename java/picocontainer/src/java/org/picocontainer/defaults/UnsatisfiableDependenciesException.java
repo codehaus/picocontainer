@@ -10,6 +10,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentAdapter;
 
 import java.util.Set;
 
@@ -19,16 +20,16 @@ import java.util.Set;
  */
 public class UnsatisfiableDependenciesException extends PicoIntrospectionException {
 
-    private final InstantiatingComponentAdapter instantiatingComponentAdapter;
+    private final ComponentAdapter instantiatingComponentAdapter;
     private final Set failedDependencies;
 
-    public UnsatisfiableDependenciesException(InstantiatingComponentAdapter instantiatingComponentAdapter, Set failedDependencies) {
+    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Set failedDependencies) {
         super(instantiatingComponentAdapter.getComponentImplementation().getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies);
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.failedDependencies = failedDependencies;
     }
 
-    public InstantiatingComponentAdapter getUnsatisfiableComponentAdapter() {
+    public ComponentAdapter getUnsatisfiableComponentAdapter() {
         return instantiatingComponentAdapter;
     }
 

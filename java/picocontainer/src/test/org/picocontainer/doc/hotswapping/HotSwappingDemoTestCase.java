@@ -20,12 +20,10 @@ DefaultPicoContainer pico = new DefaultPicoContainer(caf);
 pico.registerComponentImplementation(Wife.class);
 pico.registerComponentImplementation(Husband.class);
 
-// START SNIPPET: hotswap
 Woman woman = (Woman) pico.getComponentInstance(Wife.class);
-// END SNIPPET: circular
-
 assertEquals(10, woman.getMan().getEndurance());
-
+// END SNIPPET: circular
+// START SNIPPET: hotswap
 // let the woman use another man
 Man superman = new Superman();
 ((Swappable)woman.getMan()).__hotSwap(superman);

@@ -8,47 +8,40 @@ PicoContainer is very simple container for very simple
 components.&nbsp; It honors the Inversion of control pattern (IoC) in a
 way that we calling it type 3 IoC.&nbsp; See below for types.<br>
 <br>
-PicoContainer components declare their needs in their constructor.&nbsp;
+PicoContainer components declare their needs in their
+constructor.&nbsp;
 A PicoContainer resolves needs at time on instantiation of the
-component.&nbsp; We have a restriction in that PicoContainer comps must
+component.&nbsp; We have a restriction in that PicoContainer components
+must
 only have one constructor. We don't think that is a bad restriction.
 Especially as the XP "change it when you need to" has not delivered a
 use case that would preclude this design yet.&nbsp; We also can't allow
 primitives in the constructor. In skeletal form, here is the simplest
 possible PicoContainer compatible component :<br>
-<pre>&nbsp;&nbsp; public class Shop {
-&nbsp;&nbsp;&nbsp; public Shop(StockManager stockManager) {
-&nbsp;&nbsp;&nbsp;&nbsp; }
-&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp; public class Shop {<br>&nbsp;&nbsp;&nbsp;    public Shop(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
 Imagine there were a component that could satisfy that like so :<br>
-<pre>&nbsp;&nbsp; public class StockManager {
-&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp; public class StockManager {<br>&nbsp;&nbsp; }</pre>
 We love this design because we see the components being used without a
 container :<br>
 <pre>&nbsp;&nbsp; new Shop(new StockManager());</pre>
 But also with a PicoContainer :<br>
-<pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();
-&nbsp;&nbsp; pc.registerComponent(StockManager.class)
-&nbsp;&nbsp; pc.registerComponent(Shop.class)
-&nbsp;&nbsp; pc.start();</pre>
+<pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();<br>&nbsp;&nbsp; pc.registerComponent(StockManager.class)<br>&nbsp;&nbsp; pc.registerComponent(Shop.class)<br>&nbsp;&nbsp; pc.start();</pre>
 And perhaps some as yet unwritten PicoContainer :<br>
-<pre>&nbsp;&nbsp; MoonscapeContainer mc = new MoonscapeContainer();
-&nbsp;&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
+<pre>&nbsp;&nbsp; MoonscapeContainer mc = new MoonscapeContainer();<br>&nbsp;&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
 It does not matter how things are laced together. It does not matter
 how tightly bound one PicoContainer is to an individual purpose.&nbsp;
-The important thing is actually the components and the numerous and imaginative  deployments for them.<br>
+The important thing is actually the components and the numerous and
+imaginative deployments for them.<br>
 <h2>Container</h2>
 PicoContainer's most basic interface is Container :
-<pre>&nbsp;&nbsp; public interface Container {
-&nbsp;&nbsp;&nbsp;&nbsp; boolean hasComponent(Class compType);
-&nbsp;&nbsp;&nbsp;&nbsp; Object getComponent(Class compType);
-&nbsp;&nbsp;&nbsp;&nbsp; Object[] getComponents();
-&nbsp;&nbsp; }</pre>
-Clearly it is a read-only thing. That's deliberate.&nbsp; We see many
+<pre>&nbsp;&nbsp; public interface Container {<br>&nbsp;&nbsp;&nbsp;&nbsp;   boolean hasComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object getComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object[] getComponents();<br>&nbsp;&nbsp; }</pre>
+Clearly a PicoContainer is a read-only thing. That's deliberate.&nbsp;
+We see many
 PicoContainers delivering different visions of component lacing and
 configuration.&nbsp; Some may exist in chains or trees, such that a
 tiering model could exist. Such a tiering model could provide
-hierarchies for reasons of security, kernel hiding or scope control (Joe
+hierarchies for reasons of security, kernel hiding or scope control
+(Joe
 has plans for a trinity of Picos to fit inside the Servlet model -
 Application, Session and Request scoped PicoContainers).
 <h2>Sister projects</h2>
@@ -56,46 +49,32 @@ NanoContainer is not really a single container. It is four
 PicoContainer compatible containers so far.&nbsp; One that takes String
 registration of components, another that takes them via XML. One that
 aggregates components into a single fat (almost) multiple-inheritance
-comp. Another that makes Nanning (the AOP framework) a PicoContainer
+comp. Another that makes <a href="http://nanning.sourceforge.net/">Nanning</a>
+(the AOP framework) a PicoContainer
 compatible proposition.<br>
 <h2>History</h2>
 <h3>&nbsp; Type 1</h3>
-Apache's Avalon project has been selling the IoC patten for many years
+Apache's <a href="http://avalon.apache.org/">Avalon</a> project has
+been selling the IoC patten for many years
 now.&nbsp; The Avalon-Framework design laces together components like
 so:<br>
-<pre>&nbsp;&nbsp; class Shop implements Serviceable {
-&nbsp;&nbsp;&nbsp;&nbsp; StockManager stockManager;
-&nbsp;&nbsp;&nbsp;&nbsp; public void service(ServiceManager sm) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");
-&nbsp;&nbsp;&nbsp;&nbsp; }
-&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp; public class Shop implements Serviceable {<br>&nbsp;&nbsp;&nbsp;&nbsp;   StockManager stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;   public void service(ServiceManager sm) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     stockManager = (StockManager) sm.lookup("StockManager");<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
 A component has to have service (component) declarations in some
-external file. The popular Phoenix container had .xinfo files for such
+external file. The popular <a href="http://avalon.apache.org/phoenix/">Phoenix</a>
+container had .xinfo files for such
 needs.<br>
 <h3>&nbsp; Type 2</h3>
 Joe Walnes whist working on a book with other luminaries, started a
 type 2 IoC design. This is marked up with doclet tags (though that is
 not hard and fast) :<br>
-<pre>&nbsp;&nbsp; class Shop {
-&nbsp;&nbsp;&nbsp;&nbsp; StockManager stockManager;&nbsp;&nbsp;&nbsp; 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
-&nbsp;&nbsp;&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;
-&nbsp;&nbsp;&nbsp;&nbsp; }
-&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp; public class Shop {<br>&nbsp;&nbsp;&nbsp;&nbsp;   StockManager stockManager;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  /**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;   public void setStockManager(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     this.stockManager = stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
 <h3>&nbsp; Type 3</h3>
 Rachel Davies, while reviewing Joe's book, left a Fermat-like margin
 note when view a snippet like the above.&nbsp; "Why not use
 constructors ?".&nbsp; Brilliant and simple.<br>
-<pre>&nbsp;&nbsp; class Shop {
-&nbsp;&nbsp;&nbsp;&nbsp; StockManager stockManager;
-&nbsp;&nbsp;&nbsp;&nbsp; public Shop(StockManager stockManager) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;
-&nbsp;&nbsp;&nbsp;&nbsp; }
-<br>&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp; public class Shop {<br>&nbsp;&nbsp;&nbsp;&nbsp;   StockManager stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;   public Shop(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     this.stockManager = stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
 Note, for this there is no need to declare needs in any other way. No
-Doclet tags, no external XML.<br>
+interfaces, no doclet tags, no external XML. Just your simple component
+and PicoContainer.<br>
 </body>
 </html>

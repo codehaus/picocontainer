@@ -118,7 +118,7 @@ public class DelegatingContainer implements MutablePicoContainer {
         return delegate.registerComponentInstance(componentKey, componentInstance);
     }
 
-    public void removeChildContainer(MutablePicoContainer child) {
+    public void removeChildContainer(PicoContainer child) {
         delegate.removeChildContainer(child);
     }
 

@@ -405,7 +405,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         namedChildContainers.put(name, child);
     }
 
-    public void removeChildContainer(MutablePicoContainer child) {
+    public void removeChildContainer(PicoContainer child) {
         Iterator children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
             Map.Entry e = (Map.Entry) children.next();

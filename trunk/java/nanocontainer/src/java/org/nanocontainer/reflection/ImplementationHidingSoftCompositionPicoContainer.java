@@ -185,7 +185,7 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         delegate.addChildContainer(name, child);
     }
 
-    public void removeChildContainer(MutablePicoContainer child) {
+    public void removeChildContainer(PicoContainer child) {
         delegate.removeChildContainer(child);
     }
 

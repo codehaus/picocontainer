@@ -6,46 +6,11 @@
 ]>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
-    <pomVersion>3</pomVersion>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
     <id>nanocontainer</id>
-    <name>NanoContainer</name>
+    <name>nanocontainer</name>
     <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
-
-    <organization>
-        <name>Codehaus</name>
-        <url>http://codehaus.org/</url>
-        <logo>http://codehaus.org/codehaus-small.gif</logo>
-    </organization>
-    <inceptionYear>2003</inceptionYear>
-    <package>org.nanocontainer</package>
-    <logo>/images/nanocontainer.jpg</logo>
-    <description>NanoContainer is a Standalone PicoContainer</description>
-    <shortDescription>NanoContainer is a Standalone PicoContainer</shortDescription>
-    <url>http://www.nanocontainer.org/</url>
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
-    <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/nanocontainer.codehaus.org/maven</siteDirectory>
-    <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
-    <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
-        <url>http://cvs.nanocontainer.codehaus.org/java/nanocontainer/?viewcvs.cgi</url>
-    </repository>
-
-    <mailingLists>
-        <mailingList>
-            <name>NanoContainer Developers</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/nanocontainer-dev/</archive>
-        </mailingList>
-        <mailingList>
-            <name>NanoContainer CVS Commits (CVSSpam)</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/nanocontainer-commits/</archive>
-        </mailingList>
-    </mailingLists>
 
     <developers>
         <developer>

@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 
 
 /**
@@ -235,5 +238,33 @@ public class CollectionComponentParameterTestCase
         Bowl bowl = (Bowl) child.getComponentInstance(Bowl.class);
         assertEquals(3, bowl.fishes.length);
         assertEquals(2, bowl.cods.length);
+    }
+
+    public static class DependsOnAll {
+        public DependsOnAll(Set set, SortedSet sortedSet, Collection collection, List list, SortedMap sortedMap, Map map
+        // , ConcurrentMap concurrentMap, Queue queue, BlockingQueue blockingQueue
+        ) {
+            assertNotNull(set);
+            assertNotNull(sortedSet);
+            assertNotNull(collection);
+            assertNotNull(list);
+            assertNotNull(sortedMap);
+            assertNotNull(map);
+            //            assertNotNull(concurrentMap);
+            //            assertNotNull(queue);
+            //            assertNotNull(blockingQueue);
+        }
+    }
+
+    public void testDifferentCollectiveTypesAreResolved() {
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
+                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
+                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
+        //            new ComponentParameter(Fish.class, true),
+                //            new ComponentParameter(Fish.class, true),
+                //            new ComponentParameter(Fish.class, true),
+                });
     }
 }

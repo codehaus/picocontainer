@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-reflection</artifactId>
+            <artifactId>nanocontainer</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
@@ -47,26 +47,6 @@
             <version>1.2.8</version>
         </dependency>
 
-        <dependency>
-            <id>groovy</id>
-            <version>1.0-beta-3</version>
-        </dependency>
-
-        <dependency>
-            <id>asm</id>
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>rhino</groupId>
-            <artifactId>js</artifactId>
-            <version>1.5R4.1</version>
-        </dependency>
-
-        <dependency>
-            <id>jython</id>
-            <version>2.1</version>
-        </dependency>
     </dependencies>
 
 </project>

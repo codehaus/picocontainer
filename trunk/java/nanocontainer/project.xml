@@ -88,12 +88,6 @@
         </dependency>
 
         <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-reflection</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <id>jmock</id>
             <version>SNAPSHOT</version>
         </dependency>

@@ -11,7 +11,6 @@ package org.picocontainer.defaults;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,10 +20,13 @@ import java.util.Set;
  * Helper class for finding implemented interfaces of classes and objects.
  *
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class InterfaceFinder implements Serializable {
+    /** the {@link Object#equals(Object)} method. */ 
     public static Method equals;
+    /** the {@link Object#hashCode()} method. */ 
     public static Method hashCode;
 
     static {
@@ -44,6 +46,7 @@ public class InterfaceFinder implements Serializable {
 
     /**
      * Get all the interfaces implemented by a list of objects.
+     * @param objects the list of objects to consider.
      * @return an array of interfaces.
      */
     public Class[] getAllInterfaces(List objects) {
@@ -57,6 +60,14 @@ public class InterfaceFinder implements Serializable {
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
+    /**
+     * Get all interfaces of the given type.
+     * If the type is a class, the returned list contains any interface, that is
+     * implemented by the class. If the type is an interface, the all 
+     * superinterfaces and the interface itself are included.
+     * @param clazz type to explore.
+     * @return an array with all interfaces. The array may be empty.
+     */
     public Class[] getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
@@ -67,9 +78,9 @@ public class InterfaceFinder implements Serializable {
         if(clazz.isInterface()) {
             interfaces.add(clazz);
         }
-        // Class.getInterfaces will return only thae interfaces that are 
+        // Class.getInterfaces will return only the interfaces that are 
         // implemented by the current class. Therefore we must loop up
-        // the hierarchy for the superclasses and the interfaces. 
+        // the hierarchy for the superclasses and the superinterfaces. 
         while (clazz != null) {
             Class[] implemented = clazz.getInterfaces();
             for(int i = 0; i < implemented.length; i++) {
@@ -83,8 +94,8 @@ public class InterfaceFinder implements Serializable {
 
     /**
      * Get most common superclass for all given objects. 
-     * @param objects The array of objects to consider.
-     * @return Returns the superclass or <code>{@link Void}.class</code> for an empty array.
+     * @param objects the array of objects to consider.
+     * @return the superclass or <code>{@link Void}.class</code> for an empty array.
      */
     public Class getClass(Object[] objects) {
         Class clazz = null;

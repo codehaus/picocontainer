@@ -34,6 +34,8 @@ public class BaseLifecycleListener {
 
     public static final String CONTAINER_KEY = "org.nanocontainer.container";
 
+    public static final String COMPONENT_REGISTRY_KEY = "org.nanocontainer.componentregistry";
+
     public static final String INSTANTIATER_KEY = "org.nanocontainer.instantiater";
 
 

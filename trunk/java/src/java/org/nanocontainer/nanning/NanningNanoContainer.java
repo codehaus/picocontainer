@@ -36,10 +36,11 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
     private RegistrationPicoContainer serviceAndAspectContainer;
 
     public NanningNanoContainer(RegistrationPicoContainer serviceAndAspectContainer,
+                                ComponentRegistry parentRegistry,
                                 ComponentRegistry componentRegistry,
                                 AspectSystem aspectSystem) {
         hierarchicalComponentRegistry =
-            new HierarchicalComponentRegistry.WithParentContainerAndChildRegistry(serviceAndAspectContainer,
+            new HierarchicalComponentRegistry.WithChildRegistry(parentRegistry,
                     componentRegistry);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.mainContainer =
@@ -48,11 +49,18 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
         this.aspectSystem = aspectSystem;
     }
 
-    public static class Default extends NanningNanoContainer {
-        public Default(AspectSystem aspectSystem) {
-            super(new DefaultPicoContainer.Default(),
+    public static class WithParentComponentRegistry extends NanningNanoContainer {
+        public WithParentComponentRegistry(AspectSystem aspectSystem, ComponentRegistry parentRegistry) {
+            super(new DefaultPicoContainer.WithComponentRegistry(parentRegistry),
+                  parentRegistry,
                   new DefaultComponentRegistry(),
                   aspectSystem);
+        }
+    }
+
+    public static class Default extends WithParentComponentRegistry {
+        public Default(AspectSystem aspectSystem) {
+            super(aspectSystem, new DefaultComponentRegistry());
         }
     }
 

@@ -11,13 +11,14 @@
 package org.nanocontainer.servlet;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentRegistry;
 
 public interface ContainerFactory {
-    PicoContainer buildContainer(String configName);
+    PicoContainer buildContainer(String configName, ComponentRegistry componentRegistry);
 
-    PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName);
+    PicoContainer buildContainerWithParent(PicoContainer parentContainer, ComponentRegistry parentRegistry, String configName);
 
-    ObjectInstantiator buildInstantiator(PicoContainer parentContainer);
+    ObjectInstantiator buildInstantiator(PicoContainer parentContainer, ComponentRegistry parentRegistry);
 
     void destroyContainer(PicoContainer container);
 }

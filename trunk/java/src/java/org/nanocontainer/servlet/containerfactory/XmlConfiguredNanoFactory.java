@@ -32,9 +32,9 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         this.servletContext = servletContext;
     }
 
-    public PicoContainer buildContainer(String configName) {
+    public PicoContainer buildContainer(String configName, ComponentRegistry componentRegistry) {
         try {
-            InputSourceRegistrationNanoContainer container = new DomRegistrationNanoContainer.Default();
+            InputSourceRegistrationNanoContainer container = new DomRegistrationNanoContainer.WithComponentRegistry(componentRegistry);
             configureAndStart(configName, container);
             return container;
         } catch (Exception e) {
@@ -43,9 +43,11 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         }
     }
 
-    public PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName) {
+    public PicoContainer buildContainerWithParent(PicoContainer parentContainer,
+                                                  ComponentRegistry parentRegistry,
+                                                  String configName) {
         try {
-            HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentContainer);
+            HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentRegistry);
             InputSourceRegistrationNanoContainer childContainer =
                 new DomRegistrationNanoContainer.WithComponentRegistry(hcr);
             configureAndStart(configName, childContainer);
@@ -67,10 +69,10 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         container.instantiateComponents();
     }
 
-    public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer) {
+    public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer, final ComponentRegistry parentRegistry) {
         return new ObjectInstantiator() {
             public Object newInstance(Class cls) {
-                HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentContainer);
+                HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentRegistry);
                 RegistrationPicoContainer childContainer = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
                 try {

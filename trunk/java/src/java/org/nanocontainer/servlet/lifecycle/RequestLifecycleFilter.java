@@ -16,6 +16,7 @@ import org.nanocontainer.servlet.ObjectHolder;
 import org.nanocontainer.servlet.ObjectInstantiator;
 import org.nanocontainer.servlet.holder.RequestScopeObjectHolder;
 import org.nanocontainer.servlet.holder.SessionScopeObjectHolder;
+import org.picocontainer.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 
 import javax.servlet.Filter;
@@ -41,25 +42,28 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
         ServletContext context = session.getServletContext();
 
-
-
         // grab the parent container
 
         ObjectHolder parentHolder = new SessionScopeObjectHolder(session, CONTAINER_KEY);
 
         PicoContainer parentContainer = (PicoContainer) parentHolder.get();
 
+        // grab the parent component registry
+
+        ObjectHolder parentRegHolder = new SessionScopeObjectHolder(session, COMPONENT_REGISTRY_KEY);
+
+        ComponentRegistry parentComponentRegistry = (ComponentRegistry) parentRegHolder.get();
 
 
         // build a container
 
-        PicoContainer container = getFactory(context).buildContainerWithParent(parentContainer, "request");
+        PicoContainer container = getFactory(context).buildContainerWithParent(parentContainer, parentComponentRegistry, "request");
 
 
 
         // and a means to instantiate new objects in the container
 
-        ObjectInstantiator instantiater = getFactory(context).buildInstantiator(container);
+        ObjectInstantiator instantiater = getFactory(context).buildInstantiator(container, parentComponentRegistry);
 
 
 

@@ -23,7 +23,7 @@
         <maven:reactor
             basedir="${basedir}"
             includes="*/project.xml"
-            excludes="nanning/*,groovypico/*,${swt}"
+            excludes="picoidea/*,nanning/*,groovypico/*,${swt}"
             goals="${goals}"
             banner="Building"
             ignoreFailures="false"

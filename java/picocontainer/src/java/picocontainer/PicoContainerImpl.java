@@ -10,8 +10,14 @@
 
 package picocontainer;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.InvocationTargetException;
 
 public class PicoContainerImpl implements PicoContainer {
 
@@ -65,11 +71,13 @@ public class PicoContainerImpl implements PicoContainer {
     }
 
     // TODO:ASLAK just declare PicoRegistrationException?
+    // NOT-TODO:PAUL On interface spec yes, on impl no. The tightly-coupled (to impl) user will thank you :-)
     public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
     // TODO:ASLAK just declare PicoRegistrationException?
+    // NOT-TODO:PAUL On interface spec yes, on impl no. The tightly-coupled (to impl) user will thank you :-)
     public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         checkConcrete(componentClass);
         checkConstructor(componentClass);

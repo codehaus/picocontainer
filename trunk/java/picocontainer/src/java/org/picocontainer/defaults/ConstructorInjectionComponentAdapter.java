@@ -156,23 +156,23 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         componentMonitor.instantiated(constructor, startTime, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
+                        componentMonitor.instantiationFailed(constructor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
-//                        componentInteraction.failed(e);
                         throw new PicoInvocationTargetInitializationException(e.getTargetException());
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
-                        //                      componentInteraction.failed(e);
+                        componentMonitor.instantiationFailed(constructor, e);
                         throw new PicoInitializationException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
-                        //                      componentInteraction.failed(e);
+                        componentMonitor.instantiationFailed(constructor, e);
                         throw new PicoInitializationException(e);
                         ///CLOVER:ON
                     }

@@ -226,7 +226,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public List getComponentInstances() throws PicoException {
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
             // This will result in the list of ComponentAdapters being populated
-            getComponentInstance(iterator.next());
+            Object o = getComponentInstance(iterator.next());
+
+            // This is a small hack to materialise the delegate in case implementation
+            // hiding component adapter is used. This is because delegates are lazily
+            // constructed, and only after the first method call occurs. Thi is what will
+            // add the real component.
+            o.hashCode();
         }
         List result = new ArrayList();
         List instantiantionOrderedComponentAdaptersCopy = new ArrayList(instantiantionOrderedComponentAdapters);

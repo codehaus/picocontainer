@@ -62,7 +62,7 @@ public class DefaultMcaDeployer implements McaDeployer {
 		String mcaFileName = sandboxDir.getName() + ".mca";
 		expand(connection.getInputStream(), tempDir, mcaFileName);
 		connection.disconnect();
-		URL jarURL = new URL("jar:file:" + tempDir.getCanonicalPath() + "\\" + mcaFileName + "!/");
+		URL jarURL = new URL("jar:file:" + tempDir.getCanonicalPath() + "/" + mcaFileName + "!/");
 
 		// handle as local
 		handleLocalMCA(sandboxDir, (JarURLConnection)jarURL.openConnection());

@@ -195,6 +195,10 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
         return reflectionAdapter.registerComponentImplementation(key, componentImplementationClassName);
     }
+    
+    public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
+        return reflectionAdapter.registerComponentImplementation(key, componentImplementationClassName, parameters);
+    }
 
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         return reflectionAdapter.registerComponentImplementation(key, componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);

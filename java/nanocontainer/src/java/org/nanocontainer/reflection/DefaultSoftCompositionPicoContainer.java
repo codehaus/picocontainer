@@ -130,8 +130,8 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return delegate.registerComponentImplementation(componentKey, componentImplementation);
     }
-
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+    
+        public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);
     }
 
@@ -195,6 +195,10 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
 
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
         return reflectionAdapter.registerComponentImplementation(key, componentImplementationClassName);
+    }
+    
+    public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
+        return reflectionAdapter.registerComponentImplementation(key, componentImplementationClassName, parameters);
     }
 
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {

@@ -1,5 +1,6 @@
 package org.nanocontainer.script.groovy
 
+import org.picocontainer.defaults.ComponentParameter
 import org.picocontainer.defaults.UnsatisfiableDependenciesException
 import org.picocontainer.defaults.SynchronizedComponentAdapterFactory
 
@@ -214,8 +215,35 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
             component(key:"Duke", instance: "Ellington")
         }
 	
-    		assertEquals("Armstrong", pico.getComponentInstance("Louis"))
-    		assertEquals("Ellington", pico.getComponentInstance("Duke"))
-	}
+        assertEquals("Armstrong", pico.getComponentInstance("Louis"))
+        assertEquals("Ellington", pico.getComponentInstance("Duke"))
+    }
+	
+    public void testConstantParameters() {
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            component(key:"cat", class:HasParams, parameters:[ "c", "a", "t" ])
+            component(key:"dog", class:HasParams, parameters:[ "d", "o", "g" ])
+        }
+	
+        cat = pico.getComponentInstance("cat");
+        dog = pico.getComponentInstance("dog");
+        assertEquals("cat", cat.getParams());
+        assertEquals("dog", dog.getParams());
+    }
+
+    public void testComponentParameters() {
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            component(key:"a", class:Xxx$A)
+            component(key:"b", class:Xxx$B, parameters:[ new ComponentParameter("a") ])
+        }
+	
+        a = pico.getComponentInstance("a");
+        b = pico.getComponentInstance("b");
+        assertSame(a, b.getA())
+    }
 
 }

@@ -1,16 +1,17 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
 package org.nanocontainer;
 
-import org.nanocontainer.xml.InputSourceFrontEnd;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.*;
 
 /**
@@ -23,21 +24,12 @@ public class NanoContainer {
     private final List lifecycleAdapters = new ArrayList();
     private final NanoContainerMonitor monitor;
 
-    public NanoContainer(Reader nanoContainerXml) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
-        this(nanoContainerXml, new ConsoleNanoContainerMonitor());
-    }
-
-    public NanoContainer(Reader nanoContainerXml, NanoContainerMonitor monitor) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
+    public NanoContainer(NanoContainerMonitor monitor) {
         this.monitor = monitor;
-        InputSource is = new InputSource(nanoContainerXml);
-        InputSourceFrontEnd isfe = new InputSourceFrontEnd();
-        final PicoContainer rootContainer = isfe.createPicoContainer(is);
-
-        instantiateComponentsBreadthFirst(rootContainer);
-        startComponentsBreadthFirst();
     }
 
-    private void instantiateComponentsBreadthFirst(PicoContainer picoContainer) {
+
+    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) {
         monitor.componentsInstantiated(picoContainer);        
         LifecyclePicoAdapter lpa = new DefaultLifecyclePicoAdapter(picoContainer);
         lifecycleAdapters.add(lpa);
@@ -49,7 +41,7 @@ public class NanoContainer {
         }
     }
 
-    private void startComponentsBreadthFirst() {
+    protected void startComponentsBreadthFirst() {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
             DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
             lpa.start();
@@ -74,14 +66,7 @@ public class NanoContainer {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        String nanoContainerXml = args[0];
-        if (nanoContainerXml == null) {
-            nanoContainerXml = "config/nanocontainer.xml";
-        }
-        NanoContainer nano = new NanoContainer(new FileReader(nanoContainerXml));
-        addShutdownHook(nano);
-    }
+
 
     protected static void addShutdownHook(final NanoContainer nano) {
         Runtime.getRuntime().addShutdownHook(new Thread() {

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Differentiators</h1>
+Pico components (to remind you) are beans with one constructor and
+simple rules for parameters. No meta XML for dependancies.<br>
+<h2>Sun specified nearly-IoC Containers &amp; Component designs</h2>
+It could be said that Sun have created a few container/component
+designs.<br>
+<h3>Enterprise Java Beans<br>
+</h3>
+Clearly Entity and Session beans run inside a container.&nbsp; The API
+is well defined and to varying degrees of sucess one can deploy EJB
+appllications to WebLogic, WebSphere, Orion and JBoss.&nbsp;
+High use of XML for assembly and configuration. There are some mandated
+parent objects and interfaces for various to extend and/or implement. <br>
+<h3>Servlet</h3>
+Not so obvious - Servlets are container by a servlet container. They
+are generally bundled with (or replaced by) value added propositions
+like JSP, but it is still a container/component design.&nbsp;&nbsp;
+High use of XML for assembly and configuration.&nbsp; Servlets have no
+concept of parent container or the conatainer above that (sometimes
+EJB) and&nbsp; its provision of components, which is very unfortunate.
+Servlets have a number of interfaces to honor, none of which is too
+malignent. Servlets typically deal with external (or parent) components
+via RMI or JNDI.&nbsp; In more recent releases of EJB, Local interfaces
+rather than RMI may be the mechanism for connection the parent
+components.&nbsp; Weblogic have always provided a optimizing mechanism
+for this interoperation.<br>
+<h3>Applet</h3>
+Applets, though not so often used by people presently, are a good
+example of Container/Component separations.&nbsp; There is very little
+XML in use by Appletss.&nbsp; Configuration is typlically delivered in
+applet tags in HTML. Applets are granted some access to the parent
+container, the brower, and&nbsp; its DOM model for pages and other
+applets.&nbsp; There little standardisation for Browser as a container.<br>
+<h2>Non IoC container-like things by various<br>
+</h2>
+<h3>Mainable (Sun)<br>
+</h3>
+"public static void main(String[] args) {}"&nbsp; Familiar?
+Hopefully not :-) No component that is statically launched is a IoC
+component. This includes static launching of Java Webstart (JNLP)
+applications.<br>
+<h3>Singleton (pattern) </h3>
+The singleton pattern was detailed in the "Design Patterns" book.&nbsp;
+It seems like a good idea, is typlically statically and publicly
+accessed in Java.&nbsp; Overuse makes for bad solutions.&nbsp; In the
+IoC world we would replace this with a container managed single
+instance.<br>
+<h3>Static Factory (pattern) </h3>
+Used in a similar way the Singleton pattern (and similarly detailed in
+"Design Patterns"), this allows disparate classes to create/get other
+components.&nbsp; Very dirty applications result from overuse of static
+factories<br>
+<h3>JNDI</h3>
+A huge map of clunkily access components via a very non-IoC mechanism.
+It has to be strapped with much XML to prevent inappropriate
+access.&nbsp; This is not IoC because the component reaches out for
+external component dependancies whenever it feels like.&nbsp; This last
+fact coulds Serlvets and EJB in use.<br>
+<h2>Other IoC container / component designs</h2>
+<h3>Avalon-Framework and associated containers</h3>
+Apache hosts a project that has been running for years called Avalon.
+It has many components that fit that design and many containers.&nbsp;
+Avalon components are characterised by implementation of many optional
+interfaces. Avalon components are distributed with meta-information in
+XML.<br>
+<h3>Carbon </h3>
+todo<br>
+<br>
+</body>
+</html>

@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.Arrays;
 
 /**
- * {@inheritDoc}
  * Instantiates components using Constructor Injection.
  * <p>
  * <em>

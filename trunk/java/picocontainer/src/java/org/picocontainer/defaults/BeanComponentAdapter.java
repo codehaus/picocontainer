@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * {@inheritDoc}
  * Instantiates components using empty constructors and
  * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
  * For easy setting of primitive properties, also see {@link BeanPropertyComponentAdapter}.

@@ -2,17 +2,16 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-ant</id>
     <name>nanocontainer-ant</name>
 
     <dependencies>
-    
+
         <dependency>
             <id>picocontainer</id>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>       
+        </dependency>
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>

@@ -2,10 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-webwork</id>
     <name>nanocontainer-webwork</name>
-
 
     <dependencies>
 

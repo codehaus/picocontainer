@@ -1,57 +1,9 @@
 <?xml version="1.0"  encoding="ISO-8859-1"?>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
-    <pomVersion>3</pomVersion>
+    <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-type1</id>
     <name>nanocontainer-type1</name>
-
-    <organization>
-        <name>Codehaus</name>
-        <url>http://codehaus.org/</url>
-        <logo>http://codehaus.org/codehaus-small.gif</logo>
-    </organization>
-    <inceptionYear>2003</inceptionYear>
-    <package>org.nanocontainer.type1</package>
-    <logo>/images/pico-logo.png</logo>
-    <description>Avalon-Framework support for PicoContainer</description>
-    <url>http://www.picocontainer.org/</url>
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
-    <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/picocontainer.codehaus.org/java</siteDirectory>
-    <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/java/type1/?viewcvs.cgi</url>
-    </repository>
-
-    <versions>
-        <!--<version>
-            <id>1.0-alpha-1</id>
-            <name>1.0-alpha-1</name>
-            <tag>NANOCONTAINER_AVALON_1_0_ALPHA_1</tag>
-        </version>-->
-    </versions>
-
-    <mailingLists>
-        <mailingList>
-            <name>PicoContainer Users</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-user/</archive>
-        </mailingList>
-        <mailingList>
-            <name>PicoContainer Developers</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
-        </mailingList>
-        <mailingList>
-            <name>PicoContainer CVS Commits (CVSSpam)</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
-        </mailingList>
-    </mailingLists>
 
     <developers>
         <developer>
@@ -107,23 +59,4 @@
             <version>1.0.1b</version>
         </dependency>
     </dependencies>
-
-    <contributors>
-        <!--<contributor>
-            <name></name>
-        </contributor>-->
-    </contributors>
-
-    <build>
-        <sourceDirectory>${basedir}/src/java</sourceDirectory>
-        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
-        <unitTest>
-            <includes>
-                <include>**/*TestCase.java</include>
-            </includes>
-            <excludes>
-                <exclude>**/Abstract*</exclude>
-            </excludes>
-        </unitTest>
-    </build>
 </project>

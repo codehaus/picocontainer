@@ -2,10 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-sample-webwork</id>
     <name>nanocontainer-sample-webwork</name>
-
 
     <dependencies>
 
@@ -101,14 +99,14 @@
             </properties>
         </dependency>
 
-<!-- Uncomment for Servlet containers that don't bundle comons-logging -->
-<!--        <dependency>-->
-<!--            <id>commons-logging</id>-->
-<!--            <version>1.0.2</version>-->
-<!--            <properties>-->
-<!--                <war.bundle>true</war.bundle>-->
-<!--            </properties>-->
-<!--        </dependency>-->
+        <!-- Uncomment for Servlet containers that don't bundle commons-logging -->
+        <!--        <dependency>-->
+        <!--            <id>commons-logging</id>-->
+        <!--            <version>1.0.2</version>-->
+        <!--            <properties>-->
+        <!--                <war.bundle>true</war.bundle>-->
+        <!--            </properties>-->
+        <!--        </dependency>-->
 
     </dependencies>
 

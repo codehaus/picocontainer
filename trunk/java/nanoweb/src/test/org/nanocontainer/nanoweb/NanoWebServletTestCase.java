@@ -138,8 +138,6 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         MyAction action = (MyAction) requestContainer.getComponentInstance("/test");
         assertEquals(2004, action.getYear());
         assertEquals("success", action.doit());
-
-        verifyMocks();
     }
 
     public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -161,16 +159,5 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         Method getYear = action.getClass().getMethod("getYear", null);
         Object resultYear = getYear.invoke(action, null);
         assertEquals("2004", resultYear);
-
-        //verifyMocks();
-    }
-
-    private void verifyMocks() {
-        //requestMock.verify();
-        //responseMock.verify();
-        //servletContextMock.verify();
-        //servletConfigMock.verify();
-        //containerBuilderMock.verify();
-        //requestDispatcherMock.verify();
     }
 }

@@ -2,25 +2,23 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-proxytoys</id>
     <name>nanocontainer-proxytoys</name>
 
-
     <dependencies>
-    
+
         <dependency>
             <id>picocontainer</id>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>    
+        </dependency>
 
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>    
+        </dependency>
 
         <dependency>
             <groupId>cglib</groupId>

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
-  <id>nanocontainer-swt</id>
-  <name>nanocontainer-swt</name>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-swt</id>
+    <name>nanocontainer-swt</name>
 
-  <dependencies>
-  
+    <dependencies>
+
         <dependency>
             <id>picocontainer</id>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>  
-  
+        </dependency>
+
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-swing</artifactId>
@@ -46,6 +45,6 @@
             <version></version>
         </dependency>
 
-  </dependencies>
+    </dependencies>
 
 </project>

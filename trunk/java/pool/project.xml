@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
-  <id>nanocontainer-pool</id>
-  <name>nanocontainer-pool</name>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-pool</id>
+    <name>nanocontainer-pool</name>
 
-  <dependencies>
-  
+    <dependencies>
+
         <dependency>
             <id>picocontainer</id>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>  
-  
-    <dependency>
+        </dependency>
+
+        <dependency>
             <groupId>nanocontainer</groupId>
-      <artifactId>nanocontainer-testmodel</artifactId>
-      <version>${pom.currentVersion}</version>
-    </dependency>  
-  </dependencies>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+    </dependencies>
 
 </project>

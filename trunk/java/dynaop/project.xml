@@ -2,10 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-dynaop</id>
     <name>nanocontainer-dynaop</name>
-
 
     <dependencies>
 
@@ -27,8 +25,8 @@
         </dependency>
 
         <dependency>
-          <id>dynaop</id>
-          <version>1.0-beta</version>
+            <id>dynaop</id>
+            <version>1.0-beta</version>
         </dependency>
 
         <!-- test time only -->

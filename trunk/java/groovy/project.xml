@@ -2,11 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-groovy</id>
     <name>nanocontainer-groovy</name>
-
-
 
     <dependencies>
         <dependency>

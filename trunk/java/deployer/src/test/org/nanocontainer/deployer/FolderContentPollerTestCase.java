@@ -59,9 +59,5 @@ public class FolderContentPollerTestCase extends MockObjectTestCase {
             fileMonitor.wait(200);
         }
         fileMonitor.stop();
-
-        //rootFolderMock.verify();
-        //newChildFolderMock.verify();
-        //folderContentHandlerMock.verify();
     }
 }

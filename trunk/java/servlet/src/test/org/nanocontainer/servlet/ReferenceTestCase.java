@@ -47,7 +47,6 @@ public class ReferenceTestCase extends MockObjectTestCase {
     private void setGetAndVerify(ObjectReference ref, Mock mock) {
         ref.set(value);
         assertEquals(value, ref.get());
-        //mock.verify();
     }
 
     private Mock createMock(final Class clazz) {

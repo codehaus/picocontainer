@@ -2,20 +2,20 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-rhino</id>
-  <name>picocontainer-rhino</name>
+  <id>picoextras-rhino</id>
+  <name>picoextras-rhino</name>
 
   <dependencies>
   
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-testmodel</artifactId>
+      <artifactId>picoextras-testmodel</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-reflection</artifactId>
+      <artifactId>picoextras-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
     

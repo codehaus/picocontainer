@@ -2,6 +2,6 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-integrationkit</id>
-  <name>picocontainer-integrationkit</name>
+  <id>picoextras-integrationkit</id>
+  <name>picoextras-integrationkit</name>
 </project>

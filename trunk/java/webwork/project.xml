@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-webwork</id>
-  <name>picocontainer-webwork</name>
+  <id>picoextras-webwork</id>
+  <name>picoextras-webwork</name>
 
   <dependencies>
 
@@ -19,13 +19,13 @@
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-integrationkit</artifactId>
+      <artifactId>picoextras-integrationkit</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
     
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-servlet</artifactId>
+      <artifactId>picoextras-servlet</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
     

@@ -730,13 +730,20 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 			public BB(I i) {}
 		}
 
-    public void testExtendAndDependOnSameType() throws Exception {
+    public void testExtendAndDependOnSameType() throws PicoRegistrationException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(AA.class);
         pico.registerComponent(BB.class);
 
-        pico.start();
-	}
+        try {
+            pico.start();
+            fail("Should have barfed");
+        } catch (UnsatisfiedDependencyStartupException e) {
+            // Neither can be instantiated without the other.
+        } catch (PicoStartException e) {
+            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+        }
+    }
 }

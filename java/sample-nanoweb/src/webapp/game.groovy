@@ -7,19 +7,18 @@ package org.nanocontainer.sample.nanoweb;
  * @version $Revision$
  */
 // START SNIPPET: class
-public class Game {
+class Game {
     GUESS_NEW_HINT = "Guess a number between 1 and 20"
 
-    numberToGuess
+    NumberToGuess numberToGuess
+    int guess = Integer.MIN_VALUE
+    hint = GUESS_NEW_HINT
 
-    property int guess = Integer.MIN_VALUE
-    property hint = GUESS_NEW_HINT
-
-    public Game(NumberToGuess n) {
+    Game(NumberToGuess n) {
         numberToGuess = n
     }
 
-    public play() {
+    play() {
         if (guess == Integer.MIN_VALUE || guess.equals(numberToGuess.getNumber())) {
             hint = GUESS_NEW_HINT
             numberToGuess.newRandom()

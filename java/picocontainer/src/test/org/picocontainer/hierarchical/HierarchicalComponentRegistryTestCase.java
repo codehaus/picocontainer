@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class HierarchicalComponentRegistryTestCase extends TestCase {
 
@@ -47,27 +48,34 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         DefaultComponentRegistry dcr = new DefaultComponentRegistry();
         DefaultPicoContainer dpc = new DefaultPicoContainer.WithComponentRegistry(dcr);
         HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(dcr);
+        DefaultPicoContainer dpc2 = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
         dpc.registerComponentByClass(FredImpl.class);
         dpc.registerComponentByClass(WilmaImpl.class);
-        HashMap component = new HashMap();
-        dpc.registerComponent(Map.class, component);
+        HashMap hashMap = new HashMap();
+        HashSet hashSet = new HashSet();
+        dpc.registerComponent(Map.class, hashMap);
+        dpc2.registerComponent(Set.class, hashSet);
 
         dpc.instantiateComponents();
+        dpc2.instantiateComponents();
 
         Set set = hcr.getComponentInstanceKeys();
         assertTrue(set.contains(FredImpl.class));
         assertTrue(set.contains(WilmaImpl.class));
         assertTrue(set.contains(Map.class));
+        assertTrue(set.contains(Set.class));
 
         List list = hcr.getOrderedComponents();
-        assertTrue(list.contains(component));
+        assertTrue(list.contains(hashMap));
+        assertTrue(list.contains(hashSet));
 
-        assertEquals("There should be two comps in the container", 3, hcr.getComponentInstances().size());
+        assertEquals("There should be two comps in the container", 4, hcr.getComponentInstances().size());
 
-        assertTrue("There should have been a Fred in the container", hcr.hasComponentInstance(FredImpl.class));
-        assertTrue("There should have been a Wilma in the container", hcr.hasComponentInstance(WilmaImpl.class));
-        assertTrue("There should have been a Map in the container", hcr.hasComponentInstance(Map.class));
+        assertTrue("There should have been a Fred in the registry", hcr.hasComponentInstance(FredImpl.class));
+        assertTrue("There should have been a Wilma in the registry", hcr.hasComponentInstance(WilmaImpl.class));
+        assertTrue("There should have been a Map in the registry", hcr.hasComponentInstance(Map.class));
+        assertTrue("There should have been a Set in the registry", hcr.hasComponentInstance(Set.class));
     }
 
     public static class DerivedWilma extends WilmaImpl {

@@ -1,14 +1,17 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultPicoContainer;
+import picocontainer.testmodel.FredImpl;
+import picocontainer.testmodel.WilmaImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClassicLifecycleTestCase extends TestCase {
 
-    public static class One implements ClassicStartingUpLifecycle, ClassicShuttonDownLifecycle {
+    public static class One implements Startable, Stoppable, Disposable {
 
         List instantiating = new ArrayList();
         List starting = new ArrayList();
@@ -26,12 +29,15 @@ public class ClassicLifecycleTestCase extends TestCase {
         public List getInstantiating() {
             return instantiating;
         }
+
         public List getStarting() {
             return starting;
         }
+
         public List getStopping() {
             return stopping;
         }
+
         public List getDisposing() {
             return disposing;
         }
@@ -39,9 +45,11 @@ public class ClassicLifecycleTestCase extends TestCase {
         public void start() throws Exception {
             startCalled("One");
         }
+
         public void stop() throws Exception {
             stopCalled("One");
         }
+
         public void dispose() throws Exception {
             disposeCalled("One");
         }
@@ -49,72 +57,90 @@ public class ClassicLifecycleTestCase extends TestCase {
         public void startCalled(String msg) {
             starting.add(msg);
         }
+
         public void stopCalled(String msg) {
             stopping.add(msg);
         }
+
         public void disposeCalled(String msg) {
             disposing.add(msg);
         }
 
     }
 
-    public static class Two implements ClassicStartingUpLifecycle, ClassicShuttonDownLifecycle {
+    public static class Two implements Startable, Stoppable, Disposable {
         One one;
+
         public Two(One one) {
             one.instantiation("Two");
             this.one = one;
         }
+
         public void start() throws Exception {
             one.startCalled("Two");
         }
+
         public void stop() throws Exception {
             one.stopCalled("Two");
         }
+
         public void dispose() throws Exception {
             one.disposeCalled("Two");
         }
     }
 
-    public static class Three implements ClassicStartingUpLifecycle, ClassicShuttonDownLifecycle {
+    public static class Three implements Startable, Stoppable, Disposable {
         One one;
+
         public Three(One one, Two two) {
             one.instantiation("Three");
             this.one = one;
         }
+
         public void start() throws Exception {
             one.startCalled("Three");
         }
+
         public void stop() throws Exception {
             one.stopCalled("Three");
         }
+
         public void dispose() throws Exception {
             one.disposeCalled("Three");
         }
     }
 
-    public static class Four implements ClassicStartingUpLifecycle, ClassicShuttonDownLifecycle {
+    public static class Four implements Startable, Stoppable, Disposable {
         One one;
+
         public Four(Two two, Three three, One one) {
             one.instantiation("Four");
             this.one = one;
         }
+
         public void start() throws Exception {
             one.startCalled("Four");
         }
+
         public void stop() throws Exception {
             one.stopCalled("Four");
         }
+
         public void dispose() throws Exception {
             one.disposeCalled("Four");
         }
     }
 
 
-    public static interface ClassicStartingUpLifecycle {
+    public static interface Startable {
         void start() throws Exception;
     }
-    public static interface ClassicShuttonDownLifecycle {
+
+    public static interface Stoppable {
         void stop() throws Exception;
+    }
+
+    public static interface Disposable {
         void dispose() throws Exception;
     }
 
@@ -130,8 +156,9 @@ public class ClassicLifecycleTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getAggregateComponentProxy(true, false);
-        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getAggregateComponentProxy(false, false);
+        Startable startup = (Startable) pico.getAggregateComponentProxy(true, false);
+        Stoppable shutdown = (Stoppable) pico.getAggregateComponentProxy(false, false);
+        Disposable disposal = (Disposable) pico.getAggregateComponentProxy(false, false);
 
         assertTrue("There should have been a 'One' in the container", pico.hasComponent(One.class));
 
@@ -162,7 +189,7 @@ public class ClassicLifecycleTestCase extends TestCase {
         assertEquals("Incorrect Order of Stopping", "Two", one.getStopping().get(2));
         assertEquals("Incorrect Order of Stopping", "One", one.getStopping().get(3));
 
-        shutdown.dispose();
+        disposal.dispose();
 
         // post instantiation shutdown - REVERSE order.
         assertEquals("Should be four elems", 4, one.getDisposing().size());
@@ -173,136 +200,199 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     }
 
-//
-//
-//    public void testStartStopStartStopAndDispose() throws Exception {
-//
-//        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
-//
-//        pico.registerComponent(FredImpl.class);
-//        pico.registerComponent(WilmaImpl.class);
-//
-//        pico.instantiateComponents();
-//
-//        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getAggregateComponentProxy(true, false);
-//        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getAggregateComponentProxy(false, false);
-//
-//
-//        startup.start();
-//        shutdown.stop();
-//
-//        startup.start();
-//        shutdown.stop();
-//
-//        shutdown.dispose();
-//
-//    }
-//
 
-//    public void testStartStartCausingBarf() throws PicoInitializationException, PicoRegistrationException{
-//        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
-//
-//        pico.registerComponent(FredImpl.class);
-//        pico.registerComponent(WilmaImpl.class);
-//
-//        pico.instantiateComponents();
-//        try {
-//            pico.instantiateComponents();
-//            fail("Should have barfed");
-//        } catch (IllegalStateException e) {
-//            // expected;
-//        }
-//    }
-//
-//    public void testStartStopStopCausingBarf() throws PicoInitializationException, PicoRegistrationException {
-//        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
-//
-//        pico.registerComponent(FredImpl.class);
-//        pico.registerComponent(WilmaImpl.class);
-//
-//        pico.instantiateComponents();
-//        pico.stop();
-//        try {
-//            pico.stop();
-//            fail("Should have barfed");
-//        } catch (IllegalStateException e) {
-//            // expected;
-//        }
-//    }
-//
-//    public void testStartStopDisposeDisposeCausingBarf() throws PicoInitializationException, PicoRegistrationException {
-//        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
-//
-//        pico.registerComponent(FredImpl.class);
-//        pico.registerComponent(WilmaImpl.class);
-//
-//        pico.instantiateComponents();
-//        pico.stop();
-//        pico.dispose();
-//        try {
-//            pico.dispose();
-//            fail("Should have barfed");
-//        } catch (IllegalStateException e) {
-//            // expected;
-//        }
-//    }
-//
-//    public static class Foo implements Runnable {
-//        private int runCount;
-//        private Thread thread = new Thread();
-//        private boolean interrupted;
-//
-//        public Foo() {
-//        }
-//
-//        public int runCount() {
-//            return runCount;
-//        }
-//
-//        public boolean isInterrupted() {
-//            return interrupted;
-//        }
-//
-//        public void instantiateComponents() {
-//            thread = new Thread(this);
-//            thread.instantiateComponents();
-//        }
-//
-//        public void stop() {
-//            thread.interrupt();
-//        }
-//
-//        // this would do something a bit more concrete
-//        // than counting in real life !
-//        public void run() {
-//            runCount++;
-//            try {
-//                Thread.sleep(10000);
-//            } catch (InterruptedException e) {
-//                interrupted = true;
-//            }
-//        }
-//    }
-//
-//    public void testStartStopOfDaemonizedThread() throws PicoInitializationException, PicoRegistrationException, InterruptedException {
-//        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.WithStartableLifecycleManager(new ReflectionUsingLifecycleManager());
-//
-//        pico.registerComponent(FredImpl.class);
-//        pico.registerComponent(WilmaImpl.class);
-//        pico.registerComponent(Foo.class);
-//
-//        pico.instantiateComponents();
-//        Thread.sleep(100);
-//        pico.stop();
-//        Foo foo = (Foo) pico.getComponent(Foo.class);
-//        assertEquals(1, foo.runCount());
-//        pico.instantiateComponents();
-//        Thread.sleep(100);
-//        pico.stop();
-//        assertEquals(2, foo.runCount());
-//
-//    }
-//
+    public static class ForgivingLifecyclePicoContainer extends DefaultPicoContainer.Default implements Startable, Stoppable {
+
+        private Startable startableAggregatedComponent;
+        private Stoppable stoppingAggregatedComponent;
+        private Disposable disposingAggregatedComponent;
+        private boolean started;
+        private boolean disposed;
+
+        public ForgivingLifecyclePicoContainer() {
+        }
+
+        public void instantiateComponents() throws PicoInitializationException {
+            super.instantiateComponents();
+            try {
+                startableAggregatedComponent = (Startable) getAggregateComponentProxy(true, false);
+            } catch (ClassCastException e) {
+            }
+            try {
+
+                stoppingAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
+            } catch (ClassCastException e) {
+            }
+
+        }
+
+        public void start() throws Exception {
+            checkDisposed();
+            if (started) {
+                throw new IllegalStateException("Already started.");
+            }
+            started = true;
+            if (startableAggregatedComponent != null) {
+                startableAggregatedComponent.start();
+            }
+        }
+
+        public void stop() throws Exception {
+            checkDisposed();
+            if (started == false) {
+                throw new IllegalStateException("Already stopped.");
+            }
+            started = false;
+            if (stoppingAggregatedComponent != null) {
+                stoppingAggregatedComponent.stop();
+            }
+        }
+
+        private void checkDisposed() {
+            if (disposed) {
+                throw new IllegalStateException("Components Disposed Of");
+            }
+        }
+
+        public void dispose() throws Exception {
+            checkDisposed();
+            disposed = true;
+            if (disposingAggregatedComponent != null) {
+                disposingAggregatedComponent.dispose();
+            }
+        }
+    }
+
+    public void testStartStopStartStopAndDispose() throws Exception {
+
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+
+        pico.start();
+        pico.stop();
+
+        pico.start();
+        pico.stop();
+
+        pico.dispose();
+
+    }
+
+    public void testStartStartCausingBarf() throws Exception {
+
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+
+        pico.start();
+        try {
+            pico.start();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+    public void testStartStopStopCausingBarf() throws Exception {
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+        pico.start();
+        pico.stop();
+        try {
+            pico.stop();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+    public void testStartStopDisposeDisposeCausingBarf() throws Exception {
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+        pico.start();
+        pico.stop();
+        pico.dispose();
+        try {
+            pico.dispose();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+    public static class FooRunnable implements Runnable, Startable, Stoppable {
+        private int runCount;
+        private Thread thread = new Thread();
+        private boolean interrupted;
+
+        public FooRunnable() {
+        }
+
+        public int runCount() {
+            return runCount;
+        }
+
+        public boolean isInterrupted() {
+            return interrupted;
+        }
+
+        public void start() {
+            thread = new Thread(this);
+            thread.start();
+        }
+
+        public void stop() {
+            thread.interrupt();
+        }
+
+        // this would do something a bit more concrete
+        // than counting in real life !
+        public void run() {
+            runCount++;
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                interrupted = true;
+            }
+        }
+    }
+
+    public void testStartStopOfDaemonizedThread() throws Exception {
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponent(FooRunnable.class);
+
+        pico.instantiateComponents();
+        pico.start();
+        Thread.sleep(100);
+        pico.stop();
+
+        FooRunnable foo = (FooRunnable) pico.getComponent(FooRunnable.class);
+        assertEquals(1, foo.runCount());
+        pico.start();
+        Thread.sleep(100);
+        pico.stop();
+        assertEquals(2, foo.runCount());
+
+    }
+
 
 
 }

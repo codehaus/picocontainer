@@ -51,6 +51,12 @@
                 - Added SynchronizedComponentAdapter.
             </action>
 
+            <action dev="tastapod" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-77">PICO-77</a>
+                - CachingComponentAdapterFactory does not produce CachingComponentAdapter.
+            </action>
+
             <action dev="rinkrank" type="fix">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-83">PICO-83</a>

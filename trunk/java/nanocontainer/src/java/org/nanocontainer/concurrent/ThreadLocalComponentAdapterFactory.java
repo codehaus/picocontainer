@@ -20,7 +20,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
- * A {link@ ComponentAdapterFactory} for {@link ThreadLocalComponentAdapter}s.
+ * A {@link ComponentAdapterFactory} for {@link ThreadLocalComponentAdapter} instances.
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterFactory
@@ -36,8 +36,8 @@ public class ThreadLocalComponentAdapterFactory
     }
 
     /**
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object,
-     *           <p/>java.lang.Class, org.picocontainer.Parameter[])
+     * {@inheritDoc}
+     * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
      */
     public ComponentAdapter createComponentAdapter(
             Object componentKey, Class componentImplementation, Parameter[] parameters)

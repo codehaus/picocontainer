@@ -14,7 +14,7 @@ import org.picocontainer.defaults.ObjectReference;
 
 
 /**
- * Implementation of an {@link org.picocontainer.defaults.ObjectReference}as
+ * Implementation of an {@link org.picocontainer.defaults.ObjectReference} as
  * {@link ThreadLocal}.
  * @author J&ouml;rg Schaible
  */

@@ -138,7 +138,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         String stringKey = componentElement.getAttribute("stringkey");
         String typeKey = componentElement.getAttribute("typekey");
 
-        //TODO we need to have config elements parsing here, and register with params action... 
+        //TODO we need to have config elements parsing here, and register with params action...
         if (stringKey == null || stringKey.equals("")) {
             stringKey = className;
         }
@@ -169,7 +169,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
                 break;
             }
         }
-        
+
         try {
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);

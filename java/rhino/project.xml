@@ -6,6 +6,7 @@
   <name>picocontainer-rhino</name>
 
   <dependencies>
+  
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>picocontainer-testmodel</artifactId>

@@ -6,64 +6,52 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public class CollectionComponentParameter : IParameter
 	{
-		/**
-     * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
-     */
+		/// <summary>
+		/// Use <code>ARRAY</code> as Parameterfor an Array that must have elements.
+		/// </summary>
 		public static readonly CollectionComponentParameter ARRAY = new CollectionComponentParameter();
-		/**
-     * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
-     * elements.
-     */
+
+		/// <summary>
+		/// Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no elements.
+		/// </summary>
 		public static readonly CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);
 
 		private readonly bool emptyCollection;
 		private readonly Type componentKeyType;
 		private readonly Type componentValueType;
 
-		/**
-     * Expect an {@link Array}of an appropriate type as parameter. At least one component of
-     * the array's component type must exist.
-     */
-
+		/// <summary>
+		/// Expect an {@link Array}of an appropriate type as parameter. At least one component of
+		/// the array's component type must exist.
+		/// </summary>
 		public CollectionComponentParameter() : this(false)
 		{
 		}
 
-		/**
-     * Expect an {@link Array}of an appropriate type as parameter.
-     * 
-     * @param emptyCollection <code>true</code> if an empty array also is a valid dependency
-     *                   resolution.
-     */
-
-		public CollectionComponentParameter(bool emptyCollection) : this(typeof(void), emptyCollection)
+		/// <summary>
+		/// Expect an {@link Array}of an appropriate type as parameter.
+		/// </summary>
+		/// <param name="emptyCollection"><code>true</code> if an empty array also is a valid dependency resolution.</param>
+		public CollectionComponentParameter(bool emptyCollection) : this(typeof (void), emptyCollection)
 		{
 		}
 
-		/**
-     * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
-     * parameter.
-     * 
-     * @param componentValueType the type of the components (ignored in case of an Array)
-     * @param emptyCollection <code>true</code> if an empty collection resolves the
-     *                   dependency.
-     */
-
-		public CollectionComponentParameter(Type componentValueType, bool emptyCollection) 
+		/// <summary>
+		/// Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as parameter.
+		/// </summary>
+		/// <param name="componentValueType">type of the components (ignored in case of an Array)</param>
+		/// <param name="emptyCollection"><code>true</code> if an empty collection resolves the dependency.</param>
+		public CollectionComponentParameter(Type componentValueType, bool emptyCollection)
 			: this(typeof (object), componentValueType, emptyCollection)
 		{
 		}
 
-		/**
-     * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
-     * parameter.
-     * 
-     * @param componentKeyType the type of the component's key
-     * @param componentValueType the type of the components (ignored in case of an Array)
-     * @param emptyCollection <code>true</code> if an empty collection resolves the
-     *                   dependency.
-     */
-
+		/// <summary>
+		/// Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as parameter.
+		/// </summary>
+		/// <param name="componentKeyType">the type of the component's key</param>
+		/// <param name="componentValueType">the type of the components (ignored in case of an Array)</param>
+		/// <param name="emptyCollection"><code>true</code> if an empty collection resolves the dependency.</param>
 		public CollectionComponentParameter(Type componentKeyType, Type componentValueType, bool emptyCollection)
 		{
 			this.emptyCollection = emptyCollection;
@@ -71,19 +59,16 @@ namespace PicoContainer.Defaults
 			this.componentValueType = componentValueType;
 		}
 
-		/**
-     * Resolve the parameter for the expected type. The method will return <code>null</code>
-     * If the expected type is not one of the collection types {@link Array},
-     * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
-     * the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @return the instance of the collection type or <code>null</code>
-     * @throws PicoInstantiationException {@inheritDoc}
-     */
-
+		/// <summary>
+		/// Resolve the parameter for the expected type. The method will return <code>null</code>
+		/// If the expected type is not one of the collection types {@link Array},
+		/// {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
+		/// the <code>emptyCollection</code> flag was set.
+		/// </summary>
+		/// <param name="container"></param>
+		/// <param name="adapter"></param>
+		/// <param name="expectedType"></param>
+		/// <returns>the instance of the collection type or <code>null</code></returns>
 		public Object ResolveInstance(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
 		{
 			// type check is done in isResolvable
@@ -91,19 +76,18 @@ namespace PicoContainer.Defaults
 			Type collectionType = GetCollectionType(expectedType);
 			if (collectionType != null)
 			{
-				IDictionary adapterMap = GetMatchingComponentAdapters(container, adapter, componentKeyType, GetValueType(expectedType));
-				if (typeof(Array).IsAssignableFrom(collectionType))
+				IDictionary dictionary = GetMatchingComponentAdapters(container, adapter, componentKeyType, GetValueType(expectedType));
+				if (typeof (Array).IsAssignableFrom(collectionType))
 				{
-					result = GetArrayInstance(container, expectedType, adapterMap);
+					result = GetArrayInstance(container, expectedType, dictionary);
 				}
-				else if (typeof(IDictionary).IsAssignableFrom(collectionType))
+				else if (typeof (IDictionary).IsAssignableFrom(collectionType))
 				{
-						// todo mward fix...
-					//result = GetMapInstance(container, expectedType, adapterMap);
+					result = GetDictionaryInstance(container, expectedType, dictionary);
 				}
-				else if ( typeof(ICollection).IsAssignableFrom(collectionType)) 
+				else if (typeof (ICollection).IsAssignableFrom(collectionType))
 				{
-					result = GetCollectionInstance(container,expectedType,adapterMap);
+					result = GetCollectionInstance(container, expectedType, dictionary);
 				}
 				else
 				{
@@ -113,39 +97,33 @@ namespace PicoContainer.Defaults
 			return result;
 		}
 
-		/**
-     * Check for a successful dependency resolution of the parameter for the expected type. The
-     * dependency can only be satisfied if the expected type is one of the collection types
-     * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
-     * resolution, if the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @return <code>true</code> if matching components were found or an empty collective type
-     *               is allowed
-     */
-
+		/// <summary>
+		/// Check for a successful dependency resolution of the parameter for the expected type. The
+		/// dependency can only be satisfied if the expected type is one of the collection types
+		/// {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
+		/// resolution, if the <code>emptyCollection</code> flag was set.
+		/// </summary>
+		/// <param name="container"></param>
+		/// <param name="adapter"></param>
+		/// <param name="expectedType"></param>
+		/// <returns><code>true</code> if matching components were found or an empty collective type is allowed</returns>
 		public bool IsResolvable(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
 		{
 			Type collectionType = GetCollectionType(expectedType);
 			Type valueType = GetValueType(expectedType);
-			
+
 			return collectionType != null && (emptyCollection || GetMatchingComponentAdapters(container, adapter, componentKeyType, valueType).Count > 0);
 		}
 
-		/**
-     * Verify a successful dependency resolution of the parameter for the expected type. The
-     * method will only return if the expected type is one of the collection types {@link Array},
-     * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
-     * the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @throws PicoIntrospectionException {@inheritDoc}
-     */
-
+		/// <summary>
+		/// Verify a successful dependency resolution of the parameter for the expected type. The
+		/// method will only return if the expected type is one of the collection types {@link Array},
+		/// {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
+		/// the <code>emptyCollection</code> flag was set.
+		/// </summary>
+		/// <param name="container"></param>
+		/// <param name="adapter"></param>
+		/// <param name="expectedType"></param>
 		public void Verify(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
 		{
 			Type collectionType = GetCollectionType(expectedType);
@@ -178,31 +156,28 @@ namespace PicoContainer.Defaults
 			return;
 		}
 
-		/**
-     * Evaluate whether the given component adapter will be part of the collective type.
-     * 
-     * @param adapter a <code>ComponentAdapter</code> value
-     * @return <code>true</code> if the adapter takes part
-     */
-
+		/// <summary>
+		/// Evaluate whether the given component adapter will be part of the collective type.
+		/// </summary>
+		/// <param name="adapter">a <code>ComponentAdapter</code> value</param>
+		/// <returns><code>true</code> if the adapter takes part</returns>
 		protected virtual bool Evaluate(IComponentAdapter adapter)
 		{
 			return adapter != null; // use parameter, prevent compiler warning
 		}
 
-		/**
-     * Collect the matching ComponentAdapter instances.
-     * @param container container to use for dependency resolution
-     * @param adapter {@link ComponentAdapter} to exclude
-     * @param keyType the compatible type of the key
-     * @param valueType the compatible type of the component
-     * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
-     */
-
-		protected IDictionary GetMatchingComponentAdapters(IPicoContainer container, 
-			IComponentAdapter adapter, 
-			Type keyType, 
-			Type valueType)
+		/// <summary>
+		/// Collect the matching ComponentAdapter instances. 
+		/// </summary>
+		/// <param name="container">container container to use for dependency resolution</param>
+		/// <param name="adapter">ComponentAdapter to exclude</param>
+		/// <param name="keyType">the compatible type of the key</param>
+		/// <param name="valueType">the compatible type of the component</param>
+		/// <returns>IDictionary with the ComponentAdapter instances and their component keys as map key.</returns>
+		protected IDictionary GetMatchingComponentAdapters(IPicoContainer container,
+		                                                   IComponentAdapter adapter,
+		                                                   Type keyType,
+		                                                   Type valueType)
 		{
 			IDictionary adapterMap = new Hashtable();
 			IPicoContainer parent = container.Parent;
@@ -212,9 +187,9 @@ namespace PicoContainer.Defaults
 
 				foreach (DictionaryEntry entry in matchingComponentAdapters)
 				{
-					adapterMap.Add(entry.Key, entry.Value);	
+					adapterMap.Add(entry.Key, entry.Value);
 				}
-				
+
 			}
 			ICollection allAdapters = container.ComponentAdapters;
 
@@ -270,12 +245,12 @@ namespace PicoContainer.Defaults
 
 		private object[] GetArrayInstance(IPicoContainer container, Type expectedType, IDictionary adapterList)
 		{
-			object[] result = (object[])Array.CreateInstance(expectedType.GetElementType(), adapterList.Count);
+			object[] result = (object[]) Array.CreateInstance(expectedType.GetElementType(), adapterList.Count);
 			int i = 0;
 
 			foreach (DictionaryEntry entry in adapterList)
 			{
-				IComponentAdapter componentAdapter = (IComponentAdapter)entry.Value;
+				IComponentAdapter componentAdapter = (IComponentAdapter) entry.Value;
 				result[i] = container.GetComponentInstance(componentAdapter.ComponentKey);
 				i++;
 			}
@@ -312,7 +287,7 @@ namespace PicoContainer.Defaults
 
 				foreach (DictionaryEntry entry in adapterList)
 				{
-					IComponentAdapter componentAdapter = (IComponentAdapter)entry.Value;
+					IComponentAdapter componentAdapter = (IComponentAdapter) entry.Value;
 					result.Add(container.GetComponentInstance(componentAdapter.ComponentKey));
 				}
 
@@ -325,41 +300,29 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-
-		// todo mward implement this
-		/*private Hashtable getMapInstance(IPicoContainer container, Type expectedType, Hashtable adapterList) 
+		private IDictionary GetDictionaryInstance(IPicoContainer container, Type expectedType, IDictionary adapterList) 
 		{
 			Type collectionType = expectedType;
 			if (collectionType.IsInterface) 
 			{
-			// The order of tests are significant. The least generic types last.
-			if (SortedMap.class.isAssignableFrom(collectionType)) {
-				collectionType = TreeMap.class;
-//            } else if (ConcurrentMap.class.isAssignableFrom(collectionType)) {
-//                collectionType = ConcurrentHashMap.class;
-			} else if (Map.class.isAssignableFrom(collectionType)) {
-				collectionType = HashMap.class;
+				collectionType = typeof(Hashtable);
+			}
+
+			try 
+			{
+				IDictionary result = (IDictionary) Activator.CreateInstance(collectionType);
+				foreach (DictionaryEntry entry in adapterList)
+				{
+					Object key = entry.Key;
+					result.Add(key, container.GetComponentInstance(key));
+				}
+				return result;
+			} 
+			catch (Exception e)
+			{
+				throw new PicoInitializationException(e);
 			}
 		}
-		try {
-			Map result = (Map) collectionType.newInstance();
-			for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
-				final Map.Entry entry = (Map.Entry) iterator.next();
-				final Object key = entry.getKey();
-				final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-				result.put(key, container.getComponentInstance(key));
-			}
-			return result;
-		} catch (InstantiationException e) {
-			///CLOVER:OFF
-			throw new PicoInitializationException(e);
-			///CLOVER:ON
-		} catch (IllegalAccessException e) {
-			///CLOVER:OFF
-			throw new PicoInitializationException(e);
-			///CLOVER:ON
-		}
-	}*/
 
 
 	}

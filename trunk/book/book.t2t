@@ -17,4 +17,4 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 %!include: nanowar-eda.t2t
 %!include: decomposing-hairball-casestudy.t2t
 %!include: ioc-history.t2t
-
+%!include: snippet-example.t2t

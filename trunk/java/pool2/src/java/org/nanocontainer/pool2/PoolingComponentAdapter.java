@@ -5,32 +5,38 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
+ * Original code by Aslak Hellesoy                                                        *
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
-import org.picocontainer.*;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 /**
  * This Component Adapter maintains a pool of component instances.
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class PoolingComponentAdapter extends DecoratingComponentAdapter {
+    
     private static final int DEFAULT_SIZE = 5;
     private int maxPoolSize;
-    private final int waitMilliSeconds;
-    private List available = new LinkedList();
-    private List busy = new LinkedList();
+    private int waitMilliSeconds;
+    protected List available = new LinkedList();
+    protected Map busy = new HashMap();
 
     /**
+     * Construct a PoolingComponentAdapter.
      * @param delegate The delegate adapter that provides the pooled instances.
      * @param maxPoolSize maximum pool size. A size of -1 results in an ever growing pool.
-     * @param waitMilliSeconds number of milliseconds to wait when {@link #getComponentInstance(MutablePicoContainer) }
+     * @param waitMilliSeconds number of milliseconds to wait when {@link #getComponentInstance() }
      * is called. Three different values are possible here:
      * <ul>
      * <li>-1 : Wait when exhausted until a component is available.</li>
@@ -54,8 +60,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
 
     public synchronized Object getComponentInstance() throws PicoException {
         Object componentInstance = null;
-        final int availableSize = available.size();
-        if (availableSize > 0) {
+        if (getAvailable() > 0) {
             componentInstance = available.remove(0);
         } else {
             // none available. grow or wait.
@@ -70,23 +75,27 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
                     if(waitMilliSeconds < 0) {
                         wait();
                     }
+                    if (getAvailable() == 0) {
+                        throw new ExhaustedException();
+                    }
                     componentInstance = available.remove(0);
                 } catch (IndexOutOfBoundsException e) {
                     throw new ExhaustedException();
                 } catch (InterruptedException e) {
+                    // give the client code of the current thread a chance to abort also
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException("INTERRUPTED!");
                 }
             }
         }
-        busy.add(componentInstance);
-        return componentInstance;
+        return markInstanceAsBusyAndReturnIt(componentInstance);
     }
 
     public synchronized void returnComponentInstance(Object componentInstance) {
         if (!getComponentImplementation().equals(componentInstance.getClass())) {
             throw new BadTypeException(getComponentImplementation(), componentInstance.getClass());
         }
-        if (!busy.contains(componentInstance)) {
+        if (!busy.keySet().contains(componentInstance)) {
             throw new UnmanagedInstanceException(componentInstance);
         }
         busy.remove(componentInstance);
@@ -94,15 +103,36 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         notify();
     }
 
+    /**
+     * @return Returns the current number of managed instances.
+     */
     public int getTotalSize() {
         return getAvailable() + getBusy();
     }
 
+    /**
+     * @return Returns the busy instances.
+     */
     public int getBusy() {
         return busy.size();
     }
 
+    /**
+     * @return Returns the available instances.
+     */
     public int getAvailable() {
         return available.size();
+    }
+    
+    /**
+     * @return Returns the maximum pool size.
+     */
+    public int getMaxPoolSize() {
+        return maxPoolSize;
+    }
+    
+    protected Object markInstanceAsBusyAndReturnIt(Object instance) {
+        busy.put(instance, instance);
+        return instance;
     }
 }

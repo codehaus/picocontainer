@@ -17,6 +17,9 @@ $test->addTestFile('ComponentAdapterTests.php');
 $test->addTestFile('DefaultPicoContainerTests.php');
 $test->addTestFile('ExceptionsTests.php');
 
-$test->run(new HtmlReporter());
+if (TextReporter::inCli()) {
+        exit ($test->run(new TextReporter()) ? 0 : 1);
+}
+$test->run(new HtmlReporter()); 
 
 ?>

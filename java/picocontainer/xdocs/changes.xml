@@ -8,6 +8,10 @@
   <body>
     <release version="1.0-beta-1-SNAPSHOT" date="In CVS">
 
+      <action dev="paul" type="update">
+        - Changed nethod signatures from Object[] to java.util.Collection.
+      </action>
+
       <action dev="rinkrank" type="update">
         Renamed AggregateProxyFactory to CompositeProxyFactory.
       </action>
@@ -25,6 +29,11 @@
       <action dev="paul" type="fix">
         Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-21">PICO-21</a>
         - Change package name from picocontainer to org.picocontainer.
+      </action>
+
+      <action dev="paul" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-23">PICO-21</a>
+        - Nuke BeanStyleComponentFactory.
       </action>
 
       <action dev="paul" type="fix">

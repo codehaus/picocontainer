@@ -17,9 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URL;
+import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -47,7 +46,9 @@ public class NanoWebServletTestCase extends TestCase {
         servletConfigMock.expectAndReturn("getServletContext", servletContextMock.proxy());
         servletConfigMock.expectAndReturn("getServletName", "NanoWeb");
         servletConfigMock.expectAndReturn("getServletContext", servletContextMock.proxy());
+        servletConfigMock.expectAndReturn("getServletContext", servletContextMock.proxy());
         servletContextMock.expect("log", C.args(C.eq("NanoWeb: init")));
+        servletContextMock.expectAndReturn("getResource", C.args(C.eq("/test_doit_success.vm")), new URL("http://dummy/"));
         containerBuilderMock = new Mock(ContainerBuilder.class);
         servletContextMock.expectAndReturn("getAttribute", C.args(C.eq(KeyConstants.BUILDER)), containerBuilderMock.proxy());
         requestContainer = new DefaultPicoContainer();
@@ -61,60 +62,43 @@ public class NanoWebServletTestCase extends TestCase {
         requestDispatcherMock = new Mock(RequestDispatcher.class);
         requestDispatcherMock.expect("forward", C.args(C.eq(requestMock.proxy()), C.eq(responseMock.proxy())));
 
+        // url params
+        Vector paramtereNames = new Vector();
+        paramtereNames.add("year");
+        requestMock.expectAndReturn("getParameterNames", paramtereNames.elements());
+        requestMock.expectAndReturn("getParameter", C.args(C.eq("year")), "2004");
+
+        // path, action and view
+        requestMock.expectAndReturn("getServletPath", "/test/doit.nano");
+        requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_doit_success.vm")), requestDispatcherMock.proxy());
+
         nanoServlet.init((ServletConfig) servletConfigMock.proxy());
     }
 
     public void testParametersShouldBeSetAndExecuteInvokedOnJavaAction() throws IOException, ServletException {
-        // url params
-        Map parameterMap = new HashMap();
-        parameterMap.put("year", "2004");
-        parameterMap.put("cars", new String[]{"renault", "fiat"});
-        requestMock.expectAndReturn("getParameterMap", parameterMap);
-
-        // path, action and view
-        requestMock.expectAndReturn("getServletPath", "/test.nano");
-        requestContainer.registerComponentImplementation("/test.nano", MyAction.class);
+        requestContainer.registerComponentImplementation("/test", MyAction.class);
         requestMock.expect("setAttribute", C.args(C.eq("action"), C.isA(MyAction.class)));
-        requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_success.vm")), requestDispatcherMock.proxy());
 
-        // doit
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
-        // assertions
-        MyAction action = (MyAction) requestContainer.getComponentInstance("/test.nano");
+        MyAction action = (MyAction) requestContainer.getComponentInstance("/test");
         assertEquals(2004, action.getYear());
-        assertEquals(Arrays.asList(new String[]{"renault", "fiat"}), action.getCars());
-        assertEquals("success", action.execute());
+        assertEquals("success", action.doit());
 
         verifyMocks();
     }
 
     public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // url params
-        Map parameterMap = new HashMap();
-        parameterMap.put("year", "2003");
-        parameterMap.put("cars", new String[]{"renault", "fiat"});
-        requestMock.expectAndReturn("getParameterMap", parameterMap);
-
-        // path, action and view
-        requestMock.expectAndReturn("getServletPath", "/test.groovy");
         servletConfigMock.expectAndReturn("getServletContext", servletContextMock.proxy());
         servletContextMock.expectAndReturn("getResource", C.args(C.eq("/test.groovy")), getClass().getResource("/test.groovy"));
         requestMock.expect("setAttribute", C.args(C.eq("action"), C.isA(Object.class)));
-        requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_success.vm")), requestDispatcherMock.proxy());
 
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
-        // assertions
         Object action = requestContainer.getComponentInstance("/test.groovy");
         Method getYear = action.getClass().getMethod("getYear", null);
         Object resultYear = getYear.invoke(action, null);
-        assertEquals("2003", resultYear);
-
-        Method getCars = action.getClass().getMethod("getCars", null);
-        String[] resultCars = (String[]) getCars.invoke(action, null);
-        String[] expectedCars = new String[]{"renault", "fiat"};
-        assertEquals(Arrays.asList(expectedCars), Arrays.asList(resultCars));
+        assertEquals("2004", resultYear);
 
         verifyMocks();
     }

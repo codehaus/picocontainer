@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<html>
-Message from NanoWeb: ${action.magic}
-
-<form action="demo.groovy">
-  <input name="magic" type="text"/>
-  <input type="submit" value="Set new message"/>
-</form>
-</html>

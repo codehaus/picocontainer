@@ -36,10 +36,11 @@ public class IntegrationTestCase extends XMLTestCase {
 
             server.start();
 
-            URL url = new URL("http://localhost:" + PORT + "/nanocontainer-sample-nanoweb/demo.groovy");
+            URL url = new URL("http://localhost:" + PORT + "/nanocontainer-sample-nanoweb/game/play.nano");
             InputStream expected = getClass().getResourceAsStream("expected.xhtml");
 
             InputStream actual = url.openStream();
+
             assertXMLEqual(new InputStreamReader(expected), new InputStreamReader(actual));
         } finally {
             server.stop();

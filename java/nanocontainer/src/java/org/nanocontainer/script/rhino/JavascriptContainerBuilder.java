@@ -19,7 +19,6 @@ import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 
@@ -39,7 +38,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
                 return new DefiningClassLoader(classLoader) {
@@ -69,13 +68,13 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                 throw new PicoCompositionException("The script must define a variable named 'pico'");
             }
             if (!(pico instanceof NativeJavaObject)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
+                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
-            if (!(javaObject instanceof MutablePicoContainer)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
+            if (!(javaObject instanceof PicoContainer)) {
+                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
             }
-            return (MutablePicoContainer) javaObject;
+            return (PicoContainer) javaObject;
         } catch (PicoCompositionException e) {
             throw e;
         } catch (JavaScriptException e) {

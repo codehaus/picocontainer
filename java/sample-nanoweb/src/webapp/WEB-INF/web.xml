@@ -6,18 +6,16 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
-                System.out.println("**** Webapp-level pico components registered by Groovy")
+                return org.picocontainer.defaults.DefaultPicoContainer.EMPTY_IMMUTABLE_INSTANCE
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                System.out.println("**** Session-level pico components registered by Groovy")
+                // Session level components
+                pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
+                pico.registerComponentImplementation(org.nanocontainer.sample.nanoweb.NumberToGuess)
+                return pico
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                System.out.println("**** Request-level pico components registered by Groovy")
-
-                // Map NanoWeb Actions
-                pico.registerComponentImplementation("/demo.nano", org.nanocontainer.sample.nanoweb.DemoAction)
+                return new org.picocontainer.defaults.DefaultPicoContainer(parent)
             }
-            return pico
         ]]></param-value>
     </context-param>
 

@@ -41,7 +41,7 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
         }
 
         // hold on to it
-        containerRef.set(container);
+        containerRef.set(lifecycle);
 
     }
 

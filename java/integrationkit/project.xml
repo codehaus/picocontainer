@@ -4,4 +4,11 @@
   <extend>${basedir}/../project.xml</extend>
   <id>picoextras-integrationkit</id>
   <name>picoextras-integrationkit</name>
+
+  <dependencies>
+    <dependency>
+      <id>jmock</id>
+      <version>SNAPSHOT</version>
+    </dependency>    
+  </dependencies>
 </project>

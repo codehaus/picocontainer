@@ -17,6 +17,7 @@
                 // Map NanoWeb Actions
                 pico.registerComponentImplementation("/demo.nano", org.nanocontainer.sample.nanoweb.DemoAction)
             }
+            return pico
         ]]></param-value>
     </context-param>
 

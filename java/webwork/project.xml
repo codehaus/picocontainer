@@ -13,7 +13,8 @@
         </dependency>
 
         <dependency>
-            <id>webwork</id>
+            <groupId>opensymphony</groupId>
+            <artifactId>webwork</artifactId>
             <version>1.4</version>
         </dependency>
 

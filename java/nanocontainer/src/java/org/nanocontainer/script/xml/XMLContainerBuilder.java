@@ -110,7 +110,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
                 }
             }
         }
-        int componentCount = 0;
+        int count = 0;
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             short type = child.getNodeType();
@@ -118,17 +118,17 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
                 String name = child.getNodeName();
                 if (name.equals("pseudocomponent")) {
                     registerPseudoComponent(reflectionFrontEnd, (Element) child);
-                    componentCount++;
+                    count++;
                 } else if (name.equals("component")) {
                     registerComponentImplementation(reflectionFrontEnd, (Element) child);
-                    componentCount++;
+                    count++;
                 } else if (name.equals("classpath")) {
                 } else {
                     throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
-        if (componentCount == 0) {
+        if (count == 0) {
             throw new EmptyCompositionException();
         }
     }

@@ -11,19 +11,16 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import javax.swing.*;
 import java.util.*;
 
-import org.picoextras.gui.swing.PicoGui;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.swing.ContainerTreePanel;
 
 /**
- * Toggle action for XDoclet Build.
- *
  * @author <a href="mailto:mbo at jcs.be">Mathias Bogaert</a>
  * @version $Revision$
  */
 public class PicoToggleAction extends ToggleAction {
     public static final String ID = "PicoToggleAction";
     public static final String PICO_CONTAINER = "PicoContainer";
-    // todo get from pico gui
     private static final Icon ICON = new ImageIcon(PicoToggleAction.class.getResource("picocontainer.gif"));
 
     private Map consoles = new HashMap();
@@ -40,7 +37,7 @@ public class PicoToggleAction extends ToggleAction {
             final ToolWindowManager manager = ToolWindowManager.getInstance(project);
             ToolWindow console = (ToolWindow) consoles.get(project);
             if (isSelected && console == null) {
-                PicoGui picoGui = new PicoGui(new DefaultPicoContainer());
+                ContainerTreePanel picoGui = new ContainerTreePanel(new DefaultPicoContainer());
 
                 // show window
                 manager.registerToolWindow(PICO_CONTAINER,
@@ -56,33 +53,6 @@ public class PicoToggleAction extends ToggleAction {
                     console.setIcon(ICON);
                     console.show(null);
                     console.activate(null);
-
-//                BeanContextSupportEx xdocletContainer = new BeanContextSupportEx();
-//                XDoclet xdoclet = new XDoclet();
-//                xdocletContainer.add(xdoclet);
-//
-//                try {
-//                    xdoclet.createPlugin("velocity");
-//                    xdoclet.createPlugin("jelly");
-//                }
-//                catch (XDocletException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                // show window
-//                manager.registerToolWindow(PICO_CONTAINER,
-//                        new BeanContextConfigurationPanel(xdocletContainer),
-//                        ToolWindowAnchor.RIGHT);
-//
-//                console = manager.getToolWindow(PICO_CONTAINER);
-//
-//                if (console != null) {
-//                    // Add manager to array to do unregister on finalize
-//                    managers.add(manager);
-//                    consoles.put(project, console);
-//                    console.setIcon(ICON);
-//                    console.show(null);
-//                    console.activate(null);
                 }
             }
             else if (!isSelected && console != null) {

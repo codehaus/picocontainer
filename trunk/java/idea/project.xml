@@ -8,7 +8,7 @@
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picoextras-gui</artifactId>
+      <artifactId>picoextras-swing</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
 

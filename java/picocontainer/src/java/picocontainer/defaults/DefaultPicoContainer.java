@@ -113,10 +113,10 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
             parameters[i] = createDefaultParameter();
         }
 
-        registerComponent(componentType, componentImplementation, parameters);
+        registerComponent(componentImplementation, componentType, parameters);
     }
 
-    public void registerComponent(Class componentType, Class componentImplementation, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
+    public void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
@@ -179,7 +179,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         componentSpec.addConstantParameterBasedOnType(componentType, parameter, arg);
     }
 
-    public void registerComponent(Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void registerComponentByClass(Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         registerComponent(componentImplementation, componentImplementation);
     }
 

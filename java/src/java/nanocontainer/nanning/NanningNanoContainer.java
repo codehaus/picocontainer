@@ -39,7 +39,7 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
      * @param compomentImplementation
      */
     public void registerServiceOrAspect(Class compomentImplementation) throws PicoRegistrationException, PicoIntrospectionException {
-        serviceAndAspectContainer.registerComponent(compomentImplementation);
+        serviceAndAspectContainer.registerComponentByClass(compomentImplementation);
     }
 
     public void instantiateComponents() throws PicoInitializationException {

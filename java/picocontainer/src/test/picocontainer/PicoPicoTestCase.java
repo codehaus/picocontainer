@@ -23,7 +23,7 @@ public class PicoPicoTestCase extends TestCase {
     public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInitializationException {
 
         HierarchicalPicoContainer pc = new HierarchicalPicoContainer.Default();
-        pc.registerComponent(HierarchicalPicoContainer.Default.class);
+        pc.registerComponentByClass(HierarchicalPicoContainer.Default.class);
         pc.instantiateComponents();
 
         tryDefaultPicoContainer((HierarchicalPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
@@ -32,8 +32,8 @@ public class PicoPicoTestCase extends TestCase {
 
     private void tryDefaultPicoContainer(HierarchicalPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
 
-        pc2.registerComponent(FredImpl.class);
-        pc2.registerComponent(WilmaImpl.class);
+        pc2.registerComponentByClass(FredImpl.class);
+        pc2.registerComponentByClass(WilmaImpl.class);
 
         pc2.instantiateComponents();
 

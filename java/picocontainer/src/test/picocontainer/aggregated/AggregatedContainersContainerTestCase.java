@@ -26,7 +26,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
         pico = new HierarchicalPicoContainer.Default();
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
         filter = new AggregatedContainersContainer.Filter(pico);
     }
 

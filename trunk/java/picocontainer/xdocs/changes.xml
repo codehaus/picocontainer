@@ -28,6 +28,12 @@
                 - Change registerComponentInstance to be more flexible.
             </action>
 
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-50">PICO-50</a>
+                - Upgrade CVSSGrab.
+            </action>
+
             <action dev="tirsen" type="add">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-55">PICO-55</a>

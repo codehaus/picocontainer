@@ -172,14 +172,13 @@
     <taskdef 
       name="cvsgrab" 
       classname="net.sourceforge.cvsgrab.CVSGrabTask" 
-      classpath="${cvsgrab.home}/lib/cvs-grab.jar;${cvsgrab.home}/lib/hotsax.jar;${cvsgrab.home}/lib/jcvsii-light.jar"/>
+      classpath="${cvsgrab.home}/lib/cvsgrab.jar"/>
 
     <cvsgrab 
       destdir="${basedir}/.."
       rootUrl="http://picocontainer.cvs.codehaus.org/"
-      cvsHost="cvs.codehaus.org"
-      cvsRoot="/cvsroot/picocontainer"
-      package="pico" 
+      cvsroot=":pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer"
+      packagePath="pico" 
       verbose="true"
       tag="HEAD"/>
   </target>

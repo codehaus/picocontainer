@@ -106,6 +106,10 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
      * @see org.picocontainer.ComponentAdapter#setContainer(org.picocontainer.PicoContainer)
      */
     public void setContainer(PicoContainer picoContainer) {
-        this.container = picoContainer;
+        // Cater for alternate implementations of MutablePicoContainer.
+        // ... that may leverage DefaultPicoContainer (wrap)
+        if (this.container == null) {
+            this.container = picoContainer;
+        }
     }
 }

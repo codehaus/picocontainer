@@ -25,19 +25,19 @@ public class ClassLoaderFactory {
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
 	protected McaDeployer mcaDeployer = null;
-	private ClassLoaderDelegate classLoaderDelegate; // promoted classloaders
+	private DelegatingClassLoader delegatingClassLoader; // promoted classloaders
 
 	public ClassLoaderFactory(McaDeployer mcaDeployer) {
 		this.mcaDeployer = mcaDeployer;
-		this.classLoaderDelegate = new ClassLoaderDelegate(this.getClass().getClassLoader());
+		this.delegatingClassLoader = new DelegatingClassLoader(this.getClass().getClassLoader());
 	}
 
 	public ClassLoader build(String contextName) {
 		URL[] urls = getURLs(contextName, PROMOTED_PATH);
 		ClassLoader hidden = new URLClassLoader(urls, this.getClass().getClassLoader());
-        classLoaderDelegate.addClassLoader(hidden);
+        delegatingClassLoader.addClassLoader(hidden);
 
-		return new StandardMicroClassLoader(getStandardApiURLs(contextName), classLoaderDelegate);
+		return new StandardMicroClassLoader(getStandardApiURLs(contextName), delegatingClassLoader);
 	}
 
 	protected URL[] getStandardApiURLs(String context) {

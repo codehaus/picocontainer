@@ -7,24 +7,24 @@ import junit.framework.TestCase;
  */
 public class ClassLoaderDelegateTestCase extends TestCase {
 
-	private ClassLoaderDelegate delegate;
+	private DelegatingClassLoader delegating;
 	private MockClassLoaderOne mockClassLoaderOne;
 	private MockClassLoaderTwo mockClassLoaderTwo;
 
 	protected void setUp() throws Exception {
-		delegate = new ClassLoaderDelegate(this.getClass().getClassLoader());
+		delegating = new DelegatingClassLoader(this.getClass().getClassLoader());
 
 		// build mock class loaders
 		mockClassLoaderOne = new MockClassLoaderOne();
 		mockClassLoaderTwo = new MockClassLoaderTwo();
 
-		// register to delegate
-		delegate.addClassLoader(mockClassLoaderOne);
-		delegate.addClassLoader(mockClassLoaderTwo);
+		// register to delegating
+		delegating.addClassLoader(mockClassLoaderOne);
+		delegating.addClassLoader(mockClassLoaderTwo);
 	}
 
 	public void testLoadClassUsesParentClassLoader() throws Exception {
-		Class clazz = delegate.loadClass("java.lang.String");
+		Class clazz = delegating.loadClass("java.lang.String");
 
 		// uses standard
 		assertEquals(clazz.getName(), "java.lang.String");
@@ -35,18 +35,18 @@ public class ClassLoaderDelegateTestCase extends TestCase {
 	}
 
 	public void testLoadClassFromDelegate() throws Exception {
-		Class clazz = delegate.loadClass("xxx");
+		Class clazz = delegating.loadClass("xxx");
 		assertNotNull(clazz);
 		assertTrue(mockClassLoaderOne.called);
 
-		clazz = delegate.loadClass("yyy");
+		clazz = delegating.loadClass("yyy");
 		assertNotNull(clazz);
 		assertTrue(mockClassLoaderTwo.called);
 	}
 
 	public void testLoadClassThrowsClassNotFound() {
 		try {
-			delegate.loadClass("does.not.exist.Junk");
+			delegating.loadClass("does.not.exist.Junk");
 			fail("ClassNotFoundException should have been thrown");
 		} catch (ClassNotFoundException ignore) {
 			// ignore

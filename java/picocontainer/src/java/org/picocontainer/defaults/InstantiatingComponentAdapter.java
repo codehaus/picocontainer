@@ -90,30 +90,22 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /**
      * {@inheritDoc}
      */
-    public void verify(final PicoContainer container) throws PicoVerificationException {
-        try {
-            if (verifyingGuard == null) {
-                verifyingGuard = new Guard() {
-                    public Object run() {
-                        final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
-                        final Class[] parameterTypes = constructor.getParameterTypes();
-                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-                        for (int i = 0; i < currentParameters.length; i++) {
-                            currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
-                        }
-                        return null;
+    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+        if (verifyingGuard == null) {
+            verifyingGuard = new Guard() {
+                public Object run() {
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Class[] parameterTypes = constructor.getParameterTypes();
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    for (int i = 0; i < currentParameters.length; i++) {
+                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
                     }
-                };
-            }
-            verifyingGuard.setArguments(container);
-            verifyingGuard.observe(getComponentImplementation());
-        } catch (PicoVerificationException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            final List list = new LinkedList();
-            list.add(ex);
-            throw new PicoVerificationException(list);
+                    return null;
+                }
+            };
         }
+        verifyingGuard.setArguments(container);
+        verifyingGuard.observe(getComponentImplementation());
     }
 
     /**

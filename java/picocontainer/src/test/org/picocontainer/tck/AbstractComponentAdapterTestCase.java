@@ -22,6 +22,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -259,15 +260,16 @@ public abstract class AbstractComponentAdapterTestCase
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
                 componentAdapter.verify(picoContainer);
-                fail("PicoVerificationException expected");
-            } catch (PicoVerificationException e) {
+                fail("PicoIntrospectionException expected");
+            } catch (PicoIntrospectionException e) {
             } catch (Exception e) {
-                fail("PicoVerificationException expected");
+                fail("PicoIntrospectionException expected");
             }
             try {
                 componentAdapter.getComponentInstance(picoContainer);
                 fail("PicoInitializationException or PicoIntrospectionException expected");
             } catch (PicoInitializationException e) {
+            } catch (PicoIntrospectionException e) {
             } catch (Exception e) {
                 fail("PicoInitializationException or PicoIntrospectionException expected");
             }
@@ -432,8 +434,7 @@ public abstract class AbstractComponentAdapterTestCase
             try {
                 componentAdapter.verify(wrappedPicoContainer);
                 fail("Thrown PicoVerificationException excpected");
-            } catch (final PicoVerificationException e) {
-                final CyclicDependencyException cycle = (CyclicDependencyException) e.getNestedExceptions().get(0);
+            } catch (final CyclicDependencyException cycle) {
                 final Class[] dependencies = cycle.getDependencies();
                 assertSame(dependencies[0], dependencies[dependencies.length - 1]);
             }

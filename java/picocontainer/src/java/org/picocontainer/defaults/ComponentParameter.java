@@ -14,7 +14,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 
@@ -117,7 +116,7 @@ public class ComponentParameter
         }
         return true;
     }
-
+    
     /**
      * {@inheritDoc}
      * 
@@ -127,14 +126,10 @@ public class ComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         try {
             super.verify(container, adapter, expectedType);
-        } catch (PicoVerificationException e) {
+        } catch (UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
-                try {
-                    collectionParameter.verify(container, adapter, expectedType);
-                    return;
-                } catch (PicoVerificationException e2) {
-                    e.getNestedExceptions().addAll(e2.getNestedExceptions());
-                }
+                collectionParameter.verify(container, adapter, expectedType);
+                return;
             }
             throw e;
         }

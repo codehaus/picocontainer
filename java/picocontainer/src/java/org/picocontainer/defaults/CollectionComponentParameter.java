@@ -10,22 +10,17 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +41,7 @@ import java.util.TreeSet;
  * @since 1.1
  */
 public class CollectionComponentParameter
-        implements Parameter, Serializable {
+        extends AbstractComponentParameter {
 
     private final boolean emptyCollection;
     private final Class componentKeyType;
@@ -128,23 +123,20 @@ public class CollectionComponentParameter
     }
 
     /**
-     * Test for dependency resolution of the parameter for the expected type. The method will
-     * return <code>false</code> If the expected type is not one of the collection types
+     * Check for a successful dependency resolution of the parameter for the expected type. The
+     * dependency can only be satisfied if the expected type is one of the collection types
      * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
      * resolution, if the <code>emptyCollection</code> flag was set.
      * 
      * @param container {@inheritDoc}
      * @param adapter {@inheritDoc}
      * @param expectedType {@inheritDoc}
-     * @return <code>true</code> the instance of the collection type or <code>null</code>
+     * @return <code>true</code> if matching components were found or an empty collective type
+     *               is allowed
      */
     public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final Class collectionType = getCollectionType(expectedType);
-        if (collectionType != null) {
-            return emptyCollection
-                    || !getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType)).isEmpty();
-        }
-        return false;
+        return collectionType != null && (emptyCollection || getResolvingAdapters(container, adapter, expectedType).length > 0);
     }
 
     /**
@@ -161,30 +153,33 @@ public class CollectionComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final Class valueType = getValueType(expectedType);
-            final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType);
-            if (adapterMap.isEmpty()) {
+            final ComponentAdapter[] componentAdapters = getResolvingAdapters(container, adapter, expectedType);
+            if (componentAdapters.length == 0) {
                 if (!emptyCollection) {
-                    final List list = new LinkedList();
-                    list.add(new PicoIntrospectionException(expectedType.getName() + " not resolvable"));
-                    throw new PicoVerificationException(list);
+                    throw new PicoIntrospectionException(expectedType.getName()
+                            + " not resolvable, no components of type "
+                            + getValueType(expectedType).getName()
+                            + " available");
                 }
             } else {
-                for (final Iterator iter = adapterMap.entrySet().iterator(); iter.hasNext();) {
-                    final Map.Entry entry = (Map.Entry) iter.next();
-                    final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-                    componentAdapter.verify(container);
+                for (int i = 0; i < componentAdapters.length; i++) {
+                    componentAdapters[i].verify(container);
                 }
             }
+        } else {
+            throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
         }
         return;
     }
 
     /**
-     * {@inheritDoc}
+     * @see org.picocontainer.defaults.AbstractComponentParameter#getResolvingAdapters(org.picocontainer.PicoContainer,
+     *           org.picocontainer.ComponentAdapter, java.lang.Class)
      */
-    public void accept(PicoVisitor visitor) {
-        visitor.visitParameter(this);
+    protected ComponentAdapter[] getResolvingAdapters(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+        final Class valueType = getValueType(expectedType);
+        final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType);
+        return (ComponentAdapter[]) adapterMap.values().toArray(new ComponentAdapter[adapterMap.size()]);
     }
 
     private Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {

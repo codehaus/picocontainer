@@ -239,7 +239,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
         try {
             pico.getComponentInstance(ComponentD.class);
-            fail();
+            fail("CyclicDependencyException expected");
         } catch (CyclicDependencyException e) {
             // CyclicDependencyException reports now the stack.
             //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());

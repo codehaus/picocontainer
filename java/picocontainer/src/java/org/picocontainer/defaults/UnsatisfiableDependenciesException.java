@@ -24,7 +24,7 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
     private final Set failedDependencies;
 
     public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Set failedDependencies) {
-        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies);
+        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: " + failedDependencies);
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.failedDependencies = failedDependencies;
     }

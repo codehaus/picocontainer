@@ -4,7 +4,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -275,9 +275,9 @@ public class CollectionComponentParameterTestCase
         parameterNonEmpty.verify(pico, dummy, Fish[].class);
         try {
             parameterNonEmpty.verify(pico, dummy, Cod[].class);
-            fail("(PicoVerificationException expected");
-        } catch (PicoVerificationException e) {
-            assertEquals(1, e.getNestedExceptions().size());
+            fail("(PicoIntrospectionException expected");
+        } catch (PicoIntrospectionException e) {
+            assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
         CollectionComponentParameter parameterEmpty = new CollectionComponentParameter(true);
         parameterEmpty.verify(pico, dummy, Fish[].class);

@@ -57,9 +57,9 @@ public interface ComponentAdapter {
      * checking that the associated PicoContainer contains all the needed dependnecies.
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @throws PicoVerificationException if one or more dependencies cannot be resolved.
+     * @throws PicoIntrospectionException if one or more dependencies cannot be resolved.
      */
-    void verify(PicoContainer container) throws PicoVerificationException;
+    void verify(PicoContainer container) throws PicoIntrospectionException;
 
     /**
      * Accepts a visitor for this ComponentAdapter. The method is normally called by visiting a {@link PicoContainer}, that 

@@ -9,7 +9,7 @@
     <groupId>picocontainer</groupId>
     <id>picocontainer-gems</id>
     <name>picocontainer-gems</name>
-    <currentVersion>1.1</currentVersion>
+    <currentVersion>1.2-SNAPSHOT</currentVersion>
 
     <inceptionYear>2004</inceptionYear>
     <package>org.picocontainer.gems</package>

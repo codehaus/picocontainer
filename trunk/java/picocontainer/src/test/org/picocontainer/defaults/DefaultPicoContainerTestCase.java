@@ -122,5 +122,16 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         pico.registerComponentImplementation(ArrayList.class);
         assertNotNull(pico.getComponentInstance(Thingie.class));
     }
+    
+    public void getComponentAdaptersOfTypeReturnsUnmodifiableList() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(Thingie.class);
+        try
+        {
+            pico.getComponentAdaptersOfType(Thingie.class).add("blah");
+            fail( "Expected an exception!" );
+        }
+        catch( UnsupportedOperationException th ) {}
+    }
 
 }

@@ -22,7 +22,7 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         try {
             invokeMethodByName(component, "start");
         } catch (InvocationTargetException e) {
-            throw new PicoInvocationTargetStartException(e.getCause());
+            throw new PicoInvocationTargetStartException(e.getTargetException());
         }
     }
 
@@ -30,7 +30,7 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         try {
             invokeMethodByName(component, "stop");
         } catch (InvocationTargetException e) {
-            throw new PicoInvocationTargetStopException(e.getCause());
+            throw new PicoInvocationTargetStopException(e.getTargetException());
         }
     }
 

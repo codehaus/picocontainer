@@ -116,7 +116,6 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
         MethodInterceptor interceptor = (MethodInterceptor) attributes.remove("interceptor");
         Object interceptorKey = attributes.remove("interceptorKey");
         Class mixinClass = (Class) attributes.remove("mixinClass");
-        Object mixinKey = attributes.remove("mixinKey");
         List mixinInterfaces = (List) attributes.remove("mixinInterfaces");
 
         ComponentPointcut componentCut = (ComponentPointcut) attributes.remove("componentCut");
@@ -126,8 +125,8 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
 
         if (interceptor != null || interceptorKey != null) {
             registerInterceptor(currentPico, classCut, componentCut, methodCut, interceptor, interceptorKey);
-        } else if (mixinClass != null || mixinKey != null) {
-            registerMixin(currentPico, classCut, componentCut, toClassArray(mixinInterfaces), mixinClass, mixinKey);
+        } else if (mixinClass != null) {
+            registerMixin(currentPico, classCut, componentCut, toClassArray(mixinInterfaces), mixinClass);
         } else {
             throw new PicoBuilderException(
                     "No advice specified - must specify one of interceptor, interceptorKey, mixinClass, or mixinKey");
@@ -168,10 +167,10 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
     }
 
     private void registerMixin(AspectablePicoContainer pico, ClassPointcut classCut, ComponentPointcut componentCut,
-            Class[] mixinInterfaces, Class mixinClass, Object mixinKey) {
+            Class[] mixinInterfaces, Class mixinClass) {
         // precondition:
-        if (mixinClass == null && mixinKey == null) {
-            throw new RuntimeException("assertion failed -- non-null mixinClass or mixinKey expected");
+        if (mixinClass == null) {
+            throw new RuntimeException("assertion failed -- mixinClass required");
         }
 
         // validate script:
@@ -183,24 +182,16 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
         }
 
         if (classCut != null) {
-            if (mixinClass != null) {
-                if (mixinInterfaces != null) {
-                    pico.registerMixin(classCut, mixinInterfaces, mixinClass);
-                } else {
-                    pico.registerMixin(classCut, mixinClass);
-                }
+            if (mixinInterfaces != null) {
+                pico.registerMixin(classCut, mixinInterfaces, mixinClass);
             } else {
-                pico.registerMixin(classCut, mixinInterfaces, mixinKey);
+                pico.registerMixin(classCut, mixinClass);
             }
         } else {
-            if (mixinClass != null) {
-                if (mixinInterfaces != null) {
-                    pico.registerMixin(componentCut, mixinInterfaces, mixinClass);
-                } else {
-                    pico.registerMixin(componentCut, mixinClass);
-                }
+            if (mixinInterfaces != null) {
+                pico.registerMixin(componentCut, mixinInterfaces, mixinClass);
             } else {
-                pico.registerMixin(componentCut, mixinInterfaces, mixinKey);
+                pico.registerMixin(componentCut, mixinClass);
             }
         }
     }

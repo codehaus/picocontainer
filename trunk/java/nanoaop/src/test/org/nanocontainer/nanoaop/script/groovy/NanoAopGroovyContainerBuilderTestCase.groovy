@@ -88,18 +88,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         dao = pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
-
-    public void testContainerScopedContainerSuppliedMixin() {
-        pico = builder.container() {
-            component(IdentifiableMixin)
-            component(key:Dao, class:DaoImpl) 
-            aspect(classCut:cuts.instancesOf(Dao), mixinInterfaces:[ Identifiable ], mixinKey:IdentifiableMixin)
-        }
-        dao = pico.getComponentInstance(Dao)
-        verifyMixin(dao)
-        assertFalse(dao instanceof AnotherInterface)
-    }
-
+  
     public void testComponentScopedMixin() {
         pico = builder.container() {
             component(key:Dao, class:DaoImpl) {
@@ -109,19 +98,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         dao = pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
-
-    public void testComponentScopedContainerSuppliedMixin() {
-        pico = builder.container() {
-            component(key:'myMixin', class:IdentifiableMixin)
-            component(key:Dao, class:DaoImpl) {
-                aspect(mixinInterfaces:[ Identifiable, AnotherInterface ], mixinKey:'myMixin')
-            }
-        }
-        dao = pico.getComponentInstance(Dao)
-        verifyMixin(dao)
-        assertTrue(dao instanceof AnotherInterface)
-    }
-
+  
     public void testContainerScopedMixinExplicitInterfaces() {
         pico = builder.container() {
             component(key:Dao, class:DaoImpl) 
@@ -171,14 +148,6 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         shouldFail(PicoBuilderException, {
             builder.container() {
                 aspect(mixinKey:'whoops')
-            }
-        })
-    }
-
-    public void testMixinInterfacesRequiredWithMixinKey() {
-        shouldFail(PicoBuilderException, {
-            builder.container() {
-                aspect(classCut:cuts.instancesOf(Dao), mixinKey:'whoops')
             }
         })
     }
@@ -243,23 +212,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         order.saveMeToo()
         assertEquals(before + 'startend', log.toString())
     }
-    
-    public void testCustomContainerFactory() {
-        // TODO:  OK, this isn't the world's greatest test.  We need to verify
-        // that our containerFactory is indeed being used.
-        log = new StringBuffer()
-        logger = new LoggingInterceptor(log)
-        containerFactory = new org.nanocontainer.nanoaop.dynaop.DynaopAspectablePicoContainerFactory()
-
-        pico = builder.container(containerFactory:containerFactory) {
-            aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
-            component(key:Dao, class:DaoImpl)
-        }
-
-        dao = pico.getComponentInstance(Dao)
-        verifyIntercepted(dao, log)
-    }
-
+   
     void verifyIntercepted(dao, log) {
         before = log.toString()
         data = dao.loadData()

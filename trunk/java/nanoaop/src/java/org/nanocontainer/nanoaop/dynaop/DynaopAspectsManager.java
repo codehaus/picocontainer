@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.nanocontainer.nanoaop.AspectsManager;
 import org.nanocontainer.nanoaop.ClassPointcut;
-import org.nanocontainer.nanoaop.ComponentKey;
 import org.nanocontainer.nanoaop.ComponentPointcut;
 import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutsFactory;
@@ -23,8 +22,8 @@ import org.picocontainer.PicoContainer;
 import dynaop.Aspects;
 import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
-import dynaop.MixinFactory;
 import dynaop.ProxyFactory;
+import dynaop.util.Classes;
 
 /**
  * An <code>AspectsManager</code> implemented using dynaop.
@@ -112,19 +111,12 @@ public class DynaopAspectsManager implements AspectsManager {
     }
 
     public void registerMixin(ClassPointcut classPointcut, Class mixinClass) {
-        containerAspects.mixin(getClassPointcut(classPointcut), mixinClass, null);
+        containerAspects.mixin(getClassPointcut(classPointcut), Classes.getAllInterfaces(mixinClass),
+                new ContainerSuppliedMixinFactory(container, mixinClass));
     }
 
     public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Class mixinClass) {
         containerAspects.mixin(getClassPointcut(classPointcut), interfaces, mixinClass, null);
-    }
-
-    public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Object mixinComponentKey) {
-        containerAspects.mixin(getClassPointcut(classPointcut), interfaces, createMixinFactory(mixinComponentKey));
-    }
-
-    public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, ComponentKey mixinComponentKey) {
-        registerMixin(classPointcut, interfaces, mixinComponentKey.getComponentKey());
     }
 
     public void registerMixin(ComponentPointcut componentPointcut, Class mixinClass) {
@@ -133,15 +125,6 @@ public class DynaopAspectsManager implements AspectsManager {
 
     public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Class mixinClass) {
         componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces, mixinClass));
-    }
-
-    public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Object mixinComponentKey) {
-        componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces,
-                createMixinFactory(mixinComponentKey)));
-    }
-
-    public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, ComponentKey mixinComponentKey) {
-        registerMixin(componentPointcut, interfaces, mixinComponentKey.getComponentKey());
     }
 
     public void registerInterfaces(ClassPointcut classPointcut, Class[] interfaces) {
@@ -190,10 +173,6 @@ public class DynaopAspectsManager implements AspectsManager {
 
     private InterceptorFactory createInterceptorFactory(Object interceptorComponent) {
         return new ContainerSuppliedInterceptorFactory(container, interceptorComponent);
-    }
-
-    private MixinFactory createMixinFactory(Object mixinComponent) {
-        return new ContainerSuppliedMixinFactory(container, mixinComponent);
     }
 
 }

@@ -22,27 +22,15 @@ import dynaop.MixinFactory;
 public class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestCase {
 
     private MutablePicoContainer pico = new DefaultPicoContainer();
-    private MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, "mixinComponentKey");
-    
+    private MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
+
     public void testCreate() {
-        IdentifiableMixin mixin = new IdentifiableMixin();
-        pico.registerComponentInstance("mixinComponentKey", mixin);
-        
-        IdentifiableMixin actualMixin = (IdentifiableMixin) mixinFactory.create(null);
-        assertNotNull(actualMixin);
-        assertSame(mixin, actualMixin);
+        Object mixin = (IdentifiableMixin) mixinFactory.create(null);
+        assertTrue(mixin instanceof IdentifiableMixin);
     }
-    
-    public void testMixinNotInContainer() {
-        try {
-            mixinFactory.create(null);
-            fail("NullPointerException should hvae been raised");
-        } catch (NullPointerException e) {
-        }
-    }
-    
+
     public void testPropertiesNotNull() {
         assertNotNull(mixinFactory.getProperties());
     }
-    
+
 }

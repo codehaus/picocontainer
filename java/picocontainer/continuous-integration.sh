@@ -18,18 +18,6 @@
 # Finally, to get the full picture, see maven.xml
 #
 
-JAVA_HOME=/usr/local/j2sdk1.4.1
-MAVEN_HOME=~bwalding/maven
-ANT_HOME=$HOME/cvs/ant/dist
-PATH=$HOME/bin:$JAVA_HOME/bin:$MAVEN_HOME/bin:$ANT_HOME/bin:$PATH
-CVS_RSH=$HOME/ssh1.sh
-
-export JAVA_HOME
-export MAVEN_HOME
-export ANT_HOME
-export PATH
-export CVS_RSH
-
 cd $HOME/cvs/pico
 
 cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P

@@ -74,14 +74,6 @@ public interface MutablePicoContainer extends PicoContainer {
     void unregisterComponent(Object componentKey);
 
     /**
-     * Finds a ComponentAdapter matching the key. Not meant to be called by clients
-     * of this API. It is used internally by the implementation.
-     *
-     * @param componentKey key of the component.
-     */
-    ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
-
-    /**
      * Adds a component instance to the container. Do not call this method
      * explicitly. It is used by the internals. Use {@link #registerComponentInstance}
      * instead if you wish to register externally instantiated objects.
@@ -93,7 +85,7 @@ public interface MutablePicoContainer extends PicoContainer {
     /**
      * Adds a child container. <b>Don't call this method explicitly.</b>
      * In order to create connected graphs and hierarchies of containers,
-     * use the {@link DelegatingPicoContainer#addParent(MutablePicoContainer)
+     * use the {@link #addParent(PicoContainer)
      * method.
      *
      * @param child child container to add

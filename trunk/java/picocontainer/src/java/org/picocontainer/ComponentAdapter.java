@@ -29,7 +29,7 @@ public interface ComponentAdapter {
      * This method should also register the instantiated component with the
      * pico container.
      *
-     * @param picoContainer registries where the adapter can look for
+     * @param picoContainer container where the adapter can look for
      *  dependent component instances
      * @return the component instance
      * @throws PicoInitializationException if the component couldn't be instantiated

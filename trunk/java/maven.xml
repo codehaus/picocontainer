@@ -9,7 +9,7 @@
     <maven:reactor
       basedir="${basedir}"
       includes="*/project.xml"
-      excludes="picogui/*,picoidea/*"
+      excludes="picogui/*,picoidea/*,webwork2/*"
       goals="jar:install"
       banner="Building"
       ignoreFailures="false"

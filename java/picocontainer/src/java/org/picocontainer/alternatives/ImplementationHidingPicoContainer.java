@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -193,8 +194,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.removeChildContainer(child);
     }
 
-    public List getComponentKeys() {
-        return delegate.getComponentKeys();
+    protected Map getNamedContainers() {
+        return delegate.getNamedContainers();    
     }
 
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
@@ -205,6 +206,12 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
             componentAdapter.setContainer(ImplementationHidingPicoContainer.this);
         }
+
+        public Map getNamedContainers() {
+            return super.getNamedContainers();
+        }
+
     }
+
 
 }

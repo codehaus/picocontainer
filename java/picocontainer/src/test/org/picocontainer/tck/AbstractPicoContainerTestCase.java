@@ -537,40 +537,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
-    public void testNamedChildContainerIsAccessibleForStringKeys() {
-        StringBuffer sb = new StringBuffer();
-        final MutablePicoContainer parent = createPicoContainer(null);
-        parent.registerComponentInstance(sb);
-        final MutablePicoContainer child = parent.makeChildContainer("foo");
-        child.registerComponentImplementation("lcm",LifeCycleMonitoring.class);
-        Object o = parent.getComponentInstance("foo/lcm");
-        assertNotNull(o);
-        assertTrue(sb.toString().indexOf("-instantiated") != -1);
-    }
-
-    public void testNamedChildContainerIsAccessibleForClassKeys() {
-        StringBuffer sb = new StringBuffer();
-        final MutablePicoContainer parent = createPicoContainer(null);
-        parent.registerComponentInstance(sb);
-        final MutablePicoContainer child = parent.makeChildContainer("foo");
-        child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
-        assertNotNull(o);
-        assertTrue(sb.toString().indexOf("-instantiated") != -1);
-    }
-
-    public void testNamedChildContainerIsAccessible() {
-        StringBuffer sb = new StringBuffer();
-        final MutablePicoContainer parent = createPicoContainer(null);
-        parent.registerComponentInstance(sb);
-        final MutablePicoContainer child = parent.makeChildContainer("foo");
-        child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
-        assertNotNull(o);
-        List keys = parent.getComponentKeys();
-        assertEquals(2, keys.size());
-        assertEquals("foo/*" + LifeCycleMonitoring.class.getName(), keys.get(1));
-    }
 
 
     public static class LifeCycleMonitoring implements Startable, Disposable {

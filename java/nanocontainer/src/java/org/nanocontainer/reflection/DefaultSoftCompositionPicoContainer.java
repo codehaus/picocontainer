@@ -10,36 +10,37 @@
 
 package org.nanocontainer.reflection;
 
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.SoftCompositionPicoContainer;
 
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
  * reference.
- *
+ * <p/>
  * In terms of implementation it adopts the behaviour of DefaultPicoContainer and DefaulReflectionContainerAdapter
  *
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
+public class DefaultSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final MutablePicoContainer delegate;
+    private final InnerMutablePicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
@@ -69,8 +70,13 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         this(DefaultSoftCompositionPicoContainer.class.getClassLoader(), null);
     }
 
-    public Object getComponentInstance(Object componentKey) {
+
+    public Object getComponentInstanceFromDelegate(Object componentKey) throws PicoException {
         return delegate.getComponentInstance(componentKey);
+    }
+
+    protected Map getNamedContainers() {
+        return delegate.getNamedContainers();
     }
 
     public Object getComponentInstanceOfType(Class componentType) {
@@ -183,11 +189,7 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         delegate.removeChildContainer(child);
     }
 
-    public List getComponentKeys() {
-        return delegate.getComponentKeys();
-    }
-
-    // --------------------
+    // ----  from reflection adapter -----
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         return reflectionAdapter.registerComponentImplementation(componentImplementationClassName);
@@ -229,5 +231,10 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
             componentAdapter.setContainer(DefaultSoftCompositionPicoContainer.this);
         }
+
+        public Map getNamedContainers() {
+            return namedChildContainers;
+        }
     }
+
 }

@@ -63,7 +63,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
     // Keeps track of the order in which components should be started
-    private List orderedComponents = new ArrayList();
+    protected List orderedComponents = new ArrayList();
 
     private Map parametersForComponent = new HashMap();
     private boolean disposedOf;

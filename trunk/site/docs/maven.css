@@ -3,14 +3,28 @@ body {
  color: #0A2509;
  }
 
+.app h2 {
+ color: #FFFFFF;
+ margin-left: 0;
+ background-color: #2AA526;
+ margin-top: 20px; 
+ margin-bottom: 5px;  
+ }
+
 .app h3 {
  color: #FFFFFF;
+ margin-left: 10px; 
  background-color: #2AA526;
+ margin-top: 15px; 
+ margin-bottom: 5px;   
  }
 
 .app h4 {
  color: #0A2509;
+ margin-left: 20px; 
  background-color: #EBEBEB;
+ margin-top: 10px; 
+ margin-bottom: 5px;   
  }
 
 .a td { 

@@ -13,10 +13,12 @@ package org.nanocontainer.script.groovy;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
-import org.nanocontainer.reflection.SoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -131,11 +133,21 @@ public class NanoGroovyBuilder extends BuilderSupport {
 
     protected MutablePicoContainer createContainer(Map attributes, PicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
-        if (adapterFactory != null) {
-            return new SoftCompositionPicoContainer(adapterFactory, parent);
-        } else {
-            return new SoftCompositionPicoContainer(parent);
+        Class containerImpl = (Class) attributes.remove("class");
+        if (containerImpl == null) {
+            containerImpl = DefaultSoftCompositionPicoContainer.class;
         }
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        if (parent != null) {
+            dpc.registerComponentInstance(parent);
+        }
+        if (adapterFactory != null) {
+            dpc.registerComponentInstance(adapterFactory);
+        }
+        DefaultPicoContainer dpc2 = new DefaultPicoContainer(dpc);
+        dpc2.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
+
+        return (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
     }
 
     protected Object createBean(Map attributes) {

@@ -9,7 +9,8 @@
 package org.nanocontainer.servlet;
 
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.reflection.SoftCompositionPicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
@@ -108,7 +109,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             if (initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
                 // disposable
-                SoftCompositionPicoContainer softPico = new SoftCompositionPicoContainer();
+                SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer();
                 softPico.setClassLoader(Thread.currentThread().getContextClassLoader());
                 ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance();
                 return new DefaultLifecycleContainerBuilder(containerComposer);

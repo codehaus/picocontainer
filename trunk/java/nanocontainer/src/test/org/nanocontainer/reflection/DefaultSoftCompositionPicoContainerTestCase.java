@@ -8,10 +8,10 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SoftCompositionPicoContainerTestCase extends AbstractPicoContainerTestCase {
+public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new SoftCompositionPicoContainer(parent);
+        return new DefaultSoftCompositionPicoContainer(parent);
     }
 
     // test methods inherited. This container is fully compliant.

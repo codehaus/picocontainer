@@ -20,6 +20,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -35,7 +36,7 @@ import java.util.List;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SoftCompositionPicoContainer implements MutablePicoContainer, ReflectionContainerAdapter, Serializable {
+public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
     private final MutablePicoContainer delegate;
 
@@ -43,17 +44,17 @@ public class SoftCompositionPicoContainer implements MutablePicoContainer, Refle
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
 
-    public SoftCompositionPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new SoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
+    public DefaultSoftCompositionPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
+        delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(delegate);
     }
 
-    public SoftCompositionPicoContainer(PicoContainer parent) {
+    public DefaultSoftCompositionPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
 
-    public SoftCompositionPicoContainer() {
+    public DefaultSoftCompositionPicoContainer() {
         this(null);
     }
 
@@ -192,7 +193,7 @@ public class SoftCompositionPicoContainer implements MutablePicoContainer, Refle
         }
 
         protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
-            componentAdapter.setContainer(SoftCompositionPicoContainer.this);
+            componentAdapter.setContainer(DefaultSoftCompositionPicoContainer.this);
         }
     }
 

@@ -45,7 +45,7 @@ import java.util.List;
  * @author Konstantin Pribluda
  * @version $Revision$
  */
-public class XStreamContainerBuilder extends ScriptedContainerBuilder {
+public class XStreamContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
     private final Element rootElement;
 
     private final static String IMPLEMENTATION = "implementation";
@@ -78,7 +78,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     }
 
     /**
-     * populate contaiber off root element. we process instance &amp; implementation
+     * populate container off root element. we process instance &amp; implementation
      * nodes here
      */
     public void populateContainer(MutablePicoContainer container) {

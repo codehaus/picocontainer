@@ -28,9 +28,14 @@ public abstract class NanoContainer {
 
     private final List lifecycleAdapters = new ArrayList();
     private final NanoContainerMonitor monitor;
+    protected PicoContainer rootContainer;
 
     public NanoContainer(NanoContainerMonitor monitor) {
         this.monitor = monitor;
+    }
+
+    public PicoContainer getRootContainer() {
+        return rootContainer;
     }
 
     protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlConfigurationException {

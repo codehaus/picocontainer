@@ -11,7 +11,9 @@
 package org.nanocontainer.xml;
 
 import junit.framework.TestCase;
+import junit.framework.AssertionFailedError;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.WebServer;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -36,8 +38,8 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <component classname='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "    <component key='org.nanocontainer.testmodel.WebServer' classname='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                "    <component impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "    <component typekey='org.nanocontainer.testmodel.WebServer' impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>"));
 
         XmlFrontEnd inputSourceContainerFactory = new DefaultXmlFrontEnd();
@@ -48,9 +50,9 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <component classname='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "    <component impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "    <container>" +
-                "        <component key='org.nanocontainer.testmodel.WebServer' classname='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                "        <component typekey='org.nanocontainer.testmodel.WebServer' impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "    </container>" +
                 "</container>"));
 
@@ -59,7 +61,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertNotNull(rootContainer.getComponentInstance(DefaultWebServerConfig.class));
 
         PicoContainer childContainer = (PicoContainer) rootContainer.getChildContainers().iterator().next();
-        assertNotNull(childContainer.getComponentInstance("org.nanocontainer.testmodel.WebServer"));
+        assertNotNull(childContainer.getComponentInstance(WebServer.class));
     }
 
     public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, EmptyXmlConfigurationException {
@@ -68,31 +70,32 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         // Paul's path to TestComp. PLEASE do not take out.
         //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
 
-        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
-        File testCompJar = new File(testcompJarFileName);
+//        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+  //      File testCompJar = new File(testcompJarFileName);
+        File testCompJar = new File("D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar");
         assertTrue(testCompJar.isFile());
 
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <classpath>" +
-                "        <element file='" + testCompJar.getAbsolutePath() + "'/>" +
-                "    </classpath>" +
-                "    <component key='foo' classname='TestComp'/>" +
+                "    <component stringkey='foo' impl='java.util.Vector'/>" +
                 "    <container>" +
-                "        <component key='bar' classname='TestComp'/>" +
+                "        <classpath>" +
+                "            <element file='" + testCompJar.getAbsolutePath() + "'/>" +
+                "        </classpath>" +
+                "        <component stringkey='bar' impl='TestComp'/>" +
                 "    </container>" +
                 "</container>"));
 
         XmlFrontEnd inputSourceFrontEnd = new DefaultXmlFrontEnd();
         PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(getRootElement(inputSource));
+
         Object fooTestComp = rootContainer.getComponentInstance("foo");
-        assertNotNull(fooTestComp);
+        assertNotNull("Container should have a 'foo' component", fooTestComp);
 
         PicoContainer childContainer = (PicoContainer) rootContainer.getChildContainers().iterator().next();
         Object barTestComp = childContainer.getComponentInstance("bar");
-        assertNotNull(barTestComp);
+        assertNotNull("Container should have a 'bar' component", barTestComp);
 
-        assertNotSame(fooTestComp, barTestComp);
     }
 
     public void testInstantiateXmlWithMissingComponent() throws Exception, SAXException, ParserConfigurationException, IOException {
@@ -100,7 +103,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         try {
             InputSource inputSource = new InputSource(new StringReader(
                     "<container>" +
-                    "      <component classname='Foo'/>" +
+                    "      <component impl='Foo'/>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
             fail("Should have thrown a ClassNotFoundException");

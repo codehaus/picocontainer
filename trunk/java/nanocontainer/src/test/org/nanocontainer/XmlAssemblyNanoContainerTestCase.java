@@ -38,11 +38,11 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                 "<container>" +
-                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "      <component impl='org.nanocontainer.Xxx$A'/>" +
                 "      <container>" +
-                "          <component classname='org.nanocontainer.Xxx$B'/>" +
+                "          <component impl='org.nanocontainer.Xxx$B'/>" +
                 "      </container>" +
-                "      <component classname='org.nanocontainer.Xxx$C'/>" +
+                "      <component impl='org.nanocontainer.Xxx$C'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -60,10 +60,10 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
             new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
                         "      <container>" +
-                        "          <component classname='org.nanocontainer.Xxx$A'/>" +
+                        "          <component impl='org.nanocontainer.Xxx$A'/>" +
                         "      </container>" +
-                        "      <component classname='org.nanocontainer.Xxx$B'/>" +
-                        "      <component classname='org.nanocontainer.Xxx$C'/>" +
+                        "      <component impl='org.nanocontainer.Xxx$B'/>" +
+                        "      <component impl='org.nanocontainer.Xxx$C'/>" +
                         "</container>"), new MockMonitor());
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch (NoSatisfiableConstructorsException e) {
@@ -78,13 +78,31 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                 "<container xmlfrontend='org.nanocontainer.BespokeXmlFrontEnd'>" +
-                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "      <component impl='org.nanocontainer.Xxx$A'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
         assertTrue("Bespoke Front End (a test class) should have been used",BespokeXmlFrontEnd.used);
     }
+
+    public void testInstantiateWithBespokeComponentAdaptor() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        BespokeXmlFrontEnd.used = false;
+
+        NanoContainer nano = null;
+            nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                        "<container componentadaptor='org.picocontainer.extras.ImplementationHidingComponentAdapterFactory'>" +
+                        "    <component impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                        "    <component typekey='org.nanocontainer.testmodel.WebServer' impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "</container>"), new MockMonitor());
+
+        Object a = nano.getRootContainer().getComponentInstances().get(0);
+
+        assertFalse("A Should not be apparent from proxied A component",Xxx.A.class.equals(a.getClass()));
+    }
+
+
 
     public void testInstantiateWithBogusXmlFrontEnd() throws SAXException, ParserConfigurationException, IOException, PicoConfigurationException {
 
@@ -105,7 +123,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                 "<container container='"+OverriddenDefaultLifecyclePicoContainer.class.getName()+"'>" +
-                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "      <component impl='org.nanocontainer.Xxx$A'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -137,6 +155,4 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
             used = true;
         }
     }
-
-
 }

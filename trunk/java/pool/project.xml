@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picoextras-pool</id>
+  <name>picoextras-pool</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>picoextras-testmodel</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>  
+  </dependencies>
+
+</project>

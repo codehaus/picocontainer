@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import org.jmock.Mock;
-import org.jmock.C;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 
@@ -15,17 +15,18 @@ import org.picocontainer.ComponentAdapter;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class GenericCollectionComponentAdapterTestCase extends TestCase {
+public class GenericCollectionComponentAdapterTestCase extends MockObjectTestCase {
     public void testShouldInstantiateArrayOfStrings() {
         GenericCollectionComponentAdapter ca = new GenericCollectionComponentAdapter("x", null, String.class, Array.class);
 
-        Mock containerMock = new Mock(PicoContainer.class);
-        containerMock.expectAndReturn("getComponentAdaptersOfType", C.args(C.eq(String.class)), Arrays.asList(
-                new ComponentAdapter[] {
+        Mock containerMock = mock(PicoContainer.class);
+        containerMock.expects(once()).
+                method("getComponentAdaptersOfType").
+                with(eq(String.class)).
+                will(returnValue(Arrays.asList(new ComponentAdapter[]{
                     new InstanceComponentAdapter("y", "Hello"),
-                    new InstanceComponentAdapter("z", "World"),
-                }
-        ));
+                    new InstanceComponentAdapter("z", "World")
+                })));
         ca.setContainer((PicoContainer) containerMock.proxy());
 
         List expected = Arrays.asList(new String[]{"Hello", "World"});

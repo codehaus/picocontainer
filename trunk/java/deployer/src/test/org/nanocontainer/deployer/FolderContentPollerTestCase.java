@@ -2,30 +2,40 @@ package org.nanocontainer.deployer;
 
 import junit.framework.TestCase;
 import org.apache.commons.vfs.FileObject;
-import org.jmock.C;
 import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class FolderContentPollerTestCase extends TestCase {
+public class FolderContentPollerTestCase extends MockObjectTestCase {
 
     public void testShouldPollForNewFoldersAtRegularIntervals() throws InterruptedException {
-        Mock rootFolderMock = new Mock(FileObject.class, "rootFolder");
+        Mock rootFolderMock = mock(FileObject.class, "rootFolder");
         FileObject[] noChildren = new FileObject[0];
 
         // Adding a child that will be returned at the second invocation of getChildren
-        Mock newChildFolderMock = new Mock(FileObject.class, "childFolder");
+        Mock newChildFolderMock = mock(FileObject.class, "childFolder");
         FileObject[] newChildren = new FileObject[] {(FileObject) newChildFolderMock.proxy()};
 
-        Mock folderContentHandlerMock = new Mock(FolderContentHandler.class, "folderContentHandlerMock");
+        Mock folderContentHandlerMock = mock(FolderContentHandler.class, "folderContentHandlerMock");
 
-        folderContentHandlerMock.expectAndReturn("getFolder", rootFolderMock.proxy());
+        folderContentHandlerMock.expects(once())
+                                .method("getFolder")
+                                .withNoArguments()
+                                .will(returnValue(rootFolderMock.proxy()));
 
-        rootFolderMock.expect("close");
-        rootFolderMock.expectAndReturn("getChildren", noChildren);
-        folderContentHandlerMock.expect("setCurrentChildren", C.args(C.same(noChildren)));
+        rootFolderMock.expects(once())
+                      .method("close")
+                      .withNoArguments();
+        rootFolderMock.expects(once())
+                      .method("getChildren")
+                      .withNoArguments()
+                      .will(returnValue(noChildren));
+        folderContentHandlerMock.expects(once())
+                                .method("setCurrentChildren")
+                                .with(same(noChildren));
         FolderContentPoller fileMonitor = new FolderContentPoller((FolderContentHandler) folderContentHandlerMock.proxy());
 
         fileMonitor.start();
@@ -33,9 +43,16 @@ public class FolderContentPollerTestCase extends TestCase {
         	fileMonitor.wait(200);
         }
 
-        rootFolderMock.expect("close");
-        rootFolderMock.expectAndReturn("getChildren", newChildren);
-        folderContentHandlerMock.expect("setCurrentChildren", C.args(C.same(newChildren)));
+        rootFolderMock.expects(once())
+                      .method("close")
+                      .withNoArguments();
+        rootFolderMock.expects(once())
+                      .method("getChildren")
+                      .withNoArguments()
+                      .will(returnValue(newChildren));
+        folderContentHandlerMock.expects(once())
+                                .method("setCurrentChildren")
+                                .with(same(newChildren));
 
 
         synchronized(fileMonitor) {
@@ -44,8 +61,8 @@ public class FolderContentPollerTestCase extends TestCase {
         }
         fileMonitor.stop();
 
-        rootFolderMock.verify();
-        newChildFolderMock.verify();
-        folderContentHandlerMock.verify();
+        //rootFolderMock.verify();
+        //newChildFolderMock.verify();
+        //folderContentHandlerMock.verify();
     }
 }

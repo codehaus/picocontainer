@@ -10,8 +10,8 @@
 package org.nanocontainer.servlet;
 
 import junit.framework.TestCase;
-import org.jmock.C;
 import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class ReferenceTestCase extends TestCase {
+public class ReferenceTestCase extends MockObjectTestCase {
     private final String key = "foo";
     private final Object value = new Object();
 
@@ -48,13 +48,18 @@ public class ReferenceTestCase extends TestCase {
     private void setGetAndVerify(ObjectReference ref, Mock mock) {
         ref.set(value);
         assertEquals(value, ref.get());
-        mock.verify();
+        //mock.verify();
     }
 
     private Mock createMock(final Class clazz) {
-        Mock mock = new Mock(clazz);
-        mock.expect("setAttribute", C.eq(key, value));
-        mock.expectAndReturn("getAttribute", C.args(C.eq(key)), value);
+        Mock mock = mock(clazz);
+        mock.expects(once())
+            .method("setAttribute")
+            .with(eq(key), eq(value));
+        mock.expects(once())
+            .method("getAttribute")
+            .with(eq(key))
+            .will(returnValue(value));
         return mock;
     }
 

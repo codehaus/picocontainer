@@ -10,10 +10,10 @@
 package org.nanocontainer.proxytoys;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
-import com.thoughtworks.proxy.toys.hotswap.ObjectReference;
-import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.ObjectReference;
+import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 
@@ -76,6 +76,6 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
             proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), getComponentImplementation().getInterfaces(), proxyFactory);
         }
         ObjectReference reference = new ImplementationHidingReference(getDelegate());
-        return HotSwapping.object(proxyTypes, proxyFactory, reference);
+        return HotSwapping.object(proxyTypes, proxyFactory, reference, true);
     }
 }

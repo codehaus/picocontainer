@@ -60,9 +60,24 @@ public class GenericCollectionComponentAdapterTestCase extends MockObjectTestCas
         mpc.registerComponentImplementation(Bowl.class);
         mpc.registerComponentImplementation(Cod.class);
         mpc.registerComponentImplementation(Shark.class);
+        Cod cod = (Cod)mpc.getComponentInstanceOfType(Cod.class);
         Bowl bowl = (Bowl)mpc.getComponentInstance(Bowl.class);
         assertEquals(1,bowl.cods.length);
         assertEquals(2,bowl.fishes.length);
+        assertSame(cod, bowl.cods[0]);
+        assertNotSame(bowl.fishes[0], bowl.fishes[1]);
+    }
+    
+    public void testCollectionsAreGeneratedOnTheFly() {
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponent(new ConstructorInjectionComponentAdapter(Bowl.class, Bowl.class));
+        mpc.registerComponentImplementation(Cod.class);
+        Bowl bowl = (Bowl)mpc.getComponentInstance(Bowl.class);
+        assertEquals(1,bowl.cods.length);
+        mpc.registerComponentInstance("Nemo", new Cod());
+        bowl = (Bowl)mpc.getComponentInstance(Bowl.class);
+        assertEquals(2,bowl.cods.length);
+        assertNotSame(bowl.cods[0], bowl.cods[1]);
     }
 
     // todo similar tests for generic collections

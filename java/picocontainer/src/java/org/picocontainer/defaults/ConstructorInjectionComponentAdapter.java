@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -90,18 +92,12 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 if (adapter == null) {
                     // perhaps it is an array or a generic collection
                     if (parameterTypes[j].getComponentType() != null) {
-                        ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j]);
-                        if (genericCollectionComponentAdapter != null) {
-                            genericCollectionComponentAdapter.setContainer(getContainer());
-                            adapterDependencies.add(genericCollectionComponentAdapter);
-                        } else {
-                            failedDependency = true;
-                            unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                        }
-                    } else {
-                        failedDependency = true;
-                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                        adapter = getGenericCollectionComponentAdapter(parameterTypes[j], adapterDependencies);
                     }
+                }
+                if (adapter == null) {
+                    failedDependency = true;
+                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
@@ -150,13 +146,16 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    private ComponentAdapter getGenericCollectionComponentAdapter(Class expectedType) {
+    private ComponentAdapter getGenericCollectionComponentAdapter(Class expectedType, List adapterDependencies) {
         Class componentType = expectedType.getComponentType();
-        if (getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
+        List matchingComponentAdapters = getContainer().getComponentAdaptersOfType(componentType); 
+        if (matchingComponentAdapters.size() == 0) {
             return null;
         } else {
             Object componentKey = new Object[]{this, componentType};
-            return new GenericCollectionComponentAdapter(componentKey, null, componentType, expectedType);
+            ComponentAdapter collectionAdapter = new GenericCollectionComponentAdapter(componentKey, null, componentType, expectedType);
+            collectionAdapter.setContainer(getContainer());
+            return collectionAdapter;
         }
     }
 
@@ -212,11 +211,23 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     protected Object[] getConstructorArguments(List adapterDependencies) {
+        List dependencies = new LinkedList();
         Object[] result = new Object[adapterDependencies.size()];
         for (int i = 0; i < adapterDependencies.size(); i++) {
             ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
             result[i] = adapterDependency.getComponentInstance();
+            if (adapterDependency instanceof GenericCollectionComponentAdapter) {
+                Class type = adapterDependency.getComponentImplementation().getComponentType();
+                List collectedAdapters = adapterDependency.getContainer().getComponentAdaptersOfType(type);
+                for (Iterator iter = collectedAdapters.iterator(); iter.hasNext();) {
+                    dependencies.add(iter.next());
+                }
+            } else {
+                dependencies.add(adapterDependency);
+            }
         }
+        adapterDependencies.clear();
+        adapterDependencies.addAll(dependencies);
         return result;
     }
 

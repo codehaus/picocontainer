@@ -41,20 +41,20 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * knowledge to instantiate a component.
      *
      * @param componentType Component type
-     * @param component preinstantiated component
+     * @param componentInstance preinstantiated component
      * @throws PicoRegistrationException If a registration problem
      */
-    void registerComponent(Class componentType, Object component)
+    void registerComponent(Class componentType, Object componentInstance)
             throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Registers an instantiated component.  This might be because you are
      * creating trees of Pico containers or if you have a class that you want treated
      * as a component, but is not Pico component compatible.
-     * @param component The pre instantiated component to register
+     * @param componentInstance The pre instantiated component to register
      * @throws PicoRegistrationException
      */
-    void registerComponent(Object component)
+    void registerComponent(Object componentInstance)
             throws PicoRegistrationException, PicoIntrospectionException;
 
     // TODO: move Parameter to this package. We shouldn't depend on subpackages.

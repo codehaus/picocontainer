@@ -17,16 +17,17 @@ public interface ComponentFactory {
      * to instantiate a component.
      * @param componentType the type the component will be registered as.
      * @param componentImplementation concrete component class.
+     * @param dependencies
      * @param instanceDependencies The component instances the created component will depend on.
-     * @return The component
-     * @throws picocontainer.defaults.PicoInvocationTargetInitializationException If a problem creating the component.
+     * @throws PicoInitializationException
+     * @throws PicoIntrospectionException
      */
     Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Return the types the componentImplementation component depends on.
      * @param componentImplementation concrete component class.
-     * @return an array of dependent types.
+     * @throws PicoIntrospectionException
      */
     Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException;
 }

@@ -10,10 +10,7 @@
 
 package nanocontainer;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -75,11 +72,26 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
                 } else {
                     registerComponent(clazz.getNodeValue());
                 }
+                addParameters(clazz.getNodeValue(), components.item(i));
             }
         } catch (SAXException e) {
             throw new NanoTextRegistrationException("SAXException:" + e.getMessage());
         } catch (IOException e) {
             throw new NanoTextRegistrationException("IOException:" + e.getMessage());
         }
+    }
+
+    private void addParameters(String className, Node node) throws ClassNotFoundException {
+        if (node instanceof Element) {
+            Element element = (Element) node;
+            NodeList paramElements = element.getElementsByTagName("param");
+            for (int i = 0; i < paramElements.getLength(); i++) {
+                Node paramNode = paramElements.item(i);
+                String type = paramNode.getAttributes().getNamedItem("type").getNodeValue();
+                String value = paramNode.getFirstChild().getNodeValue();
+                addParameterToComponent(className, type, value);
+            }
+        }
+
     }
 }

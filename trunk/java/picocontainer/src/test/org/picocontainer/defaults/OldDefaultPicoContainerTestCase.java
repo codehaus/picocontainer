@@ -691,6 +691,10 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                             throws PicoInitializationException {
                         return touchable;
                     }
+
+                    public void verify(PicoContainer picoContainer) {
+
+                    }
                 };
             }
         });

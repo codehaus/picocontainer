@@ -27,6 +27,7 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
     private List satisfiableConstructors;
     private Constructor greediestConstructor;
     private boolean instantiating;
+    private boolean verifying;
 
     /**
      * Explicitly specifies parameters, if null uses default parameters.
@@ -53,7 +54,7 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
         this(componentKey, componentImplementation, null);
     }
 
-    public Class[] getDependencies(MutablePicoContainer picoContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Class[] getDependencies(PicoContainer picoContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor constructor = getConstructor(picoContainer);
         return constructor.getParameterTypes();
     }
@@ -61,7 +62,7 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
     /**
      * @return The greediest satisfiable constructor
      */
-    private Constructor getConstructor(MutablePicoContainer picoContainer) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private Constructor getConstructor(PicoContainer picoContainer) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (greediestConstructor == null) {
             List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
             List satisfiableConstructors = getSatisfiableConstructors(allConstructors, picoContainer);
@@ -88,33 +89,30 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
         return greediestConstructor;
     }
 
-    private List getSatisfiableConstructors(List constructors, MutablePicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private List getSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (satisfiableConstructors == null) {
             satisfiableConstructors = new ArrayList();
             Set failedDependencies = new HashSet();
             for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
+                boolean failedDependency = false;
                 Constructor constructor = (Constructor) iterator.next();
                 Class[] parameterTypes = constructor.getParameterTypes();
                 Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
-                boolean failedDependency = false;
                 for (int i = 0; i < currentParameters.length; i++) {
                     ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer);
                     if (adapter == null) {
                         failedDependency = true;
                         failedDependencies.add(parameterTypes[i]);
-                        break;
                     } else {
                         // we can't depend on ourself
                         if (adapter.equals(this)) {
                             failedDependency = true;
                             failedDependencies.add(parameterTypes[i]);
-                            break;
                         }
                         if (getComponentKey().equals(adapter.getComponentKey())) {
                             failedDependency = true;
                             failedDependencies.add(parameterTypes[i]);
-                            break;
                         }
                     }
                 }
@@ -132,6 +130,11 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
 
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        ComponentAdapter[] adapterDependencies = findDependencies(picoContainer);
+        return instantiateComponent(adapterDependencies, picoContainer);
+    }
+
+    private ComponentAdapter[] findDependencies(PicoContainer picoContainer) {
         final Class[] dependencyTypes = getDependencies(picoContainer);
         final ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
 
@@ -150,7 +153,12 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
         for (int i = 0; i < adapterDependencies.length; i++) {
             adapterDependencies[i] = componentParameters[i].resolveAdapter(picoContainer);
         }
-        return instantiateComponent(adapterDependencies, picoContainer);
+        return adapterDependencies;
+    }
+
+    public void verify(PicoContainer picoContainer) {
+        ComponentAdapter[] adapterDependencies = findDependencies(picoContainer);
+        verifyComponent(adapterDependencies, picoContainer);
     }
 
     private Object instantiateComponent(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -183,6 +191,24 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
         }
     }
 
+    private void verifyComponent(ComponentAdapter[] adapterDependencies, PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
+        try {
+            Constructor constructor = getConstructor(picoContainer);
+            if (verifying) {
+                throw new CyclicDependencyException(constructor);
+            }
+            verifying = true;
+            for (int i = 0; i < adapterDependencies.length; i++) {
+                ComponentAdapter adapterDependency = adapterDependencies[i];
+                adapterDependency.verify(picoContainer);
+            }
+        } catch (Exception e) {
+            throw new PicoInvocationTargetInitializationException(e);
+        } finally {
+            verifying = false;
+        }
+    }
+
     public static boolean isAssignableFrom(Class actual, Class requested) {
         if (actual == Character.TYPE || actual == Character.class) {
             return requested == Character.TYPE || requested == Character.class;
@@ -211,7 +237,7 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
         return actual.isAssignableFrom(requested);
     }
 
-    private Parameter[] getParameters(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private Parameter[] getParameters(PicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (parameters == null) {
             return createDefaultParameters(getDependencies(componentRegistry));
         } else {

@@ -312,4 +312,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
         return removed;
     }
+
+    public void verify() throws PicoVerificationException {
+        List nestedVerificationExceptions = new ArrayList();
+        for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            try {
+                componentAdapter.verify(this);
+            } catch (NoSatisfiableConstructorsException e) {
+                nestedVerificationExceptions.add(e);
+            }
+        }
+
+        if (!nestedVerificationExceptions.isEmpty()) {
+            throw new PicoVerificationException(nestedVerificationExceptions);
+        }
+    }
 }

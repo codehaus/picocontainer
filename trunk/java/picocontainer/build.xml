@@ -92,8 +92,8 @@
       </classpath>
       <batchtest todir="${testreportdir}">
         <fileset dir="${basedir}/src/test">
-          <include name="**/*TestCase.java">
-          </include>
+          <include name="**/*TestCase.java"/>
+          <exclude name="**/Abstract*"/>
         </fileset>
       </batchtest>
     </junit>

@@ -20,5 +20,5 @@ package org.picocontainer;
  * @version $Revision$
  */
 public interface Parameter {
-    ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistry) throws PicoIntrospectionException;
+    ComponentAdapter resolveAdapter(PicoContainer componentRegistry) throws PicoIntrospectionException;
 }

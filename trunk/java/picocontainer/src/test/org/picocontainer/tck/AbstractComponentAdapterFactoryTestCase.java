@@ -3,6 +3,7 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.defaults.*;
@@ -19,6 +20,12 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
     protected void setUp() throws Exception {
 		picoContainer = new DefaultPicoContainer();
 	}
+
+    public void testEquals() throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
+
+        assertEquals(componentAdapter, componentAdapter);
+    }
 
     public void testRegisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
 		ComponentAdapter componentAdapter =

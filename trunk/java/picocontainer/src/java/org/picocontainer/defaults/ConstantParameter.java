@@ -10,9 +10,9 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 
 /**
  * A ConstantParameter should be used to pass in "constant" arguments
@@ -30,7 +30,7 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(MutablePicoContainer picoContainer) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new InstanceComponentAdapter(value, value);
     }
 }

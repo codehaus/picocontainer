@@ -10,10 +10,7 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.ComponentAdapter;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -40,6 +37,10 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
 
     public Object getComponentInstance(MutablePicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return delegate.getComponentInstance(componentRegistry);
+    }
+
+    public void verify(PicoContainer picoContainer) {
+        delegate.verify(picoContainer);
     }
 
     public ComponentAdapter getDelegate() {

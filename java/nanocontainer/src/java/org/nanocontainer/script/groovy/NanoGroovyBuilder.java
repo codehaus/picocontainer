@@ -61,12 +61,16 @@ public class NanoGroovyBuilder extends BuilderSupport {
         if (name.equals("container")) {
             return createContainerNode(parent, attributes);
         } else if (parent instanceof MutablePicoContainer) {
-            return createChildOfContainerNode(parent, name, attributes);
+            try {
+                return createChildOfContainerNode(parent, name, attributes);
+            } catch (ClassNotFoundException e) {
+                throw new PicoBuilderException("ClassNotFoundException:" + e.getMessage(), e);
+            }
         }
         throw new PicoBuilderException("Uknown method: '" + name + "'");
     }
 
-    private Object createChildOfContainerNode(Object parent, Object name, Map attributes) {
+    private Object createChildOfContainerNode(Object parent, Object name, Map attributes) throws ClassNotFoundException {
         SoftCompositionPicoContainer parentContainer = (SoftCompositionPicoContainer) parent;
         if (name.equals("component")) {
             return createComponentNode(attributes, parentContainer, name);
@@ -102,7 +106,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
             throw new PicoBuilderException("classpath '" + path + "' malformed ", e);
         }
         reflectionContainerAdapter.addClassLoaderURL(pathURL);
-        return null;
+        return pathURL;
     }
 
     private Object createBeanNode(Map attributes, MutablePicoContainer pico) {
@@ -112,14 +116,22 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return answer;
     }
 
-    private Object createComponentNode(Map attributes, MutablePicoContainer pico, Object name) {
-        Class type = (Class) attributes.remove("class");
+    private Object createComponentNode(Map attributes, SoftCompositionPicoContainer pico, Object name) throws ClassNotFoundException {
+        Object type = attributes.remove("class");
         if (type != null) {
             Object key = attributes.remove("key");
             if (key != null) {
-                pico.registerComponentImplementation(key, type);
+                if (type instanceof String) {
+                    pico.registerComponentImplementation(key, (String) type);
+                } else {
+                    pico.registerComponentImplementation(key, (Class) type);
+                }
             } else {
-                pico.registerComponentImplementation(type);
+                if (type instanceof String) {
+                    pico.registerComponentImplementation((String)type);
+                } else {
+                    pico.registerComponentImplementation((Class)type);
+                }
             }
             return name;
         } else {

@@ -10,13 +10,19 @@
 
 package org.picocontainer.extras;
 
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
 import org.picocontainer.defaults.ConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     private ImplementationHidingComponentAdapterFactory implementationHiddingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
@@ -88,7 +94,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
         ImplementationHidingComponentAdapter implementationHidingHusbandAdapter = (ImplementationHidingComponentAdapter) husbandAdapter.getDelegate();
-        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(newMan);
+        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(man, newMan);
 
         wife.getMan().kiss();
         assertTrue(newMan.wasKissed());
@@ -118,7 +124,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
         ImplementationHidingComponentAdapter implementationHidingHusbandAdapter = (ImplementationHidingComponentAdapter) husbandAdapter.getDelegate();
-        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(newMan);
+        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(man, newMan);
 
         wife.getMan().kiss();
         assertFalse(oldMan.wasKissed());
@@ -133,6 +139,27 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         Woman firstWife = (Woman) pico.getComponentInstance(Woman.class);
         Woman secondWife = (Woman) pico.getComponentInstance(Woman.class);
         assertNotSame(firstWife, secondWife);
+    }
+
+    public static class Bad implements Serializable {
+        public Bad() {
+            throw new IllegalStateException("HAHA");
+        }
+    }
+
+    public void testIHCAFwithCTORandNoCaching() {
+        // http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("l", ArrayList.class)));
+
+        List list1 = (List) pico.getComponentInstance("l");
+        List list2 = (List) pico.getComponentInstance("l");
+
+        assertNotSame(list1, list2);
+
+        list1.add("Hello");
+        assertTrue(list1.contains("Hello"));
+        assertFalse(list2.contains("Hello"));
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {

@@ -11,10 +11,12 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * This component adapter makes it possible to hide the implementation
- * of a real subject (behind a proxy). It is also possible to {@link #hotSwap(Object)}
+ * of a real subject (behind a proxy). It is also possible to {@link #hotSwap(Object, Object)}
  * the subject at runtime.
  *
  * @author Aslak Helles&oslash;y
@@ -25,11 +27,10 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     private final InterfaceFinder interfaceFinder = new InterfaceFinder();
 
     private MutablePicoContainer picoContainer;
-    private DelegatingInvocationHandler handler;
+    private Map handlers = new HashMap();
 
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
         super(delegate);
-        handler = new DelegatingInvocationHandler(this);
     }
 
     public Object getComponentInstance(MutablePicoContainer container)
@@ -44,8 +45,10 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                 }
             };
         }
+        final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
         Object proxyInstance = Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
-                interfaces, handler);
+                interfaces, delegatingInvocationHandler);
+        handlers.put(proxyInstance, delegatingInvocationHandler);
         return proxyInstance;
     }
 
@@ -54,11 +57,16 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     }
 
     /**
-     * Swaps the subject behind the proxy with a new instance.
-     * @param newSubject
+     * Swaps the subject behind a proxy with a new instance.
+     * @param proxy the proxy to swap for.
+     * @param newSubject the new subject the proxy will delegate to.
      * @return the old suject
      */
-    public Object hotSwap(Object newSubject) {
+    public Object hotSwap(Object proxy, Object newSubject) {
+        DelegatingInvocationHandler handler = (DelegatingInvocationHandler) handlers.get(proxy);
+        if(handler == null) {
+            throw new IllegalArgumentException("Unknown proxy: " + proxy.toString());
+        }
         return handler.hotSwap(newSubject);
     }
 
@@ -73,10 +81,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (delegatedInstance == null) {
-                delegatedInstance = adapter.getDelegatedComponentInstance();
-            }
-
             Class declaringClass = method.getDeclaringClass();
             if (declaringClass.equals(Object.class)) {
                 if (method.equals(InterfaceFinder.hashCode)) {
@@ -90,6 +94,9 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                 // If it's any other method defined by Object, call on ourself.
                 return method.invoke(DelegatingInvocationHandler.this, args);
             } else {
+                if (delegatedInstance == null) {
+                    delegatedInstance = adapter.getDelegatedComponentInstance();
+                }
                 return method.invoke(delegatedInstance, args);
             }
         }

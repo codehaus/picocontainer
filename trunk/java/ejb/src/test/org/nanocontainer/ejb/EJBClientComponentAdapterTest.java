@@ -145,6 +145,11 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         }
     }
     
+    /**
+     * Test failures creating the EJB.
+     * @throws ClassNotFoundException
+     * @throws RemoteException
+     */
     public void testComponentCreationFailures() throws ClassNotFoundException, RemoteException {
         final Mock helloHomeMock = mock(HelloHome.class);
         final Mock helloMock = mock(Hello.class);
@@ -212,7 +217,7 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, false);
         final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
-        final CommunicationException exception = new CommunicationException();
+        NamingException exception = new CommunicationException();
         exception.setRootCause(new SocketTimeoutException());
         m_initialContextMock.stubs().method("lookup").with(eq("Hello")).will(
                 onConsecutiveCalls(throwException(exception), returnValue(new HelloHomeImpl())));
@@ -221,6 +226,15 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
             fail("Should have thrown a ServiceUnavailableException");
         } catch (ServiceUnavailableException e) {
             assertTrue(((NamingException)e.getCause()).getRootCause() instanceof SocketTimeoutException);
+        }
+        exception.setRootCause(new NoSuchObjectException("Hello"));
+        m_initialContextMock.stubs().method("lookup").with(eq("Hello")).will(
+                onConsecutiveCalls(throwException(exception), returnValue(new HelloHomeImpl())));
+        try {
+            hello.getHelloWorld();
+            fail("Should have thrown a ServiceUnavailableException");
+        } catch (ServiceUnavailableException e) {
+            assertTrue(((NamingException)e.getCause()).getRootCause() instanceof NoSuchObjectException);
         }
         assertEquals("Hello World!", hello.getHelloWorld());
     }

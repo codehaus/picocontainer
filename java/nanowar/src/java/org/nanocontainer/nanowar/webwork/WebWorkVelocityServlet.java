@@ -15,8 +15,6 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.PicoContainer;
 import webwork.action.ServletActionContext;
 import webwork.util.ServletValueStack;

@@ -9,31 +9,27 @@
  *****************************************************************************/
 package org.nanocontainer.type1.test;
 
-import org.nanocontainer.type1.Type1Util;
-import org.nanocontainer.type1.CommonsLogger;
-import org.nanocontainer.type1.PicoLifecycleException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.InstanceComponentAdapter;
-import org.easymock.MockControl;
-import org.easymock.AbstractMatcher;
+import junit.framework.TestCase;
+import org.apache.avalon.framework.activity.Initializable;
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.apache.avalon.framework.context.Context;
+import org.apache.avalon.framework.context.Contextualizable;
 import org.apache.avalon.framework.logger.*;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.context.Context;
-import org.apache.avalon.framework.context.Contextualizable;
-import org.apache.avalon.framework.context.ContextException;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.activity.Initializable;
 import org.apache.commons.logging.impl.NoOpLog;
-
-import junit.framework.TestCase;
+import org.easymock.AbstractMatcher;
+import org.easymock.MockControl;
+import org.nanocontainer.type1.CommonsLogger;
+import org.nanocontainer.type1.PicoLifecycleException;
+import org.nanocontainer.type1.Type1Util;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 
 import java.io.Serializable;
 
@@ -363,15 +359,15 @@ public class Type1UtilTestCase extends TestCase {
                 assertNotNull(logger);
             }
 
-            public void contextualize(final Context context) throws ContextException {
+            public void contextualize(final Context context) {
                 assertNotNull(context);
             }
 
-            public void service(final ServiceManager serviceManager) throws ServiceException {
+            public void service(final ServiceManager serviceManager) {
                 assertNotNull(serviceManager);
             }
 
-            public void configure(final Configuration configuration) throws ConfigurationException {
+            public void configure(final Configuration configuration) {
                 assertNotNull(configuration);
             }
 

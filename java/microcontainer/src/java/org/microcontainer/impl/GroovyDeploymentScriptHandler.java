@@ -6,6 +6,7 @@ import org.picocontainer.defaults.SimpleReference;
 import org.microcontainer.DeploymentException;
 import org.microcontainer.McaDeployer;
 import org.microcontainer.DeploymentScriptHandler;
+import org.microcontainer.ClassLoaderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
@@ -25,7 +26,7 @@ public class GroovyDeploymentScriptHandler implements DeploymentScriptHandler {
 
 	public GroovyDeploymentScriptHandler(McaDeployer mcaDeployer) {
 		// todo picotize
-		this.classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
+		this.classLoaderFactory = new DefaultClassLoaderFactory(mcaDeployer);
 		this.mcaDeployer = mcaDeployer;
 	}
 

@@ -292,18 +292,17 @@ public class CollectionComponentParameterTestCase
 
     public void testVerify() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ComponentAdapter dummy = new InstanceComponentAdapter("foo", "bar");
         CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
         pico.registerComponentImplementation(Shark.class);
-        parameterNonEmpty.verify(pico, dummy, Fish[].class);
+        parameterNonEmpty.verify(pico, null, Fish[].class);
         try {
-            parameterNonEmpty.verify(pico, dummy, Cod[].class);
+            parameterNonEmpty.verify(pico, null, Cod[].class);
             fail("(PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
         CollectionComponentParameter parameterEmpty = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
-        parameterEmpty.verify(pico, dummy, Fish[].class);
-        parameterEmpty.verify(pico, dummy, Cod[].class);
+        parameterEmpty.verify(pico, null, Fish[].class);
+        parameterEmpty.verify(pico, null, Cod[].class);
     }
 }

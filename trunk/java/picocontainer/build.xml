@@ -180,6 +180,7 @@
       cvsHost="cvs.codehaus.org"
       cvsRoot="/cvsroot/picocontainer"
       package="pico" 
-      verbose="true"/>
+      verbose="true"
+      tag="HEAD"/>
   </target>
 </project>

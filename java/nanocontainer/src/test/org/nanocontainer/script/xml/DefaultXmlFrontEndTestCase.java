@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picoextras.integrationkit.ContainerAssembler;
-import org.picoextras.script.PicoCompositionException;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfigComp;
@@ -41,7 +41,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is).getDocumentElement();
     }
 
-    public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
@@ -60,7 +60,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         return pico;
     }
 
-    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<component class='org.picocontainer.defaults.DefaultPicoContainer'>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
@@ -76,7 +76,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertNotNull(childContainer.getComponentInstance(WebServer.class.getName()));
     }
 
-    public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
+    public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoAssemblyException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -140,7 +140,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         }
     }
 
-    public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <pseudocomponent factory='org.picoextras.script.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +

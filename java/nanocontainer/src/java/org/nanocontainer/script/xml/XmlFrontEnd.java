@@ -11,7 +11,7 @@
 package org.picoextras.script.xml;
 
 import org.picocontainer.PicoContainer;
-import org.picoextras.script.PicoCompositionException;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -27,5 +27,5 @@ import java.io.IOException;
  */
 public interface XmlFrontEnd {
     public PicoContainer createPicoContainer(Element rootElement)
-            throws IOException, SAXException, ClassNotFoundException, PicoCompositionException;
+            throws IOException, SAXException, ClassNotFoundException, PicoAssemblyException;
 }

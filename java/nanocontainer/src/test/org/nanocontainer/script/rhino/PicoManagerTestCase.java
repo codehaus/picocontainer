@@ -6,7 +6,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.script.PicoCompositionException;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
@@ -27,7 +27,7 @@ public class PicoManagerTestCase extends TestCase {
         return pico;
     }
 
-    public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
+    public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoAssemblyException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var parentContainer = new PicoScriptable();\n" +
@@ -42,7 +42,7 @@ public class PicoManagerTestCase extends TestCase {
                 pico.getComponentInstances().get(0).getClass());
     }
 
-    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
+    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoAssemblyException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var parentContainer = new PicoScriptable();\n" +
@@ -66,7 +66,7 @@ public class PicoManagerTestCase extends TestCase {
         assertEquals("ClassLoader should be the same for both components", ws.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
 
-    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
+    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoAssemblyException, JavaScriptException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.

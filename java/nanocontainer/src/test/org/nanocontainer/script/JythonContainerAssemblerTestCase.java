@@ -6,7 +6,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.WebServer;
+import org.picoextras.script.jython.JythonContainerAssembler;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -32,7 +34,7 @@ public class JythonContainerAssemblerTestCase extends TestCase {
         assertNotNull(pico.getComponentInstanceOfType(WebServer.class));
     }
 
-    public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoCompositionException {
+    public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoAssemblyException {
         try {
             Reader script = new StringReader("" +
                     "rootContainer.registerComponentImplementation('org.picoextras.testmodel.WebServerImpl')\n" +
@@ -45,7 +47,7 @@ public class JythonContainerAssemblerTestCase extends TestCase {
         }
     }
 
-    public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
+    public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("" +
                 "rootContainer.registerComponentImplementation('org.picoextras.testmodel.DefaultWebServerConfig')\n" +
                 "rootContainer.registerComponentImplementation('child', 'org.picocontainer.defaults.DefaultPicoContainer')\n" +

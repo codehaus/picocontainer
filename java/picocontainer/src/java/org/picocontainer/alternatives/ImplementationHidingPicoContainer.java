@@ -68,7 +68,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
-                return this.delegate.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
+                return this.delegate.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate, true)));
             }
         }
         return delegate.registerComponentImplementation(componentKey, componentImplementation);
@@ -79,7 +79,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
-                ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate);
+                ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate, true);
                 return this.delegate.registerComponent(new CachingComponentAdapter(ihDelegate));
             }
         }

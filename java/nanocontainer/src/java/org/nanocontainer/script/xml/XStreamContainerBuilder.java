@@ -14,9 +14,9 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.DomReader;
-import org.nanocontainer.NanoPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
-import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
@@ -256,10 +256,10 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             }
             Class cafClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafClass.newInstance();
-            NanoPicoContainer result = new DefaultNanoPicoContainer(classLoader, componentAdapterFactory,
-                    parentContainer);
-            populateContainer(result);
-            return result;
+            MutablePicoContainer picoContainer = new DefaultPicoContainer(componentAdapterFactory);
+            NanoContainer nano = new DefaultNanoContainer(classLoader, picoContainer);
+            populateContainer(nano.getPico());
+            return nano.getPico();
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException(e);
         } catch (InstantiationException e) {

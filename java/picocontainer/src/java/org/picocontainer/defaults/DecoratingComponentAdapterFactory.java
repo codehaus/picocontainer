@@ -13,8 +13,10 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
-public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory {
-    private final ComponentAdapterFactory delegate;
+import java.io.Serializable;
+
+public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+    private ComponentAdapterFactory delegate;
 
     public DecoratingComponentAdapterFactory(ComponentAdapterFactory delegate) {
         this.delegate = delegate;

@@ -212,18 +212,17 @@ public class NanoContainerBuilder extends BuilderSupport {
         ComponentAdapterFactory wrappedComponentAdapterFactory = nanoContainerBuilderDecorationDelegate.decorate(componentAdapterFactory, attributes);
 
         ClassLoader parentClassLoader = null;
-        MutablePicoContainer parentPicoContainer = null;
+        MutablePicoContainer wrappedPicoContainer = null;
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
-            parentPicoContainer = parent.getPico();
-            parentPicoContainer = new DefaultPicoContainer(wrappedComponentAdapterFactory, parentPicoContainer);
-            parent.getPico().addChildContainer(parentPicoContainer);
+            wrappedPicoContainer = new DefaultPicoContainer(wrappedComponentAdapterFactory, parent.getPico());
+            parent.getPico().addChildContainer(wrappedPicoContainer);
         } else {
             parentClassLoader = Thread.currentThread().getContextClassLoader();
-            parentPicoContainer = new DefaultPicoContainer(wrappedComponentAdapterFactory);
+            wrappedPicoContainer = new DefaultPicoContainer(wrappedComponentAdapterFactory);
         }
 
-        MutablePicoContainer decoratedPico = nanoContainerBuilderDecorationDelegate.decorate(parentPicoContainer);
+        MutablePicoContainer decoratedPico = nanoContainerBuilderDecorationDelegate.decorate(wrappedPicoContainer);
 
         return new DefaultNanoContainer(parentClassLoader, decoratedPico);
     }

@@ -28,14 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * The default implementation of {@link NanoContainer}.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
 public class DefaultNanoContainer implements NanoContainer {
     private static final Map primitiveNameToBoxedName = new HashMap();
-    private boolean componentClassLoaderLocked;
-    private ClassLoader componentClassLoader;
-
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
         primitiveNameToBoxedName.put("byte", Byte.class.getName());
@@ -46,16 +45,18 @@ public class DefaultNanoContainer implements NanoContainer {
         primitiveNameToBoxedName.put("boolean", Boolean.class.getName());
     }
 
+    private final List urls = new ArrayList();
+    private final StringToObjectConverter converter = new StringToObjectConverter();
+    private final MutablePicoContainer picoContainer;
+    private final ClassLoader parentClassLoader;
+
+    private ClassLoader componentClassLoader;
+    private boolean componentClassLoaderLocked;
+
     private static String getClassName(String primitiveOrClass) {
         String fromMap = (String) primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
     }
-
-    private final List urls = new ArrayList();
-    private final StringToObjectConverter converter = new StringToObjectConverter();
-    private final MutablePicoContainer picoContainer;
-
-    private final ClassLoader parentClassLoader;
 
     public DefaultNanoContainer(ClassLoader parentClassLoader, MutablePicoContainer picoContainer) {
         this.parentClassLoader = parentClassLoader;
@@ -65,8 +66,8 @@ public class DefaultNanoContainer implements NanoContainer {
         this.picoContainer = picoContainer;
     }
 
-    public DefaultNanoContainer(ClassLoader classLoader) {
-        this(classLoader, new DefaultPicoContainer());
+    public DefaultNanoContainer(ClassLoader parentClassLoader) {
+        this(parentClassLoader, new DefaultPicoContainer());
     }
 
     public DefaultNanoContainer(MutablePicoContainer picoContainer) {
@@ -130,11 +131,6 @@ public class DefaultNanoContainer implements NanoContainer {
         return classLoader.loadClass(cn);
     }
 
-    /**
-     * Adds a new URL that will be used in classloading
-     *
-     * @param url
-     */
     public void addClassLoaderURL(URL url) {
         if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this ContainerAdapter is locked");
         urls.add(url);

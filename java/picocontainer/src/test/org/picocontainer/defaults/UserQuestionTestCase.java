@@ -219,18 +219,18 @@ public class UserQuestionTestCase extends TestCase {
         MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
         container.registerComponentImplementation(NeedsBar.class);
 
-        Foo fooOne = new FooBar();
-        container.registerComponentInstance(Foo.class, fooOne);
-        NeedsBar barOne = (NeedsBar) container.getComponentInstance(NeedsBar.class);
-        assertSame(fooOne, barOne.getBar());
+        Bar barOne = new FooBar();
+        container.registerComponentInstance(Bar.class, barOne);
+        NeedsBar needsBarOne = (NeedsBar) container.getComponentInstance(NeedsBar.class);
+        assertSame(barOne, needsBarOne.getBar());
 
         // reuse the same container - just flip out the existing foo.
-        Foo fooTwo = new FooBar();
-        container.unregisterComponent(Foo.class);
-        container.registerComponentInstance(Foo.class, fooTwo);
-        NeedsBar barTwo = (NeedsBar) container.getComponentInstance(NeedsBar.class);
-        assertSame(fooTwo, barTwo.getBar());
+        Bar barTwo = new FooBar();
+        container.unregisterComponent(Bar.class);
+        container.registerComponentInstance(Bar.class, barTwo);
+        NeedsBar needsBarTwo = (NeedsBar) container.getComponentInstance(NeedsBar.class);
+        assertSame(barTwo, needsBarTwo.getBar());
 
-        assertNotSame(barOne, barTwo);
+        assertNotSame(needsBarOne, needsBarTwo);
     }
 }

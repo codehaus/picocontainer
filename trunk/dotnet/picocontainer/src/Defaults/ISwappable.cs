@@ -16,7 +16,7 @@ namespace PicoContainer.Defaults {
   /// Summary description for Swappable.
   /// </summary>
   public interface ISwappable {
-    object PicoHotSwap(object newSubject);
+    object HotSwap(object newSubject);
 
   }
 }

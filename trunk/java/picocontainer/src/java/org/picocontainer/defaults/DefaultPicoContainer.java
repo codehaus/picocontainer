@@ -76,12 +76,12 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     // see PicoContainer interface for Javadocs
-    public final Object getCompositeComponent() {
-        return getCompositeComponent(true, false);
+    public final Object getComponentMulticaster() {
+        return getComponentMulticaster(true, false);
     }
 
     // see PicoContainer interface for Javadocs
-    public final Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+    public final Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         List aggregateComponents = componentRegistry.getOrderedComponents();
         if (!callUnmanagedComponents) {
             for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {

@@ -100,12 +100,12 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
         return mainContainer.getComponentKeys();
     }
 
-    public Object getCompositeComponent() {
-        return mainContainer.getCompositeComponent();
+    public Object getComponentMulticaster() {
+        return mainContainer.getComponentMulticaster();
     }
 
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-        return mainContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        return mainContainer.getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 
     public void instantiateComponents() throws PicoInitializationException {

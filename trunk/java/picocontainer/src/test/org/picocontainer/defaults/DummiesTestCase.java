@@ -30,9 +30,9 @@ public class DummiesTestCase extends TestCase {
         assertNull(dc.getComponent(String.class));
         assertEquals(0, dc.getComponents().size());
         assertEquals(0, dc.getComponentKeys().size());
-        assertNull(dc.getCompositeComponent());
-        assertNull(dc.getCompositeComponent(true, false));
-        assertNull(dc.getCompositeComponent(false, true));
+        assertNull(dc.getComponentMulticaster());
+        assertNull(dc.getComponentMulticaster(true, false));
+        assertNull(dc.getComponentMulticaster(false, true));
     }
 
     public void testDefaultComponentFactory() throws PicoInstantiationException,

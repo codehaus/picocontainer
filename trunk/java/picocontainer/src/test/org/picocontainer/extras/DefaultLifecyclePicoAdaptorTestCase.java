@@ -160,9 +160,9 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Startable startup = (Startable) pico.getCompositeComponent(true, false);
-        Stoppable shutdown = (Stoppable) pico.getCompositeComponent(false, false);
-        Disposable disposal = (Disposable) pico.getCompositeComponent(false, false);
+        Startable startup = (Startable) pico.getComponentMulticaster(true, false);
+        Stoppable shutdown = (Stoppable) pico.getComponentMulticaster(false, false);
+        Disposable disposal = (Disposable) pico.getComponentMulticaster(false, false);
 
         assertTrue("There should have been a 'One' in the internals", pico.hasComponent(One.class));
 

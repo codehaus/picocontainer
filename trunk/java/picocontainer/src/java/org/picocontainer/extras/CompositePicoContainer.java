@@ -123,11 +123,11 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         return Collections.unmodifiableSet(set);
     }
 
-    public Object getCompositeComponent() {
+    public Object getComponentMulticaster() {
         throw new UnsupportedOperationException();
     }
 
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         throw new UnsupportedOperationException();
     }
 

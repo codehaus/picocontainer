@@ -38,11 +38,11 @@ public class NullContainer implements PicoContainer, Serializable {
     public void instantiateComponents() throws PicoInstantiationException {
     }
 
-    public Object getCompositeComponent() {
+    public Object getComponentMulticaster() {
         return null;
     }
 
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return null;
     }
 }

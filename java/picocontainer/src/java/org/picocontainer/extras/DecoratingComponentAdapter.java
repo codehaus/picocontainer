@@ -37,14 +37,10 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(MutablePicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if(componentRegistry != null) {
-            componentRegistry.registerOrderedComponentAdapter(this);
-        }
-        Object instance = delegate.getComponentInstance(componentRegistry);
-        if(componentRegistry != null) {
-            componentRegistry.addOrderedComponentAdapter(this);
-        }
+    public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        picoContainer.registerOrderedComponentAdapter(this);
+        Object instance = delegate.getComponentInstance(picoContainer);
+        picoContainer.addOrderedComponentAdapter(this);
         return instance;
     }
 

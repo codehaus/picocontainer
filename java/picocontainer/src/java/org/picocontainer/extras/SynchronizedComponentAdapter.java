@@ -12,33 +12,24 @@ import org.picocontainer.defaults.NoSatisfiableConstructorsException;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class SynchronizedComponentAdapter implements ComponentAdapter {
-    private ComponentAdapter delegate;
-
+public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
     public SynchronizedComponentAdapter(ComponentAdapter delegate) {
-        this.delegate = delegate;
+        super(delegate);
     }
 
     public synchronized Object getComponentKey() {
-        return delegate.getComponentKey();
+        return super.getComponentKey();
     }
 
     public synchronized Class getComponentImplementation() {
-        return delegate.getComponentImplementation();
+        return super.getComponentImplementation();
     }
 
     public synchronized Object getComponentInstance(MutablePicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException {
-        if(dependencyContainer != null) {
-            dependencyContainer.registerOrderedComponentAdapter(this);
-        }
-        Object instance = delegate.getComponentInstance(dependencyContainer);
-        if(dependencyContainer != null) {
-            dependencyContainer.addOrderedComponentAdapter(this);
-        }
-        return instance;
+        return super.getComponentInstance(dependencyContainer);
     }
 
     public synchronized void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
-        delegate.verify(picoContainer);
-    }
+        super.verify(picoContainer);
+    }    
 }

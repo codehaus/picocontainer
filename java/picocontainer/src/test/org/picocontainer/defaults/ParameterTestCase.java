@@ -45,7 +45,8 @@ public class ParameterTestCase extends TestCase {
     public void testConstantParameter() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
-        assertSame(value, parameter.resolveAdapter(null).getComponentInstance(null));
+        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+        assertSame(value, parameter.resolveAdapter(picoContainer).getComponentInstance(picoContainer));
     }
 
     public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {

@@ -2,12 +2,14 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 
 public class TransientComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
-        ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter(null, Object.class);
-        Object o1 = componentAdapter.getComponentInstance(null);
-        Object o2 = componentAdapter.getComponentInstance(null);
+        ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter("blah", Object.class);
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        Object o1 = componentAdapter.getComponentInstance(pico);
+        Object o2 = componentAdapter.getComponentInstance(pico);
         assertNotSame(o1, o2);
     }
 

@@ -6,6 +6,7 @@ package com.thoughtworks.sise2004;
 
 public class Wallet {
 
+    
     public Wallet()
     {
     }

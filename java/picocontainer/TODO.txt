@@ -45,5 +45,6 @@ JBoss component analysis - ?
 Plexus component anaylsys - ? 
 Carbon component analysis - ?
 Hibernate componentization advocacy - ?
-HypersonicSQL componentization advocacy - ? 
+HsqlDb componentization advocacy - ? 
+Threadpool (http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html)
 

@@ -37,6 +37,14 @@
     <delete file="${maven.build.dir}/compiling"/>
   </postGoal>
 
+  <preGoal name="test:compile">
+    <touch file="${maven.build.dir}/compiling"/>
+  </preGoal>
+
+  <postGoal name="test:compile">
+    <delete file="${maven.build.dir}/compiling"/>
+  </postGoal>
+
   <!--
    ! Maven doesn't tell us whether tests were ok either.
    ! If the testfailure file is there, and continuous-integration.sh

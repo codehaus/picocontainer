@@ -9,6 +9,8 @@
 
 package org.microcontainer;
 
+import org.picocontainer.PicoContainer;
+
 import java.io.File;
 import java.net.URL;
 
@@ -27,6 +29,8 @@ public interface Kernel {
     void deferredDeploy(File file) throws DeploymentException ;
 
     Object getComponent(String relativeComponentPath); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
+
+    PicoContainer getRootContainer(String context);
 
     void start(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 

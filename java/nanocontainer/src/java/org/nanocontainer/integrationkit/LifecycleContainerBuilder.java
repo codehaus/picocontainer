@@ -38,10 +38,15 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         if (container instanceof MutablePicoContainer) {
             composeContainer((MutablePicoContainer) container, assemblyScope);
         }
-        container.start();
+        autoStart(container);
 
         // hold on to it
         containerRef.set(container);
+    }
+
+    protected void autoStart(PicoContainer container) {
+        System.out.println("--> autostarted");
+        container.start();
     }
 
     public void killContainer(ObjectReference containerRef) {

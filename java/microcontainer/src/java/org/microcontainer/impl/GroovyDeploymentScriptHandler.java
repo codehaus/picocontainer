@@ -12,6 +12,7 @@ import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import java.io.FileReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Reader;
 
 /**
  * @author Michael Ward
@@ -26,18 +27,22 @@ public class GroovyDeploymentScriptHandler {
 		mcaDeployer = new McaDeployer();
 	}
 
-	public PicoContainer handle(String contextName) throws DeploymentException {
+	public PicoContainer handle(String contextName, boolean autoStart) throws DeploymentException {
 		try {
 			ClassLoader classLoader = classLoaderFactory.build(contextName);
 			File path = new File(mcaDeployer.getWorkingDir(), contextName); // actual path to work/contextName
 			FileReader script = new FileReader(new File(path, "composition.groovy"));
 
 			// build the container from the script
-			GroovyContainerBuilder gcb = new GroovyContainerBuilder(script, classLoader);
+			GroovyContainerBuilder gcb = new MicroGroovyContainerBuilder(script, classLoader);
 			MutablePicoContainer parent = new DefaultSoftCompositionPicoContainer(classLoader);
 			parent.registerComponentInstance("workingDir", path);
 
-			return buildContainer(contextName, gcb, parent);
+            PicoContainer picoContainer = buildContainer(contextName, gcb, parent);
+            if (autoStart) {
+                picoContainer.start();
+            }
+            return picoContainer;
 			
 		} catch (FileNotFoundException e) {
 			throw new DeploymentException(e);
@@ -53,6 +58,16 @@ public class GroovyDeploymentScriptHandler {
         parentContainerRef.set(parentContainer);
         builder.buildContainer(containerRef, parentContainerRef, contextName);
         return (PicoContainer) containerRef.get();
+    }
+    private class MicroGroovyContainerBuilder extends GroovyContainerBuilder {
+
+        public MicroGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
+            super(script, classLoader);
+        }
+
+        protected void autoStart(PicoContainer container) {
+            // no
+        }
     }
 }
 

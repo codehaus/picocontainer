@@ -1,15 +1,9 @@
-using System;
-
 namespace NanoContainer.Test.TestModel
 {
-	/// <summary>
-	/// Summary description for WebServerConfig.
-	/// </summary>
 	public interface WebServerConfig
 	{
+		string Host { get; }
 
-    String getHost();
-
-    int getPort();
-  }
+		int Port { get; }
+	}
 }

@@ -1,21 +1,29 @@
 using System;
 using System.Runtime.Serialization;
-using PicoContainer;
+using PicoContainer.Core;
 
 namespace NanoContainer.IntegrationKit
 {
-	/// <summary>
-	/// Summary description for PicoCompositionException.
-	/// </summary>
-	public class PicoCompositionException : PicoException 
+	public class PicoCompositionException : PicoException
 	{
-    public PicoCompositionException(){ }
+		public PicoCompositionException()
+		{
+		}
 
-    public PicoCompositionException(Exception ex) : base (ex) {}
-    public PicoCompositionException(string message) : base(message) { }
+		public PicoCompositionException(Exception ex) : base(ex)
+		{
+		}
 
-    public PicoCompositionException(string message, Exception ex) : base(message,ex) {}
- 
-    protected PicoCompositionException(SerializationInfo info, StreamingContext context) : base (info, context) {}
-  }
+		public PicoCompositionException(string message) : base(message)
+		{
+		}
+
+		public PicoCompositionException(string message, Exception ex) : base(message, ex)
+		{
+		}
+
+		protected PicoCompositionException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
+	}
 }

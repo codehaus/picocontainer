@@ -33,7 +33,7 @@ class ContainerTest < Test::Unit::TestCase
   
   class HasDependents
     attr_reader :needed, :also_needed
-          
+    
     def initialize needed, also_needed
       @needed, @also_needed = needed, also_needed
     end
@@ -47,7 +47,7 @@ class ContainerTest < Test::Unit::TestCase
     rico.register_component :also_needed, AlsoNeeded
     rico.register_component :has_dependents, HasDependents, [ :needed, :also_needed ]
     return rico
-  end 
+  end
 
   def test_registers_component_with_dependencies
     rico = build_rico_with_dependent_components

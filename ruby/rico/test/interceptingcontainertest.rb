@@ -4,7 +4,6 @@ require 'rico/interceptingcontainer'
 class InterceptingContainerTest < Test::Unit::TestCase
   include Rico
   
-  
   def setup
     $results = []
   end
@@ -18,7 +17,7 @@ class InterceptingContainerTest < Test::Unit::TestCase
   def test_intercepts_entry_to_component_method_call
     
     # create an intercepting container that does something
-    rico = InterceptingContainer.new proc { $results << "at entry" }
+    rico = InterceptingContainer.new Interceptor, proc { $results << "at entry" }
     
     # register a component
     rico.register_component :pusher, Pusher
@@ -33,7 +32,7 @@ class InterceptingContainerTest < Test::Unit::TestCase
   end
   
   def test_intercepted_component_pretends_to_have_original_components_class
-    rico = InterceptingContainer.new proc {}
+    rico = InterceptingContainer.new Interceptor, proc {}
     rico.register_component :object, Object
     assert_equal Object, rico.component(:object).class
   end

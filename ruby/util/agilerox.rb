@@ -4,11 +4,11 @@ require 'test/unit'
 module Test
   module Unit
     class TestCase
-      def TestCase.inherited(sub_id)
-        printf "\n%s\n", sub_id.to_s.sub(/^Test/, '').sub(/Test$/, '')
+      def TestCase.inherited(subclass) # intercept test cases
+        printf "\n%s\n", subclass.to_s.sub(/^Test/, '').sub(/Test$/, '')
         eval <<-EOM
-          def #{sub_id}.method_added(id)
-            meth = id.id2name
+          def #{subclass}.method_added(id) # intercept test methods
+            meth = id.to_s
             printf("- %s\n", meth.sub(/^test_?/, '').gsub(/_/, ' ')) if meth =~ /^test/
           end
         EOM
@@ -18,5 +18,5 @@ module Test
 end
 
 # Load all the tests
-ARGV.each { |arg| require arg } if $0 == __FILE__
-exit!
+ARGV.each { |src_file| require src_file } if $0 == __FILE__
+exit! # avoid running tests at exit

@@ -20,11 +20,6 @@ import webwork.action.factory.ActionFactory;
 
 /**
  * Custom webwork action lifecycle that ensures actions are treated as pico components.
- *
- * <p>To use, add to webwork.properties:
- * <pre>
- * webwork.action.factory=org.nanocontainer.webwork.WebWorkActionFactory
- * </pre></p>
  */
 public class WebWorkActionFactory extends ActionFactory {
 

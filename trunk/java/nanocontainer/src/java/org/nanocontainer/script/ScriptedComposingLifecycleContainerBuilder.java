@@ -6,10 +6,6 @@ package org.nanocontainer.script;
 
 import org.nanocontainer.integrationkit.ComposingLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.nanocontainer.script.jython.JythonContainerBuilder;
-import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
-import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -18,13 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScriptedComposingLifecycleContainerBuilder extends ComposingLifecycleContainerBuilder {
-    private static final Map EXTENSION_TO_BUILDER_CLASS_MAP = new HashMap();
+    private static final Map EXTENSION_TO_BUILDER_CLASS_NAME_MAP = new HashMap();
 
     static {
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_MAP.put("groovy", GroovyContainerBuilder.class);
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_MAP.put("js", JavascriptContainerBuilder.class);
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_MAP.put("py", JythonContainerBuilder.class);
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_MAP.put("xml", XMLContainerBuilder.class);
+        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("groovy", "org.nanocontainer.script.groovy.GroovyContainerBuilder");
+        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
+        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("py", "org.nanocontainer.script.jython.JythonContainerBuilder");
+        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
     }
 
     protected final Reader script;
@@ -35,15 +31,15 @@ public class ScriptedComposingLifecycleContainerBuilder extends ComposingLifecyc
         this.classLoader = classLoader;
     }
 
-    public static Class getContainerBuilderClass(String extension) {
-        Class containerBuilderClass = (Class) EXTENSION_TO_BUILDER_CLASS_MAP.get(extension);
-        if(containerBuilderClass == null) {
+    private static Class getContainerBuilderClass(String extension) throws ClassNotFoundException {
+        String containerBuilderClassName = (String) EXTENSION_TO_BUILDER_CLASS_NAME_MAP.get(extension);
+        if(containerBuilderClassName == null) {
             throw new IllegalArgumentException("Unknown extension: '" + extension + "' (There should be no '.')");
         }
-        return containerBuilderClass;
+        return ScriptedComposingLifecycleContainerBuilder.class.getClassLoader().loadClass(containerBuilderClassName);
     }
 
-    public static ContainerBuilder createBuilder(String extension, Reader scriptReader, ClassLoader applicationClassLoader) {
+    public static ContainerBuilder createBuilder(String extension, Reader scriptReader, ClassLoader applicationClassLoader) throws ClassNotFoundException {
         Class builderClass = getContainerBuilderClass(extension);
         MutablePicoContainer builderFactory = new DefaultPicoContainer();
         builderFactory.registerComponentImplementation("builder", builderClass);

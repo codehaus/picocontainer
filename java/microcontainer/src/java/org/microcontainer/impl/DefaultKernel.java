@@ -17,6 +17,7 @@ import org.picocontainer.ComponentAdapter;
 import org.microcontainer.Kernel;
 import org.microcontainer.McaDeployer;
 import org.microcontainer.DeploymentException;
+import org.microcontainer.DeploymentScriptHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,16 +35,16 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 
 	protected HashMap contextMap = null;
 	protected McaDeployer mcaDeployer = null;
-	protected GroovyDeploymentScriptHandler groovyDeploymentScriptHandler = null;
+	protected DeploymentScriptHandler deploymentScriptHandler = null;
 
-	public DefaultKernel(McaDeployer mcaDeployer) {
+	public DefaultKernel(McaDeployer mcaDeployer, DeploymentScriptHandler deploymentScriptHandler) {
 		contextMap = new HashMap();
 		this.mcaDeployer = mcaDeployer;
-		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler(mcaDeployer);
+		this.deploymentScriptHandler = deploymentScriptHandler;
 	}
 
 	protected void buildContainerAndRegisterContext(String context, boolean autoStart) throws DeploymentException {
-		PicoContainer container = groovyDeploymentScriptHandler.handle(context, autoStart);
+		PicoContainer container = deploymentScriptHandler.handle(context, autoStart);
 		contextMap.put(context, container);
 	}
 

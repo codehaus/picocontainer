@@ -7,6 +7,7 @@ builder = new NanoContainerBuilder(new JmxDecorationDelegate())
 nano = builder.container(parent:parent) {
   	classpathelement(path:"lib/hidden/microcontainer-impl-0.1-SNAPSHOT.jar");
 	component(key:org.microcontainer.McaDeployer, class:"org.microcontainer.impl.DefaultMcaDeployer")
+	component(key:org.microcontainer.DeploymentScriptHandler, class:"org.microcontainer.impl.GroovyDeploymentScriptHandler")
 	component(class:"org.microcontainer.impl.MicroBeanShellConsole")
 
 	component(key:javax.management.MBeanServer, instance:MBeanServerFactory.createMBeanServer("microcontainer"))

@@ -4,6 +4,8 @@
   <title>Pico Nirvana</title>
 </head>
 <body>
+<h2>Overview</h2>
+<br>
 In an ideal world we see PicoContainer principles being applied to a
 lot of different container/component aspects of Java :<br>
 <h2>Servlet</h2>
@@ -73,7 +75,9 @@ Same story :<br>
 <pre style="margin-left: 40px;">public interface StockQuoteService {<br>&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);<br>}<br>public class DefaultStockQuoteService implements StockQuoteService {<br>&nbsp;&nbsp;&nbsp; QuoteRecorder quoteRecorder;<br>&nbsp;&nbsp;&nbsp; public DefaultStockQuoteService(QuoteRecorderquoteRecorder) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.quoteRecorder =quoteRecorder;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void BigDecimal getQuote(String stockTicker) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; quoteRecorder.recordQuote(stockTicker);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new BigDecimal()// TODO - makereal<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
 <h2>Desktop Operating System</h2>
 Getting boring now :<br>
-<pre style="margin-left: 40px;">public class QuotePanel extends JPanel implements {<br>&nbsp;&nbsp;&nbsp; StockQuoteService stockQuoteService;<br>&nbsp;&nbsp;&nbsp; public QuotePanel(StockQuoteService sqs) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockQuoteService = sqs;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.add(new JTextField(""),BorderLayout.CENTER);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //etc<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
+<pre style="margin-left: 40px;">public class QuotePanel extends JPanel implements {<br>&nbsp;&nbsp;&nbsp; StockQuoteService stockQuoteService;<br>&nbsp;&nbsp;&nbsp; public QuotePanel(StockQuoteService sqs) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockQuoteService = sqs;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.add(new JTextField(""),BorderLayout.CENTER);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //etc<br>&nbsp;&nbsp;&nbsp; }<br>}<br><br></pre>
+Yo you Eclipse guys, why'd ya have to adopt the OSGi stuff ?<br>
 <br>
+<small>Authors: Paul Hammant</small><br>
 </body>
 </html>

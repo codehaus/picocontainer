@@ -9,10 +9,10 @@
 <pre>    public interface Peelable {<br>        void peel();<br>    }</pre>
 <p>If you have a container that is full of objects that are Peelable:</p>
 <pre>    pico.registerComponent(Apple.class);<br>    pico.registerComponent(Pear.class);<br>    pico.registerComponent(Grape.class);<br>    pico.registerComponent(Orange.class);<br>    pico.registerComponent(Potato.class);</pre>
-<p>It would be useful to tell the container to<br>
+<p>It would be useful to tell the container to...<br>
 </p>
 <pre>    peel()</pre>
-them all for you.
+...them all for you.
 <p>What you would like to do here is treat the whole
 container like a Peelable, so that when you call peel() on the
 container it calls peel() on all the individual components for you.</p>
@@ -26,7 +26,7 @@ components implement</b>.</p>
 <p>What this means is that if one of your components (say Potato.class)
 implements a different interface (say Mashable) then you can call that
 interface in the same way:</p>
-<pre>    Mashable mashable = (Mashable) multicaster;<br><br>    mashable.mash();</pre>
+<pre>    Mashable mashable = (Mashable) multicaster;<br>    mashable.mash();</pre>
 <p>Of course the mash() method is only applied to any components that
 implement the interface Mashable. So you can't accidentally mash() an
 Apple or an Orange.</p>
@@ -42,6 +42,9 @@ support multiple
 lifecycle implementations at the same time.</p>
 <p>Interface methods can throw Exceptions that are checked and domain
 specific. Again, PicoContainer doesn't need to know.</p>
-<p>Interfaces are strongly typed, not breakable as in reflection.</p>
+<p>Interfaces are strongly typed, not breakable as in reflection.<br>
+</p>
+<p><small>Authors: Chris Stevenson, Paul Hammant</small><br>
+</p>
 </body>
 </html>

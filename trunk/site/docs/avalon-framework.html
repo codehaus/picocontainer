@@ -4,7 +4,7 @@
   <title>Making components compatible with Avalon-Framework</title>
 </head>
 <body>
-<h3>Introduction</h3>
+<h2>Overview</h2>
 Apache's Avalon's component specification is enshrined in a number of
 interfaces. What this means is that the component writer has to
 implement them to designate their class as an Avalon component.&nbsp;
@@ -12,9 +12,9 @@ PicoComponents require adaptation to fit the type-1 Avalon-Framework
 design.<br>
 <br>
 This document details how to do this manually.<br>
-<h3>A simple example component<br>
-</h3>
-<h4>Example component APIs</h4>
+<h2>A simple example component<br>
+</h2>
+<h3>Example component APIs</h3>
 <div style="margin-left: 40px;">public interface Engine {<br>
 &nbsp; void runEngine();<br>
 }<br>
@@ -23,35 +23,17 @@ public interface Persistor {<br>
 }<br>
 </div>
 <br>
-<span style="font-weight: bold;">A simple Pico implementation of the
-hypothetical engine.</span><br>
+<h3><span style="font-weight: bold;">A simple Pico implementation of
+the
+hypothetical engine.</span></h3>
 <br>
 <pre style="margin-left: 40px;">public class EngineImpl implements Engine {<br>&nbsp; Persistor persistor;<br>&nbsp; String persistenceKey;<br>&nbsp; Object persistable;<br>&nbsp; public void EngineImpl(Persistor persistor, String persistenceKey) {<br>&nbsp;&nbsp;&nbsp; this.persistor = persistor;<br>&nbsp;&nbsp;&nbsp; this.persistorKey = persistorKey;<br>&nbsp;&nbsp;&nbsp; persistable = new Object(); // not very 'heavy' we appreciate.<br>&nbsp; }<br>&nbsp; public void runEngine() {<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>&nbsp; }<br>}<br></pre>
-<h4>The same component natively written for Apache Avalon</h4>
-<pre style="margin-left: 40px;">public class AvalonEngine implements Engine, Servicable, Configurable, Initializable {
-&nbsp; Persistor persistor;
-&nbsp; String persistenceKey;
-&nbsp; Object persistable;
-&nbsp; public void service (ServiceManager sm) throws ServiceException {
-&nbsp;&nbsp;&nbsp; this.persistor = (Persistor) sm.lookup("Persistor");
-&nbsp; }
-&nbsp; public void configure(Configuration conf) {
-&nbsp;&nbsp;&nbsp; this.persistorKey = conf.getAttribute("persistorKey");
-&nbsp; }
-&nbsp; public void initialize() {
-&nbsp;&nbsp;&nbsp; persistable = new Object(); // not very 'heavy' we appreciate.
-&nbsp; }
-&nbsp; public void runEngine() {
-&nbsp; {
-&nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);
-&nbsp; }
-}
-</pre>
-<span style="font-weight: bold;">An alternate wrapping strategy for
-Apache Avalon compatability.</span><br>
-<br>
+<h3>The same component natively written for Apache Avalon</h3>
+<pre style="margin-left: 40px;">public class AvalonEngine implements Engine, Servicable, Configurable, Initializable {<br>&nbsp; Persistor persistor;<br>&nbsp; String persistenceKey;<br>&nbsp; Object persistable;<br>&nbsp; public void service (ServiceManager sm) throws ServiceException {<br>&nbsp;&nbsp;&nbsp; this.persistor = (Persistor) sm.lookup("Persistor");<br>&nbsp; }<br>&nbsp; public void configure(Configuration conf) {<br>&nbsp;&nbsp;&nbsp; this.persistorKey = conf.getAttribute("persistorKey");<br>&nbsp; }<br>&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp; persistable = new Object(); // not very 'heavy' we appreciate.<br>&nbsp; }<br>&nbsp; public void runEngine() {<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>&nbsp; }<br>}<br></pre>
+<h3><span style="font-weight: bold;">An alternate wrapping strategy for
+Apache Avalon compatability.</span></h3>
 <pre style="margin-left: 40px;">public class AvalonEngine implements Engine, Servicable, Configurable, Initializable {<br>&nbsp; private Engine engine;<br>&nbsp; // temporary<br>&nbsp; private Persistor persistor;<br>&nbsp; private String persistenceKey;<br>&nbsp; public void service (ServiceManager sm) throws ServiceException {<br>&nbsp;&nbsp;&nbsp; this.persistor = (Persistor) sm.lookup("Persistor");<br>&nbsp; }<br>&nbsp; public void configure(Configuration conf) {<br>&nbsp;&nbsp;&nbsp; this.persistorKey = conf.getAttribute("persistorKey");<br>&nbsp; }<br>&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp; engine = new EngineImpl(persistor persistenceKey);<br>&nbsp; }<br>&nbsp; public void runEngine() {<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; engine.runEngine();<br>&nbsp; }<br>}<br></pre>
 <br>
-<br>
+<small>Authors: Paul Hammant</small><br>
 </body>
 </html>

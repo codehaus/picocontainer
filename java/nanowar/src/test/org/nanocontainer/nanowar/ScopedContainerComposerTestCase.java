@@ -35,21 +35,24 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     public void testDefaultConfiguration() throws ClassNotFoundException {
         ScopedContainerComposer composer = new ScopedContainerComposer();
 
-        MutablePicoContainer application = new DefaultPicoContainer();
+        MutablePicoContainer applicationContainer = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
-        composer.composeContainer(application, servletContextMock.proxy());
-        assertNotNull(application.getComponentInstance("applicationScopedInstance"));
+        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+        assertNotNull(applicationContainer.getComponentInstance("applicationScopedInstance"));
 
-        MutablePicoContainer session = new DefaultPicoContainer();
+        MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
         Mock httpSessionMock = mock(HttpSession.class);
-        composer.composeContainer(session, httpSessionMock.proxy());
-        assertNotNull(session.getComponentInstance("sessionScopedInstance"));
+        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+        assertNotNull(sessionContainer.getComponentInstance("applicationScopedInstance"));
+        assertNotNull(sessionContainer.getComponentInstance("sessionScopedInstance"));
 
-        MutablePicoContainer request = new DefaultPicoContainer();
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
         Mock httpRequestMock = mock(HttpServletRequest.class);
-        composer.composeContainer(request, httpRequestMock.proxy());
-        assertNotNull(request.getComponentInstance("requestScopedInstance"));
+        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        assertNotNull(requestContainer.getComponentInstance("applicationScopedInstance"));
+        assertNotNull(requestContainer.getComponentInstance("sessionScopedInstance"));
+        assertNotNull(requestContainer.getComponentInstance("requestScopedInstance"));
     }
 
     public void testCustomConfiguration() throws ClassNotFoundException {
@@ -58,24 +61,30 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull("configurator", configurator);
         ScopedContainerComposer composer = new ScopedContainerComposer(pico);
 
-        MutablePicoContainer application = new DefaultPicoContainer();
+        MutablePicoContainer applicationContainer = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
-        composer.composeContainer(application, servletContextMock.proxy());
-        assertNotNull(application.getComponentInstance("applicationScopedInstance"));
-        assertNotNull(application.getComponentInstance("applicationScopedInstance2"));
+        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+        assertNotNull(applicationContainer.getComponentInstance("applicationScopedInstance"));
+        assertNotNull(applicationContainer.getComponentInstance("applicationScopedInstance2"));
 
-        MutablePicoContainer session = new DefaultPicoContainer();
+        MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
         Mock httpSessionMock = mock(HttpSession.class);
-        composer.composeContainer(session, httpSessionMock.proxy());
-        assertNotNull(session.getComponentInstance("sessionScopedInstance"));
-        assertNotNull(session.getComponentInstance("sessionScopedInstance2"));
+        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+        assertNotNull(sessionContainer.getComponentInstance("applicationScopedInstance"));
+        assertNotNull(sessionContainer.getComponentInstance("applicationScopedInstance2"));
+        assertNotNull(sessionContainer.getComponentInstance("sessionScopedInstance"));
+        assertNotNull(sessionContainer.getComponentInstance("sessionScopedInstance2"));
 
-        MutablePicoContainer request = new DefaultPicoContainer();
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
         Mock httpRequestMock = mock(HttpServletRequest.class);
-        composer.composeContainer(request, httpRequestMock.proxy());
-        assertNotNull(request.getComponentInstance("requestScopedInstance"));
-        assertNotNull(request.getComponentInstance("requestScopedInstance2"));
+        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        assertNotNull(requestContainer.getComponentInstance("applicationScopedInstance"));
+        assertNotNull(requestContainer.getComponentInstance("applicationScopedInstance2"));
+        assertNotNull(requestContainer.getComponentInstance("sessionScopedInstance"));
+        assertNotNull(requestContainer.getComponentInstance("sessionScopedInstance2"));
+        assertNotNull(requestContainer.getComponentInstance("requestScopedInstance"));
+        assertNotNull(requestContainer.getComponentInstance("requestScopedInstance2"));
     }
 
     private PicoContainer createPicoContainerWithConfiguredComponents() throws ClassNotFoundException{

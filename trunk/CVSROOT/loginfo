@@ -36,4 +36,5 @@ ALL /usr/local/despots/cvs/collect_diffs.rb --to scm@picocontainer.codehaus.org 
 #java ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://64.7.141.17:4712/private/xmlrpc picocontainer
 # Disabled by DamageControl on June 30, 2004
 #java ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://64.7.141.17:4712/private/xmlrpc picocontainer
-java /home/services/dcontrol/ruby/bin/ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://64.7.141.17:4712/private/xmlrpc picocontainer
+# Disabled by DamageControl on July 06, 2004
+#java /home/services/dcontrol/ruby/bin/ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://64.7.141.17:4712/private/xmlrpc picocontainer

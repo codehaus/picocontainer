@@ -11,22 +11,18 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class OldDefaultPicoContainerTestCase extends TestCase {
@@ -111,33 +107,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class DerivedTouchable extends SimpleTouchable {
-        public DerivedTouchable() {
-        }
-    }
-
-    public void testAmbiguousDependencies() throws PicoRegistrationException, PicoInitializationException {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        // Register two Touchables that Fred will be confused about
-        pico.registerComponentImplementation(SimpleTouchable.class);
-        pico.registerComponentImplementation(DerivedTouchable.class);
-
-        // Register a confused DependsOnTouchable
-        pico.registerComponentImplementation(DependsOnTouchable.class);
-
-        try {
-            pico.getComponentInstance(DependsOnTouchable.class);
-            fail("DependsOnTouchable should have been confused about the two Touchables");
-        } catch (AmbiguousComponentResolutionException e) {
-            List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());
-            assertTrue(componentImplementations.contains(DerivedTouchable.class));
-            assertTrue(componentImplementations.contains(SimpleTouchable.class));
-
-            assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);
-        }
-    }
 
     public void testComponentRegistrationMismatch() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();

@@ -238,7 +238,6 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
 
         Xxx.reset();
 
-
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new NanoContainerBuilder()\n" +

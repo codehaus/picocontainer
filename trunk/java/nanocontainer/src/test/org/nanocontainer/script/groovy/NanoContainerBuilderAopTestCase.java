@@ -24,8 +24,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
 
     public void testContainerScopedInterceptor() {
         String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
-                "import org.nanocontainer.script.groovy.NanoContainerBuilder\n" +
                 "" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
@@ -49,6 +49,34 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         StringBuffer log = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
         verifyIntercepted(dao, log);
     }
+
+    public void testContainerScopedContainerSuppliedInterceptor() {
+
+        String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.nanocontainer.aop.*\n" +
+                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
+
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
+                "builder = new NanoContainerBuilder(decorator)\n" +
+                "nano = builder.container() {\n" +
+                "    aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)\n" +
+                "    component(key:'log', class:StringBuffer)\n" +
+                "    component(LoggingInterceptor)\n" +
+                "    component(key:Dao, class:DaoImpl)\n" +
+                "}";
+
+        GroovyContainerBuilder builder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
+
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        StringBuffer log = (StringBuffer) pico.getComponentInstance("log");
+        verifyIntercepted(dao, log);
+    }
+
+
 
     private void verifyIntercepted(Dao dao, StringBuffer log) {
         String before = log.toString();

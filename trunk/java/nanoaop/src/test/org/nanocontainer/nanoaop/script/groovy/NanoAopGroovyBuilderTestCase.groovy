@@ -32,18 +32,6 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
         verifyIntercepted(dao, log)
     }
 
-    public void testContainerScopedContainerSuppliedInterceptor() {
-        nano = builder.container() {
-            aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)
-            component(key:'log', class:StringBuffer)
-            component(LoggingInterceptor)
-            component(key:Dao, class:DaoImpl)
-        }
-
-        dao = nano.pico.getComponentInstance(Dao.class)
-        log = nano.pico.getComponentInstance('log')
-        verifyIntercepted(dao, log)
-    }
 
     public void testComponentScopedInterceptor() {
         log = new StringBuffer()

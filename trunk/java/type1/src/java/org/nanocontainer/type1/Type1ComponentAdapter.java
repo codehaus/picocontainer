@@ -15,6 +15,7 @@ import org.apache.avalon.framework.service.ServiceException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.*;
 
 /**
@@ -40,16 +41,15 @@ public class Type1ComponentAdapter extends AbstractComponentAdapter {
     /**
      * {@inheritDoc}
      * 
+     * @param container {@inheritDoc} 
      * @return {@inheritDoc}
      * @throws PicoInitializationException {@inheritDoc}
      * @throws PicoIntrospectionException {@inheritDoc}
      */ 
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
         try {
 
             final Object instance = getComponentImplementation().newInstance();
-
-            final PicoContainer container = getContainer();
 
             //Type1Util.tryToEnableBasicAvalonSupport(container);
             return Type1Util.handleType1Lifecycle(getComponentKey(), instance, container);
@@ -75,6 +75,6 @@ public class Type1ComponentAdapter extends AbstractComponentAdapter {
      * 
      * @throws UnsatisfiableDependenciesException {@inheritDoc}
      */ 
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer container) throws PicoVerificationException {
     }
 }

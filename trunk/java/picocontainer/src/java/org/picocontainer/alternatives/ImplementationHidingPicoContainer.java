@@ -69,7 +69,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
-                delegate.setContainer(this);
                 return this.delegate.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }
@@ -81,9 +80,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
-                delegate.setContainer(this);
                 ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate);
-                //ihDelegate.setContainer(this);
                 return this.delegate.registerComponent(new CachingComponentAdapter(ihDelegate));
             }
         }
@@ -103,7 +100,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        componentAdapter.setContainer(this);        
         return delegate.registerComponent(componentAdapter);
     }
 
@@ -204,13 +200,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.getNamedContainers();    
     }
 
+    // TODO: Paul this is a vanilla class now ... remove it and use DPC directly ?
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
-        }
-
-        protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
-            componentAdapter.setContainer(ImplementationHidingPicoContainer.this);
         }
 
         public Map getNamedContainers() {

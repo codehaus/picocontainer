@@ -10,12 +10,11 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -24,14 +23,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Instantiates components using Constructor Injection.
- * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
@@ -71,70 +67,53 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         this(componentKey, componentImplementation, null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
+        int lastSatisfiableConstructorSize = -1;
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
-            List adapterDependencies = new ArrayList();
             boolean failedDependency = false;
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-//            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
-                ComponentAdapter adapter = currentParameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
-                if (adapter == null) {
-                    // perhaps it is an array or a generic collection
-                    if (parameterTypes[j].getComponentType() != null) {
-                        adapter = getGenericCollectionComponentAdapter(parameterTypes[j], adapterDependencies);
-                    }
+                // check wether this constructor is statisfiable
+                if (currentParameters[j].isResolvable(container, this, parameterTypes[j])) {
+                    continue;
                 }
-                if (adapter == null) {
-                    failedDependency = true;
-                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                } else {
-                    // we can't depend on ourself
-                    if (adapter.equals(this)) {
-                        failedDependency = true;
-                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                    } else if (getComponentKey().equals(adapter.getComponentKey())) {
-                        failedDependency = true;
-                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                    } else {
-                        adapterDependencies.add(adapter);
-                    }
-                }
+                unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                failedDependency = true;
+                break;
             }
-            if (!failedDependency) {
-                if (conflicts.size() == 0 && greediestConstructor == null) {
-                    greediestConstructor = constructor;
-                    adapterInstantiationOrderTrackingList.addAll(adapterDependencies);
-                } else if (conflicts.size() == 0 && greediestConstructor.getParameterTypes().length > parameterTypes.length) {
-                    // remember: we're sorted by length, therefore we've already found the optimal constructor
-                    break;
+            
+            if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
+                if (conflicts.isEmpty()) {
+                    // we found our match [aka. greedy and satisfied]
+                    return greediestConstructor;
                 } else {
-                    if (greediestConstructor != null) {
-                        conflicts.add(greediestConstructor);
-                        greediestConstructor = null;
-                    }
+                    // fits although not greedy
                     conflicts.add(constructor);
-                    adapterInstantiationOrderTrackingList.clear();
                 }
+            } else  if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
+                // satisfied and same size as previous one?
+                conflicts.add(constructor);
+                conflicts.add(greediestConstructor);
+            } else if (!failedDependency) {
+                greediestConstructor = constructor;
+                lastSatisfiableConstructorSize = parameterTypes.length;
             }
         }
         if (!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
-        }
-        if (greediestConstructor == null && unsatisfiableDependencyTypes.size() > 0) {
+        } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
-        }
-        if (greediestConstructor == null) {
+        } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out 
             final Set nonMatching = new HashSet();
             final Constructor[] constructors = getComponentImplementation().getDeclaredConstructors();
@@ -146,49 +125,14 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    private ComponentAdapter getGenericCollectionComponentAdapter(Class expectedType, List adapterDependencies) {
-        Class componentType = expectedType.getComponentType();
-        List matchingComponentAdapters = getContainer().getComponentAdaptersOfType(componentType); 
-        if (matchingComponentAdapters.size() == 0) {
-            return null;
-        } else {
-            Object componentKey = new Object[]{this, componentType};
-            ComponentAdapter collectionAdapter = new GenericCollectionComponentAdapter(componentKey, null, componentType, expectedType);
-            collectionAdapter.setContainer(getContainer());
-            return collectionAdapter;
-        }
-    }
-
-//    private ComponentAdapter getGenericCollectionComponentAdapter(Class parameterType, Type genericType) {
-//        ComponentAdapter result = null;
-//
-//        boolean isMap = Map.class.isAssignableFrom(parameterType);
-//        boolean isCollection = Collection.class.isAssignableFrom(parameterType);
-//        if((isMap || isCollection) && genericType instanceof ParameterizedType) {
-//            ParameterizedType parameterizedType = (ParameterizedType) genericType;
-//            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-//            Class keyType = null;
-//            Class valueType = null;
-//            if(isMap) {
-//                keyType = (Class) actualTypeArguments[0];
-//                valueType = (Class) actualTypeArguments[1];
-//            } else {
-//                valueType = (Class) actualTypeArguments[0];
-//            }
-//            Object componentKey = new Object[]{this, genericType};
-//            result = new GenericCollectionComponentAdapter(componentKey, keyType, valueType, parameterType);
-//        }
-//        return result;
-//    }
-
-    protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        final Constructor constructor = getGreediestSatisfiableConstructor(container);
         if (instantiating) {
-            throw new CyclicDependencyException(constructor.getParameterTypes());
+            throw new CyclicDependencyException(getComponentImplementation());
         }
         try {
             instantiating = true;
-            Object[] parameters = getConstructorArguments(adapterInstantiationOrderTrackingList);
+            Object[] parameters = getConstructorArguments(container, constructor);
 
             return newInstance(constructor, parameters);
         } catch (InvocationTargetException e) {
@@ -199,35 +143,28 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             }
             throw new PicoInvocationTargetInitializationException(e.getTargetException());
         } catch (InstantiationException e) {
-            // can't get her because checkConcrete() will catch it earlier
+            // can't get her because checkConcrete() will catch it earlier, but see PICO-191
             ///CLOVER:OFF
             throw new PicoInitializationException("Should never get here");
             ///CLOVER:ON
         } catch (IllegalAccessException e) {
             throw new PicoInitializationException(e);
+        } catch (CyclicDependencyException e) {
+            e.appendDependency(getComponentImplementation());
+            throw e;
         } finally {
             instantiating = false;
         }
     }
 
-    protected Object[] getConstructorArguments(List adapterDependencies) {
-        List dependencies = new LinkedList();
-        Object[] result = new Object[adapterDependencies.size()];
-        for (int i = 0; i < adapterDependencies.size(); i++) {
-            ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
-            result[i] = adapterDependency.getComponentInstance();
-            if (adapterDependency instanceof GenericCollectionComponentAdapter) {
-                Class type = adapterDependency.getComponentImplementation().getComponentType();
-                List collectedAdapters = adapterDependency.getContainer().getComponentAdaptersOfType(type);
-                for (Iterator iter = collectedAdapters.iterator(); iter.hasNext();) {
-                    dependencies.add(iter.next());
-                }
-            } else {
-                dependencies.add(adapterDependency);
-            }
+    protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {
+        Class[] parameterTypes = ctor.getParameterTypes();
+        Object[] result = new Object[parameterTypes.length];
+        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+
+        for (int i = 0; i < currentParameters.length; i++) {
+            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i]);
         }
-        adapterDependencies.clear();
-        adapterDependencies.addAll(dependencies);
         return result;
     }
 

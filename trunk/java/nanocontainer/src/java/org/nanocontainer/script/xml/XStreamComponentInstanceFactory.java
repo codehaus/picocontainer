@@ -8,6 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
+import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomReader;
@@ -22,9 +23,9 @@ import com.thoughtworks.xstream.io.xml.DomReader;
 public class XStreamComponentInstanceFactory implements XMLComponentInstanceFactory {
     /**
      * {@inheritDoc}
-     * @see XMLComponentInstanceFactory#makeInstance(Element)
+     * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
      */
-    public Object makeInstance(Element element) throws ClassNotFoundException {
+    public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
         XStream xs = new XStream();
         return xs.unmarshal(new DomReader(element));
     }

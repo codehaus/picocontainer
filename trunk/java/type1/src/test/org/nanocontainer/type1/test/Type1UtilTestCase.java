@@ -410,7 +410,6 @@ public class Type1UtilTestCase extends TestCase {
         
         final org.apache.log4j.Logger logger = org.apache.log4j.LogManager.getLogger("blah");
         final ComponentAdapter adapter = new InstanceComponentAdapter(org.apache.log4j.Logger.class, logger);
-        adapter.setContainer(mock);
         
         mock.getComponentAdapter(org.apache.log4j.Logger.class);
         mockControl.setReturnValue(adapter);
@@ -451,7 +450,6 @@ public class Type1UtilTestCase extends TestCase {
         
         final org.apache.log.Logger logger = org.apache.log.Hierarchy.getDefaultHierarchy().getRootLogger(); 
         final ComponentAdapter adapter = new InstanceComponentAdapter(org.apache.log.Logger.class, logger);
-        adapter.setContainer(mock);
         
         mock.getComponentAdapter(org.apache.log4j.Logger.class);
         mockControl.setReturnValue(null);
@@ -494,7 +492,6 @@ public class Type1UtilTestCase extends TestCase {
         
         final org.apache.commons.logging.Log logger = new NoOpLog(); 
         final ComponentAdapter adapter = new InstanceComponentAdapter(org.apache.commons.logging.Log.class, logger);
-        adapter.setContainer(mock);
         
         mock.getComponentAdapter(org.apache.log4j.Logger.class);
         mockControl.setReturnValue(null);

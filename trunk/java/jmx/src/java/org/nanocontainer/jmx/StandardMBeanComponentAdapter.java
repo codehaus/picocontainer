@@ -10,6 +10,7 @@
 
 package org.nanocontainer.jmx;
 
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -65,9 +66,9 @@ public class StandardMBeanComponentAdapter extends InstanceComponentAdapter {
 	 * Registers the StandardMBean to the MBeanServer
 	 * @return
 	 */
-	public Object getComponentInstance() {
-		Object componentInstance = super.getComponentInstance();
-		MBeanServerHelper.register(this, componentInstance);
+	public Object getComponentInstance(PicoContainer pico) {
+		Object componentInstance = super.getComponentInstance(pico);
+		MBeanServerHelper.register(pico, this, componentInstance);
 		return componentInstance;
 	}
 

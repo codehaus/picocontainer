@@ -114,7 +114,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
     public void testSetProperties() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
-        Foo foo = (Foo) adapter.getComponentInstance();
+        Foo foo = (Foo) adapter.getComponentInstance(null);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
@@ -122,7 +122,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     public void testFailingSetter() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
-            adapter.getComponentInstance();
+            adapter.getComponentInstance(null);
             fail();
         } catch (PicoInitializationException e) {
         }
@@ -141,7 +141,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("message", "hello");
         adapter.setProperties(properties);
 
-        Foo foo = (Foo) adapter.getComponentInstance();
+        Foo foo = (Foo) adapter.getComponentInstance(null);
 
         assertEquals("hello", foo.message);
     }
@@ -180,7 +180,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("url_", "http://www.picocontainer.org/");
         BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(Primitives.class, Primitives.class, null);
         adapter.setProperties(properties);
-        Primitives primitives = (Primitives) adapter.getComponentInstance();
+        Primitives primitives = (Primitives) adapter.getComponentInstance(null);
 
         assertNotNull(primitives);
         assertEquals(1, primitives.byte_);

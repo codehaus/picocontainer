@@ -11,7 +11,6 @@ package org.nanocontainer.hibernate;
 
 import net.sf.hibernate.Session;
 import net.sf.hibernate.cfg.Configuration;
-import net.sf.hibernate.HibernateException;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
 

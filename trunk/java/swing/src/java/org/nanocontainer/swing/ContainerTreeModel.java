@@ -59,8 +59,8 @@ public class ContainerTreeModel implements TreeModel {
     public void valueForPathChanged(TreePath path, Object newValue) {
     }
 
-    public void fire(ComponentAdapter componentAdapter) {
-        PicoContainer[] path = getPathToRoot(componentAdapter);
+    public void fire(PicoContainer pico, ComponentAdapter componentAdapter) {
+        PicoContainer[] path = getPathToRoot(pico);
         PicoContainer last = path[path.length - 1];
         Collection componentAdapters = last.getComponentAdapters();
         int[] indices = new int[componentAdapters.size()];
@@ -82,9 +82,8 @@ public class ContainerTreeModel implements TreeModel {
         }
     }
 
-    private PicoContainer[] getPathToRoot(ComponentAdapter componentAdapter) {
+    private PicoContainer[] getPathToRoot(PicoContainer parent) {
         List result = new ArrayList();
-        PicoContainer parent = componentAdapter.getContainer();
         while (parent != null) {
             result.add(0, parent);
             parent = parent.getParent();

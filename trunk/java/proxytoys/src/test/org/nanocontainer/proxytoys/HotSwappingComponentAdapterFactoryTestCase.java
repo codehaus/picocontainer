@@ -120,10 +120,10 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         pico.registerComponent(wifeAdapter);
         pico.registerComponent(husbandAdapter);
 
-        Woman wife = (Woman) wifeAdapter.getComponentInstance();
+        Woman wife = (Woman) wifeAdapter.getComponentInstance(pico);
         Man wifesMan = wife.getMan();
         wifesMan.kiss();
-        Man man = (Man) husbandAdapter.getComponentInstance();
+        Man man = (Man) husbandAdapter.getComponentInstance(pico);
         assertTrue(man.wasKissed());
 
         assertSame(man, wife.getMan());

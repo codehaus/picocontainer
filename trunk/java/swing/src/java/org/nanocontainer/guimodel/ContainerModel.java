@@ -73,7 +73,7 @@ public class ContainerModel {
             ComponentAdapter componentAdapter = (ComponentAdapter) it.next();
             if (componentAdapter instanceof InstanceComponentAdapter) {
                 InstanceComponentAdapter instanceComponentAdapter = (InstanceComponentAdapter) componentAdapter;
-                result[i++] = instanceComponentAdapter.getComponentInstance();
+                result[i++] = instanceComponentAdapter.getComponentInstance(parent);
             } else {
                 result[i++] = componentAdapter;
             }

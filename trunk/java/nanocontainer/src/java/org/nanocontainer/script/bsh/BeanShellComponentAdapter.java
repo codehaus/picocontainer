@@ -12,6 +12,7 @@ package org.nanocontainer.script.bsh;
 import bsh.EvalError;
 import bsh.Interpreter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AbstractComponentAdapter;
@@ -59,14 +60,14 @@ public class BeanShellComponentAdapter extends AbstractComponentAdapter {
         this.parameters = parameters;
     }
 
-    public Object getComponentInstance()
+    public Object getComponentInstance(PicoContainer pico)
             throws PicoInitializationException, PicoIntrospectionException {
 
         if (instance == null) {
             try {
                 Interpreter i = new Interpreter();
                 i.set("adapter", this);
-                i.set("picoContainer", getContainer());
+                i.set("picoContainer", pico);
                 i.set("componentKey", getComponentKey());
                 i.set("componentImplementation", getComponentImplementation());
                 i.set("parameters", parameters != null ? Arrays.asList(parameters) : Collections.EMPTY_LIST);
@@ -97,6 +98,6 @@ public class BeanShellComponentAdapter extends AbstractComponentAdapter {
         return instance;
     }
 
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
     }
 }

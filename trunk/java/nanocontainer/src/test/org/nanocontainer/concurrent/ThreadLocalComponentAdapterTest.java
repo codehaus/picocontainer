@@ -83,7 +83,7 @@ public class ThreadLocalComponentAdapterTest
         final Set set = Collections.synchronizedSet(new HashSet());
         final List list = Collections.synchronizedList(new ArrayList());
         final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(Touchable.class, SimpleTouchable.class, null));
-        final Touchable touchable = (Touchable) componentAdapter.getComponentInstance();
+        final Touchable touchable = (Touchable) componentAdapter.getComponentInstance(null);
 
         final Thread[] threads = {
             new Thread(new Runner(touchable, list, set), "junit-1"),

@@ -23,6 +23,7 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  * @see <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package.
+ * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {
 
@@ -109,17 +110,11 @@ public interface PicoContainer extends Startable, Disposable {
     void verify() throws PicoVerificationException;
 
     /**
-     * Callback method from the implementation to keep track of the instantiation order. <b>This method is not intended
-     * to be called explicitly by clients of the API!</b>
-     * 
-     * @param componentAdapter the {@link ComponentAdapter} to add.
-     */
-    void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
-
-    /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order,
-     * starting with the components instaqntiated first at the beginning.
+     * starting with the components instantiated first at the beginning.
+     * @param componentType the searched type.
      * @return a List of components.
+     * @throws PicoException
      * @since 1.1
      */
     List getComponentInstancesOfType(Class componentType) throws PicoException;

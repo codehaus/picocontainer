@@ -193,7 +193,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     if ( key != null && !EMPTY.equals(key) ) {
                         parametersList.add(new ComponentParameter(key));
                     } else {
-                        parametersList.add(createConstantParameter(element));
+                        parametersList.add(createConstantParameter(container, element));
                     }                    
                 }
             }
@@ -222,7 +222,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         return null;
     }
     
-    private Parameter createConstantParameter(Element element) throws ClassNotFoundException{
+    private Parameter createConstantParameter(PicoContainer pico, Element element) throws ClassNotFoundException{
         NodeList nl = element.getChildNodes();
         Element childElement = null;
         for (int i = 0; i < nl.getLength(); i++) {
@@ -233,7 +233,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
         
         XMLComponentInstanceFactory factory = createComponentInstanceFactory(element.getAttribute(FACTORY));
-        Object instance = factory.makeInstance(childElement);
+        Object instance = factory.makeInstance(pico, childElement);
         return new ConstantParameter(instance);
     }
         
@@ -248,7 +248,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
 
         XMLComponentInstanceFactory factory = createComponentInstanceFactory(componentElement.getAttribute(FACTORY));
-        Object instance = factory.makeInstance(childElement);
+        Object instance = factory.makeInstance(container, childElement);
 
         String key = componentElement.getAttribute(KEY);
         if ( key == null || key.equals(EMPTY) ){ 

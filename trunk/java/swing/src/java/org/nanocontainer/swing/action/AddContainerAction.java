@@ -30,10 +30,10 @@ public class AddContainerAction extends TreeSelectionAction {
     public void actionPerformed(ActionEvent evt) {
         PicoContainer pico = new DefaultPicoContainer(selectedContainer);
         ComponentAdapter ca = selectedContainer.registerComponentInstance("" + i++, pico);
-        containerTreeModel.fire(ca);
+        containerTreeModel.fire(pico, ca);
     }
 
     protected void setEnabled() {
-        setEnabled(selectedContainer != null);
+        setEnabled(selectedAdapter == null);
     }
 }

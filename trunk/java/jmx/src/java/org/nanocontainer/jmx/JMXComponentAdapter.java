@@ -14,6 +14,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoInitializationException;
 
@@ -35,24 +36,24 @@ public class JMXComponentAdapter extends DecoratingComponentAdapter {
 		super(delegate);
 	}
 
-	public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-		Object componentInstance = super.getComponentInstance();
-		Object mbean = new PicoContainerMBean(componentInstance, getMBeanInfo(componentInstance));
+	public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+		Object componentInstance = super.getComponentInstance(pico);
+		Object mbean = new PicoContainerMBean(componentInstance, getMBeanInfo(pico, componentInstance));
 
 		// register with MBean Server
-		MBeanServerHelper.register(this, mbean);
+		MBeanServerHelper.register(pico, this, mbean);
 		return componentInstance;
 	}
 
-	protected MBeanInfo getMBeanInfo(Object componentInstance) {
+	protected MBeanInfo getMBeanInfo(PicoContainer pico, Object componentInstance) {
 		String key = componentInstance.getClass().getName().concat("MBeanInfo");
-		MBeanInfo mBeanInfo = (MBeanInfo)getContainer().getComponentInstance(key);
+		MBeanInfo mBeanInfo = (MBeanInfo)pico.getComponentInstance(key);
 
 		if(mBeanInfo == null) {
 			try {
 				// see if the MBeanInfo is registered to the Class (per Jörg Schaible suggestion)
                 Class clazz = Class.forName(key);
-				mBeanInfo = (MBeanInfo)getContainer().getComponentInstance(clazz);
+				mBeanInfo = (MBeanInfo)pico.getComponentInstance(clazz);
 			} catch (ClassNotFoundException e) {
 				throwMBeanInfoMissingException(key);
 			}

@@ -11,10 +11,18 @@ package org.nanocontainer.type1.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.context.ContextException;
 import org.apache.avalon.framework.service.ServiceException;
-import org.nanocontainer.type1.*;
+
+import org.nanocontainer.type1.PicoConfigurationException;
+import org.nanocontainer.type1.PicoContextException;
+import org.nanocontainer.type1.PicoServiceException;
+import org.nanocontainer.type1.PicoType1ContractException;
+import org.nanocontainer.type1.Type1ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 /**
@@ -23,6 +31,13 @@ import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
  */
 public class Type1ComponentAdapterTestCase extends TestCase {
     
+    private PicoContainer pico;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        pico = new DefaultPicoContainer();
+    }
+    
     public void testConstructor()
     {
         new Type1ComponentAdapter(this, this.getClass());
@@ -30,13 +45,13 @@ public class Type1ComponentAdapterTestCase extends TestCase {
     
     public void testVerify()
     {
-        new Type1ComponentAdapter(this, this.getClass()).verify();
+        new Type1ComponentAdapter(this, this.getClass()).verify(pico);
     }
     
     public void testGetComponentInstance()
     {
         final Type1ComponentAdapter a = new Type1ComponentAdapter(this, this.getClass());
-        assertTrue( a.getComponentInstance() instanceof Test );
+        assertTrue( a.getComponentInstance(pico) instanceof Test );
     }
 
     public void testGetComponentInstanceInstantiationException()
@@ -44,7 +59,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock1", Mock1.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoInvocationTargetInitializationException th )
@@ -58,7 +73,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock2", Mock2.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoInvocationTargetInitializationException th )
@@ -72,7 +87,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock3", Mock3.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoContextException th )
@@ -86,7 +101,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock4", Mock4.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoServiceException th )
@@ -100,7 +115,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock5", Mock5.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoConfigurationException th )
@@ -114,7 +129,7 @@ public class Type1ComponentAdapterTestCase extends TestCase {
         final Type1ComponentAdapter a = new Type1ComponentAdapter("mock6", Mock6.class);
         try
         {
-            a.getComponentInstance();
+            a.getComponentInstance(pico);
             fail( "Expected an exception!" );
         }
         catch( PicoType1ContractException th )

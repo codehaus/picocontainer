@@ -36,7 +36,7 @@ public class GroovyScriptGenerator {
                 groovyKey = "\"" + componentKey + "\"";
             }
 
-            Object componentInstance = componentAdapter.getComponentInstance();
+            Object componentInstance = componentAdapter.getComponentInstance(pico);
 
             if (componentInstance instanceof String) {
                 groovy.append("pico.registerComponentInstance(" + groovyKey + ", \"" + componentInstance + "\")\n");

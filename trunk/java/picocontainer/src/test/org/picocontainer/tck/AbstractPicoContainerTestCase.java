@@ -234,9 +234,11 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             pico.getComponentInstance(ComponentD.class);
             fail();
         } catch (CyclicDependencyException e) {
-            final List dDependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
+            // CyclicDependencyException reports now the stack.
+            //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
+            final List dependencies = Arrays.asList(new Class[]{ComponentD.class, ComponentE.class, ComponentD.class});
             final List reportedDependencies = Arrays.asList(e.getDependencies());
-            assertEquals(dDependencies, reportedDependencies);
+            assertEquals(dependencies, reportedDependencies);
         } catch (StackOverflowError e) {
             fail();
         }
@@ -389,12 +391,14 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
-        final InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter("", new Object());
-        final MutablePicoContainer picoContainer = createPicoContainer(null);
-        picoContainer.registerComponent(componentAdapter);
-        assertSame(picoContainer, componentAdapter.getContainer());
-    }
+    // An adapter has no longer a hosting container.
+    
+//    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
+//        final InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter("", new Object());
+//        final MutablePicoContainer picoContainer = createPicoContainer(null);
+//        picoContainer.registerComponent(componentAdapter);
+//        assertSame(picoContainer, componentAdapter.getContainer());
+//    }
 
     public static class ContainerDependency {
         public ContainerDependency(PicoContainer container) {

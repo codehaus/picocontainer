@@ -219,7 +219,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     }
     
     public static class TestFactory implements XMLComponentInstanceFactory {
-        public Object makeInstance(Element elem) throws ClassNotFoundException {
+        public Object makeInstance(PicoContainer pico, Element elem) throws ClassNotFoundException {
             return "Hello";
         }
     }

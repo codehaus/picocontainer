@@ -151,9 +151,9 @@ public class NanoGroovyBuilder extends BuilderSupport {
         Object o = attributes.remove("class");
         Object answer = null;
         if (o instanceof Class) {
-            answer = dpc.registerComponentImplementation((Class) o).getComponentInstance();
+            answer = dpc.registerComponentImplementation((Class) o).getComponentInstance(pico);
         } else {
-            answer = dpc.registerComponentImplementation((String) o).getComponentInstance();
+            answer = dpc.registerComponentImplementation((String) o).getComponentInstance(pico);
         }
         System.out.println("--> ? " + answer);
 

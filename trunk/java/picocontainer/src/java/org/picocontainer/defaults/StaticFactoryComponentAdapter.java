@@ -9,11 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.PicoVerificationException;
 
 
 /**
@@ -51,16 +50,16 @@ public class StaticFactoryComponentAdapter
 
     /**
      * @return Returns the component created by the static factory.
-     * @see org.picocontainer.ComponentAdapter#getComponentInstance()
+     * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance()
-            throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
         return staticFactory.get();
     }
 
     /**
      * {@inheritDoc}
+     * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
      */
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer container) throws PicoVerificationException {
     }
 }

@@ -53,7 +53,7 @@ public abstract class AbstractSoftCompositionPicoContainer implements SoftCompos
             }
         }
         if (componentAdapter != null) {
-            return componentAdapter.getComponentInstance();
+            return componentAdapter.getComponentInstance(this);
         } else {
             return getComponentInstanceFromChildren(componentKey);
         }

@@ -22,7 +22,7 @@ import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
- * @version $Id$
+ * @version $Revision$
  */
 public class PicoContainerBasedServiceManagerTestCase extends TestCase {
     public void testConstructor()
@@ -104,18 +104,11 @@ public class PicoContainerBasedServiceManagerTestCase extends TestCase {
                 return null;
             }
 
-            public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+            public Object getComponentInstance(final PicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException {
                 return null;
             }
 
-            public PicoContainer getContainer() {
-                return null;
-            }
-
-            public void setContainer(final PicoContainer picoContainer) {
-            }
-
-            public void verify() throws UnsatisfiableDependenciesException {
+            public void verify(final PicoContainer picoContainer) throws UnsatisfiableDependenciesException {
             }
 
             public void accept(PicoVisitor visitor) {

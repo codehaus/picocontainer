@@ -17,14 +17,13 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
+ * @since 1.1
  */
 public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
@@ -60,49 +59,32 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public ComponentAdapter getComponentAdapter(Object componentKey) {
-        ComponentAdapter componentAdapter = delegate.getComponentAdapter(componentKey);
-        return new ImmutableComponentAdapter(componentAdapter);
+        return delegate.getComponentAdapter(componentKey);
     }
 
     public ComponentAdapter getComponentAdapterOfType(Class componentType) {
-        ComponentAdapter componentAdapter = delegate.getComponentAdapterOfType(componentType);
-        return new ImmutableComponentAdapter(componentAdapter);
+        return delegate.getComponentAdapterOfType(componentType);
     }
 
     public Collection getComponentAdapters() {
-        List list = new ArrayList();
-        Collection componentAdapters = delegate.getComponentAdapters();
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter ca = (ComponentAdapter) iterator.next();
-            list.add(new ImmutableComponentAdapter(ca));
-        }
-        return list;
+        return delegate.getComponentAdapters();
     }
 
     public List getComponentAdaptersOfType(Class componentType) {
-        List list = new ArrayList();
-        List componentAdaptersOfType = delegate.getComponentAdaptersOfType(componentType);
-        for (Iterator iterator = componentAdaptersOfType.iterator(); iterator.hasNext();) {
-            ComponentAdapter ca = (ComponentAdapter) iterator.next();
-            list.add(new ImmutableComponentAdapter(ca));
-        }
-        return list;
+        return delegate.getComponentAdaptersOfType(componentType);
     }
 
     public void verify() throws PicoVerificationException {
         delegate.verify();
     }
 
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        throw new UnsupportedOperationException("This container is immutable, addOrderedComponentAdapter() is not allowed");
-    }
-
     public List getComponentInstancesOfType(Class type) throws PicoException {
         return delegate.getComponentInstancesOfType(type);
     }
 
-    public void accept(PicoVisitor containerVisitor, Class componentType, boolean visitInInstantiationOrder) {
-        delegate.accept(containerVisitor, componentType, visitInInstantiationOrder);
+    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
+        visitor.visitContainer(this);
+        delegate.accept(visitor, componentType, visitInInstantiationOrder);
     }
 
     public void start() {

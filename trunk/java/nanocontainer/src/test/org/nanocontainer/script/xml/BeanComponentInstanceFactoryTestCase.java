@@ -37,7 +37,7 @@ public class BeanComponentInstanceFactoryTestCase extends TestCase {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = db.parse(is);
 
-        Object o = xsf.makeInstance(doc.getDocumentElement());
+        Object o = xsf.makeInstance(null, doc.getDocumentElement());
         TestBean bean = (TestBean) o;
         assertEquals("hello", bean.getBar());
         assertEquals(10, bean.getFoo());

@@ -2,6 +2,7 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -26,12 +27,11 @@ public class UserQuestionTestCase extends TestCase {
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException {
             return bla.get("cheese");
         }
 
-        public void verify() throws UnsatisfiableDependenciesException {
-
+        public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
         }
     }
 

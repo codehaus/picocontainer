@@ -15,6 +15,7 @@ import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -92,8 +93,8 @@ public class NanningComponentAdapterFactory extends DecoratingComponentAdapterFa
             this.componentInterface = componentInterface;
         }
 
-        public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Object component = super.getComponentInstance();
+        public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            Object component = super.getComponentInstance(pico);
             // TODO Nanning will at the moment only aspectify stuff when it has one and only one interface
 
             // the trick: set up first mixin manually with the component as target
@@ -121,9 +122,9 @@ public class NanningComponentAdapterFactory extends DecoratingComponentAdapterFa
             this.aspectSystem = aspectSystem;
         }
 
-        public Object getComponentInstance()
+        public Object getComponentInstance(PicoContainer pico)
                 throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Aspect aspect = (Aspect) super.getComponentInstance();
+            Aspect aspect = (Aspect) super.getComponentInstance(pico);
             getAspectSystem().addAspect(aspect);
             return aspect;
         }

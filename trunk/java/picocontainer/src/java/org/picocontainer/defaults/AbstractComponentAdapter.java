@@ -10,7 +10,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
@@ -31,7 +30,6 @@ import java.io.Serializable;
 public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {
     private Object componentKey;
     private Class componentImplementation;
-    private PicoContainer container;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 
@@ -67,7 +65,7 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         return componentImplementation;
     }
 
-    private void checkTypeCompatibility() throws AssignabilityRegistrationException {
+    protected void checkTypeCompatibility() throws AssignabilityRegistrationException {
         if (componentKey instanceof Class) {
             Class componentType = (Class) componentKey;
             if (!componentType.isAssignableFrom(componentImplementation)) {
@@ -76,31 +74,12 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         }
     }
 
-
     /**
      * @return Returns the ComponentAdapter's class name and the component's key.
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return getClass().getName() + "[" + getComponentKey() + "]";
-    }
-
-    /**
-     * @see org.picocontainer.ComponentAdapter#getContainer()
-     */
-    public PicoContainer getContainer() {
-        return container;
-    }
-
-    /**
-     * @see org.picocontainer.ComponentAdapter#setContainer(org.picocontainer.PicoContainer)
-     */
-    public void setContainer(PicoContainer picoContainer) {
-        // Cater for alternate implementations of MutablePicoContainer.
-        // ... that may leverage DefaultPicoContainer (wrap)
-        if (this.container == null) {
-            this.container = picoContainer;
-        }
     }
 
     public void accept(PicoVisitor visitor) {

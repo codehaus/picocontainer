@@ -22,6 +22,7 @@ import org.picocontainer.MutablePicoContainer;
 import javax.swing.AbstractAction;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 
 /**
  * Action that listens to tree selections and enables/disables itself accordingly.
@@ -41,13 +42,20 @@ public abstract class TreeSelectionAction extends AbstractAction {
         containerTreeModel = (ContainerTreeModel) tree.getModel();
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
-                selected = e.getPath().getLastPathComponent();
+                TreePath treePath = e.getPath();
+                selected = treePath.getLastPathComponent();
                 if (selected instanceof MutablePicoContainer) {
                     selectedContainer = (MutablePicoContainer) selected;
                     selectedAdapter = null;
                 } else {
                     selectedAdapter = (ComponentAdapter) selected;
                     selectedContainer = null;
+                    for(int i = treePath.getPathCount(); --i >= 0; ) {
+                        final Object element = treePath.getPathComponent(i);
+                        if (element instanceof MutablePicoContainer) {
+                            selectedContainer = (MutablePicoContainer)element;
+                        }
+                    }
                 }
                 setEnabled();
             }

@@ -13,9 +13,10 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 
-import java.lang.reflect.Field;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 /**
  * A ConstantParameter should be used to pass in "constant" arguments
@@ -25,6 +26,7 @@ import java.io.Serializable;
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
+ * @author Thomas Heller
  * @version $Revision$
  */
 public class ConstantParameter implements Parameter, Serializable {
@@ -34,34 +36,43 @@ public class ConstantParameter implements Parameter, Serializable {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter result = null;
-        if (expectedType.isAssignableFrom(value.getClass())) {
-            result = new InstanceComponentAdapter(uniqueishKey(), value);
-        } else if (expectedType.isPrimitive()) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+        if (expectedType.isPrimitive()) {
             try {
-                Field field = value.getClass().getField("TYPE");
-                Class type = (Class) field.get(value);
-                if (expectedType.isAssignableFrom(type)) {
-                    result = new InstanceComponentAdapter(uniqueishKey(), value);
-                } else {
-                    result = null;
-                }
+                return checkPrimitive(expectedType);
             } catch (NoSuchFieldException e) {
-                result = null;
             } catch (IllegalArgumentException e) {
-                result = null;
             } catch (IllegalAccessException e) {
-                result = null;
             } catch (ClassCastException e) {
-                result = null;
             }
+            return false;
         }
-        return result;
+        return expectedType.isInstance(value);
     }
-
-    private Integer uniqueishKey() {
-        return new Integer(System.identityHashCode(value));
+    
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return value;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer, org.picocontainer.ComponentAdapter, java.lang.Class)
+     */
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+        try {
+            if ((expectedType.isPrimitive() && !checkPrimitive(expectedType)) || !expectedType.isInstance(value)) {
+                throw new PicoIntrospectionException(value.toString() + " does not match the type " + expectedType.getClass().getName()) {};
+            }
+        } catch (NoSuchFieldException e) {
+            throw new PicoIntrospectionException(e) {};
+        } catch (IllegalAccessException e) {
+            throw new PicoIntrospectionException(e) {};
+        }
+    }
+    
+    private boolean checkPrimitive(Class expectedType) throws NoSuchFieldException, IllegalAccessException {
+        final Field field = value.getClass().getField("TYPE");
+        final Class type = (Class)field.get(value);
+        return expectedType.isAssignableFrom(type);
+    }
 }

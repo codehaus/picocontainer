@@ -85,7 +85,7 @@ public class NanoContainer {
             defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
         }
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(builderClass);
-        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance();
+        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultReflectionContainerAdapter.getPicoContainer());
 
     }
     private static File fileExists(File file) {

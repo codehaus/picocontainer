@@ -13,7 +13,9 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.HibernateException;
 
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -39,45 +41,47 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
 	
 	public SessionFailoverComponentAdapter(SessionComponentAdapter sfca) {
 		super(sfca);
-        sessionProxy = (Session) Proxy.newProxyInstance(Session.class.getClassLoader(),
-            new Class[] { Session.class },
-            new InvocationHandler() {
-                Session target = null;
-                
-                public synchronized Session getSession() {
-                    if(target == null) {
-                        System.err.println("retrieve new session");
-                        target = (Session)getDelegate().getComponentInstance();
-                    }
-                    return target;
-                }
-                public Object invoke(Object proxy,
-                    Method method,Object[] args) throws Throwable {
-                    try {
-                        Object retval = method.invoke(getSession(),args);
-                        if(method.getName().equals("close")) {
-                            target = null;
-                            System.err.println("invalidate session on explicit close");
-                        }
-                        return retval;
-                    } catch(InvocationTargetException ite) {
-                        // we got hibernate exception kill this session
-                        if(ite.getCause() instanceof HibernateException && target != null)  {
-                            target.clear();
-                            target.close();
-                            System.err.println("invalidate proxy on error");
-                        }
-                        throw ite;
-                    }
-                }
-            });
 	}
 	
 	/**
 	 * return session wrapper
 	 * 
 	 */
-	public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(final PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException {
+        if (sessionProxy == null) {
+            sessionProxy = (Session) Proxy.newProxyInstance(Session.class.getClassLoader(),
+                    new Class[] { Session.class },
+                    new InvocationHandler() {
+                        Session target = null;
+                        
+                        public synchronized Session getSession() {
+                            if(target == null) {
+                                System.err.println("retrieve new session");
+                                target = (Session)getDelegate().getComponentInstance(pico);
+                            }
+                            return target;
+                        }
+                        public Object invoke(Object proxy,
+                            Method method,Object[] args) throws Throwable {
+                            try {
+                                Object retval = method.invoke(getSession(),args);
+                                if(method.getName().equals("close")) {
+                                    target = null;
+                                    System.err.println("invalidate session on explicit close");
+                                }
+                                return retval;
+                            } catch(InvocationTargetException ite) {
+                                // we got hibernate exception kill this session
+                                if(ite.getCause() instanceof HibernateException && target != null)  {
+                                    target.clear();
+                                    target.close();
+                                    System.err.println("invalidate proxy on error");
+                                }
+                                throw ite;
+                            }
+                        }
+                    });
+        }
 		return sessionProxy;
 	}
 	

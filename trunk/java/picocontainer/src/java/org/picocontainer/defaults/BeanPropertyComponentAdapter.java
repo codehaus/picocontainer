@@ -1,6 +1,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -59,12 +60,12 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      * @throws AssignabilityRegistrationException {@inheritDoc}
      * @throws NotConcreteRegistrationException {@inheritDoc}
      */
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (propertyDescriptorMap == null) {
             initializePropertyDescriptorMap();
         }
         
-        final Object componentInstance = super.getComponentInstance();
+        final Object componentInstance = super.getComponentInstance(container);
 
         if (properties != null) {
             Set propertyNames = properties.keySet();
@@ -82,7 +83,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
                             ". Getter: " + propertyDescriptor.getReadMethod());
                 }
                 try {
-                    setter.invoke(componentInstance, new Object[]{convertType(setter, propertyValue)});
+                    setter.invoke(componentInstance, new Object[]{convertType(container, setter, propertyValue)});
                 } catch (final Exception e) {
                     throw new PicoInitializationException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
                 }
@@ -107,7 +108,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         }
     }
 
-    private Object convertType(Method setter, Object propertyValue) throws MalformedURLException, ClassNotFoundException {
+    private Object convertType(PicoContainer container, Method setter, Object propertyValue) throws MalformedURLException, ClassNotFoundException {
         if (propertyValue == null) {
             return null;
         }
@@ -139,8 +140,10 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             // check if the propertyValue is a key of a component in the container
             // if so, the type of the component and the setters parameter type
             // have to be compatible
-            if (getContainer() != null) {
-                Object component = getContainer().getComponentInstance(propertyValue);
+
+            // TODO: null check only because of test-case, otherwise null is impossible
+            if (container != null) {
+                Object component = container.getComponentInstance(propertyValue);
                 if (component != null && type.isAssignableFrom(component.getClass())) {
                     return component;
                 }

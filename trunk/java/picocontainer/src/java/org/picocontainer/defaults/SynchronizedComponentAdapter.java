@@ -11,6 +11,7 @@ package org.picocontainer.defaults;
 
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -24,11 +25,11 @@ public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
         super(delegate);
     }
 
-    public synchronized Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-        return super.getComponentInstance();
+    public synchronized Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        return super.getComponentInstance(container);
     }
 
-    public synchronized void verify() throws UnsatisfiableDependenciesException {
-        super.verify();
+    public synchronized void verify(PicoContainer container) throws UnsatisfiableDependenciesException {
+        super.verify(container);
     }
 }

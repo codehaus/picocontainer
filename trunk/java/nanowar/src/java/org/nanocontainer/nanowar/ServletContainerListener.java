@@ -21,7 +21,6 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -113,7 +112,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 String containerComposerClassName = context.getInitParameter(initParameter);
                 // disposable
                 SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer(Thread.currentThread().getContextClassLoader());
-                ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance();
+                ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance(softPico);
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }

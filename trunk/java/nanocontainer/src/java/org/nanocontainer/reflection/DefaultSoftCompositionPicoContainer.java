@@ -155,7 +155,6 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
     }
 
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        componentAdapter.setContainer(this);
         return delegate.registerComponent(componentAdapter);
     }
 
@@ -234,17 +233,13 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
             super(componentAdapterFactory, parent);
         }
 
-        protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
-            componentAdapter.setContainer(DefaultSoftCompositionPicoContainer.this);
-        }
-
         public Map getNamedContainers() {
             return namedChildContainers;
         }
     }
 
     public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
+        visitor.visitContainer(this);
         delegate.accept(visitor, componentType, visitInInstantiationOrder);
     }
-
 }

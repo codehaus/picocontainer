@@ -13,14 +13,18 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
 
 import java.awt.AWTError;
 
 public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
         ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", Object.class);
-        Object o1 = componentAdapter.getComponentInstance();
-        Object o2 = componentAdapter.getComponentInstance();
+
+        PicoContainer pico = new DefaultPicoContainer();
+
+        Object o1 = componentAdapter.getComponentInstance(pico);
+        Object o2 = componentAdapter.getComponentInstance(pico);
         assertNotNull(o1);
         assertNotSame(o1, o2);
     }
@@ -60,15 +64,14 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
     }
 
     public void testSuccessfulVerificationWithNoDependencies() {
-        InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", A.class);
-        componentAdapter.verify();
+        ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", A.class);
+        componentAdapter.verify(new DefaultPicoContainer());
     }
 
     public void testFailingVerificationWithUnsatisfiedDependencies() {
         ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", B.class);
-        componentAdapter.setContainer(new DefaultPicoContainer());
         try {
-            componentAdapter.verify();
+            componentAdapter.verify(new DefaultPicoContainer());
             fail();
         } catch (UnsatisfiableDependenciesException e) {
         }
@@ -88,13 +91,14 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
 
     public void testFailingVerificationWithCyclicDependencyException() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(C1.class);
-        picoContainer.registerComponentImplementation(C2.class);
+        picoContainer.registerComponentImplementation(C1.class, C1.class);
+        picoContainer.registerComponentImplementation(C2.class, C2.class);
         try {
             picoContainer.verify();
             fail();
         } catch (CyclicDependencyException e) {
             String message = e.getMessage();
+            // TODO  (eg. -1 + 16 isn't the correct result but would pass) should check e.getDependencies()
             assertTrue(message.indexOf("C1") + message.indexOf("C2") > 0);
         }
     }

@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoContainer;
 
 /**
  * This ComponentAdapter caches the instance.
@@ -31,10 +32,10 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
         this.instanceReference = instanceReference;
     }
 
-    public Object getComponentInstance()
+    public Object getComponentInstance(PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
-            instanceReference.set(super.getComponentInstance());
+            instanceReference.set(super.getComponentInstance(container));
         }
         return instanceReference.get();
     }

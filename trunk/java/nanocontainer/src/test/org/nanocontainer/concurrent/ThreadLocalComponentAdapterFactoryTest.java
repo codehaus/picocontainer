@@ -38,7 +38,7 @@ public class ThreadLocalComponentAdapterFactoryTest
         final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory
                 .createComponentAdapter(List.class, ArrayList.class, new Parameter[]{});
-        final List list = (List) componentAdapter.getComponentInstance();
+        final List list = (List) componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {

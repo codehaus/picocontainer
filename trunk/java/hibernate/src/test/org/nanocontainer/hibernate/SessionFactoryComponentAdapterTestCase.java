@@ -53,8 +53,8 @@ public class SessionFactoryComponentAdapterTestCase extends TestCase {
 				"foo",
 				new ConstantParameter(new Configuration())
 				);
-		
-		assertNotNull(adapter.getComponentInstance());
+
+		assertNotNull(adapter.getComponentInstance(null));
 	}
 	
 	/**

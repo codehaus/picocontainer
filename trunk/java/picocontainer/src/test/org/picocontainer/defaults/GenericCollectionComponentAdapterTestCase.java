@@ -6,7 +6,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,10 +25,17 @@ public class GenericCollectionComponentAdapterTestCase extends MockObjectTestCas
                     new InstanceComponentAdapter("y", "Hello"),
                     new InstanceComponentAdapter("z", "World")
                 })));
-        ca.setContainer((PicoContainer) containerMock.proxy());
+        containerMock.expects(once()).
+                method("getComponentInstance").
+                with(eq("y")).
+                will(returnValue("Hello"));
+        containerMock.expects(once()).
+                method("getComponentInstance").
+                with(eq("z")).
+                will(returnValue("World"));
 
         List expected = Arrays.asList(new String[]{"Hello", "World"});
-        List actual = Arrays.asList((Object[]) ca.getComponentInstance());
+        List actual = Arrays.asList((Object[]) ca.getComponentInstance((PicoContainer) containerMock.proxy()));
         assertEquals(expected, actual);
     }
     

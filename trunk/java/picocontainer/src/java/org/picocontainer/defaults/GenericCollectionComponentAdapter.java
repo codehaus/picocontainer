@@ -1,11 +1,11 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Array;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +17,7 @@ import java.util.List;
  * <p/>
  *
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
@@ -52,36 +53,40 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
         }
     }
 
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-        List adaptersOfType = getContainer().getComponentAdaptersOfType(valueType);
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        List adaptersOfType = container.getComponentAdaptersOfType(valueType);
         // TODO: uncomment when we start supporting generics
-//        if (Array.class.isAssignableFrom(collectionType)) {
-            return getArrayInstance(adaptersOfType);
-//        } else if (Map.class.isAssignableFrom(collectionType)) {
-//            return getMapInstance(adaptersOfType);
-//        } else {
-//            return getCollectionInstance(adaptersOfType);
-//        }
+//      if (Array.class.isAssignableFrom(collectionType)) {
+          return getArrayInstance(container, adaptersOfType);
+//      } else if (Map.class.isAssignableFrom(collectionType)) {
+//          return getMapInstance(container, adaptersOfType);
+//      } else {
+//          return getCollectionInstance(container, adaptersOfType);
+//      }
     }
 
-    private Object[] getArrayInstance(List adaptersOfType) {
+    private Object[] getArrayInstance(PicoContainer container, List adaptersOfType) {
         Object[] result = (Object[]) Array.newInstance(valueType, adaptersOfType.size());
         int i = 0;
         for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            result[i] = componentAdapter.getComponentInstance();
+            result[i] = getInstance(container, componentAdapter);
             i++;
         }
         return result;
     }
 
+    private Object getInstance(PicoContainer container, ComponentAdapter componentAdapter) {
+        return container.getComponentInstance(componentAdapter.getComponentKey());
+    }
+
     // TODO: uncomment when we start supporting generics
-//    private Collection getCollectionInstance(List adaptersOfType) {
+//    private Collection getCollectionInstance(PicoContainer container, List adaptersOfType) {
 //        try {
 //            Collection result = (Collection) collectionClass.newInstance();
 //            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
 //                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-//                result.add(componentAdapter.getComponentInstance());
+//                result.add(getInstance(container, componentAdapter));
 //            }
 //            return result;
 //        } catch (InstantiationException e) {
@@ -91,14 +96,14 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
 //        }
 //    }
 //
-//    private Map getMapInstance(List adaptersOfType) {
+//    private Map getMapInstance(PicoContainer container, List adaptersOfType) {
 //        try {
 //            Map result = (Map) collectionClass.newInstance();
 //            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
 //                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
 //                Object componentKey = componentAdapter.getComponentKey();
 //                if (keyType.isAssignableFrom(componentKey.getClass())) {
-//                    result.put(componentKey, componentAdapter.getComponentInstance());
+//                    result.put(componentKey, getInstance(container, componentAdapter));
 //                }
 //            }
 //            return result;
@@ -109,7 +114,7 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
 //        }
 //    }
 
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer container) throws UnsatisfiableDependenciesException {
 
     }
 }

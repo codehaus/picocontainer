@@ -36,6 +36,13 @@ public class StandardMBeanFactoryTestCase extends TestCase {
         assertEquals(mBeanInfo, mBean.getMBeanInfo());
     }
 
+    public void testMBeanCreationWithoutMBeanInfo() {
+        final DynamicMBeanFactory factory = new StandardMBeanFactory();
+        final DynamicMBean mBean = factory.create(new Person(), null);
+        assertNotNull(mBean);
+        assertNotNull(mBean.getMBeanInfo());
+    }
+
     public void testMBeanCreationWithMBeanInfoAndArbitraryInterfaceName() {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
@@ -62,8 +69,19 @@ public class StandardMBeanFactoryTestCase extends TestCase {
         try {
             factory.create(new SimpleTouchable(), mBeanInfo);
             fail("JMXRegistrationException expected");
-        } catch(final JMXRegistrationException e) {
+        } catch (final JMXRegistrationException e) {
             // fine
         }
+    }
+
+    public void testGetDefaultManagementInterfaceFromMBeanType() throws ClassNotFoundException {
+        final StandardMBeanFactory factory = new StandardMBeanFactory();
+        assertSame(PersonMBean.class, factory.getDefaultManagementInterface(Person.class, null));
+    }
+
+    public void testGetDefaultManagementInterfaceFromMBeanInfo() throws ClassNotFoundException {
+        final StandardMBeanFactory factory = new StandardMBeanFactory();
+        final MBeanInfo mBeanInfo = Person.createMBeanInfo();
+        assertSame(PersonMBean.class, factory.getDefaultManagementInterface(SimpleTouchable.class, mBeanInfo));
     }
 }

@@ -33,7 +33,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     private final Map registry;
 
     /**
-     * Construct a RegisteredMBeanConstructingProvider with a {@link StandardMBeanFactory}as default.
+     * Construct a RegisteredMBeanConstructingProvider with a {@link StandardMBeanFactory} as default.
      */
     public RegisteredMBeanConstructingProvider() {
         this(new StandardMBeanFactory());
@@ -78,9 +78,9 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     /**
      * Register a specific Pico component by key with an MBeanInfo and an ObjectName.
      * @param componentKey The key of the Pico component.
-     * @param objectName The {@link ObjectName}of the MBean.
+     * @param objectName The {@link ObjectName} of the MBean.
      * @param management The management interface.
-     * @param mBeanInfo The {@link MBeanInfo}of the MBean.
+     * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
         registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management, null));
@@ -89,8 +89,8 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     /**
      * Register a specific Pico component by key with an MBeanInfo and an ObjectName.
      * @param componentKey The key of the Pico component.
-     * @param objectName The {@link ObjectName}of the MBean.
-     * @param mBeanInfo The {@link MBeanInfo}of the MBean.
+     * @param objectName The {@link ObjectName} of the MBean.
+     * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName, final MBeanInfo mBeanInfo) {
         register(componentKey, objectName, null, mBeanInfo);
@@ -98,9 +98,9 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
 
     /**
      * Register a specific Pico component with an MBeanInfo and an ObjectName. The implementation class of the
-     * {@link DynamicMBean}must be the key of the Pico component.
-     * @param objectName The {@link ObjectName}of the MBean.
-     * @param mBeanInfo The {@link MBeanInfo}of the MBean.
+     * {@link DynamicMBean} must be the key of the Pico component.
+     * @param objectName The {@link ObjectName} of the MBean.
+     * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
     public void register(final ObjectName objectName, final MBeanInfo mBeanInfo) {
         try {
@@ -113,7 +113,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     /**
      * Register a specific Pico component by key with an ObjectName.
      * @param componentKey The key of the Pico component.
-     * @param objectName The {@link ObjectName}of the MBean.
+     * @param objectName The {@link ObjectName} of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName) {
         register(componentKey, objectName, (String)null);
@@ -122,7 +122,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     /**
      * Register a specific Pico component by key with an ObjectName and a description for the MBean.
      * @param componentKey The key of the Pico component.
-     * @param objectName The {@link ObjectName}of the MBean.
+     * @param objectName The {@link ObjectName} of the MBean.
      * @param description The derscription of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName, final String description) {

@@ -28,7 +28,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
     private final ObjectNameFactory objectNameFactory;
 
     /**
-     * Construct a DynamicMBeanComponentProvider. This instance will use a {@link TypedObjectNameFactory}and register all
+     * Construct a DynamicMBeanComponentProvider. This instance will use a {@link TypedObjectNameFactory} and register all
      * MBeans in the default domain of the {@link javax.management.MBeanServer}.
      */
     public DynamicMBeanComponentProvider() {
@@ -60,7 +60,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
                     return new JMXRegistrationInfo(objectName, mBean);
                 }
             } catch (final MalformedObjectNameException e) {
-                throw new JMXRegistrationException("Cannot register MBean for component '"
+                throw new JMXRegistrationException("Cannot create ObjectName for component '"
                         + componentAdapter.getComponentKey()
                         + "'", e);
             }

@@ -17,7 +17,9 @@ import javax.management.StandardMBean;
 
 
 /**
- * A factory for DynamicMBeans, that creates {@link StandardMBean}instances from previously registered components.
+ * A factory for DynamicMBeans, that creates {@link StandardMBean} instances from previously registered components. The
+ * implementation offers special support for MBeans following the naming convention for their management interface using the
+ * class name of the component with an appended <em>MBean</em>.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -25,39 +27,59 @@ import javax.management.StandardMBean;
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
-     * Create a StandardNanoMBean for the component.
+     * Create a StandardMBean for the component.
+     * @param componentInstance {@inheritDoc}
+     * @param management The management interface. If <code>null</code> the implementation will use the interface complying
+     *                   with the naming convention for management interfaces.
+     * @param mBeanInfo The {@link MBeanInfo} to use. If <code>null</code> the {@link StandardMBean} will use an automatically
+     *                   generated one.
+     * @return Returns a {@link StandardMBean}. If the <strong>mBeanInfo</strong> was not null, it is an instance of a
+     *               {@link StandardNanoMBean}.
      * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
         try {
-            return new StandardNanoMBean(componentInstance, management, mBeanInfo);
+            final Class managementInterface = getManagementInterface(componentInstance.getClass(), management, null);
+            if (mBeanInfo == null) {
+                return new StandardMBean(componentInstance, managementInterface);
+            } else {
+                return new StandardNanoMBean(componentInstance, managementInterface, mBeanInfo);
+            }
+        } catch (final ClassNotFoundException e) {
+            throw new JMXRegistrationException("Cannot load management interface for StandardMBean", e);
         } catch (final NotCompliantMBeanException e) {
             throw new JMXRegistrationException("Cannot create StandardMBean", e);
         }
     }
 
     /**
-     * Create a StandardNanoMBean for the component. The implementation expects to find the corresponding management interface
-     * in the classpath. The lookup for this interface is done by name following the convention, that the management interface's name
-     * is tha same as the name of the class implementing the MBean, but with an appended <i>MBean</i>.
+     * Create a StandardMBean for the component. The implementation expects to find a management interface in the classpath
+     * following the naming conventions.
+     * @param componentInstance {@inheritDoc}
+     * @param mBeanInfo The {@link MBeanInfo} to use. If <code>null</code> the {@link StandardMBean} will use an automatically
+     *                   generated one.
+     * @return Returns a {@link StandardMBean}. If the <strong>mBeanInfo</strong> was not null, it is an instance of a
+     *               {@link StandardNanoMBean}.
      * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final MBeanInfo mBeanInfo) {
-        try {
-            return create(componentInstance, componentInstance.getClass().getClassLoader().loadClass(
-                    mBeanInfo.getClassName() + "MBean"), mBeanInfo);
-        } catch (final ClassNotFoundException e) {
-            throw new JMXRegistrationException("Cannot load management interface for StandardMBean", e);
-        }
+        return create(componentInstance, null, mBeanInfo);
     }
 
     /**
-     * Create a DynamicMBean for the component. If the description is null a StandradMBean is created else a StandardNanoMBean.
+     * Create a DynamicMBean for the component with a given description.
+     * @param componentInstance {@inheritDoc}
+     * @param management The management interface. If <code>null</code> the implementation will use the interface complying
+     *                   with the naming convention for management interfaces.
+     * @param description {@inheritDoc}
+     * @return Returns a {@link StandardMBean}. If the description was not null, it is an instance of a
+     *               {@link StandardNanoMBean}.
      * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, java.lang.String)
      */
     public DynamicMBean create(final Object componentInstance, final Class management, final String description) {
         try {
-            final DynamicMBean mBean = new StandardMBean(componentInstance, management);
+            final Class managementInterface = getManagementInterface(componentInstance.getClass(), management, null);
+            final DynamicMBean mBean = new StandardMBean(componentInstance, managementInterface);
             if (description != null && description.length() != 0) {
                 final MBeanInfo mBeanInfo = mBean.getMBeanInfo();
                 return create(componentInstance, management, new MBeanInfo(mBeanInfo.getClassName(), description, mBeanInfo
@@ -65,8 +87,36 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
             } else {
                 return mBean;
             }
+        } catch (final ClassNotFoundException e) {
+            throw new JMXRegistrationException("Cannot load management interface for StandardMBean", e);
         } catch (final NotCompliantMBeanException e) {
             throw new JMXRegistrationException("Cannot create StandardMBean", e);
         }
+    }
+
+    private Class getManagementInterface(final Class type, final Class management, final MBeanInfo mBeanInfo)
+            throws ClassNotFoundException {
+        final Class managementInterface;
+        if (management == null) {
+            managementInterface = getDefaultManagementInterface(type, mBeanInfo);
+        } else {
+            managementInterface = management;
+        }
+        return managementInterface;
+    }
+
+    /**
+     * Determin the management interface for the given type. The class name of the given type is used as class name of the mBean
+     * unless the caller has provided a {@link MBeanInfo}, the class name of the MBean is retrieved a MBeanInfo that defines
+     * this name. Following the naming conventions is the name of the management interface the same as the class name of the
+     * MBean with an appended <em>MBean</em>. The {@link ClassLoader} of the type is used to load the interface type.
+     * @param type The class of the MBean.
+     * @param mBeanInfo The {@link MBeanInfo} for the MBean. May be <code>null</code>.
+     * @return Returns the default management interface.
+     * @throws ClassNotFoundException If the management interface cannot be found.
+     * @since 1.0
+     */
+    public Class getDefaultManagementInterface(final Class type, final MBeanInfo mBeanInfo) throws ClassNotFoundException {
+        return type.getClassLoader().loadClass((mBeanInfo == null ? type.getName() : mBeanInfo.getClassName()) + "MBean");
     }
 }

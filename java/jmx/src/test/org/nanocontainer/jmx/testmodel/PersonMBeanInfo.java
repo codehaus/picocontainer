@@ -8,29 +8,21 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.jmx.testmodel;
+
+import javax.management.MBeanInfo;
+
 
 /**
- * An abstract ObjectNameFactory that offers functionality to handle the domain part of the object name.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
-public abstract class AbstractObjectNameFactory implements ObjectNameFactory {
+public class PersonMBeanInfo extends MBeanInfo {
 
-    private String domain;
+    final static MBeanInfo INFO = Person.createMBeanInfo();
 
-    /**
-     * Construct an AbstractObjectNameFactory.
-     * @param domain The name of the domain, use <code>null</code> for the default domain.
-     */
-    protected AbstractObjectNameFactory(final String domain) {
-        this.domain = domain;
+    public PersonMBeanInfo() {
+        super(INFO.getClassName(), INFO.getDescription(), INFO.getAttributes(), INFO.getConstructors(), INFO.getOperations(), INFO
+                .getNotifications());
     }
 
-    /**
-     * @return Return the domain part of the {@link javax.management.ObjectName}.
-     */
-    protected String getDomain() {
-        return domain != null ? domain : "";
-    }
 }

@@ -15,9 +15,9 @@ import javax.management.DynamicMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
+
 /**
  * Provide instances of DynamicMBean from Pico components.
- *
  * @author J&ouml;rg Schaible
  * @since 1.0
  */

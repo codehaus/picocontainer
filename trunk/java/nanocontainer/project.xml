@@ -62,6 +62,12 @@
       <version>1.5R4.1</version>
     </dependency> 
 
+    <dependency>
+      <groupId>spice</groupId>
+      <artifactId>spice-cli</artifactId>
+      <version>1.0</version>
+    </dependency>
+
   </dependencies>
 
 </project>

@@ -13,7 +13,7 @@ package nanocontainer.aggregating;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoContainer;
-import picocontainer.HierarchicalPicoContainer;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.Collection;
 import java.util.ArrayList;

@@ -14,9 +14,11 @@ import picocontainer.PicoContainer;
 import picocontainer.Container;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
-import picocontainer.HierarchicalPicoContainer;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoStopException;
 import picocontainer.NullContainer;
+import picocontainer.PicoDisposalException;
+
 import java.util.ArrayList;
 
 import nanocontainer.reflection.StringToObjectConverter;
@@ -83,6 +85,10 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public void stop() throws PicoStopException {
         picoContainer.stop();
+    }
+
+    public void dispose() throws PicoDisposalException {
+        // TODO: just implemented bacause I had to (?)
     }
 
     public boolean hasComponent(Class clazz) {

@@ -11,7 +11,7 @@
 package nanocontainer.aggregating;
 
 import picocontainer.Container;
-import picocontainer.AggregatedContainersContainer;
+import picocontainer.aggregated.AggregatedContainersContainer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;

@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.NullContainer;
 import picocontainer.Container;
-import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.hierarchical.PicoInvocationTargetStartException;
 import picocontainer.PicoStartException;
+import picocontainer.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl

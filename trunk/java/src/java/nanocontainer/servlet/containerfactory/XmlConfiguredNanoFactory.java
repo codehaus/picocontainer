@@ -6,6 +6,7 @@ import nanocontainer.servlet.ContainerFactory;
 import nanocontainer.servlet.ObjectInstantiater;
 import org.xml.sax.InputSource;
 import picocontainer.*;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;

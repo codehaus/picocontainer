@@ -16,7 +16,7 @@ import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.PicoContainer;
-import picocontainer.HierarchicalPicoContainer;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 

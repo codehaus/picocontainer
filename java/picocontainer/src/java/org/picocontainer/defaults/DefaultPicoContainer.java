@@ -27,6 +27,7 @@ import java.util.Map;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
+ * @author Thomas Heller
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
@@ -72,7 +73,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * @return a Map of {@link ComponentAdapter}. The keys are the keys of the adapters, the values the
      *         adapters (including parent container adapters).
      */
-    private Map getComponentAdapterMap() {
+    private Map getComponentAdapterMapFromEntireHierarchyWithChildrenMaskingParents() {
         Map result;
         if (parent != null) {
             result = createComponentAdapterMap(parent);
@@ -89,10 +90,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public final ComponentAdapter getComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
-        return (ComponentAdapter) getComponentAdapterMap().get(componentKey);
+        return (ComponentAdapter) getComponentAdapterMapFromEntireHierarchyWithChildrenMaskingParents().get(componentKey);
     }
 
     public ComponentAdapter getComponentAdapterOfType(Class componentType) {
+        // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
+        ComponentAdapter adapterByKey = getComponentAdapter(componentType);
+        if (adapterByKey != null) {
+            return adapterByKey;
+        }
+
         List found = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();

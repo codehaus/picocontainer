@@ -26,9 +26,7 @@ public class DependsOnTouchable implements Serializable {
         this.touchable = touchable;
     }
 
-    public Object getTouchable() {
+    public Touchable getTouchable() {
         return touchable;
     }
-
-
 }

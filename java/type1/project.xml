@@ -4,7 +4,6 @@
     <pomVersion>3</pomVersion>
     <id>nanocontainer-type1</id>
     <name>nanocontainer-type1</name>
-    <currentVersion>1.0-RC1</currentVersion>
 
     <organization>
         <name>Codehaus</name>

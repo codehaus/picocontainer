@@ -5,7 +5,7 @@
     <groupId>nanocontainer</groupId>
     <id>nanocontainer-swing</id>
     <name>nanocontainer-swing</name>
-    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
 
     <dependencies>
 
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <version>${pom.currentVersion}</version>
         </dependency>
     </dependencies>
 

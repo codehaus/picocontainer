@@ -5,14 +5,14 @@
     <groupId>nanocontainer</groupId>
     <id>nanocontainer-jmx</id>
     <name>nanocontainer-jmx</name>
-    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
 
 
     <dependencies>
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <version>${pom.currentVersion}</version>
         </dependency>
 
         <dependency>

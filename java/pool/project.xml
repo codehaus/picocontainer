@@ -5,8 +5,6 @@
     <groupId>nanocontainer</groupId>
   <id>nanocontainer-pool</id>
   <name>nanocontainer-pool</name>
-  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
-
 
   <dependencies>
   

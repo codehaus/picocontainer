@@ -1,0 +1,13 @@
+<!ENTITY dep-jmock "
+    <groupId>jmock</groupId>
+    <artifactId>jmock</artifactId>
+    <version>SNAPSHOT</version>
+">
+
+<!ENTITY dep-junit "
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>3.8.1</version>
+    <url>http://www.junit.org</url>
+">
+

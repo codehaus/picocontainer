@@ -1,0 +1,2 @@
+<!ENTITY % project-entities SYSTEM "file:build-system/project.ent"> %project-entities;
+

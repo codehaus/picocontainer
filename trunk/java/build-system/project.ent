@@ -1,0 +1,9 @@
+<!ENTITY % character-entities SYSTEM "characters.ent"> %character-entities;
+<!ENTITY % organization-entities SYSTEM "organizations.ent"> %organization-entities;
+<!ENTITY % version-entities SYSTEM "versions.ent"> %version-entities;
+<!ENTITY % mail-entities SYSTEM "mail.ent"> %mail-entities;
+<!ENTITY % dependency-entities SYSTEM "dependencies.ent"> %dependency-entities;
+<!ENTITY % developer-entities SYSTEM "developers.ent"> %developer-entities;
+<!ENTITY % role-entities SYSTEM "roles.ent"> %role-entities;
+<!ENTITY % contributor-entities SYSTEM "contributors.ent"> %contributor-entities;
+

@@ -1,0 +1,44 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!ENTITY dev-PaulHammant "
+    <name>Paul Hammant</name>
+    <id>paul</id>
+    <email>paul_hammant@yahoo.com</email>
+    <organization></organization>
+    <timezone></timezone>
+">
+<!ENTITY dev-AslakHellesøy "
+    <name>Aslak Helles&oslash;y</name>
+    <id>rinkrank</id>
+    <email>rinkrank@codehaus.org</email>
+    <organization></organization>
+    <timezone></timezone>
+">
+<!ENTITY dev-JonTirsén "
+    <name>Jon Tirs&eacute;n</name>
+    <id>tirsen</id>
+    <email>tirsen@codehaus.org</email>
+    <organization></organization>
+    <timezone></timezone>
+">
+<!ENTITY dev-ChrisStevenson "
+    <name>Chris Stevenson</name>
+    <id>skizz</id>
+    <email>skizz@codehaus.org</email>
+    <organization></organization>
+    <timezone></timezone>
+">
+<!ENTITY dev-ThomasHeller "
+    <name>Thomas Heller</name>
+    <id>maniax</id>
+    <email>th.heller@mx4k.com</email>
+    <organization></organization>
+    <timezone></timezone>
+">
+<!ENTITY dev-JörgSchaible "
+    <name>J&ouml;rg Schaible</name>
+    <id>joehni</id>
+    <email>joerg.schaible@gmx.de</email>
+    <organization>Elsag-Solutions AG</organization>
+    <timezone>+1</timezone>
+">
+ 

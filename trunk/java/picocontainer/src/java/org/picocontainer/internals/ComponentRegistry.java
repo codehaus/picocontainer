@@ -8,10 +8,11 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.internals;
 
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.PicoInitializationException;
 
 import java.util.Collection;
 import java.util.List;

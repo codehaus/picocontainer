@@ -3,7 +3,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.tck.AbstractBasicStringCompatabilityTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;

@@ -10,7 +10,7 @@
 
 package org.picocontainer.composite;
 
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.NullContainer;
@@ -25,8 +25,8 @@ import java.io.Serializable;
 
 /**
  * CompositePicoContainer aggregates the the contents of more
- * than one container together for the sake of a single list of
- * components. This list may be used as the parent container for
+ * than one internals together for the sake of a single list of
+ * components. This list may be used as the parent internals for
  * another PicoContainer. This will result in directive graphs of
  * containers/components rather than just trees.
  *
@@ -132,7 +132,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     /**
-     * Adds a new Pico container to this composite container
+     * Adds a new Pico internals to this composite internals
      * @param container
      */
     protected void addContainer(PicoContainer container) {
@@ -140,7 +140,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     /**
-     * Removes a Pico container from this composite container
+     * Removes a Pico internals from this composite internals
      * @param container
      */
     protected void removeContainer(PicoContainer container) {

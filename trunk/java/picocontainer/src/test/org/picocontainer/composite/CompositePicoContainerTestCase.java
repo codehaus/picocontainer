@@ -11,7 +11,7 @@
 package org.picocontainer.composite;
 
 import junit.framework.TestCase;
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;

@@ -8,9 +8,11 @@
  * Idea by Rachel Davies, Original code by Jon Tirsen                        *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.internals;
 
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.PicoInitializationException;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

@@ -132,8 +132,8 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         RegistrationPicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         addAHashMapByInstance(picoContainer);
         picoContainer.instantiateComponents();
-        assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());
-        assertEquals("Key - Map, Impl - HashMap should be in container", HashMap.class, picoContainer.getComponent(Map.class).getClass());
+        assertEquals("Wrong number of comps in the internals", 3, picoContainer.getComponents().size());
+        assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, picoContainer.getComponent(Map.class).getClass());
         //TODO - some way to test hashmap was passed in as an instance ?
         // should unmanaged side of DefaultPicoContainer be more exposed thru interface?
     }

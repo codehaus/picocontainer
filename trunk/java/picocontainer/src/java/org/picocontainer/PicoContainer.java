@@ -20,7 +20,7 @@ import java.util.Set;
 public interface PicoContainer {
 
     /**
-     * Does the container have a partilcilar component type?
+     * Does the internals have a partilcilar component type?
      * @param componentKey The component type to look for.
      * @return true if it does have the component type
      */
@@ -46,7 +46,7 @@ public interface PicoContainer {
     Set getComponentKeys();
 
     /**
-     * Initialize the container.
+     * Initialize the internals.
      */
     void instantiateComponents() throws PicoInitializationException;
 
@@ -60,7 +60,7 @@ public interface PicoContainer {
      * Returns a proxy that implements the union of all the components'
      * interfaces.
      * Calling a method on the returned Object will call the
-     * method on all components in the container that implement
+     * method on all components in the internals that implement
      * that interface.
      *
      * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)

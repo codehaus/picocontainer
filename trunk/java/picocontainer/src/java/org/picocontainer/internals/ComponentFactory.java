@@ -8,9 +8,11 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.internals;
 
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 public interface ComponentFactory {
 
@@ -19,8 +21,8 @@ public interface ComponentFactory {
      * to instantiate a component.
      * @param componentSpec
      * @param instanceDependencies The component instances the created component will depend on.
-     * @throws PicoInitializationException
-     * @throws PicoIntrospectionException
+     * @throws org.picocontainer.PicoInitializationException
+     * @throws org.picocontainer.PicoIntrospectionException
      */
     Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInitializationException, PicoIntrospectionException;
 

@@ -8,14 +8,10 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.internals;
 
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentRegistry;
 
 import java.util.Arrays;
 import java.io.Serializable;
@@ -67,7 +63,7 @@ public class ComponentSpecification implements Serializable {
         return componentFactory.createComponent(this, dependencies);
     }
 
-    static boolean isAssignableFrom(Class actual, Class requested) {
+    public static boolean isAssignableFrom(Class actual, Class requested) {
         if (actual == Integer.TYPE || actual == Integer.class) {
             return requested == Integer.TYPE || requested == Integer.class;
         }

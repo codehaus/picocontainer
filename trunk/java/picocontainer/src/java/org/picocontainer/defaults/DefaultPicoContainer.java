@@ -10,13 +10,14 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentRegistry;
-import org.picocontainer.Parameter;
+import org.picocontainer.internals.ComponentFactory;
+import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.internals.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
@@ -34,11 +35,10 @@ import java.util.Set;
  */
 public class DefaultPicoContainer implements RegistrationPicoContainer, Serializable {
 
-
     private final ComponentRegistry componentRegistry;
     private final ComponentFactory componentFactory;
 
-    // Keeps track of unmanaged components - components instantiated outside this container
+    // Keeps track of unmanaged components - components instantiated outside this internals
     protected List unmanagedComponents = new ArrayList();
 
     private boolean initialized;

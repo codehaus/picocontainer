@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+import org.picocontainer.internals.Parameter;
+
 public interface RegistrationPicoContainer extends PicoContainer {
 
     /**
@@ -35,7 +37,7 @@ public interface RegistrationPicoContainer extends PicoContainer {
 
     /**
      * Registers a component that is instantiated and configured outside
-     * the container. Useful in cases where pico doesn't have sufficient
+     * the internals. Useful in cases where pico doesn't have sufficient
      * knowledge to instantiate a component.
      *
      * @param componentKey Component type

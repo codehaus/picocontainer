@@ -70,7 +70,7 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         assertTrue(list.contains(hashMap));
         assertTrue(list.contains(hashSet));
 
-        assertEquals("There should be two comps in the container", 4, hcr.getComponentInstances().size());
+        assertEquals("There should be two comps in the internals", 4, hcr.getComponentInstances().size());
 
         assertTrue("There should have been a Fred in the registry", hcr.hasComponentInstance(DependsOnTouchable.class));
         assertTrue("There should have been a Touchable in the registry", hcr.hasComponentInstance(SimpleTouchable.class));
@@ -95,8 +95,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         parent.instantiateComponents();
 
-        assertTrue("There should have been a Fred in the container", child.hasComponent(DependsOnTouchable.class));
-        assertTrue("There should have been a Touchable in the container", child.hasComponent(SimpleTouchable.class));
+        assertTrue("There should have been a Fred in the internals", child.hasComponent(DependsOnTouchable.class));
+        assertTrue("There should have been a Touchable in the internals", child.hasComponent(SimpleTouchable.class));
     }
 
     public void testGetComponentTypes() throws PicoRegistrationException, PicoInitializationException {
@@ -109,7 +109,7 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         parent.registerComponentByClass(DependsOnTouchable.class);
         parent.registerComponent(Touchable.class, SimpleTouchable.class);
 
-        // You might have thought that starting the container shouldn't be necessary
+        // You might have thought that starting the internals shouldn't be necessary
         // just to get the types, but it is. The map holding the types->component instances
         // doesn't receive anything until the components are instantiated.
         parent.instantiateComponents();
@@ -140,8 +140,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         child.instantiateComponents();
 
         assertEquals("The parent should return 2 components (one from the parent)", 2, child.getComponents().size());
-        assertTrue("Touchable should have been passed through the parent container", child.hasComponent(Touchable.class));
-        assertTrue("There should have been a DependsOnTouchable in the container", child.hasComponent(DependsOnTouchable.class));
+        assertTrue("Touchable should have been passed through the parent internals", child.hasComponent(Touchable.class));
+        assertTrue("There should have been a DependsOnTouchable in the internals", child.hasComponent(DependsOnTouchable.class));
 
     }
 

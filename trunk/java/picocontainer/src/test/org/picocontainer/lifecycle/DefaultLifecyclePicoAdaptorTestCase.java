@@ -159,7 +159,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         Stoppable shutdown = (Stoppable) pico.getCompositeComponent(false, false);
         Disposable disposal = (Disposable) pico.getCompositeComponent(false, false);
 
-        assertTrue("There should have been a 'One' in the container", pico.hasComponent(One.class));
+        assertTrue("There should have been a 'One' in the internals", pico.hasComponent(One.class));
 
         One one = (One) pico.getComponent(One.class);
 
@@ -390,7 +390,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        // Touchable is not Startable (etc). This container should be able to handle the
+        // Touchable is not Startable (etc). This internals should be able to handle the
         // fact that none of the comps are Startable (etc).
         pico.registerComponentByClass(SimpleTouchable.class);
 

@@ -12,13 +12,13 @@ public class StockTraderTest extends TestCase {
     public static interface StockTicker {
     }
 
-    public static class MockStockTicker implements StockTicker {
+    public static class StockTickerStub implements StockTicker {
     }
 
     public static interface StockMarket {
     }
 
-    public static class MockStockMarket implements StockMarket {
+    public static class StockMarketStub implements StockMarket {
     }
 
     public static class StockTrader {
@@ -27,8 +27,10 @@ public class StockTraderTest extends TestCase {
     }
 
     public void testSellMicrosoftWhenAboveHundred() {
-        StockTicker ticker = new MockStockTicker();
-        StockMarket market = new MockStockMarket();
+        StockTicker ticker = new StockTickerStub();
+        StockMarket market = new StockMarketStub();
         StockTrader trader = new StockTrader(ticker, market);
+        ticker.changeTickerValue("MSFT", 101);
+        assertEquals(new String[] { "MSFT" }, market.currentSellBids());
     }
 }

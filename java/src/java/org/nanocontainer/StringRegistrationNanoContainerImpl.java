@@ -11,52 +11,54 @@
 package org.nanocontainer;
 
 import org.nanocontainer.reflection.StringToObjectConverter;
-import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.NullContainer;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.ComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
 
     private final RegistrationPicoContainer picoContainer;
     private ArrayList classLoaders = new ArrayList();
     private StringToObjectConverter converter;
+    private final ComponentRegistry componentRegistry;
 
-    public StringRegistrationNanoContainerImpl(PicoContainer parentContainer, ClassLoader classLoader, StringToObjectConverter converter) {
-        this.picoContainer = makePicoContainer(parentContainer);
+    public StringRegistrationNanoContainerImpl(ClassLoader classLoader, StringToObjectConverter converter,
+                                               ComponentRegistry componentRegistry) {
+        this.componentRegistry = componentRegistry;
+        this.picoContainer = makePicoContainer();
         if (classLoader != null) {
             classLoaders.add(classLoader);
         }
         this.converter = converter;
     }
 
-    protected RegistrationPicoContainer makePicoContainer(PicoContainer parentContainer) {
-        return new HierarchicalPicoContainer.WithParentContainer(parentContainer);
+    protected RegistrationPicoContainer makePicoContainer() {
+        return new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
     }
 
     public static class Default extends StringRegistrationNanoContainerImpl {
         public Default() {
-            super(new NullContainer(), StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter());
-        }
-    }
-
-    public static class WithParentContainer extends StringRegistrationNanoContainerImpl {
-        public WithParentContainer(PicoContainer parentContainer) {
-            super(parentContainer, StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter());
+            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(),new DefaultComponentRegistry());
         }
     }
 
     public static class WithClassLoader extends StringRegistrationNanoContainerImpl {
         public WithClassLoader(ClassLoader classLoader) {
-            super(new NullContainer(), classLoader, new StringToObjectConverter());
+            super(classLoader, new StringToObjectConverter(), new DefaultComponentRegistry());
+        }
+    }
+
+    public class WithClassLoaderAndComponentRegistry extends StringRegistrationNanoContainerImpl {
+        public WithClassLoaderAndComponentRegistry(ClassLoader classLoader, ComponentRegistry componentRegistry) {
+            super(classLoader, new StringToObjectConverter(), componentRegistry);
         }
     }
 

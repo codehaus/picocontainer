@@ -12,27 +12,22 @@
 package org.nanocontainer.servlet.lifecycle;
 
 
-import org.nanocontainer.servlet.holder.SessionScopeObjectHolder;
-
-import org.nanocontainer.servlet.holder.RequestScopeObjectHolder;
-
-import org.nanocontainer.servlet.lifecycle.BaseLifecycleListener;
-
 import org.nanocontainer.servlet.ObjectHolder;
-
 import org.nanocontainer.servlet.ObjectInstantiator;
-
-
-import javax.servlet.*;
-
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
-
-
+import org.nanocontainer.servlet.holder.RequestScopeObjectHolder;
+import org.nanocontainer.servlet.holder.SessionScopeObjectHolder;
 import org.picocontainer.PicoContainer;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 public class RequestLifecycleFilter extends BaseLifecycleListener implements Filter {

@@ -11,16 +11,15 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The default component registry.
@@ -92,6 +91,10 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         Set result = new HashSet();
         result.addAll(componentKeyToInstanceMap.values());
         return Collections.unmodifiableSet(result);
+    }
+
+    public boolean hasComponentInstance(Object componentKey) {
+        return componentKeyToInstanceMap.containsKey(componentKey);
     }
 
     public ComponentSpecification getComponentSpec(Object componentKey) {

@@ -1,7 +1,6 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
 import org.picocontainer.testmodel.FredImpl;
@@ -31,7 +30,7 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
-        RegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
 
@@ -48,7 +47,7 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
-        RegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         WilmaImpl wilma = new WilmaImpl();
         pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[] {
             new ConstantParameter(wilma)

@@ -38,6 +38,7 @@ public interface ComponentRegistry {
 
     Set getComponentInstances();
 
+    boolean hasComponentInstance(Object componentKey);
 
     ComponentSpecification getComponentSpec(Object componentKey);
 

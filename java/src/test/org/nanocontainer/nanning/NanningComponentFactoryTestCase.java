@@ -23,7 +23,8 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.ComponentSpecification;
 import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 
 /**
  * @author Jon Tirsen
@@ -80,8 +81,8 @@ public class NanningComponentFactoryTestCase extends TestCase {
         }));
 
         NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem, new DefaultComponentFactory());
-        RegistrationPicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
-                componentFactory);
+        RegistrationPicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(
+                componentFactory, new DefaultComponentRegistry());
         nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponentByClass(FredImpl.class);
 

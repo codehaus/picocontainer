@@ -18,7 +18,7 @@ import org.picocontainer.testmodel.WilmaImpl;
 public class NoPicoTestCase extends TestCase {
 
     /**
-     * Aa demonstration of using components WITHOUT Pico (or Nano)
+     * RecordingAware2 demonstration of using components WITHOUT Pico (or Nano)
      * This was one of the design goals.
      *
      * This is manual lacing of components.

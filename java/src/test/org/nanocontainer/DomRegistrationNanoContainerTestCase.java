@@ -84,16 +84,6 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
-    public void testRegistrationMismatch() throws PicoRegistrationException, ParserConfigurationException, PicoIntrospectionException {
-        DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
-        try {
-            nc.registerComponent("Foo");
-            fail("should have failed");
-        } catch (ClassNotFoundException e) {
-            // expected
-        }
-    }
-
     public static class Startme implements Startable {
         public boolean started;
         public Startme() {
@@ -150,7 +140,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
             PicoRegistrationException, PicoInitializationException
     {
 
-        DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.WithParentContainer(new DefaultPicoContainer.Default());
+        DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         registerInstantiateAndCheckComponent(nc);
 
     }

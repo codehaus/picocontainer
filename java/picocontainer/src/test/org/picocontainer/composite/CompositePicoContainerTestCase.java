@@ -12,7 +12,7 @@ package org.picocontainer.composite;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.NullContainer;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.WilmaImpl;
 import org.picocontainer.*;
 
@@ -24,7 +24,7 @@ public class CompositePicoContainerTestCase extends TestCase {
     private CompositePicoContainer.Filter filter;
 
     public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
-        pico = new HierarchicalPicoContainer.Default();
+        pico = new DefaultPicoContainer.Default();
         pico.registerComponentByClass(WilmaImpl.class);
         filter = new CompositePicoContainer.Filter(pico);
     }
@@ -150,7 +150,7 @@ public class CompositePicoContainerTestCase extends TestCase {
         assertTrue(acc.getComponent(String.class) == acomp);
         assertTrue(acc.getComponent(Integer.class) == bcomp);
         assertTrue(acc.getComponents().size() == 2);
-        assertTrue(acc.getComponentKeys().size() == 2);        
+        assertTrue(acc.getComponentKeys().size() == 2);
 
     }
 

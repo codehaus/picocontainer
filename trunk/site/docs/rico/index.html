@@ -4,6 +4,28 @@
   <title>Rico</title>
 </head>
 <body>
-Fuck you Dan!<br>
+Rico is a container written in <a href="http://www.ruby-lang.org">Ruby</a>,
+demonstrating the same Inversion-of-Control principles as the Java <a
+ href="/">Pico
+Container</a>.<br>
+<br>
+It is primarily a proof of concept at this stage - there is an
+embarrassingly small amount of
+actual code but it seems to cover the fundamentals.<br>
+<br>
+The "Type 3" IoC model depends on the signature of the constructor(s)
+of an object to identify
+its dependencies. Ruby does not have static types, so we use a list of
+keys to represent dependencies, passed in when we register a component.<br>
+<h3>Basic operation</h3>
+<pre>require 'rico' # the main container<br><br>include Rico # so we don't need to use Rico:: everywhere<br><br>container = Rico.new<br><br># Register a component with key "one"<br>container.register "one", Object<br><br># Register a component with dependencies<br>container.register "two", Complex, [ "one" ]<br><br># Get a component<br>component = container.component "two" # constructs Object, passes it to Complex<br>                                      # constructor and returns the result<br></pre>
+<h3>Additional behaviour</h3>
+Rico has the same multicasting behaviour as Pico - you can call methods
+on a multicaster object and any registered components that understand
+the method will have it called. This is useful for lifecycle management.<br>
+<h3>Next steps</h3>
+Rico currently doesn't support the same ComponentAdapter model as Pico,
+which would bring it much more into line. Also we need a sample app or
+two to demonstrate how it works.<br>
 </body>
 </html>

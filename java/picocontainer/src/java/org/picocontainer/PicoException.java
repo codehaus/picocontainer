@@ -1,7 +1,7 @@
 package org.picocontainer;
 
 /**
- * Superclass for all Exceptions in OldPicoContainer for lazy people
+ * Superclass for all Exceptions in PicoContainer for lazy people
  * who want to catch only one Exception type.
  *
  * @author Aslak Helles&oslash;y

@@ -4,7 +4,7 @@
  * Date: 23-Jan-2004
  * Time: 23:09:14
  */
-package org.picoextras.integrationkit;
+package org.nanocontainer.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;
 

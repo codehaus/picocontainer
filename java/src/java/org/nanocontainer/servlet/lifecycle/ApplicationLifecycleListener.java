@@ -19,7 +19,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 public class ApplicationLifecycleListener extends BaseLifecycleListener implements ServletContextListener {
@@ -28,12 +28,12 @@ public class ApplicationLifecycleListener extends BaseLifecycleListener implemen
 
         ServletContext context = event.getServletContext();
 
-        // Store comp reg for application level container.
+        // Store comp reg for application level internals.
         ComponentRegistry reg = new DefaultComponentRegistry();
         ObjectHolder regHolder = new ApplicationScopeObjectHolder(context, COMPONENT_REGISTRY_KEY);
         regHolder.put(reg);
         
-        // build a container
+        // build a internals
         PicoContainer container = getFactory(context).buildContainer("application", reg);
 
         // and hold on to it
@@ -46,9 +46,8 @@ public class ApplicationLifecycleListener extends BaseLifecycleListener implemen
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
 
-        // shutdown container
+        // shutdown internals
         destroyContainer(context, new ApplicationScopeObjectHolder(context, CONTAINER_KEY));
     }
 
 }
-

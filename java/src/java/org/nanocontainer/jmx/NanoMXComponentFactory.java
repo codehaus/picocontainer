@@ -12,10 +12,10 @@ package org.nanocontainer.jmx;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 
 /**
  * @author James Strachan

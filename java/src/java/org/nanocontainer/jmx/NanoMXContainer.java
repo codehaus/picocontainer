@@ -19,7 +19,7 @@ import javax.management.ObjectName;
 
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -31,9 +31,9 @@ import java.io.Serializable;
 
 /**
  * A simple PicoContainer which allow multiple implementations of the same interface
- * and any component registered with the container is also registered into JMX
+ * and any component registered with the internals is also registered into JMX
  * for viewing in a JMX management console.
- * 
+ *
  * @author James Strachan
  * @author Mauro Talevi
  * @version $Revision: 1.2 $
@@ -59,11 +59,11 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
 
     /**
      * Registers a new constructed component with the given key
-     * 
+     *
      * @param key is the key (or name) used to lookup the component in the future
      * @param component is the component to be registered
-     * @throws PicoRegistrationException 
-     * @throws PicoIntrospectionException 
+     * @throws PicoRegistrationException
+     * @throws PicoIntrospectionException
      */
     public synchronized void registerComponent(Object key, Object component)
         throws PicoRegistrationException, PicoIntrospectionException {
@@ -141,7 +141,7 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
     //
     //    /**
     //     * Removes the component registered with the given key
-    //     * 
+    //     *
     //     * @param key
     //     */
     //    public synchronized void removeComponent(Object key) throws MalformedObjectNameException {

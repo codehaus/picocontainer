@@ -16,7 +16,7 @@ import org.nanocontainer.servlet.ObjectHolder;
 import org.nanocontainer.servlet.ObjectInstantiator;
 import org.nanocontainer.servlet.holder.RequestScopeObjectHolder;
 import org.nanocontainer.servlet.holder.SessionScopeObjectHolder;
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 
 import javax.servlet.Filter;
@@ -42,7 +42,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
         ServletContext context = session.getServletContext();
 
-        // grab the parent container
+        // grab the parent internals
 
         ObjectHolder parentHolder = new SessionScopeObjectHolder(session, CONTAINER_KEY);
 
@@ -55,13 +55,13 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
         ComponentRegistry parentComponentRegistry = (ComponentRegistry) parentRegHolder.get();
 
 
-        // build a container
+        // build a internals
 
         PicoContainer container = getFactory(context).buildContainerWithParent(parentContainer, parentComponentRegistry, "request");
 
 
 
-        // and a means to instantiate new objects in the container
+        // and a means to instantiate new objects in the internals
 
         ObjectInstantiator instantiater = getFactory(context).buildInstantiator(container, parentComponentRegistry);
 
@@ -90,7 +90,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
         } finally {
 
 
-            // shutdown container
+            // shutdown internals
 
             destroyContainer(context, containerHolder);
 
@@ -110,4 +110,3 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
     }
 
 }
-

@@ -1,0 +1,7 @@
+<project>
+    <postGoal name="test:compile">
+        <copy todir="${basedir}/target/test-classes">
+            <fileset dir="${basedir}/src/test"/>
+        </copy>
+    </postGoal>
+</project>

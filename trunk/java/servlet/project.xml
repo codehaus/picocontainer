@@ -2,10 +2,10 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
     <id>nanocontainer-servlet</id>
     <name>nanocontainer-servlet</name>
     <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
-
 
     <dependencies>
     
@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-script</artifactId>
+            <artifactId>nanocontainer</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 

@@ -40,7 +40,7 @@ mkdir target
 
 # clover requiring it to run twice to get proper coverage.
 # The 2nd time happens during site:deploy
-maven clover > target/cleanbuild.log
+maven clover &> target/cleanbuild.log
 
 # See if the "compiling" file is there. If it is, compilation
 # failed.
@@ -54,14 +54,14 @@ else
     cat target/cleanbuild.log | mutt -s "[BUILD] Test failure - see http://www.picocontainer.org/junit-report.html" picocontainer-dev@lists.codehaus.org
 
     # We'll deploy the site even if the tests fail. Log currently not used.
-    maven site:deploy > target/sitedeploy.log
+    maven site:deploy &> target/sitedeploy.log
   else
     # Deploy site only if compile and tests pass. Logs currently not used.
     # Must be run separately to get the files uploaded in the proper dir
     # on the server
-    maven jar:deploy > target/jardeploy.log
-    maven dist:deploy > target/distdeploy.log
+    maven jar:deploy &> target/jardeploy.log
+    maven dist:deploy &> target/distdeploy.log
   fi
   # We'll deploy the site even if the tests fail. Log currently not used.
-  maven site:deploy > target/sitedeploy.log
+  maven site:deploy &> target/sitedeploy.log
 fi

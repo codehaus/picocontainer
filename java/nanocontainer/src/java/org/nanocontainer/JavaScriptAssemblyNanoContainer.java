@@ -17,6 +17,17 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class JavaScriptAssemblyNanoContainer extends NanoContainer {
+
+    private Scriptable scriptable;
+    private Class nanoRhinoScriptableClass;
+
+    public JavaScriptAssemblyNanoContainer(Reader script, NanoContainerMonitor monitor, Class nanoRhinoScriptableClass) throws PicoConfigurationException, ClassNotFoundException, IOException {
+        super(monitor);
+        this.nanoRhinoScriptableClass = nanoRhinoScriptableClass;
+        configure(script);
+    }
+
+
     public JavaScriptAssemblyNanoContainer(Reader script, NanoContainerMonitor monitor) throws PicoConfigurationException, ClassNotFoundException, IOException {
         super(monitor);
         configure(script);
@@ -26,15 +37,12 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
 
         Context cx = Context.enter();
         try {
-            Scriptable scriptable = cx.initStandardObjects(null);
-            try {
-                ScriptableObject.defineClass(scriptable, DefaultNanoRhinoScriptable.class);
-            } catch (final Exception e) {
-                throw new PicoConfigurationException() {
-                    public String getMessage() {
-                        return "JavaScriptException : " + e.getMessage();
-                    }
-                };
+            scriptable = cx.initStandardObjects(null);
+
+            if (nanoRhinoScriptableClass != null) {
+                defineClass(nanoRhinoScriptableClass);
+            } else {
+                defineClass(DefaultNanoRhinoScriptable.class);                
             }
 
             NanoHelper nanoHelper = new NanoHelper();
@@ -43,7 +51,7 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
 
             cx.evaluateReader(scriptable, script, "<cmd>", 1, null);
 
-            rootContainer = nanoHelper.getRhinoFrontEnd().getPicoContainer();
+            rootContainer = nanoHelper.getNanoRhinoScriptable().getPicoContainer();
 
         } catch (final JavaScriptException e) {
             e.printStackTrace();
@@ -59,12 +67,24 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
         startComponentsBreadthFirst();
     }
 
+    private void defineClass(Class rhinoClass) throws PicoConfigurationException {
+        try {
+            ScriptableObject.defineClass(scriptable, rhinoClass);
+        } catch (final Exception e) {
+            throw new PicoConfigurationException() {
+                public String getMessage() {
+                    return "JavaScriptException : " + e.getMessage();
+                }
+            };
+        }
+    }
+
     public static class NanoHelper {
         NanoRhinoScriptable rhinoFrontEnd;
-        public NanoRhinoScriptable getRhinoFrontEnd() {
+        public NanoRhinoScriptable getNanoRhinoScriptable() {
             return rhinoFrontEnd;
         }
-        public void setRhinoFrontEnd(NanoRhinoScriptable rhinoFrontEnd) {
+        public void setNanoRhinoScriptable(NanoRhinoScriptable rhinoFrontEnd) {
             this.rhinoFrontEnd = rhinoFrontEnd;
         }
     }

@@ -9,14 +9,17 @@
 package org.nanocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoConfigurationException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.EcmaError;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -32,20 +35,52 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         Xxx.componentRecorder = "";
     }
 
-    public void testInstantiateBasicRhinoFrontEnd() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBasicRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
                 "}\n" +
-                "nano.setRhinoFrontEnd(parentContainer)\n"
+                "nano.setNanoRhinoScriptable(parentContainer)\n"
                 ), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
         assertEquals("Should match the expression", "<AA>!A", Xxx.componentRecorder);
     }
+
+    public void testInstantiateBespokeRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                "var parentContainer = new NanoRhinoScriptable();\n" +
+                "with (parentContainer) {\n" +
+                "  addComponent('org.nanocontainer.Xxx$A');\n" +
+                "}\n" +
+                "nano.setNanoRhinoScriptable(parentContainer)\n"
+                ), new MockMonitor(), BespokeNanoRhinoScriptable.class);
+        nano.stopComponentsDepthFirst();
+        nano.disposeComponentsDepthFirst();
+
+        assertEquals("Should match the expression", "<AA>!A", Xxx.componentRecorder);
+    }
+
+    public void testInstantiateBogusRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        try {
+            new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                    "var parentContainer = new NanoRhinoScriptable();\n" +
+                    "with (parentContainer) {\n" +
+                    "  addComponent('org.nanocontainer.Xxx$A');\n" +
+                    "}\n" +
+                    "nano.setNanoRhinoScriptable(parentContainer)\n"
+                    ), new MockMonitor(), BogusNanoRhinoScriptable.class);
+            fail("Should have barfed with EcmaError");
+        } catch (EcmaError e) {
+            // expected
+        }
+    }
+
 
     public void testInstantiateWithChildContainer() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
@@ -62,7 +97,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  }\n" +
                 "  addComponent('org.nanocontainer.Xxx$C');\n" +
                 "}\n" +
-                "nano.setRhinoFrontEnd(parentContainer)\n"
+                "nano.setNanoRhinoScriptable(parentContainer)\n"
                 ), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -88,7 +123,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                     "  }\n" +
                     "  addComponent('org.nanocontainer.Xxx$C');\n" +
                     "}\n" +
-                    "nano.setRhinoFrontEnd(parentContainer)\n"
+                    "nano.setNanoRhinoScriptable(parentContainer)\n"
                     ), new MockMonitor());
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch (NoSatisfiableConstructorsException e) {
@@ -103,7 +138,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServerConfig','org.nanocontainer.testmodel.DefaultWebServerConfig');\n" +
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
                 "}\n" +
-                "nano.setRhinoFrontEnd(parentContainer)\n"
+                "nano.setNanoRhinoScriptable(parentContainer)\n"
                 ), new MockMonitor());
         Object ws = nano.getRootContainer().getComponentInstance(WebServer.class);
 
@@ -117,6 +152,4 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         //TODO - should be assertFalse( ), we're implementation hiding here !
         assertTrue(ws instanceof WebServerImpl);
     }
-
-
 }

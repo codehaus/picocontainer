@@ -64,7 +64,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
         containerBuilder.buildContainer(containerRef, parentContainerRef, session);
 
-        session.setAttribute("Session destroyed helper", new HttpSessionBindingListener() {
+        session.setAttribute("picoextras session container killer helper", new HttpSessionBindingListener() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
             }
 
@@ -82,7 +82,8 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
     private ContainerComposer loadAssembler(ServletContext context) {
         ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-        String className = context.getInitParameter("assembler");
+        //TODO Is this right? It still feel like a mouthful.
+        String className = context.getInitParameter("picoextras-servlet-container-composer");
         ContainerComposer result = null;
         try {
             result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();

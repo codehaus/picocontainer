@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -553,7 +553,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testRegisterByNameResolvesToInterfaceRegisteredComponents() throws Exception {
-        // TODO we should add some kind of findImplementatingComponents() method to OldPicoContainer!
+        // TODO we should add some kind of findImplementatingComponents() method to PicoContainer!
         AbstractPicoContainer pico = new DefaultPicoContainer();
 
         pico.registerComponentImplementation("fred", DependsOnTouchable.class);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -22,22 +22,22 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 	protected void setUp() throws Exception {
 		componentRegistry = new DefaultPicoContainer();
 	}
-	
+
 	public void testRegisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
-		
+
 		componentRegistry.registerComponent(componentSpecification);
-		
+
 		assertTrue(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
-	
+
 	public void testUnregisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
-			
+
 		componentRegistry.registerComponent(componentSpecification);
-		
+
 		componentRegistry.unregisterComponent(Touchable.class);
-		
+
 		assertFalse(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
 

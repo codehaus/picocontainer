@@ -7,8 +7,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-bsh</id>
-  <name>picocontainer-bsh</name>
+  <id>picoextras-bsh</id>
+  <name>picoextras-bsh</name>
 
   <developers>
     <developer>

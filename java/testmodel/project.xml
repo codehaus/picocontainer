@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-testmodel</id>
-  <name>picocontainer-testmodel</name>
+  <id>picoextras-testmodel</id>
+  <name>picoextras-testmodel</name>
 
   <dependencies>
   </dependencies>

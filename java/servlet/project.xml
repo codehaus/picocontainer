@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-servlet</id>
-  <name>picocontainer-servlet</name>
+  <id>picoextras-servlet</id>
+  <name>picoextras-servlet</name>
 
   <dependencies>
 
@@ -14,7 +14,7 @@
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-integrationkit</artifactId>
+      <artifactId>picoextras-integrationkit</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
     

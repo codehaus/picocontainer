@@ -2,19 +2,19 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picocontainer-groovy</id>
-  <name>picocontainer-groovy</name>
+  <id>picoextras-groovy</id>
+  <name>picoextras-groovy</name>
 
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-testmodel</artifactId>
+      <artifactId>picoextras-testmodel</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-reflection</artifactId>
+      <artifactId>picoextras-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
 

@@ -26,7 +26,7 @@ public class ComponentSpecification
         return compType;
     }
 
-    public Class getComponentClass()
+    public Class getComponentImplementation()
     {
         return comp;
     }

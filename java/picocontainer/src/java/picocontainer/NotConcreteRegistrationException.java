@@ -16,17 +16,17 @@ package picocontainer;
  * @version $Revision$
  */
 public class NotConcreteRegistrationException extends PicoRegistrationException {
-    private final Class componentClass;
+    private final Class componentImplementation;
 
-    public NotConcreteRegistrationException(Class componentClass) {
-        this.componentClass = componentClass;
+    public NotConcreteRegistrationException(Class componentImplementation) {
+        this.componentImplementation = componentImplementation;
     }
 
     public String getMessage() {
-        return "Bad Access: '" + componentClass.getName() + "' is not instansiable";
+        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
     }
 
-    public Class getComponentClass() {
-        return componentClass;
+    public Class getComponentImplementation() {
+        return componentImplementation;
     }
 }

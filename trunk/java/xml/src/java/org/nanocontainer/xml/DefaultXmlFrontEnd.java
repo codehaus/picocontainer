@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -137,6 +138,16 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         String className = componentElement.getAttribute("impl");
         String stringKey = componentElement.getAttribute("stringkey");
         String typeKey = componentElement.getAttribute("typekey");
+
+        ArrayList hints = new ArrayList();
+        NodeList children = componentElement.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = children.item(i);
+            if (child.getNodeName() == "hint") {
+                hints.add(((Element) child).getAttribute("stringkey"));
+            }
+        }
+
 
         //TODO we need to have config elements parsing here, and register with params action...
         if (stringKey == null || stringKey.equals("")) {

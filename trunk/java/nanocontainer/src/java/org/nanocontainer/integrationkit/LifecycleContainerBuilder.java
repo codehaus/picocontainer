@@ -15,23 +15,27 @@ import org.picocontainer.defaults.ObjectReference;
 /**
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @version $Revision$
  */
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
-    public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
+    public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope, boolean addChildToParent) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
         // register the child in the parent so that lifecycle can be propagated down the hierarchy
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
-            MutablePicoContainer mutableContainer = (MutablePicoContainer) parentContainer;
+            MutablePicoContainer mutableParentContainer = (MutablePicoContainer) parentContainer;
 
             // this synchronization is necessary, because several servlet request may
             // occur at the same time for given session, and this produce race condition
             // especially in framed environments
-            synchronized (mutableContainer) {
-                mutableContainer.registerComponentInstance(containerRef, container);
+            synchronized (mutableParentContainer) {
+                if (addChildToParent) {
+                    mutableParentContainer.addChildContainer(container);
+                }
+//                mutableParentContainer.registerComponentInstance(containerRef, container);
             }
         }
 
@@ -45,7 +49,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
     }
 
     protected void autoStart(PicoContainer container) {
-        System.out.println("--> autostarted");
         container.start();
     }
 

@@ -93,7 +93,7 @@ public class PicoContainerTask extends Task {
             }
         };
         try {
-            containerBuilder.buildContainer(containerRef, null, null);
+            containerBuilder.buildContainer(containerRef, null, null, true);
             containerBuilder.killContainer(containerRef);
         } catch (java.lang.reflect.UndeclaredThrowableException e) {
             Throwable ex = e.getUndeclaredThrowable();

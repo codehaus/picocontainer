@@ -56,7 +56,7 @@ public class GroovyDeploymentScriptHandler {
 		ObjectReference containerRef = new SimpleReference();
 		ObjectReference parentContainerRef = new SimpleReference();
         parentContainerRef.set(parentContainer);
-        builder.buildContainer(containerRef, parentContainerRef, contextName);
+        builder.buildContainer(containerRef, parentContainerRef, contextName, true);
         return (PicoContainer) containerRef.get();
     }
     private class MicroGroovyContainerBuilder extends GroovyContainerBuilder {

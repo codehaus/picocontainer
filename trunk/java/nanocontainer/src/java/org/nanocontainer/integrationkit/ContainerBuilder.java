@@ -27,7 +27,7 @@ public interface ContainerBuilder {
      * @param parentContainerRef reference to a container that may be used as a parent to the new container (may be null).
      * @param compositionScope   Hint about the scope for composition.
      */
-    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object compositionScope);
+    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object compositionScope, boolean addChildToParent);
 
     /**
      * Locate a container at the given reference so it can be stopped,

@@ -111,7 +111,7 @@ public class NanoContainerDeployer implements Deployer {
 
         NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, applicationClassLoader);
         ContainerBuilder builder = nanoContainer.getContainerBuilder();
-        builder.buildContainer(result, parentContainerRef, null);
+        builder.buildContainer(result, parentContainerRef, null, true);
 
         return result;
     }

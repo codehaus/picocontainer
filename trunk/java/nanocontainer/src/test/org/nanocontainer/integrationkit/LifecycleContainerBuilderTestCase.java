@@ -48,7 +48,7 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
 
         ObjectReference childRef = new SimpleReference();
 
-        builder.buildContainer(childRef, parentRef, null);
+        builder.buildContainer(childRef, parentRef, null, true);
         PicoContainer childContainer = (PicoContainer) childRef.get();
         assertSame(parentC, childContainer.getParent());
 

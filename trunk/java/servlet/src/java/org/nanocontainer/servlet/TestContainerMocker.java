@@ -61,7 +61,7 @@ public class TestContainerMocker implements KeyConstants {
      */
     public void startApplication() {
         SimpleReference ref = new SimpleReference();
-        containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy());
+        containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
         application = (MutablePicoContainer) ref.get();
     }
 
@@ -86,7 +86,7 @@ public class TestContainerMocker implements KeyConstants {
         SimpleReference ref = new SimpleReference();
         SimpleReference parent = new SimpleReference();
         parent.set(application);
-        containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()));
+        containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()), false);
         session = (MutablePicoContainer) ref.get();
 
     }
@@ -112,7 +112,7 @@ public class TestContainerMocker implements KeyConstants {
         SimpleReference ref = new SimpleReference();
         SimpleReference parent = new SimpleReference();
         parent.set(session);
-        containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy());
+        containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy(), false);
         request = (MutablePicoContainer) ref.get();
 
     }

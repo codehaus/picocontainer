@@ -30,6 +30,7 @@ import java.util.HashSet;
  *
  * @author konstantin pribluda
  * @version $Revision$
+ * @deprecated use SessionFactoryDelegator instead and avoid ugly scripting. 
  */
 public class SessionFactoryComponentAdapter implements ComponentAdapter {
 

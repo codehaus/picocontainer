@@ -11,6 +11,7 @@
 package nanocontainer.aggregating;
 
 import picocontainer.Container;
+import picocontainer.FilterContainer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -19,49 +20,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Arrays;
 
-import nanocontainer.aggregating.reflect.SequentialInvocationHandler;
+public class AggregatingNanoContainer extends FilterContainer {
 
+    private InvocationHandler invocationHandler;
 
-public class AggregatingNanoContainer implements Container {
-
-    private final InvocationHandler invocationHandler;
     /** Cached */
     private Object proxy;
-    private final Object[] componentsToAggregate;
 
-    public AggregatingNanoContainer(Object[] componentsToAggregate,
+    public AggregatingNanoContainer(Container containerToAggregateComponentsFor,
                                     InvocationHandler invocationHandler) {
-        this.componentsToAggregate = componentsToAggregate;
-        this.invocationHandler = invocationHandler;
-    }
-
-    public static class ComponentsFromContainer extends AggregatingNanoContainer {
-        public ComponentsFromContainer(Container containerToAggregateComponentsFor, InvocationHandler invocationHandler) {
-            super(containerToAggregateComponentsFor.getComponents(), invocationHandler);
-        }
+        super(containerToAggregateComponentsFor);
+        setInvocationHandler(invocationHandler);
     }
 
     public static class Default extends AggregatingNanoContainer {
         public Default(Container containerToAggregateComponentsFor) {
-            super(containerToAggregateComponentsFor.getComponents(),
-                    new SequentialInvocationHandler(containerToAggregateComponentsFor));
+            super(containerToAggregateComponentsFor, null);
         }
     }
-    
-    public boolean hasComponent(Class aClass) {
-        return true;
-    }
 
-    public Object getComponent(Class aClass) {
-        return proxy;
-    }
-
-    public Object[] getComponents() {
-        return new Object[]{proxy};
-    }
-
-    public Class[] getComponentTypes() {
-        return new Class[0]; //TODO ? 
+    public void setInvocationHandler(InvocationHandler invocationHandler) {
+        this.invocationHandler = invocationHandler;
     }
 
     public Object getProxy() {
@@ -70,6 +49,7 @@ public class AggregatingNanoContainer implements Container {
 
             // TODO should fail if container isn't started. Throw checked exception?
             Set interfaces = new HashSet();
+            Object[] componentsToAggregate = getToFilterFor().getComponents();
             for (int i = 0; i < componentsToAggregate.length; i++) {
                 Class componentClass = componentsToAggregate[i].getClass();
                 Class[] implemeted = componentClass.getInterfaces();
@@ -84,8 +64,5 @@ public class AggregatingNanoContainer implements Container {
         } else {
             return proxy;
         }
-
     }
-
-
 }

@@ -169,8 +169,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         List matchingConstructors = new ArrayList();
         Constructor[] allConstructors = getComponentImplementation().getDeclaredConstructors();
         // filter out all constructors that will definately not match 
+        Constructor constructor;
         for (int i = 0; i < allConstructors.length; i++) {
-            Constructor constructor = allConstructors[i];
+            constructor = allConstructors[i];
             if ((parameters == null || constructor.getParameterTypes().length == parameters.length) 
                     && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);

@@ -14,9 +14,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y

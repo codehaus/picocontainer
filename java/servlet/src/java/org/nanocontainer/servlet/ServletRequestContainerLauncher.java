@@ -49,11 +49,13 @@ public class ServletRequestContainerLauncher {
             throw new ServletException("org.picoextras.servlet.ServletContainerListener not deployed");
         }
 
-        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, "request");
+        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, request);
 
     }
 
     public void killContainer() {
-        containerBuilder.killContainer(containerRef);
+        if (containerRef.get() != null) {
+            containerBuilder.killContainer(containerRef);
+        }
     }
 }

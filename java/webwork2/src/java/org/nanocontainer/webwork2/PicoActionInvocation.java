@@ -15,6 +15,7 @@ import com.opensymphony.xwork.DefaultActionInvocation;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
 
@@ -48,6 +49,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
             container.registerComponentImplementation(actionClass);
             action = (Action) container.getComponentInstance(actionClass);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("Unknown action name: " + e.getMessage());
         }
     }
@@ -55,6 +57,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     private MutablePicoContainer getParentContainer() {
         HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
-        return (MutablePicoContainer) ref.get();
+        LifecyclePicoAdapter lifecycle = (LifecyclePicoAdapter) ref.get();
+        return (MutablePicoContainer) lifecycle.getPicoContainer();
     }
 }

@@ -7,6 +7,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 /**
@@ -33,7 +34,8 @@ public class DefaultLifecycleContainerBuilderTestCase extends TestCase {
 
         SimpleObjectReference parentRef = new SimpleObjectReference();
         MutablePicoContainer parentC = new DefaultPicoContainer();
-        parentRef.set(parentC);
+        DefaultLifecyclePicoAdapter parentCLifecycle = new DefaultLifecyclePicoAdapter(parentC);
+        parentRef.set(parentCLifecycle);
 
         SimpleObjectReference childRef = new SimpleObjectReference();
 

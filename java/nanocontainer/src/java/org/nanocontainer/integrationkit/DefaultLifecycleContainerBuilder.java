@@ -30,7 +30,8 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
         DefaultLifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(container);
 
         if (parentContainerRef != null) {
-            MutablePicoContainer parent = (MutablePicoContainer) parentContainerRef.get();
+            LifecyclePicoAdapter parentLifecycle = (LifecyclePicoAdapter) parentContainerRef.get();
+            MutablePicoContainer parent = (MutablePicoContainer) parentLifecycle.getPicoContainer();
             container.addParent(parent);
         }
 

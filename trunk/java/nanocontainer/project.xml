@@ -23,6 +23,12 @@
       <artifactId>picocontainer-xml</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
+    
+    <dependency>
+      <id>groovy</id>
+      <version>1.0-alpha-1</version>
+    </dependency>   
+    
   </dependencies>
 
 </project>

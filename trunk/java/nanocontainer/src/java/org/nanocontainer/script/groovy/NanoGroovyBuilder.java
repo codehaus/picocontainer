@@ -8,6 +8,7 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
+
 package org.nanocontainer.script.groovy;
 
 import groovy.util.BuilderSupport;
@@ -141,12 +142,15 @@ public class NanoGroovyBuilder extends BuilderSupport {
             dpc.registerComponentInstance(parent);
         }
         if (adapterFactory != null) {
-            dpc.registerComponentInstance(adapterFactory);
+            dpc.registerComponentInstance(ComponentAdapterFactory.class, adapterFactory);
         }
         DefaultPicoContainer dpc2 = new DefaultPicoContainer(dpc);
         dpc2.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
 
+        //TODO - is this puppy picking up on the CAF available to it via the transient parent container dpc ?
+
         SoftCompositionPicoContainer softPico = (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
+
         if (parent != null) {
             System.out.println("--> Setting parent");
             parent.addChildContainer(softPico);

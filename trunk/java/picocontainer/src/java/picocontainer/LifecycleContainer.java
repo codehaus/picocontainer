@@ -11,4 +11,6 @@ public interface LifecycleContainer extends Container {
 
     void stop() throws PicoStopException;
 
+    void dispose() throws PicoDisposalException;
+
 }

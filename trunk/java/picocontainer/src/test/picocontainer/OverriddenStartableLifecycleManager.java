@@ -26,6 +26,9 @@ public class OverriddenStartableLifecycleManager implements StartableLifecycleMa
         stopped.add(component.getClass());
     }
 
+    public void disposeOfComponent(Object component) throws PicoDisposalException {        
+    }
+
     public List getStarted() {
         return started;
     }

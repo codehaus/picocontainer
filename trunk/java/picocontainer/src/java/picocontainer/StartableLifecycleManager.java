@@ -16,4 +16,5 @@ public interface StartableLifecycleManager {
 
     void stopComponent(Object component) throws PicoStopException;
 
+    void disposeOfComponent(Object component) throws PicoDisposalException;
 }

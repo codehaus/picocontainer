@@ -1,11 +1,86 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"  encoding="ISO-8859-1"?>
 
-<project>
-  <extend>${basedir}/../project.xml</extend>
-  <id>nanocontainer</id>
-  <name>nanocontainer</name>
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
 
-  <dependencies>
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <pomVersion>3</pomVersion>
+    <id>nanocontainer</id>
+    <name>NanoContainer</name>
+    <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2003</inceptionYear>
+    <package>org.nanocontainer</package>
+    <logo>/images/nanocontainer.jpg</logo>
+    <description>NanoContainer is a Standalone PicoContainer</description>
+    <url>http://www.nanocontainer.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
+    <siteAddress>codehaus.org</siteAddress>
+    <siteDirectory>/www/nanocontainer.codehaus.org/</siteDirectory>
+    <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:pico</developerConnection>
+        <url>http://cvs.nanocontainer.codehaus.org/nano</url>
+        <!-- statcvs only works with this one: -->
+        <!--url>http://cvs.codehaus.org/viewcvs.cgi/nano/?cvsroot=nanocontainer</url-->
+    </repository>
+
+    <mailingLists>
+        <mailingList>
+            <name>NanoContainer Developers</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/nanocontainer-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>NanoContainer CVS Commits (CVSSpam)</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/nanocontainer-commits/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Helles&oslash;y</name>
+            <id>rinkrank</id>
+            <email>rinkrank@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+
+    <dependency>
+      <id>picocontainer</id>
+      <version>1.0-SNAPSHOT</version>
+      <url>http://www.picocontainer.org/</url>
+    </dependency>
+
     <dependency>
       <groupId>picocontainer</groupId>
       <artifactId>picoextras-testmodel</artifactId>
@@ -67,8 +142,31 @@
       <version>2.1</version>
     </dependency> 
 
+    </dependencies>
 
+    <build>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*</exclude>
+            </excludes>
+        </unitTest>
+    </build>
 
-  </dependencies>
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-faq-plugin</report>
+        <report>maven-simian-plugin</report>
+        <report>maven-changes-plugin</report>
+        <report>maven-statcvs-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-junit-report-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
 
 </project>

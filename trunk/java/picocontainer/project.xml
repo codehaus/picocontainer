@@ -10,7 +10,7 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>1.1-SNAPSHOT</currentVersion>
+    <currentVersion>1.1-beta-2</currentVersion>
 
     <organization>
         <name>Codehaus</name>

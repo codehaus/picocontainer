@@ -17,7 +17,7 @@ import javax.management.StandardMBean;
 
 
 /**
- * A factory for DynamicMBeans that can create at least {@link StandardMBean}instances.
+ * A factory for DynamicMBeans, that creates {@link StandardMBean}instances from previously registered components.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -25,22 +25,45 @@ import javax.management.StandardMBean;
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
-     * This method will throw a JMXRegistrationException, since the creation of a DynamicMBean with an explicit MBeanInfo is not
-     * supported by this implementation.
-     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
+     * Create a StandardNanoMBean for the component.
+     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, javax.management.MBeanInfo)
      */
-    public DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo) {
-        throw new JMXRegistrationException(
-                "A DynamicMBeanFactory instance supporting DynamicMBean creation with an MBeanInfo MUST be registered with the container");
+    public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
+        try {
+            return new StandardNanoMBean(componentInstance, management, mBeanInfo);
+        } catch (final NotCompliantMBeanException e) {
+            throw new JMXRegistrationException("Cannot create StandardMBean", e);
+        }
     }
 
     /**
-     * {@inheritDoc}
-     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class)
+     * Create a StandardNanoMBean for the component. The implementation expects to find the corresponding management interface
+     * in the classpath.
+     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
      */
-    public DynamicMBean create(Object componentInstance, Class management) {
+    public DynamicMBean create(final Object componentInstance, final MBeanInfo mBeanInfo) {
         try {
-            return new StandardMBean(componentInstance, management);
+            return create(componentInstance, componentInstance.getClass().getClassLoader().loadClass(
+                    mBeanInfo.getClassName() + "MBean"), mBeanInfo);
+        } catch (final ClassNotFoundException e) {
+            throw new JMXRegistrationException("Cannot load management interface for StandardMBean", e);
+        }
+    }
+
+    /**
+     * Create a DynamicMBean for the component. If the description is null a StandradMBean is created else a StandardNanoMBean.
+     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, java.lang.String)
+     */
+    public DynamicMBean create(final Object componentInstance, final Class management, final String description) {
+        try {
+            final DynamicMBean mBean = new StandardMBean(componentInstance, management);
+            if (description != null && description.length() != 0) {
+                final MBeanInfo mBeanInfo = mBean.getMBeanInfo();
+                return create(componentInstance, management, new MBeanInfo(mBeanInfo.getClassName(), description, mBeanInfo
+                        .getAttributes(), mBeanInfo.getConstructors(), mBeanInfo.getOperations(), mBeanInfo.getNotifications()));
+            } else {
+                return mBean;
+            }
         } catch (final NotCompliantMBeanException e) {
             throw new JMXRegistrationException("Cannot create StandardMBean", e);
         }

@@ -48,6 +48,6 @@ public class ComponentMulticasterAdapter implements Serializable {
      */
     public Object createComponentMulticaster(PicoContainer picoContainer, Class type, boolean callInInstantiationOrder) throws PicoException {
         List componentsToMulticast = picoContainer.getComponentInstances();
-        return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder, invocationInterceptor, new MulticastInvoker());
+        return factory.createComponentMulticaster(getClass().getClassLoader(), type, componentsToMulticast, callInInstantiationOrder, invocationInterceptor, new MulticastInvoker());
     }
 }

@@ -17,7 +17,8 @@ public class CGLIBMulticasterFactoryTestCase extends TestCase {
         MulticasterFactory multicasterFactory = new CGLIBMulticasterFactory();
         ArrayList multicaster = (ArrayList) multicasterFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
-                Arrays.asList(new ArrayList[]{one, two}),
+                ArrayList.class, 
+                Arrays.asList(new Object[]{"not a list", one, two}),
                 false,
                 new NullInvocationInterceptor(),
                 new MulticastInvoker()

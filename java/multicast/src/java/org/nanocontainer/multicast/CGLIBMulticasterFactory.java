@@ -5,6 +5,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -13,17 +14,16 @@ import java.util.List;
  */
 public class CGLIBMulticasterFactory extends AbstractMulticasterFactory {
 
-    protected Object createProxy(ClassLoader classLoader, List objectsToAggregateCallFor, Object[] targets, InvocationInterceptor invocationInterceptor, Invoker invoker) {
-        Class clazz = getProxyClass(objectsToAggregateCallFor);
-
+    protected Object createProxy(ClassLoader classLoader, Class type, List objectsToAggregateCallFor, Object[] targets, InvocationInterceptor invocationInterceptor, Invoker invoker) {
         return Enhancer.create(
-                clazz,
+                type,
                 interfaceFinder.getInterfaces(objectsToAggregateCallFor),
                 new AggregatingMethodInterceptor(classLoader, targets, invocationInterceptor,invoker));
     }
 
-    private Class getProxyClass(List objectsToAggregateCallFor) {
-        return objectsToAggregateCallFor.get(0).getClass();
+    public boolean canMulticast(Class type) {
+        int modifiers = type.getModifiers();
+        return Modifier.isPublic(modifiers) && !Modifier.isAbstract(modifiers);
     }
 
     protected class AggregatingMethodInterceptor extends AbstractAggregatingInvocationHandler implements MethodInterceptor {

@@ -51,11 +51,12 @@ public class AbstractAggregatingInvocationHandler {
         if (results.size() == 1) {
             // Got exactly one result. Just return that.
             result = results.get(0);
-        } else if (returnType.isInterface()) {
+        } else if (multicasterFactory.canMulticast(returnType)) {
             // We have two or more results
             // We can make a new proxy that aggregates all the results.
             //Class[] resultInterfaces = getInterfaces(results.toArray());
             result = multicasterFactory.createComponentMulticaster(classLoader,
+                    returnType,
                     results,
                     true,
                     invocationInterceptor,

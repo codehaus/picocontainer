@@ -21,11 +21,11 @@ import java.util.List;
  * @version $Revision$
  */
 public interface MulticasterFactory {
-    Object createComponentMulticaster(
-            ClassLoader classLoader,
-            List objectsToAggregateCallFor,
-            boolean callInReverseOrder,
-            InvocationInterceptor invocationInterceptor,
-            Invoker invoker
-            );
+    Object createComponentMulticaster(ClassLoader classLoader,
+                                      Class type, List objectsToAggregateCallFor,
+                                      boolean callInReverseOrder,
+                                      InvocationInterceptor invocationInterceptor,
+                                      Invoker invoker);
+
+    boolean canMulticast(Class type);
 }

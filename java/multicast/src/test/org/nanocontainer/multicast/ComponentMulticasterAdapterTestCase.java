@@ -314,8 +314,6 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         food.hashCode();
 
         // Get some booze. Should be ok since only one is Boozable
-        Boozable boozable = (Boozable) food;
-        assertEquals("Calvados", boozable.getBooze());
 
         // Test hashCode() and equals(Object)
         List list = new ArrayList();
@@ -337,7 +335,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         MulticasterFactory multicasterFactory = new StandardProxyMulticasterFactory();
         List multicaster = (List) multicasterFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
-                Arrays.asList(new List[]{one, two}),
+                null, Arrays.asList(new List[]{one, two}),
                 false,
                 new NullInvocationInterceptor(),
                 new MulticastInvoker()

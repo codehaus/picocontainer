@@ -15,9 +15,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NullContainer;
 
-//RMV import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;

@@ -21,13 +21,13 @@
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>nanocontainer-swing</artifactId>
-      <version>${pom.currentVersion}</version>
+      <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>nanocontainer-testmodel</artifactId>
-      <version>${pom.currentVersion}</version>
+      <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
     
   </dependencies>

@@ -22,19 +22,19 @@
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-integrationkit</artifactId>
-            <version>${pom.currentVersion}</version>
+            <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-reflection</artifactId>
-            <version>${pom.currentVersion}</version>
+            <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-script</artifactId>
-            <version>${pom.currentVersion}</version>
+            <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

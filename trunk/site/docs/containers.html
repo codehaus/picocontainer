@@ -4,19 +4,24 @@
   <title>Containers</title>
 </head>
 <body>
-PicoContainer (the project) ships with a few containers.
-<h3>DefaultPicoContainer</h3>
-The basic PicoContainer.&nbsp; No frills.&nbsp; This one has component
-registration by class.<br>
-<h3>CompositePicoContainer</h3>
-This one takes an array of PicoContainers to build a contrived single
-container. You may use that container as the parent to others. Thus
-trees of containers are not the only design.<br>
+<h3><span style="font-weight: bold;">Container Interfaces</span></h3>
+<span style="font-weight: bold;"></span>
+<h4><span style="font-weight: bold;">PicoContainer ( Java interface )</span></h4>
+This is the most basic type of PicoConatiner. It offeres a number of
+operations for a container that has had its components populated.<br
+ style="font-weight: bold;">
+<div style="margin-left: 40px;">
+<pre>Object getComponentInstance(Object componentKey) throws PicoException;<br>List getComponentInstances() throws PicoException;<br>boolean hasComponent(Object componentKey);<br>Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException;<br>Object getComponentMulticaster() throws PicoException;<br>Collection getComponentKeys();<br>Collection getChildContainers();<br>List getParentContainers();<br>ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;<br>void verify() throws PicoVerificationException;</pre>
+</div>
+<h4>MutablePicoContainer ( Java interface )</h4>
+This extends PicoContainer (above) and specifies one mechanism of
+registration for components and child/parent containers.<br>
+<pre>&nbsp;&nbsp;&nbsp; Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp; Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp; Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp; Object registerComponentInstance(Object componentInstance) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp; Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp; Object unregisterComponent(Object componentKey);<br>&nbsp;&nbsp;&nbsp; void addOrderedComponentAdapter(ComponentAdapter componentAdapter);<br>&nbsp;&nbsp;&nbsp; boolean addChild(MutablePicoContainer child);<br>&nbsp;&nbsp;&nbsp; boolean addParent(MutablePicoContainer parent);<br>&nbsp;&nbsp;&nbsp; boolean removeChild(MutablePicoContainer child);<br>&nbsp;&nbsp;&nbsp; boolean removeParent(MutablePicoContainer parent);</pre>
+<h3>PicoContainer Implementations</h3>
+<h4>DefaultPicoContainer</h4>
+The basic PicoContainer that implements MutablePicoContainer.&nbsp; It
+can optionally take a ComponentAdapterFactory in its constructor.<br>
 <br>
-Any Pico-style container that honors the PicoContainer interface can be
-eligible for inclusion in the composite. These could be
-DefaultPicoContainer or any other the Nano containers (sister project),
-or those from third parties.<br>
 <br>
 </body>
 </html>

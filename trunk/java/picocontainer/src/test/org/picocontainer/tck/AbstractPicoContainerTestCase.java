@@ -416,7 +416,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 //    }
 
     public void testSelfRegistryThrowsIllegalArgument() {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        final MutablePicoContainer pico = createPicoContainer(null);
         try {
             pico.registerComponentInstance(pico);
             fail("Should not be able to register a container to itself");
@@ -425,12 +425,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public void testShouldReturnNullWhenUnregistereingUnmanagedComponent() {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        final MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.unregisterComponentByInstance("yo"));
     }
 
     public void testShouldReturnNullForComponentAdapterOfUnregisteredType() {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        final MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponentInstanceOfType(List.class));
     }
 
@@ -469,6 +469,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         final MutablePicoContainer picoContainer = createPicoContainer(null);
         Foo foo = new Foo();
         picoContainer.registerComponentInstance(foo);
+        picoContainer.start();
         picoContainer.stop();
         assertEquals(true, foo.stopped);
     }

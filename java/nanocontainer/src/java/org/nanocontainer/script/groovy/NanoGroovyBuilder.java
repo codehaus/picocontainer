@@ -99,12 +99,13 @@ public class NanoGroovyBuilder extends BuilderSupport {
         } else if (name.equals("classpathelement")) {
             return createClassPathElementNode(attributes, parentContainer);
         } else if (name.equals("doCall")) {
-            // TODO ????
-            //BuilderSupport builder = (BuilderSupport) attributes.remove("class");
-            return null;
-
+            return processAlternateContainerNodes(parent, name, attributes);
         }
         throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
+    }
+
+    protected Object processAlternateContainerNodes(Object parent, Object name, Map attributes) {
+        return null;
     }
 
     private Object createContainerNode(Object parent, Map attributes) {

@@ -325,6 +325,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestModel\PersonBean.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\PurseBean.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestModel\SimpleTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -24,12 +24,12 @@ namespace Test.Tck
 			return SERIALIZABLE | VERIFYING | INSTANTIATING | RESOLVING;
 		}
 
-		protected IComponentAdapterFactory CreateDefaultComponentAdapterFactory() 
+		protected virtual IComponentAdapterFactory CreateDefaultComponentAdapterFactory() 
 		{
 			return new DefaultComponentAdapterFactory();
 		}
 
-		protected IPicoContainer WrapComponentInstances(Type decoratingComponentAdapterClass, IPicoContainer picoContainer, object[] wrapperDependencies)
+		protected virtual IPicoContainer WrapComponentInstances(Type decoratingComponentAdapterClass, IPicoContainer picoContainer, object[] wrapperDependencies)
 		{
 			Assert.IsTrue(typeof (DecoratingComponentAdapter).IsAssignableFrom(decoratingComponentAdapterClass));
 			IMutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
@@ -263,7 +263,7 @@ namespace Test.Tck
 		/// <param name="picoContainer">container, may probably not be used.</param>
 		/// <returns>a ComponentAdapter of the type to test with a component that fails with a SystemException at
 		/// instantiation. Registration in the pico is not necessary.</returns>
-		protected virtual IComponentAdapter prepINS_runtimeExceptionIsRethrown(IMutablePicoContainer picoContainer)
+		protected virtual IComponentAdapter prepINS_systemExceptionIsRethrown(IMutablePicoContainer picoContainer)
 		{
 			throw new AssertionException("You have to overwrite this method for a useful test");
 		}
@@ -274,7 +274,7 @@ namespace Test.Tck
 			if ((GetComponentAdapterNature() & INSTANTIATING) > 0)
 			{
 				IMutablePicoContainer picoContainer = new DefaultPicoContainer(CreateDefaultComponentAdapterFactory());
-				IComponentAdapter componentAdapter = prepINS_runtimeExceptionIsRethrown(picoContainer);
+				IComponentAdapter componentAdapter = prepINS_systemExceptionIsRethrown(picoContainer);
 				Assert.AreSame(GetComponentAdapterType(), componentAdapter.GetType());
 				try
 				{

@@ -63,7 +63,7 @@ namespace PicoContainer.Defaults
 
 		private IComponentAdapter ResolveAdapter(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
 		{
-			IComponentAdapter result = getTargetAdapter(container, expectedType, adapter);
+			IComponentAdapter result = GetTargetAdapter(container, expectedType, adapter);
 
 			if (result != null && !expectedType.IsAssignableFrom(result.ComponentImplementation))
 			{
@@ -73,7 +73,7 @@ namespace PicoContainer.Defaults
 			return result;
 		}
 
-		private IComponentAdapter getTargetAdapter(IPicoContainer container, Type expectedType, IComponentAdapter excludeAdapter)
+		private IComponentAdapter GetTargetAdapter(IPicoContainer container, Type expectedType, IComponentAdapter excludeAdapter)
 		{
 			if (componentKey != null)
 			{

@@ -14,8 +14,8 @@ namespace Test.Defaults
 		public void NonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance()
 		{
 			ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", typeof (object));
-			object o1 = componentAdapter.ComponentInstance;
-			object o2 = componentAdapter.ComponentInstance;
+			object o1 = componentAdapter.GetComponentInstance(null);
+			object o2 = componentAdapter.GetComponentInstance(null);
 			Assert.IsNotNull(o1);
 			Assert.IsFalse(o1.Equals(o2));
 		}

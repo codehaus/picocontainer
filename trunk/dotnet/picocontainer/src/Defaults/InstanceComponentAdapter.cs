@@ -17,15 +17,9 @@ namespace PicoContainer.Defaults
 	{
 		private object componentInstance;
 
-
 		public InstanceComponentAdapter(object componentKey, object componentInstance) : base(componentKey, componentInstance.GetType())
 		{
 			this.componentInstance = componentInstance;
-		}
-
-		public override object ComponentInstance
-		{
-			get { return componentInstance; }
 		}
 
 		public override object GetComponentInstance(IPicoContainer container)

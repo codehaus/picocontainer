@@ -104,17 +104,6 @@ namespace PicoContainer.Defaults
 			set { this.container = value; }
 		}
 
-		/// <summary>
-		/// Gets the component instance. This method will usually create
-		/// a new instance for each call.
-		/// </summary>
-		/// <remarks>
-		/// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
-		/// </remarks>
-		/// <returns>a component instance</returns>
-		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
-		public abstract object ComponentInstance { get; }
-
 		public abstract object GetComponentInstance(IPicoContainer container);
 
 		/// <summary>

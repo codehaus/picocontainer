@@ -25,8 +25,8 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public abstract class InstantiatingComponentAdapter : AbstractComponentAdapter
 	{
-		[NonSerialized] internal VerifyingGuard guard;
-		internal IParameter[] parameters;
+		[NonSerialized] protected DefaultVerifyingGuard verifyingGuard;
+		protected IParameter[] parameters;
 		/// <summary>
 		/// Flag indicating instanciation of non-public classes.
 		/// </summary>
@@ -57,18 +57,6 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-		/// <summary>
-		/// Gets the component instance. 
-		/// </summary>
-		/// <returns>a component instance</returns>
-		public override object ComponentInstance
-		{
-			get
-			{
-				return GetComponentInstance(Container);
-			}
-		}
-
 		public abstract override object GetComponentInstance(IPicoContainer container);
 
 		/// <summary>
@@ -90,17 +78,18 @@ namespace PicoContainer.Defaults
 		/// 
 		/// </summary>
 		[Serializable]
-		internal class VerifyingGuard : ThreadStaticCyclicDependencyGuard
+		protected class DefaultVerifyingGuard : ThreadStaticCyclicDependencyGuard
 		{
 			protected IPicoContainer guardedContainer;
-			private InstantiatingComponentAdapter ica;
+			protected InstantiatingComponentAdapter ica;
 
-			public VerifyingGuard(InstantiatingComponentAdapter ica, IPicoContainer container)
+			public DefaultVerifyingGuard(InstantiatingComponentAdapter ica, IPicoContainer guardedContainer)
 			{
 				this.ica = ica;
-				this.guardedContainer = container;
+				this.guardedContainer = guardedContainer;
 			}
 
+			// TODO move to constructor injection adapter ... mward
 			public override object Run()
 			{
 				ConstructorInfo constructor = ica.GetGreediestSatisfiableConstructor(guardedContainer);
@@ -115,17 +104,17 @@ namespace PicoContainer.Defaults
 			}
 		}
 
+		protected abstract ConstructorInfo GetGreediestSatisfiableConstructor(IPicoContainer container);
+
 		public override void Verify(IPicoContainer container)
 		{
-			if (guard == null) 
+			if (verifyingGuard == null) 
 			{
-				guard = new VerifyingGuard(this, container);
+				verifyingGuard = new DefaultVerifyingGuard(this, container);
 			}
 
-			guard.Observe(ComponentImplementation);
+			verifyingGuard.Observe(ComponentImplementation);
 		}
-
-		protected abstract ConstructorInfo GetGreediestSatisfiableConstructor(IPicoContainer container);
 
 	}
 }

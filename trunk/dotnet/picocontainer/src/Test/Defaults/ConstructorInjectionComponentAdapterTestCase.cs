@@ -102,7 +102,7 @@ namespace Test.Defaults
 			}
 		}
 
-		protected override IComponentAdapter prepINS_runtimeExceptionIsRethrown(IMutablePicoContainer picoContainer)
+		protected override IComponentAdapter prepINS_systemExceptionIsRethrown(IMutablePicoContainer picoContainer)
 		{
 			return new ConstructorInjectionComponentAdapter(typeof (RuntimeThrowing), typeof (RuntimeThrowing));
 		}

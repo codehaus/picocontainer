@@ -24,138 +24,177 @@ namespace PicoContainer.Defaults
 	/// </remarks>
 	/// </summary>
 	[Serializable]
-	public class SetterInjectionComponentAdapter : DecoratingComponentAdapter
+	public class SetterInjectionComponentAdapter : InstantiatingComponentAdapter
 	{
-		private ArrayList setters;
-		private readonly IParameter[] parameters;
+		[NonSerialized] private SetterInjectionGuard setterInjectionGuard;
+		[NonSerialized] private IList setters;
+		[NonSerialized] private Type[] setterTypes;
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="theDelegate">The component adapter to decorate</param>
-		public SetterInjectionComponentAdapter(IComponentAdapter theDelegate) : this(theDelegate, null)
+		public SetterInjectionComponentAdapter(object componentKey,
+		                                       Type componentImplementation,
+		                                       IParameter[] parameters,
+		                                       bool allowNonPublicClasses) : base(componentKey, componentImplementation, parameters, allowNonPublicClasses)
 		{
 		}
 
-		public SetterInjectionComponentAdapter(IComponentAdapter theDelegate, IParameter[] parameters) : base(theDelegate)
+		public SetterInjectionComponentAdapter(object componentKey,
+		                                       Type componentImplementation,
+		                                       IParameter[] parameters) : base(componentKey, componentImplementation, parameters, false)
 		{
-			this.parameters = parameters;
 		}
 
-		/// <summary>
-		/// Gets the component instance. This method will usually create
-		/// a new instance for each call.
-		/// </summary>
-		/// <remarks>
-		/// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
-		/// </remarks>
-		/// <returns>a component instance</returns>
-		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
-		public override object ComponentInstance
+		protected override ConstructorInfo GetGreediestSatisfiableConstructor(IPicoContainer container)
 		{
-			get
-			{
-				Object result = base.ComponentInstance;
-
-				SetDependencies(result);
-
-				return result;
-			}
+			return GetConstructor();
 		}
 
-		public override object GetComponentInstance(IPicoContainer container)
+		private ConstructorInfo GetConstructor()
 		{
-			// todo mward implement cyclical guard
-			object result = base.GetComponentInstance(container);
-
-			SetDependencies(result);
-
-			return result;
+			return ComponentImplementation.GetConstructor(Type.EmptyTypes);
 		}
 
-		private void SetDependencies(object componentInstance)
-		{
-			IList unsatisfiableDependencyTypes = new ArrayList();
-			MethodInfo[] setters = GetSetters();
-			for (int i = 0; i < setters.Length; i++)
-			{
-				MethodInfo setter = setters[i];
-				Type dependencyType = setter.GetParameters()[0].ParameterType;
-				object dependency = GetDependencyInstance(dependencyType, unsatisfiableDependencyTypes);
-				if (dependency != null)
-				{
-					try
-					{
-						setter.Invoke(componentInstance, new object[] {dependency});
-					}
-					catch (Exception e)
-					{
-						throw new PicoIntrospectionException(e);
-					}
-				}
-				else
-				{
-					unsatisfiableDependencyTypes.Add(dependencyType);
-				}
-			}
-			if (unsatisfiableDependencyTypes.Count != 0)
-			{
-				throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
-			}
-		}
-
-		private object GetDependencyInstance(Type type, IList unsatisfiableDependencyTypes)
-		{
-			if (parameters != null)
-			{
-				return GetDependencyInstanceFromParameters(type, unsatisfiableDependencyTypes);
-			}
-
-			IComponentAdapter adapterDependency = Container.GetComponentAdapterOfType(type);
-			if (adapterDependency != null)
-			{
-				return adapterDependency.ComponentInstance;
-			}
-			else
-			{
-				unsatisfiableDependencyTypes.Add(type);
-				return null;
-			}
-		}
-
-		private object GetDependencyInstanceFromParameters(Type type, IList unsatisfiableDependencyTypes)
-		{
-			foreach (IParameter parameter in parameters)
-			{
-				object instance = parameter.ResolveInstance(Container, this, type);
-
-				if(instance != null)
-				{
-					return instance;
-				}
-			}
-			unsatisfiableDependencyTypes.Add(type);
-			return null;
-		}
-
-		private MethodInfo[] GetSetters()
+		private IParameter[] GetMatchingParameterListForSetters(IPicoContainer container)
 		{
 			if (setters == null)
 			{
-				setters = new ArrayList();
-				PropertyInfo[] properties = ComponentImplementation.GetProperties();
-				foreach (PropertyInfo property in properties)
+				InitializeSetterAndTypeLists();
+			}
+
+			IParameter[] matchingParameterList = new IParameter[setters.Count];
+			ArrayList nonMatchingParameterPositions = new ArrayList(); // was Set
+			IParameter[] currentParameters = parameters != null ? parameters : CreateDefaultParameters(setterTypes);
+			for (int i = 0; i < currentParameters.Length; i++)
+			{
+				IParameter parameter = currentParameters[i];
+				bool failedDependency = true;
+				for (int j = 0; j < setterTypes.Length; j++)
 				{
-					MethodInfo method = property.GetSetMethod();
-					if (method != null)
+					if (matchingParameterList[j] == null && parameter.IsResolvable(container, this, setterTypes[j]))
 					{
-						setters.Add(method);
+						matchingParameterList[j] = parameter;
+						failedDependency = false;
+						break;
 					}
+				}
+				if (failedDependency)
+				{
+					nonMatchingParameterPositions.Add(i);
 				}
 			}
 
-			return (MethodInfo[]) setters.ToArray(typeof (MethodInfo));
+			ArrayList unsatisfiableDependencyTypes = new ArrayList();
+			for (int i = 0; i < matchingParameterList.Length; i++)
+			{
+				if (matchingParameterList[i] == null)
+				{
+					unsatisfiableDependencyTypes.Add(setterTypes[i]);
+				}
+			}
+			if (unsatisfiableDependencyTypes.Count > 0)
+			{
+				throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
+			}
+			else if (nonMatchingParameterPositions.Count > 0)
+			{
+				throw new PicoInitializationException("Following parameters do not match any of the setters for "
+					+ ComponentImplementation + ": " + nonMatchingParameterPositions.ToString());
+			}
+			return matchingParameterList;
 		}
 
+		public override Object GetComponentInstance(IPicoContainer container)
+		{
+			if (setterInjectionGuard == null)
+			{
+				setterInjectionGuard = new SetterInjectionGuard(container, this);
+			}
+			return setterInjectionGuard.Observe(ComponentImplementation);
+		}
+
+		public override void Verify(IPicoContainer container)
+		{
+			if (verifyingGuard == null)
+			{
+				verifyingGuard = new VerifyingGuard(this, container);
+			}
+			verifyingGuard.Observe(ComponentImplementation);
+		}
+
+		private void InitializeSetterAndTypeLists()
+		{
+			setters = new ArrayList();
+			ArrayList typeList = new ArrayList();
+
+			PropertyInfo[] properties = ComponentImplementation.GetProperties();
+			foreach (PropertyInfo property in properties)
+			{
+				MethodInfo method = property.GetSetMethod();
+				if (method != null)
+				{
+					setters.Add(method);
+					typeList.Add(property.PropertyType);
+				}
+			}
+
+			setterTypes = (Type[]) typeList.ToArray(typeof (Type));
+		}
+
+		[Serializable]
+		internal class SetterInjectionGuard : ThreadStaticCyclicDependencyGuard
+		{
+			private IPicoContainer guardedContainer;
+			private SetterInjectionComponentAdapter sica;
+			
+			public SetterInjectionGuard(IPicoContainer guardedContainer, SetterInjectionComponentAdapter sica)
+			{
+				this.guardedContainer = guardedContainer;
+				this.sica = sica;
+			}
+
+			public override Object Run()
+			{
+				ConstructorInfo constructorInfo = sica.GetConstructor();
+				IParameter[] matchingParameters = sica.GetMatchingParameterListForSetters(guardedContainer);
+				try
+				{
+					object componentInstance = constructorInfo.Invoke(new object[] {}); // removed newInstance call
+					for (int i = 0; i < sica.setters.Count; i++)
+					{
+						MethodInfo setter = (MethodInfo) sica.setters[i];
+						setter.Invoke(componentInstance, new Object[] {matchingParameters[i].ResolveInstance(guardedContainer, sica, sica.setterTypes[i])});
+					}
+					return componentInstance;
+				}
+				catch (TargetInvocationException e)
+				{
+					throw new PicoInvocationTargetInitializationException(e.GetBaseException());
+				}
+				catch(NullReferenceException e)
+				{
+					throw new PicoInvocationTargetInitializationException(e.GetBaseException());
+				}
+			}
+		}
+
+		[Serializable]
+		class VerifyingGuard : InstantiatingComponentAdapter.DefaultVerifyingGuard
+		{
+			public VerifyingGuard(InstantiatingComponentAdapter ica, IPicoContainer guardedContainer) 
+				: base(ica, guardedContainer)
+			{
+			}
+
+			public override Object Run()
+			{
+				SetterInjectionComponentAdapter sica = (SetterInjectionComponentAdapter)ica;
+
+				IParameter[] currentParameters = sica.GetMatchingParameterListForSetters(guardedContainer);
+				for (int i = 0; i < currentParameters.Length; i++)
+				{
+					currentParameters[i].Verify(guardedContainer, sica, sica.setterTypes[i]);
+				}
+				return null;
+			}
+		}
 	}
 }

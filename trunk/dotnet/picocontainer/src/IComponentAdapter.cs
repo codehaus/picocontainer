@@ -37,20 +37,10 @@ namespace PicoContainer
 		Type ComponentImplementation { get; }
 
 		/// <summary>
-		/// Gets the component instance. 
+		/// 
 		/// </summary>
-		/// <remarks>
-		/// This method will usually create a new instance for each call, this is not required.
-		/// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
-		/// </remarks>
-		/// <returns>The component instance</returns>
-		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>
-		/// <exception cref="PicoContainer.PicoIntrospectionException">if the component has dependencies which could not be resolved, or
-		///                                                            instantiation of the component lead to an ambigous situation within the
-		///                                                            container.</exception>
-		[Obsolete("Need to replace with GetComponentInstance(IPicoContainer)")]
-		object ComponentInstance { get; }
-
+		/// <param name="container"></param>
+		/// <returns></returns>
 		object GetComponentInstance(IPicoContainer container);
 
 		/// 

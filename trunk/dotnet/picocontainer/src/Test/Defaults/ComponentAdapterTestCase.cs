@@ -38,11 +38,6 @@ namespace Test.Defaults
 		{
 		}
 
-		public override object ComponentInstance
-		{
-			get { return null; }
-		}
-
 		public override object GetComponentInstance(IPicoContainer container)
 		{
 			return null;

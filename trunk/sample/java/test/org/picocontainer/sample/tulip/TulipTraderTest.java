@@ -13,34 +13,33 @@ import java.util.ArrayList;
  */
 public class TulipTraderTest extends TestCase {
 
-    public static interface TickerListener {
+    public static interface FlowerPriceListener {
         void flowerPriceChanged(String flower, int price);
     }
 
     // TODO is this really called "ticker"?
     public static interface FlowerTicker {
-        void addTickerListener(TickerListener tickerListener);
+        void addFlowerPriceListener(FlowerPriceListener flowerPriceListener);
     }
 
     public static class FlowerTickerStub implements FlowerTicker {
-        public void addTickerListener(TickerListener tickerListener) {
+        public void addFlowerPriceListener(FlowerPriceListener flowerPriceListener) {
 
         }
 
-        // TODO is this really called "ticker"?
-        public void changeFlowerPrice(String ticker, int value) {
+        public void changeFlowerPrice(String flower, int value) {
         }
     }
 
     public static interface FlowerMarket {
-        void sellBid(String ticker); // TODO: is this really called "bid"?
+        void sellBid(String flower);
     }
 
     public static class FlowerMarketStub implements FlowerMarket {
         private List currentSellBids = new ArrayList();
 
-        public void sellBid(String ticker) {
-            currentSellBids.add(ticker);
+        public void sellBid(String flower) {
+            currentSellBids.add(flower);
         }
 
         public List currentSellBids() {
@@ -48,18 +47,18 @@ public class TulipTraderTest extends TestCase {
         }
     }
 
-    public static class TulipTrader implements TickerListener {
+    public static class TulipTrader implements FlowerPriceListener {
         public void flowerPriceChanged(String flower, int price) {
 
         }
 
         public TulipTrader(FlowerTicker ticker,  FlowerMarket market) {
-            ticker.addTickerListener(this);
+            ticker.addFlowerPriceListener(this);
             market.sellBid("TULIP");
         }
     }
 
-    public void testSellMicrosoftWhenAboveHundred() {
+    public void testSellTulipsWhenAboveHundred() {
         FlowerTickerStub ticker = new FlowerTickerStub();
         FlowerMarketStub market = new FlowerMarketStub();
         new TulipTrader(ticker, market);

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-15"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    
+    <pomVersion>3</pomVersion>
+    <id>nanocontainer-ejb</id>
+    <name>nanocontainer-ejb</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2004</inceptionYear>
+    <package>org.nanocontainer.ejb</package>
+    <description>
+        The NanoContainer EJB project currently contains a simple
+        ComponentAdapter for client-side and stateless EJBs.
+    </description>
+    <shortDescription>NanoContainer EJB</shortDescription>
+
+    <versions>
+        <version>
+            <id>1.0-beta-1-SNAPSHOT</id>
+            <name>nanocontainer-ejb</name>
+            <tag>HEAD</tag>
+        </version>
+    </versions>
+
+    <dependencies>
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>1.0-RC-1-SNAPSHOT</version>
+        </dependency>
+        <!-- J2EE dependency, replace with you server's client jar -->
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-j2ee</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>simple-jndi</groupId>
+            <artifactId>simple-jndi</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </unitTest>
+    </build>
+
+</project>
+

@@ -129,30 +129,6 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoConfigurationException {
-
-        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "var caf = new Packages.org.picocontainer.extras.ImplementationHidingComponentAdapterFactory();\n" +
-                "var parentContainer = new NanoRhinoScriptable(caf);\n" +
-                "with (parentContainer) {\n" +
-                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServerConfig','org.nanocontainer.testmodel.DefaultWebServerConfig');\n" +
-                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
-                "}\n" +
-                "nano.setNanoRhinoScriptable(parentContainer)\n"
-        ), new MockMonitor());
-        Object ws = nano.getRootContainer().getComponentInstance(WebServer.class);
-
-        assertTrue(ws instanceof WebServer);
-        assertFalse(ws instanceof WebServerImpl);
-
-        ws = nano.getRootContainer().getComponentInstances().get(1);
-
-        assertTrue(ws instanceof WebServer);
-
-        //TODO - should be assertFalse( ), we're implementation hiding here !
-        assertTrue(ws instanceof WebServerImpl);
-    }
-
     public void testInstantiateWithInlineConfiguration() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +

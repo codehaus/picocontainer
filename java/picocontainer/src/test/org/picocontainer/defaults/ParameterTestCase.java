@@ -60,6 +60,15 @@ public class ParameterTestCase extends TestCase {
         picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         assertNull(parameter.resolveAdapter(picoContainer, TestCase.class));
     }
+	
+	
+	public void testComponentParameterResolvesPrimitiveType() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+		picoContainer.registerComponentInstance("glarch", new Integer(239));
+		Parameter parameter = new ComponentParameter("glarch");
+		assertNotNull(parameter.resolveAdapter(picoContainer,Integer.TYPE));
+		
+	}
 
     public void testConstantParameterRespectsExpectedType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();

@@ -16,6 +16,7 @@ import org.picocontainer.PicoIntrospectionException;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 /**
  * A ComponentParameter should be used to pass in a particular component
  * as argument to a different component's constructor. This is particularly
@@ -52,8 +53,23 @@ public class ComponentParameter implements Parameter, Serializable {
         if (componentKey != null) {
             result = picoContainer.getComponentAdapter(componentKey);
             if (result != null && !expectedType.isAssignableFrom(result.getComponentImplementation())) {
-                // found one, but it wasn't of the expected type
-                result = null;
+				// check for primitive value
+				if(expectedType.isPrimitive()) {
+					try {
+						Field field = result.getComponentImplementation().getField("TYPE");
+						Class type = (Class) field.get(result.getComponentInstance());
+					} catch (NoSuchFieldException e) {
+						result = null;
+					} catch (IllegalArgumentException e) {
+						result = null;
+					} catch (IllegalAccessException e) {
+						result = null;
+					} catch (ClassCastException e) {
+						result = null;
+					}
+				} else {
+					result = null;
+				}
             }
         } else {
             result = picoContainer.getComponentAdapterOfType(expectedType);

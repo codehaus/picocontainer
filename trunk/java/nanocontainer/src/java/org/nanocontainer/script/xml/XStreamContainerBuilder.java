@@ -12,6 +12,8 @@ package org.nanocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomReader;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
@@ -52,8 +54,15 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     private final static String CONSTANT = "constant";
     private final static String DEPENDENCY = "dependency";
 
+    private HierarchicalStreamDriver xsdriver;
+
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader) {
+        this(script, classLoader, new DomDriver());
+    }
+
+    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
         super(script, classLoader);
+        xsdriver = driver;
         InputSource inputSource = new InputSource(script);
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
@@ -197,7 +206,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
         for (int i = 0; i < children.getLength(); i++) {
             child = children.item(i);
             if (child.getNodeType() == Document.ELEMENT_NODE) {
-                return (new XStream()).unmarshal(new DomReader((Element) child));
+                return (new XStream(xsdriver)).unmarshal(new DomReader((Element) child));
             }
         }
         return null;

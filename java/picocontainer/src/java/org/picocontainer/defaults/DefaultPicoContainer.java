@@ -219,14 +219,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void addChild(MutablePicoContainer child) {
-        children.add(child);
+        if(!children.contains(child)) {
+            children.add(child);
+        }
         if(!child.getParentContainers().contains(this)) {
             child.addParent(this);
         }
     }
 
     public void addParent(MutablePicoContainer parent) {
-        parents.add(parent);
+        if(!parents.contains(parent)) {
+            parents.add(parent);
+        }
         if(!parent.getChildContainers().contains(this)) {
             parent.addChild(this);
         }

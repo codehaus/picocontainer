@@ -168,4 +168,8 @@
     <unjar dest="${maven.home}" src="${user.home}/maven-install-latest.jar">
     </unjar>
   </target>
+
+  <task name="cvs:make-patch" description="Creates a patch of *your* changes">
+    <cvs command="-q diff -b -u -N" output="patch.txt"/>
+  </task>
 </project>

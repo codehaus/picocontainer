@@ -4,4 +4,7 @@
     <attainGoal name="html2xdoc"/>
   </preGoal>
 
+  <goal name="cvs:make-patch" description="Creates a patch of *your* changes">
+    <cvs command="-q diff -b -u -N" output="patch.txt"/>
+  </goal>
 </project>

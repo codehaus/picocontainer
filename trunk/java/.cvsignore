@@ -1,5 +1,5 @@
-distributions.*
 target
+distributions.*
 junit*
 *.log
 *.iws

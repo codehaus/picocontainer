@@ -9,7 +9,8 @@
             pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 println("**** Webapp-level pico components registered by Groovy")
-                pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
+                pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.dao.simple.MemoryCheeseDao)
+                pico.registerComponentImplementation("cheeseStore", org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 println("**** Session-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
@@ -17,6 +18,14 @@
             }
         ]]></param-value>
     </context-param>
+    <filter>
+        <filter-name>picoRequest</filter-name>
+        <filter-class>org.nanocontainer.nanowar.ServletRequestContainerFilter</filter-class>
+    </filter>
+   <filter-mapping>
+        <filter-name>picoRequest</filter-name>
+        <url-pattern>*.vm</url-pattern>
+    </filter-mapping>
 
     <listener>
         <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
@@ -30,7 +39,7 @@
 
     <servlet>
         <servlet-name>velocity</servlet-name>
-        <servlet-class>webwork.view.velocity.WebWorkVelocityServlet</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.webwork.WebWorkVelocityServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -42,6 +51,11 @@
         <servlet-name>velocity</servlet-name>
         <url-pattern>*.vm</url-pattern>
     </servlet-mapping>
+    
+   <welcome-file-list>
+        <welcome-file>index.vm</welcome-file>
+   </welcome-file-list>
+
 </web-app>
 
 

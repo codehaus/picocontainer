@@ -31,6 +31,9 @@ public class MemoryCheeseDao implements CheeseDao, Serializable {
         cheeses.put(cheese.getName(), cheese);
     }
 
+    public void remove(Cheese cheese) {
+        cheeses.remove(cheese.getName());
+    }
     public Cheese get(String name) {
         return (Cheese) cheeses.get(name);
     }

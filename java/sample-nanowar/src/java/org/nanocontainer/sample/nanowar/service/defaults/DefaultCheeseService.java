@@ -40,4 +40,8 @@ public class DefaultCheeseService implements CheeseService {
     public void save(Cheese cheese) {
         dao.save(cheese);
     }
+    
+    public void remove(Cheese cheese) {
+        dao.remove(cheese);
+    }
 }

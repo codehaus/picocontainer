@@ -17,6 +17,10 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -89,5 +93,23 @@ public class PicoExceptionsTestCase
         assertSame(getClass(), classes[0]);
         assertSame(String.class, classes[1]);
         assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
+    }
+    
+    public void testPrintStackTrace() throws IOException {
+        PicoException nestedException = new PicoException("Outer", new Exception("Inner")){};
+        PicoException simpleException = new PicoException("Outer"){};
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(out);
+        nestedException.printStackTrace(printStream);
+        simpleException.printStackTrace(printStream);
+        out.close();
+        assertTrue(out.toString().indexOf("Caused by:") > 0);
+        out = new ByteArrayOutputStream();
+        PrintWriter writer = new PrintWriter(out);
+        nestedException.printStackTrace(writer);
+        simpleException.printStackTrace(writer);
+        writer.flush();
+        out.close();
+        assertTrue(out.toString().indexOf("Caused by:") > 0);
     }
 }

@@ -56,4 +56,12 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         visitor.visitComponentAdapter(this);
         delegate.accept(visitor);
     }
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer(this.getClass().getName());
+        buffer.append("[");
+        buffer.append(super.toString());
+        buffer.append("]");
+        return buffer.toString();
+    }
 }

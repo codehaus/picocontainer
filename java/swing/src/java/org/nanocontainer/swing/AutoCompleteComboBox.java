@@ -1,16 +1,3 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.swing;
 
 import java.util.*;
@@ -18,6 +5,10 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.*;
 
+/**
+ * @author Aslak Helles&oslash;y
+ * @version $Revision$
+ */
 public class AutoCompleteComboBox extends JComboBox {
     private static final Locale[] INSTALLED_LOCALES = Locale.getAvailableLocales();
     private ComboBoxModel model = null;
@@ -32,9 +23,6 @@ public class AutoCompleteComboBox extends JComboBox {
         f.setVisible(true);
     }
 
-    /**
-     * Constructor for AutoCompleteComboBox - 	 * The Default Model is a TreeSet which is alphabetically sorted and doesnt allow duplicates.	 * @param items
-     */
     public AutoCompleteComboBox(Object[] items, boolean caseSensitive) {
         super(items);
         model = new ComboBoxModel(items);
@@ -43,9 +31,6 @@ public class AutoCompleteComboBox extends JComboBox {
         setEditor(new AutoCompleteEditor(this, caseSensitive));
     }
 
-    /**
-     * Constructor for AutoCompleteComboBox - 	 * The Default Model is a TreeSet which is alphabetically sorted and doesnt allow duplicates.	 * @param items
-     */
     public AutoCompleteComboBox(Vector items, boolean caseSensitive) {
         super(items);
         model = new ComboBoxModel(items);
@@ -54,19 +39,13 @@ public class AutoCompleteComboBox extends JComboBox {
         setEditor(new AutoCompleteEditor(this, caseSensitive));
     }
 
-    /**
-     * Constructor for AutoCompleteComboBox - 	 * This constructor uses JComboBox's Default Model which is a Vector.	 * @param caseSensitive
-     */
     public AutoCompleteComboBox(boolean caseSensitive) {
         super();
         setEditable(true);
         setEditor(new AutoCompleteEditor(this, caseSensitive));
-    }	/*	 * ComboBoxModel.java	 */
+    }
 
     public class ComboBoxModel extends DefaultComboBoxModel {
-        /**
-         * The TreeSet which holds the combobox's data (ordered no duplicates)
-         */
         private TreeSet values = null;
 
         public ComboBoxModel(List items) {
@@ -81,14 +60,14 @@ public class AutoCompleteComboBox extends JComboBox {
         public ComboBoxModel(final Object items[]) {
             this(Arrays.asList(items));
         }
-    }	/*	 * AutoCompleteEditor.java	 */
+    }
 
     public class AutoCompleteEditor extends BasicComboBoxEditor {
         public AutoCompleteEditor(JComboBox combo, boolean caseSensitive) {
             super();
             editor = new AutoCompleteEditorComponent(combo, caseSensitive);
         }
-    }	/*	 * AutoCompleteEditorComponent.java	 */
+    }
 
     public class AutoCompleteEditorComponent extends JTextField {
         JComboBox combo = null;
@@ -100,9 +79,6 @@ public class AutoCompleteComboBox extends JComboBox {
             this.caseSensitive = caseSensitive;
         }
 
-        /**
-         * overwritten to return custom PlainDocument which does the work
-         */
         protected Document createDefaultModel() {
             return new PlainDocument() {
                 public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {

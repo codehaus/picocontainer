@@ -12,6 +12,7 @@ package org.nanocontainer.swing;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.nanocontainer.guimodel.ContainerModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class TreeDemo {
 		container3.registerComponentImplementation(WebServerImpl.class);
 
 		// Swing in action
-		ContainerTree tree = new ContainerTree(container1, IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
+		ContainerTree tree = new ContainerTree(new ContainerModel(container1), IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
 
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(tree, BorderLayout.CENTER);

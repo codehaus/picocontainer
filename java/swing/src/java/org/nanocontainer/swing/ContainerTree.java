@@ -10,6 +10,7 @@
 package org.nanocontainer.swing;
 
 import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.guimodel.ContainerModel;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
@@ -29,8 +30,8 @@ import java.util.Arrays;
  */
 public class ContainerTree extends JTree {
 
-	public ContainerTree(MutablePicoContainer mutablePicoContainer, Icon componentIcon) {
-		super(new ContainerTreeModel(mutablePicoContainer));
+	public ContainerTree(ContainerModel containerModel, Icon componentIcon) {
+		super(new ContainerTreeModel(containerModel));
 		this.setRootVisible(true);
 		this.setCellRenderer(new ContainerTreeCellRenderer(componentIcon));
 

@@ -15,6 +15,7 @@ import org.jmock.Mock;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.apache.tools.ant.filters.StringInputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -35,7 +36,7 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
         "return pico\n" +
         "";
 
-    public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialised() {
+    public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialisedWithInlinedScript() {
         ServletContainerListener listener = new ServletContainerListener();
 
         Mock servletContextMock = new Mock(ServletContext.class);
@@ -43,6 +44,22 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
         initParams.add("nanocontainer.groovy");
         servletContextMock.expectAndReturn("getInitParameterNames", C.args(), initParams.elements());
         servletContextMock.expectAndReturn("getInitParameter", C.args(C.eq("nanocontainer.groovy")), groovyScript);
+        servletContextMock.expect("setAttribute", C.args(C.eq(BUILDER), C.isA(GroovyContainerBuilder.class)));
+        servletContextMock.expect("setAttribute", C.args(C.eq(APPLICATION_CONTAINER), C.isA(PicoContainer.class)));
+
+        listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
+        servletContextMock.verify();
+    }
+
+    public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialisedWithSeparateScript() {
+        ServletContainerListener listener = new ServletContainerListener();
+
+        Mock servletContextMock = new Mock(ServletContext.class);
+        final Vector initParams = new Vector();
+        initParams.add("nanocontainer.groovy");
+        servletContextMock.expectAndReturn("getInitParameterNames", C.args(), initParams.elements());
+        servletContextMock.expectAndReturn("getInitParameter", C.args(C.eq("nanocontainer.groovy")), "/config/nanocontainer.groovy");
+        servletContextMock.expectAndReturn("getResourceAsStream", C.args(C.eq("/config/nanocontainer.groovy")), new StringInputStream(groovyScript));
         servletContextMock.expect("setAttribute", C.args(C.eq(BUILDER), C.isA(GroovyContainerBuilder.class)));
         servletContextMock.expect("setAttribute", C.args(C.eq(APPLICATION_CONTAINER), C.isA(PicoContainer.class)));
 
@@ -64,7 +81,7 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
         httpSessionMock.expect("setAttribute", C.args(C.eq(SESSION_CONTAINER), C.isA(PicoContainer.class)));
 
         listener.sessionCreated(new HttpSessionEvent((HttpSession) httpSessionMock.proxy()));
-
+        servletContextMock.verify();
         httpSessionMock.verify();
     }
 

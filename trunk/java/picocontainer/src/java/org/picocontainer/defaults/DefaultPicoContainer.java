@@ -353,7 +353,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
     */
     public void verify() throws PicoVerificationException {
-        accept(new VerifyingVisitor());
+        new VerifyingVisitor().traverse(this);
     }
 
     /**

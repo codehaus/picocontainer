@@ -30,8 +30,8 @@ public class DefaultPicoContainerWithComponentRegistryTestCase extends AbstractB
     }
 
     protected void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
-        ((DefaultPicoContainer) picoContainer).registerComponentByClass(SimpleTouchable.class);
-    }    
+        ((DefaultPicoContainer) picoContainer).registerComponent(Touchable.class, SimpleTouchable.class);
+    }
 
     // testXXX methods are in superclass.
 

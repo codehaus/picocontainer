@@ -20,7 +20,7 @@
     <maven:reactor
       basedir="${basedir}"
       includes="*/project.xml"
-      excludes="picogui/*,picoidea/*,nanocontainer/*"
+      excludes="picogui/*,picoidea/*"
       goals="${goals}"
       banner="Building"
       ignoreFailures="false"

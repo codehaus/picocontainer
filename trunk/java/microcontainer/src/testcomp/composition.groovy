@@ -18,7 +18,7 @@ pico = builder.container(parent:parent) {
     component(key:javax.management.MBeanServer, instance:MBeanServerFactory.newMBeanServer())
 
     component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl') {
-    	jmx(key:'domain:wilma=default', management:'org.nanocontainer.testmodel.Wilma',  operations:['helloCalled'], description:'This is the wilma MBeanInfo description' )
+    	jmx(key:'domain:wilma=default', management:org.nanocontainer.testmodel.Wilma,  operations:['helloCalled'], description:'This is the wilma MBeanInfo description' )
     }
 }
 

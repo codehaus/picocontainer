@@ -12,13 +12,14 @@ package org.microcontainer.jmx;
 
 import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import org.nanocontainer.jmx.DynamicMBeanProvider;
+import org.nanocontainer.jmx.DynamicMBeanFactory;
 import org.nanocontainer.jmx.JMXRegistrationException;
-import org.nanocontainer.jmx.JMXVisitor;
-import org.nanocontainer.jmx.RegisteredMBeanConstructingProvider;
+import org.nanocontainer.jmx.StandardMBeanFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 
+import javax.management.DynamicMBean;
+import javax.management.JMException;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
@@ -31,6 +32,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author Michael Ward
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDelegate {
@@ -69,18 +71,15 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 	}
 
 	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException, ClassNotFoundException {
-        MBeanServer server = (MBeanServer)picoContainer.getComponentInstanceOfType(MBeanServer.class);
-        if (server == null) {
-            throw new JMXRegistrationException("A MBeanServer must be registered within the PicoContainer");
-        }
-        RegisteredMBeanConstructingProvider registrar = new RegisteredMBeanConstructingProvider();
-		JMXVisitor jmxVisitor = new JMXVisitor(server, new DynamicMBeanProvider[] {registrar});
+        MBeanServer server = getMBeanServer();
+        DynamicMBeanFactory factory = getDynamicMBeanFactory();
         String description = (String)attributes.get("description");
 		ObjectName objectName = new ObjectName((String) attributes.remove("key"));
 		List operations = (List) attributes.remove("operations");
 		Class componentImplementation = getComponentImplementation(currentClass);
-        String managementName = (String)attributes.get("management");
-        Class management = managementName != null ? componentImplementation.getClassLoader().loadClass(managementName) : null;
+//        String managementName = (String)attributes.get("management");
+//        Class management = managementName != null ? componentImplementation.getClassLoader().loadClass(managementName) : null;
+        Class management = (Class)attributes.get("management");
 
 		// Build MBeanInfo
 		List methods = getMatchingMethods(operations, componentImplementation);
@@ -89,8 +88,19 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
 		MBeanInfo mBeanInfo = new MBeanInfo(componentImplementation.getName(), description, null, null, mBeanOperationInfos, null);
 
-        registrar.register(currentKey, objectName, management, mBeanInfo);
-		picoContainer.accept(jmxVisitor);
+        // Register MBean
+        Object componentInstance = picoContainer.getComponentInstance(currentKey);
+        DynamicMBean mBean = null;
+        if (management == null && !(currentKey instanceof Class)) {
+            mBean = factory.create(componentInstance, mBeanInfo);
+        } else {
+            mBean = factory.create(componentInstance, management != null ? management : (Class)currentKey, mBeanInfo);
+        }
+        try {
+            server.registerMBean(mBean, objectName);
+        } catch(JMException e) {
+            throw new JMXRegistrationException("Failed to register MBean '" + objectName + "'", e);
+        }
 		return picoContainer;
 	}
 
@@ -143,8 +153,20 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		return matching;
 	}
 
-	protected MBeanServer getMBeanServer(MutablePicoContainer picoContainer) {
-		return (MBeanServer) picoContainer.getComponentInstance(MBeanServer.class);
+	protected MBeanServer getMBeanServer() {
+		MBeanServer server = (MBeanServer) picoContainer.getComponentInstanceOfType(MBeanServer.class);
+        if (server == null) {
+            throw new JMXRegistrationException("A MBeanServer must be registered within the PicoContainer");
+        }
+        return server;
 	}
+
+    protected DynamicMBeanFactory getDynamicMBeanFactory() {
+        DynamicMBeanFactory factory = (DynamicMBeanFactory) picoContainer.getComponentInstanceOfType(DynamicMBeanFactory.class);
+        if (factory == null) {
+            factory = new StandardMBeanFactory();
+        }
+        return factory;
+    }
 
 }

@@ -38,7 +38,8 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
      * Create a StandardNanoMBean for the component. The implementation expects to find the corresponding management interface
-     * in the classpath.
+     * in the classpath. The lookup for this interface is done by name following the convention, that the management interface's name
+     * is tha same as the name of the class implementing the MBean, but with an appended <i>MBean</i>.
      * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final MBeanInfo mBeanInfo) {

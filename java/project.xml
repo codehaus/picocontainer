@@ -73,11 +73,11 @@
     <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>**/*Test.java</include>
-        <include>**/*TestCase.java</include>
+        <include>**/*Test.*</include>
+        <include>**/*TestCase.*</include>
       </includes>
       <excludes>
-        <exclude>**/Abstract*.java</exclude>
+        <exclude>**/Abstract*.*</exclude>
       </excludes>
       <resources>
         <resource>

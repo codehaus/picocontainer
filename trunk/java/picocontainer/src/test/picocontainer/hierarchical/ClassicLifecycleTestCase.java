@@ -3,6 +3,7 @@ package picocontainer.hierarchical;
 import junit.framework.TestCase;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 
@@ -124,7 +125,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     public void testOrderOfInstantiation() throws Exception {
 
-        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(Four.class);
         pico.registerComponent(Two.class);

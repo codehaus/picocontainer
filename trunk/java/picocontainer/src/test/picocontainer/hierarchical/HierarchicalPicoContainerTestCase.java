@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,18 +32,20 @@ import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.NullContainer;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new HierarchicalPicoContainer(null, new picocontainer.defaults.DefaultComponentFactory());
+            new HierarchicalPicoContainer(new DefaultComponentFactory(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalPicoContainer(new picocontainer.defaults.NullContainer(), null);
+            new HierarchicalPicoContainer(null, new NullContainer());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected

@@ -7,3 +7,4 @@ public interface ObjectHolder {
     Object get();
 
 }
+

@@ -1,12 +1,13 @@
 package nanocontainer.servlet.holder;
 
 import nanocontainer.servlet.ObjectHolder;
-
 import javax.servlet.ServletContext;
+
 
 /**
  * Holds an object in the ServletContext (application scope)
  */
+
 public class ApplicationScopeObjectHolder implements ObjectHolder {
 
     private ServletContext context;
@@ -26,3 +27,4 @@ public class ApplicationScopeObjectHolder implements ObjectHolder {
     }
 
 }
+

@@ -11,6 +11,14 @@
         Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-20">PICO-20</a>
         - Merge default lifecycle interfaces into one.
       </action>
+      <action dev="paul" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-28">PICO-28</a>
+        - Merge PicoInstantiationException and PicoIntrospectionException.
+      </action>
+      <action dev="paul" type="update">
+        Changed signatures on PicoContainer from registerComponent to more verbose
+        method names.
+      </action>
     </release>
 
     <release version="1.0-alpha-2" date="2003-07-10">

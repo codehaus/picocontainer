@@ -1,7 +1,5 @@
 package org.picocontainer.defaults;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -9,11 +7,13 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.ArrayList;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +32,7 @@ public class CollectionComponentParameterTestCase
         Mock componentAdapterMock = mock(ComponentAdapter.class);
         componentAdapterMock.expects(atLeastOnce()).method("getComponentKey").will(returnValue("x"));
         Mock containerMock = mock(PicoContainer.class);
+        containerMock.expects(once()).method("getComponentAdapters").withNoArguments().will(returnValue(new HashSet()));
         containerMock.expects(once()).method("getComponentAdaptersOfType").with(eq(String.class)).will(
                 returnValue(Arrays.asList(new ComponentAdapter[]{
                         new InstanceComponentAdapter("y", "Hello"), new InstanceComponentAdapter("z", "World")})));
@@ -69,21 +70,6 @@ public class CollectionComponentParameterTestCase
         public Bowl(Cod cods[], Fish fishes[]) {
             this.cods = cods;
             this.fishes = fishes;
-        }
-
-        public Bowl(Collection cods, Collection fishes) {
-            this.cods = (Cod[]) cods.toArray(new Cod[cods.size()]);
-            this.fishes = (Fish[]) fishes.toArray(new Fish[fishes.size()]);
-        }
-
-        public Bowl(Cod cod, Map map) {
-            this.cods = new Cod[]{cod};
-            Collection collection = new ArrayList();
-            for (final Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-                final Map.Entry entry = (Map.Entry) iter.next();
-                collection.add(entry.getValue());
-            }
-            this.fishes = (Fish[]) collection.toArray(new Fish[collection.size()]);
         }
     }
 
@@ -236,5 +222,18 @@ public class CollectionComponentParameterTestCase
         observer.touch();
         SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstanceOfType(SimpleTouchable.class);
         assertTrue(touchable.wasTouched);
+    }
+
+    public void testWillRemoveComponentsWithMatchingKeyFromParent() {
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation("Tom", Cod.class);
+        parent.registerComponentImplementation("Dick", Cod.class);
+        parent.registerComponentImplementation("Harry", Cod.class);
+        MutablePicoContainer child = new DefaultPicoContainer(parent);
+        child.registerComponentImplementation("Dick", Shark.class);
+        child.registerComponentImplementation(Bowl.class);
+        Bowl bowl = (Bowl) child.getComponentInstance(Bowl.class);
+        assertEquals(3, bowl.fishes.length);
+        assertEquals(2, bowl.cods.length);
     }
 }

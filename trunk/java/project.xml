@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!DOCTYPE project [
-    <!ENTITY % entities-locator SYSTEM "file:locator.ent"> %entities-locator;
-]>
-
 <project>
 
     <pomVersion>3</pomVersion>
     <name>PicoContainer</name>
     <groupId>picocontainer</groupId>
     <url>http://www.picoextras.org/${pom.artifactId}/</url>
-    &org-codehaus;
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
     <inceptionYear>2003</inceptionYear>
     <package>org</package>
     <shortDescription>PicoContainer</shortDescription>
@@ -34,7 +33,12 @@
     <dependencies>
 
         <!-- Build/Test time only -->
-        <dependency>&dep-junit;</dependency>
+
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+            <url></url>
+        </dependency>
 
     </dependencies>
 

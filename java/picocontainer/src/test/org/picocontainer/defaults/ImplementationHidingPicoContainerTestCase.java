@@ -22,7 +22,7 @@ import org.picocontainer.Parameter;
 public class ImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new ImplementationHidingPicoContainer();
+        return new ImplementationHidingPicoContainer(parent);
     }
 
     public void testInstanceIsNotAutomaticallyHidden() {

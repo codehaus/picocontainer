@@ -19,6 +19,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
@@ -430,6 +432,53 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testShouldReturnNullForComponentAdapterOfUnregisteredType() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         assertNull(pico.getComponentInstanceOfType(List.class));
+    }
+
+    public void testContainerCanHaveParent() {
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        final MutablePicoContainer picoContainer = createPicoContainer(parent);
+        assertEquals(parent, picoContainer.getParent());
+
+    }
+
+    class Foo implements Startable, Disposable{
+        public boolean started;
+        public boolean stopped;
+        public boolean disposed;
+        public void start() {
+            started = true;
+        }
+        public void stop() {
+            stopped = true;
+        }
+        public void dispose() {
+            disposed = true;
+        }
+
+    }
+
+    public void testContainerCascadesStart() {
+        final MutablePicoContainer picoContainer = createPicoContainer(null);
+        Foo foo = new Foo();
+        picoContainer.registerComponentInstance(foo);
+        picoContainer.start();
+        assertEquals(true, foo.started);
+    }
+
+    public void testContainerCascadesStop() {
+        final MutablePicoContainer picoContainer = createPicoContainer(null);
+        Foo foo = new Foo();
+        picoContainer.registerComponentInstance(foo);
+        picoContainer.stop();
+        assertEquals(true, foo.stopped);
+    }
+
+    public void testContainerCascadesDispose() {
+        final MutablePicoContainer picoContainer = createPicoContainer(null);
+        Foo foo = new Foo();
+        picoContainer.registerComponentInstance(foo);
+        picoContainer.dispose();
+        assertEquals(true, foo.disposed);
     }
 
 }

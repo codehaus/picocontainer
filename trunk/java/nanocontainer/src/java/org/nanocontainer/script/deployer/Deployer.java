@@ -2,7 +2,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.script.deployer;
+package org.nanocontainer.script.deployer;
 
 import org.apache.commons.vfs.*;
 import org.apache.commons.vfs.impl.VFSClassLoader;

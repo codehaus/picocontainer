@@ -2,7 +2,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.script;
+package org.nanocontainer.script;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;

@@ -1,4 +1,4 @@
-package org.picoextras.script.rhino;
+package org.nanocontainer.script.rhino;
 
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;

@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.picoextras.script.bsh;
+package org.nanocontainer.script.bsh;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

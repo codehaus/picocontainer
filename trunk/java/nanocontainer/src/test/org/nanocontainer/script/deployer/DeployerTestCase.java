@@ -1,4 +1,4 @@
-package org.picoextras.script.deployer;
+package org.nanocontainer.script.deployer;
 
 import junit.framework.TestCase;
 import org.apache.commons.vfs.FileObject;

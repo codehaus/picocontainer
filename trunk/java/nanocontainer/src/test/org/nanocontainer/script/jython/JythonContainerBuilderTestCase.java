@@ -1,4 +1,4 @@
-package org.picoextras.script.jython;
+package org.nanocontainer.script.jython;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;

@@ -95,4 +95,6 @@ public interface PicoContainer extends Startable, Disposable {
      * order. This method is not intended to be called explicitly by clients of the API!
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
+
+    List getComponentAdaptersOfType(Class componentType);
 }

@@ -30,21 +30,21 @@ import java.util.Map;
 import java.util.Comparator;
 
 /**
- * <p>
+ * <p/>
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
  * Constructing a container c with a parent p container will cause c to look up components
  * in p if they cannot be found inside c itself.
  * </p>
- * <p>
+ * <p/>
  * Using {@link Class} objects as keys to the various registerXXX() methods makes
  * a subtle semantic difference:
  * </p>
- * <p>
+ * <p/>
  * If there are more than one registered components of the same type and one of them are
  * registered with a {@link java.lang.Class} key of the corresponding type, this component
  * will take precedence over other components during type resolution.
  * </p>
- * <p>
+ * <p/>
  * Another place where keys that are classes make a subtle difference is in
  * {@link ImplementationHidingComponentAdapter}.
  * </p>
@@ -89,8 +89,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public final ComponentAdapter getComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
-        ComponentAdapter adapter = (ComponentAdapter)componentKeyToAdapterCache.get(componentKey);
-        if(adapter == null && parent != null) {
+        ComponentAdapter adapter = (ComponentAdapter) componentKeyToAdapterCache.get(componentKey);
+        if (adapter == null && parent != null) {
             adapter = parent.getComponentAdapter(componentKey);
         }
         return adapter;
@@ -103,14 +103,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             return adapterByKey;
         }
 
-        List found = new ArrayList();
-        for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-
-            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                found.add(componentAdapter);
-            }
-        }
+        List found = getComponentAdaptersOfType(componentType);
 
         if (found.size() == 1) {
             return ((ComponentAdapter) found.get(0));
@@ -129,6 +122,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
             throw new AmbiguousComponentResolutionException(componentType, foundClasses);
         }
+    }
+
+    public List getComponentAdaptersOfType(Class componentType) {
+        List found = new ArrayList();
+        for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+
+            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                found.add(componentAdapter);
+            }
+        }
+        return found;
     }
 
     /**
@@ -166,7 +171,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
-        if(componentInstance == this)
+        if (componentInstance == this)
             throw new PicoRegistrationException("Cannot register a container to itself. The container is already implicitly registered.");
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
@@ -204,7 +209,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) throws PicoRegistrationException {
         Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-        return registerComponentImplementation(componentKey,  componentImplementation, parametersAsArray);
+        return registerComponentImplementation(componentKey, componentImplementation, parametersAsArray);
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
@@ -214,21 +219,27 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getComponentInstances() throws PicoException {
+        return getComponentInstancesOfType(null);
+    }
+
+    public List getComponentInstancesOfType(Class type) throws PicoException {
         Map adapterToInstanceMap = new HashMap();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            Object componentInstance = componentAdapter.getComponentInstance();
-            adapterToInstanceMap.put(componentAdapter, componentInstance);
+            if (type == null || type.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                Object componentInstance = componentAdapter.getComponentInstance();
+                adapterToInstanceMap.put(componentAdapter, componentInstance);
 
-            // This is to ensure all are added. (Indirect dependencies will be added
-            // from InstantiatingComponentAdapter).
-            addOrderedComponentAdapter(componentAdapter);
+                // This is to ensure all are added. (Indirect dependencies will be added
+                // from InstantiatingComponentAdapter).
+                addOrderedComponentAdapter(componentAdapter);
+            }
         }
         List result = new ArrayList();
         for (Iterator iterator = orderedComponentAdapters.iterator(); iterator.hasNext();) {
             Object componentAdapter = iterator.next();
             final Object componentInstance = adapterToInstanceMap.get(componentAdapter);
-            if(componentInstance != null) {
+            if (componentInstance != null) {
                 // may be null in the case of the "implicit" adapter
                 // representing "this".
                 result.add(componentInstance);
@@ -263,7 +274,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         Collection componentAdapters = getComponentAdapters();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if(componentAdapter.getComponentInstance().equals(componentInstance)) {
+            if (componentAdapter.getComponentInstance().equals(componentInstance)) {
                 return unregisterComponent(componentAdapter.getComponentKey());
             }
         }
@@ -287,51 +298,39 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void start() {
-        if(started) throw new IllegalStateException("Already started");
-        if(disposed) throw new IllegalStateException("Already disposed");
-        List componentAdapters = getComponentAdaptersWithContainerAdaptersLast();
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if(Startable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                Startable startable = (Startable) componentAdapter.getComponentInstance();
-                startable.start();
-            }
+        if (started) throw new IllegalStateException("Already started");
+        if (disposed) throw new IllegalStateException("Already disposed");
+        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
+        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+            ((Startable) iterator.next()).start();
         }
         started = true;
     }
 
-    public void stop(){
-        if(!started) throw new IllegalStateException("Not started");
-        if(disposed) throw new IllegalStateException("Already disposed");
-        List componentAdapters = getComponentAdaptersWithContainerAdaptersLast();
-        Collections.reverse(componentAdapters);
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if(Startable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                Startable startable = (Startable) componentAdapter.getComponentInstance();
-                startable.stop();
-            }
+    public void stop() {
+        if (!started) throw new IllegalStateException("Not started");
+        if (disposed) throw new IllegalStateException("Already disposed");
+        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
+        Collections.reverse(componentInstances);
+        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+            ((Startable) iterator.next()).stop();
         }
         started = false;
     }
 
     public void dispose() {
-        if(disposed) throw new IllegalStateException("Already disposed");
-        List componentAdapters = getComponentAdaptersWithContainerAdaptersLast();
-        Collections.reverse(componentAdapters);
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if(Disposable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                Disposable disposable = (Disposable) componentAdapter.getComponentInstance();
-                disposable.dispose();
-            }
+        if (disposed) throw new IllegalStateException("Already disposed");
+        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Disposable.class);
+        Collections.reverse(componentInstances);
+        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+            ((Disposable) iterator.next()).dispose();
         }
         disposed = true;
     }
 
-    private List getComponentAdaptersWithContainerAdaptersLast() {
+    public List getComponentInstancesOfTypeWithContainerAdaptersLast(Class type) {
         List result = new ArrayList();
-        result.addAll(getComponentAdapters());
+        result.addAll(getComponentInstancesOfType(type));
         Collections.sort(result, new StackContainersAtEndComparator());
         return result;
     }
@@ -346,12 +345,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     class StackContainersAtEndComparator implements Comparator {
         public int compare(Object o1, Object o2) {
-            ComponentAdapter a1 = (ComponentAdapter) o1;
-            ComponentAdapter a2 = (ComponentAdapter) o2;
-            if (PicoContainer.class.isAssignableFrom(a1.getComponentImplementation())) {
+            if (PicoContainer.class.isAssignableFrom(o1.getClass())) {
                 return 1;
             }
-            if (PicoContainer.class.isAssignableFrom(a2.getComponentImplementation())) {
+            if (PicoContainer.class.isAssignableFrom(o2.getClass())) {
                 return -1;
             }
             return 0;

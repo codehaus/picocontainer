@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoContainer;
-
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$

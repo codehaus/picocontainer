@@ -123,7 +123,6 @@
   </developers>
 
   <build>
-    <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
     <unitTest>
@@ -131,14 +130,6 @@
         <include>**/*TestCase.java</include>
       </includes>
     </unitTest>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/conf</directory>
-        <includes>
-          <include>*.properties</include>
-        </includes>
-      </resource>
-    </resources>
   </build>
 
   <reports>

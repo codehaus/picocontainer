@@ -96,7 +96,9 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testContainerIsSerializable() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {
 
-        PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+        MutablePicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+        // Add a list too, using a constant parameter
+        pico.registerComponentImplementation("list", ArrayList.class, new Parameter[] {new ConstantParameter(new Integer(10))});
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -104,7 +106,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         oos.writeObject(pico);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
 
-        pico = (PicoContainer) ois.readObject();
+        pico = (MutablePicoContainer) ois.readObject();
 
         DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
         assertNotNull(dependsOnTouchable);

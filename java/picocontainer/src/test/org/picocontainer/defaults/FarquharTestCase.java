@@ -91,4 +91,64 @@ public class FarquharTestCase extends TestCase {
         assertEquals("Roquefort", flexibleOmelette.getCheese().getName());
     }
 
+    public static interface InterfaceX {
+        String getIt();
+    }
+    public static class Enabled implements InterfaceX {
+        public String getIt() {
+            return "Enabled";
+        }
+    }
+    public static class Disabled implements InterfaceX {
+        public String getIt() {
+            return "Disabled";
+        }
+    }
+    public static class Something implements InterfaceX {
+        private final Disabled disabled;
+        private final Enabled enabled;
+        private final Map map;
+
+        public Something(Disabled disabled, Enabled enabled, Map map) {
+            this.disabled = disabled;
+            this.enabled = enabled;
+            this.map = map;
+        }
+
+        public String getIt() {
+            if(map.get("enabled") == null) {
+                return disabled.getIt();
+            } else {
+                return enabled.getIt();
+            }
+        }
+    }
+    public static class NeedsInterfaceX {
+        private final InterfaceX interfaceX;
+
+        public NeedsInterfaceX(InterfaceX interfaceX) {
+            this.interfaceX = interfaceX;
+        }
+
+        public String getIt() {
+            return interfaceX.getIt();
+        }
+    }
+
+    public void testMoreWeirdness() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        Map map = new HashMap();
+        pico.registerComponentInstance(map);
+        // See class level javadoc in DefaultPicoContainer - about precedence. 
+        pico.registerComponentImplementation(InterfaceX.class, Something.class);
+        pico.registerComponentImplementation(Disabled.class);
+        pico.registerComponentImplementation(Enabled.class);
+        pico.registerComponentImplementation(NeedsInterfaceX.class);
+
+        NeedsInterfaceX needsInterfaceX = (NeedsInterfaceX) pico.getComponentInstance(NeedsInterfaceX.class);
+        assertEquals("Disabled", needsInterfaceX.getIt());
+        map.put("enabled", "blah");
+        assertEquals("Enabled", needsInterfaceX.getIt());
+    }
+
 }

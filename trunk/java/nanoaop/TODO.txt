@@ -1,0 +1,12 @@
+TODO list for nanoaop:
+
+1.  Add more pointcuts to PointcutsFactory (and implementation)
+2.  Add interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer
+3.  Create interface AspectablePicoContainerFactory
+4.  Create class DynaopAspectablePicoContainerFactory, shall use mixin to introduce DynaopAspectsManager into a PicoContainer.
+5.  Create NanoaopGroovyBuilder
+6.  Create NanoaopXMLBuilder
+7.  BeanShell, Python, etc. support
+8.  Consider alternate Nanning implementation (org.nanocontainer.nanoaop.nanning)
+9.  Javadoc everything, create package.html, proof-read.
+10. Create doc / user's guide in Confluence

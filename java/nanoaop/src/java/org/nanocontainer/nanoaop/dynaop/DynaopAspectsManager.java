@@ -38,10 +38,19 @@ public class DynaopAspectsManager implements AspectsManager {
     private final PicoContainer container = PicoContainerProxy.create(containerLoader);
     private final Aspects containerAspects;
     private final List componentAspects = new ArrayList();
-    private final PointcutsFactory pointcutsFactory = new DynaopPointcutsFactory();
+    private final PointcutsFactory pointcutsFactory;
+
+    public DynaopAspectsManager(Aspects containerAspects, PointcutsFactory pointcutsFactory) {
+        this.containerAspects = containerAspects;
+        this.pointcutsFactory = pointcutsFactory;
+    }
 
     public DynaopAspectsManager(Aspects containerAspects) {
-        this.containerAspects = containerAspects;
+        this(containerAspects, new DynaopPointcutsFactory());
+    }
+    
+    public DynaopAspectsManager(PointcutsFactory pointcutsFactory) {
+        this(new Aspects(), pointcutsFactory);
     }
 
     public DynaopAspectsManager() {

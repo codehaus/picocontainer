@@ -3,8 +3,8 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 
-import java.util.Collection;
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -20,6 +20,7 @@ public class ArraysTestCase extends TestCase {
         pico = new DefaultPicoContainer();
 
 // START SNIPPET: usage
+
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class);
@@ -33,6 +34,7 @@ public class ArraysTestCase extends TestCase {
 
     private void explanation() {
 // START SNIPPET: explanation
+
         Shark shark = new Shark();
         Cod cod = new Cod();
 
@@ -40,17 +42,18 @@ public class ArraysTestCase extends TestCase {
         Cod[] cods = new Cod[]{cod};
 
         Bowl bowl = new Bowl(fishes, cods);
-// START SNIPPET: explanation
+// END SNIPPET: explanation
     }
 
 // START SNIPPET: classes
+
     public static interface Fish {
     }
 
-    public static class Cod implements Fish{
+    public static class Cod implements Fish {
     }
 
-    public static class Shark implements Fish{
+    public static class Shark implements Fish {
     }
 
     public static class Bowl {

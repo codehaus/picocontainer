@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import picocontainer.PicoContainer;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
@@ -78,10 +79,12 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
             throw new NanoTextRegistrationException("SAXException:" + e.getMessage());
         } catch (IOException e) {
             throw new NanoTextRegistrationException("IOException:" + e.getMessage());
+        } catch (PicoIntrospectionException e) {
+
         }
     }
 
-    private void addParameters(String className, Node node) throws ClassNotFoundException {
+    private void addParameters(String className, Node node) throws ClassNotFoundException, PicoIntrospectionException {
         if (node instanceof Element) {
             Element element = (Element) node;
             NodeList paramElements = element.getElementsByTagName("param");

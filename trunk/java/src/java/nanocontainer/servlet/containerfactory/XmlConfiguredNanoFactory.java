@@ -14,7 +14,7 @@ package nanocontainer.servlet.containerfactory;
 import nanocontainer.DomRegistrationNanoContainer;
 import nanocontainer.InputSourceRegistrationNanoContainer;
 import nanocontainer.servlet.ContainerFactory;
-import nanocontainer.servlet.ObjectInstantiater;
+import nanocontainer.servlet.ObjectInstantiator;
 import org.xml.sax.InputSource;
 import picocontainer.*;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
@@ -52,7 +52,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         }
     }
 
-    private void configureAndStart(String configName, InputSourceRegistrationNanoContainer container) throws PicoRegistrationException, ClassNotFoundException, PicoInstantiationException, IOException {
+    private void configureAndStart(String configName, InputSourceRegistrationNanoContainer container) throws PicoRegistrationException, ClassNotFoundException, PicoInstantiationException, IOException, PicoIntrospectionException {
         InputStream in = getConfigInputStream(configName);
         try {
             container.registerComponents(new InputSource(in));
@@ -62,13 +62,16 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         container.instantiateComponents();
     }
 
-    public ObjectInstantiater buildInstantiater(final PicoContainer parentContainer) {
-        return new ObjectInstantiater() {
+    public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer) {
+        return new ObjectInstantiator() {
             public Object newInstance(Class cls) {
                 ClassRegistrationPicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
                 try {
                     container.registerComponent(cls);
                 } catch (PicoRegistrationException e) {
+                    // TODO: throw a custom exception
+                    throw new RuntimeException("Could not instantiate " + cls.getName(), e);
+                } catch (PicoIntrospectionException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not instantiate " + cls.getName(), e);
                 }
@@ -77,6 +80,8 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                 } catch (PicoInstantiationException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not instantiateComponents container", e);
+                } catch (PicoIntrospectionException e) {
+
                 }
                 return container.getComponent(cls);
             }

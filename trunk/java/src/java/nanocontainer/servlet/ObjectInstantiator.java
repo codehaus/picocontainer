@@ -11,7 +11,7 @@
 
 package nanocontainer.servlet;
 
-public interface ObjectInstantiater {
+public interface ObjectInstantiator {
 
     Object newInstance(Class cls);
 

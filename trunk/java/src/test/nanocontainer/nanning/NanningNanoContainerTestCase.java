@@ -3,6 +3,7 @@ package nanocontainer.nanning;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.Pointcut;
 import com.tirsen.nanning.config.AllPointcut;
+import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MethodInterceptor;
 import com.tirsen.nanning.Invocation;
@@ -11,6 +12,9 @@ import com.tirsen.nanning.MixinInstance;
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Contains both unit-tests for the NanninNanoContainer and acceptance-tests outlining an example of how to use it.
@@ -104,31 +108,31 @@ public class NanningNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        container = new NanningNanoContainer();
+        container = new NanningNanoContainer(new DefaultComponentFactory(), new DefaultPicoContainer.Default(),new AspectSystem());
     }
 
-    public void testStartService() throws PicoInstantiationException, PicoRegistrationException {
+    public void testStartService() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        container.start();
+        container.instantiateComponents();
 
         assertNotNull(container.getComponent(TransactionManager.class));
     }
 
-    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInstantiationException {
+    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
-        container.start();
+        container.instantiateComponents();
 
         TransactionAspect transactionAspect = (TransactionAspect) container.getComponent(TransactionAspect.class);
         assertNotNull(transactionAspect);
         assertNotNull(transactionAspect.transactionManager);
     }
 
-    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInstantiationException {
+    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
-        container.start();
+        container.instantiateComponents();
 
         Component component = (Component) container.getComponent(Component.class);
         assertNotNull(component);
@@ -143,7 +147,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
-        container.start();
+        container.instantiateComponents();
 
         Component component = (Component) container.getComponent(Component.class);
         component.doSomethingRequiringATransaction();
@@ -156,7 +160,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, FailingComponent.class);
-        container.start();
+        container.instantiateComponents();
 
         Component component = (Component) container.getComponent(Component.class);
         try {

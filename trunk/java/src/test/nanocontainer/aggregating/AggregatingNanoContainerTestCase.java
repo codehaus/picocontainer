@@ -13,20 +13,18 @@ package nanocontainer.aggregating;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoInstantiationException;
 import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Map;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.TestCase;
 import nanocontainer.aggregating.reflect.SequentialInvocationHandler;
 import nanocontainer.aggregating.AggregatingNanoContainer;
-
-import javax.swing.*;
 
 public class AggregatingNanoContainerTestCase extends TestCase {
 
@@ -47,7 +45,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testGetProxy() throws PicoRegistrationException, PicoInstantiationException {
+    public void testGetProxy() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
@@ -73,7 +71,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         assertEquals("Zap", foo.getBar());
     }
 
-    public void testNoInvocationHandler() throws PicoRegistrationException, PicoInstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testNoInvocationHandler() throws PicoRegistrationException, PicoInstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, PicoIntrospectionException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 

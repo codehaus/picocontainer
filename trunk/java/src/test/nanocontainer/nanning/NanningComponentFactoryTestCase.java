@@ -19,10 +19,10 @@ import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoInstantiationException;
-import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Jon Tirsen
@@ -48,14 +48,14 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     private StringBuffer log = new StringBuffer();
 
-    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInvocationTargetInitailizationException {
-        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
+    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInstantiationException, PicoIntrospectionException {
+        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
         Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class, null, null);
         assertTrue(Aspects.isAspectObject(component));
     }
 
-    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInvocationTargetInitailizationException {
-        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
+    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInstantiationException, PicoIntrospectionException {
+        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
         Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class, null, null);
         assertFalse(Aspects.isAspectObject(component));
     }
@@ -64,7 +64,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
-    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInstantiationException {
+    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {
@@ -74,7 +74,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
             }
         }));
 
-        NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem);
+        NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem, new DefaultComponentFactory());
         ClassRegistrationPicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
                 componentFactory);
         nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);

@@ -12,6 +12,7 @@ package nanocontainer;
 
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoContainer;
+import picocontainer.PicoIntrospectionException;
 
 public interface StringRegistrationNanoContainer extends PicoContainer {
 
@@ -23,7 +24,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * @throws ClassNotFoundException If th eclass could npot be found in any
      * visible classloader.
      */
-    void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException;
+    void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     /**
      * Register a component by the clasnames of its type and implementation.
@@ -33,7 +34,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * @throws ClassNotFoundException If th eclass could npot be found in any
      * visible classloader.
      */
-    void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException;
+    void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     /**
      * (Subject to change ... Joe? )
@@ -42,7 +43,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * @param value
      * @throws ClassNotFoundException
      */
-    void addParameterToComponent(String compClassName, String paramClassName, String value) throws ClassNotFoundException;
+    void addParameterToComponent(String compClassName, String paramClassName, String value) throws ClassNotFoundException, PicoIntrospectionException;
 
     /**
      * Used for classloader juggling. The container will look in each classloader in

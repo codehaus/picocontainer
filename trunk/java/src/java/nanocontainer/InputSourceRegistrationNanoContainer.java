@@ -19,7 +19,7 @@ public interface InputSourceRegistrationNanoContainer extends PicoContainer {
     /**
      * Register a list of components expressed in XML form.
      * @param registration The InputSource pertaining to the XML document detailing
-     * assembly and optionally configuration.
+     * assembly and optionally configuration. TODO: write an XSD for this.
      * @throws PicoRegistrationException If a problem registereing the component.
      * @throws ClassNotFoundException If th eclass could npot be found in any
      */

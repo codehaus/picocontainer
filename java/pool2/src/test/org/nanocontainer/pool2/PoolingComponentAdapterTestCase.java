@@ -16,6 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import EDU.oswego.cs.dl.util.concurrent.Sync;
+import EDU.oswego.cs.dl.util.concurrent.Latch;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -88,14 +91,14 @@ public class PoolingComponentAdapterTestCase extends TestCase {
 
         final Object[] borrowed = new Object[3];
         final Throwable[] threadException = new Throwable[2];
-
+        final Sync sync = new Latch();
         final StringBuffer order = new StringBuffer();
         final Thread returner = new Thread() {
             public void run() {
                 try {
-                    Thread.sleep(50); // ensure, that main thread is blocked
                     order.append("returner ");
                     componentAdapter2.returnComponentInstance(borrowed[0]);
+                    sync.release();
                 } catch (Throwable t) {
                     t.printStackTrace();
                     synchronized (componentAdapter2) {
@@ -110,8 +113,8 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         borrowed[1] = componentAdapter2.getComponentInstance(null);
         returner.start();
 
-        // should block
         order.append("main ");
+        assertTrue(sync.attempt(2000));
         borrowed[2] = componentAdapter2.getComponentInstance(null);
         order.append("main");
 
@@ -131,10 +134,12 @@ public class PoolingComponentAdapterTestCase extends TestCase {
                 new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 250);
         Object borrowed0 = componentAdapter2.getComponentInstance(null);
         Object borrowed1 = componentAdapter2.getComponentInstance(null);
+        assertNotNull(borrowed0);
+        assertNotSame(borrowed0,  borrowed1);
         long time = System.currentTimeMillis();
         try {
-            Object borrowed2 = componentAdapter2.getComponentInstance(null);
-            fail("Missing ExhaustedException, pool cannot grow further.");
+            componentAdapter2.getComponentInstance(null);
+            fail("Expected ExhaustedException, pool shouldn't be able to grow further.");
         } catch (ExhaustedException e) {
             assertTrue(System.currentTimeMillis() - time >= 250);
         }
@@ -192,8 +197,8 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         Object borrowed1 = componentAdapter2.getComponentInstance(null);
         assertEquals(2, componentAdapter2.getTotalSize());
         try {
-            Object borrowed2 = componentAdapter2.getComponentInstance(null);
-            fail("Missing ExhaustedException, pool cannot grow further.");
+            componentAdapter2.getComponentInstance(null);
+            fail("Expected ExhaustedException, pool shouldn't be able to grow further.");
         } catch (ExhaustedException e) {
         }
 

@@ -62,14 +62,14 @@
         </dependency>
         <dependency>
             <id>velocity</id>
-            <version>1.4-rc1</version>
+            <version>1.4</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
         <dependency>
             <id>velocity-tools</id>
-            <version>1.0</version>
+            <version>1.1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -106,8 +106,9 @@
             </properties>
         </dependency>
         <dependency>
-            <id>jta</id>
-            <version>1.0.1B</version>
+            <groupId>geronimo-spec</groupId>
+            <artifactId>geronimo-spec-jta</artifactId>
+            <version>1.0.1B-rc2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -157,7 +158,7 @@
         </dependency>
         <dependency>
             <id>nanocontainer</id>
-            <version>1.0-beta-5-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -188,7 +189,7 @@
         </dependency>
         <dependency>
             <id>xstream</id>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -196,7 +197,7 @@
     <!-- those are for xdoclet 2 -->
         <dependency>
             <id>xdoclet</id>
-            <version>SNAPSHOT</version>
+            <version>20050206.203044</version>
         </dependency>
         <dependency>
             <id>qfork</id>
@@ -210,7 +211,7 @@
         </dependency>
         <dependency>
             <id>generama</id>
-            <version>SNAPSHOT</version>
+            <version>20050206.202559</version>
             <url>http://xdoclet.codehaus.org/generama/</url>
         </dependency>
         <dependency>
@@ -237,23 +238,23 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-ant</artifactId>
-            <version>1.0-beta-5-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- specific plugins -->
         <dependency>
             <groupId>xdoclet-plugins</groupId>
             <artifactId>xdoclet-plugin-hibernate</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>20050206.203645</version>
         </dependency>
         <dependency>
             <groupId>xdoclet-plugins</groupId>
             <artifactId>xdoclet-plugin-webwork</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>20050206.204030</version>
         </dependency>
         <dependency>
             <groupId>xdoclet-plugins</groupId>
             <artifactId>xdoclet-plugin-externalizer</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>20050206.203712</version>
         </dependency>
     </dependencies>
  <!-- build information for the project -->

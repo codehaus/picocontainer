@@ -1,50 +1,66 @@
-<project 
+<project
     default="binary:install"
     xmlns:deploy="deploy"
     xmlns:j="jelly:core">
 
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy">
-         <attainGoal name="jar:deploy"/>
-         <attainGoal name="site:deploy"/>
-         
-         <j:if test="${!pom.currentVersion.endsWith('SNAPSHOT')}">
-           <!-- IT IS A RELEASE -->
-           <attainGoal name="dist:deploy"/>
-         </j:if>
+        <attainGoal name="jar:deploy"/>
+        <attainGoal name="site:deploy"/>
+
+        <j:if test="${!pom.currentVersion.endsWith('SNAPSHOT')}">
+            <!-- IT IS A RELEASE -->
+            <attainGoal name="dist:deploy"/>
+        </j:if>
     </goal>
 
     <goal name="pico:tck-jar">
         <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">
-            <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}" />
+            <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}"/>
         </jar>
     </goal>
 
     <goal name="pico:tck-install">
-        <attainGoal name="pico:tck-jar" />
+        <attainGoal name="pico:tck-jar"/>
         <property name="jardir__" value="${maven.repo.local}/${pom.artifactDirectory}/jars"/>
         <mkdir dir="${jardir__}"/>
         <copy
             file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
             todir="${jardir__}"
             overwrite="true"
-        />
+            />
     </goal>
 
     <goal name="pico:tck-deploy">
-        <attainGoal name="pico:tck-jar" />
+        <attainGoal name="pico:tck-jar"/>
         <deploy:artifact
             artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
             type="jars"
-        />
+            />
     </goal>
 
     <postGoal name="jar:install">
-        <attainGoal name="pico:tck-install" />
+        <attainGoal name="pico:tck-install"/>
     </postGoal>
 
     <postGoal name="jar:deploy">
-        <attainGoal name="pico:tck-deploy" />
+        <attainGoal name="pico:tck-deploy"/>
     </postGoal>
+
+    <postGoal name="xdoc:transform">
+        <attainGoal name="site-massage"/>
+    </postGoal>
+
+    <goal name="site-massage">
+        <unzip
+            src="${basedir}/site/picosite.zip"
+            dest="${basedir}/target/docs"
+            />
+
+        <exec dir="${basedir}/target/docs" executable="ruby">
+            <arg line="${basedir}/massage_site.rb"/>
+        </exec>
+
+    </goal>
 
 </project>

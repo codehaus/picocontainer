@@ -24,21 +24,16 @@ public class DefaultComponentRegistryTestCase extends TestCase {
     }
 
     public void testRegisterComponent() throws PicoRegistrationException {
-        ComponentAdapter componentSpecification = createComponentAdapter();
-
-        picoContainer.registerComponent(componentSpecification);
-
-        assertTrue(picoContainer.getComponentAdapters().contains(componentSpecification));
+        ComponentAdapter componentAdapter = createComponentAdapter();
+        picoContainer.registerComponent(componentAdapter);
+        assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
     public void testUnregisterComponent() throws PicoRegistrationException {
-        ComponentAdapter componentSpecification = createComponentAdapter();
-
-        picoContainer.registerComponent(componentSpecification);
-
+        ComponentAdapter componentAdapter = createComponentAdapter();
+        picoContainer.registerComponent(componentAdapter);
         picoContainer.unregisterComponent(Touchable.class);
-
-        assertFalse(picoContainer.getComponentAdapters().contains(componentSpecification));
+        assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
     private ComponentAdapter createComponentAdapter() throws AssignabilityRegistrationException, NotConcreteRegistrationException {

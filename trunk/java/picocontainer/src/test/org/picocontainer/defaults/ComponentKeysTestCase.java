@@ -26,7 +26,7 @@ public class ComponentKeysTestCase extends TestCase {
         pico.registerComponentImplementation("default", SimpleTouchable.class);
 
         /**
-         * By using a class as key, this should take precedence over the other Touchable (Simmpe)
+         * By using a class as key, this should take precedence over the other Touchable
          */
         pico.registerComponentImplementation(Touchable.class, DecoratedTouchable.class, new Parameter[]{
             new ComponentParameter("default")

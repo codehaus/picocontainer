@@ -27,7 +27,7 @@ import org.picocontainer.defaults.SimpleReference;
 /**
  * @author Stephen Molitor
  */
-public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
+public class NanoAopGroovyBuilderTestCase2 extends TestCase {
 
     public void testContainerScopedAdvice() throws PicoCompositionException {
         Reader script = new StringReader(
@@ -35,7 +35,7 @@ public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
                         + "import org.nanocontainer.nanoaop.*\n"
                         + ""
                         + "LoggingInterceptor logger = new LoggingInterceptor(log)\n"
-                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
+                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyBuilder()\n"
                         + "cuts = builder.pointcuts()\n"
                         + "pico = builder.container() {\n"
                         + "    component(key:Dao, class:DaoImpl)\n"
@@ -56,7 +56,7 @@ public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
                         + "import org.nanocontainer.nanoaop.*\n"
                         + ""
                         + "LoggingInterceptor logger = new LoggingInterceptor(log)\n"
-                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
+                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyBuilder()\n"
                         + "cuts = builder.pointcuts()\n"
                         + "pico = builder.container() {\n"
                         + "    component(key:Dao, class:DaoImpl) {\n"
@@ -77,7 +77,7 @@ public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
                 ""
                 + "import org.nanocontainer.nanoaop.*\n"
                 + "myFactory = new org.nanocontainer.nanoaop.script.groovy.DummyAdapterFactory()\n"
-                + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
+                + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyBuilder()\n"
                 + "pico = builder.container(adapterFactory:myFactory) {\n"
                 + "    component(key:Dao, class:DaoImpl)\n"
                 + "}\n");

@@ -141,6 +141,11 @@ public interface AspectsContainer {
 
     /**
      * Adds interfaces to classes picked by the class pointcut.
+     * <p>
+     * This can be handy when you want to add an aggregate helper interface that
+     * extends all the mixin interfaces added, to avoid the need for casting.
+     * Note that the interfaces will <i>not </i> be added if no advice
+     * (interceptor or mixin) has been applied to the component.
      * 
      * @param classPointcut classes to add interfaces to.
      * @param interfaces the interfaces to add.
@@ -149,6 +154,9 @@ public interface AspectsContainer {
 
     /**
      * Adds interfaces to components picked by the component pointcut.
+     * 
+     * @see AspectsContainer#registerInterfaces(ClassPointcut, Class[]) for
+     *      notes on using this method.
      * 
      * @param componentPointcut components to add interfaces to.
      * @param interfaces the interfaces to add.

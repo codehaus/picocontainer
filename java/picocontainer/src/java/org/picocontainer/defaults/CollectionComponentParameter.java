@@ -47,14 +47,15 @@ public class CollectionComponentParameter
         implements Parameter, Serializable {
 
     /**
-     * Use <code>ARRAY</code> as {@link Parameter} for an Array that must have elements.
+     * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
      */
     public static final CollectionComponentParameter ARRAY = new CollectionComponentParameter();
     /**
-     * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter} for an Array that may have no elements.
+     * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
+     * elements.
      */
     public static final CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);
-    
+
     private final boolean emptyCollection;
     private final Class componentKeyType;
     private final Class componentValueType;
@@ -148,7 +149,7 @@ public class CollectionComponentParameter
      */
     public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final Class collectionType = getCollectionType(expectedType);
-        return collectionType != null && (emptyCollection || getResolvingAdapters(container, adapter, expectedType).length > 0);
+        return collectionType != null && (emptyCollection || resolveAdapters(container, adapter, expectedType).length > 0);
     }
 
     /**
@@ -165,7 +166,7 @@ public class CollectionComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final ComponentAdapter[] componentAdapters = getResolvingAdapters(container, adapter, expectedType);
+            final ComponentAdapter[] componentAdapters = resolveAdapters(container, adapter, expectedType);
             if (componentAdapters.length == 0) {
                 if (!emptyCollection) {
                     throw new PicoIntrospectionException(expectedType.getName()
@@ -194,10 +195,16 @@ public class CollectionComponentParameter
     }
 
     /**
-     * @see org.picocontainer.defaults.AbstractComponentParameter#getResolvingAdapters(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter, java.lang.Class)
+     * Evaluate whether the given component adapter will be part of the collective type.
+     * 
+     * @param adapter a <code>ComponentAdapter</code> value
+     * @return <code>true</code> if the adapter takes part
      */
-    protected ComponentAdapter[] getResolvingAdapters(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    protected boolean evaluate(final ComponentAdapter adapter) {
+        return adapter != null; // use parameter, prevent compiler warning
+    }
+
+    private ComponentAdapter[] resolveAdapters(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final Class valueType = getValueType(expectedType);
         final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType);
         return (ComponentAdapter[]) adapterMap.values().toArray(new ComponentAdapter[adapterMap.size()]);
@@ -221,7 +228,7 @@ public class CollectionComponentParameter
             if (key.equals(adapter.getComponentKey())) {
                 continue;
             }
-            if (keyType.isAssignableFrom(key.getClass())) {
+            if (keyType.isAssignableFrom(key.getClass()) && evaluate(componentAdapter)) {
                 adapterMap.put(key, componentAdapter);
             }
         }
@@ -266,10 +273,10 @@ public class CollectionComponentParameter
             // The order of tests are significant. The least generic types last.
             if (List.class.isAssignableFrom(collectionType)) {
                 collectionType = ArrayList.class;
-                //            } else if (BlockingQueue.class.isAssignableFrom(collectionType)) {
-                //                collectionType = ArrayBlockingQueue.class;
-                //            } else if (Queue.class.isAssignableFrom(collectionType)) {
-                //                collectionType = LinkedList.class;
+//            } else if (BlockingQueue.class.isAssignableFrom(collectionType)) {
+//                collectionType = ArrayBlockingQueue.class;
+//            } else if (Queue.class.isAssignableFrom(collectionType)) {
+//                collectionType = LinkedList.class;
             } else if (SortedSet.class.isAssignableFrom(collectionType)) {
                 collectionType = TreeSet.class;
             } else if (Set.class.isAssignableFrom(collectionType)) {
@@ -303,8 +310,8 @@ public class CollectionComponentParameter
             // The order of tests are significant. The least generic types last.
             if (SortedMap.class.isAssignableFrom(collectionType)) {
                 collectionType = TreeMap.class;
-                //            } else if (ConcurrentMap.class.isAssignableFrom(collectionType)) {
-                //                collectionType = ConcurrentHashMap.class;
+//            } else if (ConcurrentMap.class.isAssignableFrom(collectionType)) {
+//                collectionType = ConcurrentHashMap.class;
             } else if (Map.class.isAssignableFrom(collectionType)) {
                 collectionType = HashMap.class;
             }

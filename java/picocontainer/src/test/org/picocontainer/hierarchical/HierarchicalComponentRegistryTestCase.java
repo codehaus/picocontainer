@@ -76,6 +76,7 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         assertTrue("There should have been a Wilma in the registry", hcr.hasComponentInstance(WilmaImpl.class));
         assertTrue("There should have been a Map in the registry", hcr.hasComponentInstance(Map.class));
         assertTrue("There should have been a Set in the registry", hcr.hasComponentInstance(Set.class));
+
     }
 
     public static class DerivedWilma extends WilmaImpl {
@@ -119,6 +120,11 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         assertTrue("There should be a FredImpl type", types.contains(FredImpl.class));
         assertTrue("There should be a Wilma type", types.contains(Wilma.class));
         assertTrue("There should not be a WilmaImpl type", !types.contains(WilmaImpl.class));
+
+        assertNotNull("Should have a thing implementing Wilma", hcr.findImplementingComponent(Wilma.class));
+        assertEquals("Should have a thing implementing Wilma", hcr.findImplementingComponent(Wilma.class).getClass(), WilmaImpl.class);
+        assertNotNull("Should have a thing implementing Wilma",hcr.findImplementingComponentSpecification(Wilma.class));
+
     }
 
     public void testParentContainer() throws PicoRegistrationException, PicoInitializationException {

@@ -21,51 +21,79 @@ import java.util.HashSet;
 
 public class CompositePicoContainerTestCase extends TestCase {
     private RegistrationPicoContainer pico;
-    private CompositePicoContainer.Filter filter;
+    private CompositePicoContainer.WithContainerArray composite;
 
-    public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
+    public void setUp() throws PicoRegistrationException, PicoInitializationException {
         pico = new DefaultPicoContainer.Default();
         pico.registerComponentByClass(WilmaImpl.class);
-        filter = new CompositePicoContainer.Filter(pico);
+        pico.instantiateComponents();
+        composite = new CompositePicoContainer.WithContainerArray(new PicoContainer[] {pico});
     }
 
     public void testGetComponents() {
-        assertEquals("Content of Component arrays should be the same", pico, filter.getSubject());
+        assertEquals("Collections of Component Keys should be the same", pico.getComponentKeys(), composite.getComponentKeys());
     }
 
-    public void testGetComponentTypes() {
-        assertEquals("Content of Component type arrays should be the same", pico, filter.getSubject());
+    public void testGetComponentKeys() {
+        assertEquals("Collections of Component Keys should be the same", pico.getComponents(), composite.getComponents());
     }
 
     public void testGetComponent() {
-        assertSame("Wilma should be the same", pico.getComponent(WilmaImpl.class), filter.getComponent(WilmaImpl.class));
+        assertSame("Wilma should be the same", pico.getComponent(WilmaImpl.class), composite.getComponent(WilmaImpl.class));
     }
 
     public void testHasComponent() {
-        assertEquals("Containers should contain the same", pico.hasComponent(WilmaImpl.class), filter.hasComponent(WilmaImpl.class));
+        assertEquals("Containers should contain the same", pico.hasComponent(WilmaImpl.class), composite.hasComponent(WilmaImpl.class));
     }
 
     public void testNullContainer() {
         try {
-            new CompositePicoContainer.Filter(null);
+            new CompositePicoContainer.WithContainerArray(null);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine
         }
     }
 
-    public void testNullArrayContainer() {
+    public void todo_testEmptyArrayOfContainers() {
         try {
-            new CompositePicoContainer(null);
+            new CompositePicoContainer.WithContainerArray(new PicoContainer[0]);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine
         }
     }
 
-    public void testGetToFilterFor() {
-        assertSame("The PicoContainer to filter for should be the one made in setUp", pico, filter.getSubject());
+    public void testNullInArrayOfContainers() {
+        try {
+            new CompositePicoContainer.WithContainerArray(new PicoContainer[1]);
+            fail("Should have failed with an NPE");
+        } catch (NullPointerException e) {
+            // fine
+        }
     }
+
+    public void testUnsupportedOperations() throws PicoInitializationException {
+        try {
+            composite.getCompositeComponent();
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+        try {
+            composite.getCompositeComponent(true, true);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+        try {
+            composite.instantiateComponents();
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+    }
+
 
     public void testBasic() {
 
@@ -143,7 +171,7 @@ public class CompositePicoContainerTestCase extends TestCase {
             }
         };
 
-        CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[]{a, b});
+        CompositePicoContainer acc = new CompositePicoContainer.WithContainerArray(new PicoContainer[]{a, b});
 
         assertTrue(acc.hasComponent(String.class));
         assertTrue(acc.hasComponent(Integer.class));
@@ -156,7 +184,7 @@ public class CompositePicoContainerTestCase extends TestCase {
 
     public void testEmpty() {
 
-        CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[0]);
+        CompositePicoContainer acc = new CompositePicoContainer.WithContainerArray(new PicoContainer[0]);
         assertTrue(acc.hasComponent(String.class) == false);
         assertTrue(acc.getComponent(String.class) == null);
         assertTrue(acc.getComponents().size() == 0);
@@ -169,4 +197,15 @@ public class CompositePicoContainerTestCase extends TestCase {
         // Should not barf. Should do nothing, but that hard to test.
         nc.instantiateComponents();
     }
+
+    public void testAdditiveFeatures() {
+
+        CompositePicoContainer addContainer = new CompositePicoContainer.Default();
+        addContainer.addContainer(pico);
+        assertTrue("Should have a wilma", addContainer.hasComponent(WilmaImpl.class));
+        addContainer.removeContainer(pico);
+        assertFalse("Should not have a wilma", addContainer.hasComponent(WilmaImpl.class));
+
+    }
+
 }

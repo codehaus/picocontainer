@@ -14,6 +14,9 @@ public class PicoInvocationTargetStartException extends PicoStartException {
     private final Throwable cause;
 
     public PicoInvocationTargetStartException(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("Cause must not be null");
+        }
         this.cause = cause;
     }
 
@@ -22,7 +25,9 @@ public class PicoInvocationTargetStartException extends PicoStartException {
     }
 
     public String getMessage() {
-        return "InvocationTargetException:" + cause.getMessage();
+        return "InvocationTargetException: "
+                + cause.getClass().getName()
+                + " " + cause.getMessage();
     }
 
 

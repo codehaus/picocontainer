@@ -41,8 +41,8 @@ import java.util.Set;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private transient boolean instantiating;
     private transient List sortedMatchingConstructors;
+    private transient ObjectReference instantiationGuard;
 
     /**
      * Explicitly specifies parameters. If parameters are null, default parameters
@@ -125,36 +125,33 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getGreediestSatisfiableConstructor(container);
-        if (instantiating) {
-            throw new CyclicDependencyException(getComponentImplementation());
+        if (instantiationGuard == null) {
+            instantiationGuard = new CyclicDependency.ThreadLocalGuard();
         }
-        try {
-            instantiating = true;
-            Object[] parameters = getConstructorArguments(container, constructor);
-
-            return newInstance(constructor, parameters);
-        } catch (InvocationTargetException e) {
-            if (e.getTargetException() instanceof RuntimeException) {
-                throw (RuntimeException) e.getTargetException();
-            } else if (e.getTargetException() instanceof Error) {
-                throw (Error) e.getTargetException();
+        return CyclicDependency.observe(instantiationGuard, getComponentImplementation(), new CyclicDependency() {
+            public Object run() {
+                try {
+                    Object[] parameters = getConstructorArguments(container, constructor);
+                    return newInstance(constructor, parameters);
+                } catch (InvocationTargetException e) {
+                    if (e.getTargetException() instanceof RuntimeException) {
+                        throw (RuntimeException) e.getTargetException();
+                    } else if (e.getTargetException() instanceof Error) {
+                        throw (Error) e.getTargetException();
+                    }
+                    throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                } catch (InstantiationException e) {
+                    // can't get her because checkConcrete() will catch it earlier, but see PICO-191
+                    ///CLOVER:OFF
+                    throw new PicoInitializationException("Should never get here");
+                    ///CLOVER:ON
+                } catch (IllegalAccessException e) {
+                    throw new PicoInitializationException(e);
+                }
             }
-            throw new PicoInvocationTargetInitializationException(e.getTargetException());
-        } catch (InstantiationException e) {
-            // can't get her because checkConcrete() will catch it earlier, but see PICO-191
-            ///CLOVER:OFF
-            throw new PicoInitializationException("Should never get here");
-            ///CLOVER:ON
-        } catch (IllegalAccessException e) {
-            throw new PicoInitializationException(e);
-        } catch (CyclicDependencyException e) {
-            e.appendDependency(getComponentImplementation());
-            throw e;
-        } finally {
-            instantiating = false;
-        }
+        });
     }
 
     protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {

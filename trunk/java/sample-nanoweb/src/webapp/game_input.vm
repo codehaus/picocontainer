@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
+// END SNIPPET: view
 <html>
     <body>
         <p>
@@ -11,3 +12,4 @@
         </form>
     </body>
 </html>
+// END SNIPPET: view

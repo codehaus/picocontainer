@@ -67,19 +67,40 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private boolean started = false;
     private boolean disposed = false;
 
+    /**
+     * Creates a new container with a custom ComponentAdapterFactory and a parent container.
+     * <p>
+     * <em>
+     * Important note about caching: If you intend the components to be cached, you should pass
+     * in a factory that creates {@link CachingComponentAdapter} instances, such as for example
+     * {@link CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
+     * other ComponentAdapterFactories.
+     * </em>
+     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param parent the parent container.
+     */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
         this.parent = parent;
     }
 
+    /**
+     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and a parent container.
+     */
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
 
+    /**
+     * Creates a new container with a custom ComponentAdapterFactory and no parent container.
+     */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
         this(componentAdapterFactory, null);
     }
 
+    /**
+     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and no parent container.
+     */
     public DefaultPicoContainer() {
         this(new DefaultComponentAdapterFactory(), null);
     }

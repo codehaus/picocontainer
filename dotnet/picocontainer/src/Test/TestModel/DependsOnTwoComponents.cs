@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 
-
 namespace PicoContainer.Tests.TestModel
 {
 	/// <summary>
@@ -9,10 +8,10 @@ namespace PicoContainer.Tests.TestModel
 	/// </summary>
 	public class DependsOnTwoComponents
 	{
-		public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred) 
+		public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred)
 		{
-  //    Assert.IsNotNull("Touchable cannot be passed in as null", Touchable);
+			//    Assert.IsNotNull("Touchable cannot be passed in as null", Touchable);
 //      Assert.IsNotNull("DependsOnTouchable cannot be passed in as null", fred);
-    }
+		}
 	}
 }

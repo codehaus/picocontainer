@@ -15,48 +15,51 @@ using System.Runtime.Serialization;
 
 namespace PicoContainer.Defaults
 {
-  [Serializable]
-  public class TooManySatisfiableConstructorsException : PicoIntrospectionException
+	[Serializable]
+	public class TooManySatisfiableConstructorsException : PicoIntrospectionException
 	{
-    private Type forClass;
-    private ICollection constructors;
+		private Type forClass;
+		private ICollection constructors;
 
-    public TooManySatisfiableConstructorsException(Type forClass, ICollection constructors) 
-    {
-      this.forClass = forClass;
-      this.constructors = constructors;
-    }
+		public TooManySatisfiableConstructorsException(Type forClass, ICollection constructors)
+		{
+			this.forClass = forClass;
+			this.constructors = constructors;
+		}
 
-    public TooManySatisfiableConstructorsException(){ }
+		public TooManySatisfiableConstructorsException()
+		{
+		}
 
-    public TooManySatisfiableConstructorsException(Exception ex) : base (ex) {}
-    public TooManySatisfiableConstructorsException(string message) : base(message) { }
+		public TooManySatisfiableConstructorsException(Exception ex) : base(ex)
+		{
+		}
 
-    public TooManySatisfiableConstructorsException(string message, Exception ex) : base(message,ex) {}
+		public TooManySatisfiableConstructorsException(string message) : base(message)
+		{
+		}
 
-    protected TooManySatisfiableConstructorsException(SerializationInfo info, StreamingContext context) : base (info, context) {}
+		public TooManySatisfiableConstructorsException(string message, Exception ex) : base(message, ex)
+		{
+		}
 
-    public Type ForImplementationClass
-    {
-      get {
-        return forClass;
-      }
-    }
+		protected TooManySatisfiableConstructorsException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
 
-    public override String Message
-    {
-      get 
-      {
-        return "Too many satisfiable constructors:" + constructors.ToString();
-      }
-    }
+		public Type ForImplementationClass
+		{
+			get { return forClass; }
+		}
 
-    public ICollection Constructors
-    {
-      get {
-        return constructors;
-      }
-    }
-  }
+		public override String Message
+		{
+			get { return "Too many satisfiable constructors:" + constructors.ToString(); }
+		}
+
+		public ICollection Constructors
+		{
+			get { return constructors; }
+		}
+	}
 }
-

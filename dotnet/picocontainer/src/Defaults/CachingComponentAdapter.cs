@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -9,47 +9,51 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-using System;
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// ComponentAdapter initializing the component only once. Reusing the component.
+	/// <remarks>Components registered using this adapter can be seen as Singleton. No synchronization of calls is done.
+	/// </remarks>
+	/// </summary>
+	public class CachingComponentAdapter : DecoratingComponentAdapter
+	{
+		private IObjectReference instanceReference;
 
-namespace PicoContainer.Defaults {
-  /// <summary>
-  /// ComponentAdapter initializing the component only once. Reusing the component.
-  /// <remarks>Components registered using this adapter can be seen as Singleton. No synchronization of calls is done.
-  /// </remarks>
-  /// </summary>
-  public class CachingComponentAdapter : DecoratingComponentAdapter {
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="theDelegate">The component adapter to decorate</param>
+		public CachingComponentAdapter(IComponentAdapter theDelegate) : this(theDelegate, new SimpleReference())
+		{
+		}
 
-    private IObjectReference instanceReference;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="theDelegate">The component adapter to decorate</param>
+		/// <param name="reference">Object to store the instance in. See <see cref="IObjectReference"/> for an explanation.</param>
+		public CachingComponentAdapter(IComponentAdapter theDelegate, SimpleReference reference) : base(theDelegate)
+		{
+			instanceReference = reference;
+		}
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="theDelegate">The component adapter to decorate</param>
-    public CachingComponentAdapter(IComponentAdapter theDelegate) :this (theDelegate, new SimpleReference()){
-    }
+		/// <summary>
+		/// Gets the component instance. Only one instance is created of the type
+		/// </summary>
+		/// <returns>a component instance</returns>
+		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
+		public override object ComponentInstance
+		{
+			get
+			{
+				if (instanceReference.Get() == null)
+				{
+					instanceReference.Set(base.ComponentInstance);
+				}
+				return instanceReference.Get();
+			}
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="theDelegate">The component adapter to decorate</param>
-    /// <param name="reference">Object to store the instance in. See <see cref="IObjectReference"/> for an explanation.</param>
-    public CachingComponentAdapter(IComponentAdapter theDelegate, SimpleReference reference) :base(theDelegate){
-      instanceReference= reference;
-    }
-
-    /// <summary>
-    /// Gets the component instance. Only one instance is created of the type
-    /// </summary>
-    /// <returns>a component instance</returns>
-    /// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
-    public override object ComponentInstance   {
-      get {
-        if (instanceReference.Get() == null) {
-          instanceReference.Set(base.ComponentInstance);
-        }
-        return instanceReference.Get();
-      }
-
-    }
-  }
+		}
+	}
 }

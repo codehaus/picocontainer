@@ -9,11 +9,8 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-using System;
-
 namespace PicoContainer.Tests.TestModel
 {
-
 	/// Summary description for SimpleTouchable.
 	/// </summary>
 	public class SimpleTouchable : Touchable
@@ -23,16 +20,17 @@ namespace PicoContainer.Tests.TestModel
 			//
 			// TODO: Add constructor logic here
 			//
-    }
-    #region Touchable Members
+		}
 
-    public bool wasTouched;
+		#region Touchable Members
 
-    public void touch()
-    {
-      wasTouched = true;
-    }
+		public bool wasTouched;
 
-    #endregion
-  }
+		public void touch()
+		{
+			wasTouched = true;
+		}
+
+		#endregion
+	}
 }

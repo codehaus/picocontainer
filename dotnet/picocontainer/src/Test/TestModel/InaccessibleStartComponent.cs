@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-
 using NUnit.Framework;
+
 namespace Test.TestModel
 {
 	/// <summary>
@@ -9,14 +9,16 @@ namespace Test.TestModel
 	/// </summary>
 	public class InaccessibleStartComponent
 	{
-    private IList messages;
+		private IList messages;
+
 		public InaccessibleStartComponent(IList messages)
 		{
-      this.messages = messages;
+			this.messages = messages;
 		}
 
-    private void start() {
-      messages.Add("Started");
-    }
+		private void start()
+		{
+			messages.Add("Started");
+		}
 	}
 }

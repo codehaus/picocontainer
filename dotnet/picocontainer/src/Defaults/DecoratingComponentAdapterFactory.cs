@@ -11,17 +11,20 @@
 
 using System;
 
-namespace PicoContainer.Defaults {
-	
-  public class DecoratingComponentAdapterFactory : IComponentAdapterFactory {
-    private readonly IComponentAdapterFactory theDelegate;
-		
-    public DecoratingComponentAdapterFactory(IComponentAdapterFactory theDelegate) {
-      this.theDelegate= theDelegate;
-    }
-		
-    public virtual IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
-      return theDelegate.CreateComponentAdapter(componentKey, componentImplementation, parameters);
-    }
-  }
+namespace PicoContainer.Defaults
+{
+	public class DecoratingComponentAdapterFactory : IComponentAdapterFactory
+	{
+		private readonly IComponentAdapterFactory theDelegate;
+
+		public DecoratingComponentAdapterFactory(IComponentAdapterFactory theDelegate)
+		{
+			this.theDelegate = theDelegate;
+		}
+
+		public virtual IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)
+		{
+			return theDelegate.CreateComponentAdapter(componentKey, componentImplementation, parameters);
+		}
+	}
 }

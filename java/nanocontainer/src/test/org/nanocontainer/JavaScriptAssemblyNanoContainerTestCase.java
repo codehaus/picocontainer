@@ -11,6 +11,7 @@ package org.nanocontainer;
 import junit.framework.TestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.WebServerConfig;
 import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.mozilla.javascript.JavaScriptException;
@@ -43,7 +44,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
-                ), new MockMonitor());
+        ), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
@@ -58,7 +59,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
-                ), new MockMonitor(), BespokeNanoRhinoScriptable.class);
+        ), new MockMonitor(), BespokeNanoRhinoScriptable.class);
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
@@ -74,7 +75,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                     "  addComponent('org.nanocontainer.Xxx$A');\n" +
                     "}\n" +
                     "nano.setNanoRhinoScriptable(parentContainer)\n"
-                    ), new MockMonitor(), BogusNanoRhinoScriptable.class);
+            ), new MockMonitor(), BogusNanoRhinoScriptable.class);
             fail("Should have barfed with EcmaError");
         } catch (EcmaError e) {
             // expected
@@ -98,7 +99,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  addComponent('org.nanocontainer.Xxx$C');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
-                ), new MockMonitor());
+        ), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
@@ -124,7 +125,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                     "  addComponent('org.nanocontainer.Xxx$C');\n" +
                     "}\n" +
                     "nano.setNanoRhinoScriptable(parentContainer)\n"
-                    ), new MockMonitor());
+            ), new MockMonitor());
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch (NoSatisfiableConstructorsException e) {
         }
@@ -139,7 +140,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
-                ), new MockMonitor());
+        ), new MockMonitor());
         Object ws = nano.getRootContainer().getComponentInstance(WebServer.class);
 
         assertTrue(ws instanceof WebServer);
@@ -152,4 +153,25 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         //TODO - should be assertFalse( ), we're implementation hiding here !
         assertTrue(ws instanceof WebServerImpl);
     }
+
+    public void testInstantiateWithInlineConfiguration() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                "var parentContainer = new NanoRhinoScriptable();\n" +
+                "with (parentContainer) {\n" +
+                "  var pc = new Packages.org.nanocontainer.testmodel.WebServerConfigBean();\n" +
+                "  pc.setHost('foobar.com');\n" +
+                "  pc.setPort(4321);\n" +
+                "  addComponentInstance(pc);\n" +
+                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
+                "}\n" +
+                "nano.setNanoRhinoScriptable(parentContainer)\n"
+        ), new MockMonitor());
+
+        assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
+        WebServerConfig wsc = (WebServerConfig) nano.getRootContainer().getComponentInstance(WebServerConfig.class);
+        assertEquals("foobar.com", wsc.getHost());
+        assertEquals(4321, wsc.getPort());
+    }
+
 }

@@ -15,6 +15,8 @@ import picocontainer.LifecycleContainer;
 
 public interface StringRegistrationNanoContainer extends LifecycleContainer {
 
+    void addComponentClassLoader(ClassLoader classLoader);
+
     void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException;
 
     void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException;

@@ -29,13 +29,13 @@ public class NanoNanoTestCase extends TestCase {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("picocontainer.PicoContainerImpl$Default");
-        nc.registerComponent("nanocontainer.StringRegistrationNanoContainerImpl");
+        nc.registerComponent("nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
 
         nc.start();
 
-        assertTrue("Should have a StringRegistrationNanoContainerImpl", nc.hasComponent(StringRegistrationNanoContainerImpl.class));
+        assertTrue("Should have a StringRegistrationNanoContainerImpl", nc.hasComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
 
-        tryUsingStringRegistrationNanoContainer((StringRegistrationNanoContainer) nc.getComponent(StringRegistrationNanoContainerImpl.class));
+        tryUsingStringRegistrationNanoContainer((StringRegistrationNanoContainer) nc.getComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
 
     }
 

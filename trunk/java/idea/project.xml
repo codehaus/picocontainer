@@ -6,6 +6,17 @@
   <name>picocontainer-idea</name>
 
   <dependencies>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>picocontainer-gui</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>
+
+        <dependency>
+            <id>openapi</id>
+            <version>896</version>
+            <url>http://www.intellij.net/</url>
+        </dependency>
   </dependencies>
 
 </project>

@@ -2,8 +2,11 @@ package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.ComponentNode;
 import org.picocontainer.gui.model.BeanPropertyModel;
+import org.picocontainer.gui.model.ContainerNode;
+import org.picocontainer.gui.model.BeanPropertyTableModel;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.BeanInfo;
@@ -15,7 +18,7 @@ import java.beans.Introspector;
  */
 public class PicoTreeCellRenderer extends DefaultTreeCellRenderer {
     private final Icon picoContainerIcon = new ImageIcon(getClass().getResource("picocontainer.gif"));
-    private final Icon genericComponentIcon = new ImageIcon(getClass().getResource("picocontainer.gif"));
+    private final Icon defaultComponentIcon = new ImageIcon(getClass().getResource("defaultcomponent.gif"));
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
@@ -30,15 +33,18 @@ public class PicoTreeCellRenderer extends DefaultTreeCellRenderer {
                 if(image != null) {
                     icon = new ImageIcon(image);
                 } else {
-                    icon = genericComponentIcon;
+                    icon = defaultComponentIcon;
                 }
                 label.setIcon(icon);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(tree, e.getStackTrace());
             }
-        } else {
+        } else if(value instanceof ContainerNode) {
             label.setText("PicoContainer");
             label.setIcon(picoContainerIcon);
+        } else {
+            BeanPropertyTableModel beanPropertyTableModel = (BeanPropertyTableModel) ((DefaultMutableTreeNode)value).getUserObject();
+            return new JScrollPane( new JTable(beanPropertyTableModel));
         }
         return label;
     }

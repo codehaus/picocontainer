@@ -6,6 +6,7 @@ import org.picocontainer.gui.model.ComponentNode;
 import org.picocontainer.gui.model.BeanPropertyTableModel;
 
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.*;
 import java.beans.IntrospectionException;
 
@@ -22,6 +23,10 @@ public class ComponentRegistrar {
         BeanPropertyModel beanPropertyModel = new BeanPropertyModel(componentImplementation);
         ComponentNode componentNode = new ComponentNode(beanPropertyModel);
         treeModel.insertNodeInto(componentNode, containerNode, 0);
+
+        // now make a child node of the component displaying the property table.
+        DefaultMutableTreeNode propNode = new DefaultMutableTreeNode(new BeanPropertyTableModel(beanPropertyModel));
+        treeModel.insertNodeInto(propNode, componentNode, 0);
     }
 
     public void displayInPropertyTable(BeanPropertyModel beanPropertyModel) {

@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 public class DomRegistrationNanoContainer implements InputSourceRegistrationNanoContainer, Serializable {
 
@@ -115,7 +116,7 @@ public class DomRegistrationNanoContainer implements InputSourceRegistrationNano
         return stringRegistrationNanoContainer.getComponentInstance(componentKey);
     }
 
-    public Collection getComponentInstances() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public List getComponentInstances() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return stringRegistrationNanoContainer.getComponentInstances();
     }
 

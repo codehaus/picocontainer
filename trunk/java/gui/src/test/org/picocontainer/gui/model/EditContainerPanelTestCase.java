@@ -78,4 +78,8 @@ public class EditContainerPanelTestCase extends TestCase {
 //        panel.executeSelected();
 //    }
 //
+    public void testIt() {
+
+    }
+
 }

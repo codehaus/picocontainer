@@ -44,7 +44,7 @@ public class BeanStyleComponentFactoryTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer(new BeanStyleComponentFactory());
 
         pico.registerComponent(Dog.class, DogImpl.class);
-        pico.registerComponent(ManImpl.class);
+        pico.registerComponentByClass(ManImpl.class);
 
         pico.instantiateComponents();
 

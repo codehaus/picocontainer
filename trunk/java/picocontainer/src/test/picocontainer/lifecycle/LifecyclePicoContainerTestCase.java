@@ -146,10 +146,10 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent(Four.class);
-        pico.registerComponent(Two.class);
-        pico.registerComponent(One.class);
-        pico.registerComponent(Three.class);
+        pico.registerComponentByClass(Four.class);
+        pico.registerComponentByClass(Two.class);
+        pico.registerComponentByClass(One.class);
+        pico.registerComponentByClass(Three.class);
 
         pico.instantiateComponents();
 
@@ -178,10 +178,10 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(One.class);
-        pico.registerComponent(Two.class);
-        pico.registerComponent(Three.class);
-        pico.registerComponent(Four.class);
+        pico.registerComponentByClass(One.class);
+        pico.registerComponentByClass(Two.class);
+        pico.registerComponentByClass(Three.class);
+        pico.registerComponentByClass(Four.class);
 
         pico.instantiateComponents();
 
@@ -233,8 +233,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
 
@@ -250,8 +250,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     public void testStartStopStopCausingBarf() throws Exception {
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
         pico.start();
@@ -267,8 +267,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     public void testDisposeDisposeCausingBarf() throws Exception {
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
         pico.start();
@@ -286,8 +286,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
         pico.start();
@@ -341,9 +341,9 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     public void testStartStopOfDaemonizedThread() throws Exception {
         LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
-        pico.registerComponent(FooRunnable.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(FooRunnable.class);
 
         pico.instantiateComponents();
         pico.start();
@@ -365,7 +365,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
         // Wilma is not Startable (etc). This container should be able to handle the
         // fact that none of the comps are Startable (etc).
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
 

@@ -21,7 +21,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @param componentImplementation The class of the component to instantiate
      * @throws PicoRegistrationException If a registration problem
      */
-    void registerComponent(Class componentImplementation)
+    void registerComponentByClass(Class componentImplementation)
             throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
@@ -58,7 +58,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
             throws PicoRegistrationException, PicoIntrospectionException;
 
     // TODO: move Parameter to this package. We shouldn't depend on subpackages.
-    void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters)
+    void registerComponent(Class componentType, Class componentImplementation, Parameter[] parameters)
             throws PicoRegistrationException;
 
     /**

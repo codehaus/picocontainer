@@ -79,7 +79,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
         ClassRegistrationPicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
                 componentFactory);
         nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
-        nanningEnabledPicoContainer.registerComponent(FredImpl.class);
+        nanningEnabledPicoContainer.registerComponentByClass(FredImpl.class);
 
         assertEquals("", log.toString());
 

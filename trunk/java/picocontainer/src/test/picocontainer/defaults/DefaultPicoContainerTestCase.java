@@ -128,8 +128,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        pico.registerComponent(PeelableComponent.class);
-        pico.registerComponent(CoincidentallyPeelableComponent.class);
+        pico.registerComponentByClass(PeelableComponent.class);
+        pico.registerComponentByClass(CoincidentallyPeelableComponent.class);
         pico.instantiateComponents();
 
         assertEquals(2, pico.getComponents().length);
@@ -151,9 +151,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent(PeelableComponent.class);
-        pico.registerComponent(CoincidentallyPeelableComponent.class);
-        pico.registerComponent(PeelableAndWashableComponent.class);
+        pico.registerComponentByClass(PeelableComponent.class);
+        pico.registerComponentByClass(CoincidentallyPeelableComponent.class);
+        pico.registerComponentByClass(PeelableAndWashableComponent.class);
 
         pico.instantiateComponents();
 
@@ -190,8 +190,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(PeelableComponent.class, peelableComponent);
 
         //some managed ones
-        pico.registerComponent(CoincidentallyPeelableComponent.class);
-        pico.registerComponent(PeelableAndWashableComponent.class);
+        pico.registerComponentByClass(CoincidentallyPeelableComponent.class);
+        pico.registerComponentByClass(PeelableAndWashableComponent.class);
 
         pico.instantiateComponents();
 
@@ -258,8 +258,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.registerComponent(Recorder.class, recorder);
         pico.registerComponent(Aa.class, unmanagedComponent);
-        pico.registerComponent(Bb.class);
-        pico.registerComponent(Cc.class);
+        pico.registerComponentByClass(Bb.class);
+        pico.registerComponentByClass(Cc.class);
 
         pico.instantiateComponents();
 
@@ -284,8 +284,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent(PeelableComponent.class);
-        pico.registerComponent(PeelableAndWashableComponent.class);
+        pico.registerComponentByClass(PeelableComponent.class);
+        pico.registerComponentByClass(PeelableAndWashableComponent.class);
 
         pico.instantiateComponents();
 
@@ -389,9 +389,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
             throws NotConcreteRegistrationException, AssignabilityRegistrationException,
             DuplicateComponentTypeRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        pico.registerComponent(Recorder.class);
-        pico.registerComponent(AppleFactory.class);
-        pico.registerComponent(OrangeFactory.class);
+        pico.registerComponentByClass(Recorder.class);
+        pico.registerComponentByClass(AppleFactory.class);
+        pico.registerComponentByClass(OrangeFactory.class);
 
         pico.instantiateComponents();
 
@@ -468,8 +468,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
 
@@ -482,7 +482,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         assertNull(pico.findImplementingComponentSpecification(Wilma.class));
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
         assertNotNull(pico.findImplementingComponentSpecification(WilmaImpl.class));
         assertNotNull(pico.findImplementingComponentSpecification(Wilma.class));
     }
@@ -512,7 +512,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testInstantiateOneComponent() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
         pico.instantiateComponents();
 
         WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);

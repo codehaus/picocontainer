@@ -13,13 +13,19 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomReader;
 
 /**
+ * Implementation of XMLPseudoComponentFactory that uses XStream to unmarshal
+ * DOM elements.
+ * 
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
 public class XStreamXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
-    public Object makeInstance(Element elem) throws ClassNotFoundException {
+    /**
+     * {@inheritDoc}
+     * @see XMLPseudoComponentFactory#makeInstance(Element)
+     */
+    public Object makeInstance(Element element) throws ClassNotFoundException {
         XStream xs = new XStream();
-        Object result = xs.unmarshal(new DomReader(elem));
-        return result;
+        return xs.unmarshal(new DomReader(element));
     }
 }

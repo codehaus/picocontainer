@@ -180,7 +180,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Constructor constructor;
         for (int i = 0; i < allConstructors.length; i++) {
             constructor = allConstructors[i];
-            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) 
+            if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
                     && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);
             }

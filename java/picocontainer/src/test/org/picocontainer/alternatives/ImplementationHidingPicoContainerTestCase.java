@@ -25,4 +25,17 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
     public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
         super.testStartStopAndDisposeNotCascadedtoRemovedChildren();
     }
+
+    public static class MyThread extends Thread {
+        public MyThread(String s){super(s);}
+    }
+
+    public void testHidingWithoutParameter() {
+        // this was a bug reported by Arnd Kors on 21st Sept on the mail list.
+        ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer();
+        pico.registerComponentImplementation(String.class);
+        pico.registerComponentImplementation(Runnable.class, MyThread.class);
+        pico.verify();
+    }
+
 }

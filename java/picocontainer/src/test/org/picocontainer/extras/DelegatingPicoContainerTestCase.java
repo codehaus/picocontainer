@@ -46,6 +46,16 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         }
     }
 
+    public void testChildOverridesParent() {
+        parent.registerComponentImplementation(SimpleTouchable.class);
+        child.registerComponentImplementation(SimpleTouchable.class);
+
+        SimpleTouchable parentTouchable = (SimpleTouchable) parent.getComponentInstance(SimpleTouchable.class);
+        SimpleTouchable childTouchable = (SimpleTouchable) child.getComponentInstance(SimpleTouchable.class);
+        assertEquals(1, child.getComponentInstances().size());
+        assertNotSame(parentTouchable, childTouchable);
+    }
+
     public void testMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         parent.registerComponentImplementation(SimpleTouchable.class);
         child.registerComponentImplementation(DependsOnTouchable.class);

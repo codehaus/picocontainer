@@ -10,8 +10,8 @@ package org.nanocontainer;
 
 import org.mozilla.javascript.*;
 import org.picocontainer.PicoConfigurationException;
-import org.nanocontainer.rhino.RhinoFrontEnd;
-import org.nanocontainer.rhino.DefaultRhinoFrontEnd;
+import org.nanocontainer.rhino.NanoRhinoScriptable;
+import org.nanocontainer.rhino.DefaultNanoRhinoScriptable;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -28,7 +28,7 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
         try {
             Scriptable scriptable = cx.initStandardObjects(null);
             try {
-                ScriptableObject.defineClass(scriptable, DefaultRhinoFrontEnd.class);
+                ScriptableObject.defineClass(scriptable, DefaultNanoRhinoScriptable.class);
             } catch (final Exception e) {
                 throw new PicoConfigurationException() {
                     public String getMessage() {
@@ -60,11 +60,11 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
     }
 
     public static class NanoHelper {
-        RhinoFrontEnd rhinoFrontEnd;
-        public RhinoFrontEnd getRhinoFrontEnd() {
+        NanoRhinoScriptable rhinoFrontEnd;
+        public NanoRhinoScriptable getRhinoFrontEnd() {
             return rhinoFrontEnd;
         }
-        public void setRhinoFrontEnd(RhinoFrontEnd rhinoFrontEnd) {
+        public void setRhinoFrontEnd(NanoRhinoScriptable rhinoFrontEnd) {
             this.rhinoFrontEnd = rhinoFrontEnd;
         }
     }

@@ -11,7 +11,7 @@ package org.nanocontainer.rhino;
 import org.picocontainer.MutablePicoContainer;
 import org.mozilla.javascript.Scriptable;
 
-public interface RhinoFrontEnd extends Scriptable {
+public interface NanoRhinoScriptable extends Scriptable {
 
     MutablePicoContainer getPicoContainer();
 

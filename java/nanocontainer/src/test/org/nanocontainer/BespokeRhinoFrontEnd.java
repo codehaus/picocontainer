@@ -8,9 +8,9 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.nanocontainer.rhino.DefaultRhinoFrontEnd;
+import org.nanocontainer.rhino.DefaultNanoRhinoScriptable;
 
-public class BespokeRhinoFrontEnd extends DefaultRhinoFrontEnd {
+public class BespokeRhinoFrontEnd extends DefaultNanoRhinoScriptable {
 
     public static boolean used;
     public BespokeRhinoFrontEnd() {

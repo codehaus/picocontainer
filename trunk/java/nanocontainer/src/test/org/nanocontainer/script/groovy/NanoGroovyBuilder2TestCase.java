@@ -15,26 +15,19 @@ import java.io.StringReader;
  */
 public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public void testNothing() {
-
-    }
-
-    public void doNOT_testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
-
-        // Hmmm NanoGroovyBuilder like this
-
+    public void testInstantiateBasicScriptable() throws PicoCompositionException {
         Reader script = new StringReader("" +
-                "foo = 'eee'\n" +
-//                "import org.nanocontainer.script.groovy.Xxx\n" +
-//                "Xxx.reset()\n" +
-//                "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-//                "pico = builder.container {\n" +
-//                "    component(Xxx$A)\n" +
+                "import org.nanocontainer.script.groovy.Xxx\n" +
+                "import org.nanocontainer.script.groovy.Xxx$A\n" +
+                "Xxx.reset()\n" +
+                "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
+                "pico = builder.container {\n" +
+                "    component(Xxx$A)\n" +
                 "}");
 
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
-        pico.start();
-        pico.stop();
+        // LifecyleContainerBuilder starts the container
+        pico.dispose();
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder);
     }

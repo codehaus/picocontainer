@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
 import java.beans.beancontext.BeanContextServicesListener;
+import java.io.FileDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -30,17 +31,17 @@ public class ClassHierarchyIntrospectorTestCase extends TestCase {
     }
 
     public void testMostCommonSuperclassForClassesAreInSameHierarchy() throws IOException {
-        assertEquals(OutputStreamWriter.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter("~"), new OutputStreamWriter(System.out)}));
-        assertEquals(OutputStreamWriter.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new FileWriter("~")}));
+        assertEquals(OutputStreamWriter.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)}));
+        assertEquals(OutputStreamWriter.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)}));
     }
 
     public void testMostCommonSuperclassForClassesInSameOrDifferentHierarchy() throws IOException {
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter("~"), new StringWriter(), new OutputStreamWriter(System.out)}));
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter("~"), new OutputStreamWriter(System.out), new StringWriter()}));
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new StringWriter(), new FileWriter("~"), new OutputStreamWriter(System.out)}));
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new FileWriter("~"), new StringWriter()}));
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new StringWriter(), new OutputStreamWriter(System.out), new FileWriter("~")}));
-        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new StringWriter(), new FileWriter("~")}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter(FileDescriptor.out), new StringWriter(), new OutputStreamWriter(System.out)}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out), new StringWriter()}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new StringWriter(), new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out), new StringWriter()}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new StringWriter(), new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)}));
+        assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new StringWriter(), new FileWriter(FileDescriptor.out)}));
     }
 
     public void testMostCommonSuperclassForUnmatchingObjects() {

@@ -70,25 +70,28 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
     }
 
     /**
-     * Shorthand for {@link #getAggregateComponentProxy(boolean, boolean)}(true, true).
-     * @return a proxy.
+     * @deprecated Use getCompositeComponent instead
      */
     public Object getAggregateComponentProxy() {
-        return getAggregateComponentProxy(true, false);
+        return getCompositeComponent();
     }
 
     /**
-     * Returns a proxy that implements the union of all the components'
-     * interfaces.
-     * Calling a method on the returned Object will call the
-     * method on all components in the container that implement
-     * that interface.
-     *
-     * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)
-     * @param callInInstantiationOrder whether to exclude components registered with {@link #registerComponent(Class, Object)}
-     * or {@link #registerComponent(Object)}
+     * @deprecated Use getCompositeComponent instead
      */
     public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        return getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
+    }
+
+    // see PicoContainer interface for Javadocs
+    public Object getCompositeComponent()
+    {
+        return getCompositeComponent(true, false);
+    }
+
+    // see PicoContainer interface for Javadocs
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+    {
         List aggregateComponents = new ArrayList(orderedComponents);
         if(!callUnmanagedComponents) {
             for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {
@@ -101,7 +104,6 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
                 callInInstantiationOrder
         );
     }
-
 
     public void registerComponent(Class componentType, Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         checkConcrete(componentImplementation);

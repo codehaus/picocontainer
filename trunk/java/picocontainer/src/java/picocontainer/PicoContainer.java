@@ -10,6 +10,10 @@
 
 package picocontainer;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * PicoContainer - guaranteed to resolve the needs of components
  * as it instantiates them.
@@ -47,4 +51,24 @@ public interface PicoContainer {
      * Initialize the container.
      */
     void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException;
+
+    /**
+     * Shorthand for {@link #getCompositeComponent(boolean, boolean)}(true, true).
+     * @return a proxy.
+     */
+    Object getCompositeComponent();
+
+    /**
+     * Returns a proxy that implements the union of all the components'
+     * interfaces.
+     * Calling a method on the returned Object will call the
+     * method on all components in the container that implement
+     * that interface.
+     *
+     * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)
+     * @param callUnmanagedComponents whether to exclude components registered via instance rather than class
+     */
+    Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents);
+
+
 }

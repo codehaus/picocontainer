@@ -23,7 +23,7 @@ import picocontainer.defaults.ComponentSpecification;
  * @author Aslak Hellesoy
  * @version $Revision: 1.7 $
  */
-class NanningComponentFactory implements ComponentFactory {
+public class NanningComponentFactory implements ComponentFactory {
 
     private final AspectSystem aspectSystem;
     private final ComponentFactory decoratedComponentFactory;

@@ -118,19 +118,19 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
     public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException, PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer();
         pico.registerComponentImplementation("MultiOneTwo", Multi.class, new Parameter[]{
-            new ComponentParameter(),
+            ComponentParameter.DEFAULT,
             new ComponentParameter("Two"),
         });
         pico.registerComponentImplementation("MultiTwoOne", Multi.class, new Parameter[]{
             new ComponentParameter("Two"),
-            new ComponentParameter(),
+            ComponentParameter.DEFAULT,
         });
         pico.registerComponentImplementation("MultiOneString", Multi.class, new Parameter[]{
-            new ComponentParameter(),
+            ComponentParameter.DEFAULT,
             new ConstantParameter(""),
         });
         pico.registerComponentImplementation("MultiOneInt", Multi.class, new Parameter[]{
-            new ComponentParameter(),
+            ComponentParameter.DEFAULT,
             new ConstantParameter(new Integer(5)),
         });
         pico.registerComponentImplementation("MultiNone", Multi.class, new Parameter[]{});

@@ -108,7 +108,7 @@ public class LifecycleVisitorTestCase
         parent.registerComponentImplementation("recording", StringBuffer.class);
         child.registerComponentImplementation(Four.class);
         parent.registerComponentImplementation(Two.class);
-        parent.registerComponentImplementation(One.class, One.class, new Parameter[] { new ComponentParameter() });
+        parent.registerComponentImplementation(One.class, One.class, new Parameter[] { ComponentParameter.DEFAULT });
         child.registerComponentImplementation(Three.class);
 
         starter.traverse(parent);

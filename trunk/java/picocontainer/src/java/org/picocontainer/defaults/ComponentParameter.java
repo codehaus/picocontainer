@@ -35,6 +35,20 @@ import org.picocontainer.PicoVisitor;
 public class ComponentParameter
         extends BasicComponentParameter {
 
+    /**
+     * <code>DEFAULT</code> is an instance of ComponentParameter using the default constructor.
+     */
+    public static final ComponentParameter DEFAULT = new ComponentParameter();
+    /**
+     * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
+     */
+    public static final ComponentParameter ARRAY = new ComponentParameter(false);
+    /**
+     * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
+     * elements.
+     */
+    public static final ComponentParameter ARRAY_ALLOW_EMPTY = new ComponentParameter(true);
+
     private final Parameter collectionParameter;
 
     /**
@@ -61,7 +75,7 @@ public class ComponentParameter
      * @since 1.1
      */
     public ComponentParameter(boolean emptyCollection) {
-        this(null, new CollectionComponentParameter(emptyCollection));
+        this(null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
     }
 
     /**
@@ -116,7 +130,7 @@ public class ComponentParameter
         }
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      * 

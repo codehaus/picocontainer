@@ -30,11 +30,14 @@ public abstract class NanoContainer {
         configure(configuration);
     }
 
-    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) {
-        monitor.componentsInstantiated(picoContainer);        
+    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyNanoContainerException {
         LifecyclePicoAdapter lpa = new DefaultLifecyclePicoAdapter(picoContainer);
         lifecycleAdapters.add(lpa);
-        picoContainer.getComponentInstances();
+        List comps = picoContainer.getComponentInstances();
+        if (comps.size() == 0) {
+            throw new EmptyNanoContainerException();
+        }
+        monitor.componentsInstantiated(picoContainer);
         Collection childContainers = picoContainer.getChildContainers();
         for (Iterator iterator = childContainers.iterator(); iterator.hasNext();) {
             PicoContainer childContainer = (PicoContainer) iterator.next();

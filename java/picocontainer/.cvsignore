@@ -1,5 +1,6 @@
 target
 *.iws
 *.ipr
+test_viewcvs
 *.iml
 *.log

@@ -10,7 +10,7 @@
   !-->
 
     <pomVersion>3</pomVersion>
-    <currentVersion>1.0-beta-1</currentVersion>
+    <currentVersion>1.0-SNAPSHOT</currentVersion>
     <name>NanoContainer</name>
     <groupId>nanocontainer</groupId>
     <url>http://www.nanocontainer.org</url>
@@ -46,7 +46,7 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.0</version>
+            <version>1.01-SNAPSHOT/version>
             <url>http://www.picocontainer.org/</url>
             <properties>
                 <war.bundle>true</war.bundle>

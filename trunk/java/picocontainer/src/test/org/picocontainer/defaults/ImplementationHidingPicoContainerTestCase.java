@@ -80,17 +80,6 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
         }
     }
 
-    public void testParentCannotBeSet() {
-        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
-        ImplementationHidingPicoContainer pc2 = new ImplementationHidingPicoContainer(pc);
-        try {
-            pc2.setParent(pc);
-            fail("should have barfed");
-        } catch (PicoIntrospectionException e) {
-            // expected
-        }
-    }
-
     public void testExceptionThrowingFromHiddenComponent() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
         pc.registerComponentImplementation(ActionListener.class, Burp.class);

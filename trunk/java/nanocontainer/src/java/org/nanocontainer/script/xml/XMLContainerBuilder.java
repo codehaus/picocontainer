@@ -114,6 +114,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     registerPseudoComponent(parentContainer, (Element) child);
                     count++;
                 } else if (name.equals("component")) {
+
                     registerComponentImplementation(parentContainer, (Element) child);
                     count++;
                 } else if (name.equals("container")) {

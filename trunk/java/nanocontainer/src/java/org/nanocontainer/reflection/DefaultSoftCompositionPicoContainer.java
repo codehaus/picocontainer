@@ -152,10 +152,6 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         return delegate.unregisterComponentByInstance(componentInstance);
     }
 
-    public void setParent(PicoContainer parent) {
-        delegate.setParent(parent);
-    }
-
     public PicoContainer getImmutable() {
         return delegate.getImmutable();
     }

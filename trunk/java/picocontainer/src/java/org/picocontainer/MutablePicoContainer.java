@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 /**
  * This is the core interface used for registration of components with a container. It is possible to register {@link
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
@@ -127,15 +125,6 @@ public interface MutablePicoContainer extends PicoContainer {
      * @return the ComponentAdapter that was associated with this component.
      */
     ComponentAdapter unregisterComponentByInstance(Object componentInstance);
-
-    /**
-     * Set the Parent container.
-     * 
-     * @param parent parent container.
-     * @deprecated This will probably go away. implementations should take the parent in the constructor (constructor
-     *             injection!)
-     */
-    void setParent(PicoContainer parent);
 
     /**
      * Make/Get an Immutable wrapper for this container.

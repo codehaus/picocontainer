@@ -1,11 +1,11 @@
-//import org.nanocontainer.script.groovy.NanoContainerBuilder
-import org.microcontainer.MicroGroovyBuilder
+import org.nanocontainer.script.groovy.NanoContainerBuilder
+import org.microcontainer.jmx.JmxDecorationDelegate
 import javax.management.MBeanServerFactory
 import java.io.File
 
 hiddenJarPath = new File(parent.getComponentInstance("workingDir"), "/MCA-INF/hidden/hidden.jar").getCanonicalPath()
 
-pico = new MicroGroovyBuilder().container(parent:parent) {
+pico = new NanoContainerBuilder(new JmxDecorationDelegate()).container(parent:parent) {
 
 	classpathelement(path:hiddenJarPath);
 	// the two keys should already be in the classpath (classloader tree)

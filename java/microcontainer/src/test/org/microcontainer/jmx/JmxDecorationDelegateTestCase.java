@@ -27,11 +27,14 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 	public void testScript() throws Exception {
 
 		Reader script = new StringReader("" +
-				"builder = new org.microcontainer.MicroGroovyBuilder()\n" +
-				"pico = builder.container(parent:parent) {\n" +
+				"import org.nanocontainer.script.groovy.NanoContainerBuilder\n" +
+				"import org.microcontainer.jmx.JmxDecorationDelegate\n" +
+				"\n" +
+				"builder = new NanoContainerBuilder(new JmxDecorationDelegate())\n" +
+				"pico = builder.container {\n" +
 				"	component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.newMBeanServer())\n" +
 				"	jmx(key:'domain:wilma=default', operations:['helloCalled']) {\n" +
-				"   	component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl')\n" +
+				"   	component(key:org.nanocontainer.testmodel.Wilma, class:org.nanocontainer.testmodel.WilmaImpl)\n" +
 				"   }\n" +
 				"}");
 
@@ -40,7 +43,7 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 
 		ObjectName objectName = new ObjectName("domain:wilma=default");
 		Wilma wilma = (Wilma)pico.getComponentInstance(objectName.getCanonicalName());
-		assertEquals("Wilma should be registered to the object name and the key", wilma, pico.getComponentInstance("wilma"));
+		assertEquals("Wilma should be registered to the object name and the key (Wilma interface)", wilma, pico.getComponentInstance(Wilma.class));
 		wilma.hello();
 
 		// MBeanInfo is registered to the implementation

@@ -79,6 +79,7 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             fail("Should have barfed");
         } catch (PicoInvocationTargetStopException e) {
             assertEquals(SQLException.class, e.getCause().getClass());
+            assertTrue(e.getMessage().indexOf("SQLException") > 0 );
             // expected
         }
     }

@@ -19,7 +19,10 @@ import org.picocontainer.PicoRegistrationException;
 import java.net.URL;
 
 /**
- * This class adapts a {@link MutablePicoContainer} through a similar API that
+ * A NanoContainer is a container that contains a PicoContainer. -Like
+ * <a href="http://www.monkeon.co.uk/russiandolls/">Russian dolls</a>.
+ *
+ * A NanoContainer adapts a {@link MutablePicoContainer} through a similar API that
  * is based only on Strings. (It uses reflection to look up classes before registering them
  * with the adapted PicoContainer). This adapter API is used primarily by the various
  * {@link org.nanocontainer.script.ScriptedContainerBuilder} implementations in the
@@ -46,6 +49,11 @@ public interface NanoContainer {
                                                      String[] parameterTypesAsString,
                                                      String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
+    /**
+     * Adds a new URL that will be used in classloading
+     *
+     * @param url
+     */
     void addClassLoaderURL(URL url);
 
     /**

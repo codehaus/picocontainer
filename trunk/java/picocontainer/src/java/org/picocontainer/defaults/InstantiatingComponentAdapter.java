@@ -38,7 +38,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
     /** Flag indicating instanciation of non-public classes. */ 
-    protected final boolean allowNonPublicClasses;
+    protected boolean allowNonPublicClasses;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 

@@ -2,23 +2,19 @@ package org.picocontainer.alternatives;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.alternatives.ImplementationHidingComponentAdapter;
 
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
-        ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[] {ActionListener.class, MouseListener.class},Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
+        ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
+        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
         Object comp = ihca.getComponentInstance(null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
@@ -26,28 +22,27 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
     }
 
     public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[] {String.class},Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
+        ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[]{String.class}, Footle.class);
+        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
         try {
-            Object comp = ihca.getComponentInstance(null);
+            ihca.getComponentInstance(null);
             fail("Oh no.");
         } catch (PicoIntrospectionException e) {
         }
     }
 
-    public void testNonInterfaceCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww",Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
+    public void testShouldThrowExceptionWhenAccessingNonInterfaceKeyedComponentInStrictMode() {
+        ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww", Footle.class);
+        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
         try {
-            Object comp = ihca.getComponentInstance(null);
+            ihca.getComponentInstance(null);
             fail("Oh no.");
         } catch (PicoIntrospectionException e) {
         }
-      }
+    }
 
-    public class Footle implements ActionListener , MouseListener {
+    public class Footle implements ActionListener, MouseListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("--> foo");
         }
 
         public void mouseClicked(MouseEvent e) {

@@ -128,6 +128,7 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     ComponentAdapter unregisterComponentByInstance(Object componentInstance);
 
+    // TODO: For the sake of simplicity/unambiguity - perhaps remove this method and instead expose getComponentAdapterFactory()? --Aslak
     /**
      * Make a child container, using the same implementation of MutablePicoContainer as the parent.
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.

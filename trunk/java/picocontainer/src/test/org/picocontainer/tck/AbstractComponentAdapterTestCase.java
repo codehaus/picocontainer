@@ -125,7 +125,7 @@ public abstract class AbstractComponentAdapterTestCase
     
     protected abstract ComponentAdapter prepareTestSerializable(MutablePicoContainer picoContainer);
     
-    final public void testSerializable() {
+    final public void testShouldBeXstreamSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepareTestSerializable(picoContainer);

@@ -25,7 +25,7 @@ import org.nanocontainer.aop.MalformedRegularExpressionException;
  */
 public class NameMatchesComponentPointcut implements ComponentPointcut {
 
-    private final Pattern patern;
+    private final Pattern pattern;
     private final Perl5Matcher matcher = new Perl5Matcher();
 
     /**
@@ -43,27 +43,23 @@ public class NameMatchesComponentPointcut implements ComponentPointcut {
     public NameMatchesComponentPointcut(String regex) throws MalformedRegularExpressionException {
         Perl5Compiler compiler = new Perl5Compiler();
         try {
-            patern = compiler.compile(regex);
+            pattern = compiler.compile(regex);
         } catch (MalformedPatternException e) {
             throw new MalformedRegularExpressionException("malformed component name regular expression", e);
         }
     }
 
     /**
-     * Tests to see if the component key matches the regular expression passed
-     * to the constructor. Always returns false if <code>componentKey</code>
-     * is not an instance of <code>java.lang.String</code>.
+     * Tests to see if the component key's toString() value matches the regular expression passed
+     * to the constructor.
      *
      * @param componentKey the component key to match against.
      * @return true if the regular expression passed to the constructor matches
      *         against <code>componentKey</code>, else false.
      */
     public boolean picks(Object componentKey) {
-        if (!(componentKey instanceof String)) {
-            return false;
-        }
-        String componentName = (String) componentKey;
-        return matcher.contains(componentName, patern);
+        String componentName = (String) componentKey.toString();
+        return matcher.contains(componentName, pattern);
     }
 
 }

@@ -37,22 +37,4 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
         return failedDependencies;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UnsatisfiableDependenciesException)) return false;
-
-        final UnsatisfiableDependenciesException noSatisfiableConstructorsException = (UnsatisfiableDependenciesException) o;
-
-        if (!instantiatingComponentAdapter.equals(noSatisfiableConstructorsException.instantiatingComponentAdapter)) return false;
-        if (!failedDependencies.equals(noSatisfiableConstructorsException.failedDependencies)) return false;
-
-        return true;
-    }
-
-    public int hashCode() {
-        int result;
-        result = instantiatingComponentAdapter.hashCode();
-        result = 29 * result + failedDependencies.hashCode();
-        return result;
-    }
 }

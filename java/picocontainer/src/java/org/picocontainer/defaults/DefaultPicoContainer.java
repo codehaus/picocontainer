@@ -19,6 +19,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
-        this.parent = parent;
+        this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
     }
 
     /**

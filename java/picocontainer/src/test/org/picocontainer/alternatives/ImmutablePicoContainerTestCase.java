@@ -12,9 +12,9 @@ package org.picocontainer.alternatives;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.Disposable;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collection;
@@ -165,6 +165,7 @@ public class ImmutablePicoContainerTestCase extends TestCase {
             // expected
         }
     }
+
     public void testStopBarfs() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponentImplementation(Map.class, HashMap.class);
@@ -189,24 +190,26 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testEqualsAlwaysBarfsForDifferentContainers() {
-        MutablePicoContainer mpc = new DefaultPicoContainer();
-        ImmutablePicoContainer im = new ImmutablePicoContainer(mpc);
-        try {
-            assertFalse(im.equals(new DefaultPicoContainer()));
-        } catch (junit.framework.AssertionFailedError e) {
-            assertFalse(im.equals(new ImmutablePicoContainer(new DefaultPicoContainer())));
+    public static class MyDisposable implements Disposable {
+        public boolean disposed;
+
+        public void dispose() {
+            disposed = true;
         }
     }
 
-    public void testHashCode() {
+    public void testLifecycleGuardIsEasyToCircumventSoItMightAsWellBeDeleted() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponentImplementation(Map.class, HashMap.class);
+        mpc.registerComponentImplementation(MyDisposable.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        assertNotSame(mpc,ipc);
-        ImmutablePicoContainer ipc2 = new ImmutablePicoContainer(mpc);
-        assertNotSame(ipc2,ipc);
-        assertEquals(ipc2,ipc);
+        List componentInstances = ipc.getComponentInstances();
+        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+            Object o = iterator.next();
+            if(o instanceof Disposable) {
+                ((Disposable) o).dispose();
+            }
+        }
+        MyDisposable disposable = (MyDisposable ) ipc.getComponentInstance(MyDisposable.class);
+        assertTrue(disposable.disposed);
     }
-
 }

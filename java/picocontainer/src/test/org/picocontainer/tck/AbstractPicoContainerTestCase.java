@@ -436,11 +436,11 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertNull(pico.getComponentInstanceOfType(List.class));
     }
 
-    public void testContainerCanHaveParent() {
+    public void testShouldReturnNonMutableParent() {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         final MutablePicoContainer picoContainer = createPicoContainer(parent);
-        assertEquals(parent, picoContainer.getParent());
-
+        assertNotSame(parent, picoContainer.getParent());
+        assertFalse(picoContainer.getParent() instanceof MutablePicoContainer);
     }
 
     class Foo implements Startable, Disposable{

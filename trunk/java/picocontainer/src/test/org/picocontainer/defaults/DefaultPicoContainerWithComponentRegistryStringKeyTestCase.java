@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class DefaultPicoContainerWithComponentRegistryStringKeyTestCase extends AbstractBasicStringCompatabilityTestCase {
 
-    public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
+    public PicoContainer createPicoContainerWithTouchableAndDependency() throws DuplicateComponentKeyRegistrationException,
             AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
 
         ComponentRegistry componentRegistry = new DefaultComponentRegistry();

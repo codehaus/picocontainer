@@ -10,6 +10,17 @@
 
 package picocontainer;
 
+/**
+ * Disposable is an entirely optional interface.  A Pico component
+ * may choose to implement this or not or any other interface that
+ * roughly forces Disposable behavior.
+ *
+ * Dispoable may be a useful concept for heavy (charcterize that
+ * how you will) components and called at the end of their life.
+ * The lifecycle design of Pico requires a LifecycleManager that
+ * reconises the type of lifecycle design the component writer
+ * is using.
+ */
 public interface Disposable  {
 
     /**

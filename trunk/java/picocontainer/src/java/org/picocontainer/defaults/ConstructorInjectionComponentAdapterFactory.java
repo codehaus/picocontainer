@@ -21,10 +21,20 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+    private final boolean allowNonPublicClasses;
+
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
+        this.allowNonPublicClasses = allowNonPublicClasses;
+    }
+
+    public ConstructorInjectionComponentAdapterFactory() {
+        this(false);
+    }
+
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters);
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 }

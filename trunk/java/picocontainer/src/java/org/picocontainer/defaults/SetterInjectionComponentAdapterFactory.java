@@ -25,6 +25,15 @@ import org.picocontainer.PicoIntrospectionException;
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+    private final boolean allowNonPublicClasses;
+
+    public SetterInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
+        this.allowNonPublicClasses = allowNonPublicClasses;
+    }
+
+    public SetterInjectionComponentAdapterFactory() {
+        this(false);
+    }
     /**
      * Create a {@link SetterInjectionComponentAdapter}.
      * @param componentKey The component's key
@@ -41,6 +50,6 @@ public class SetterInjectionComponentAdapterFactory implements ComponentAdapterF
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters);
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 }

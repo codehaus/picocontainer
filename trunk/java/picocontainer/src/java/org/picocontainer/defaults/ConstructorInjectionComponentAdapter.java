@@ -51,8 +51,13 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      */
     public ConstructorInjectionComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
-                                       Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters);
+                                       Parameter[] parameters,
+                                       boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+    }
+
+    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+        this(componentKey, componentImplementation, parameters, false);
     }
 
     /**
@@ -135,7 +140,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out 
             final Set nonMatching = new HashSet();
-            final Constructor[] constructors = getComponentImplementation().getConstructors();
+            final Constructor[] constructors = getComponentImplementation().getDeclaredConstructors();
             for (int i = 0; i < constructors.length; i++) {
                 if (!sortedMatchingConstructors.contains(constructors[i])) {
                     nonMatching.add(constructors[i]);
@@ -153,8 +158,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     private ComponentAdapter getGenericCollectionComponentAdapter(Class componentType) {
-        GenericCollectionComponentAdapter result = null;
-
         if(getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
             return null;
         } else {
@@ -194,7 +197,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             instantiating = true;
             Object[] parameters = getConstructorArguments(adapterInstantiationOrderTrackingList);
 
-            return constructor.newInstance(parameters);
+            return newInstance(constructor, parameters);
         } catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof RuntimeException) {
                 throw (RuntimeException) e.getTargetException();
@@ -206,13 +209,12 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             // Handled by prior invocation of checkConcrete() is superclass. Caught and rethrown in line marked <here> above.
             throw new RuntimeException("Should never get here");
         } catch (IllegalAccessException e) {
-            // Handled by prior invocation of checkConcrete() is superclass. Caught and rethrown in line marked <here> above.
-            throw new RuntimeException("Should never get here");
+            throw new PicoInitializationException(e);
         } finally {
             instantiating = false;
         }
     }
-    
+
     protected Object[] getConstructorArguments(List adapterDependencies) {
         Object[] result = new Object[adapterDependencies.size()];
         for (int i = 0; i < adapterDependencies.size(); i++) {
@@ -224,7 +226,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     
     private List getSortedMatchingConstructors() {
         List matchingConstructors = new ArrayList();
-        Constructor[] allConstructors = getComponentImplementation().getConstructors();
+        Constructor[] allConstructors = getComponentImplementation().getDeclaredConstructors();
         // filter out all constructors that will definately not match 
         for (int i = 0; i < allConstructors.length; i++) {
             Constructor constructor = allConstructors[i];

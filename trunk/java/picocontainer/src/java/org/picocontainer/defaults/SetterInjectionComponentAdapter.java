@@ -49,8 +49,15 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
+                                       Parameter[] parameters,
+                                       boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+    }
+
+    public SetterInjectionComponentAdapter(final Object componentKey,
+                                       final Class componentImplementation,
                                        Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters);
+        super(componentKey, componentImplementation, parameters, false);
     }
 
     /**
@@ -119,7 +126,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                 throw new CyclicDependencyException(setterTypes);
             }
             instantiating = true;
-            final Object componentInstance = constructor.newInstance(null);
+            final Object componentInstance = newInstance(constructor, null);
             for (int i = 0; i < setters.size(); i++) {
                 final Method setter = (Method)setters.get(i);
                 final ComponentAdapter adapter = (ComponentAdapter)adapterInstantiationOrderTrackingList.get(i);

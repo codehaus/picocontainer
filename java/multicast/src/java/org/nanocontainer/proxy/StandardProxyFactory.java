@@ -1,6 +1,6 @@
 package org.nanocontainer.proxy;
 
-import org.picocontainer.defaults.InterfaceFinder;
+import org.picocontainer.defaults.ClassHierarchyIntrospector;
 
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class StandardProxyFactory implements ProxyFactory {
     public Object createProxy(Class classOrInterface, Class[] interfaces, final InvocationInterceptor invocationInterceptor) {
         if(!classOrInterface.isInterface()) {
             Set interfaceSet = new HashSet();
-            interfaceSet.addAll(Arrays.asList(new InterfaceFinder().getAllInterfaces(classOrInterface)));
+            interfaceSet.addAll(Arrays.asList(ClassHierarchyIntrospector.getAllInterfaces(classOrInterface)));
             if(interfaces != null) {
                 interfaceSet.addAll(Arrays.asList(interfaces));
             }

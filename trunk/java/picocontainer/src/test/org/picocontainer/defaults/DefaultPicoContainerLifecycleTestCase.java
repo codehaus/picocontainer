@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
+ * Copyright (c) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -381,7 +381,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testContainersArePutLastAndTheOthersAreMaintainedInSamePlace() {
         List l = new ArrayList();
-        l.add("ComponentC");
+        l.add("c");
         l.add(new DefaultPicoContainer());
         l.add("ComponentB");
         l.add(new DefaultPicoContainer());
@@ -389,7 +389,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         l.add(new DefaultPicoContainer());
         l.add("ComponentD");
         Collections.sort(l,new StackContainersAtEndComparator());
-        assertEquals("ComponentC", l.get(0));
+        assertEquals("c", l.get(0));
         assertEquals("ComponentB", l.get(1));
         assertEquals("A", l.get(2));
         assertEquals("ComponentD", l.get(3));

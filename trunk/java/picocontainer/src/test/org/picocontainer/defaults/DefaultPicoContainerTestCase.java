@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
+ * Copyright (c) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -62,11 +62,11 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         MutablePicoContainer child = createPicoContainer();
         child.setParent(parent);
 
-        // ComponentF -> ComponentA -> ComponentB+ComponentC
+        // ComponentF -> ComponentA -> ComponentB+c
         child.registerComponentImplementation(ComponentF.class);
         parent.registerComponentImplementation(ComponentA.class);
         child.registerComponentImplementation(ComponentB.class);
-        child.registerComponentImplementation(ComponentC.class);
+        child.registerComponentImplementation(c.class);
 
         try {
             child.getComponentInstance(ComponentF.class);

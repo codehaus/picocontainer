@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
+ * Copyright (c) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -31,7 +31,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
         assertTrue(comp instanceof SimpleTouchable);
     }
 
-    public void testSingleUseComponentCanBeInstantiatedByDefaultComponentAdapter() {
+    public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter("o", Object.class, null);
         Object component = componentAdapter.getComponentInstance();
         assertNotNull(component);

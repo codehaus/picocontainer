@@ -23,7 +23,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -94,8 +93,6 @@ public class NanoGroovyBuilder extends BuilderSupport {
         SoftCompositionPicoContainer parentContainer = (SoftCompositionPicoContainer) parent;
         if (name.equals("component")) {
             return createComponentNode(attributes, parentContainer, name);
-//        } else if (name.equals("builder")) {
-  //          return createBuilderNode(attributes, parentContainer);
         } else if (name.equals("bean")) {
             return createBeanNode(attributes, parentContainer);
         } else if (name.equals("classpathelement")) {
@@ -160,23 +157,6 @@ public class NanoGroovyBuilder extends BuilderSupport {
         pico.registerComponentInstance(answer);
         return answer;
     }
-
-    private Object createBuilderNode(Map attributes, MutablePicoContainer pico) throws ClassNotFoundException {
-        // lets create a bean
-        DefaultSoftCompositionPicoContainer dpc = new DefaultSoftCompositionPicoContainer();
-        dpc.registerComponentInstance(MutablePicoContainer.class, pico);
-        Object o = attributes.remove("class");
-        Object answer = null;
-        if (o instanceof Class) {
-            answer = dpc.registerComponentImplementation((Class) o).getComponentInstance(pico);
-        } else {
-            answer = dpc.registerComponentImplementation((String) o).getComponentInstance(pico);
-        }
-        System.out.println("--> ? " + answer);
-
-        return answer;
-    }
-
 
     private Object createComponentNode(Map attributes, SoftCompositionPicoContainer pico, Object name) throws ClassNotFoundException {
         Object key = attributes.remove("key");

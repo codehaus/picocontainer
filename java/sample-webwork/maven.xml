@@ -1,0 +1,3 @@
+<project default="binary:install">
+    <goal name="binary:install" prereqs="war:install"/>
+</project>

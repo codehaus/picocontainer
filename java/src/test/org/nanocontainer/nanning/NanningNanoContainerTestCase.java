@@ -13,7 +13,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -24,7 +23,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class NanningNanoContainerTestCase extends TestCase {
 
     private NanningNanoContainer mainContainer;
-    private RegistrationPicoContainer serviceAndAspectContainer;
 
     /**
      * RecordingAware2 very simplified interface to a TransactionManager.
@@ -108,18 +106,18 @@ public class NanningNanoContainerTestCase extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         AspectSystem as = new AspectSystem();
-        mainContainer = new NanningNanoContainer.Default(as, new NanningComponentFactory(as, new DefaultComponentFactory()));
-        serviceAndAspectContainer = new DefaultPicoContainer.Default();
+        mainContainer = new NanningNanoContainer.Default(as);
     }
 
-    public void testStartService() throws PicoRegistrationException, PicoInitializationException {
+    public void testServiceIsInstantiated() throws PicoRegistrationException, PicoInitializationException {
         mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         mainContainer.instantiateComponents();
 
+        assertTrue(mainContainer.hasComponent(TransactionManager.class));
         assertNotNull(mainContainer.getComponent(TransactionManager.class));
     }
 
-    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInitializationException {
+    public void testAspectDependingOnServiceIsInstantiated() throws PicoRegistrationException, PicoInitializationException {
         mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         mainContainer.registerServiceOrAspect(TransactionAspect.class);
         mainContainer.instantiateComponents();
@@ -129,10 +127,11 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertNotNull(transactionAspect.transactionManager);
     }
 
-    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInitializationException {
+    public void testAspectifiedComponentIsInstantiatedWithProperAspects()
+            throws PicoRegistrationException, PicoInitializationException {
         mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        serviceAndAspectContainer.registerComponent(Component.class, SucceedingComponent.class);
+        mainContainer.registerComponent(Component.class, SucceedingComponent.class);
         mainContainer.instantiateComponents();
 
         Component component = (Component) mainContainer.getComponent(Component.class);
@@ -147,10 +146,11 @@ public class NanningNanoContainerTestCase extends TestCase {
     public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
         mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        serviceAndAspectContainer.registerComponent(Component.class, SucceedingComponent.class);
+        mainContainer.registerComponent(Component.class, SucceedingComponent.class);
         mainContainer.instantiateComponents();
 
         Component component = (Component) mainContainer.getComponent(Component.class);
+        assertNotNull(component);
         component.doSomethingRequiringATransaction();
 
         LoggingTransactionManager transactionManager = (LoggingTransactionManager) mainContainer.getComponent(TransactionManager.class);
@@ -160,7 +160,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
         mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        serviceAndAspectContainer.registerComponent(Component.class, FailingComponent.class);
+        mainContainer.registerComponent(Component.class, FailingComponent.class);
         mainContainer.instantiateComponents();
 
         Component component = (Component) mainContainer.getComponent(Component.class);

@@ -142,5 +142,24 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertEquals("org.nanocontainer.script.groovy.TestContainer",pico.getClass().getName())
     }
 
+//    fails, but should pass
+//    void testInstantiateBasicComponentWithDeepTree() {
+//
+//        Xxx.reset()
+//
+//        builder = new NanoGroovyBuilder()
+//        pico = builder.container {
+//            container() {
+//                container() {
+//                    component(Xxx$A)
+//                }
+//            }
+//        }
+//
+//        startAndStop(pico)
+//
+//        assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
+//    }
+
 
 }

@@ -18,7 +18,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import junit.framework.TestCase;
 
 /** 
- * test that sesison is reobtained on close  
+ * test capabilities of session failover component adapter
  * 
  * @author Konstantin Pribluda
  * @version $Revision$ 
@@ -40,7 +40,7 @@ public class SessionFailoverComponentAdapterTestCase extends TestCase {
 	public void testThatSessionIsCached() throws Exception {
 		
 		Session session = (Session)container.getComponentInstanceOfType(Session.class);
-		
+		assertNotNull(session);
 		assertSame(session,container.getComponentInstanceOfType(Session.class));
 		
 	}
@@ -49,7 +49,7 @@ public class SessionFailoverComponentAdapterTestCase extends TestCase {
 	public void testThatSessionIsRecreatedOnClose() throws Exception {
 		Session session = (Session)container.getComponentInstanceOfType(Session.class);
 		session.close();
-		assertNotSame(session,container.getComponentInstanceOfType(Session.class));
+		assertSame(session,container.getComponentInstanceOfType(Session.class));
 	}
 	
 	
@@ -62,7 +62,7 @@ public class SessionFailoverComponentAdapterTestCase extends TestCase {
 		} catch(Exception ex) {
 			// that's ok... 
 		}
-		assertNotSame(session,container.getComponentInstanceOfType(Session.class));
+		assertSame(session,container.getComponentInstanceOfType(Session.class));
 	}
 }
 

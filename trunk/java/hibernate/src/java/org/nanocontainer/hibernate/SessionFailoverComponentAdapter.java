@@ -25,8 +25,9 @@ import java.lang.reflect.InvocationTargetException;
 
 /** 
  * component adapter providing transparent session restart and management
- * also takes care that transactions do not overlap. this adapter serves as kind-of 
- * caching component adapter ( original CCA is unusable due to session invalidation issues )
+ * this adapter serves as kind-of caching component adapter ( original CCA is 
+ * unusable due to session invalidation issues ) and invalidates hibernate session
+ * on error and closing. new session is obtained lazily. 
  * 
  * 
  * @author Konstantin Pribluda
@@ -38,42 +39,45 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
 	
 	public SessionFailoverComponentAdapter(SessionComponentAdapter sfca) {
 		super(sfca);
+        sessionProxy = (Session) Proxy.newProxyInstance(Session.class.getClassLoader(),
+            new Class[] { Session.class },
+            new InvocationHandler() {
+                Session target = null;
+                
+                public synchronized Session getSession() {
+                    if(target == null) {
+                        System.err.println("retrieve new session");
+                        target = (Session)getDelegate().getComponentInstance();
+                    }
+                    return target;
+                }
+                public Object invoke(Object proxy,
+                    Method method,Object[] args) throws Throwable {
+                    try {
+                        Object retval = method.invoke(getSession(),args);
+                        if(method.getName().equals("close")) {
+                            target = null;
+                            System.err.println("invalidate session on explicit close");
+                        }
+                        return retval;
+                    } catch(InvocationTargetException ite) {
+                        // we got hibernate exception kill this session
+                        if(ite.getCause() instanceof HibernateException && target != null)  {
+                            target.clear();
+                            target.close();
+                            System.err.println("invalidate proxy on error");
+                        }
+                        throw ite;
+                    }
+                }
+            });
 	}
 	
 	/**
-	 * return cached session instance. session instance will be wrapped by proxy 
+	 * return session wrapper
 	 * 
 	 */
 	public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-		if(sessionProxy == null) {
-			final Session session = (Session)super.getComponentInstance();
-			
-			sessionProxy = (Session) Proxy.newProxyInstance(Session.class.getClassLoader(),
-				new Class[] { Session.class },
-				new InvocationHandler() {
-					Session target = session;
-					
-					public Object invoke(Object proxy,
-						Method method,Object[] args) throws Throwable {
-						try {
-							if(method.getName().equals("close")) {
-								sessionProxy = null;
-							}
-							return method.invoke(target,args);
-						} catch(InvocationTargetException ite) {
-							// we got hibernate exception kill this session
-							if(ite.getCause() instanceof HibernateException)  {
-								target.clear();
-								target.close();
-								sessionProxy = null;
-							}
-							throw ite;
-						}
-					}
-				});
-				
-		}
-		
 		return sessionProxy;
 	}
 	

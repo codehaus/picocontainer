@@ -12,13 +12,14 @@ package org.nanocontainer.dynaop;
 import dynaop.Interceptor;
 import dynaop.Invocation;
 
+
 public class LoggingInterceptor implements Interceptor {
     private StringBuffer log;
-
+    
     public LoggingInterceptor(StringBuffer log) {
         this.log = log;
     }
-
+    
     public Object intercept(Invocation invocation) throws Throwable {
         log.append("start");
         Object result = invocation.proceed();

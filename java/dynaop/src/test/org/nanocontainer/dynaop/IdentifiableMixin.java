@@ -15,15 +15,11 @@ import java.io.Serializable;
  * @author Stephen Molitor
  */
 public class IdentifiableMixin implements Identifiable {
-
+    
     private Serializable id = new Integer(0);
 
-    public Serializable getId() {
-        return id;
-    }
-
-    public void setId(Serializable id) {
-        this.id = id;
-    }
+    public Serializable getId() { return id; }
+    
+    public void setId(Serializable id) { this.id = id; }
 
 }

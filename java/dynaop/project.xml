@@ -2,14 +2,16 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
     <id>nanocontainer-dynaop</id>
     <name>nanocontainer-dynaop</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
 
     <dependencies>
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-final-SNAPSHOT</version>
+            <version>1.0-RC-1-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
 
@@ -25,8 +27,8 @@
         </dependency>
 
         <dependency>
-            <id>dynaop</id>
-            <version>1.0-beta</version>
+          <id>dynaop</id>
+          <version>1.0-beta</version>
         </dependency>
 
         <!-- test time only -->
@@ -37,7 +39,7 @@
 
         <dependency>
             <id>jmock</id>
-            <version>1.0.0.RC1</version>
+            <version>SNAPSHOT</version>
         </dependency>
 
     </dependencies>

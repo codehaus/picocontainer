@@ -15,9 +15,9 @@ import java.io.Serializable;
  * @author Stephen Molitor
  */
 public interface Identifiable {
-
+    
     Serializable getId();
-
+    
     void setId(Serializable id);
 
 }

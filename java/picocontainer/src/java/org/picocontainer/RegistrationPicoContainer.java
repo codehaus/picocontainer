@@ -77,4 +77,5 @@ public interface RegistrationPicoContainer extends PicoContainer {
      */
     void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException;
 
+    void unregisterComponent(Object componentKey);
 }

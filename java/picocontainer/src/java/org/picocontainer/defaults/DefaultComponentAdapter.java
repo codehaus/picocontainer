@@ -113,6 +113,9 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
             throws PicoInitializationException {
         Class[] dependencyTypes = getDependencies();
         Object[] dependencies = new Object[dependencyTypes.length];
+        if (dependencyTypes.length != parameters.length) {
+            throw new RuntimeException("Incorrect number of parameters specified for " + getComponentImplementation().getName() + " component with key " + getComponentKey().toString() );
+        }
         for (int i = 0; i < dependencies.length; i++) {
             dependencies[i] = parameters[i].resolve(componentRegistry, this, dependencyTypes[i]);
         }
@@ -159,13 +162,13 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
     public Parameter[] getParameters() {
         return parameters;
     }
-    
+
 	public boolean equals(Object object) {
 		if (object == null || !getClass().equals(object.getClass())) {
 			return false;
 		}
 		DefaultComponentAdapter other = (DefaultComponentAdapter) object;
-		
+
 		return getComponentKey().equals(other.getComponentKey()) &&
 			getComponentImplementation().equals(other.getComponentImplementation()) &&
 			Arrays.asList(getParameters()).equals(Arrays.asList(other.getParameters()));

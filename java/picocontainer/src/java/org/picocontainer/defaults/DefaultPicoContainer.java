@@ -135,6 +135,9 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     private void checkConcrete(Class componentImplementation) throws NotConcreteRegistrationException {
+        if(componentImplementation == null) {
+            throw new NullPointerException("componentImplementation cant be null");
+        }
         // Assert that the component class is concrete.
         boolean isAbstract = (componentImplementation.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
         if (componentImplementation.isInterface() || isAbstract) {

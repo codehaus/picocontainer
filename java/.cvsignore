@@ -1,6 +1,6 @@
 target
-distributions.*
 junit*
+distributions.*
 *.iml
 *.ipr
 *.iws

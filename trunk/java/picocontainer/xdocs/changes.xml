@@ -37,6 +37,9 @@
                 Use of weak references for parent containers to avoid memory leaks.
             </action>
 
+            <action dev="tirsen" type="add">
+                Added TransientComponentAdapter/TransientComponentAdapterFactory
+            </action>
         </release>
 
         <release version="1.0-beta-3" date="2003-11-03">

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-util</id>
+    <name>nanocontainer-util</name>
+
+    <dependencies>
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-RC-1-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+        
+        <dependency>
+            <id>velocity</id>
+            <version>1.4-rc1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.2</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -43,7 +43,7 @@
     <url>http://www.picocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
     <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/picocontainer.codehaus.org</siteDirectory>
+    <siteDirectory>/www/picocontainer.codehaus.org/picocontainer</siteDirectory>
     <distributionDirectory>/www/picocontainer.codehaus.org/builds/</distributionDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>

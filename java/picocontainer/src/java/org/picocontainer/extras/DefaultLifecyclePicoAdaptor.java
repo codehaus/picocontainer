@@ -44,21 +44,21 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
     private void initializeIfNotInitialized() {
         if (startableAggregatedComponent == null) {
             try {
-                startableAggregatedComponent = (Startable) picoContainer.getCompositeComponent(true, false);
+                startableAggregatedComponent = (Startable) picoContainer.getComponentMulticaster(true, false);
             } catch (ClassCastException e) {
             }
         }
         if (stoppableAggregatedComponent == null) {
             try {
 
-                stoppableAggregatedComponent = (Stoppable) picoContainer.getCompositeComponent(false, false);
+                stoppableAggregatedComponent = (Stoppable) picoContainer.getComponentMulticaster(false, false);
             } catch (ClassCastException e) {
             }
         }
         if (disposableAggregatedComponent == null) {
             try {
                 //TODO-Aslak broken ?
-                Object o = picoContainer.getCompositeComponent(false, false);
+                Object o = picoContainer.getComponentMulticaster(false, false);
                 disposableAggregatedComponent = (Disposable) o;
             } catch (ClassCastException e) {
             }

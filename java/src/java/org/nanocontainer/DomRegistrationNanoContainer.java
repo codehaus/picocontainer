@@ -154,11 +154,11 @@ public class DomRegistrationNanoContainer  implements InputSourceRegistrationNan
         stringRegistrationNanoContainer.instantiateComponents();
     }
 
-    public Object getCompositeComponent() {
-        return stringRegistrationNanoContainer.getCompositeComponent();
+    public Object getComponentMulticaster() {
+        return stringRegistrationNanoContainer.getComponentMulticaster();
     }
 
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-        return stringRegistrationNanoContainer.getCompositeComponent();
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        return stringRegistrationNanoContainer.getComponentMulticaster();
     }
 }

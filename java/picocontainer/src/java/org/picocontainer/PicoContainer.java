@@ -52,10 +52,10 @@ public interface PicoContainer {
     void instantiateComponents() throws PicoInitializationException;
 
     /**
-     * Shorthand for {@link #getCompositeComponent(boolean, boolean)}(true, true).
+     * Shorthand for {@link #getComponentMulticaster(boolean, boolean)}(true, true).
      * @return a proxy.
      */
-    Object getCompositeComponent();
+    Object getComponentMulticaster();
 
     /**
      * Returns a proxy that implements the union of all the components'
@@ -67,7 +67,7 @@ public interface PicoContainer {
      * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)
      * @param callUnmanagedComponents whether to exclude components registered via instance rather than class
      */
-    Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents);
+    Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents);
 
 
 }

@@ -106,14 +106,14 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getComponents();
     }
 
-    public Object getCompositeComponent()
+    public Object getComponentMulticaster()
     {
-        return picoContainer.getCompositeComponent();
+        return picoContainer.getComponentMulticaster();
     }
 
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
     {
-        return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
+        return picoContainer.getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 
     public Collection getComponentKeys() {

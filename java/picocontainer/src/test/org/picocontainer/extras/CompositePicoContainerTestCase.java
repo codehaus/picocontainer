@@ -83,13 +83,13 @@ public class CompositePicoContainerTestCase extends TestCase {
 
     public void testUnsupportedOperations() throws PicoInitializationException {
         try {
-            composite.getCompositeComponent();
+            composite.getComponentMulticaster();
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             // expected
         }
         try {
-            composite.getCompositeComponent(true, true);
+            composite.getComponentMulticaster(true, true);
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             // expected
@@ -132,11 +132,11 @@ public class CompositePicoContainerTestCase extends TestCase {
             public void instantiateComponents() throws PicoInstantiationException {
             }
 
-            public Object getCompositeComponent() {
+            public Object getComponentMulticaster() {
                 return null;
             }
 
-            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+            public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
                 return null;
             }
         };
@@ -166,11 +166,11 @@ public class CompositePicoContainerTestCase extends TestCase {
             public void instantiateComponents() throws PicoInstantiationException {
             }
 
-            public Object getCompositeComponent() {
+            public Object getComponentMulticaster() {
                 return null;
             }
 
-            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+            public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
                 return null;
             }
         };

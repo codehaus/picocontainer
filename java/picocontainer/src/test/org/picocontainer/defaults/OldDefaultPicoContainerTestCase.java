@@ -147,7 +147,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponents().size());
 
-        Peelable myPeelableContainer = (Peelable) pico.getCompositeComponent();
+        Peelable myPeelableContainer = (Peelable) pico.getComponentMulticaster();
 
         myPeelableContainer.peel();
 
@@ -170,7 +170,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getCompositeComponent();
+        Object myPeelableAndWashableContainer = pico.getComponentMulticaster();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -208,7 +208,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getCompositeComponent(true, true);
+        Object myPeelableAndWashableContainer = pico.getComponentMulticaster(true, true);
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -249,7 +249,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getCompositeComponent(false, true);
+                pico.getComponentMulticaster(false, true);
 
         ((Washable) washableContainer).wash();
 
@@ -282,14 +282,14 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getCompositeComponent(false, false);
+                pico.getComponentMulticaster(false, false);
 
         ((Washable) washableContainer).wash();
 
         assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
         assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
         assertTrue(
-                "Unmanaged components should not be called by an getCompositeComponent() proxy",
+                "Unmanaged components should not be called by an getComponentMulticaster() proxy",
                 !recorder.thingsThatHappened.contains("RecordingAware2.wash()"));
     }
 
@@ -302,7 +302,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object proxy = pico.getCompositeComponent();
+        Object proxy = pico.getComponentMulticaster();
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -410,7 +410,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.instantiateComponents();
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) pico.getCompositeComponent();
+        FoodFactory foodFactory = (FoodFactory) pico.getComponentMulticaster();
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
@@ -629,7 +629,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.instantiateComponents();
 
         try {
-            Map map = (Map) pico.getCompositeComponent();
+            Map map = (Map) pico.getComponentMulticaster();
             fail("Unmanaged comps should nopt make it into the composite");
         } catch (ClassCastException e) {
             // expected

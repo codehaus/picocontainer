@@ -2,107 +2,128 @@
 
 <project>
 
-  <!-- the version of maven's project object model -->
+    <!-- the version of maven's project object model -->
 
-  <pomVersion>3</pomVersion>
-  <!-- a unique name for this project -->
+    <pomVersion>3</pomVersion>
+    <!-- a unique name for this project -->
 
-  <id>picocontainer</id>
-  <!-- a short but descriptive name for the project -->
+    <id>picocontainer</id>
+    <!-- a short but descriptive name for the project -->
 
-  <name>Maven example projects</name>
-  <!-- The version of the project under development, e.g.
-       1.1, 1.2, 2.0-dev -->
+    <name>PicoContainer</name>
+    <!-- The version of the project under development, e.g.
+         1.1, 1.2, 2.0-dev -->
 
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
-  <!-- details about the organization that 'owns' the project -->
+    <currentVersion>1.0-SNAPSHOT</currentVersion>
+    <!-- details about the organization that 'owns' the project -->
 
-  <organization>
-    <name>PicoContainer Organisation</name>
-    <url>http://www.picocontainer.org/</url>
-    <logo>http://www.picocontainer.org/images/logo.gif</logo>
-  </organization>
-  <!-- the year the project started -->
+    <organization>
+        <name>PicoContainer Organisation</name>
+        <url>http://picocontainer.codehaus.org</url>
+        <logo></logo>
+    </organization>
+    <!-- the year the project started -->
 
-  <inceptionYear>2003</inceptionYear>
-  <package>picocontainer</package>
-  <logo>http://www.picocontainer.org/images/logo.gif</logo>
-  <description>A collection of example projects showing how to use maven in different situations</description>
-  <!-- a short description of what the project does -->
+    <inceptionYear>2003</inceptionYear>
+    <package>picocontainer</package>
+    <logo>/images/picocontainer.jpg</logo>
+    <description></description>
+    <!-- a short description of what the project does -->
 
-  <shortDescription>How to use maven in different situations</shortDescription>
-  <!-- the project home page -->
+    <shortDescription></shortDescription>
+    <!-- the project home page -->
 
-  <url>http://maven.apache.org/reference/plugins/examples/</url>
-  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/maven.apache.org/reference/plugins/examples/</siteDirectory>
-  <distributionDirectory>/www/maven.apache.org/builds/</distributionDirectory>
-  <!-- the version control repository and http url for online access
-       the connection element has the form:
-       scm:<system>:<system specific connection string> -->
+    <url>http://picocontainer.codehaus.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org/</issueTrackingUrl>
+    <siteAddress>codehaus.org</siteAddress>
+    <siteDirectory>/www/picocontainer.codehaus.org/</siteDirectory>
+    <distributionDirectory>unknown-at-this-time</distributionDirectory>
+    <!-- the version control repository and http url for online access
+         the connection element has the form:
+         scm:<system>:<system specific connection string> -->
 
-  <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/?cvsroot=picocontainer</url>
-  </repository>
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
+        <url>http://cvs.codehaus.org/viewcvs.cgi/?cvsroot=picocontainer</url>
+    </repository>
 
-  <mailingLists>
-    <mailingList>
-      <name>Picocontainer Developers</name>
-      <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
-      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
-      <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
-    </mailingList>
-    <mailingList>
-      <name>Picocontainer CVS Commits</name>
-      <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
-      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
-      <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
-    </mailingList>
-  </mailingLists>
+    <mailingLists>
+        <mailingList>
+            <name>Picocontainer Developers</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Picocontainer CVS Commits</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
+        </mailingList>
+    </mailingLists>
 
-  <developers>
-    <developer>
-      <name>Paul Hammant</name>
-      <id>paul</id>
-      <email>paul_hammant@yahoo.com</email>
-      <organization>n/a</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Aslak Hellesoy</name>
-      <id>rinkrank</id>
-      <email>rinkrank@codehaus.org</email>
-      <organization>n/a</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-  </developers>
-  <!-- jar files the project is dependent on -->
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Hellesoy</name>
+            <id>rinkrank</id>
+            <email>rinkrank@codehaus.org</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Jon Tirsen</name>
+            <id>tirsen</id>
+            <email>tirsen@codehaus.org</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <!-- jar files the project is dependent on -->
 
-  <dependencies/>
-  <!-- build information for the project -->
+    <dependencies/>
+    <!-- build information for the project -->
 
-  <build>
-    <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
-    <sourceDirectory>${basedir}/src/java</sourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
-    <unitTest>
-      <includes>
-        <include>**/*TestCase.java</include>
-      </includes>
-    </unitTest>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/conf</directory>
-        <includes>
-          <include>*.properties</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
+    <build>
+        <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.*</include>
+            </includes>
+        </unitTest>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/conf</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <reports>
+        <report>maven-checkstyle-plugin</report>
+        <report>maven-jdepend-plugin</report>
+        <report>maven-changelog-plugin</report>
+        <report>maven-file-activity-plugin</report>
+        <report>maven-developer-activity-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-junit-report-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
 </project>

@@ -1,102 +1,150 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-  <meta http-equiv="Content-Type"
- content="text/html; charset=iso-8859-1">
-  <meta name="Robots" content="Index,Follow">
-  <meta http-equiv="PRAGMA" content="NO-CACHE">
-  <title>$page.title</title>
+  <title>PicoContainer -</title>
   <style type="text/css">
-/*<![CDATA[*/
-<!--
-body{
-     margin: 0px;
-     background: #808080;
-         color: #333333;
-     }
-h4 {margin:0; padding: 5px 0;}
-#lh-col{
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: 180px;
-        border: 2px solid #000000;
-        background: #c0c0c0;
-        color: #333333;
-        margin: 0px;
-        padding: 0px;
-        height: 710px;
-        }
-#rh-col{
-        margin: 20px 20px 20px 220px;
-        border: 2px solid #000000;
-        background: #ffffff;
-        color: #333333;
-        padding: 20px;
-        }
--->
-/*]]>*/
-  </style>
+          @import url("tigris.css");
+          @import url("maven.css");
+        </style>
+  <link rel="stylesheet" href="print.css" type="text/css" media="print">
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
 </head>
-<body>
-<div id="lh-col"><br>
-<p align="center"> <span style="font-weight: bold;">PicoContainer</span><strong></strong><br>
-<br>
-<strong>About PicoContainer</strong><br>
-<br>
-<a href="apidocs/index.html">JavaDoc API</a><br>
-<a href="introduction.html">Introduction</a><br>
-<a href="faq.html">FAQ</a><br>
-<a href="ioc.html">Inversion of Control</a><br>
-<a href="configuration.html">Configuration</a><br>
-<a href="lifecycle.html">Lifecycle</a><br>
-<a href="components.html">Components</a><br>
-<a href="good-citizens.html">Good Citizens</a><br>
-<a href="component-adapters.html">Component Adapters</a><br>
-<a href="compositecomponents.html">Component Multicaster</a><br>
-<a href="differentiators.html">Differentiators</a><br>
-<a href="license.html">License</a><br>
-<a href="extras.html">Extras</a><br>
-<a href="nirvana.html">Nirvana</a><br>
-<a href="volunteers.html">Volunteers</a><br>
-<a href="propaganda.html">Propaganda</a><br>
-<a href="related-projects.html">Related Projects</a><br>
-<a href="people.html">People</a><br>
-<a href="blogs.html">Blogs</a><br>
-<a href="picosaurus.html">Picosaurus</a><br>
-<a href="download.html">Download</a><br>
-<a href="news.html"></a></p>
-<div style="text-align: center;"><strong></strong><br>
-<a href="http://sourceforge.net"><br>
-</a></div>
-</div>
-<div id="rh-col">
-<table width="100%" cellpadding="8" cellspacing="0" border="0">
+<body class="composite">
+<div id="banner">
+<table border="0" width="100%" cellpadding="8" cellspacing="0">
   <tbody>
     <tr>
-      <td align="left"><font size="+6"><img src="pico-logo.png" title=""
- alt="PicoContainer logo" align="middle">&nbsp; PicoContainer</font></td>
-    </tr>
-  </tbody>
-</table>
-<div align="center" style="color: red;">
-<table cellpadding="2" cellspacing="2" border="0"
- style="text-align: left; width: 100%;">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top; width: 40%;"><br>
-      </td>
-      <td style="vertical-align: top;">
-      <hr style="width: 100%; height: 2px;"></td>
-      <td style="vertical-align: top; width: 40%;"><br>
+      <td> <a href="http://codehaus.org/"> <img border="0"
+ alt="Codehaus" src="codehaus-small.gif" align="left"> </a> </td>
+      <td>
+      <div id="login" align="right"> <a
+ href="http://www.picocontainer.org/"> <img border="0"
+ alt="PicoContainer" src="pico-logo.png" align="right"> </a> </div>
       </td>
     </tr>
   </tbody>
 </table>
-<br>
-<br>
 </div>
-$page.body </div>
-<!-- Credits to http://www.endamcg.com/main/templates/ licensed under a Creative Commons License. -->
+<div id="breadcrumbs">
+<table border="0" width="100%" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr>
+      <td>Last published: SERVER_DATE | Doc for 1.0-SNAPSHOT </td>
+      <td>
+      <div align="right"> <a href="apidocs/index.html"><img
+ class="handle" src="none.png" alt=""></a> | <a
+ href="http://wiki.codehaus.org/picocontainer/PicoContainer"><img
+ class="handle" src="none.png" alt="">Wiki</a> | <a
+ href="download.html"><img class="handle" src="none.png" alt="">Download</a>
+| <a href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120"><img
+ class="handle" src="none.png" alt="">Issue Tracker</a> | <a
+ href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120&amp;amp;report=roadmap"><img
+ class="handle" src="none.png" alt="">Roadmap</a> | <a
+ href="http://www.nanocontainer.org/"><img class="handle" src="none.png"
+ alt="">NanoContainer</a> </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table border="0" width="100%" cellpadding="8" cellspacing="0">
+  <tbody>
+    <tr valign="top">
+      <td width="20%" id="leftcol">
+      <div id="navcolumn">
+      <div> <strong>PicoContainer</strong>
+      <div> <small> <a href="apidocs/index.html"><img class="handle"
+ src="none.png" alt=""></a> </small> </div>
+      <div> <small> <a href="introduction.html"><img class="handle"
+ src="none.png" alt="">Introduction</a> </small> </div>
+      <div> <small> <b><a href="faq.html"><img class="handle"
+ src="none.png" alt="">FAQ</a></b> </small> </div>
+      <div> <small> <a href="ioc.html"><img class="handle"
+ src="none.png" alt="">Inversion of Control</a> </small> </div>
+      <div> <small> <a href="configuration.html"><img class="handle"
+ src="none.png" alt="">Configuration</a> </small> </div>
+      <div> <small> <a href="lifecycle.html"><img class="handle"
+ src="none.png" alt="">Lifecycle</a> </small> </div>
+      <div> <small> <a href="components.html"><img class="handle"
+ src="none.png" alt="">Components</a> </small> </div>
+      <div> <small> <a href="good-citizens.html"><img class="handle"
+ src="none.png" alt="">Good Citizens</a> </small> </div>
+      <div> <small> <a href="component-adapters.html"><img
+ class="handle" src="none.png" alt="">Component Adapters</a> </small> </div>
+      <div> <small> <a href="compositecomponents.html"><img
+ class="handle" src="none.png" alt="">Component Multicaster</a> </small>
+      </div>
+      <div> <small> <a href="differentiators.html"><img class="handle"
+ src="none.png" alt="">Differentiators</a> </small> </div>
+      <div> <small> <a href="license.html"><img class="handle"
+ src="none.png" alt="">License</a> </small> </div>
+      <div> <small> <a href="extras.html"><img class="handle"
+ src="none.png" alt="">Extras</a> </small> </div>
+      <div> <small> <a href="hotswapping.html"><img class="handle"
+ src="none.png" alt="">Hot Swapping</a> </small> </div>
+      <div> <small> <a href="nirvana.html"><img class="handle"
+ src="none.png" alt="">Nirvana</a> </small> </div>
+      <div> <small> <a href="volunteers.html"><img class="handle"
+ src="none.png" alt="">Volunteers</a> </small> </div>
+      <div> <small> <a href="propaganda.html"><img class="handle"
+ src="none.png" alt="">Propaganda</a> </small> </div>
+      <div> <small> <a href="related-projects.html"><img
+ class="handle" src="none.png" alt="">Related Projects</a> </small> </div>
+      <div> <small> <a href="people.html"><img class="handle"
+ src="none.png" alt="">People</a> </small> </div>
+      <div> <small> <a href="blogs.html"><img class="handle"
+ src="none.png" alt="">Blogs</a> </small> </div>
+      <div> <small> <a href="picosaurus.html"><img class="handle"
+ src="none.png" alt="">Picosaurus</a> </small> </div>
+      <div> <small> <a href="download.html"><img class="handle"
+ src="none.png" alt="">Download</a> </small> </div>
+      </div>
+      <div> <strong>PicoExtras<br>
+&nbsp;<br>
+Search PicoContainer</strong>
+      <form action="http://www.google.com/search" method="get"> <a
+ href="http://www.google.com" class="navlink"> <img border="0"
+ alt="Google" src="Logo_25wht.gif"> </a>
+        <p></p>
+        <input name="q" maxlength="255" size="15" type="text" value="">
+        <input name="btnG" type="submit" value="Go"> <input
+ name="domains" type="hidden" value="http://www.picocontainer.org"> <input
+ name="sitesearch" type="hidden" value="http://www.picocontainer.org"
+ id="search"> </form>
+      </div>
+      <div> <strong>Project Documentation</strong>
+      <div> <small> <a href="index.html"><img class="handle"
+ src="none.png" alt="">About PicoContainer</a> </small> </div>
+      <br>
+      </div>
+      <div style="margin-top: 20px; width: 100%; text-align: center;"> <a
+ href="http://maven.apache.org/" title="Powered by Maven"><br>
+      </a> </div>
+      </div>
+      </td>
+      <td rowspan="2">
+      <div id="bodycol">
+      <div class="app">
+      <div class="h1">
+      <h1>$page.title</h1>
+      </div>
+      <br>
+      $page.body
+      </div>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div id="footer">
+<table border="0" style="width: 100%;" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr>
+      <td> &copy; 2003, PicoContainer team </td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </body>
 </html>

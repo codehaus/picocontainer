@@ -53,7 +53,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     }
 
     public void testCustomConfiguration() throws Exception {
-        PicoContainer pico = createPicoContainerConfiguration();
+        PicoContainer pico = createPicoContainerWithConfiguredComponents();
         ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponentInstance(ScopedContainerConfigurator.class);
         assertNotNull("configurator", configurator);
         ScopedContainerComposer composer = new ScopedContainerComposer(pico);
@@ -78,7 +78,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(request.getComponentInstance("requestScopedInstance2"));
     }
 
-    private PicoContainer createPicoContainerConfiguration() throws ClassNotFoundException{
+    private PicoContainer createPicoContainerWithConfiguredComponents() throws ClassNotFoundException{
         Reader scriptReader = new StringReader("" +
                 "<container>" +
                 "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+

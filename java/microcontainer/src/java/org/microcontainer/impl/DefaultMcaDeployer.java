@@ -29,6 +29,9 @@ public class DefaultMcaDeployer implements McaDeployer {
 	protected File workingDir = null;
 	protected File tempDir = null;
 
+	/**
+	 * Uses default loactions for work and temp directories
+	 */
 	public DefaultMcaDeployer() {
 		this(new File("work"), new File("temp"));
 	}

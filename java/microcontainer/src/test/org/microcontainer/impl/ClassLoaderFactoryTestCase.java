@@ -12,7 +12,7 @@ public class ClassLoaderFactoryTestCase extends TestCase {
 	private ClassLoader classLoader;
 
 	protected void setUp() throws Exception {
-		ClassLoaderFactory clf = new DefaultClassLoaderFactory(new DefaultMcaDeployer());
+		ClassLoaderFactory clf = TestFixture.createClassLoaderFactory();
         new File("test").mkdir();
 		classLoader = clf.build("test");
 	}

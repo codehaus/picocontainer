@@ -1,5 +1,7 @@
 package org.picocontainer.gui.model;
 
+import org.picocontainer.defaults.ComponentAdapter;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
@@ -7,7 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @version $Revision$
  */
 public class ComponentTreeNode extends DefaultMutableTreeNode {
-    public ComponentTreeNode(Class componentImplementation) {
-        super(componentImplementation);
+    public ComponentTreeNode(ComponentAdapter componentAdapter) {
+        super(componentAdapter);
     }
 }

@@ -12,6 +12,10 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoRegistrationException;
 
+/**
+ * @author Jon Tirs&eacute;n
+ * @version $Revision: 1.5 $
+ */
 public class DuplicateComponentKeyRegistrationException extends PicoRegistrationException {
     private Object key;
 

@@ -26,6 +26,10 @@ import java.util.Iterator;
  * <p>
  * It replaces the old HierarchicalComponentRegistry and
  * CompositePicoContainer.
+ *
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
+ * @version $Revision$
  */
 public class DecoratingPicoContainer extends AbstractPicoContainer {
 
@@ -51,10 +55,6 @@ public class DecoratingPicoContainer extends AbstractPicoContainer {
         return null;
     }
 
-    public void addDelegate(AbstractPicoContainer delegate) {
-        delegates.add(delegate);
-    }
-
     public void unregisterComponent(Object componentKey) {
         throw new UnsupportedOperationException();
     }
@@ -67,4 +67,9 @@ public class DecoratingPicoContainer extends AbstractPicoContainer {
         throw new UnsupportedOperationException();
     }
 
+    // END implementation of abstract superclass methods
+
+    public void addDelegate(AbstractPicoContainer delegate) {
+        delegates.add(delegate);
+    }
 }

@@ -10,6 +10,9 @@ import java.util.List;
 /**
  * A component adapter is responsible for instantiating and caching
  * a specific component.
+ *
+ * @author Aslak Helles&oslash;y
+ * @author Jon Tirs&eacute;n
  */
 public interface ComponentAdapter {
     /**

@@ -13,20 +13,16 @@ import java.util.*;
 public abstract class AbstractPicoContainer implements MutablePicoContainer, Serializable {
     // Keeps track of unmanaged components - components instantiated outside this internals
     private final List unmanagedComponents = new ArrayList();
+
     // Keeps track of the instantiation order
-    // TODO the component adapters should maybe add here? Easier, as they might
-    // chain to others when instantiating dependant components
     private final List orderedComponents = new ArrayList();
 
     protected ComponentAdapterFactory componentAdapterFactory;
 
-//    protected abstract List getOrderedComponents();
+    public abstract Collection getComponentKeys();
     public abstract List getComponentAdapters();
     public abstract void registerComponent(ComponentAdapter compSpec) throws PicoRegistrationException;
-//    protected abstract void addOrderedComponentInstance(Object component);
-//    protected abstract ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
-//    protected abstract Object findComponentInstance(Class componentType) throws PicoInitializationException;
-//    protected abstract ComponentAdapter findImplementingComponentAdapter(Class componentType) throws PicoIntrospectionException;
+    public abstract ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException;
 
     public void registerComponentInstance(Object component) throws PicoRegistrationException{
         registerComponentInstance(component.getClass(), component);
@@ -104,8 +100,6 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         return Collections.unmodifiableCollection(componentInstances);
     }
 
-    public abstract Collection getComponentKeys();
-
     public Object findComponentInstance(Class componentType) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List foundKeys = new ArrayList();
         Object result = null;
@@ -130,8 +124,6 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
     public boolean hasComponent(Object componentKey) {
         return getComponentKeys().contains(componentKey);
     }
-
-    public abstract ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException;
 
     public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();

@@ -19,6 +19,10 @@ import java.util.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @author Jon Tirs&eacute;n
+ * @version $Revision$
+ */
 public class DefaultComponentAdapter extends AbstractComponentAdapter {
 
     private Parameter[] parameters;

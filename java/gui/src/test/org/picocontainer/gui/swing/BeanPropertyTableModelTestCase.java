@@ -1,13 +1,11 @@
 package org.picocontainer.gui.swing;
 
 import junit.framework.TestCase;
-
-import java.beans.BeanInfo;
-import java.beans.Introspector;
 import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
-
 import org.picocontainer.gui.model.BeanPropertyTableModel;
+import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -46,36 +44,20 @@ public class BeanPropertyTableModelTestCase extends TestCase {
         }
     }
 
-    protected void setUp() throws IntrospectionException {
-        BeanInfo manInfo = Introspector.getBeanInfo(Man.class);
-        model = new BeanPropertyTableModel(manInfo);
+    protected void setUp() throws PicoIntrospectionException {
+        BeanPropertyComponentAdapterFactory factory = new BeanPropertyComponentAdapterFactory(
+                new DefaultComponentAdapterFactory()
+        );
+        BeanPropertyComponentAdapterFactory.Adapter adapter =
+                (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter("whatever", Man.class, null);
+        model = new BeanPropertyTableModel(adapter);
     }
 
     public void testRows() throws IntrospectionException {
-        assertEquals(3, model.getRowCount());
+        assertEquals(4, model.getRowCount());
 
-        // they are automatically alphabetically sorted :-)
-        assertEquals("name", model.getValueAt(2,0));
+        // they are automatically alphabetically sorted, and there is class too
+        assertEquals("name", model.getValueAt(3,0));
     }
 
-    public void testDisplay() throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-        Man man = new Man();
-        man.birth = "1971";
-        man.haircolour = "Blond";
-        man.name = "Aslak";
-
-        model.display(man);
-        
-        assertEquals(3, model.getRowCount());
-
-        // they are automatically alphabetically sorted :-)
-        assertEquals("Aslak", model.getValueAt(2,1));
-    }
-
-    public void testUpdate() throws InvocationTargetException, IllegalAccessException {
-        model.setValueAt("rinkrank", 2, 1);
-
-        Man man = new Man();
-        model.update(man);
-    }
 }

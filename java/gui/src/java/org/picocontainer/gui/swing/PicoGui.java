@@ -1,17 +1,10 @@
 package org.picocontainer.gui.swing;
 
-import org.picocontainer.gui.model.ComponentRegistryTreeNode;
-import org.picocontainer.gui.model.ComponentTreeNode;
-import org.picocontainer.gui.model.BeanPropertyTableModel;
-import org.picocontainer.gui.swing.BeanPropertyTableModelTestCase;
-import org.picocontainer.gui.swing.PropertyTableCommander;
-import org.picocontainer.gui.swing.EditContainerPanel;
+import org.picocontainer.gui.model.*;
 
 import javax.swing.*;
+import javax.swing.tree.TreeModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.beans.Introspector;
-import java.beans.IntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -19,19 +12,19 @@ import java.beans.IntrospectionException;
  */
 public class PicoGui extends JPanel {
 
-    public PicoGui(ComponentRegistryTreeNode rootNode) throws IntrospectionException {
+    public PicoGui(ComponentRegistryTreeNode rootNode) {
         super(new BorderLayout());
 
         JSplitPane split = new JSplitPane();
-
         JPanel left = new JPanel(new BorderLayout());
 
-        JTree tree = new JTree(rootNode);
+        TreeModel treeModel = new PicoTreeModel(rootNode);
+        JTree tree = new JTree(treeModel);
         tree.setCellRenderer(new PicoTreeCellRenderer());
         left.add(new JScrollPane(tree), BorderLayout.CENTER);
 
         EditContainerPanel editContainerPanel = new EditContainerPanel(tree);
-        left.add(editContainerPanel, BorderLayout.SOUTH);
+        left.add(editContainerPanel, BorderLayout.NORTH);
 
         JPanel right = new JPanel(new BorderLayout());
         JTable table = new JTable(BeanPropertyTableModel.EMPTY_MODEL);
@@ -40,8 +33,9 @@ public class PicoGui extends JPanel {
 
         right.add(new JScrollPane(table),  BorderLayout.CENTER);
 
-        split.setLeftComponent(left);
-        split.setRightComponent(right);
+        split.setTopComponent(left);
+        split.setBottomComponent(right);
+        split.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
         add(split, BorderLayout.CENTER);
     }
@@ -53,23 +47,18 @@ public class PicoGui extends JPanel {
             System.out.println(message);
         }
 
+        public A() {
+            System.out.println("CONSTRUCTED");
+        }
+
         public void setMessage(String message) {
             this.message = message;
+            System.out.println("SET:" + message);
         }
     }
 
-    public static void main(String[] args) throws IntrospectionException {
+    public static void main(String[] args) {
         ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
-
-        // register a new child component.
-        parentNode.add(new ComponentTreeNode(A.class));
-
-        // register a new child registry with a child component.
-        ComponentRegistryTreeNode childNode = new ComponentRegistryTreeNode();
-        parentNode.add(childNode);
-        childNode.add(new ComponentTreeNode(ArrayList.class));
-        parentNode.add(childNode);
-
         PicoGui gui = new PicoGui(parentNode);
 
         JFrame f = new JFrame();

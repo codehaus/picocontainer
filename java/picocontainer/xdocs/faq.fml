@@ -4,6 +4,19 @@
   <part id="general">
     <title>General</title>
 
+    <faq id="when-pico">
+      <question>
+        When should I use PicoContainer
+      </question>
+      <answer>
+        <p>
+          We recommend using PicoContainer when your application consists of many different classes (components)
+          that are related to each other. Instantiating and lacing/connecting a lot of objects can be difficult task.
+          Further, if your classes know what other objects they need in order to be a <a href="">good citizen</a>
+        </p>
+      </answer>
+    </faq>
+
     <faq id="why-another">
       <question>
         Why another IoC framework?

@@ -11,7 +11,6 @@
 package org.picocontainer;
 
 public abstract class PicoInitializationException extends PicoException {
-    ///CLOVER:OFF
     protected PicoInitializationException() {
     }
 
@@ -26,5 +25,4 @@ public abstract class PicoInitializationException extends PicoException {
     protected PicoInitializationException(String message, Throwable cause) {
         super(message, cause);
     }
-    ///CLOVER:ON
 }

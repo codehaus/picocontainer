@@ -26,7 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.io.Serializable;
 
 /**
- *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

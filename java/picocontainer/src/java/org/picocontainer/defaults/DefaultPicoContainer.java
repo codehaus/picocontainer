@@ -12,9 +12,11 @@ package org.picocontainer.defaults;
 import java.util.*;
 
 /**
- * The default component registry.
+ * The default implementation of PicoContainer
  *
- * @author Aslak Hellesoy, Paul Hammant, various
+ * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
+ * @author Jon Tirs&eacute;n
  * @version $Revision: 1.8 $
  */
 

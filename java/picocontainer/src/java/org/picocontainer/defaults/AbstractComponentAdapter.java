@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
 public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {

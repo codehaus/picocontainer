@@ -7,8 +7,7 @@ package org.picocontainer;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public abstract class PicoException extends Exception {
-    ///CLOVER:OFF
+public abstract class PicoException extends RuntimeException {
     private Throwable cause;
 
     protected PicoException() {
@@ -30,5 +29,4 @@ public abstract class PicoException extends Exception {
     public Throwable getCause() {
         return cause;
     }
-    ///CLOVER:ON
 }

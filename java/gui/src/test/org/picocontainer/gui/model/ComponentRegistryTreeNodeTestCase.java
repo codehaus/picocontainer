@@ -2,13 +2,12 @@ package org.picocontainer.gui.model;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapter;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.gui.model.ComponentRegistryTreeNode;
-import org.picocontainer.gui.model.ComponentTreeNode;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -33,6 +32,10 @@ public class ComponentRegistryTreeNodeTestCase extends TestCase {
         }
     }
 
+    private ComponentTreeNode createComponentNode(Class clazz) {
+        return new ComponentTreeNode(new DefaultComponentAdapter(clazz, clazz));
+    }
+
     public void testCreateRegistryChild() {
         ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
         assertEquals(0, parentNode.getChildCount());
@@ -50,7 +53,7 @@ public class ComponentRegistryTreeNodeTestCase extends TestCase {
         ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
 
         // register a new child component.
-        ComponentTreeNode regChild = new ComponentTreeNode(Foo.class);
+        ComponentTreeNode regChild = createComponentNode(Foo.class);
         parentNode.add(regChild);
         assertEquals(1, parentNode.getChildCount());
 
@@ -62,13 +65,13 @@ public class ComponentRegistryTreeNodeTestCase extends TestCase {
         ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
 
         // register a new child component.
-        parentNode.add(new ComponentTreeNode(Foo.class));
+        parentNode.add(createComponentNode(Foo.class));
 
         // register a new child registry with a child component.
         ComponentRegistryTreeNode childNode = new ComponentRegistryTreeNode();
         parentNode.add(childNode);
 
-        ComponentTreeNode childBar = new ComponentTreeNode(Bar.class);
+        ComponentTreeNode childBar = createComponentNode(Bar.class);
         childNode.add(childBar);
 
         PicoContainer parentPico = new DefaultPicoContainer.WithComponentRegistry(parentNode.createHierarchicalComponentRegistry());
@@ -91,11 +94,11 @@ public class ComponentRegistryTreeNodeTestCase extends TestCase {
         ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
 
         // register a new child component.
-        parentNode.add(new ComponentTreeNode(Bar.class));
+        parentNode.add(createComponentNode(Bar.class));
 
         // register a new child registry with a child component.
         ComponentRegistryTreeNode childNode = new ComponentRegistryTreeNode();
-        childNode.add(new ComponentTreeNode(Foo.class));
+        childNode.add(createComponentNode(Foo.class));
 
         PicoContainer parentPico = new DefaultPicoContainer.WithComponentRegistry(parentNode.createHierarchicalComponentRegistry());
         try {

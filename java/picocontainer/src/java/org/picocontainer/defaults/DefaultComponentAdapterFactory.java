@@ -6,7 +6,7 @@ import org.picocontainer.PicoIntrospectionException;
 import java.io.Serializable;
 
 /**
- * @author Jon Tirsen
+ * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
 public class DefaultComponentAdapterFactory implements ComponentAdapterFactory, Serializable {

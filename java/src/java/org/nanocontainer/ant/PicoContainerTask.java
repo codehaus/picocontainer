@@ -42,8 +42,6 @@ public class PicoContainerTask extends Task {
     private MutablePicoContainer pico;
 
     public PicoContainerTask() {
-        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory();
-        pico = new DefaultPicoContainer(componentAdapterFactory);
     }
 
     public void setComponentAdapterFactoryClass(Class factoryClass) {
@@ -82,7 +80,7 @@ public class PicoContainerTask extends Task {
     public final void execute() {
         registerComponentsSpecifiedInAnt();
         try {
-            pico.getComponentInstances();
+            getPicoContainer().getComponentInstances();
         } catch (Exception e) {
             throw new BuildException(e);
         }
@@ -120,6 +118,10 @@ public class PicoContainerTask extends Task {
     }
 
     public PicoContainer getPicoContainer() {
+        if(pico == null) {
+            ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory();
+            pico = new DefaultPicoContainer(componentAdapterFactory);
+        }
         return pico;
     }
 

@@ -1,9 +1,7 @@
 package org.picocontainer.gui.model;
 
-import org.picocontainer.extras.HierarchicalComponentRegistry;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.*;
+import org.picocontainer.extras.DecoratingPicoContainer;
 import org.picocontainer.defaults.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,8 +19,7 @@ import java.util.Iterator;
  */
 public class ComponentRegistryTreeNode extends DefaultMutableTreeNode {
     // These never instantiate components.
-    private ComponentRegistry tempRegistry = new DefaultComponentRegistry();
-    private RegistrationPicoContainer tempContainer = new DefaultPicoContainer.WithComponentRegistry(tempRegistry);
+    private DefaultPicoContainer tempPico = new DefaultPicoContainer();
 
     public ComponentRegistryTreeNode() {
         super("DUMMY");
@@ -31,12 +28,8 @@ public class ComponentRegistryTreeNode extends DefaultMutableTreeNode {
     public void insert(MutableTreeNode newChild, int i) {
         if (newChild instanceof ComponentTreeNode) {
             ComponentTreeNode componentTreeNode = (ComponentTreeNode) newChild;
-
-            try {
-                tempContainer.registerComponentByClass((Class) componentTreeNode.getUserObject());
-            } catch (PicoException e) {
-                throw new RuntimeException(e);
-            }
+            ComponentAdapter componentAdapter = (ComponentAdapter) componentTreeNode.getUserObject();
+            tempPico.registerComponent(componentAdapter);
         }
         super.insert(newChild, i);
     }
@@ -44,40 +37,33 @@ public class ComponentRegistryTreeNode extends DefaultMutableTreeNode {
     public void remove(MutableTreeNode aChild) {
         if (aChild instanceof ComponentTreeNode) {
             ComponentTreeNode componentTreeNode = (ComponentTreeNode) aChild;
-            tempContainer.unregisterComponent((Class) componentTreeNode.getUserObject());
+            ComponentAdapter componentAdapter = (ComponentAdapter) componentTreeNode.getUserObject();
+            tempPico.unregisterComponent(componentAdapter.getComponentKey());
         }
 
         super.remove(aChild);
     }
 
-    public HierarchicalComponentRegistry createHierarchicalComponentRegistry() throws PicoInitializationException {
+    public DecoratingPicoContainer createHierarchicalComponentRegistry() throws PicoInitializationException {
 
-        ComponentRegistry componentRegistry = new DefaultComponentRegistry();
-        RegistrationPicoContainer registrationOnlyContainer = new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
+        DefaultPicoContainer childPico = new DefaultPicoContainer();
 
-        System.out.println("REG specs:" + tempRegistry.getComponentAdapters());
-
-
-        for (Iterator iterator = tempRegistry.getComponentAdapters().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = tempPico.getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter adapter = (ComponentAdapter) iterator.next();
-            try {
-                registrationOnlyContainer.registerComponentByClass(adapter.getComponentImplementation());
-            } catch (PicoException e) {
-                throw new RuntimeException(e);
-            }
+            // todo hmmm. can we reuse it??
+            childPico.registerComponent(adapter);
         }
 
         ComponentRegistryTreeNode parentNode = (ComponentRegistryTreeNode) getParent();
-        ComponentRegistry parentRegistry = null;
+        AbstractPicoContainer parentPico = null;
         if (parentNode != null) {
-            parentRegistry = parentNode.createHierarchicalComponentRegistry();
+            parentPico = parentNode.createHierarchicalComponentRegistry();
         } else {
-            parentRegistry = new DefaultComponentRegistry();
+            parentPico = new DefaultPicoContainer();
         }
-        HierarchicalComponentRegistry hierarchicalRegistry = new PublicHierarchicalComponentRegistry(
-                parentRegistry,
-                componentRegistry
-        );
-        return hierarchicalRegistry;
+        DecoratingPicoContainer result = new DecoratingPicoContainer();
+        result.addDelegate(childPico);
+        result.addDelegate(parentPico);
+        return result;
     }
 }

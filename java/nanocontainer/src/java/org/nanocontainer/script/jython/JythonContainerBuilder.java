@@ -30,7 +30,6 @@ public class JythonContainerBuilder extends ScriptedComposingLifecycleContainerB
 
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
-        interpreter.exec("from org.picocontainer.extras import *");
         interpreter.exec("from org.picoextras.reflection import *");
         interpreter.exec("from java.net import *");
         interpreter.execfile(new InputStream() {

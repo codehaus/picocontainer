@@ -60,41 +60,6 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         this.componentFactory = componentFactory;
     }
 
-    public Object[] getComponents() {
-       /* <ASLAK>
-        * TODO: make final again
-        *
-        * The reason why we're not simply doing
-        *
-        * return componentKeyToInstanceMap.values().toArray();
-        *
-        * is that we want a simple way to override the behaviour
-        * of getComponents() and getComponentKeys(). These methods
-        * are conceptually related, and one should therefore depend
-        * on the other. (Like the below implementation).
-        *
-        * (Overriding one and not another will probably break the container)
-        *
-        * Ideally, this method should be final, so we can avoid unexpected
-        * behaviour. Making this method non-final is bad (IMHO) because
-        * if someone overrides only this method, and forget to override
-        * getComponentKeys() *will* result in strange behaviour.
-        *
-        * Paul removed the final specifier in order to open up for some of James'
-        * stuff, but as I'm trying to explain, I think this is very dangerous.
-        *
-        * </ASLAK>
-        */
-
-        Object[] componentKeys = getComponentKeys();
-        Object[] components = new Object[componentKeys.length];
-        for (int i = 0; i < componentKeys.length; i++) {
-            Object componentKey = componentKeys[i];
-            components[i] = getComponent(componentKey);
-        }
-        return components;
-    }
-
     /**
      * @deprecated Use {@link #getCompositeComponent} instead
      */
@@ -307,6 +272,48 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         }
 
         return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
+    }
+
+    public Object[] getComponents() {
+       /* <ASLAK>
+        * TODO: make final again
+        *
+        * There is a reason why we're not simply doing
+        *
+        * return componentKeyToInstanceMap.values().toArray();
+        *
+        * getComponents() and getComponentKeys() are tightly related.
+        * They have a "contract" between each other. More specifically:
+		*
+		* 1) They should always return equally sized arrays.
+		* 2) For each key returned by getComponentKeys() the call to getComponent(key)
+		*    should never return null.
+		*
+		* If Java had supported DBC, we would have expressed this contract on the PicoContainer
+		* interface itself, forcing that contract to be respected through the whole hierarchy.
+		* Since this isn't possible in Java, we as programmers use other means (comments and final
+		* being some of them) to "enforce" the contract to be respected.
+		*
+		* Overriding getComponents() and not getComponentType() has the potential danger in that
+		* it might violate the contract. Making one of the methods final (that would naturally be
+		* getComponents()) and finalising the contract in that final method prevents the contract
+		* from being violated. Ever.
+		*
+		* Using final on methods is a way to avoid contracts being broken.
+        *
+        * Ideally, this method should be final, so we can avoid the contract being accidentally
+        * broken.
+        *
+        * </ASLAK>
+        */
+
+        Object[] componentKeys = getComponentKeys();
+        Object[] components = new Object[componentKeys.length];
+        for (int i = 0; i < componentKeys.length; i++) {
+            Object componentKey = componentKeys[i];
+            components[i] = getComponent(componentKey);
+        }
+        return components;
     }
 
     public Object[] getComponentKeys() {

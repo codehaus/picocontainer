@@ -71,10 +71,10 @@ public class ScopedContainerComposer implements ContainerComposer {
         applicationRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         populateContainer(config.getApplicationConfig(), applicationRecorder);
 
-        sessionRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
+        sessionRecorder = new DefaultContainerRecorder(applicationRecorder.getContainerProxy());
         populateContainer(config.getSessionConfig(), sessionRecorder);
         
-        requestRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
+        requestRecorder = new DefaultContainerRecorder(sessionRecorder.getContainerProxy());
         populateContainer(config.getRequestConfig(), requestRecorder);
 	}    
 

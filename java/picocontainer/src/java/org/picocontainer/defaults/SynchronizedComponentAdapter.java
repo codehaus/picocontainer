@@ -28,8 +28,4 @@ public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
     public synchronized Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
         return super.getComponentInstance(container);
     }
-
-    public synchronized void verify(PicoContainer container) throws UnsatisfiableDependenciesException {
-        super.verify(container);
-    }
 }

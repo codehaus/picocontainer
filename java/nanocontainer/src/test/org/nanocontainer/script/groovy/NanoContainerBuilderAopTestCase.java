@@ -31,8 +31,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
-                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
                 "builder = new NanoContainerBuilder(decorator)\n" +
                 "nano = builder.container() {\n" +
@@ -56,9 +56,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
-                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
                 "builder = new NanoContainerBuilder(decorator)\n" +
                 "nano = builder.container() {\n" +
@@ -85,8 +84,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
-                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
                 "builder = new NanoContainerBuilder(decorator) \n" +
                 "nano = builder.container() {\n" +
@@ -115,8 +114,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
-                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
                 "builder = new NanoContainerBuilder(decorator) \n" +
                 "nano = builder.container() {\n" +
@@ -141,8 +140,8 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
                 "logger = new LoggingInterceptor(log)\n" +
                 "caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory()\n" +
                 "\n" +
-                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
                 "builder = new NanoContainerBuilder(decorator) \n" +
                 "nano = builder.container(adapterFactory:caf) {\n" +

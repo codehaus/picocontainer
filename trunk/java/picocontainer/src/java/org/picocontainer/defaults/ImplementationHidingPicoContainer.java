@@ -8,17 +8,17 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
 
-import java.util.List;
-import java.util.Collection;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -64,7 +64,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
-                return pc.registerComponent(new ImplementationHidingComponentAdapter( new CachingComponentAdapter(delegate)));
+                return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }
         return pc.registerComponentImplementation(componentKey, componentImplementation);
@@ -75,7 +75,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
-                return pc.registerComponent(new ImplementationHidingComponentAdapter( new CachingComponentAdapter(delegate)));
+                return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }
         return pc.registerComponentImplementation(componentKey, componentImplementation, parameters);

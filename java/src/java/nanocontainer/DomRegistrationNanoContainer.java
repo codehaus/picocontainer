@@ -23,7 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 import picocontainer.Container;
-import picocontainer.DummyContainer;
+import picocontainer.NullContainer;
 import picocontainer.PicoRegistrationException;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
@@ -38,7 +38,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     public static class Default extends DomRegistrationNanoContainer {
         public Default() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer(), DomRegistrationNanoContainer.class.getClassLoader() );
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader() );
         }
     }
 
@@ -50,13 +50,13 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     public static class WithCustomDocumentBuilder extends DomRegistrationNanoContainer {
         public WithCustomDocumentBuilder(DocumentBuilder documentBuilder) {
-            super(documentBuilder, new DummyContainer(), DomRegistrationNanoContainer.class.getClassLoader());
+            super(documentBuilder, new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
     public static class WithClassLoader extends DomRegistrationNanoContainer {
         public WithClassLoader(ClassLoader classLoader) throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer(), classLoader);
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), classLoader);
         }
     }
 

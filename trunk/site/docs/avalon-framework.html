@@ -8,8 +8,8 @@
 Apache's Avalon's component specification is enshrined in a number of
 interfaces. What this means is that the component writer has to
 implement them to designate their class as an Avalon component.&nbsp;
-PicoComponents require adaptation to fit the type-1 Avalon-Framework
-design.<br>
+PicoComponents require adaptation to fit the Avalon-Framework
+(contextualized depenedency lookup) design.<br>
 <br>
 This document details how to do this manually.<br>
 <h2>A simple example component<br>
@@ -23,10 +23,9 @@ public interface Persistor {<br>
 }<br>
 </div>
 <br>
-<h3><span style="font-weight: bold;">A simple Pico implementation of
+<span style="font-weight: bold;">A simple Pico implementation of
 the
-hypothetical engine.</span></h3>
-<br>
+hypothetical engine.</span>
 <pre style="margin-left: 40px;">public class EngineImpl implements Engine {<br>&nbsp; Persistor persistor;<br>&nbsp; String persistenceKey;<br>&nbsp; Object persistable;<br>&nbsp; public void EngineImpl(Persistor persistor, String persistenceKey) {<br>&nbsp;&nbsp;&nbsp; this.persistor = persistor;<br>&nbsp;&nbsp;&nbsp; this.persistorKey = persistorKey;<br>&nbsp;&nbsp;&nbsp; persistable = new Object(); // not very 'heavy' we appreciate.<br>&nbsp; }<br>&nbsp; public void runEngine() {<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>&nbsp; }<br>}<br></pre>
 <h3>The same component natively written for Apache Avalon</h3>
 <pre style="margin-left: 40px;">public class AvalonEngine implements Engine, Servicable, Configurable, Initializable {<br>&nbsp; Persistor persistor;<br>&nbsp; String persistenceKey;<br>&nbsp; Object persistable;<br>&nbsp; public void service (ServiceManager sm) throws ServiceException {<br>&nbsp;&nbsp;&nbsp; this.persistor = (Persistor) sm.lookup("Persistor");<br>&nbsp; }<br>&nbsp; public void configure(Configuration conf) {<br>&nbsp;&nbsp;&nbsp; this.persistorKey = conf.getAttribute("persistorKey");<br>&nbsp; }<br>&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp; persistable = new Object(); // not very 'heavy' we appreciate.<br>&nbsp; }<br>&nbsp; public void runEngine() {<br>&nbsp; {<br>&nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>&nbsp; }<br>}<br></pre>

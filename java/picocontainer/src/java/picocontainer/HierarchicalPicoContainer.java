@@ -26,14 +26,7 @@ TODO (Aslak):
 
 package picocontainer;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
@@ -47,6 +40,8 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     private Map componentTypeToInstanceMap = new HashMap();
     // Keeps track of the order in which components should be started
     private List orderedComponents = new ArrayList();
+
+    private Map parametersForComponent = new HashMap();
 
     // Cache the types and components. For speed, but also to make sure
     // subsequent calls return the same object arrays (and not only
@@ -151,6 +146,24 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         componentTypeToInstanceMap.put(componentType, component);
     }
 
+    public void addParameterToComponent(Class componentType, Class parameter, Object arg) {
+        if (!parametersForComponent.containsKey(componentType)) {
+            parametersForComponent.put(componentType, new ArrayList());
+        }
+        List args = (List)parametersForComponent.get(componentType);
+        args.add(new ParameterSpec(parameter, arg));
+    }
+
+    class ParameterSpec {
+        private Class parameterType;
+        private Object arg;
+
+        ParameterSpec(Class parameterType, Object parameter) {
+            this.parameterType = parameterType;
+            this.arg = parameter;
+        }
+    }
+
     public void start() throws PicoStartException {
         boolean progress = true;
         while (progress == true) {
@@ -185,11 +198,17 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             Constructor constructor = constructors[0];
             Class[] parameters = constructor.getParameterTypes();
 
+            List paramSpecs = (List)parametersForComponent.get(componentImplementation);
+            paramSpecs = paramSpecs == null ? Collections.EMPTY_LIST : new LinkedList(paramSpecs); // clone because we are going to modify it
+
             // For each param, look up the instantiated componentImplementation.
             Object[] args = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 Class param = parameters[i];
-                args[i] = getComponentForParam(param);
+                args[i] = getComponentForParam(param); // lookup a service for this param
+                if (args[i] == null && !paramSpecs.isEmpty()) { // failing that, check if any params are available from addParameterToComponent()
+                    args[i] = ((ParameterSpec) paramSpecs.remove(0)).arg;
+                }
             }
             if (hasAnyNullArguments(args) == false) {
                 Object componentInstance = null;

@@ -429,4 +429,90 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             // ok
         }
     }
+
+    interface Animal {
+
+        String getFood();
+    }
+
+    public static class Dino implements Animal {
+        String food;
+
+        public Dino(String food) {
+            this.food = food;
+        }
+
+        public String getFood() {
+            return food;
+        }
+    }
+
+    public void testParameterCanBePassedToConstructor() throws Exception {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino.class);
+        pico.addParameterToComponent(Dino.class, String.class, "bones");
+        pico.start();
+
+        Animal animal = (Animal)pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("bones", animal.getFood());
+    }
+
+    public static class Dino2 extends Dino {
+        public Dino2(int number) {
+            super(String.valueOf(number));
+        }
+    }
+
+    public void testParameterCanBePrimitive() throws Exception {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino2.class);
+        pico.addParameterToComponent(Dino2.class, Integer.class, new Integer(22));
+        pico.start();
+
+        Animal animal = (Animal)pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("22", animal.getFood());
+    }
+
+    public static class Dino3 extends Dino {
+        public Dino3(String a, String b) {
+            super(a + b);
+        }
+    }
+
+    public void testMultipleParametersCanBePassed() throws Exception {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino3.class);
+        pico.addParameterToComponent(Dino3.class, String.class, "a");
+        pico.addParameterToComponent(Dino3.class, String.class, "b");
+        pico.start();
+
+        Animal animal = (Animal)pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("ab", animal.getFood());
+
+    }
+
+    public static class Dino4 extends Dino {
+        public Dino4(String a, int n, String b, Wilma wilma) {
+            super(a + n + b + " " + wilma.getClass().getName());
+        }
+    }
+
+    public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino4.class);
+        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.addParameterToComponent(Dino4.class, String.class, "a");
+        pico.addParameterToComponent(Dino4.class, Integer.class, new Integer(3));
+        pico.addParameterToComponent(Dino4.class, String.class, "b");
+        pico.start();
+
+        Animal animal = (Animal)pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("a3b picocontainer.testmodel.WilmaImpl", animal.getFood());
+    }
+
+
 }

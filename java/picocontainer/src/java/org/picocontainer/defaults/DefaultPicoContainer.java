@@ -84,11 +84,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    public void addParent(MutablePicoContainer parent) {
-        parents.add(parent);
-        parent.addChild(this);
-    }
-
     public void registerComponentInstance(Object component) throws PicoRegistrationException{
         registerComponentInstance(component.getClass(), component);
     }
@@ -223,11 +218,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return Collections.unmodifiableList(parents);
     }
 
-    public void addChild(PicoContainer child) {
+    public void addChild(MutablePicoContainer child) {
         children.add(child);
+        if(!child.getParentContainers().contains(this)) {
+            child.addParent(this);
+        }
     }
 
-    public void addParent(PicoContainer parent) {
+    public void addParent(MutablePicoContainer parent) {
         parents.add(parent);
+        if(!parent.getChildContainers().contains(this)) {
+            parent.addChild(this);
+        }
     }
 }

@@ -33,6 +33,9 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
         return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
+    public void hotSwap(Class aClass) {
+    }
+
     public class Adapter extends DecoratingComponentAdapter {
         public Adapter(ComponentAdapter delegate) {
             super(delegate);

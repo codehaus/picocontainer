@@ -16,33 +16,46 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.defaults.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
     private static boolean addCalled = false;
 
-    public static class OneConstructorArrayList extends ArrayList {
-        public OneConstructorArrayList() {
-            super();
-        }
+    public static class ReferencesSwappables {
+        public final Swappable swappable;
 
-        public boolean add(Object o) {
-            addCalled = true;
-            return super.add(o);
+        public ReferencesSwappables(Swappable swappable) {
+            this.swappable = swappable;
+        }
+    }
+
+    public static interface Swappable {
+        String getCheese();
+    }
+
+    public static class ConcreteSwappable implements Swappable {
+        public String getCheese() {
+            return "Edam";
         }
     }
 
     public void testCreatedComponentAdapterCreatesInstancesWhereImplementationIsHidden()
             throws NoSuchMethodException, PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(List.class, OneConstructorArrayList.class, null);
-        Object o = componentAdapter.getComponentInstance(picoContainer);
-        assertTrue(o instanceof List);
-        assertFalse(o instanceof OneConstructorArrayList);
-        ((List) o).add("hello");
-        assertTrue("Add was called", addCalled);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(Swappable.class, ConcreteSwappable.class, null);
+        Swappable swappable = (Swappable) componentAdapter.getComponentInstance(picoContainer);
+        assertFalse(swappable instanceof ConcreteSwappable);
+        assertEquals("Edam", swappable.getCheese());
     }
+
+    public void testHotSwap() {
+        ImplementationHidingComponentAdapterFactory componentAdapterFactory = (ImplementationHidingComponentAdapterFactory) createComponentAdapterFactory();
+        ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(Swappable.class, ConcreteSwappable.class, null);
+        Swappable swappable = (Swappable) componentAdapter.getComponentInstance(picoContainer);
+        assertFalse(swappable instanceof ConcreteSwappable);
+        assertEquals("Edam", swappable.getCheese());
+
+        componentAdapterFactory.hotSwap(Swappable.class);
+    }
+
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
         return new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());

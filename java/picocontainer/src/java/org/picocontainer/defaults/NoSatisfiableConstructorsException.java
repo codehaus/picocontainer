@@ -14,7 +14,7 @@ public class NoSatisfiableConstructorsException extends PicoIntrospectionExcepti
     private final Set failedDependencies;
 
     public NoSatisfiableConstructorsException(Class componentImplementation, Set failedDependencies) {
-        super(componentImplementation.getName() + " doesn't have any satisfiable constructors. Usatisfiable dependencies: " + failedDependencies.toString());
+        super(componentImplementation.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies.toString());
         this.componentImplementation = componentImplementation;
         this.failedDependencies = failedDependencies;
     }

@@ -14,6 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.Field;
+
 /**
  * A ConstantParameter should be used to pass in "constant" arguments
  * to constructors. This includes {@link String}s, {@link Integer}s or
@@ -30,44 +32,29 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws NotConcreteRegistrationException {
-        if(!expectedType.isAssignableFrom(value.getClass())) {
-            if (expectedType.isPrimitive()) {
-                if(!primitiveMatches(expectedType, value.getClass())) {
-                    return null;
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        ComponentAdapter result = null;
+        if (expectedType.isAssignableFrom(value.getClass())) {
+            result = new InstanceComponentAdapter(value, value);
+        } else if (expectedType.isPrimitive()) {
+            try {
+                Field field = value.getClass().getField("TYPE");
+                Class type = (Class) field.get(value);
+                if (expectedType.isAssignableFrom(type)) {
+                    result = new InstanceComponentAdapter(value, value);
+                } else {
+                    result = null;
                 }
-            } else {
-                return null;
+            } catch (NoSuchFieldException e) {
+                result = null;
+            } catch (IllegalArgumentException e) {
+                result = null;
+            } catch (IllegalAccessException e) {
+                result = null;
+            } catch (ClassCastException e) {
+                result = null;
             }
         }
-        return new InstanceComponentAdapter(value, value);
-    }
-
-    private boolean primitiveMatches(Class expectedPrimitiveType, Class constantClass) {
-        if(expectedPrimitiveType.equals(Byte.class) || expectedPrimitiveType.equals(Byte.TYPE)) {
-            return constantClass.equals(Byte.class) || constantClass.equals(Byte.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Short.class) || expectedPrimitiveType.equals(Short.TYPE)) {
-            return constantClass.equals(Short.class) || constantClass.equals(Short.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Integer.class) || expectedPrimitiveType.equals(Integer.TYPE)) {
-            return constantClass.equals(Integer.class) || constantClass.equals(Integer.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Long.class) || expectedPrimitiveType.equals(Long.TYPE)) {
-            return constantClass.equals(Long.class) || constantClass.equals(Long.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Float.class) || expectedPrimitiveType.equals(Float.TYPE)) {
-            return constantClass.equals(Float.class) || constantClass.equals(Float.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Double.class) || expectedPrimitiveType.equals(Double.TYPE)) {
-            return constantClass.equals(Double.class) || constantClass.equals(Double.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Boolean.class) || expectedPrimitiveType.equals(Boolean.TYPE)) {
-            return constantClass.equals(Boolean.class) || constantClass.equals(Boolean.TYPE);
-        }
-        if(expectedPrimitiveType.equals(Character.class) || expectedPrimitiveType.equals(Character.TYPE)) {
-            return constantClass.equals(Character.class) || constantClass.equals(Character.TYPE);
-        }
-        return false;
+        return result;
     }
 }

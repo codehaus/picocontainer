@@ -87,4 +87,21 @@ public interface PicoContainer {
      * @see #getParents()
      */
     Collection getChildren();
+
+    /**
+     * Get the parents. In a purely hierarchical (tree structure) container,
+     * there will be 0..1 parents. However, it is possible to have several parents.
+     * A container will look in its parents if a component can be found in self.
+     *
+     * @return a Collection of {@link PicoContainer}.
+     */
+    List getParents();
+
+    /**
+     * Finds a ComponentAdapter matching the key. This method is an "expert" method, and should
+     * normally not be called by clients of this API. (It is called by the implementation).
+     *
+     * @param componentKey key of the component.
+     */
+    ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
 }

@@ -22,6 +22,10 @@ import java.lang.reflect.Method;
  * @version $Revision$
  */
 public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+    /**
+     * Map of maps. The key for each map value is a component key. The key/value pairs in the
+     * map values are property name/property value pairs.
+     */
     private Map componentProperties = new HashMap();
 
     public BeanPropertyComponentAdapterFactory(ComponentAdapterFactory delegate) {
@@ -81,20 +85,32 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             if (componentInstance == null) {
                 componentInstance = super.getComponentInstance(picoContainer);
 
-                Set propertyNames = propertyValues.keySet();
-                for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
-                    final String propertyName = (String) iterator.next();
-                    final Object propertyValue = propertyValues.get(propertyName);
-                    PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
-                    Method setter = propertyDescriptor.getWriteMethod();
-                    try {
-                        setter.invoke(componentInstance, new Object[]{propertyValue});
-                    } catch (final Exception e) {
-                        throw new PicoInitializationException() {
-                            public String getMessage() {
-                                return "Failed to set property " + propertyName + " to " + propertyValue + ". " + e.getMessage();
-                            }
-                        };
+                if (propertyValues != null) {
+                    Set propertyNames = propertyValues.keySet();
+                    for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
+                        final String propertyName = (String) iterator.next();
+                        final Object propertyValue = propertyValues.get(propertyName);
+                        final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+                        Method setter = propertyDescriptor.getWriteMethod();
+                        if(setter == null) {
+                            throw new PicoInitializationException() {
+                                public String getMessage() {
+                                    return "There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +
+                                            ". Setter: " + propertyDescriptor.getWriteMethod() +
+                                            ". Getter: " + propertyDescriptor.getReadMethod();
+                                }
+                            };
+                        }
+                        try {
+                            setter.invoke(componentInstance, new Object[]{propertyValue});
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                            throw new PicoInitializationException() {
+                                public String getMessage() {
+                                    return "Failed to set property " + propertyName + " to " + propertyValue + ". " + e.getMessage();
+                                }
+                            };
+                        }
                     }
                 }
             }

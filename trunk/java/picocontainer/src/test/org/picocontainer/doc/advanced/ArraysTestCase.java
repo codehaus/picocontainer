@@ -3,6 +3,8 @@ package org.picocontainer.doc.advanced;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.CollectionComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Arrays;
@@ -120,5 +122,56 @@ public class ArraysTestCase
         //      END SNIPPET: directDemo
         
         assertTrue(cods.contains(cod));
+    }
+
+    public void testShouldCreateBowlWithFishCollectionAnyway() {
+
+        //      START SNIPPET: ensureArray
+
+        pico.registerComponentImplementation(Shark.class);
+        pico.registerComponentImplementation(Cod.class);
+        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new CollectionComponentParameter(),
+            new CollectionComponentParameter()
+        });
+        pico.registerComponentInstance(new Fish[]{});
+        pico.registerComponentInstance(new Cod[]{});
+
+        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        //      END SNIPPET: ensureArray
+
+        shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
+        cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
+
+        //      START SNIPPET: ensureDemo
+        
+        List fishes = Arrays.asList(bowl.getFishes());
+        assertEquals(2, fishes.size());
+
+        List cods = Arrays.asList(bowl.getCods());
+        assertEquals(1, cods.size());
+        //      END SNIPPET: ensureDemo
+        
+        assertTrue(fishes.contains(shark));
+        assertTrue(fishes.contains(cod));
+        assertTrue(cods.contains(cod));
+    }
+
+    public void testShouldCreateBowlWithNoFishAtAll() {
+
+        //      START SNIPPET: emptyArray
+
+        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new CollectionComponentParameter(true),
+            new CollectionComponentParameter(true)
+        });
+
+        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        //      END SNIPPET: emptyArray
+
+        List fishes = Arrays.asList(bowl.getFishes());
+        assertEquals(0, fishes.size());
+        List cods = Arrays.asList(bowl.getCods());
+        assertEquals(0, cods.size());
     }
 }

@@ -9,17 +9,22 @@
 
 package org.nanocontainer;
 
-import org.picoextras.script.PicoCompositionException;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
+import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.ContainerBuilder;
+import org.picoextras.script.jython.JythonContainerAssembler;
+import org.picoextras.script.rhino.JavascriptContainerAssembler;
+import org.picoextras.script.xml.XMLContainerAssembler;
 import org.realityforge.cli.CLArgsParser;
-import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLOption;
+import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -27,6 +32,13 @@ public class Main {
     private static final int VERSION_OPT = 'v';
     private static final int MONITOR_OPT = 'm';
     private static final int COMPOSITION_OPT = 'c';
+
+    private static final Map extensionToAssemblerMap = new HashMap();
+    static {
+        extensionToAssemblerMap.put(".js", JavascriptContainerAssembler.class);
+        extensionToAssemblerMap.put(".xml", XMLContainerAssembler.class);
+        extensionToAssemblerMap.put(".py", JythonContainerAssembler.class);
+    }
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
@@ -49,7 +61,7 @@ public class Main {
 
     };
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, PicoCompositionException, ParserConfigurationException {
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
         List options = getOptions(args);
 
         String monitor = "";
@@ -87,21 +99,52 @@ public class Main {
         // Monitor
         NanoContainerMonitor nanoContainerMonitor = createMonitor(args, monitor);
 
-        createComposition(composition, nanoContainerMonitor);
+        buildAndStartContainer(composition, nanoContainerMonitor);
     }
 
-    private static void createComposition(String composition, NanoContainerMonitor nanoContainerMonitor) throws PicoCompositionException, ClassNotFoundException, IOException, ParserConfigurationException {
-        if (composition.toLowerCase().endsWith(".js")) {
-            NanoContainer nano = new JavaScriptCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
-            nano.addShutdownHook();
-        } else if (composition.toLowerCase().endsWith(".xml")) {
-            NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
-            nano.addShutdownHook();
-        } else {
-            System.err.println("NanoContainer: Unknown configuration file suffix, .js or .xml expected");
-            System.exit(30);
-        }
+    /*
+    Now that the breadth/depth-first traversal of "child" containers, we should consider adding support
+    for "monitors" at a higher level of abstraction.
+
+    I think that ideally this should be done on the multicaster level, so that we can get monitor
+    events whenever *any* method is called via the multicaster. That way we could easily intercept lifecycle
+    methods on individual components, not only on the container level.
+
+    The most elegant way to deal with this is perhaps via Nanning, or we could add support for it
+    directly in the MulticastInvoker class. (It could be constructed with an additional argument
+    called InvocationInterceptor. MulticastInvoker would then call methods on this object in addition
+    to the subject. The InvocationInterceptor would serve the same purpose as this NanoContainerMonitor,
+    but at a much higher level of abstraction. It would be more reusable, since it would enable monitoring
+    outside the scope of nano. It could be useful in e.g. WebWork or other environments.
+
+    I think it should be up to the ContainerBuilder instances (in integrationkit) to decide what kind of
+    monitor/InvocationInterceptor to use.
+
+    AH
+    */
+    private static void buildAndStartContainer(String composition, NanoContainerMonitor nanoContainerMonitor) throws IllegalAccessException, InstantiationException {
+        final String extension = composition.substring(composition.indexOf("."));
+        Class containerAssemblerClass = (Class) extensionToAssemblerMap.get(extension);
+
+        // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
+        ContainerAssembler ca = (ContainerAssembler) containerAssemblerClass.newInstance();
+        final ContainerBuilder cb = new org.picoextras.integrationkit.LifecycleContainerBuilder();
+
+        final ObjectReference containerRef = new SimpleReference();
+
+        // build and start the container
+        cb.buildContainer(containerRef, null, ca, null);
+
+        // add a shutdown hook that will tell the builder to kill it.
+        Runnable shutdownHook = new Runnable() {
+            public void run() {
+                cb.killContainer(containerRef);
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));
+
     }
+
 
     private static NanoContainerMonitor createMonitor(String[] args, String monitor) {
         NanoContainerMonitor nanoContainerMonitor = new NullNanoContainerMonitor();

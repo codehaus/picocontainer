@@ -12,6 +12,10 @@ package org.nanocontainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
+// TODO can we deprecate this in favour of some sort of InvocationInterceptor
+// that sits closer to the MulticastInvoker? See longer comment inside the Main class.
+// AH
+
 /**
  * @author Paul Hammant
  * @version $Revision$

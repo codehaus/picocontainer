@@ -16,23 +16,23 @@ import org.picoextras.script.rhino.PicoScriptable;
 
 
 public class BespokeNanoRhinoScriptable extends PicoScriptable {
-    public static boolean used;
-
-    public BespokeNanoRhinoScriptable() {
-        used = true;
-    }
-
-    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        return PicoScriptable.jsConstructor(cx, args, ctorObj, inNewExpr);
-    }
-
-    public static void jsFunction_registerComponentImplementation(Context cx, Scriptable thisObj, Object[] args, Function funObj)
-            throws ClassNotFoundException {
-        PicoScriptable.jsFunction_registerComponentImplementation(cx, thisObj, args, funObj);
-    }
-
-    public static void jsFunction_addParent(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
-        PicoScriptable.jsFunction_addParent(cx, thisObj, args, funObj);
-    }
+//    public static boolean used;
+//
+//    public BespokeNanoRhinoScriptable() {
+//        used = true;
+//    }
+//
+//    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+//        return PicoScriptable.jsConstructor(cx, args, ctorObj, inNewExpr);
+//    }
+//
+//    public static void jsFunction_registerComponentImplementation(Context cx, Scriptable thisObj, Object[] args, Function funObj)
+//            throws ClassNotFoundException {
+//        PicoScriptable.jsFunction_registerComponentImplementation(cx, thisObj, args, funObj);
+//    }
+//
+//    public static void jsFunction_addParent(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
+//        PicoScriptable.jsFunction_addParent(cx, thisObj, args, funObj);
+//    }
 
 }

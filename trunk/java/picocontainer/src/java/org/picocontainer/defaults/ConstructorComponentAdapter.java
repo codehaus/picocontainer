@@ -17,6 +17,7 @@ import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,16 +96,16 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(picoContainer, parameterTypes[j]);
                 if (adapter == null) {
                     failedDependency = true;
-                    unsatisfiableDependencyTypes.add(parameterTypes[j]);
+                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
                         failedDependency = true;
-                        unsatisfiableDependencyTypes.add(parameterTypes[j]);
+                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
                     }
                     if (getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
-                        unsatisfiableDependencyTypes.add(parameterTypes[j]);
+                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
                     }
                 }
             }

@@ -92,6 +92,16 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
             public void instantiateComponents() throws PicoInstantiationException {
             }
+
+            public Object getCompositeComponent()
+            {
+                return null;
+            }
+
+            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+            {
+                return null;
+            }
         };
 
         PicoContainer b = new PicoContainer() {
@@ -112,6 +122,16 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
+            }
+
+            public Object getCompositeComponent()
+            {
+                return null;
+            }
+
+            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+            {
+                return null;
             }
         };
 

@@ -13,6 +13,7 @@ package picocontainer.defaults;
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoContainer;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.aggregated.AggregatedContainersContainer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +36,7 @@ public class DummiesTestCase extends TestCase {
         assertNotNull(decorated);
     }
 
-    public void testInstantiation() throws PicoInstantiationException
+    public void testInstantiation() throws PicoInstantiationException, PicoIntrospectionException
     {
         AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[0]);
         // Should not barf. Should no nothing, but that hard to test.

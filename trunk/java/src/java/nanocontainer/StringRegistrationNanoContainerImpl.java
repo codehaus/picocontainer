@@ -93,6 +93,16 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getComponents();
     }
 
+    public Object getCompositeComponent()
+    {
+        return picoContainer.getCompositeComponent();
+    }
+
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+    {
+        return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
+    }
+
     public Class[] getComponentTypes() {
         return picoContainer.getComponentTypes();
     }

@@ -32,5 +32,15 @@ public class NullContainer implements PicoContainer {
 
     public void instantiateComponents() throws PicoInstantiationException {
     }
+
+    public Object getCompositeComponent()
+    {
+        return null;
+    }
+
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+    {
+        return null;
+    }
 }
 

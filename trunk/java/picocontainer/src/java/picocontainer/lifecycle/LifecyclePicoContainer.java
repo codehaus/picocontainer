@@ -39,17 +39,17 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
     public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
         super.instantiateComponents();
         try {
-            startableAggregatedComponent = (Startable) getAggregateComponentProxy(true, false);
+            startableAggregatedComponent = (Startable) getCompositeComponent(true, false);
         } catch (ClassCastException e) {
         }
         try {
 
-            stoppableAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
+            stoppableAggregatedComponent = (Stoppable) getCompositeComponent(false, false);
         } catch (ClassCastException e) {
         }
         try {
             //TODO-Aslak broken
-            Object o =  getAggregateComponentProxy(false, false);
+            Object o =  getCompositeComponent(false, false);
             disposableAggregatedComponent = (Disposable) o;
         } catch (ClassCastException e) {
             System.out.println("");

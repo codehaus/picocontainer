@@ -257,6 +257,16 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
             public void instantiateComponents() throws PicoInstantiationException {
             }
+
+            public Object getCompositeComponent()
+            {
+                return null;
+            }
+
+            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+            {
+                return null;
+            }
         });
 
         pico.registerComponent(FredImpl.class);

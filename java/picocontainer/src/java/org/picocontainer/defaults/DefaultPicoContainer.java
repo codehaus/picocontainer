@@ -285,11 +285,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void start() {
         if(started) throw new IllegalStateException("Already started");
         if(disposed) throw new IllegalStateException("Already disposed");
-        Collection components = getComponentInstances();
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
-            Object o =  iterator.next();
-            if(o!= this && o instanceof Startable) {
-                ((Startable)o).start();
+        List componentAdapters = new ArrayList(getComponentAdapters());
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            if(Startable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                Startable startable = (Startable) componentAdapter.getComponentInstance();
+                startable.start();
             }
         }
         started = true;
@@ -298,12 +299,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop(){
         if(!started) throw new IllegalStateException("Not started");
         if(disposed) throw new IllegalStateException("Already disposed");
-        List components = new ArrayList(getComponentInstances());
-        Collections.reverse(components);
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
-            Object o =  iterator.next();
-            if(o instanceof Startable) {
-                ((Startable)o).stop();
+        List componentAdapters = new ArrayList(getComponentAdapters());
+        Collections.reverse(componentAdapters);
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            if(Startable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                Startable startable = (Startable) componentAdapter.getComponentInstance();
+                startable.stop();
             }
         }
         started = false;
@@ -311,12 +313,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public void dispose() {
         if(disposed) throw new IllegalStateException("Already disposed");
-        List components = new ArrayList(getComponentInstances());
-        Collections.reverse(components);
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
-            Object o =  iterator.next();
-            if(o instanceof Disposable) {
-                ((Disposable)o).dispose();
+        List componentAdapters = new ArrayList(getComponentAdapters());
+        Collections.reverse(componentAdapters);
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            if(Disposable.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                Disposable disposable = (Disposable) componentAdapter.getComponentInstance();
+                disposable.dispose();
             }
         }
         disposed = true;

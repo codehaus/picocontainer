@@ -1,7 +1,104 @@
-Constructor Dependency Injection, with PicoContainer 
+Constructor Dependency Injection, with PicoContainer
 Preface
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
 = Preface =
 
-Blah
+== Why PicoContainer ==
+
+In the spring of 2003, Aslak was starting his tenure at ThoughtWorks in London, UK. Without a place to live, it seemed sensible for
+him to stay in Paul Hammant's spare room until he found accomodation of his own. Between bouts of hard drinking, partying, evenings
+with the eXtreme Tuesday crowd, and occasional work, conversation would inevitably turn towards open source.
+
+=== Post Avalon ===
+
+Paul was particularly dispondent with the state of Apache's Avalon project. It was undergoing chnages as a result of huge turmoil.
+The discord was a consequence of the committers being divided on its direction.  Aside from the internal politics for Avalon,
+Avalon's chief goal an "Inversion of Control" (IoC) landscape for components required some explanation.  Aslak, as is typical for
+people that hear about Avalon's form of IoC, objected to the whole concept.  What is not so typical about Aslak is that he quite
+often u-turns after an hour, and becomes the biggest proponent of something. This was one of those moments.
+
+=== WebWork, XWork and Rachel ===
+
+Following Avalon, the former "type 2" IoC (now Setter Dependency Injection) was discussed. Joe Walnes with Mike Cannon Brookes and
+others had modified the highly respected WebWork to sit on top of a new library called XWork. This used setters to resolve
+dependencies for components. The whole approach was being discussed in their forthcoming book "Java Open Source Programming". As a
+point of fact, the book should have been called "Programming web apps in Java using open source".  Joe had approached Rachel Davies
+to be a reviewer (amongst a who's who of others). Rachel, diligently applying herself to her chore, noted "why not use constructors"
+in a margin note on the draft manuscript.  Thus "type 3" was born. This is, of course, now known as Constructor Dependency
+Injection. Paul recounted this story to Aslak, and given the crossroads that Paul was at with Avalon, the next step seemed obvious.
+
+=== xContainer, Pico, nano and micro ===
+
+The first version of xContainer was kicked off that night. It was not until some time later that it was renamed to PicoContainer.
+The first version was pair programmed and written test first (according to the TDD principles of eXtreme Programming).  As it
+appeared that a significant project was in the offing, Aslak and Paul set the technical goals for the project. Here, as far as
+memory serves, they are:
+
+1) PicoContainer is designed for embedding. It was not in itself to be a replacement for EJB.
+2) Components Designed for PicoContainer were to have no meta-data ever. That is no XML or properties file that accompanies the
+components classes for use by a container
+3) No class in the PicoContainer jar should depend on any class that is not in J2SE.
+4) No name based registration of components.
+
+We also defined some rules of engagement for the project to prevent the problems apparent in the Avalon community.
+
+1) No disrespect on the mail list. Fights are taken offline (there have been a few). Rudeness is not allowed, as people's careers
+can be affected by what is written about them.
+2) Unit tests are our specification. All architectural direction changes are to be justified by way of unit tests (often
+deliberately failing to justify the point).
+3) At any time any refactoring can be undertaken (for architectural merit) with impunity as long as it does not change the Unit
+tests
+4) Test Driven Development
+5) Paul and Aslak share the lead of the Pico projects.
+6) People ease themselves into positions of responsibility for part of the projects that others may be leading. i.e. Person A has
+substantially written sub-project X, Person B, starts with suggests for change (patches), and works respectfully towards free rein
+as the esatblished team gets used to their programatic touch.
+
+At the same time, and because that is clearly too limiting for a complete container, they charted what was appropriate for
+NanoContainer:
+
+1) XML and other name based registration of components is allowed.
+2) Depending on classes outside of J2SE is allowed.
+3) NanoContainer to still be embeddable.
+
+Latterly, the team has started MicroContainer (pico, nano, micro - there is a deliberate russian dolls theme here). This comes
+closet to matching the function of Apache's Avalon-Phoenix. This tool and components for it were the center of Paul's Apache and IoC
+life before the discord. Phoenix lives on as Loom at Codehaus. MicroContainer delivers :
+
+1) Server existance
+2) Whole applications (.mca files) that can drop in and deploy
+3) Management of applications (JMX & Console)
+
+=== Container versus Framework ===
+
+Anyway, is is still not clear why the term Container was used. Well it was cleat that the open source community was flooded with
+projects with the word framework in them. Framework is also a dirty word in the eXtreme Programming community as non XP teams
+sometimes drift towards developing frameworks instead of business value for commercial projects. The experience of XP is that
+frameworks can be reverse engineered from business value, at the saving of much cost and time.
+
+No, PicoContainer is a container because of Java's AWT & Swing most probably.  Though there is some ugliness to Swing, it is quite
+well designed in terms of frameworks. Err libraries.
+
+Swing and AWT have the terms Container and Component. Components sit inside containers and containers are components too. In a very
+polymorphic way, Component is subclasses by many real widgets (Button etc). It is also subclsses by specialised containers (Panel,
+Frame, etc).  Although there are deliberate on-screen rectangular connotations to AWT's container, the concepts are neat -
+Containers can be nested, and can contain components.
+
+For the record, some Swing is imperfect as a component model:
+
+1) Too much "is a" and not enough "has a" going on. i.e. there are not many examples of composition in the base libraries.
+2) AWT should have been refactored to sit on top of Swing when Swing was delivered. Emulation of AWT was one possibility from that.
+3) Not enough Constructor Depenency Injection!
+
+=== Platform ? ===
+
+Martin is showing signs that he is uncomfortable with the word Container. Watch this space for, perhaps, a lurch towards "Platform"
+perhaps? The rationale is that Container hints at total containment. In that functions and operations are accessed thru the
+container.
+
+At that point we may not rename PicoContainer to PicoPlatform etc. Though we might smile through gritted teeth at a
+team that grabbed the SomethingPlatform naming real estate.
+
+
+

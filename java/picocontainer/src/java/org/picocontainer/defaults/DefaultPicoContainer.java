@@ -313,10 +313,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return parent;
     }
 
-    public void setParent(PicoContainer parent) {
-        this.parent = parent;
-    }
-
     public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
         Collection componentAdapters = getComponentAdapters();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {

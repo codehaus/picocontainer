@@ -112,10 +112,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.unregisterComponentByInstance(componentInstance);
     }
 
-    public void setParent(PicoContainer parent) {
-        throw new PicoIntrospectionException("setParent was deprecated by the time this class was created");
-    }
-
     public Object getComponentInstance(Object componentKey) {
         return delegate.getComponentInstance(componentKey);
     }

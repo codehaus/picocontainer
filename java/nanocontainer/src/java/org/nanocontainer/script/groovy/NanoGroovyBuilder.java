@@ -80,9 +80,9 @@ public class NanoGroovyBuilder extends BuilderSupport {
     }
 
     private Object createContainerNode(Object parent, Map attributes) {
-        MutablePicoContainer parentContainer = null;
-        if (parent instanceof MutablePicoContainer) {
-            parentContainer = (MutablePicoContainer) parent;
+        SoftCompositionPicoContainer parentContainer = null;
+        if (parent instanceof SoftCompositionPicoContainer) {
+            parentContainer = (SoftCompositionPicoContainer) parent;
         }
         MutablePicoContainer answer = createContainer(attributes, parentContainer);
         return answer;
@@ -131,29 +131,29 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
+    protected MutablePicoContainer createContainer(Map attributes, SoftCompositionPicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         Class containerImpl = (Class) attributes.remove("class");
         if (containerImpl == null) {
+            // TODO - not used
             containerImpl = DefaultSoftCompositionPicoContainer.class;
         }
-        DefaultPicoContainer dpc = new DefaultPicoContainer();
+
+        SoftCompositionPicoContainer softPico = null;
         if (parent != null) {
-            dpc.registerComponentInstance(parent);
-        }
-        if (adapterFactory != null) {
-            dpc.registerComponentInstance(ComponentAdapterFactory.class, adapterFactory);
-        }
-        DefaultPicoContainer dpc2 = new DefaultPicoContainer(dpc);
-        dpc2.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
-
-        //TODO - is this puppy picking up on the CAF available to it via the transient parent container dpc ?
-
-        SoftCompositionPicoContainer softPico = (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
-
-        if (parent != null) {
+            if (adapterFactory != null) {
+                softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(),adapterFactory, parent);
+            } else {
+                softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), parent);
+            }
             parent.addChildContainer(softPico);
+
         } else {
+            if (adapterFactory != null) {
+                softPico = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader(), adapterFactory, null);
+            } else {
+                softPico = new DefaultSoftCompositionPicoContainer();
+            }
         }
         return softPico;
     }

@@ -8,6 +8,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -33,6 +34,7 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
     private static final Method START;
     private static final Method STOP;
     private static final Method DISPOSE;
+
     static {
         try {
             START = Startable.class.getMethod("start", null);
@@ -49,12 +51,23 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
     private final Class type;
     private final boolean visitInInstantiationOrder;
     private final List componentInstances;
+    private ComponentMonitor componentMonitor;
 
-    public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
+    // TODO - in reality this ctor is unlikely to be called, the other ctor is prevalent in the ..
+    // public static void start|stop|dispose(Object node) methods below.
+    // next on the list is to inject a "LifecycleManager" to DPC (which may or may not use a PicoVisitor)
+    // Aslak and Paul have talked about this, and it's been on the mail list as a proposal -
+    // Refer "LifecycleManager - pluggable", 29/10/2004 (mail)
+    public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
         this.method = method;
         this.type = ofType;
         this.visitInInstantiationOrder = visitInInstantiationOrder;
+        this.componentMonitor = componentMonitor;
         this.componentInstances = new ArrayList();
+    }
+
+    public LifecycleVisitor(Method method, Class ofType, boolean visiInInstantiationOrder) {
+        this(method, ofType, visiInInstantiationOrder, NullComponentMonitor.getInstance());
     }
 
     public Object traverse(Object node) {
@@ -66,24 +79,20 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
             }
             for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
                 Object o = iterator.next();
-                long startTime = System.currentTimeMillis();
+//                ComponentInteraction componentInteraction = null;
                 try {
-//                    if (PicoContainer.SHOULD_LOG) {
-//                        System.out.print("PICO: Calling " + method.toString() + " on " + o + "... ");
-//                        System.out.flush();
-//                    }
+                    //                  componentInteraction = componentMonitor.invoking(method, o, "Lifecycle Visitation");
                     method.invoke(o, null);
+                    //                componentInteraction.complete();
                 } catch (IllegalArgumentException e) {
+                    //              componentInteraction.failed(e);
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (IllegalAccessException e) {
+                    //            componentInteraction.failed(e);
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (InvocationTargetException e) {
+                    //          componentInteraction.failed(e);
                     throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
-                } finally {
-//                    if (PicoContainer.SHOULD_LOG) {
-//                        long endTime = System.currentTimeMillis();
-//                        System.out.println("[" + (endTime - startTime) + "ms]");
-//                    }
                 }
             }
         } finally {
@@ -104,29 +113,35 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
     public void visitParameter(Parameter parameter) {
         checkTraversal();
     }
-    
+
     /**
      * Invoke the standard PicoContainer lifecycle for {@link Startable#start()}.
+     *
      * @param node The node to start the traversal.
      */
     public static void start(Object node) {
-        new LifecycleVisitor(START, Startable.class, true).traverse(node);;
+        new LifecycleVisitor(START, Startable.class, true).traverse(node);
+        ;
     }
-    
+
     /**
      * Invoke the standard PicoContainer lifecycle for {@link Startable#stop()}.
+     *
      * @param node The node to start the traversal.
      */
     public static void stop(Object node) {
-        new LifecycleVisitor(STOP, Startable.class, false).traverse(node);;
+        new LifecycleVisitor(STOP, Startable.class, false).traverse(node);
+        ;
     }
-    
+
     /**
      * Invoke the standard PicoContainer lifecycle for {@link Disposable#dispose()}.
+     *
      * @param node The node to start the traversal.
      */
     public static void dispose(Object node) {
-        new LifecycleVisitor(DISPOSE, Disposable.class, false).traverse(node);;
+        new LifecycleVisitor(DISPOSE, Disposable.class, false).traverse(node);
+        ;
     }
 
 }

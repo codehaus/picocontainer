@@ -9,10 +9,10 @@
 package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;

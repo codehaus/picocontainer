@@ -14,9 +14,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.alternatives.ImplementationHidingComponentAdapter;
-import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -40,13 +37,14 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
     /**
      * Creates a new container with a parent container.
      */
+
     public ImplementationHidingCachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this(parent, new CachingComponentAdapterFactory(caf));
     }
 
     private ImplementationHidingCachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf) {
         super(new ImplementationHidingPicoContainer(caf, parent));
-        this.caf =caf;
+        this.caf = caf;
     }
 
     /**

@@ -11,6 +11,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -22,9 +23,16 @@ import java.io.Serializable;
  */
 public class ConstructorInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
     private final boolean allowNonPublicClasses;
+    private ComponentMonitor componentMonitor;
+
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
+        this.allowNonPublicClasses = allowNonPublicClasses;
+        this.componentMonitor = componentMonitor;
+    }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
         this.allowNonPublicClasses = allowNonPublicClasses;
+        this.componentMonitor = NullComponentMonitor.getInstance();
     }
 
     public ConstructorInjectionComponentAdapterFactory() {
@@ -35,6 +43,6 @@ public class ConstructorInjectionComponentAdapterFactory implements ComponentAda
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor);
     }
 }

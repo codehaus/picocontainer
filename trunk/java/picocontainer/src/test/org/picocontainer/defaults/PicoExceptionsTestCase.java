@@ -11,11 +11,11 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class PicoExceptionsTestCase
     final static public Throwable THROWABLE = new Throwable();
 
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, true);
+        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, true, NullComponentMonitor.getInstance());
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentInstance(MESSAGE);
         try {
@@ -94,10 +94,12 @@ public class PicoExceptionsTestCase
         assertSame(String.class, classes[1]);
         assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
     }
-    
+
     public void testPrintStackTrace() throws IOException {
-        PicoException nestedException = new PicoException("Outer", new Exception("Inner")){};
-        PicoException simpleException = new PicoException("Outer"){};
+        PicoException nestedException = new PicoException("Outer", new Exception("Inner")) {
+        };
+        PicoException simpleException = new PicoException("Outer") {
+        };
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(out);
         nestedException.printStackTrace(printStream);

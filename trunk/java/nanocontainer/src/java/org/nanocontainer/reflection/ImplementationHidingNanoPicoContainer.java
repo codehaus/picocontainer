@@ -11,11 +11,13 @@
 package org.nanocontainer.reflection;
 
 import org.nanocontainer.NanoPicoContainer;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.NullComponentMonitor;
 
 import java.io.Serializable;
 
@@ -27,21 +29,23 @@ import java.io.Serializable;
  *
  * @author Paul Hammant
  * @version $Revision$
- *
- *
- * This is not not one for one advice - PH
+ *          <p/>
+ *          <p/>
+ *          This is not not one for one advice - PH
  * @ not deprecated Use {@link org.nanocontainer.DefaultNanoContainer)
- *             constructed with a {@link org.picocontainer.alternatives.ImplementationHidingPicoContainer}.
+ * constructed with a {@link org.picocontainer.alternatives.ImplementationHidingPicoContainer}.
  * Suggest something with DefaultNanoPicoContainer and its ctor.
  */
 public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoContainer implements NanoPicoContainer, Serializable {
+    private ComponentMonitor componentMonitor;
 
-    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
+    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(new ImplementationHidingPicoContainer(caf, parent), classLoader);
+        this.componentMonitor = componentMonitor;
     }
 
     public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        super(new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent), classLoader);
+        super(new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(NullComponentMonitor.getInstance()), parent), classLoader);
     }
 
     public ImplementationHidingNanoPicoContainer(PicoContainer pc) {

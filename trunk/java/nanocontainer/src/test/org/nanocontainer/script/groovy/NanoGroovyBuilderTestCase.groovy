@@ -130,17 +130,20 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         compJarPath2 = testCompJar2.getCanonicalPath()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        child = null
+        parent = builder.container {
             classpathelement(path:compJarPath)
+            component(class:StringBuffer)
             component(class:"TestComp")
-//            child = container() {
-//                classpathelement(path:compJarPath2)
-//                component(class:"TestComp2")
-//            }
-//            assertNotNull(child.getComponentInstance("TestComp2"))
+            child = container() {
+                classpathelement(path:compJarPath2)
+                component(class:"TestComp2")
+            }
         }
-        comps = pico.getComponentInstances()
-        assertTrue(comps.size() == 1)
+        assertTrue(parent.getComponentInstances().size() == 2)
+        assertTrue(child.getComponentInstances().size() == 1)
+        //assertNotNull(child.getComponentInstance("TestComp2"))
+
     }
 
 

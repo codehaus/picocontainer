@@ -4,6 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-struts</id>
     <name>nanocontainer-struts</name>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>
 

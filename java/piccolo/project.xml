@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-piccolo</id>
-  <name>picoextras-piccolo</name>
+  <id>nanocontainer-piccolo</id>
+  <name>nanocontainer-piccolo</name>
 
   <dependencies>
     <dependency>
@@ -18,13 +18,13 @@
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picoextras-swing</artifactId>
+      <artifactId>nanocontainer-swing</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picoextras-testmodel</artifactId>
+      <artifactId>nanocontainer-testmodel</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
     

@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-nanning</id>
-  <name>picoextras-nanning</name>
+  <id>nanocontainer-nanning</id>
+  <name>nanocontainer-nanning</name>
 
   <dependencies>
         <dependency>

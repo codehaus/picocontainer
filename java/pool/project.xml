@@ -2,13 +2,13 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-pool</id>
-  <name>picoextras-pool</name>
+  <id>nanocontainer-pool</id>
+  <name>nanocontainer-pool</name>
 
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picoextras-testmodel</artifactId>
+      <artifactId>nanocontainer-testmodel</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>  
   </dependencies>

@@ -16,7 +16,7 @@ import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Proxy;
 
-public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
+public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 

@@ -19,7 +19,7 @@ import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -33,7 +33,7 @@ import java.io.StringReader;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
+public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("<container>" +

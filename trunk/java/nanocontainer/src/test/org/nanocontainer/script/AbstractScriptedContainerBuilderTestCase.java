@@ -18,7 +18,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
-public abstract class AbstractScriptedComposingLifecycleContainerBuilderTestCase extends TestCase {
+public abstract class AbstractScriptedContainerBuilderTestCase extends TestCase {
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 

@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
@@ -24,7 +24,7 @@ import java.io.StringReader;
 /**
  * test case for container creation off xml via xstream
  */
-public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
+public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
 
 	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {

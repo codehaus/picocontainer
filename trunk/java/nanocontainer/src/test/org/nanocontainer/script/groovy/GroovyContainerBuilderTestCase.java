@@ -15,7 +15,7 @@ package org.nanocontainer.script.groovy;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -24,7 +24,7 @@ import java.io.StringReader;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class GroovyContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
+public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testContainerCanBeBuiltWithParent() {
         // * imports are not supported by groovy yet, so the GroovyContainerBuilder won't either.

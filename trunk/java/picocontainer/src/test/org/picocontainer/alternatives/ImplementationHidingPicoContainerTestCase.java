@@ -11,6 +11,11 @@ package org.picocontainer.alternatives;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class ImplementationHidingPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 
@@ -38,4 +43,15 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         pico.verify();
     }
 
+    public void testUsageOfADifferentComponentAdapterFactory() {
+        // Jira bug 212
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer(new ConstructorInjectionComponentAdapterFactory(), parent);
+        pico.registerComponentImplementation(List.class, ArrayList.class);
+        List list1 = (List) pico.getComponentInstanceOfType(List.class);
+        List list2 = (List) pico.getComponentInstanceOfType(List.class);
+        assertNotNull(list1);
+        assertNotNull(list2);
+        assertFalse(list1 == list2);
+    }
 }

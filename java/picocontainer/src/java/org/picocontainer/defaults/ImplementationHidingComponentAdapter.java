@@ -88,7 +88,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             }
         }
         interfaces.add(Swappable.class);
-        final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
+        final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler();
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 (Class[]) interfaces.toArray(new Class[interfaces.size()]),
@@ -100,12 +100,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     }
 
     private class DelegatingInvocationHandler implements InvocationHandler {
-        private final ImplementationHidingComponentAdapter adapter;
         private Object delegatedInstance;
-
-        public DelegatingInvocationHandler(ImplementationHidingComponentAdapter adapter) {
-            this.adapter = adapter;
-        }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Class declaringClass = method.getDeclaringClass();
@@ -124,7 +119,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                 return hotswap(args[0]);
             } else {
                 if (delegatedInstance == null) {
-                    delegatedInstance = adapter.getDelegatedComponentInstance();
+                    delegatedInstance = ImplementationHidingComponentAdapter.this.getDelegatedComponentInstance();
                 }
                 return method.invoke(delegatedInstance, args);
             }

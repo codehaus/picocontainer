@@ -121,7 +121,7 @@
         <developer>
             <name>Paul Hammant</name>
             <id>paul</id>
-            <email>paul_hammant@yahoo.com</email>
+            <email>NOSPAM.paul_hammant@yahoo.com</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -130,7 +130,7 @@
         <developer>
             <name>Aslak Helles&oslash;y</name>
             <id>rinkrank</id>
-            <email>rinkrank@codehaus.org</email>
+            <email>NOSPAM.rinkrank@codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -139,7 +139,7 @@
         <developer>
             <name>Jon Tirs&eacute;n</name>
             <id>tirsen</id>
-            <email>tirsen@codehaus.org</email>
+            <email>NOSPAM.tirsen@codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -148,7 +148,7 @@
         <developer>
             <name>Chris Stevenson</name>
             <id>skizz</id>
-            <email>skizz@codehaus.org</email>
+            <email>NOSPAM.skizz@codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -157,7 +157,7 @@
         <developer>
             <name>Thomas Heller</name>
             <id>maniax</id>
-            <email>th.heller@mx4k.com</email>
+            <email>NOSPAM.th.heller@mx4k.com</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -166,7 +166,16 @@
         <developer>
             <name>J&ouml;rg Schaible</name>
             <id>joehni</id>
-            <email>joerg.schaible@gmx.de</email>
+            <email>NOSPAM.joerg.schaible@gmx.de</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Konstantin Pribluda</name>
+            <id>joehni</id>
+            <email>NOSPAM.kpribluda@j-tec-team.de</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>

@@ -30,4 +30,6 @@
 
         <mkdir dir="${maven.build.dir}/dist/apps"/>
     </goal>
+
+    <goal name="binary:deploy" prereqs="jar:deploy"/>
 </project>

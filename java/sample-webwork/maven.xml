@@ -1,3 +1,4 @@
 <project default="binary:install">
     <goal name="binary:install" prereqs="war:install"/>
+    <goal name="binary:deploy" prereqs="war:deploy"/>
 </project>

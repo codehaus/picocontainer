@@ -37,6 +37,18 @@ public class ChildContainerTestCase extends TestCase {
         assertEquals(SimpleTouchable.class, dot.getTouchable().getClass());
     }
 
+    public void testParentComponentRegisteredAsClassShouldBePreffered() throws Exception {
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
+
+        parent.registerComponentImplementation(Touchable.class, AlternativeTouchable.class);
+        child.registerComponentImplementation("key", SimpleTouchable.class);
+        child.registerComponentImplementation(DependsOnTouchable.class);
+
+        DependsOnTouchable dot = (DependsOnTouchable) child.getComponentInstanceOfType(DependsOnTouchable.class);
+        assertEquals(AlternativeTouchable.class, dot.getTouchable().getClass());
+    }
+
     public void testResolveFromParentByType() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.registerComponentImplementation(Touchable.class, SimpleTouchable.class);

@@ -8,15 +8,13 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * @author Paul Hammant
@@ -24,7 +22,7 @@ import java.lang.reflect.Method;
  */
 public class BeanXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
 
-    public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
+    public Object makeInstance(Element elem) throws ClassNotFoundException {
         String className = elem.getNodeName();
         ReflectionContainerAdapter rfe = new DefaultReflectionContainerAdapter();
         rfe.registerComponentImplementation(className);

@@ -226,11 +226,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
         }
 
-        try {
-            Object pseudoComp = factory.makeInstance(childElement);
-            pico.getPicoContainer().registerComponentInstance(pseudoComp);
-        } catch (final SAXException e) {
-            throw new PicoCompositionException(e);
-        }
+        Object pseudoComp = factory.makeInstance(childElement);
+        pico.getPicoContainer().registerComponentInstance(pseudoComp);
     }
 }

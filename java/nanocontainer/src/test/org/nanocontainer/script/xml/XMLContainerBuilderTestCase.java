@@ -165,7 +165,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     }
 
     public static class TestFactory implements XMLPseudoComponentFactory {
-        public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
+        public Object makeInstance(Element elem) throws ClassNotFoundException {
             return "Hello";
         }
     }

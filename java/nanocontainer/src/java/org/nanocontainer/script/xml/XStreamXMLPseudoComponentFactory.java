@@ -8,17 +8,16 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
+import org.w3c.dom.Element;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomReader;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
 public class XStreamXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
-    public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
+    public Object makeInstance(Element elem) throws ClassNotFoundException {
         XStream xs = new XStream();
         Object result = xs.unmarshal(new DomReader(elem));
         return result;

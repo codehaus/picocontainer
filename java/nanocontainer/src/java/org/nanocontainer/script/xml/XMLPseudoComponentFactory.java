@@ -11,8 +11,7 @@
 package org.nanocontainer.script.xml;
 
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 public interface XMLPseudoComponentFactory {
-    Object makeInstance(Element elem) throws SAXException, ClassNotFoundException;
+    Object makeInstance(Element elem) throws ClassNotFoundException;
 }

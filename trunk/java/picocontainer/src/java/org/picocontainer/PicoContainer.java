@@ -13,88 +13,106 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This is the core interface for PicoContainer. It only has accessor methods.
- * In order to register components in a PicoContainer, use a {@link MutablePicoContainer},
- * such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
- *
+ * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only
+ * has accessor methods (in addition to  the {@link #verify()} method). In order to register components in a
+ * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
+ * 
+ * @see org.picocontainer the package description has a basic overview of how to use the picocontainer package.
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
+ * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {
 
     /**
-     * Gets a component instance registered with a specific key.
-     *
-     * @param componentKey key the component was registered with.
-     * @return an instantiated component.
+     * Retrieve a component instance registered with a specific key. If a component cannot be found in this container,
+     * the parent container (if one exists) will be searched.
+     * 
+     * @param componentKey the key that the component was registered with.
+     * @return an instantiated component, or <code>null</code> if no component has been registered for the specified
+     *         key.
      */
     Object getComponentInstance(Object componentKey);
 
     /**
-     * Finds a component instance matching the type, looking in parent if
-     * not found in self (unless parent is null).
-     *
-     * @param componentType type of the component.
+     * Find a component instance matching the specified type.
+     * 
+     * @param componentType the type of the component.
      * @return the adapter matching the class.
      */
     Object getComponentInstanceOfType(Class componentType);
 
     /**
-     * Gets all the registered component instances in the container, (not including
-     * those in the parent container).
-     * The components are returned in their order of instantiation, which
-     * depends on the dependency order between them.
-     *
+     * Retrieve all the registered component instances in the container, (not including those in the parent container).
+     * The components are returned in their order of instantiation, which depends on the dependency order between them.
+     * 
      * @return all the components.
      */
     List getComponentInstances();
 
     /**
-     * Get the parent container of this container.
-     *
-     * @return a Collection of {@link PicoContainer}.
+     * Retrieve the parent container of this container.
+     * 
+     * @return a {@link PicoContainer} instance, or <code>null</code> if this container does not have a parent.
      */
     PicoContainer getParent();
 
     /**
-     * Finds a ComponentAdapter matching the key, looking in parent if
-     * not found in self (unless parent is null).
-     *
-     * @param componentKey key of the component.
-     * @return the adapter matching the key.
+     * Find a component adapter associated with the specified key. If a component adapter cannot be found in this
+     * container, the parent container (if one exists) will be searched.
+     * 
+     * @param componentKey the key that the component was registered with.
+     * @return the component adapter associated with this key, or <code>null</code> if no component has been registered
+     *         for the specified key.
      */
     ComponentAdapter getComponentAdapter(Object componentKey);
 
     /**
-     * Finds a ComponentAdapter matching the type, looking in parent if
-     * not found in self (unless parent is null).
-     *
-     * @param componentType type of the component.
-     * @return the adapter matching the class.
+     * Find a component adapter associated with the specified type. If a component adapter cannot be found in this
+     * container, the parent container (if one exists) will be searched.
+     * 
+     * @param componentType the type of the component.
+     * @return the component adapter associated with this class, or <code>null</code> if no component has been
+     *         registered for the specified key.
      */
     ComponentAdapter getComponentAdapterOfType(Class componentType);
 
     /**
-     * Returns all adapters (not including the adapters from the parent).
-     * @return Collection of {@link ComponentAdapter}.
+     * Retrieve all the component adapters inside this container. The component adapters from the parent container are
+     * not returned.
+     * 
+     * @see #getComponentAdaptersOfType(Class) a variant of this method which returns the component adapters inside this
+     * container that are associated with the specified type.
+     * 
+     * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will
+     *         not be modifiable.
      */
     Collection getComponentAdapters();
 
     /**
-     * Verifies that the dependencies for all the registered components can be satisfied
-     * None of the components are instantiated during the verification process.
-     *
+     * Retrieve all component adapters inside this container that are associated with the specified type. The component
+     * adapters from the parent container are not returned.
+     * 
+     * @param componentType the type of the components.
+     * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
+     *         the specified type. Changes to this collection will not be reflected in the container itself.
+     */ 
+    List getComponentAdaptersOfType(Class componentType);
+
+    /**
+     * Verify that the dependencies for all the registered components can be satisfied. No components are
+     * instantiated during the verification process.
+     * 
      * @throws PicoVerificationException if there are unsatisifiable dependencies.
      */
     void verify() throws PicoVerificationException;
 
     /**
-     * Callback method from the implementation to keep track of the instantiation
-     * order. This method is not intended to be called explicitly by clients of the API!
+     * Callback method from the implementation to keep track of the instantiation order. <b>This method is not intended
+     * to be called explicitly by clients of the API!</b>
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
-
-    List getComponentAdaptersOfType(Class componentType);
 }

@@ -10,19 +10,47 @@
 
 package org.picocontainer;
 
+/**
+ * Subclass of {@link PicoException} that is thrown when there is a problem registering a component with the container
+ * or another part of the PicoContainer API, for example, when a request for a component is ambiguous.
+ * 
+ * @version $Revision$
+ * @since 1.0
+ */
 public class PicoRegistrationException extends PicoException {
+    /**
+     * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
+     * that caused this one. 
+     */ 
     protected PicoRegistrationException() {
     }
 
-    public PicoRegistrationException(String message) {
+    /**
+     * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the
+     * exception that caused this one. 
+     * 
+     * @param message the message detailing the exception.
+     */ 
+    public PicoRegistrationException(final String message) {
         super(message);
     }
 
-    protected PicoRegistrationException(Throwable cause) {
+    /**
+     * Construct a new exception with the specified cause and no detail message.
+     * 
+     * @param cause the exception that caused this one.
+     */ 
+    protected PicoRegistrationException(final Throwable cause) {
         super(cause);
     }
 
-    protected PicoRegistrationException(String message, Throwable cause) {
-        super(message, cause);
+    /**
+     * Construct a new exception with the specified cause and the specified detail message.
+     * 
+     * @param message the message detailing the exception. 
+     * @param cause the exception that caused this one.
+     */ 
+    protected PicoRegistrationException(final String message, final Throwable cause) {
+        super(message,cause);
     }
 }

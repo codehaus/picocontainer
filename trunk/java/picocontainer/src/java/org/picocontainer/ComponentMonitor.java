@@ -11,6 +11,7 @@
 package org.picocontainer;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @author Paul Hammant & Obie Fernandez & Aslak Hellesoy
@@ -24,7 +25,10 @@ public interface ComponentMonitor {
 
     void instantiationFailed(Constructor constructor, Exception e);
 
+    void invoking(Method method, Object instance);
 
-    //ComponentInteraction invoking(Method method, Object instance, String context);
+    void invoked(Method method, Object instance, long duration);
+
+    void invocationFailed(Method method, Object instance, Exception e);
 
 }

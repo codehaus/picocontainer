@@ -10,6 +10,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -68,7 +69,30 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private boolean started = false;
     private boolean disposed = false;
     private HashSet children = new HashSet();
-//    private ComponentMonitor componentMonitor;
+    private LifecycleManager lifecycleManager;
+
+    /**
+     * Creates a new container with a custom ComponentAdapterFactory and a parent container.
+     * <p/>
+     * <em>
+     * Important note about caching: If you intend the components to be cached, you should pass
+     * in a factory that creates {@link CachingComponentAdapter} instances, such as for example
+     * {@link CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
+     * other ComponentAdapterFactories.
+     * </em>
+     *
+     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param parent                  the parent container (used for component dependency lookups).
+     * @param lifecycleManager        the liftcycle manager used to handle start/stop etc.
+     */
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent,
+                                LifecycleManager lifecycleManager) {
+        this.lifecycleManager = lifecycleManager;
+        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        this.componentAdapterFactory = componentAdapterFactory;
+        this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
+    }
+
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -84,9 +108,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
-        this.componentAdapterFactory = componentAdapterFactory;
-        this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
+        this(componentAdapterFactory, parent, new DefaultLifecycleManager());
     }
 
     /**
@@ -104,6 +126,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
         this(componentAdapterFactory, null);
+    }
+
+    /**
+     * Creates a new container with a custom LifecycleManger and no parent container.
+     *
+     * @param lifecycleManager the lifecycle manager to manage start/stop/dispose calls on the container.
+     */
+    public DefaultPicoContainer(LifecycleManager lifecycleManager) {
+        this(new DefaultComponentAdapterFactory(), null, lifecycleManager);
     }
 
     /**
@@ -368,7 +399,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
-        LifecycleVisitor.start(this);
+        lifecycleManager.start(this);
         started = true;
     }
 
@@ -383,7 +414,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
-        LifecycleVisitor.stop(this);
+        lifecycleManager.stop(this);
         started = false;
     }
 
@@ -397,7 +428,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
-        LifecycleVisitor.dispose(this);
+        lifecycleManager.dispose(this);
         disposed = true;
     }
 

@@ -42,8 +42,13 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         return propertyAdapter;
     }
 
-    public void setProperties(Object componentKey, Map properies) {
-        componentProperties.put(componentKey, properies);
+    /**
+     * Set properties to set upon the component instance upon instantiation.
+     * @param componentKey key of component instance where properties should be set.
+     * @param properties map of bean property name -> property value
+     */
+    public void setProperties(Object componentKey, Map properties) {
+        componentProperties.put(componentKey, properties);
     }
 
     public static class PicoBeanInfoInitializationException extends PicoIntrospectionException {

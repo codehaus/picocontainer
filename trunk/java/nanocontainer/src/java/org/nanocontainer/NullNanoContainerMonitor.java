@@ -9,7 +9,6 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -21,6 +20,6 @@ public class NullNanoContainerMonitor implements NanoContainerMonitor {
     public void componentsInstantiated(PicoContainer picoContainer) {
     }
 
-    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
+    public void componentsLifecycleEvent(String eventName, PicoContainer container) {
     }
 }

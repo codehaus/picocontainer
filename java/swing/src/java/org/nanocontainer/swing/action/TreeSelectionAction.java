@@ -42,7 +42,6 @@ public abstract class TreeSelectionAction extends AbstractAction {
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 selected = e.getPath().getLastPathComponent();
-                System.out.println("selected = " + selected);
                 if(selected instanceof MutablePicoContainer) {
                     selectedContainer = (MutablePicoContainer) selected;
                     selectedAdapter = null;

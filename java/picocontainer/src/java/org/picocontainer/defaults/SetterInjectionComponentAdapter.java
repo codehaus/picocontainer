@@ -12,6 +12,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.Parameter;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -34,9 +35,15 @@ import java.util.Set;
  */
 public class SetterInjectionComponentAdapter extends DecoratingComponentAdapter {
     private List setters;
+    private final Parameter[] parameters;
 
     public SetterInjectionComponentAdapter(ComponentAdapter delegate) {
+        this(delegate, null);
+    }
+
+    public SetterInjectionComponentAdapter(ComponentAdapter delegate, Parameter[] parameters) {
         super(delegate);
+        this.parameters = parameters;
     }
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -65,6 +72,9 @@ public class SetterInjectionComponentAdapter extends DecoratingComponentAdapter 
     }
 
     private Object getDependencyInstance(Class type, Set unsatisfiableDependencyTypes) {
+        if(parameters != null) {
+            return getDependencyInstanceFromParameters(type, unsatisfiableDependencyTypes);
+        }
         ComponentAdapter adapterDependency = getContainer().getComponentAdapterOfType(type);
         if (adapterDependency != null) {
             return adapterDependency.getComponentInstance();
@@ -72,6 +82,18 @@ public class SetterInjectionComponentAdapter extends DecoratingComponentAdapter 
             unsatisfiableDependencyTypes.add(type);
             return null;
         }
+    }
+
+    private Object getDependencyInstanceFromParameters(Class type, Set unsatisfiableDependencyTypes) {
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter parameter = parameters[i];
+            ComponentAdapter adapter = parameter.resolveAdapter(getContainer(), type);
+            if(adapter != null) {
+                return adapter.getComponentInstance();
+            }
+        }
+        unsatisfiableDependencyTypes.add(type);
+        return null;
     }
 
     private Method[] getSetters() {

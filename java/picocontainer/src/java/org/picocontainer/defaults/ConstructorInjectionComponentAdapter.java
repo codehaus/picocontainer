@@ -86,18 +86,18 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         }
     }
 
-    protected Constructor getGreediestSatisifableConstructor(List adapterDependencies) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
-            List dependencies = new ArrayList();
+            List adapterDependencies = new ArrayList();
             boolean failedDependency = false;
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
-            // remember: all constructors with less arguments as the given parameters are filtered out already
+            // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
                 if (adapter == null) {
@@ -112,14 +112,14 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         failedDependency = true;
                         unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
                     } else {
-                        dependencies.add(adapter);
+                        adapterDependencies.add(adapter);
                     }
                 }
             }
             if (!failedDependency) {
                 if(conflicts.size() == 0 && greediestConstructor == null) {
                     greediestConstructor = constructor;
-                    adapterDependencies.addAll(dependencies);
+                    adapterInstantiationOrderTrackingList.addAll(adapterDependencies);
                 } else if (conflicts.size() == 0 && greediestConstructor.getParameterTypes().length > parameterTypes.length) {
                     // remember: we're sorted by length, therefore we've already found the optimal constructor
                     break;
@@ -129,7 +129,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         greediestConstructor = null;
                     }
                     conflicts.add(constructor);
-                    adapterDependencies.clear();
+                    adapterInstantiationOrderTrackingList.clear();
                 }
             }
         }
@@ -153,14 +153,14 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    protected Object instantiateComponent(List adapterDependencies) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
-            Constructor constructor = getGreediestSatisifableConstructor(adapterDependencies);
+            Constructor constructor = getGreediestSatisifableConstructor(adapterInstantiationOrderTrackingList);
             if (instantiating) {
                 throw new CyclicDependencyException(constructor.getParameterTypes());
             }
             instantiating = true;
-            Object[] parameters = getConstructorArguments(adapterDependencies);
+            Object[] parameters = getConstructorArguments(adapterInstantiationOrderTrackingList);
 
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {

@@ -155,7 +155,6 @@ public class DefaultPicoPool implements PicoPool {
                 }
             } catch (InterruptedException e) {
                 //ignore
-                System.out.println("Wait interrupted");
             }
             if (maxWait > 0 && ((System.currentTimeMillis() - start) >= maxWait) || getSize() == activeMap.size()) {
                 throw new NoSuchElementException("Wait period expired for pooled object");

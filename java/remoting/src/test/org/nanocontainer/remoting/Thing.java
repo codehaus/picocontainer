@@ -24,7 +24,6 @@ public class Thing {
 
     public void doIt(Serializable s) {
         dunit = true;
-        System.out.println("HEY");
     }
 
     public Thang getThang() {

@@ -37,8 +37,6 @@ class ExampleTest extends GroovyTestCase {
 
         startAndStop(pico)
 
-        System.out.println("Found: " + Xxx.componentRecorder);
-        
         // TODO this method seems non-deterministic, returning either of the following
         //  
         //assertEquals("Should match the expression", "<A!A<C<A!A!C", Xxx.componentRecorder)

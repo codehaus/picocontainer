@@ -72,8 +72,6 @@ public class PicoBuilder extends BuilderSupport {
             if (parent instanceof MutablePicoContainer) {
                 MutablePicoContainer pico = (MutablePicoContainer) parent;
 
-                //System.out.println("Creating node: " + name + " with " + attributes);
-
                 if (name.equals("component")) {
                     Class type = (Class) attributes.remove("class");
                     if (type != null) {

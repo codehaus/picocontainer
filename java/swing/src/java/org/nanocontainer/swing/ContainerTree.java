@@ -50,7 +50,6 @@ public class ContainerTree extends JTree {
             public void treeStructureChanged(final TreeModelEvent e) {
                 SwingUtilities.invokeLater(new Runnable(){
                     public void run() {
-                        System.out.println("e = " + Arrays.asList(e.getTreePath().getPath()));
                         final Object lastChild = e.getChildren()[e.getChildren().length - 1];
                         TreePath newPath = new TreePath(e.getTreePath().pathByAddingChild(lastChild));
                         setSelectionPath(newPath);
@@ -62,7 +61,6 @@ public class ContainerTree extends JTree {
         addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 Object path = Arrays.asList(e.getPath().getPath());
-                System.out.println("path = " + path);
             }
         });
 	}

@@ -58,7 +58,6 @@ public class NanoContainerDeployerTestCase extends TestCase {
         if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
-        System.out.println("url = " + url);
         FileObject applicationFolder = manager.resolveFile(url);
         return applicationFolder;
     }

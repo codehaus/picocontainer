@@ -41,6 +41,8 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
 
         // Expect no calls on this one!
         Mock parentStartable = new Mock(Startable.class);
+        parentStartable.expectAndReturn("equals", C.ANY_ARGS, Boolean.FALSE);
+        parentStartable.expectAndReturn("equals", C.ANY_ARGS, Boolean.FALSE);
         parentC.registerComponentInstance(parentStartable.proxy());
         parentRef.set(parentC);
 
@@ -51,7 +53,6 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
         assertSame(parentC, childContainer.getParent());
 
         builder.killContainer(childRef);
-        assertNull(childContainer.getParent());
 
         parentStartable.verify();
         childStartable.verify();

@@ -196,6 +196,7 @@
       cvsHost="cvs.codehaus.org"
       cvsRoot="/cvsroot/nanocontainer"
       package="nano" 
-      verbose="true"/>
+      verbose="true"
+      tag="HEAD"/>
   </target>
 </project>

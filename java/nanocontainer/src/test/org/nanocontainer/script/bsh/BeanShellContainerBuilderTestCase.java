@@ -33,7 +33,8 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
                 "pico.registerComponentInstance(\"hello\", \"BeanShell\");\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent);
-        assertSame(parent, pico.getParent());
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
         assertEquals("BeanShell", pico.getComponentInstance("hello"));
     }
 

@@ -70,7 +70,8 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "pico = DefaultPicoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent);
-        assertSame(parent, pico.getParent());
+        //pico.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
     }
 
 }

@@ -110,6 +110,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "var pico = new DefaultPicoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent);
-        assertSame(parent, pico.getParent());
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
     }
 }

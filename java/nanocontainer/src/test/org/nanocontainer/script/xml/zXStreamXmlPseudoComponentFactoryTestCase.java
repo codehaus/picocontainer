@@ -23,10 +23,10 @@ import java.io.StringReader;
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class BeanXmlPseudoComponentFactoryTestCase extends TestCase {
+public class zXStreamXmlPseudoComponentFactoryTestCase extends TestCase {
 
     public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
-        BeanXmlPseudoComponentFactory xsf = new BeanXmlPseudoComponentFactory();
+        zXStreamXmlPseudoComponentFactory xsf = new zXStreamXmlPseudoComponentFactory();
 
         StringReader sr = new StringReader("" +
                 "<org.picoextras.script.xml.TestPseudoComp>" +

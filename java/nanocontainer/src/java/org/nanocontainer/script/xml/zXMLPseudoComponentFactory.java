@@ -5,14 +5,14 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
+ * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
 package org.picoextras.script.xml;
 
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
-public class EmptyCompositionException extends PicoAssemblyException {
-    public String getMessage() {
-        return "No components in the XML composition";
-    }
+public interface zXMLPseudoComponentFactory {
+    Object makeInstance(Element elem) throws SAXException, ClassNotFoundException;
 }

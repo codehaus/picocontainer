@@ -6,34 +6,21 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-
 package org.picoextras.script.xml;
 
-import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.xml.dom.DomXMLReader;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
- * @author Jeppe Cramon
+ * @author Paul Hammant
+ * @author Marcos Tarruella
  */
-public class XmlFrontEndException extends PicoAssemblyException {
-
-    protected XmlFrontEndException() {
-        super();
+public class zXStreamXmlPseudoComponentFactory implements zXMLPseudoComponentFactory {
+    public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
+        XStream xs = new XStream();
+        Object result = xs.fromXML(new DomXMLReader(elem));
+        return result;
     }
-
-    /**
-     * @param cause
-     */
-    public XmlFrontEndException(Throwable cause) {
-        super(cause);
-    }
-
-    public XmlFrontEndException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public XmlFrontEndException(String message) {
-        super(message);
-    }
-
 }

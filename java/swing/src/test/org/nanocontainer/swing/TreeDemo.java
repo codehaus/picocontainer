@@ -26,7 +26,7 @@ public class TreeDemo {
 		container3.registerComponentImplementation(WebServerImpl.class);
 
 		// Swing in action
-		ContainerTree tree = new ContainerTree(container1);
+		ContainerTree tree = new ContainerTree(container1, IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
 
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(tree, BorderLayout.CENTER);

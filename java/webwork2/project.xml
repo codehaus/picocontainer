@@ -30,6 +30,12 @@
         </dependency>
 
         <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>picoextras-script</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
             <id>xwork</id>
             <version>1.0-beta</version>
             <type>jar</type>

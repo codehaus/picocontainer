@@ -1,41 +1,54 @@
 package org.picoextras.idea;
 
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindowAnchor;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.actionSystem.Separator;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.Separator;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowAnchor;
+import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.idea.action.AddContainer;
+import org.picoextras.idea.action.RegisterComponent;
+import org.picoextras.idea.action.StartContainer;
+import org.picoextras.idea.action.StopContainer;
+import org.picoextras.idea.action.UnregisterComponent;
+import org.picoextras.swing.ContainerTree;
 import org.picoextras.swing.ContainerTreePanel;
 import org.picoextras.swing.IconHelper;
-import org.picoextras.idea.action.StartContainerAction;
-import org.picoextras.idea.action.StopContainerAction;
-import org.picoextras.idea.action.RegisterComponentAction;
-import org.picoextras.idea.action.UnregisterComponentAction;
+import org.picoextras.swing.action.AddContainerAction;
+import org.picoextras.swing.action.RegisterComponentAction;
+import org.picoextras.swing.action.StartContainerAction;
+import org.picoextras.swing.action.StopContainerAction;
+import org.picoextras.swing.action.UnregisterComponentAction;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class PicoPlugin implements ProjectComponent {
-    public static final String TOOL_WINDOW_ID = "PicoContainer";
+    private static final String TOOL_WINDOW_ID = "PicoContainer";
     private static final String TOOL_WINDOW_TOOLBAR_ID = "PicoContainerToolBar";
-    public static final String START_ACTION_ID = "PicoContainer.Start";
-    public static final String STOP_ACTION_ID = "PicoContainer.Stop";
-    public static final String REGISTER_ACTION_ID = "PicoContainer.Register";
-    public static final String UNREGISTER_ACTION_ID = "PicoContainer.Unregister";
+    private static final String START_CONTAINER_ACTION_ID = "PicoContainer.StartContainer";
+    private static final String STOP_CONTAINER_ACTION_ID = "PicoContainer.StopContainer";
+    private static final String ADD_CONTAINER_ACTION_ID = "PicoContainer.AddContainer";
+    private static final String REGISTER_COMPONENT_ACTION_ID = "PicoContainer.RegisterComponent";
+    private static final String UNREGISTER_COMPONENT_ACTION_ID = "PicoContainer.UnregisterComponent";
 
     private Project project;
-    private DefaultPicoContainer pico;
+    private ContainerTree tree = new ContainerTree(new DefaultPicoContainer(), IconHelper.getIcon("/nodes/class.png", false));
 
     public PicoPlugin(Project project) {
         this.project = project;
@@ -43,13 +56,27 @@ public class PicoPlugin implements ProjectComponent {
 
     public void projectOpened() {
         final ToolWindowManager manager = ToolWindowManager.getInstance(project);
-        pico = new DefaultPicoContainer();
-        ContainerTreePanel picoGui = new ContainerTreePanel(pico, createToolBar().getComponent());
+        ContainerTreePanel picoGui = new ContainerTreePanel(tree, createToolBar().getComponent());
 
         ToolWindow toolWindow = manager.registerToolWindow(TOOL_WINDOW_ID,
                 picoGui,
                 ToolWindowAnchor.RIGHT);
-        toolWindow.setIcon(IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON));
+        toolWindow.setIcon(IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false));
+
+        ModuleManager moduleManager = ModuleManager.getInstance(project);
+        final Module[] modules = moduleManager.getModules();
+        for (int i = 0; i < modules.length; i++) {
+            Module module = modules[i];
+            final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+            final String compilerOutputPathUrl = moduleRootManager.getCompilerOutputPathUrl();
+            System.out.println("compilerOutputPathUrl = " + compilerOutputPathUrl);
+            final VirtualFile[] files = moduleRootManager.getFiles(OrderRootType.CLASSES_AND_OUTPUT);
+            for (int j = 0; j < files.length; j++) {
+                VirtualFile file = files[j];
+                String url = file.getUrl();
+                System.out.println("url = " + url);
+            }
+        }
     }
 
     private ActionToolbar createToolBar() {
@@ -57,11 +84,12 @@ public class PicoPlugin implements ProjectComponent {
         DefaultActionGroup toolGroup = (DefaultActionGroup) registerAction(actionManager, new DefaultActionGroup(TOOL_WINDOW_TOOLBAR_ID, false), TOOL_WINDOW_TOOLBAR_ID);
 
         List actions = new ArrayList();
-        actions.add(registerAction(actionManager, new StartContainerAction(pico), START_ACTION_ID));
-        actions.add(registerAction(actionManager, new StopContainerAction(pico), STOP_ACTION_ID));
+        actions.add(registerAction(actionManager, new StartContainer(new StartContainerAction("/actions/execute.png", tree)), START_CONTAINER_ACTION_ID));
+        actions.add(registerAction(actionManager, new StopContainer(new StopContainerAction("/actions/suspend.png", tree)), STOP_CONTAINER_ACTION_ID));
         actions.add(Separator.getInstance());
-        actions.add(registerAction(actionManager, new RegisterComponentAction(pico), REGISTER_ACTION_ID));
-        actions.add(registerAction(actionManager, new UnregisterComponentAction(pico), UNREGISTER_ACTION_ID));
+        actions.add(registerAction(actionManager, new RegisterComponent(new RegisterComponentAction("/nodes/entryPoints.png", tree)), REGISTER_COMPONENT_ACTION_ID));
+        actions.add(registerAction(actionManager, new AddContainer(new AddContainerAction(IconHelper.PICO_CONTAINER_ICON, tree)), ADD_CONTAINER_ACTION_ID));
+        actions.add(registerAction(actionManager, new UnregisterComponent(new UnregisterComponentAction("/actions/exclude.png", tree)), UNREGISTER_COMPONENT_ACTION_ID));
         addToolBarActions(toolGroup, actions);
         return actionManager.createActionToolbar(TOOL_WINDOW_TOOLBAR_ID, toolGroup, true);
     }

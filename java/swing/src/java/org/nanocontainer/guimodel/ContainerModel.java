@@ -1,6 +1,7 @@
 package org.picoextras.guimodel;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
@@ -15,10 +16,10 @@ import java.util.Iterator;
  * @version $Revision$
  */
 public abstract class ContainerModel {
-    private final PicoContainer pico;
+    private final MutablePicoContainer pico;
     private boolean expandAdapters = false;
 
-    protected ContainerModel(PicoContainer pico) {
+    protected ContainerModel(MutablePicoContainer pico) {
         this.pico = pico;
     }
 

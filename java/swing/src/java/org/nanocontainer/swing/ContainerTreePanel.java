@@ -1,7 +1,6 @@
 package org.picoextras.swing;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picoextras.guimodel.BeanProperty;
 import org.picoextras.guimodel.ComponentAdapterModel;
 
@@ -22,13 +21,13 @@ import java.awt.event.MouseEvent;
  * @version $Revision$
  */
 public class ContainerTreePanel extends JPanel {
-	private ContainerTree tree;
+	private final ContainerTree tree;
 	private JTable table;
 
-	public ContainerTreePanel(PicoContainer pico, JComponent toolbar) {
+	public ContainerTreePanel(final ContainerTree tree, JComponent toolbar) {
         super(new BorderLayout());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		this.tree = new ContainerTree(pico);
+		this.tree = tree;
 		this.table = new JTable();
 
 		JScrollPane topPane = new JScrollPane(this.tree);

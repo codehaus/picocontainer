@@ -9,7 +9,6 @@
 package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 
 import javax.servlet.ServletContext;
@@ -23,16 +22,13 @@ import javax.servlet.http.HttpSession;
 public class ServletRequestContainerLauncher {
 
     private ContainerBuilder containerBuilder;
-    private ContainerComposer assembler;
     private ObjectReference containerRef;
     private HttpServletRequest request;
 
     public ServletRequestContainerLauncher(ServletContext context, HttpServletRequest request) {
 
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, KeyConstants.BUILDER);
-        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, KeyConstants.ASSEMBLER);
 
-        assembler = (ContainerComposer) assemblerRef.get();
         containerRef = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
         containerBuilder = (ContainerBuilder) builderRef.get();
         this.request = request;
@@ -45,7 +41,7 @@ public class ServletRequestContainerLauncher {
 
         ObjectReference parentContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
 
-        if (assembler == null || containerBuilder == null) {
+        if (containerBuilder == null) {
             throw new ServletException("org.picoextras.servlet.ServletContainerListener not deployed");
         }
 

@@ -13,11 +13,15 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
 
-import javax.management.*;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 
 /**
  * @author James Strachan
@@ -43,7 +47,7 @@ public class MX4JComponentAdapter extends DecoratingComponentAdapter {
         ObjectName name = null;
         try {
             name = asObjectName(getComponentKey());
-            Object mbean = asMBean(componentInstance);
+            Object mbean = new PicoContainerMBean(componentInstance);
             mbeanServer.registerMBean(mbean, name);
         } catch (MalformedObjectNameException e) {
             throw new MX4JInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
@@ -57,30 +61,26 @@ public class MX4JComponentAdapter extends DecoratingComponentAdapter {
         return componentInstance;
     }
 
-    public static Object asMBean(Object component) {
-        return new PicoContainerMBean(component);
-    }
-
     /**
-     * Ensures that the given key is converted to a JMX ObjectName
-     * @param key
-     * @return an ObjectName based on the given key
+     * Ensures that the given componentKey is converted to a JMX ObjectName
+     * @param componentKey
+     * @return an ObjectName based on the given componentKey
      */
-    public static ObjectName asObjectName(Object key) throws MalformedObjectNameException {
-        if (key == null) {
-            throw new NullPointerException("key cannot be null");
+    private static ObjectName asObjectName(Object componentKey) throws MalformedObjectNameException {
+        if (componentKey == null) {
+            throw new NullPointerException("componentKey cannot be null");
         }
-        if (key instanceof ObjectName) {
-            return (ObjectName) key;
+        if (componentKey instanceof ObjectName) {
+            return (ObjectName) componentKey;
         }
-        if (key instanceof Class) {
-            Class clazz = (Class) key;
-            return new ObjectName("nanomx:type=" + clazz.getName());
+        if (componentKey instanceof Class) {
+            Class clazz = (Class) componentKey;
+            return new ObjectName("picomx:type=" + clazz.getName());
         } else {
-            String text = key.toString();
+            String text = componentKey.toString();
             // Fix, so it works under WebSphere ver. 5
             if (text.indexOf(':') == -1) {
-                text = "nanomx:type=" + text;
+                text = "picomx:type=" + text;
             }
             return new ObjectName(text);
         }

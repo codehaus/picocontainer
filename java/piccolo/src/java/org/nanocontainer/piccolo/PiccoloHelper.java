@@ -1,16 +1,15 @@
 package org.picoextras.piccolo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.picocontainer.PicoContainer;
-import org.picoextras.piccolo.Constants;
-
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolox.util.PFixedWidthStroke;
+import org.picocontainer.PicoContainer;
+import org.picoextras.swing.IconHelper;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class PiccoloHelper {
 
@@ -60,7 +59,7 @@ public class PiccoloHelper {
 		path.setPaint(Constants.PICO_FILL);
 
 		// Add an icon on the top-left corner
-		PImage pcimg = new PImage(Constants.picoContainerIcon.getImage(), false);
+		PImage pcimg = new PImage(IconHelper.PICO_CONTAINER_ICON, false);
 		pcimg.setPickable(false);
 		pcimg.setBounds(x, y, unit, unit);
 		path.addChild(pcimg);
@@ -89,7 +88,7 @@ public class PiccoloHelper {
 		path.setPaint(Constants.PICO_FILL);
 
 		// Add an icon on the center
-		PImage cimg = new PImage(Constants.defaultComponentIcon.getImage(), false);
+		PImage cimg = new PImage(IconHelper.DEFAULT_COMPONENT_ICON, false);
 		cimg.setPickable(false);
 		cimg.setBounds(x + unit / 2, y + unit / 2, unit, unit);
 		path.addChild(cimg);

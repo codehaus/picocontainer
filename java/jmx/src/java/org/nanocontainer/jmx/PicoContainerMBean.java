@@ -17,12 +17,12 @@ import mx4j.AbstractDynamicMBean;
  */
 public class PicoContainerMBean extends AbstractDynamicMBean {
 
-    public PicoContainerMBean(Object component) {
-        setResource(component);
+    public PicoContainerMBean(Object componentInstance) {
+        setResource(componentInstance);
     }
 
     /* Method of the second group that is overridden */
     protected String getMBeanDescription() {
-        return "A simple DynamicMBean";
+        return "PicoContainerMBean: " + getResource().toString();
     }
 }

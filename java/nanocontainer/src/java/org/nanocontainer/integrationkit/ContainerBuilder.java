@@ -34,7 +34,6 @@ public interface ContainerBuilder {
      * destroyed and removed.
      *
      * @param containerRef Where the container is stored.
-     * @deprecated Not needed anymore??
      */
     void killContainer(ObjectReference containerRef);
 

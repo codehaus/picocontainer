@@ -6,14 +6,18 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.servlet;
+package org.picoextras.webwork;
+
+import org.picoextras.servlet.ServletContainerListener;
+import javax.servlet.ServletContextEvent;
+import webwork.action.factory.ActionFactory;
 
 /**
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Aslak Helles&oslash;y
  */
-public interface KeyConstants {
-    String APPLICATION_CONTAINER = "picocontainer.application";
-    String SESSION_CONTAINER = "picocontainer.session";
-    String REQUEST_CONTAINER = "picocontainer.request";
-    String BUILDER = "picocontainer.builder";
+public class WebWorkContainerListener extends ServletContainerListener {
+    public void contextInitialized(ServletContextEvent event) {
+        super.contextInitialized(event);
+        ActionFactory.setActionFactory(new WebWorkActionFactory());
+    }
 }

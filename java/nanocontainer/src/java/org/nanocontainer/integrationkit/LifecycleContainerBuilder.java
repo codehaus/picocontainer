@@ -8,6 +8,7 @@
  *****************************************************************************/
 package org.picoextras.integrationkit;
 
+import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
@@ -20,13 +21,8 @@ import org.picocontainer.defaults.ObjectReference;
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-
-        MutablePicoContainer container = createContainer();
-
-        if (parentContainerRef != null) {
-            MutablePicoContainer parent = (MutablePicoContainer) parentContainerRef.get();
-            container.setParent(parent);
-        }
+        PicoContainer parentContainer = (PicoContainer) parentContainerRef.get();
+        MutablePicoContainer container = createContainer(parentContainer);
 
         composeContainer(container, assemblyScope);
         container.start();
@@ -48,7 +44,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected MutablePicoContainer createContainer() {
-		return new DefaultPicoContainer();
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+		return new DefaultPicoContainer(parentContainer);
 	}
 }

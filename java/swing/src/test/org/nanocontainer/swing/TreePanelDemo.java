@@ -3,6 +3,9 @@ package org.picoextras.swing;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
+import org.picoextras.swing.action.RegisterComponentAction;
+import org.picoextras.swing.action.AddContainerAction;
+import org.picoextras.swing.action.UnregisterComponentAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,13 +23,21 @@ public class TreePanelDemo {
 		DefaultPicoContainer container2 = new DefaultPicoContainer(container1);
         container1.registerComponentInstance(container2);
 		DefaultPicoContainer container3 = new DefaultPicoContainer(container2);
+        container2.registerComponentInstance(container3);
 
 		container1.registerComponentImplementation(DefaultWebServerConfig.class);
 		container1.registerComponentImplementation(WebServerImpl.class);
 		container2.registerComponentImplementation(WebServerImpl.class);
 		container3.registerComponentImplementation(WebServerImpl.class);
 
-		ContainerTreePanel panel = new ContainerTreePanel(container1, new JLabel("Start"));
+        JToolBar toolBar = new JToolBar();
+        ContainerTree tree = new ContainerTree(container1, IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
+        toolBar.add(new RegisterComponentAction("blah", tree));
+        final AddContainerAction addContainerAction = new AddContainerAction("blah", tree);
+        toolBar.add(addContainerAction);
+        toolBar.add(new UnregisterComponentAction("blah", tree));
+
+        ContainerTreePanel panel = new ContainerTreePanel(tree, toolBar);
 
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);

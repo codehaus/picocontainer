@@ -13,7 +13,6 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.nanowar.struts.KeyConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -226,7 +226,6 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         reflectionAdapter.addClassLoaderURL(url);
     }
 
-    //TODO Should this method be the ReflectionContainerAdapter interface only?
     public MutablePicoContainer getPicoContainer() {
         return this;
     }

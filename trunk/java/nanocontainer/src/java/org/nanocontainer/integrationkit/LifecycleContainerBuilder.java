@@ -72,5 +72,5 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     protected abstract void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope);
 
-    protected abstract SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
+    protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
 }

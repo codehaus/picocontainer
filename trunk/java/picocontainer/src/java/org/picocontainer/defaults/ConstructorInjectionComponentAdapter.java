@@ -120,7 +120,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             for (int i = 0; i < constructors.length; i++) {
                 nonMatching.add(constructors[i]);
             }
-            throw new PicoInitializationException("Either do the specified parameters not match any of the following constructors: " + nonMatching.toString() + " or the constructs were not accessible for '" + getComponentImplementation() + "'");
+            throw new PicoInitializationException("Either do the specified parameters not match any of the following constructors: " + nonMatching.toString() + " or the constructors were not accessible for '" + getComponentImplementation() + "'");
         }
         return greediestConstructor;
     }

@@ -9,13 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
@@ -24,6 +17,14 @@ import org.nanocontainer.reflection.DefaultContainerRecorder;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ConstantParameter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configurable ContainerComposer reading from XML files.
@@ -53,7 +54,7 @@ public class XMLContainerComposer implements ContainerComposer {
     private ContainerRecorder sessionRecorder;
 	// configurable ContainerBuilder class name
 	private String containerBuilderClassName;
-	
+
     /**
      * Creates a default XMLContainerComposer
      * @throws ClassNotFoundException
@@ -99,8 +100,8 @@ public class XMLContainerComposer implements ContainerComposer {
 	private void populateContainer(String[] resources, ContainerRecorder recorder) throws ClassNotFoundException {
 	    SoftCompositionPicoContainer container = recorder.getContainerProxy();
 		for ( int i = 0; i < resources.length; i++ ){
-			ContainerPopulator builder = createContainerPopulator(getResource(resources[i]));
-			builder.populateContainer(container);
+			ContainerPopulator populator = createContainerPopulator(getResource(resources[i]));
+			populator.populateContainer(container);
 		}
 	}
 

@@ -29,7 +29,7 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         this.classLoader = classLoader;
     }
 
-    protected final SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             return createContainerFromScript(parentContainer, assemblyScope);
         } finally {
@@ -40,7 +40,7 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         }
     }
 
-    protected abstract SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
+    protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
     protected void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope) {
         // do nothing. assume that this is done in createContainer().

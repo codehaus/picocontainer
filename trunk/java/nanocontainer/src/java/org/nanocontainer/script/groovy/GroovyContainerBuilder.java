@@ -31,7 +31,7 @@ import org.picocontainer.PicoContainer;
  * The groovyScript has to return an instance of {@link SoftCompositionPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
- * PicoContainer.
+ * SoftCompositionPicoContainer.
  *
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
@@ -44,7 +44,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         if(groovyScript == null) {
             createGroovyScript();
         }

@@ -1,12 +1,13 @@
 package org.nanocontainer.script.bsh;
 
-import java.io.Reader;
+import bsh.EvalError;
+import bsh.Interpreter;
 import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
-import bsh.EvalError;
-import bsh.Interpreter;
+
+import java.io.Reader;
 
 /**
  * {@inheritDoc}
@@ -24,7 +25,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Interpreter i = new Interpreter();
         try {
             i.set("parent", parentContainer);

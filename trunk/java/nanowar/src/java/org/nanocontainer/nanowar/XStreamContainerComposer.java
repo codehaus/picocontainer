@@ -50,12 +50,14 @@ public class XStreamContainerComposer implements ContainerComposer {
         sessionRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
 		
         // create and populate request scope
-        XStreamContainerBuilder reqBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(REQUEST_CONFIG)), Thread.currentThread().getContextClassLoader());
-        reqBuilder.populateContainer(requestRecorder.getContainerProxy());
+        InputStreamReader requestScopeScript = new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(REQUEST_CONFIG));
+        XStreamContainerBuilder requestPopulator = new XStreamContainerBuilder(requestScopeScript, Thread.currentThread().getContextClassLoader());
+        requestPopulator.populateContainer(requestRecorder.getContainerProxy());
 
         // create and populate session scope
-        XStreamContainerBuilder sessionBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(SESSION_CONFIG)), Thread.currentThread().getContextClassLoader());
-        sessionBuilder.populateContainer(sessionRecorder.getContainerProxy());
+        InputStreamReader sessionScopeScript = new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(SESSION_CONFIG));
+        XStreamContainerBuilder sessionPopulator = new XStreamContainerBuilder(sessionScopeScript, Thread.currentThread().getContextClassLoader());
+        sessionPopulator.populateContainer(sessionRecorder.getContainerProxy());
 
     }
 
@@ -67,8 +69,9 @@ public class XStreamContainerComposer implements ContainerComposer {
      */
     public void composeContainer(SoftCompositionPicoContainer container, Object scope) {
         if (scope instanceof ServletContext) {
-            XStreamContainerBuilder appBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(APPLICATION_CONFIG)), Thread.currentThread().getContextClassLoader());
-            appBuilder.populateContainer(container);
+            InputStreamReader applicationScopeScript = new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(APPLICATION_CONFIG));
+            XStreamContainerBuilder applicationPopulator = new XStreamContainerBuilder(applicationScopeScript, Thread.currentThread().getContextClassLoader());
+            applicationPopulator.populateContainer(container);
         } else if (scope instanceof HttpSession) {
             sessionRecorder.replay(container);
         } else if (scope instanceof HttpServletRequest) {

@@ -14,11 +14,11 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.DomReader;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
@@ -59,7 +59,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     private final static String CONSTANT = "constant";
     private final static String DEPENDENCY = "dependency";
 
-    private HierarchicalStreamDriver xsdriver;
+    private final HierarchicalStreamDriver xsdriver;
 
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader) {
         this(script, classLoader, new DomDriver());
@@ -80,10 +80,6 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         }
     }
 
-    /**
-     * populate container off root element. we process instance &amp; implementation
-     * nodes here
-     */
     public void populateContainer(SoftCompositionPicoContainer container) {
 		populateContainer(container,rootElement);
     }
@@ -92,7 +88,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 	 * just a convenience method, so we can work recursively with subcontainers
 	 * for whatever puproses we see cool. 
 	 */
-	void populateContainer(MutablePicoContainer container, Element rootElement) {
+	private void populateContainer(MutablePicoContainer container, Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -250,15 +246,15 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         return null;
     }
 
-    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {
                 cafName = DefaultComponentAdapterFactory.class.getName();
             }
-            Class cfaClass = classLoader.loadClass(cafName);
-            ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
-            DefaultSoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
+            Class cafClass = classLoader.loadClass(cafName);
+            ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafClass.newInstance();
+            SoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
                     parentContainer);
             populateContainer(result);
             return result;

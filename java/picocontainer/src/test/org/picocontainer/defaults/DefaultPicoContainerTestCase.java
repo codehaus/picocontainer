@@ -443,7 +443,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsException, PicoRegistrationException, PicoStartException {
+//    public void testPeelableAndWashableContainer() throws NoPicoSuitableConstructorException, PicoRegistrationException, PicoStartException {
 //
 //        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
 //                new MorphingHierarchicalPicoContainer(

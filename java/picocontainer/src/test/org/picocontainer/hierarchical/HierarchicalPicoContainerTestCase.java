@@ -27,7 +27,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.NullContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-import org.picocontainer.defaults.WrongNumberOfConstructorsException;
+import org.picocontainer.defaults.NoPicoSuitableConstructorException;
 import org.picocontainer.testmodel.FlintstonesImpl;
 import org.picocontainer.testmodel.FredImpl;
 import org.picocontainer.testmodel.Wilma;
@@ -284,9 +284,9 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         try {
             pico.registerComponentByClass(Vector.class);
             fail("Should fail because there are more than one constructors");
-        } catch (WrongNumberOfConstructorsException e) {
+        } catch (NoPicoSuitableConstructorException e) {
             // expected;
-            assertTrue(e.getMessage().indexOf("4") > 0);
+            assertEquals("Should be right class", Vector.class,  e.getForImplementationClass());
         }
 
     }

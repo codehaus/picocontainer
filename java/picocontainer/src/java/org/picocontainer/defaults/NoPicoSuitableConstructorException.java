@@ -12,16 +12,16 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
 
-public class WrongNumberOfConstructorsException extends PicoIntrospectionException {
+public class NoPicoSuitableConstructorException extends PicoIntrospectionException {
 
-    int numOfCtors;
+    private Class forClass;
 
-    public WrongNumberOfConstructorsException(int numOfCtors) {
-        this.numOfCtors = numOfCtors;
+    public NoPicoSuitableConstructorException(Class forClass) {
+        this.forClass = forClass;
     }
 
-    public String getMessage() {
-        return "Wrong Number of Constructors for Pico Component. Expected 1, found " + numOfCtors;
+    public Class getForImplementationClass() {
+        return forClass;
     }
 
 }

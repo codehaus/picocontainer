@@ -130,6 +130,10 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return mutablePicoContainer.registerComponentInstance(componentInstance);
     }
 
+    public void registerOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+        mutablePicoContainer.registerOrderedComponentAdapter(componentAdapter);
+    }
+
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
         mutablePicoContainer.addOrderedComponentAdapter(componentAdapter);
     }

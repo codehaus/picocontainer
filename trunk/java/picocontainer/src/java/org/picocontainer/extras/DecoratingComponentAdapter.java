@@ -38,7 +38,14 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
     }
 
     public Object getComponentInstance(MutablePicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return delegate.getComponentInstance(componentRegistry);
+        if(componentRegistry != null) {
+            componentRegistry.registerOrderedComponentAdapter(this);
+        }
+        Object instance = delegate.getComponentInstance(componentRegistry);
+        if(componentRegistry != null) {
+            componentRegistry.addOrderedComponentAdapter(this);
+        }
+        return instance;
     }
 
     public void verify(PicoContainer picoContainer) {

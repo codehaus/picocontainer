@@ -90,11 +90,28 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter unregisterComponent(Object componentKey);
 
     /**
-     * Adds a component instance to the container. <b>Do not call this method
-     * explicitly</b>. It is used by the internals. Use {@link #registerComponent}
-     * instead if you wish to register custom component adapters.
+     * Registers an ordered component adapter candidate for a component. Subsequent calls to
+     * {@link #addOrderedComponentAdapter(ComponentAdapter)} will be ignored for
+     * all adapters, except the first caller of this method for each component key.
+     * 
+     * You don't need to call this mehtod, unless you are implementing custom component adapters.
+     * Use {@link #registerComponentInstance(Object)} and {@link #registerComponentInstance(Object, Object)}
+     * to register externally instantiated objects.
      *
-     * @param componentAdapter key of the component.
+     * @param componentAdapter adapter of the component.
+     */
+    void registerOrderedComponentAdapter(ComponentAdapter componentAdapter);
+
+    /**
+     * Adds a component instance to the instantiation order list. Calls to this method are ignored
+     * for all adapters except the first caller of {@link #registerOrderedComponentAdapter(ComponentAdapter)}
+     * for each component key. 
+     * 
+     * You don't need to call this mehtod, unless you are implementing custom component adapters.
+     * Use {@link #registerComponentInstance(Object)} and {@link #registerComponentInstance(Object, Object)}
+     * to register externally instantiated objects.
+     *
+     * @param componentAdapter adapter of the component.
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 

@@ -32,8 +32,15 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        if(picoContainer != null) {
+            picoContainer.registerOrderedComponentAdapter(this);
+        }
         ComponentAdapter[] adapterDependencies = findDependencies(picoContainer);
-        return instantiateComponent(adapterDependencies, picoContainer);
+        Object instance = instantiateComponent(adapterDependencies, picoContainer);
+        if(picoContainer != null) {
+            picoContainer.addOrderedComponentAdapter(this);
+        }
+        return instance;
     }
 
     private Parameter[] getParameters(PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

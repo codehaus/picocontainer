@@ -41,6 +41,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     // Keeps track of the instantiation order (dependency order)
     private final List instantiantionOrderedComponentAdapters = new ArrayList();
+    
+    // Keeps track of the keys of the instantiation ordered components, to grant single registration
+    private final Map instantiationOrderedComponentAdapterMap = new HashMap();
 
     private final ComponentAdapterFactory componentAdapterFactory;
 
@@ -90,6 +93,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             Object instance = result.getComponentInstance(this);
             componentKeyToAdapterMap.remove(componentKey);
             instantiantionOrderedComponentAdapters.remove(result);
+            instantiationOrderedComponentAdapterMap.remove(componentKey);
             unmanagedComponents.remove(instance);
         }
         return result;
@@ -135,8 +139,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
-
-        addOrderedComponentAdapter(componentAdapter);
         unmanagedComponents.add(componentInstance);
         return componentAdapter;
     }
@@ -205,8 +207,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return componentAdapter;
     }
 
+    public void registerOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+        if(!instantiationOrderedComponentAdapterMap.containsKey(componentAdapter.getComponentKey())) {
+            instantiationOrderedComponentAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);
+        }
+    }
+
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        instantiantionOrderedComponentAdapters.add(componentAdapter);
+        ComponentAdapter first = (ComponentAdapter)instantiationOrderedComponentAdapterMap.get(componentAdapter.getComponentKey());
+        if(first == null) {
+            throw new IllegalStateException("need to call registerOrderedComponentAdapter first");
+        }
+        if(first.equals(componentAdapter)) {
+            instantiantionOrderedComponentAdapters.add(componentAdapter);
+        }
     }
 
     public List getComponentInstances() throws PicoException {

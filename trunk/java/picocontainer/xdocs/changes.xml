@@ -72,8 +72,13 @@
             <action dev="rinkrank" type="update">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-85">PICO-85</a>
-                - Moved support for component multicaster out from PicoContainer/DefaultPicoContainer
-                into ComponentMulticasterPicoAdapter.
+                - Wrap component multicaster functionality into adapter.
+            </action>
+
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-86">PICO-86</a>
+                - addOrderedAdapter use across the system is inconsitent.
             </action>
 
             <action dev="paul" type="fix">

@@ -23,7 +23,6 @@
             <version>${pom.currentVersion}</version>
         </dependency>
 
-        <!-- This should ideally not be necessary when ThreadLocalCA is "fixed" -->
         <dependency>
             <id>proxytoys</id>
             <version>0.1</version>
@@ -33,13 +32,23 @@
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jboss-j2ee</artifactId>
-            <version>3.2.3</version>
+            <version>3.2.5</version>
         </dependency>
         <!-- test dependencies -->
         <dependency>
-            <groupId>simple-jndi</groupId>
-            <artifactId>simple-jndi</artifactId>
-            <version>0.9.1</version>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jmock</groupId>
+            <artifactId>jmock-cglib</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-full</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
 </project>

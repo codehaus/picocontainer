@@ -9,116 +9,208 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
+import java.io.Serializable;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.SocketTimeoutException;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
+import java.util.Hashtable;
+
+import javax.ejb.EJBHome;
+import javax.ejb.EJBObject;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.AbstractComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
-import javax.ejb.EJBHome;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * {@link ComponentAdapter}, that is able to lookup and instantiate an EJB as client.
- * <p>If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter},
- * you have to use a {@link org.nanocontainer.concurrent.ThreadLocalReference}, since you may not use an instance of the EJB
- * in different threads.</p>
- * <p>Use a EJBClientComponnatAdapterFactory for a completely transparent {@link ThreadLocal}
- * support.</p>
- *
+ * <p>
+ * The default mode for this adapter is late binding i.e. the adapter returns a proxy object for the requested type as instance.
+ * The lookup for the EJB is started with the first call of the proxy and the stub is created. Any further call will do the
+ * same, if the last call was aborted by a remote exception. With early binding the stub wiill be created in the constructor and
+ * the initialization of the adapter may fail.
+ * </p>
+ * <p>
+ * The adapter is using internally an own proxy for the stub object. This enables a failover in case of a temporary
+ * unavailability of the application server providing the EJB. With every call to a methof of the EJB, the adapter is able to
+ * reestablish the connection, if the last call had been failed. For standard cases the adapter throws a
+ * {@link ServiceUnavailableException}when a call fails and such a temporary unavailability can be assumed (e.g. because the
+ * application is redeployed). Although the adapter tries his best to detect such cases, you might still get some other
+ * {@link RuntimeException}when a call is made and the application server is about to stop. In this case you might try a call
+ * at some minutes later again, but you should give up after some trials. Same applies to a thrown ServiceUnavailableException
+ * although you might have a good chance, that the application server will be available some time later again.
+ * </p>
+ * <p>
+ * If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter}, you have to use a
+ * {@link org.nanocontainer.concurrent.ThreadLocalReference}, since you may not use an instance of the EJB in different
+ * threads. Use an {@link EJBClientComponentAdapterFactory}for such a completely transparent {@link ThreadLocal}support.
+ * </p>
  * @author J&ouml;rg Schaible
  */
 public class EJBClientComponentAdapter extends AbstractComponentAdapter {
 
-    private final Object m_home;
-    private final Method m_create;
-    private final String m_ejbName;
-    private final Class m_ejbClass;
+    private final Object m_proxy;
 
     /**
-     * Construct a {@link ComponentAdapter} for an EJB.
-     *
-     * @param ejb           The EJB's name.
+     * Construct a {@link ComponentAdapter}for an EJB. This constructor implies the home interface follows normal naming
+     * conventions. The adapter will use late bining.
+     * @param name The EJB's JNDI name.
+     * @param type The implemented interface of the EJB.
+     * @throws ClassNotFoundException Thrown if the home interface could not be found
+     */
+    public EJBClientComponentAdapter(final String name, final Class type) throws ClassNotFoundException {
+        this(name, type, null, false);
+    }
+
+    /**
+     * Construct a {@link ComponentAdapter}for an EJB. This constructor implies the home interface follows normal naming
+     * conventions. The adapter will use late bining.
+     * @param name The EJB's JNDI name.
+     * @param type The implemented interface of the EJB.
+     * @param environment The environment {@link InitialContext}to use.
+     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
+     * @throws ClassNotFoundException Thrown if the home interface could not be found
+     */
+    public EJBClientComponentAdapter(final String name, final Class type, final Hashtable environment, final boolean earlyBinding)
+            throws ClassNotFoundException {
+        this(name, type, type.getClassLoader().loadClass(type.getName() + "Home"), environment, earlyBinding);
+    }
+
+    /**
+     * Construct a {@link ComponentAdapter}for an EJB.
+     * @param name The EJB's JNDI name.
+     * @param type The implemented interface of the EJB.
      * @param homeInterface The home interface of the EJB.
-     * @param context       The {@link InitialContext} to use.
+     * @param environment The environment {@link InitialContext}to use.
+     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
      * @throws PicoIntrospectionException Thrown if lookup of home interface fails.
      */
-    public EJBClientComponentAdapter(final String ejb, final Class homeInterface, final InitialContext context) {
-        super(homeInterface, homeInterface);
-        try {
-            if (!EJBHome.class.isAssignableFrom(homeInterface)) {
-                throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
-            }
-            final Object ref = context.lookup(ejb);
-            m_home = PortableRemoteObject.narrow(ref, homeInterface);
-            final Class homeClass = m_home.getClass();
-            m_create = homeClass.getMethod("create", null);
-            m_ejbClass = m_create.getReturnType();
-            m_ejbName = ejb;
-        } catch (SecurityException e) {
-            throw new PicoIntrospectionException("Security Exception occured accessing create method of home interface of " + ejb, e);
-        } catch (NoSuchMethodException e) {
-            throw new PicoIntrospectionException("Home interface of " + ejb + " has no create method", e);
-        } catch (NamingException e) {
-            throw new PicoIntrospectionException("InitialContext has no EJB named " + ejb, e);
-        } catch (ClassCastException e) {
-            throw new PicoIntrospectionException("Home interface for " + ejb + " has wrong type.", e);
+    public EJBClientComponentAdapter(
+            final String name, final Class type, final Class homeInterface, final Hashtable environment, final boolean earlyBinding) {
+        super(name, type);
+        if (!EJBHome.class.isAssignableFrom(homeInterface)) {
+            throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
+        }
+        if (!EJBObject.class.isAssignableFrom(type)) {
+            throw new AssignabilityRegistrationException(EJBObject.class, type);
+        }
+        if (!type.isInterface()) {
+            throw new PicoIntrospectionException(type.getName() + " must be an interface");
+        }
+        final InvocationHandler invocationHandler = new EJBClientInvocationHandler(name, type, homeInterface, environment);
+        m_proxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{type}, invocationHandler);
+        if (earlyBinding) {
+            m_proxy.hashCode();
         }
     }
 
     /**
      * Instantiate the EJB.
-     *
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException {
-        Object result = null;
-        try {
-            result = m_create.invoke(m_home, null);
-        } catch (IllegalArgumentException e) {
-            throw new PicoInitializationException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoInitializationException(e);
-        } catch (InvocationTargetException e) {
-            throw new PicoInitializationException(e);
-        }
-        return result;
+    public Object getComponentInstance(final PicoContainer pico) {
+        return m_proxy;
     }
 
     /**
      * This implementation has nothing to verify.
-     *
      * @see org.picocontainer.ComponentAdapter#verify(PicoContainer)
      */
-    public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
+    public void verify(final PicoContainer pico) throws UnsatisfiableDependenciesException {
         // cannot do anything here
     }
 
-    public void accept(PicoVisitor visitor) {
-        visitor.visitComponentAdapter(this);
-    }
+    private final static class EJBClientInvocationHandler implements InvocationHandler, Serializable {
+        private final String m_name;
+        private final Class m_type;
+        private final Class m_home;
+        private final Hashtable m_environment;
+        private transient Object m_stub;
 
-    /**
-     * @return the name of the EJB.
-     * @see org.picocontainer.ComponentAdapter#getComponentKey()
-     */
-    public Object getComponentKey() {
-        return m_ejbName;
-    }
+        private EJBClientInvocationHandler(final String name, final Class type, final Class home, final Hashtable environment) {
+            m_name = name;
+            m_type = type;
+            m_home = home;
+            m_environment = environment;
+        }
 
-    /**
-     * @see org.picocontainer.ComponentAdapter#getComponentImplementation()
-     */
-    public Class getComponentImplementation() {
-        return m_ejbClass;
+        /**
+         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+         */
+        public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+            try {
+                if (m_stub == null) {
+                    m_stub = bind();
+                }
+                return method.invoke(m_stub, args);
+            } catch (final InvocationTargetException e) {
+                m_stub = null;
+                final Throwable target = e.getTargetException();
+                if (target instanceof ConnectException || target instanceof NoSuchObjectException) {
+                    // Server meanwhile down or restarted or application has been redeployed
+                    throw new ServiceUnavailableException("EJB instance named " + m_name + " no longer available", target);
+                } else {
+                    throw target;
+                }
+            } catch (Throwable t) {
+                m_stub = null;
+                throw t;
+            }
+        }
+
+        private Object bind() {
+            try {
+                final InitialContext context = new InitialContext(m_environment);
+                final Object ref = context.lookup(m_name);
+                final Object proxy = PortableRemoteObject.narrow(ref, m_home);
+                final Class homeClass = proxy.getClass();
+                final Method create = homeClass.getMethod("create", null);
+                if (m_type.isAssignableFrom(create.getReturnType())) {
+                    return create.invoke(proxy, null);
+                }
+                throw new PicoIntrospectionException("Wrong return type of EJBHome implementation", new ClassCastException(create
+                        .getReturnType().getName()));
+            } catch (final SecurityException e) {
+                throw new PicoIntrospectionException("Security Exception occured accessing create method of home interface of "
+                        + m_name, e);
+            } catch (final NoSuchMethodException e) {
+                throw new PicoIntrospectionException("Home interface of " + m_name + " has no create method", e);
+            } catch (final NameNotFoundException e) {
+                // Server startup, application not bound yet
+                throw new ServiceUnavailableException("EJB named " + m_name + " not found", e);
+            } catch (final NamingException e) {
+                final Throwable rootCause = e.getRootCause();
+                if (rootCause != null && rootCause instanceof SocketTimeoutException) {
+                    // Server down, did not have a connection yet
+                    throw new ServiceUnavailableException("Timeout occured creating EJB named " + m_name, e);
+                } else {
+                    throw new PicoInitializationException("InitialContext has no EJB named " + m_name, e);
+                }
+            } catch (final IllegalAccessException e) {
+                throw new PicoInitializationException("Cannot access default constructor for " + m_name, e);
+            } catch (final InvocationTargetException e) {
+                if (e.getTargetException() instanceof RuntimeException) {
+                    throw (RuntimeException)e.getTargetException();
+                } else if (e.getTargetException() instanceof Error) {
+                    throw (Error)e.getTargetException();
+                }
+                throw new PicoInvocationTargetInitializationException(e.getTargetException());
+            }
+
+        }
     }
 }
-

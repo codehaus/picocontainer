@@ -9,11 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.ejb.testmodel;
 
+import java.rmi.RemoteException;
+
 import javax.ejb.EJBObject;
 
 
 /** Simple EJB interface */
 public interface Hello extends EJBObject {
-    /** @return Returns &quot;Hello World&quot; */
-    public String getHelloWorld();
+    /**
+     * @return Returns &quot;Hello World&quot;
+     * @throws RemoteException
+     */
+    public String getHelloWorld() throws RemoteException;
 }

@@ -22,23 +22,20 @@ import java.util.List;
 
 /**
  * Test ThreadLocalComponentAdapterFactory.
- *
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapterFactoryTest
-        extends TestCase {
-
+public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
 
     /**
-     * Test method createComponentAdapter.
-     *
+     * Test creation of a CA ensuring ThreadLocal-behaviour.
      * @throws InterruptedException
      */
-    public final void testCreateComponentAdapter() throws InterruptedException {
-        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
-        final ComponentAdapter componentAdapter = componentAdapterFactory
-                .createComponentAdapter(List.class, ArrayList.class, new Parameter[]{});
-        final List list = (List) componentAdapter.getComponentInstance(null);
+    public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
+        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
+                new ConstructorInjectionComponentAdapterFactory());
+        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+                List.class, ArrayList.class, new Parameter[]{});
+        final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {
@@ -55,5 +52,83 @@ public class ThreadLocalComponentAdapterFactoryTest
         assertEquals(1, list2.size());
         assertSame(thread, list2.get(0));
     }
-}
 
+    /**
+     * Test creation of a CA failing ThreadLocal-behaviour.
+     * @throws InterruptedException
+     */
+    public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
+        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
+                new ConstructorInjectionComponentAdapterFactory(), ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY);
+        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+                List.class, ArrayList.class, new Parameter[]{});
+        final List list = (List)componentAdapter.getComponentInstance(null);
+        list.add(this);
+        final List list2 = new ArrayList();
+        final Thread thread = new Thread(new Runnable() {
+            /**
+             * @see java.lang.Runnable#run()
+             */
+            public void run() {
+                list2.addAll(list);
+                list2.add(Thread.currentThread());
+            }
+        }, "junit");
+        thread.start();
+        thread.join();
+        assertEquals(2, list2.size());
+        assertSame(this, list2.get(0));
+        assertSame(thread, list2.get(1));
+    }
+
+    /**
+     * Test creation of a CA with ThreadLocal-behaviour works if the thread ensures creation.
+     * @throws InterruptedException
+     */
+    public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
+        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
+                new ConstructorInjectionComponentAdapterFactory(), ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY);
+        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+                List.class, ArrayList.class, new Parameter[]{});
+        final List list = (List)componentAdapter.getComponentInstance(null);
+        list.add(this);
+        final List list2 = new ArrayList();
+        final Thread thread = new Thread(new Runnable() {
+            /**
+             * @see java.lang.Runnable#run()
+             */
+            public void run() {
+                final List newList = (List)componentAdapter.getComponentInstance(null);
+                list2.addAll(newList);
+                final Thread junitThread = Thread.currentThread(); 
+                list2.add(junitThread);
+                if (newList.size() == 0) {
+                    synchronized (junitThread) {
+                        junitThread.notify();
+                        try {
+                            junitThread.wait();
+                        } catch (InterruptedException e) {
+                            // Ignore
+                        }
+                    }
+                    newList.add(list2);
+                    run();
+                }
+            }
+        }, "junit");
+        synchronized (thread) {
+            thread.start();
+            thread.wait();
+        }
+        assertEquals(1, list2.size());
+        assertSame(thread, list2.get(0));
+        synchronized (thread) {
+            thread.notify();
+        }
+        thread.join();
+        assertEquals(3, list2.size());
+        assertSame(thread, list2.get(0));
+        assertSame(list2, list2.get(1));
+        assertSame(thread, list2.get(2));
+    }
+}

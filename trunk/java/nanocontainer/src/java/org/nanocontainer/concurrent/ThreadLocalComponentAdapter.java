@@ -9,7 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.concurrent;
 
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
@@ -19,12 +23,7 @@ import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 
 /**
@@ -32,26 +31,26 @@ import java.util.Map;
  * <p>
  * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
  * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
- * accessed from different threads.
+ * accessed from different threads. See {@link org.nanocontainer.concurrent.ThreadLocalComponentAdapterFactory}for details.
  * </p>
  * <p>
- * If you instantiate your components from different threads anyway, then use a simpler and faster approach with: <code>
- * new CachingComponentAdapter(ConstructorInjectionComponentAdapter(...), new ThreadLocalReference());
- * </code>
- * <p>
+ * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
+ * interfaces of your component.
+ * </p>
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapter
-        extends DecoratingComponentAdapter {
+public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
 
-    private static Map m_proxyMap = Collections.synchronizedMap(new HashMap());
+    private transient Class[] m_interfaces;
 
     /**
      * Construct a ThreadLocalComponentAdapter.
      * @param delegate The {@link ComponentAdapter}to delegate.
+     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalComponentAdapter(ComponentAdapter delegate) {
+    public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
         super(new CachingComponentAdapter(delegate, new ThreadLocalReference()));
+        m_interfaces = getInterfaces();
     }
 
     /**
@@ -61,36 +60,51 @@ public class ThreadLocalComponentAdapter
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException,
             NotConcreteRegistrationException {
 
-        final Object componentKey = getDelegate().getComponentKey();
-        final String key = String.valueOf(System.identityHashCode(componentKey))
-                + "."
-                + String.valueOf(System.identityHashCode(pico));
-        Object proxy = m_proxyMap.get(key);
-        if (proxy == null) {
-            final Class[] interfaces;
-            if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
-                interfaces = new Class[]{(Class)getDelegate().getComponentKey()};
-            } else {
-                interfaces = ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation());
-            }
-            if (interfaces.length == 0) {
-                throw new PicoIntrospectionException("Can't proxy implementation for "
-                        + getDelegate().getComponentImplementation().getName()
-                        + ". It doesn't implement any interfaces.");
-            }
-            final InvocationHandler threadLocalInvocationHandler = new InvocationHandler() {
-                /**
-                 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method,
-                 *           java.lang.Object[])
-                 */
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    final Object delegatedInstance = ThreadLocalComponentAdapter.this.getDelegate().getComponentInstance(pico);
-                    return method.invoke(delegatedInstance, args);
-                }
-            };
-            proxy = Proxy.newProxyInstance(getClass().getClassLoader(), interfaces, threadLocalInvocationHandler);
-            m_proxyMap.put(key, proxy);
+        final ComponentAdapter delegate = getDelegate();
+        if (m_interfaces == null) {
+            m_interfaces = getInterfaces();
         }
-        return proxy;
+        final InvocationHandler threadLocalInvocationHandler = new ThreadLocalInvocationHandler(pico, delegate);
+        return Proxy.newProxyInstance(getComponentImplementation().getClassLoader(), m_interfaces, threadLocalInvocationHandler);
+    }
+
+    final private Class[] getInterfaces() {
+        final Object componentKey = getComponentKey();
+        final Class[] interfaces;
+        if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
+            interfaces = new Class[]{(Class)componentKey};
+        } else {
+            interfaces = ClassHierarchyIntrospector.getAllInterfaces(getComponentImplementation());
+        }
+        if (interfaces.length == 0) {
+            throw new PicoIntrospectionException("Can't proxy implementation for "
+                    + getComponentImplementation().getName()
+                    + ". It does not implement any interfaces.");
+        }
+        return interfaces;
+    }
+
+    final static private class ThreadLocalInvocationHandler implements InvocationHandler {
+
+        private final PicoContainer pico;
+        private final ComponentAdapter delegate;
+
+        public ThreadLocalInvocationHandler(final PicoContainer pico, final ComponentAdapter delegate) {
+            this.pico = pico;
+            this.delegate = delegate;
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+         */
+        public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+            final Object delegatedInstance = delegate.getComponentInstance(pico);
+            try {
+                return method.invoke(delegatedInstance, args);
+            } catch (final InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }
     }
 }

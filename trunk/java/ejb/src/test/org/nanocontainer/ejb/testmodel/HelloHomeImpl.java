@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.ejb.testmodel;
 
-import org.nanocontainer.ejb.rmi.mock.EJBHomeMock;
 
 
 /** EJB Home implementation */

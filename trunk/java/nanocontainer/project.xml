@@ -90,6 +90,11 @@
         </dependency>
 
         <dependency>
+            <id>xpp3</id>
+            <version>1.1.2a</version>
+        </dependency>
+
+        <dependency>
             <groupId>rhino</groupId>
             <artifactId>js</artifactId>
             <version>1.5R4.1</version>
@@ -131,7 +136,6 @@
             <version>2.0.8</version>
         </dependency>
 
-        <!-- This should ideally not be necessary when ThreadLocalCA is "fixed" -->
         <dependency>
             <id>proxytoys</id>
             <version>0.1</version>

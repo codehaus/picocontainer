@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 
 public class HierarchicalComponentRegistry implements ComponentRegistry, Serializable {
 
@@ -51,8 +52,6 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         }
     }
 
-
-
     public void registerComponent(ComponentSpecification compSpec) {
         childRegistry.registerComponent(compSpec);
     }
@@ -62,7 +61,13 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
     }
 
     public List getOrderedComponents() {
-        return childRegistry.getOrderedComponents();
+        // Get child types
+        List types = new ArrayList(childRegistry.getOrderedComponents());
+
+        // Get those from parent.
+        types.addAll(parentRegistry.getOrderedComponents());
+
+        return Collections.unmodifiableList(types);
     }
 
     public void addOrderedComponent(Object component) {

@@ -140,7 +140,7 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
 
         // Then look in parent if we had nothing
         if (result == null) {
-            result = parentRegistry.findImplementingComponentSpecification(componentType);
+            result = parentRegistry.findImplementingComponent(componentType);
         }
         return result;
 

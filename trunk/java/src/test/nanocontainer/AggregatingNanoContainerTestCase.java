@@ -52,7 +52,6 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         pico.start();
 
         AggregatingNanoContainer aggContainer = new AggregatingNanoContainer(pico, new SequentialInvocationHandler(pico));
-        aggContainer.start();
         
         Object proxy = aggContainer.getProxy();
 

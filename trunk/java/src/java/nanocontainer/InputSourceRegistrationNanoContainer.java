@@ -5,15 +5,17 @@
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
 package nanocontainer;
 
 import org.xml.sax.InputSource;
+import picocontainer.PicoRegistrationException;
+import picocontainer.LifecycleContainer;
 
-public interface InputSourceRegistrationNanoContainer extends NanoContainer {
+public interface InputSourceRegistrationNanoContainer extends LifecycleContainer {
 
-    void registerComponents(InputSource registration) throws NanoRegistrationException, ClassNotFoundException;
+    void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException;
 
 }

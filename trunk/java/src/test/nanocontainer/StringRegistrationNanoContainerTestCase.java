@@ -12,18 +12,19 @@ package nanocontainer;
 
 import junit.framework.TestCase;
 import picocontainer.PicoStartException;
+import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServerImpl;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws NanoRegistrationException, PicoStartException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, PicoStartException, ClassNotFoundException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
         nc.start();
     }
 
-    public void testProvision() throws NanoRegistrationException, PicoStartException, ClassNotFoundException {
+    public void testProvision() throws PicoRegistrationException, PicoStartException, ClassNotFoundException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
@@ -33,7 +34,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         assertTrue("WebServerImpl should exist", nc.getComponent(WebServerImpl.class) instanceof WebServerImpl);
     }
 
-    public void testNoGenerationRegistration() throws NanoRegistrationException {
+    public void testNoGenerationRegistration() throws PicoRegistrationException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         try {
             nc.registerComponent("Foo");

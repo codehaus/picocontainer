@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
 package nanocontainer;
@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import picocontainer.Container;
 import picocontainer.DummyContainer;
+import picocontainer.PicoRegistrationException;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
         implements InputSourceRegistrationNanoContainer{
@@ -53,7 +54,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
         }
     }
 
-    public void registerComponents(InputSource registration) throws NanoRegistrationException, ClassNotFoundException {
+    public void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException {
         try {
             Document doc = documentBuilder.parse(registration);
             NodeList components = doc.getElementsByTagName("component");

@@ -10,10 +10,13 @@
 
 package nanocontainer;
 
-public interface StringRegistrationNanoContainer extends NanoContainer {
+import picocontainer.PicoRegistrationException;
+import picocontainer.LifecycleContainer;
 
-    void registerComponent(String compClassName) throws NanoRegistrationException, ClassNotFoundException;
+public interface StringRegistrationNanoContainer extends LifecycleContainer {
 
-    void registerComponent(String typeClassName, String compClassName) throws NanoRegistrationException, ClassNotFoundException;
+    void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException;
+
+    void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException;
 
 }

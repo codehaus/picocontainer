@@ -7,13 +7,14 @@
  *                                                                           *
  * Original code by Leo Simmons & Joerg Schaible                             *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.gems;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 

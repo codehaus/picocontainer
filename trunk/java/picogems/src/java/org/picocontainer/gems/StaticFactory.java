@@ -1,3 +1,4 @@
+package org.picocontainer.gems;
 /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
@@ -7,8 +8,6 @@
  *                                                                           *
  * Original code by Leo Simmons & Jörg Schaible                              *
  *****************************************************************************/
-package org.picocontainer.defaults;
-
 /**
  * Interface for a static factory wrapper used by the 
  * {@link org.picocontainer.defaults.StaticFactoryComponentAdapter}.

@@ -170,7 +170,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponent(new WilmaImpl());
+        pico.registerComponentByInstance(new WilmaImpl());
 
         pico.instantiateComponents();
 

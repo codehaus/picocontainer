@@ -54,7 +54,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @param componentInstance The pre instantiated component to register
      * @throws PicoRegistrationException
      */
-    void registerComponent(Object componentInstance)
+    void registerComponentByInstance(Object componentInstance)
             throws PicoRegistrationException, PicoIntrospectionException;
 
     // TODO: move Parameter to this package. We shouldn't depend on subpackages.

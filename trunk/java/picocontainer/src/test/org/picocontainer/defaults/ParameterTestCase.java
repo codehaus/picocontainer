@@ -16,7 +16,15 @@ public class ParameterTestCase extends TestCase {
         assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
         assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
         assertTrue(DefaultComponentAdapter.isAssignableFrom(String.class, String.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
         assertFalse(DefaultComponentAdapter.isAssignableFrom(Integer.class, String.class));
+        assertFalse(DefaultComponentAdapter.isAssignableFrom(Double.class, String.class));
     }
 
     static class TestClass {

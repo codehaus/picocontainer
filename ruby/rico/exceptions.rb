@@ -1,5 +1,4 @@
 module Rico
-  class NonexistentComponentError < RuntimeError; end
-  class ContainerNotStartedError < RuntimeError; end
-  class ContainerNotStoppedError < RuntimeError; end
+  class NonexistentComponentError < StandardError; end
+  class DuplicateComponentKeyRegistrationError < StandardError; end
 end

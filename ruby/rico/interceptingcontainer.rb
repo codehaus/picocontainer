@@ -1,4 +1,4 @@
-require 'rico'
+require 'rico/container'
 require 'rico/componentspecification'
 
 #

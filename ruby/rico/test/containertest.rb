@@ -1,6 +1,6 @@
 require 'test/unit'
 
-require 'rico'
+require 'rico/container'
 require 'rico/exceptions'
 
 class ContainerTest < Test::Unit::TestCase
@@ -217,7 +217,8 @@ class ContainerTest < Test::Unit::TestCase
   def test_dependencies_can_be_constant_values
     rico = Container.new
     rico.register_component :needed, Needed
-    rico.register_component :component, ComponentWithDependentAndConstant, [ :needed, "constant" ]
+    rico.register_component :constant, "constant"
+    rico.register_component :component, ComponentWithDependentAndConstant, [ :needed, :constant ]
     component = rico.component(:component)
     assert_instance_of Needed, component.needed
     assert_equal "constant", component.constant

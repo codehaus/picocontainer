@@ -1,4 +1,4 @@
-require 'rico'
+require 'rico/container'
 
 module Rico
   #

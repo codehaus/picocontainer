@@ -5,28 +5,23 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by James Strachan                                           *
+ * Original code by Michael Ward                                    		 *
  *****************************************************************************/
-package org.nanocontainer.jmx;
 
-import mx4j.AbstractDynamicMBean;
+package org.nanocontainer.jmx.mx4j;
 
+import org.nanocontainer.jmx.DynamicMBeanFactory;
+
+import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
 /**
- * @author James Strachan
  * @author Michael Ward
  * @version $Revision$
  */
-public class NanoMBean extends AbstractDynamicMBean {
+public class MX4JDynamicMBeanFactory implements DynamicMBeanFactory {
 
-    public NanoMBean(Object componentInstance, MBeanInfo mBeanInfo) {
-        setResource(componentInstance);
-		setMBeanInfo(mBeanInfo);
-    }
-
-    /* Method of the second group that is overridden */
-    protected String getMBeanDescription() {
-        return "NanoMBean: " + getResource().toString();
-    }
+	public DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo) {
+		return new MX4JDynamicMBean(componentInstance, mBeanInfo);
+	}
 }

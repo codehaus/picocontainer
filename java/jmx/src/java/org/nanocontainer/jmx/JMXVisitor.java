@@ -1,9 +1,21 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Michael Ward                                    		 *
+ *****************************************************************************/
+
 package org.nanocontainer.jmx;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.AbstractPicoVisitor;
+import org.nanocontainer.jmx.mx4j.MX4JDynamicMBeanFactory;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
@@ -69,15 +81,28 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	}
 
 	/**
-	 * Create a NanoMBean from the MBeanInfoWrapper being passed in
+	 * Create a DynamicMBean from the MBeanInfoWrapper being passed in
 	 */
 	protected void handleMBeanInfo(ComponentAdapter componentAdapter, MBeanInfoWrapper mBeanInfoWrapper) {
 		MBeanInfo mBeanInfo = mBeanInfoWrapper.getmBeanInfo();
 		ObjectName objectName = mBeanInfoWrapper.getObjectName();
 		Object instance = componentAdapter.getComponentInstance(picoContainer);
-		NanoMBean nanoMBean = new NanoMBean(instance, mBeanInfo);
+		DynamicMBean mbean = getDynamicMBeanFactory().create(instance, mBeanInfo);
 
-		registerWithMBeanServer(nanoMBean, objectName);
+		registerWithMBeanServer(mbean, objectName);
+	}
+
+	protected DynamicMBeanFactory getDynamicMBeanFactory() {
+		DynamicMBeanFactory factory = (DynamicMBeanFactory)picoContainer.
+				getComponentInstance(DynamicMBeanFactory.class);
+
+		if(factory == null) {
+			// no factory registered lets default to MX4J implementation
+			factory = new MX4JDynamicMBeanFactory();
+			((MutablePicoContainer)picoContainer).registerComponentInstance(DynamicMBeanFactory.class, factory);
+		}
+
+		return factory;
 	}
 
 	/**

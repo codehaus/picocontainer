@@ -153,7 +153,7 @@
     </unjar>
   </target>
 
-  <task name="cvs:make-patch" description="Creates a patch of *your* changes">
+  <target name="cvs:make-patch" description="Creates a patch of *your* changes">
     <cvs command="-q diff -b -u -N" output="patch.txt"/>
     <echo>
       Please create a new issue in PicoContainer's JIRA: 
@@ -166,5 +166,20 @@
       you increase the chance of having the patch applied by some
       of the committers.
     </echo>    
-  </task>
+  </target>
+
+  <target name="cvsgrab">
+    <taskdef 
+      name="cvsgrab" 
+      classname="net.sourceforge.cvsgrab.CVSGrabTask" 
+      classpath="${cvsgrab.home}/lib/cvs-grab.jar;${cvsgrab.home}/lib/hotsax.jar;${cvsgrab.home}/lib/jcvsii-light.jar"/>
+
+    <cvsgrab 
+      destdir="${basedir}"
+      rootUrl="http://picocontainer.cvs.codehaus.org/"
+      cvsHost="cvs.codehaus.org"
+      cvsRoot="/cvsroot/picocontainer"
+      package="pico" 
+      verbose="true"/>
+  </target>
 </project>

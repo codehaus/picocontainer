@@ -17,12 +17,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 
 public class ConfiguringNanoContainerTestCase extends TestCase {
 
     public void testCanDealWithNoConfiguration()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\"/>" +
@@ -33,7 +33,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     public void testCanDealWithNonConfiguringXML()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\">" +
@@ -45,7 +45,8 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     public void testCanConfigureWithSingleString()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException,
+                   PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\">" +
@@ -58,7 +59,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     public void testCanConfigureWithSingleStringAndTypeSpecification()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component type=\"nanocontainer.MockComponent\" class=\"nanocontainer.MockComponentImpl\">" +
@@ -71,7 +72,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     public void testCanConfigureWithSingleInteger()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\">" +
@@ -84,7 +85,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     public void testCanConfigureWithMultipleIntegers()
-            throws ParserConfigurationException, PicoRegistrationException, PicoStartException, ClassNotFoundException {
+            throws ParserConfigurationException, PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\">" +
@@ -104,11 +105,11 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
     }
 
     private InputSourceRegistrationNanoContainer configureContainer(final String xml)
-            throws ParserConfigurationException, PicoRegistrationException, ClassNotFoundException, PicoStartException {
+            throws ParserConfigurationException, PicoRegistrationException, ClassNotFoundException, PicoInitializationException {
         final InputSourceRegistrationNanoContainer container = new ConfiguringNanoContainerImpl.Default();
         container.registerComponents(new InputSource(new StringReader(
                 xml)));
-        container.start();
+        container.initializeContainer();
         return container;
     }
 

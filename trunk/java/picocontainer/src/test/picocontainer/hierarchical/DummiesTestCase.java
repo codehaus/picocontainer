@@ -11,14 +11,9 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
+import picocontainer.PicoInitializationException;
 
 import java.lang.reflect.InvocationTargetException;
-
-import picocontainer.defaults.NullContainer;
-import picocontainer.defaults.NullLifecycleManager;
-import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.PicoStartException;
-import picocontainer.PicoStopException;
 
 public class DummiesTestCase extends TestCase {
 
@@ -29,16 +24,7 @@ public class DummiesTestCase extends TestCase {
         assertEquals(0, dc.getComponents().length);
     }
 
-    public void testDummyStartableLifecycleManager() throws PicoStartException, PicoStopException {
-        picocontainer.defaults.NullLifecycleManager ds = new picocontainer.defaults.NullLifecycleManager();
-        Object o = new Object();
-        ds.startComponent(o);
-        ds.stopComponent(o);
-        //TODO check no methods were called, via proxy ?
-    }
-
-    public void testDefaultComponentFactory() throws PicoStartException,
-                                                     PicoStopException,
+    public void testDefaultComponentFactory() throws PicoInitializationException,
                                                      NoSuchMethodException,
                                                      InvocationTargetException,
                                                      IllegalAccessException,

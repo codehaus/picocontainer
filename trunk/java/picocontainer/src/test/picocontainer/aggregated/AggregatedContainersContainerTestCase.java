@@ -11,12 +11,12 @@
 package picocontainer.aggregated;
 
 import junit.framework.TestCase;
-import picocontainer.testmodel.WilmaImpl;
 import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStopException;
 import picocontainer.PicoContainer;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
+import picocontainer.testmodel.WilmaImpl;
 
 public class AggregatedContainersContainerTestCase extends TestCase {
     private ClassRegistrationPicoContainer pico;
@@ -26,15 +26,6 @@ public class AggregatedContainersContainerTestCase extends TestCase {
         pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(WilmaImpl.class);
         filter = new AggregatedContainersContainer.Filter(pico);
-    }
-
-    public void tearDown() throws PicoStopException {
-        try {
-            pico.stop();
-        } catch (IllegalStateException e) {
-        }
-        pico = null;
-        filter = null;
     }
 
     public void testGetComponents() {
@@ -96,6 +87,9 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             public Class[] getComponentTypes() {
                 return new Class[] {String.class};
             }
+
+            public void initializeContainer() throws PicoInitializationException {
+            }
         };
 
         PicoContainer b = new PicoContainer() {
@@ -113,6 +107,9 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
             public Class[] getComponentTypes() {
                 return new Class[] {Integer.class};
+            }
+
+            public void initializeContainer() throws PicoInitializationException {
             }
         };
 

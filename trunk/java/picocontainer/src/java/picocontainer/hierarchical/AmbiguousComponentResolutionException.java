@@ -9,9 +9,9 @@
  *****************************************************************************/
 package picocontainer.hierarchical;
 
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 
-public class AmbiguousComponentResolutionException extends PicoStartException {
+public class AmbiguousComponentResolutionException extends PicoInitializationException {
     private final Class[] ambiguousClasses;
 
     public AmbiguousComponentResolutionException(Class[] ambiguousClass) {

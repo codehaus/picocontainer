@@ -20,22 +20,22 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
  */
 public class PicoPicoTestCase extends TestCase {
 
-    public void testDefaultPicoContainer() throws PicoRegistrationException, PicoStartException {
+    public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInitializationException {
 
-        ClassRegistrationPicoContainer pc = new HierarchicalPicoContainer.Default();
+        HierarchicalPicoContainer pc = new HierarchicalPicoContainer.Default();
         pc.registerComponent(HierarchicalPicoContainer.Default.class);
-        pc.start();
+        pc.initializeContainer();
 
-        tryDefaultPicoContainer((ClassRegistrationPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
+        tryDefaultPicoContainer((HierarchicalPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
 
     }
 
-    private void tryDefaultPicoContainer(ClassRegistrationPicoContainer pc2) throws PicoRegistrationException, PicoStartException {
+    private void tryDefaultPicoContainer(HierarchicalPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
 
         pc2.registerComponent(FredImpl.class);
         pc2.registerComponent(WilmaImpl.class);
 
-        pc2.start();
+        pc2.initializeContainer();
 
         assertTrue( "There should have been a Fred in the container", pc2.hasComponent( FredImpl.class ) );
         assertTrue( "There should have been a Wilma in the container", pc2.hasComponent( WilmaImpl.class ) );

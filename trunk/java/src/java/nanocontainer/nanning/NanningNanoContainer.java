@@ -2,7 +2,6 @@ package nanocontainer.nanning;
 
 import picocontainer.*;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
-import picocontainer.defaults.NullLifecycleManager;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
 
@@ -16,8 +15,7 @@ public class NanningNanoContainer extends AspectSystem {
 
     public NanningNanoContainer() {
         serviceAndAspectContainer = new HierarchicalPicoContainer.Default();
-        componentContainer = new HierarchicalPicoContainer(serviceAndAspectContainer,
-                new picocontainer.defaults.NullLifecycleManager(), new NanningComponentFactory(this));
+        componentContainer = new HierarchicalPicoContainer(serviceAndAspectContainer, new NanningComponentFactory(this));
     }
 
     /**
@@ -37,8 +35,8 @@ public class NanningNanoContainer extends AspectSystem {
         serviceAndAspectContainer.registerComponent(compomentImplementation);
     }
 
-    public void start() throws PicoStartException {
-        serviceAndAspectContainer.start();
+    public void start() throws PicoInitializationException {
+        serviceAndAspectContainer.initializeContainer();
         Object[] components = serviceAndAspectContainer.getComponents();
         for (int i = 0; i < components.length; i++) {
             Object component = components[i];
@@ -48,7 +46,7 @@ public class NanningNanoContainer extends AspectSystem {
             }
         }
 
-        componentContainer.start();
+        componentContainer.initializeContainer();
     }
 
     public Object getComponent(Class componentType) {

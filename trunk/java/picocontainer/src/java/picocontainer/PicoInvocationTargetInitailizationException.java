@@ -10,5 +10,25 @@
 
 package picocontainer;
 
-public abstract class PicoStopException extends Exception {
+public class PicoInvocationTargetInitailizationException extends PicoInitializationException {
+    private final Throwable cause;
+
+    public PicoInvocationTargetInitailizationException(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("Cause must not be null");
+        }
+        this.cause = cause;
+    }
+
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public String getMessage() {
+        return "InvocationTargetException: "
+                + cause.getClass().getName()
+                + " " + cause.getMessage();
+    }
+
+
 }

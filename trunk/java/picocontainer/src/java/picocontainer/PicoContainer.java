@@ -42,4 +42,10 @@ public interface PicoContainer {
      * @return An Array of component types.
      */
     Class[] getComponentTypes();
+
+    /**
+     * Initialize the container.
+     */
+    void initializeContainer() throws PicoInitializationException;
+
 }

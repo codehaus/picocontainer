@@ -10,9 +10,9 @@
 
 package picocontainer.hierarchical;
 
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 
-public class UnsatisfiedDependencyStartupException extends PicoStartException
+public class UnsatisfiedDependencyStartupException extends PicoInitializationException
 {
     private Class classThatNeedsDeps;
 

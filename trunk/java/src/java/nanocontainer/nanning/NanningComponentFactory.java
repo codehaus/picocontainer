@@ -18,7 +18,7 @@ import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MixinInstance;
 import com.tirsen.nanning.config.AspectSystem;
 import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.PicoInvocationTargetInitailizationException;
 
 public class NanningComponentFactory extends DefaultComponentFactory {
     private final AspectSystem aspectSystem;
@@ -27,7 +27,7 @@ public class NanningComponentFactory extends DefaultComponentFactory {
         this.aspectSystem = aspectSystem;
     }
 
-    public Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
+    public Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
 
         Object component = super.createComponent(compType, constructor, args);
 

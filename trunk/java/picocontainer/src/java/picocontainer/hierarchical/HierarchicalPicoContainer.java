@@ -29,36 +29,30 @@ package picocontainer.hierarchical;
 
 import picocontainer.AbstractContainer;
 import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoContainer;
-import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
+import picocontainer.PicoContainer;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.PicoStopException;
-import picocontainer.PicoDisposalException;
-import picocontainer.PicoInvocationTargetStartException;
-import picocontainer.defaults.NullContainer;
 import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.defaults.NullLifecycleManager;
+import picocontainer.defaults.NullContainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class HierarchicalPicoContainer extends AbstractContainer implements ClassRegistrationPicoContainer {
 
     private final PicoContainer parentContainer;
-    private final LifecycleManager startableLifecycleManager;
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
@@ -66,49 +60,36 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     protected List orderedComponents = new ArrayList();
 
     private Map parametersForComponent = new HashMap();
-    private boolean disposedOf;
     private boolean initialized;
-    private boolean started;
 
     public HierarchicalPicoContainer(PicoContainer parentContainer,
-                                     LifecycleManager startableLifecycleManager,
                                      ComponentFactory componentFactory) {
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
-        }
-        if (startableLifecycleManager == null) {
-            throw new NullPointerException("startableLifecycleManager cannot be null");
         }
         if (componentFactory == null) {
             throw new NullPointerException("componentFactory cannot be null");
         }
         this.parentContainer = parentContainer;
-        this.startableLifecycleManager = startableLifecycleManager;
         this.componentFactory = componentFactory;
     }
 
     public static class Default extends HierarchicalPicoContainer {
         public Default() {
-            super(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+            super(new NullContainer(), new DefaultComponentFactory());
         }
 
     }
 
     public static class WithParentContainer extends HierarchicalPicoContainer {
         public WithParentContainer(PicoContainer parentContainer) {
-            super(parentContainer, new NullLifecycleManager(), new DefaultComponentFactory());
-        }
-    }
-
-    public static class WithStartableLifecycleManager extends HierarchicalPicoContainer {
-        public WithStartableLifecycleManager(LifecycleManager startableLifecycleManager) {
-            super(new NullContainer(), startableLifecycleManager, new DefaultComponentFactory());
+            super(parentContainer, new DefaultComponentFactory());
         }
     }
 
     public static class WithComponentFactory extends HierarchicalPicoContainer {
         public WithComponentFactory(ComponentFactory componentFactory) {
-            super(new NullContainer(), new NullLifecycleManager(), componentFactory);
+            super(new NullContainer(), componentFactory);
         }
     }
 
@@ -184,23 +165,18 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         }
     }
 
-    public void start() throws PicoStartException {
-        checkNotDisposedOf();
+    public void initializeContainer() throws PicoInitializationException {
         if (initialized == false) {
             initializeComponents();
             checkUnsatisfiedDependencies();
             initialized = true;
-        }
-        if (started == false) {
-            startComponents();
-            started = true;
         } else {
             throw new IllegalStateException("PicoContainer Started Already");
         }
     }
 
     // This is Lazy and NOT public :-)
-    private void initializeComponents() throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
+    private void initializeComponents() throws AmbiguousComponentResolutionException, PicoInvocationTargetInitailizationException {
         boolean progress = true;
         while (progress == true) {
             progress = false;
@@ -223,7 +199,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         }
     }
 
-    protected boolean hookEmUp(Class componentImplementation, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
+    protected boolean hookEmUp(Class componentImplementation, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetInitailizationException {
             Constructor[] constructors = componentImplementation.getConstructors();
             Constructor constructor = constructors[0];
             Class[] parameters = constructor.getParameterTypes();
@@ -266,50 +242,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         return false;
     }
 
-    public void stop() throws PicoStopException {
-        checkNotDisposedOf();
-        if (started == true) {
-            stopComponents();
-            started = false;
-        } else {
-            throw new IllegalStateException("PicoContainer Not started");
-        }
-    }
-
-    private void checkNotDisposedOf() {
-        if (disposedOf == true) {
-            throw new IllegalStateException("PicoContainer Disposed Of");
-        }
-    }
-
-    public void dispose() throws PicoDisposalException {
-        checkNotDisposedOf();
-        disposeOfComponents();
-    }
-
-    protected void startComponents() throws PicoStartException {
-        for (int i = 0; i < orderedComponents.size(); i++) {
-            Object component = orderedComponents.get(i);
-            startableLifecycleManager.startComponent(component);
-        }
-    }
-
-    protected void stopComponents() throws PicoStopException {
-        for (int i = orderedComponents.size() - 1; i >= 0; i--) {
-            Object component = orderedComponents.get(i);
-            startableLifecycleManager.stopComponent(component);
-        }
-    }
-
-    protected void disposeOfComponents() throws PicoDisposalException {
-        for (int i = 0; i < orderedComponents.size(); i++) {
-            Object component = orderedComponents.get(i);
-            startableLifecycleManager.disposeOfComponent(component);
-        }
-        disposedOf = true;
-    }
-
-
     private void checkUnsatisfiedDependencies() throws UnsatisfiedDependencyStartupException {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
@@ -320,7 +252,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         }
     }
 
-    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
+    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
         return componentFactory.createComponent(type, constructor, args);
     }
 

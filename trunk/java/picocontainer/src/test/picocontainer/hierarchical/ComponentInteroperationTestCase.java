@@ -11,29 +11,23 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
-import picocontainer.hierarchical.HierarchicalPicoContainer;
-import picocontainer.hierarchical.OverriddenPicoTestContainer;
-import picocontainer.defaults.NullLifecycleManager;
-import picocontainer.hierarchical.DuplicateComponentTypeRegistrationException;
-import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.hierarchical.UnsatisfiedDependencyStartupException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 
 public class ComponentInteroperationTestCase extends TestCase {
 
-    public void testBasic() throws PicoStartException, PicoRegistrationException
+    public void testBasic() throws PicoInitializationException, PicoRegistrationException
     {
 
         WilmaImpl wilma = new WilmaImpl();
-        ClassRegistrationPicoContainer pico = new OverriddenPicoTestContainer(wilma, new picocontainer.defaults.NullLifecycleManager());
+        OverriddenPicoTestContainer pico = new OverriddenPicoTestContainer(wilma);
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }

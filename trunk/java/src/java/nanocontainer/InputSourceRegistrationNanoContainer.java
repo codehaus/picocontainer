@@ -12,9 +12,9 @@ package nanocontainer;
 
 import org.xml.sax.InputSource;
 import picocontainer.PicoRegistrationException;
-import picocontainer.LifecycleContainer;
+import picocontainer.PicoContainer;
 
-public interface InputSourceRegistrationNanoContainer extends LifecycleContainer {
+public interface InputSourceRegistrationNanoContainer extends PicoContainer {
 
     /**
      * Register a list of components expressed in XML form.

@@ -18,8 +18,8 @@ import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -48,13 +48,13 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     private StringBuffer log = new StringBuffer();
 
-    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInvocationTargetStartException {
+    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInvocationTargetInitailizationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
         Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class.getConstructors()[0], null);
         assertTrue(Aspects.isAspectObject(component));
     }
 
-    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInvocationTargetStartException {
+    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInvocationTargetInitailizationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
         Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class.getConstructors()[0],
                 null);
@@ -65,7 +65,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
-    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoStartException {
+    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInitializationException {
 
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {
@@ -83,7 +83,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
         assertEquals("", log.toString());
 
-        nanningEnabledPicoContainer.start();
+        nanningEnabledPicoContainer.initializeContainer();
 
         // fred says hello to wilma, even the interceptor knows
         assertEquals("hello ", log.toString());

@@ -18,11 +18,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import picocontainer.hierarchical.ImplementationHidingComponentFactory;
-import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.PicoInvocationTargetInitailizationException;
 
 public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 
-    public void testBasic() throws NoSuchMethodException, PicoInvocationTargetStartException {
+    public void testBasic() throws NoSuchMethodException, PicoInvocationTargetInitailizationException {
         ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory();
         Constructor ctor = ArrayList.class.getConstructor(new Class[0]);
         Object o = cf.createComponent(List.class, ctor, new Object[0]);

@@ -11,9 +11,9 @@
 package nanocontainer;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.LifecycleContainer;
+import picocontainer.PicoContainer;
 
-public interface StringRegistrationNanoContainer extends LifecycleContainer {
+public interface StringRegistrationNanoContainer extends PicoContainer {
 
 
     /**

@@ -1,4 +1,7 @@
-<project xmlns:ant="jelly:ant" xmlns:j="jelly:core" xmlns:u="jelly:util" >
+<project default="binary:install"
+	xmlns:ant="jelly:ant"
+	xmlns:j="jelly:core"
+	xmlns:u="jelly:util" >
 
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy" prereqs="jar:deploy"/>
@@ -6,9 +9,8 @@
     <preGoal name="test:test" >
         <echo>Building test.mca file for use with unit tests </echo>
         <attainGoal name="build-test.mca"/>
-        
     </preGoal>
-    
+
     <goal name="build-test.mca" >
         <attainGoal name="compile-testcomp"/>
         <attainGoal name="test-promoted.jar"/>
@@ -17,29 +19,29 @@
         <delete file="test.mca"/>
         <zip destfile="test.mca">
             <fileset dir="src/testcomp/" includes="*.groovy"/>
-            <zipfileset dir="target/classes/" includes="promoted.jar" prefix="MCA-INF/promoted"/>
-            <zipfileset dir="target/classes/" includes="components.jar" prefix="MCA-INF/components"/>
-            <zipfileset dir="target/classes/" includes="hidden.jar" prefix="MCA-INF/hidden"/>
+            <zipfileset dir="${maven.build.dir}" includes="promoted.jar" prefix="MCA-INF/promoted"/>
+            <zipfileset dir="${maven.build.dir}" includes="components.jar" prefix="MCA-INF/components"/>
+            <zipfileset dir="${maven.build.dir}" includes="hidden.jar" prefix="MCA-INF/hidden"/>
         </zip>
     </goal>
 
     <goal name="test-promoted.jar">
-        <delete file="target/classes/promoted.jar"/>
-          <jar destfile="target/classes/promoted.jar"
+        <delete file="${maven.build.dir}/promoted.jar"/>
+          <jar destfile="${maven.build.dir}/promoted.jar"
               basedir="src/testcomp/target/classes"
               includes="org/microcontainer/testapi/TestPromotable.class"/>
       </goal>
 
     <goal name="test-components.jar">
-        <delete file="target/classes/components.jar"/>
-          <jar destfile="target/classes/components.jar"
+        <delete file="${maven.build.dir}/components.jar"/>
+          <jar destfile="${maven.build.dir}/components.jar"
               basedir="src/testcomp/target/classes"
               includes="org/microcontainer/test/TestComp.class"/>
       </goal>
 
     <goal name="test-hidden.jar">
-        <delete file="target/classes/hidden.jar"/>
-          <jar destfile="target/classes/hidden.jar"
+        <delete file="${maven.build.dir}/hidden.jar"/>
+        <jar destfile="${maven.build.dir}/hidden.jar"
               basedir="src/testcomp/target/classes"
               includes="org/microcontainer/test/hopefullyhidden/*.class"/>
       </goal>
@@ -58,11 +60,11 @@
      <goal name="jars" prereqs="test">
         <ant:delete file="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"/>
         <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"
-              basedir="${maven.build.dir}/classes"
-              includes="org/microcontainer/*.class"/>
+              basedir="${maven.build.dest}"
+              includes="org/microcontainer/*.class,org/microcontainer/jmx/*.class"/>
         <ant:delete file="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"/>
         <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"
-              basedir="${maven.build.dir}/classes"
+              basedir="${maven.build.dest}"
               includes="org/microcontainer/impl/**.class"/>
       </goal>
       

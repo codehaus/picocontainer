@@ -37,26 +37,26 @@ public class McaDeployerTestCase extends TestCase {
 	}
 
 	public void testDeploy() throws Exception {
-		File marFile = new File("test.mar");
-		URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
-		deployer.deploy("unittest", url); // handleDeployForMarFile the MAR to unittest context
+		File mcaFile = new File("test.mca");
+		URL url = new URL("jar:file:" + mcaFile.getCanonicalPath() + "!/");
+		deployer.deploy("unittest", url); // handleDeployForMcaFile the MCA to unittest context
 
-		validateMarDeployedToWorkingDir();
+		validateMcaDeployedToWorkingDir();
 	}
 
 	/**
-	 * remote MAR files are first downloaded to a temporary directory once downloaded they are expanded into the
+	 * remote MCA files are first downloaded to a temporary directory once downloaded they are expanded into the
 	 * working directory as normal
 	 */
 	public void testDeployFromHttp() throws Exception {
-		// normally this directory would be created by handleDeployForMarFile()... but we are bypassing for testing
+		// normally this directory would be created by handleDeployForMcaFile()... but we are bypassing for testing
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
-		McaDeployer marDeployer = new McaDeployer();
-		marDeployer.handleRemoteMCA(unitTestDir, connection);
+		McaDeployer mcaDeployer = new McaDeployer();
+		mcaDeployer.handleRemoteMCA(unitTestDir, connection);
 
-		validateMarDeployedToWorkingDir();
+		validateMcaDeployedToWorkingDir();
 
 		// cleanup temp dir
 		File tempDir = new File("temp");
@@ -65,13 +65,13 @@ public class McaDeployerTestCase extends TestCase {
 		assertFalse(tempDir.exists());
 	}
 
-	protected void validateMarDeployedToWorkingDir() {
+	protected void validateMcaDeployedToWorkingDir() {
 		// assert everything is deployed to the file system correctly
 		assertTrue(unitTestDir.exists());
 		assertTrue(new File(unitTestDir, "composition.groovy").exists());
-		assertTrue(new File(unitTestDir, "MAR-INF/components/components.jar").exists());
-		assertTrue(new File(unitTestDir, "MAR-INF/promoted/promoted.jar").exists());
-		assertTrue(new File(unitTestDir, "MAR-INF/hidden/hidden.jar").exists());
+		assertTrue(new File(unitTestDir, "MCA-INF/components/components.jar").exists());
+		assertTrue(new File(unitTestDir, "MCA-INF/promoted/promoted.jar").exists());
+		assertTrue(new File(unitTestDir, "MCA-INF/hidden/hidden.jar").exists());
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class McaDeployerTestCase extends TestCase {
 		}
 
 		public InputStream getInputStream() throws IOException {
-			File marFile = new File("test.mar");
-			return new FileInputStream(marFile);
+			File mcaFile = new File("test.mca");
+			return new FileInputStream(mcaFile);
 		}
 	}
 }

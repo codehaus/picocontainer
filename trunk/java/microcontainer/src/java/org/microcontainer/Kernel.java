@@ -10,6 +10,7 @@
 package org.megacontainer;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * @author Paul Hammant
@@ -18,6 +19,8 @@ import java.io.File;
 
 public interface Kernel {
     void deploy(File marFile);
+
+    void deploy(URL remoteMarFile); // aka lightweight java web start
 
     void deferredDeploy(File file);
 

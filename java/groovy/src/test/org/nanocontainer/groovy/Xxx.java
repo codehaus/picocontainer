@@ -9,7 +9,7 @@
 package org.picoextras.groovy;
 
 import junit.framework.Assert;
-import org.picocontainer.lifecycle.Lifecycle;
+import org.picocontainer.Lifecycle;
 
 /**
  * An abstract component and three dependancies used for testing.

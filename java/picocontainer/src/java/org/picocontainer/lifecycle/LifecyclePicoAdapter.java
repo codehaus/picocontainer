@@ -11,6 +11,7 @@
 package org.picocontainer.lifecycle;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Lifecycle;
 
 /**
  * @author Paul Hammant

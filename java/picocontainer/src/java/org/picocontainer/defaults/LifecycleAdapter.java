@@ -10,10 +10,10 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.Disposable;
-import org.picocontainer.lifecycle.Lifecycle;
-import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.Disposable;
+import org.picocontainer.Lifecycle;
+import org.picocontainer.*;
+import org.picocontainer.Startable;
 
 import java.io.Serializable;
 

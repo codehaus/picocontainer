@@ -5,7 +5,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.Startable;
 import org.jmock.Mock;
 import org.jmock.C;
 import junit.framework.TestCase;

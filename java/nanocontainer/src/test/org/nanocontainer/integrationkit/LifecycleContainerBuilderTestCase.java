@@ -7,7 +7,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.Startable;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -20,7 +20,7 @@
     
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-script</artifactId>
+      <artifactId>picoextras-script</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>    
         

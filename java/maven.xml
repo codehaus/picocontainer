@@ -1,10 +1,10 @@
 <project
-  default="build-subprojects"
+  default="jar-install"
   xmlns:maven="jelly:maven">
 
   <goal 
-    name="build-subprojects"
-    description="Build each sub project">
+    name="jar-install"
+    description="Build each sub project into a jar">
 
     <maven:reactor
       basedir="${basedir}"
@@ -15,6 +15,20 @@
       ignoreFailures="false"
     />
 
+  </goal>
+
+  <goal 
+    name="generic"
+    description="Build each sub project with a particular goal. e.g. maven -Dgoals=site:deploy generic">
+
+    <maven:reactor
+      basedir="${basedir}"
+      includes="*/project.xml"
+      excludes="picogui/*,picoidea/*"
+      goals="${goals}"
+      banner="Building"
+      ignoreFailures="false"
+    />
   </goal>
 
 </project>

@@ -13,7 +13,8 @@
     </dependency>
 
     <dependency>
-      <id>picocontainer-reflection</id>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>picocontainer-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
   </dependencies>

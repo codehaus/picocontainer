@@ -1,0 +1,6 @@
+<project default="jar:install">
+
+    <postGoal name="test:compile">
+    </postGoal>
+
+</project>

@@ -1,0 +1,25 @@
+PicoGui is a small Graphical User Interface for PicoContainer.
+It lets you register components, and even create hierearchical
+trees of containers.
+
+You can also "execute" a particular container. Or more precisely
+manage the lifecycle (such as start, stop and dispose) via
+PicoGui.
+
+Furthermore, PicoGui lets you edit simple bean properties of the
+components. These properties will be set on the associated
+component instance (via reflection) immediately after instantiation.
+
+Finally, PicoGui is a great starting point for IDE plugins for
+PicoContainer. This means that XDoclet and Generama (who are
+just special PicoContainers) can be configured and run from
+this GUI.
+
+PicoGui's design is also based on the Pico model. All the GUI
+components (the panel with the tree, the tree and text field 
+listeners etc.) are laced together by a PicoContainer.
+
+Writing a GUI the Pico way was a very pleasant experience.
+I hadn't written a GUI in a year or so. I did it TDD with
+PicoContainer in the back of the head, and the GUI components
+just magically emerged.

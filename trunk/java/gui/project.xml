@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picogui</id>
+  <name>PicoContainer GUI</name>
+  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+
+  <dependencies>
+        <dependency>
+            <id>nanocontainer</id>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+  </dependencies>
+
+</project>

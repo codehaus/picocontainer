@@ -21,6 +21,6 @@
     </action>
   </action-mappings>
 
-  <controller processorClass="org.nanocontainer.struts.PicoRequestProcessor"/>
+  <controller processorClass="org.nanocontainer.nanowar.struts.PicoRequestProcessor"/>
 
 </struts-config>

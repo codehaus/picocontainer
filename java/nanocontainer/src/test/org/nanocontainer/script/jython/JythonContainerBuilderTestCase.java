@@ -4,7 +4,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.integrationkit.PicoAssemblyException;
-import org.picoextras.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLif
 
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader(
-                "from org.picoextras.testmodel import *\n" +
+                "from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation(WebServerImpl)\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n");
@@ -31,7 +31,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLif
     public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoAssemblyException {
         try {
             Reader script = new StringReader("" +
-                    "from org.picoextras.testmodel import *\n" +
+                    "from org.nanocontainer.testmodel import *\n" +
                     "pico = DefaultPicoContainer()\n" +
                     "pico.registerComponentImplementation(WebServerImpl)\n" +
                     "childContainer = DefaultPicoContainer(pico)\n" +
@@ -45,7 +45,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLif
 
     public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("" +
-                "from org.picoextras.testmodel import *\n" +
+                "from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n" +
                 "pico.registerComponentInstance('child', DefaultPicoContainer(pico))\n" +

@@ -1,4 +1,4 @@
-package org.picoextras.jmx;
+package org.nanocontainer.jmx;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

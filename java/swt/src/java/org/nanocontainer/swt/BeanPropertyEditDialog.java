@@ -1,4 +1,4 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import java.beans.PropertyEditor;
 
@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.picoextras.guimodel.BeanProperty;
+import org.nanocontainer.guimodel.BeanProperty;
 
 /**
  * A dialog to edit a bean property
@@ -21,7 +21,7 @@ import org.picoextras.guimodel.BeanProperty;
  * <li>The BeanProperty must have a PropertyEditor</li>
  * <li>CustomEditor are not supported</li>
  * </ul></p>
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -32,7 +32,7 @@ public class BeanPropertyEditDialog extends Dialog {
 
 	/**
 	 * Build a dialog around a BeanProperty
-	 * 
+	 *
 	 * @param parentShell
 	 * @param p
 	 */
@@ -46,7 +46,7 @@ public class BeanPropertyEditDialog extends Dialog {
 
 	/**
 	 * Set up a nice title
-	 * 
+	 *
 	 * @param shell
 	 */
 	protected void configureShell(Shell shell) {
@@ -56,7 +56,7 @@ public class BeanPropertyEditDialog extends Dialog {
 
 	/**
 	 * Creates the content of the dialog
-	 * 
+	 *
 	 * @param parent
 	 * @return
 	 */

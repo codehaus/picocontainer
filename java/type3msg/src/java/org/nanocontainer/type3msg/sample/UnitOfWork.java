@@ -1,4 +1,4 @@
-package org.picoextras.type3msg.sample;
+package org.nanocontainer.type3msg.sample;
 
 /**
  * Created by IntelliJ IDEA.

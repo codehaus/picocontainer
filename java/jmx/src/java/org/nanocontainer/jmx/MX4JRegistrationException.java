@@ -7,13 +7,13 @@
  *                                                                           *
  * Original code by James Strachan and Mauro Talevi                          *
  *****************************************************************************/
-package org.picoextras.jmx;
+package org.nanocontainer.jmx;
 
 import org.picocontainer.PicoRegistrationException;
 
 /**
  * A registration exception caused trying to register the component with JMX
- * 
+ *
  * @author James Strachan
  * @author Mauro Talevi
  * @author Jeppe Cramon

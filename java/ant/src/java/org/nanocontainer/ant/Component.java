@@ -1,11 +1,11 @@
-package org.picoextras.ant;
+package org.nanocontainer.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicConfigurator;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picoextras.reflection.StringToObjectConverter;
+import org.nanocontainer.reflection.StringToObjectConverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

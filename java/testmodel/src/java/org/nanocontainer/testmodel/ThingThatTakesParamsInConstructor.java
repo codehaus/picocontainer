@@ -1,4 +1,4 @@
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 public class ThingThatTakesParamsInConstructor {
     private String value;

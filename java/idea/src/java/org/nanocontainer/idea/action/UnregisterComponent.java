@@ -1,6 +1,6 @@
-package org.picoextras.idea.action;
+package org.nanocontainer.idea.action;
 
-import org.picoextras.swing.action.UnregisterComponentAction;
+import org.nanocontainer.swing.action.UnregisterComponentAction;
 
 /**
  * @author Aslak Helles&oslash;y

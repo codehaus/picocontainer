@@ -2,9 +2,9 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
-import org.picoextras.multicast.InvocationInterceptor;
+import org.nanocontainer.multicast.InvocationInterceptor;
 
 import java.lang.reflect.Method;
 

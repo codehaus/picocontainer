@@ -6,10 +6,10 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork2;
+package org.nanocontainer.webwork2;
 
 import com.opensymphony.xwork.ActionProxyFactory;
-import org.picoextras.servlet.ServletContainerListener;
+import org.nanocontainer.servlet.ServletContainerListener;
 
 import javax.servlet.ServletContextEvent;
 

@@ -1,4 +1,4 @@
-package org.picoextras.guimodel;
+package org.nanocontainer.guimodel;
 
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * A simple wrapper around a Bean property.
- * 
+ *
  * @author Laurent Etiemble
  * @author Aslak Helles&oslashy;
  * @version $Revision$

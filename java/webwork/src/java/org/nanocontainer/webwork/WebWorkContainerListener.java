@@ -6,9 +6,9 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork;
+package org.nanocontainer.webwork;
 
-import org.picoextras.servlet.ServletContainerListener;
+import org.nanocontainer.servlet.ServletContainerListener;
 import javax.servlet.ServletContextEvent;
 import webwork.action.factory.ActionFactory;
 

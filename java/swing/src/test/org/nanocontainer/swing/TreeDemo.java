@@ -1,8 +1,8 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.testmodel.DefaultWebServerConfig;
-import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 
 import javax.swing.*;
 import java.awt.*;

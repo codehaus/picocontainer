@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.groovy;
+package org.nanocontainer.groovy;
 
 import junit.framework.Assert;
 import org.picocontainer.Startable;

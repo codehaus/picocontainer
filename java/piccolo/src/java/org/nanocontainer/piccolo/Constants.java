@@ -1,4 +1,4 @@
-package org.picoextras.piccolo;
+package org.nanocontainer.piccolo;
 
 import java.awt.Color;
 

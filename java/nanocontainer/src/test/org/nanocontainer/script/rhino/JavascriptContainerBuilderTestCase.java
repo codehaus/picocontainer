@@ -4,9 +4,9 @@ import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.integrationkit.PicoAssemblyException;
-import org.picoextras.testmodel.WebServer;
-import org.picoextras.testmodel.WebServerConfig;
-import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultPicoContainer()\n" +
-                "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfig)\n");
+                "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
@@ -32,8 +32,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory())\n" +
-                "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfig)\n" +
-                "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.WebServerImpl)\n");
+                "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
+                "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 

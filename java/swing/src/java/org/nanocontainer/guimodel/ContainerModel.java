@@ -1,4 +1,4 @@
-package org.picoextras.guimodel;
+package org.nanocontainer.guimodel;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 /**
  * An abstract class that is used to access the content of a PicoContainer.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

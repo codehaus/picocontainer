@@ -8,13 +8,13 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picoextras.pool;
+package org.nanocontainer.pool;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.testmodel.FredImpl;
-import org.picoextras.testmodel.WilmaImpl;
+import org.nanocontainer.testmodel.FredImpl;
+import org.nanocontainer.testmodel.WilmaImpl;
 
 import java.util.NoSuchElementException;
 

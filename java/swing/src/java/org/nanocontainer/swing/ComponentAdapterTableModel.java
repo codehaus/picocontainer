@@ -1,7 +1,7 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.guimodel.ComponentAdapterModel;
+import org.nanocontainer.guimodel.ComponentAdapterModel;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * A model that takes an Object instance. Property name are in the left column
  * and their value in the right column.
- * 
+ *
  * @author Laurent Etiemble
  * @author Aslak Helles&oslash;y
  * @version $Revision$

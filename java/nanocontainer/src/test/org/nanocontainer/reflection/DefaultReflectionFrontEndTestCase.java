@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
@@ -16,8 +16,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
-import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.nanocontainer.testmodel.WebServerImpl;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,14 +26,14 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServer", "org.picoextras.testmodel.WebServerImpl");
+        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
         ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServerImpl");
+        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.WebServerImpl");
 
         assertNotNull("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
@@ -124,10 +124,10 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentFrontEnd.registerComponentImplementation("foo", "org.picoextras.testmodel.DefaultWebServerConfig");
+        parentFrontEnd.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
 
         Object fooWebServerConfig = parentFrontEnd.getPicoContainer().getComponentInstance("foo");
-        assertEquals("org.picoextras.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
+        assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(parentFrontEnd);
         childFrontEnd.addClassLoaderURL(testCompJar.toURL());

@@ -1,4 +1,4 @@
-package org.picoextras.ant;
+package org.nanocontainer.ant;
 
 import junit.framework.TestCase;
 import org.apache.tools.ant.Project;

@@ -2,7 +2,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.idea.action;
+package org.nanocontainer.idea.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

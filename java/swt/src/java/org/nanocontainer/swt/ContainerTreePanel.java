@@ -1,4 +1,4 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -15,16 +15,16 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.picocontainer.PicoContainer;
-import org.picoextras.guimodel.BeanProperty;
-import org.picoextras.guimodel.BeanProperty;
-import org.picoextras.swt.ComponentAdapterContentProvider;
-import org.picoextras.swt.BeanLabelProvider;
-import org.picoextras.swt.BeanPropertyEditDialog;
+import org.nanocontainer.guimodel.BeanProperty;
+import org.nanocontainer.guimodel.BeanProperty;
+import org.nanocontainer.swt.ComponentAdapterContentProvider;
+import org.nanocontainer.swt.BeanLabelProvider;
+import org.nanocontainer.swt.BeanPropertyEditDialog;
 
 /**
  * An horizontal sash form that displays a PicoContainer tree (top) and a
  * table with selected node properties (bottom).
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -32,7 +32,7 @@ public class ContainerTreePanel extends SashForm {
 
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 * @param parent
 	 * @param flags
 	 */
@@ -43,7 +43,7 @@ public class ContainerTreePanel extends SashForm {
 
 	/**
 	 * Helper method that allows to set-up the root container.
-	 * 
+	 *
 	 * @param container
 	 */
 	public void setContainer(PicoContainer container) {

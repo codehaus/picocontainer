@@ -1,16 +1,12 @@
-package org.picoextras.typ3msg;
+package org.nanocontainer.type3msg;
 
 import junit.framework.TestCase;
-import org.picoextras.type3msg.MulticastingPicoException;
-import org.picoextras.type3msg.MulticastingProxy;
-import org.picoextras.type3msg.RoundRobinMulticastingProxy;
-import org.picoextras.type3msg.Type3MsgPicoContainer;
-import org.picoextras.type3msg.sample.Controller;
-import org.picoextras.type3msg.sample.Database;
-import org.picoextras.type3msg.sample.PretendDatabase;
-import org.picoextras.type3msg.sample.Worker;
-import org.picoextras.type3msg.sample.WorkerDoer;
-import org.picoextras.type3msg.sample.WorkerLogger;
+import org.nanocontainer.type3msg.sample.Controller;
+import org.nanocontainer.type3msg.sample.Database;
+import org.nanocontainer.type3msg.sample.PretendDatabase;
+import org.nanocontainer.type3msg.sample.Worker;
+import org.nanocontainer.type3msg.sample.WorkerDoer;
+import org.nanocontainer.type3msg.sample.WorkerLogger;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;

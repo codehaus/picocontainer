@@ -1,8 +1,8 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.guimodel.BeanProperty;
-import org.picoextras.guimodel.ComponentAdapterModel;
+import org.nanocontainer.guimodel.BeanProperty;
+import org.nanocontainer.guimodel.ComponentAdapterModel;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 /**
  * An horizontal split-panel that displays a PicoContainer tree (top) and a
  * table with selected node properties (bottom).
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 public interface Converter {
     Object convert(String in);

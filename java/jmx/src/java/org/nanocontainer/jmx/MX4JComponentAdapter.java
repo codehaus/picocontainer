@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by James Strachan and Mauro Talevi                          *
  *****************************************************************************/
-package org.picoextras.jmx;
+package org.nanocontainer.jmx;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;

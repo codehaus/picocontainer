@@ -1,4 +1,4 @@
-package org.picoextras.idea;
+package org.nanocontainer.idea;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
@@ -16,19 +16,19 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.idea.action.AddContainer;
-import org.picoextras.idea.action.RegisterComponent;
-import org.picoextras.idea.action.StartContainer;
-import org.picoextras.idea.action.StopContainer;
-import org.picoextras.idea.action.UnregisterComponent;
-import org.picoextras.swing.ContainerTree;
-import org.picoextras.swing.ContainerTreePanel;
-import org.picoextras.swing.IconHelper;
-import org.picoextras.swing.action.AddContainerAction;
-import org.picoextras.swing.action.RegisterComponentAction;
-import org.picoextras.swing.action.StartContainerAction;
-import org.picoextras.swing.action.StopContainerAction;
-import org.picoextras.swing.action.UnregisterComponentAction;
+import org.nanocontainer.idea.action.AddContainer;
+import org.nanocontainer.idea.action.RegisterComponent;
+import org.nanocontainer.idea.action.StartContainer;
+import org.nanocontainer.idea.action.StopContainer;
+import org.nanocontainer.idea.action.UnregisterComponent;
+import org.nanocontainer.swing.ContainerTree;
+import org.nanocontainer.swing.ContainerTreePanel;
+import org.nanocontainer.swing.IconHelper;
+import org.nanocontainer.swing.action.AddContainerAction;
+import org.nanocontainer.swing.action.RegisterComponentAction;
+import org.nanocontainer.swing.action.StartContainerAction;
+import org.nanocontainer.swing.action.StopContainerAction;
+import org.nanocontainer.swing.action.UnregisterComponentAction;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -45,7 +45,7 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
             ImporterTopLevel.importPackage(cx,
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.defaults", classLoader),
-                        new NativeJavaPackage("org.picoextras.reflection", classLoader),
+                        new NativeJavaPackage("org.nanocontainer.reflection", classLoader),
                         // File, URL and URLClassLoader will be frequently used by scripts.
                         new NativeJavaPackage("java.net", classLoader),
                         new NativeJavaPackage("java.io", classLoader),

@@ -1,4 +1,4 @@
-package org.picoextras.picometer;
+package org.nanocontainer.picometer;
 
 import junit.framework.TestCase;
 
@@ -42,7 +42,7 @@ public abstract class AbstractPicoMeterTestCase extends TestCase {
     // putting this at the end makes test less brittle -- jon
 
     protected void setUp() throws Exception {
-        source = findResource("org/picoextras/picometer/AbstractPicoMeterTestCase.java");
+        source = findResource("org/nanocontainer/picometer/AbstractPicoMeterTestCase.java");
     }
 
     private URL findResource(String resourcePath) {

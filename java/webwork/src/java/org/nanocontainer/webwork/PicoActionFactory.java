@@ -6,13 +6,13 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork;
+package org.nanocontainer.webwork;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.servlet.KeyConstants;
-import org.picoextras.servlet.RequestScopeObjectReference;
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;

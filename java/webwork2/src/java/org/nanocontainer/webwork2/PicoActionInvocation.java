@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork2;
+package org.nanocontainer.webwork2;
 
 import com.opensymphony.webwork.WebWorkStatics;
 import com.opensymphony.xwork.Action;
@@ -16,8 +16,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.servlet.KeyConstants;
-import org.picoextras.servlet.RequestScopeObjectReference;
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

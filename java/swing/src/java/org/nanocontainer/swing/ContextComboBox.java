@@ -2,7 +2,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;

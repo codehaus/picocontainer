@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.servlet;
+package org.nanocontainer.servlet;
 
 /**
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>

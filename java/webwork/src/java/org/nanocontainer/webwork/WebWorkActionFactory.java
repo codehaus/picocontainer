@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork;
+package org.nanocontainer.webwork;
 
 import webwork.action.Action;
 import webwork.action.factory.AliasingActionFactoryProxy;
@@ -23,7 +23,7 @@ import webwork.action.factory.ActionFactory;
  *
  * <p>To use, add to webwork.properties:
  * <pre>
- * webwork.action.factory=org.picoextras.webwork.WebWorkActionFactory
+ * webwork.action.factory=org.nanocontainer.webwork.WebWorkActionFactory
  * </pre></p>
  */
 public class WebWorkActionFactory extends ActionFactory {

@@ -1,9 +1,9 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picoextras.guimodel.ContainerModel;
+import org.nanocontainer.guimodel.ContainerModel;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * A tree model based on a PicoContainer hierarchy.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

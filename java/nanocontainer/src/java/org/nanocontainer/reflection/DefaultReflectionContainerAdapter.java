@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -127,8 +127,8 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     /**
      * Sets what classloader to use. This will reset all previously set URLs.
      * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
-     * 
-     * @param classLoader 
+     *
+     * @param classLoader
      * @see #addClassLoaderURL
      */
     public void setClassLoader(ClassLoader classLoader) {
@@ -139,8 +139,8 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     /**
      * Adds a new URL.
      * This overrides the ClassLoader that may have been set by setClassLoader(..)
-     * 
-     * @param url 
+     *
+     * @param url
      */
     public void addClassLoaderURL(URL url) {
         classLoader = null;

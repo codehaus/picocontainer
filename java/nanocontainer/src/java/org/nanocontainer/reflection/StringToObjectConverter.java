@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 import java.util.HashMap;
 import java.util.Map;

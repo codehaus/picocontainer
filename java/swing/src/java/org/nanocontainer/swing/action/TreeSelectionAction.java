@@ -2,13 +2,13 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.swing.action;
+package org.nanocontainer.swing.action;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.swing.ContainerTree;
-import org.picoextras.swing.ContainerTreeModel;
-import org.picoextras.swing.IconHelper;
+import org.nanocontainer.swing.ContainerTree;
+import org.nanocontainer.swing.ContainerTreeModel;
+import org.nanocontainer.swing.IconHelper;
 
 import javax.swing.AbstractAction;
 import javax.swing.event.TreeSelectionEvent;

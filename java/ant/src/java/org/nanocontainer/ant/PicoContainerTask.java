@@ -1,4 +1,4 @@
-package org.picoextras.ant;
+package org.nanocontainer.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -12,8 +12,8 @@ import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.picoextras.reflection.DefaultReflectionContainerAdapter;
-import org.picoextras.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,7 +27,7 @@ import java.util.Map;
  * The antSpecifiedComponents's start() method (if it exists) will be invoked
  * in the order of instantiation.
  *
- * &lt;taskdef name="pico" classname="org.picoextras.ant.PicoContainerTask"/&gt;
+ * &lt;taskdef name="pico" classname="org.nanocontainer.ant.PicoContainerTask"/&gt;
  *
  * &lt;pico&gt;
  *    &lt;component classname="foo.Bar" someprop="somevalue"/&gt;

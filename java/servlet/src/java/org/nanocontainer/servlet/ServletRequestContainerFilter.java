@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Thomas Heller & Jacob Kjome                              *
  *****************************************************************************/
-package org.picoextras.servlet;
+package org.nanocontainer.servlet;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

@@ -1,4 +1,4 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -7,7 +7,7 @@ import org.picocontainer.PicoContainer;
 
 /**
  * Provides texts and images for a tree full of PicoContainer.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -24,7 +24,7 @@ public class ContainerTreeLabelProvider extends LabelProvider {
 
 	/**
 	 * Returns an image according to the value passed.
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class ContainerTreeLabelProvider extends LabelProvider {
 
 	/**
 	 * Returns a text according to the value passed.
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */

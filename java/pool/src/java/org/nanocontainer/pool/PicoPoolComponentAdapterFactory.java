@@ -13,7 +13,7 @@
  *
  */
 
-package org.picoextras.pool;
+package org.nanocontainer.pool;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

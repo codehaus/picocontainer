@@ -8,12 +8,10 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import junit.framework.TestCase;
 import junit.framework.ComparisonFailure;
+import junit.framework.TestCase;
 import org.mozilla.javascript.EcmaError;
-import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
-import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 

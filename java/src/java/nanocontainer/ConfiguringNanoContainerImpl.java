@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 import picocontainer.hierarchical.PicoInvocationTargetStartException;
 import picocontainer.PicoStartException;
 import picocontainer.NullContainer;
@@ -46,7 +46,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
     private final Map implConfigurationMap;
 
 
-    public ConfiguringNanoContainerImpl(DocumentBuilder documentBuilder, Container parentContainer, ClassLoader classLoader) {
+    public ConfiguringNanoContainerImpl(DocumentBuilder documentBuilder, PicoContainer parentContainer, ClassLoader classLoader) {
         super(parentContainer, classLoader, new StringToObjectConverter());
         this.documentBuilder = documentBuilder;
         implConfigurationMap = new HashMap();

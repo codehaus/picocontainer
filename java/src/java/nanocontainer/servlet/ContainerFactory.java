@@ -1,15 +1,30 @@
 package nanocontainer.servlet;
 
-import picocontainer.Container;
+
+
+import picocontainer.PicoContainer;
+
+
 
 public interface ContainerFactory {
 
-    Container buildContainer(String configName);
 
-    Container buildContainerWithParent(Container parentContainer, String configName);
 
-    ObjectInstantiater buildInstantiater(Container parentContainer);
+    PicoContainer buildContainer(String configName);
 
-    void destroyContainer(Container container);
+
+
+    PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName);
+
+
+
+    ObjectInstantiater buildInstantiater(PicoContainer parentContainer);
+
+
+
+    void destroyContainer(PicoContainer container);
+
+
 
 }
+

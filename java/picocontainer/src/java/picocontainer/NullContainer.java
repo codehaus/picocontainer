@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) ClassRegistrationPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,9 +10,9 @@
 
 package picocontainer;
 
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 
-public class NullContainer implements Container {
+public class NullContainer implements PicoContainer {
     public boolean hasComponent(Class compType) {
         return false;
     }

@@ -16,7 +16,7 @@ import com.tirsen.nanning.MethodInterceptor;
 import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
-import picocontainer.PicoContainer;
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
@@ -77,7 +77,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
         }));
 
         NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem);
-        PicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
+        ClassRegistrationPicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(
                 componentFactory);
         nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponent(FredImpl.class);

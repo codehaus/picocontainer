@@ -19,7 +19,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         this.servletContext = servletContext;
     }
 
-    public Container buildContainer(String configName) {
+    public PicoContainer buildContainer(String configName) {
         try {
             InputSourceRegistrationNanoContainer container = new DomRegistrationNanoContainer.Default();
             configureAndStart(configName, container);
@@ -30,7 +30,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         }
     }
 
-    public Container buildContainerWithParent(Container parentContainer, String configName) {
+    public PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName) {
         try {
             InputSourceRegistrationNanoContainer container = new DomRegistrationNanoContainer.WithParentContainer(parentContainer);
             configureAndStart(configName, container);
@@ -51,10 +51,10 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         container.start();
     }
 
-    public ObjectInstantiater buildInstantiater(final Container parentContainer) {
+    public ObjectInstantiater buildInstantiater(final PicoContainer parentContainer) {
         return new ObjectInstantiater() {
             public Object newInstance(Class cls) {
-                PicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
+                ClassRegistrationPicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
                 try {
                     container.registerComponent(cls);
                 } catch (PicoRegistrationException e) {
@@ -72,7 +72,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         };
     }
 
-    public void destroyContainer(Container container) {
+    public void destroyContainer(PicoContainer container) {
         // TODO
     }
 

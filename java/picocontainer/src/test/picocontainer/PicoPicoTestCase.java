@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) ClassRegistrationPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -22,15 +22,15 @@ public class PicoPicoTestCase extends TestCase {
 
     public void testDefaultPicoContainer() throws PicoRegistrationException, PicoStartException {
 
-        PicoContainer pc = new HierarchicalPicoContainer.Default();
+        ClassRegistrationPicoContainer pc = new HierarchicalPicoContainer.Default();
         pc.registerComponent(HierarchicalPicoContainer.Default.class);
         pc.start();
 
-        tryDefaultPicoContainer((PicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
+        tryDefaultPicoContainer((ClassRegistrationPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
 
     }
 
-    private void tryDefaultPicoContainer(PicoContainer pc2) throws PicoRegistrationException, PicoStartException {
+    private void tryDefaultPicoContainer(ClassRegistrationPicoContainer pc2) throws PicoRegistrationException, PicoStartException {
 
         pc2.registerComponent(FredImpl.class);
         pc2.registerComponent(WilmaImpl.class);

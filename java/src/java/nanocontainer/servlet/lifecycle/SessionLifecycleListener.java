@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 
 public class SessionLifecycleListener extends BaseLifecycleListener implements HttpSessionListener {
 
@@ -19,10 +19,10 @@ public class SessionLifecycleListener extends BaseLifecycleListener implements H
 
         // grab the parent container
         ObjectHolder parentHolder = new ApplicationScopeObjectHolder(context, CONTAINER_KEY);
-        Container parentContainer = (Container)parentHolder.get();
+        PicoContainer parentContainer = (PicoContainer)parentHolder.get();
 
         // build a container
-        Container container = getFactory(context).buildContainerWithParent(parentContainer, "session");
+        PicoContainer container = getFactory(context).buildContainerWithParent(parentContainer, "session");
 
         // and hold on to it
         ObjectHolder holder = new SessionScopeObjectHolder(session, CONTAINER_KEY);

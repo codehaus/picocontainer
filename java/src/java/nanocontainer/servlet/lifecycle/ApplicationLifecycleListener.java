@@ -5,7 +5,7 @@ import nanocontainer.servlet.ObjectHolder;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 
 public class ApplicationLifecycleListener extends BaseLifecycleListener implements ServletContextListener {
 
@@ -14,7 +14,7 @@ public class ApplicationLifecycleListener extends BaseLifecycleListener implemen
         ServletContext context = event.getServletContext();
 
         // build a container
-        Container container = getFactory(context).buildContainer("application");
+        PicoContainer container = getFactory(context).buildContainer("application");
 
         // and hold on to it
         ObjectHolder holder = new ApplicationScopeObjectHolder(context, CONTAINER_KEY);

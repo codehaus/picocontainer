@@ -1,6 +1,6 @@
 package picocontainer;
 
-public interface LifecycleContainer extends Container {
+public interface LifecycleContainer extends PicoContainer {
 
     /**
      * Instantiates all registered components.

@@ -10,8 +10,8 @@
 
 package nanocontainer.aggregating.reflect;
 
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.Container;
 
 import java.lang.reflect.InvocationHandler;
 
@@ -21,13 +21,13 @@ import java.lang.reflect.InvocationHandler;
  * @version $Revision: 1.4 $
  */
 public abstract class ContainerInvocationHandler implements InvocationHandler {
-    private Container container;
+    private PicoContainer container;
 
-    protected ContainerInvocationHandler( Container container ) {
+    protected ContainerInvocationHandler( PicoContainer container ) {
         this.container = container;
     }
 
-    protected Container getContainer() {
+    protected PicoContainer getContainer() {
         return container;
     }
 }

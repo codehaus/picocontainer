@@ -10,7 +10,7 @@
 
 package nanocontainer.aggregating.reflect;
 
-import picocontainer.PicoContainer;
+import picocontainer.ClassRegistrationPicoContainer;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -26,13 +26,13 @@ import java.util.ArrayList;
  */
 public class MultipleReturnTypeInvocationHandler extends ContainerInvocationHandler {
 
-    public MultipleReturnTypeInvocationHandler(PicoContainer picoContainer) {
+    public MultipleReturnTypeInvocationHandler(ClassRegistrationPicoContainer picoContainer) {
         super(picoContainer);
     }
 
     /**
      * Returns an Array of Object, containing all the return values for the components
-     * in the associated PicoContainer.
+     * in the associated ClassRegistrationPicoContainer.
      *
      * @param proxy
      * @param method

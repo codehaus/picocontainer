@@ -10,7 +10,7 @@ package nanocontainer.aggregating.reflect;
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 
 import java.lang.reflect.Method;
 
@@ -24,13 +24,13 @@ import java.lang.reflect.Method;
  */
 public class SequentialInvocationHandler extends ContainerInvocationHandler {
 
-    public SequentialInvocationHandler(Container container) {
+    public SequentialInvocationHandler(PicoContainer container) {
         super(container);
     }
 
     /**
      * Returns an Array of Object, containing all the return values for the components
-     * in the associated PicoContainer.
+     * in the associated ClassRegistrationPicoContainer.
      *
      * @param proxy
      * @param method

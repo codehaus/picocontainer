@@ -36,7 +36,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testImmutingofNullBarfs() {
         try {
-            ImmutablePicoContainer ipc = new ImmutablePicoContainer(null);
+            new ImmutablePicoContainer(null);
             fail("Should have barfed");
         } catch (NullPointerException e) {
             //expected
@@ -114,8 +114,10 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     }
 
     public static class UnsatisfiableIterator implements Iterator {
+
         public UnsatisfiableIterator(Map map) {
         }
+
         public void remove() {
         }
 

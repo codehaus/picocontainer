@@ -12,6 +12,7 @@
 package org.nanocontainer.script.groovy;
 
 import groovy.lang.Closure;
+import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.SoftCompositionPicoContainer;
@@ -22,6 +23,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -47,19 +49,19 @@ public class NanoGroovyBuilder extends BuilderSupport {
     protected void setParent(Object parent, Object child) {
     }
 
-//    protected Object doInvokeMethod(String s, Object name, Object args) {
-//        //TODO use setDelegate() from Groovy beta 7
-//        Object answer = super.doInvokeMethod(s, name, args);
-//        List list = InvokerHelper.asList(args);
-//        if (!list.isEmpty()) {
-//            Object o = list.get(list.size() - 1);
-//            if (o instanceof Closure) {
-//                Closure closure = (Closure) o;
-//                closure.setDelegate(answer);
-//            }
-//        }
-//        return answer;
-//    }
+    protected Object doInvokeMethod(String s, Object name, Object args) {
+        //TODO use setDelegate() from Groovy beta 7
+        Object answer = super.doInvokeMethod(s, name, args);
+        List list = InvokerHelper.asList(args);
+        if (!list.isEmpty()) {
+            Object o = list.get(list.size() - 1);
+            if (o instanceof Closure) {
+                Closure closure = (Closure) o;
+                closure.setDelegate(answer);
+            }
+        }
+        return answer;
+    }
 
     protected Object createNode(Object name) {
         return createNode(name, Collections.EMPTY_MAP);
@@ -92,15 +94,30 @@ public class NanoGroovyBuilder extends BuilderSupport {
         SoftCompositionPicoContainer parentContainer = (SoftCompositionPicoContainer) parent;
         if (name.equals("component")) {
             return createComponentNode(attributes, parentContainer, name);
-        } else if (name.equals("builder")) {
-            return createBuilderNode(attributes, parentContainer);
+//        } else if (name.equals("builder")) {
+  //          return createBuilderNode(attributes, parentContainer);
         } else if (name.equals("bean")) {
             return createBeanNode(attributes, parentContainer);
         } else if (name.equals("classpathelement")) {
             return createClassPathElementNode(attributes, parentContainer);
+        } else if (name.equals("newBuilder")) {
+            return createNewBuilderNode(attributes, parentContainer);
         } else {
             return processAlternateContainerNodes(parent, name, attributes);
         }
+    }
+
+    private Object createNewBuilderNode(Map attributes, SoftCompositionPicoContainer parentContainer) {
+        String builderClass = (String) attributes.remove("class");
+        DefaultSoftCompositionPicoContainer transientPC = new DefaultSoftCompositionPicoContainer();
+        transientPC.registerComponentInstance(MutablePicoContainer.class, parentContainer);
+        try {
+            transientPC.registerComponentImplementation(GroovyObject.class, builderClass);
+        } catch (ClassNotFoundException e) {
+            throw new PicoBuilderException("ClassNotFoundException " + builderClass);
+        }
+        Object componentInstance = transientPC.getComponentInstance(GroovyObject.class);
+        return componentInstance;
     }
 
     protected Object processAlternateContainerNodes(Object parent, Object name, Map attributes) {

@@ -1,1 +1,1 @@
-txt2tags -t html cdi.t2t
+txt2tags -t html --toc cdi.t2t

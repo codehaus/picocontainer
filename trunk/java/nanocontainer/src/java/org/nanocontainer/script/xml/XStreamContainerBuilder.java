@@ -51,7 +51,6 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     private final static String IMPLEMENTATION = "implementation";
     private final static String INSTANCE = "instance";
     private final static String ADAPTER = "adapter";
-	private final static String OBJECT = "object";
     private final static String CLASS = "class";
     private final static String KEY = "key";
     private final static String CONSTANT = "constant";

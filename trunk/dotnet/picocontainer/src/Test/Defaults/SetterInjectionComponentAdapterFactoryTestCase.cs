@@ -9,6 +9,7 @@ namespace Test.Defaults
 	/// <summary>
 	/// Summary description for SetterInjectionComponentAdapterFactoryTestCase.
 	/// </summary>
+	[TestFixture]
 	public class SetterInjectionComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase
 	{
 		[SetUp]
@@ -65,7 +66,8 @@ namespace Test.Defaults
 			}
 		}
 
-		public void testContainerIgnoresParameters()
+		[Test]
+		public void TestContainerIgnoresParameters()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Bean), typeof (NamedBean), new IParameter[]
 				{
@@ -77,7 +79,8 @@ namespace Test.Defaults
 			Assert.AreEqual("Tom", bean.Name);
 		}
 
-		public void testContainerUsesStandardConstructor()
+		[Test]
+		public void TestContainerUsesStandardConstructor()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Bean), typeof (NamedBeanWithPossibleDefault));
 			picoContainer.RegisterComponentInstance("Tom");
@@ -85,7 +88,8 @@ namespace Test.Defaults
 			Assert.IsFalse(bean.ByDefault);
 		}
 
-		public void testContainerUsesOnlyStandardConstructor()
+		[Test]
+		public void TestContainerUsesOnlyStandardConstructor()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Bean), typeof (NoBean));
 			picoContainer.RegisterComponentInstance("Tom");

@@ -10,7 +10,8 @@ namespace Test.Defaults
 	[TestFixture]
 	public class TransientIComponentAdapterTestCase
 	{
-		public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance()
+		[Test]
+		public void NonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance()
 		{
 			ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", typeof (object));
 			object o1 = componentAdapter.ComponentInstance;
@@ -35,7 +36,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientIComponentAdapter()
+		public void TestDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientIComponentAdapter()
 		{
 			DefaultPicoContainer picoContainer = new DefaultPicoContainer();
 			picoContainer.RegisterComponentImplementation(typeof (Service));
@@ -64,14 +65,14 @@ namespace Test.Defaults
 
 
 		[Test]
-		public void testSuccessfulVerificationWithNoDependencies()
+		public void TestSuccessfulVerificationWithNoDependencies()
 		{
 			InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (A));
 			componentAdapter.Verify();
 		}
 
 		[Test]
-		public void testFailingVerificationWithUnsatisfiedDependencies()
+		public void TestFailingVerificationWithUnsatisfiedDependencies()
 		{
 			IComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (B));
 			componentAdapter.Container = new DefaultPicoContainer();

@@ -18,7 +18,8 @@ namespace Test.Defaults
 			child = new DefaultPicoContainer(parent);
 		}
 
-		public void testChildGetsFromParent()
+		[Test]
+		public void TestChildGetsFromParent()
 		{
 			parent.RegisterComponentImplementation(typeof (SimpleTouchable));
 			child.RegisterComponentImplementation(typeof (DependsOnTouchable));
@@ -27,8 +28,9 @@ namespace Test.Defaults
 			Assert.IsNotNull(dependsOnTouchable);
 		}
 
+		[Test]
 		[ExpectedException(typeof (UnsatisfiableDependenciesException))]
-		public void testParentDoesntGetFromChild()
+		public void TestParentDoesntGetFromChild()
 		{
 			child.RegisterComponentImplementation(typeof (SimpleTouchable));
 			parent.RegisterComponentImplementation(typeof (DependsOnTouchable));
@@ -36,7 +38,8 @@ namespace Test.Defaults
 			parent.GetComponentInstance(typeof (DependsOnTouchable));
 		}
 
-		public void testChildOverridesParent()
+		[Test]
+		public void TestChildOverridesParent()
 		{
 			parent.RegisterComponentImplementation(typeof (SimpleTouchable));
 			child.RegisterComponentImplementation(typeof (SimpleTouchable));
@@ -46,7 +49,5 @@ namespace Test.Defaults
 			Assert.AreEqual(1, child.ComponentInstances.Count);
 			Assert.IsFalse(parentTouchable.Equals(childTouchable));
 		}
-
-
 	}
 }

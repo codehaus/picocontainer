@@ -166,7 +166,7 @@ namespace Test.Defaults
 
 
 		[Test]
-		public void testOrderOfInstantiationWithoutAdapter()
+		public void TestOrderOfInstantiationWithoutAdapter()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 
@@ -186,7 +186,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testStartStopStartStopAndDispose()
+		public void TestStartStopStartStopAndDispose()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation(typeof (One));
@@ -235,7 +235,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testStartStartCausingBarf()
+		public void TestStartStartCausingBarf()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.Start();
@@ -251,7 +251,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testStartStopStopCausingBarf()
+		public void TestStartStopStopCausingBarf()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.Start();
@@ -268,7 +268,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testDisposeDisposeCausingBarf()
+		public void TestDisposeDisposeCausingBarf()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.Start();
@@ -287,7 +287,7 @@ namespace Test.Defaults
 
 
 		[Test]
-		public void testStartStopDisposeDisposeCausingBarf()
+		public void TestStartStopDisposeDisposeCausingBarf()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			object o = pico.ComponentInstances;
@@ -310,7 +310,6 @@ namespace Test.Defaults
 			private int rCount;
 			private Thread thread;
 
-
 			public FooRunnable()
 			{
 			}
@@ -319,7 +318,6 @@ namespace Test.Defaults
 			{
 				return rCount;
 			}
-
 
 			public void Start()
 			{
@@ -348,7 +346,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testStartStopOfDaemonizedThread()
+		public void TestStartStopOfDaemonizedThread()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation(typeof (FooRunnable));
@@ -369,7 +367,7 @@ namespace Test.Defaults
 		// This is the basic functionality for starting of child containers
 
 		[Test]
-		public void testDefaultPicoContainerRegisteredAsComponentGetsHostingContainerAsParent()
+		public void TestDefaultPicoContainerRegisteredAsComponentGetsHostingContainerAsParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation("child", typeof (DefaultPicoContainer));
@@ -378,7 +376,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testGetComponentInstancesOnParentContainerHostedChildContainerDoesntReturnParentAdapter()
+		public void TestGetComponentInstancesOnParentContainerHostedChildContainerDoesntReturnParentAdapter()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation("child", typeof (DefaultPicoContainer));
@@ -437,7 +435,7 @@ namespace Test.Defaults
 		// The StackContainersAtEndComparator is only used in this testcase. 
 		// I changed it to test only the placement of the containers at the end of the list.
 		[Test]
-		public void testContainersArePutLastAndTheOthersAreMaintainedInSamePlace()
+		public void TestContainersArePutLastAndTheOthersAreMaintainedInSamePlace()
 		{
 			IList l = new ArrayList();
 			l.Add(new InstanceComponentAdapter("aa", "ComponentC"));
@@ -455,7 +453,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testComponentsAreStartedBreadthFirstAndStoppedDepthFirst()
+		public void TestComponentsAreStartedBreadthFirstAndStoppedDepthFirst()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation("recording", typeof (StringBuilder));
@@ -478,7 +476,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testOnlyStartableComponentsAreInstantiatedOnStart()
+		public void TestOnlyStartableComponentsAreInstantiatedOnStart()
 		{
 			IMutablePicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation("recording", typeof (StringBuilder));
@@ -489,7 +487,6 @@ namespace Test.Defaults
 			pico.Stop();
 			pico.Dispose();
 			Assert.AreEqual("<AA>!A", pico.GetComponentInstance("recording").ToString());
-
 		}
 
 	}

@@ -67,14 +67,17 @@ public class ScopedContainerComposer implements ContainerComposer {
 	public ScopedContainerComposer(PicoContainer configuration) throws ClassNotFoundException {
 	    ScopedContainerConfigurator config = getConfigurator(configuration);
 	    containerBuilderClassName = config.getContainerBuilder();
-	    
-        applicationRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
+
+        MutablePicoContainer applicationContainerPrototype = new DefaultPicoContainer();
+        applicationRecorder = new DefaultContainerRecorder(applicationContainerPrototype);
         populateContainer(config.getApplicationConfig(), applicationRecorder);
 
-        sessionRecorder = new DefaultContainerRecorder(applicationRecorder.getContainerProxy());
+        MutablePicoContainer sessionContainerPrototype = new DefaultPicoContainer(applicationContainerPrototype);
+        sessionRecorder = new DefaultContainerRecorder(sessionContainerPrototype);
         populateContainer(config.getSessionConfig(), sessionRecorder);
-        
-        requestRecorder = new DefaultContainerRecorder(sessionRecorder.getContainerProxy());
+
+        MutablePicoContainer requestContainerPrototype = new DefaultPicoContainer(sessionContainerPrototype);
+        requestRecorder = new DefaultContainerRecorder(requestContainerPrototype);
         populateContainer(config.getRequestConfig(), requestRecorder);
 	}    
 

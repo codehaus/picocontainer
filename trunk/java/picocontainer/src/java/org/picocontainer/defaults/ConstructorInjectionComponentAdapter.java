@@ -136,9 +136,21 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (instantiationGuard == null) {
             instantiationGuard = new Guard() {
                 public Object run() {
-                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Constructor constructor;
+                    try {
+                        constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    } catch (AmbiguousComponentResolutionException e) {
+                        e.setComponent(getComponentImplementation());
+                        throw e;
+                    }
+                    long startTime = -1;
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
+//                        if (PicoContainer.SHOULD_LOG) {
+//                            startTime = System.currentTimeMillis();
+//                            System.out.print("PICO: Invoking " + constructor.toString() + "... ");
+//                            System.out.flush();
+//                        }
                         return newInstance(constructor, parameters);
                     } catch (InvocationTargetException e) {
                         if (e.getTargetException() instanceof RuntimeException) {
@@ -157,6 +169,13 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         ///CLOVER:OFF
                         throw new PicoInitializationException(e);
                         ///CLOVER:ON
+                    } finally {
+//                        if (PicoContainer.SHOULD_LOG) {
+//                            if(startTime != -1) {
+//                                long endTime = System.currentTimeMillis();
+//                                System.out.println("[" + (endTime - startTime) + "ms]");
+//                            }
+//                        }
                     }
                 }
             };

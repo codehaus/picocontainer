@@ -14,6 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.nanocontainer.jmx.mx4j.MX4JDynamicMBeanFactory;
 
@@ -124,7 +125,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 			try {
 				mBeanServer.registerMBean(dynamicMBean, objectName);
 			} catch (Exception e) {
-				throw new RuntimeException("Unable to register MBean to MBean Server", e);
+				throw new PicoRegistrationException("Unable to register MBean to MBean Server", e);
 			}
 		}
 	}

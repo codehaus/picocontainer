@@ -26,7 +26,10 @@
         <available file="${basedir}/idea/lib/openapi.jar" property="idea" value="dummy/*"/>
         <property name="idea" value="idea/*"/>
 
-        <property name="excludes" value="pool/*,pool3/*,${swt},${idea}"/>
+        <available classname="java.util.LinkedHashMap" property="microcontainer" value="dummy/*"/>
+        <property name="microcontainer" value="microcontainer/*"/>
+
+        <property name="excludes" value="pool/*,pool3/*,${swt},${idea},${microcontainer}"/>
 
         <echo>Excluded from build: ${excludes}</echo>
 

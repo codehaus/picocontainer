@@ -13,7 +13,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVerificationException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +20,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -46,8 +44,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     private transient Class[] setterTypes;
 
     /**
-     * Explicitly specifies parameters, if null uses default parameters.
      * {@inheritDoc}
+     * Explicitly specifies parameters, if null uses default parameters.
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
                                            final Class componentImplementation,
@@ -62,9 +60,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         super(componentKey, componentImplementation, parameters, false);
     }
 
-    /**
-     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getGreediestSatisfiableConstructor(PicoContainer)
-     */
     protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
@@ -122,9 +117,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         return (Parameter[]) matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    /**
-     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getComponentInstance(PicoContainer)
-     */
     public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
@@ -157,10 +149,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         return instantiationGuard.observe(getComponentImplementation());
     }
 
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
-     */
     public void verify(final PicoContainer container) throws PicoIntrospectionException {
         if (verifyingGuard == null) {
             verifyingGuard = new Guard() {

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -52,12 +53,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         child.registerComponentImplementation(ComponentF.class);
         parent.registerComponentImplementation(ComponentA.class);
         child.registerComponentImplementation(ComponentB.class);
-        child.registerComponentImplementation(c.class);
+        child.registerComponentImplementation(ComponentC.class);
 
         try {
             child.getComponentInstance(ComponentF.class);
             fail();
         } catch (UnsatisfiableDependenciesException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -147,5 +149,24 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         TransientComponent c2 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
         assertNotSame(c1, c2);
         assertSame(c1.service, c2.service);
+    }
+
+    public static class DependsOnCollection {
+        public DependsOnCollection(Collection c) {
+        }
+    }
+
+    public void testShouldProvideInfoAboutDependingWhenAmbiguityHappens() {
+        MutablePicoContainer pico = this.createPicoContainer(null);
+        pico.registerComponentInstance(new ArrayList());
+        pico.registerComponentInstance(new LinkedList());
+        pico.registerComponentImplementation(DependsOnCollection.class);
+        try {
+            pico.getComponentInstanceOfType(DependsOnCollection.class);
+            fail();
+        } catch (AmbiguousComponentResolutionException expected) {
+            String doc = DependsOnCollection.class.getName();
+            assertEquals("class " + doc + " has ambiguous dependency on interface java.util.Collection, resolves to multiple classes: [class java.util.ArrayList, class java.util.LinkedList]", expected.getMessage());
+        }
     }
 }

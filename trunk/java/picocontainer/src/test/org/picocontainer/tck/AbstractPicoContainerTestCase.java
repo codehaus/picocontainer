@@ -11,7 +11,6 @@ package org.picocontainer.tck;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
@@ -112,7 +111,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     private Touchable getTouchableFromSerializedContainer() throws IOException, ClassNotFoundException {
         MutablePicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         // Add a list too, using a constant parameter
-        pico.registerComponentImplementation("list", ArrayList.class, new Parameter[] {new ConstantParameter(new Integer(10))});
+        pico.registerComponentImplementation("list", ArrayList.class, new Parameter[]{new ConstantParameter(new Integer(10))});
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -352,7 +351,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public static class ComponentA {
-        public ComponentA(ComponentB b, c c) {
+        public ComponentA(ComponentB b, ComponentC c) {
             Assert.assertNotNull(b);
             Assert.assertNotNull(c);
         }
@@ -361,7 +360,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public static class ComponentB {
     }
 
-    public static class c {
+    public static class ComponentC {
     }
 
     public static class ComponentD {
@@ -450,16 +449,19 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertFalse(picoContainer.getParent() instanceof MutablePicoContainer);
     }
 
-    class Foo implements Startable, Disposable{
+    class Foo implements Startable, Disposable {
         public boolean started;
         public boolean stopped;
         public boolean disposed;
+
         public void start() {
             started = true;
         }
+
         public void stop() {
             stopped = true;
         }
+
         public void dispose() {
             disposed = true;
         }
@@ -576,19 +578,22 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             this.sb = sb;
             sb.append("-instantiated");
         }
+
         public void start() {
             sb.append("-started");
         }
+
         public void stop() {
             sb.append("-stopped");
         }
+
         public void dispose() {
             sb.append("-disposed");
         }
     }
-    
+
     public static class RecordingStrategyVisitor extends AbstractPicoVisitor {
-        
+
         private final List list;
 
         public RecordingStrategyVisitor(List list) {
@@ -602,11 +607,11 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
             list.add(componentAdapter);
         }
-        
+
         public void visitParameter(Parameter parameter) {
             list.add(parameter);
         }
-        
+
     }
 
     public void testAcceptImplementsBreadthFirstStrategy() {
@@ -618,12 +623,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         ComponentAdapter arrayListAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class));
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
-        ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class, new Parameter[] {
-                    componentParameter,
-                    throwableParameter
-                }));
+        ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class, new Parameter[]{
+            componentParameter,
+            throwableParameter
+        }));
 
-        List expectedList = Arrays.asList(new Object[] {
+        List expectedList = Arrays.asList(new Object[]{
             parent,
             hashMapAdapter,
             hashSetAdapter,
@@ -667,7 +672,5 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         public DerivedTouchable() {
         }
     }
-
-
 
 }

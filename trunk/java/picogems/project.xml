@@ -9,7 +9,7 @@
     <groupId>picocontainer</groupId>
     <id>picocontainer-gems</id>
     <name>picocontainer-gems</name>
-    <currentVersion>1.1-SNAPSHOT</currentVersion>
+    <currentVersion>1.1</currentVersion>
 
     <inceptionYear>2004</inceptionYear>
     <package>org.picocontainer.gems</package>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${picocontainer.version}</version>
         </dependency>
 
         <!-- test time only -->
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
 

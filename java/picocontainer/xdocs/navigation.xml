@@ -14,7 +14,10 @@
         </links>
 
         <menu name="PicoContainer">
+            <item name="License" href="/license.html"/>
             <item name="JavaDoc API" href="/apidocs/index.html"/>
+            <item name="Clover" href="/clover/index.html"/>
+            <item name="Simian" href="/simian-report.html"/>
         </menu>
     </body>
 

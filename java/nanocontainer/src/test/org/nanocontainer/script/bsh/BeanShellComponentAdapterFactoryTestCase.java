@@ -22,17 +22,24 @@ import java.util.ArrayList;
  * BeanShellComponentAdapter.
  *
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
+ * @author Nick Sieger
  * @version $Id$
  */
 public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
-    public void testGetComponentInstance() {
+
+    ComponentAdapter setupComponentAdapter(Class implementation) {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("whatever", ArrayList.class);
 
         ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter(
-                "thekey", ScriptableDemoBean.class, null);
+                "thekey", implementation, null);
 
         pico.registerComponent(adapter);
+        return adapter;
+    }
+
+    public void testGetComponentInstance() {
+        ComponentAdapter adapter = setupComponentAdapter(ScriptableDemoBean.class);
 
         ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance();
 
@@ -40,4 +47,16 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
 
         assertTrue(bean.whatever instanceof ArrayList);
     }
+
+    public void testGetComponentInstanceBadScript() {
+        ComponentAdapter adapter = setupComponentAdapter(BadScriptableDemoBean.class);
+
+        try {
+            adapter.getComponentInstance();
+            fail("did not throw exception on missing 'instance' variable");
+        } catch (BeanShellScriptInitializationException bssie) {
+            // success
+        }
+    }
+
 }

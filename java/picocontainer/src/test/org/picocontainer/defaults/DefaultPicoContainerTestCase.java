@@ -11,21 +11,17 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.HashMap;
-import java.util.Map;
-import java.awt.Button;
-import java.awt.Panel;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y

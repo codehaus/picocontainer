@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.AlternativeTouchable;
 
 /**
  * @author Paul Hammant
@@ -23,6 +24,18 @@ import org.picocontainer.testmodel.Touchable;
  * @version $Revision$
  */
 public class ChildContainerTestCase extends TestCase {
+
+    public void testParentContainerWithComponentWithEqualKeyShouldBeShadowedByChild() throws Exception {
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
+
+        parent.registerComponentImplementation("key", AlternativeTouchable.class);
+        child.registerComponentImplementation("key", SimpleTouchable.class);
+        child.registerComponentImplementation(DependsOnTouchable.class);
+
+        DependsOnTouchable dot = (DependsOnTouchable) child.getComponentInstanceOfType(DependsOnTouchable.class);
+        assertEquals(SimpleTouchable.class, dot.getTouchable().getClass());
+    }
 
     public void testResolveFromParentByType() {
         MutablePicoContainer parent = new DefaultPicoContainer();

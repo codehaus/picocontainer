@@ -26,28 +26,27 @@ import java.util.List;
  */
 public class ComponentMulticasterAdapter implements Serializable {
     private final MulticasterFactory factory;
-    private final InvocationInterceptor invocationInterceptor;
 
     public ComponentMulticasterAdapter() {
-        this(new StandardProxyMulticasterFactory(), new NullInvocationInterceptor());
+        this(new MulticasterFactory());
     }
 
-    public ComponentMulticasterAdapter(MulticasterFactory factory, InvocationInterceptor invocationInterceptor) {
+    public ComponentMulticasterAdapter(MulticasterFactory factory) {
         this.factory = factory;
-        this.invocationInterceptor = invocationInterceptor;
     }
 
     /**
      * Creates a proxy that will multicast method invocations to all objects in the container that correspond to the
      * type.
      * @param picoContainer the container containing the components.
-     * @param type the component type. Null is allowed here, and means "all types".
+     * @param classOrInterface the component type. Null is allowed here, and means "all types".
+     * @param interfaces
      * @param callInInstantiationOrder true if invocations should be done in the components' instantiation order (dependency order).
      * @return a proxy object that can be cast to the specified type.
      * @throws PicoException if the multicaster can't be created.
      */
-    public Object createComponentMulticaster(PicoContainer picoContainer, Class type, boolean callInInstantiationOrder) throws PicoException {
+    public Object createComponentMulticaster(PicoContainer picoContainer, Class classOrInterface, Class[] interfaces, boolean callInInstantiationOrder) throws PicoException {
         List componentsToMulticast = picoContainer.getComponentInstances();
-        return factory.createComponentMulticaster(getClass().getClassLoader(), type, componentsToMulticast, callInInstantiationOrder, invocationInterceptor, new MulticastInvoker());
+        return factory.createComponentMulticaster(classOrInterface, interfaces, componentsToMulticast, callInInstantiationOrder, new MulticastInvoker());
     }
 }

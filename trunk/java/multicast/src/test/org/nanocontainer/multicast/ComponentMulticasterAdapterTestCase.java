@@ -27,7 +27,6 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -215,24 +214,22 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         mockStartable.expect("start", C.args());
         pico.registerComponentInstance(mockStartable.proxy());
 
-        Mock mockInvocationInterceptor = new Mock(InvocationInterceptor.class);
-        mockInvocationInterceptor.expect("intercept", C.args(C.isA(Method.class), C.IS_ANYTHING, C.IS_ANYTHING));
-
-        ComponentMulticasterAdapter cma = new ComponentMulticasterAdapter(new StandardProxyMulticasterFactory(), (InvocationInterceptor)mockInvocationInterceptor.proxy());
-        Startable startable = (Startable) cma.createComponentMulticaster(pico, null, true);
+        ComponentMulticasterAdapter cma = new ComponentMulticasterAdapter(new MulticasterFactory());
+        Startable startable = (Startable) cma.createComponentMulticaster(pico, Startable.class, null, true);
 
         startable.start();
 
         mockStartable.verify();
-        mockInvocationInterceptor.verify();
     }
 
     public static interface Standalone{}
     public static class StandaloneImpl implements Standalone{}
     public static class NeedsOne {
         public NeedsOne(Standalone standalone) {
+            assertNotNull(standalone);
         }
     }
+
     public void testMulticasterDoesntMulticastToParent() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer(parent);
@@ -240,7 +237,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         parent.registerComponentImplementation(StandaloneImpl.class);
         child.registerComponentImplementation(NeedsOne.class);
 
-        Object multicaster = new ComponentMulticasterAdapter().createComponentMulticaster(child, null, true);
+        Object multicaster = new ComponentMulticasterAdapter().createComponentMulticaster(child, null, null, true);
         assertTrue(multicaster instanceof Serializable);
         assertFalse(multicaster instanceof Standalone);
     }
@@ -253,7 +250,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
 
         assertEquals(2, pico.getComponentInstances().size());
 
-        Peelable myPeelableContainer = (Peelable) new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
+        Peelable myPeelableContainer = (Peelable) new ComponentMulticasterAdapter().createComponentMulticaster(pico, Peelable.class, null, true);
 
         myPeelableContainer.peel();
 
@@ -273,7 +270,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(PeelableComponent.class);
         pico.registerComponentImplementation(PeelableAndWashableComponent.class);
 
-        Object proxy = new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
+        Object proxy = new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, null, true);
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -298,7 +295,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(OrangeFactory.class);
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
+        FoodFactory foodFactory = (FoodFactory) new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, null, true);
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
@@ -308,7 +305,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         food.eat();
 
         String s = food.toString();
-        assertTrue("getOriginalFileName() should return the result from the invocation handler", s.indexOf("AggregatingInvocationHandler") != -1);
+        assertTrue("getOriginalFileName() should return the result from the invocation handler", s.indexOf("AggregatingInvocationInterceptor") != -1);
 
         // Try to call a hashCode on a "recursive" proxy.
         food.hashCode();
@@ -332,12 +329,9 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         List one = new ArrayList();
         List two = new ArrayList();
 
-        MulticasterFactory multicasterFactory = new StandardProxyMulticasterFactory();
-        List multicaster = (List) multicasterFactory.createComponentMulticaster(
-                getClass().getClassLoader(),
-                null, Arrays.asList(new List[]{one, two}),
+        MulticasterFactory multicasterFactory = new MulticasterFactory();
+        List multicaster = (List) multicasterFactory.createComponentMulticaster(null, null, Arrays.asList(new List[]{one, two}),
                 false,
-                new NullInvocationInterceptor(),
                 new MulticastInvoker()
         );
         multicaster.add("hello");

@@ -2,14 +2,13 @@ package org.nanocontainer.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
+import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.servlet.KeyConstants;
-import org.nanocontainer.servlet.ServletRequestContainerLauncher;
-import org.nanocontainer.servlet.RequestScopeObjectReference;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
@@ -43,6 +42,9 @@ import java.util.Set;
  * @version $Revision$
  */
 public class NanoWebServlet extends HttpServlet implements KeyConstants {
+    // TODO make this configurable from web.xml
+    private Dispatcher dispatcher = new ChainingDispatcher();
+
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), httpServletRequest);
         try {
@@ -51,9 +53,8 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             Object action = getAction(actionPath, httpServletRequest);
             setPropertiesWithOgnl(httpServletRequest, action);
             String result = execute(action);
-            String view = getView(result, actionPath);
             httpServletRequest.setAttribute("action", action);
-            dispatch(httpServletRequest, httpServletResponse, view);
+            dispatcher.dispatch(httpServletRequest, httpServletResponse, actionPath, result);
         } finally {
             try {
                 containerLauncher.killContainer();
@@ -66,7 +67,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     private Object getAction(String key, ServletRequest request) throws ServletException {
         MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer(request));
         Object action = container.getComponentInstance(key);
-        if(action == null) {
+        if (action == null) {
             String msg = "No action found for '" + key + "'";
             throw new ServletException(msg);
         }
@@ -79,8 +80,8 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         for (Iterator iterator = parameterKeys.iterator(); iterator.hasNext();) {
             String parameterKey = (String) iterator.next();
             Object value = parameterMap.get(parameterKey);
-            if(value instanceof String[]) {
-                value = ((String[])value)[0];
+            if (value instanceof String[]) {
+                value = ((String[]) value)[0];
             }
             try {
                 Ognl.setValue(parameterKey, action, value);
@@ -98,27 +99,6 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServletException(e);
-        }
-    }
-
-    private String getView(String result, String actionPath) {
-        String actionName = actionPath.substring(0, actionPath.indexOf(".nano"));
-        String view = actionName + "_" + result + ".vm";
-        return view;
-    }
-
-    private void dispatch(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String view) {
-        RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(view);
-        try {
-            if (httpServletRequest.getAttribute("javax.servlet.include.servlet_path") == null) {
-                requestDispatcher.forward(httpServletRequest, httpServletResponse);
-            } else {
-                requestDispatcher.include(httpServletRequest, httpServletResponse);
-            }
-        } catch (ServletException e) {
-            // the view doesn't exist. try something else
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

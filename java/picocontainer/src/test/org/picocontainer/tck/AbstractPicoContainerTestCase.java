@@ -482,4 +482,22 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals(true, foo.disposed);
     }
 
+    public void testComponentInstancesFromParentsAreNotDirectlyAccessible2() {
+        final MutablePicoContainer a = createPicoContainer(null);
+        final MutablePicoContainer b = createPicoContainer(a);
+        final MutablePicoContainer c = createPicoContainer(b);
+
+        Object ao = new Object();
+        Object bo = new Object();
+        Object co = new Object();
+
+        a.registerComponentInstance("a", ao);
+        b.registerComponentInstance("b", bo);
+        c.registerComponentInstance("c", co);
+
+        assertEquals(1, a.getComponentInstances().size());
+        assertEquals(1, b.getComponentInstances().size());
+        assertEquals(1, c.getComponentInstances().size());
+    }
+
 }

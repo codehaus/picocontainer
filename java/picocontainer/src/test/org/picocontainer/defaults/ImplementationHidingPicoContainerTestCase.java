@@ -53,6 +53,14 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
         assertTrue(map instanceof HashMap);
     }
 
+    public void testNonInterfaceImplementaionWithParametersIsAutomaticallyHidden() {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
+        pc.registerComponentImplementation(HashMap.class, HashMap.class, new Parameter[0]);
+        Map map = (Map) pc.getComponentInstance(HashMap.class);
+        assertNotNull(map);
+        assertTrue(map instanceof HashMap);
+    }
+
 
     public void testImplementaionWithParametersIsAutomaticallyHidden() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();

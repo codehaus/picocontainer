@@ -16,9 +16,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import EDU.oswego.cs.dl.util.concurrent.Sync;
-import EDU.oswego.cs.dl.util.concurrent.Latch;
-
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -86,21 +83,21 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         }
     }
 
+    // TODO: Aslak, under what circumstances fails this version for you? It in here for more that 7 months
+    // and I've tested it with several JDKs on Windows and Linux ...
     public void testBlocksWhenExhausted() throws InterruptedException {
         final PoolingComponentAdapter componentAdapter2 = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 5000);
 
         final Object[] borrowed = new Object[3];
         final Throwable[] threadException = new Throwable[2];
-        //final Sync sync = new Latch();
+
         final StringBuffer order = new StringBuffer();
         final Thread returner = new Thread() {
             public void run() {
                 try {
-                    // sleep for 3000 millis to allow test to block on pool
-                    sleep(3000);
+                    Thread.sleep(100); // ensure, that main thread is blocked
                     order.append("returner ");
                     componentAdapter2.returnComponentInstance(borrowed[0]);
-                    //sync.release();
                 } catch (Throwable t) {
                     t.printStackTrace();
                     synchronized (componentAdapter2) {
@@ -115,8 +112,8 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         borrowed[1] = componentAdapter2.getComponentInstance(null);
         returner.start();
 
+        // should block
         order.append("main ");
-        //assertTrue(sync.attempt(2000));
         borrowed[2] = componentAdapter2.getComponentInstance(null);
         order.append("main");
 

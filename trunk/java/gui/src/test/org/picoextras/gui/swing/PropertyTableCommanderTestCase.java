@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.picoextras.gui.model.ComponentNode;
 import org.picoextras.gui.model.BeanPropertyTableModel;
-import org.picocontainer.defaults.DefaultComponentAdapter;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -10,7 +10,6 @@
 
 package org.picoextras.script.xml;
 
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picoextras.script.PicoCompositionException;
 import org.w3c.dom.Element;
@@ -21,16 +20,12 @@ import java.io.IOException;
 /**
  * This interface builds up a hierarchy of PicoContainers from an XML configuration file.
  *
+ * TODO remove. Obsoleted by ContainerAssembler
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-
 public interface XmlFrontEnd {
-
-    public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
-            throws IOException, SAXException, ClassNotFoundException, PicoCompositionException;
-
     public PicoContainer createPicoContainer(Element rootElement)
             throws IOException, SAXException, ClassNotFoundException, PicoCompositionException;
 }

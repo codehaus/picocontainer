@@ -10,10 +10,7 @@
 
 package org.picoextras.pool;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.extras.DecoratingComponentAdapter;
@@ -43,7 +40,7 @@ public class PicoPoolComponentAdapter extends DecoratingComponentAdapter {
     /* (non-Javadoc)
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.MutablePicoContainer)
      */
-    public Object getComponentInstance(MutablePicoContainer componentRegistry)
+    public Object getComponentInstance()
             throws
             PicoInitializationException,
             PicoIntrospectionException,

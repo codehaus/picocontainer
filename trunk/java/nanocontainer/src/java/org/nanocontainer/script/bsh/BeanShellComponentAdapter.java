@@ -11,13 +11,9 @@ package org.picoextras.script.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.*;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.AbstractComponentAdapter;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +26,7 @@ import java.util.Collections;
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation
  * (and possibly also initialisation) of component instances.
  * <p>
- * When {@link #getComponentInstance} is called (by PicoContainer),
+ * When {@link org.picocontainer.ComponentAdapter#getComponentInstance} is called (by PicoContainer),
  * the adapter instance will look for a script with the same name as the component implementation
  * class (but with the .bsh extension). This script must reside in the same folder as the class.
  * (It's ok to have them both in a jar).
@@ -51,42 +47,31 @@ import java.util.Collections;
  * @author Aslak Hellesoy
  * @version $Id$
  */
-public class BeanShellComponentAdapter implements ComponentAdapter {
-    private final Object componentKey;
-    private final Class componentImplementation;
+public class BeanShellComponentAdapter extends AbstractComponentAdapter {
     private final Parameter[] parameters;
 
     private Object instance = null;
 
     public BeanShellComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        this.componentKey = componentKey;
-        this.componentImplementation = componentImplementation;
+        super(componentKey, componentImplementation);
         this.parameters = parameters;
     }
 
-    public Object getComponentKey() {
-        return componentKey;
-    }
-
-    public Class getComponentImplementation() {
-        return componentImplementation;
-    }
-
-    public Object getComponentInstance(MutablePicoContainer picoContainer)
+    public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException {
 
         if (instance == null) {
             try {
                 Interpreter i = new Interpreter();
                 i.set("adapter", this);
-                i.set("picoContainer", picoContainer);
-                i.set("componentKey", componentKey);
-                i.set("componentImplementation", componentImplementation);
+                i.set("picoContainer", getContainer());
+                i.set("componentKey", getComponentKey());
+                i.set("componentImplementation", getComponentImplementation());
                 i.set("parameters", parameters != null ? Arrays.asList(parameters) : Collections.EMPTY_LIST);
-                i.eval("import " + componentImplementation.getName() + ";");
+                i.eval("import " + getComponentImplementation().getName() + ";");
 
-                String scriptPath = "/" + componentImplementation.getName().replace('.', '/') + ".bsh";
-                URL scriptURL = componentImplementation.getResource(scriptPath);
+                String scriptPath = "/" + getComponentImplementation().getName().replace('.', '/') + ".bsh";
+                URL scriptURL = getComponentImplementation().getResource(scriptPath);
                 if (scriptURL == null) {
                     throw new BeanShellScriptInitializationException("Couldn't load script at path " + scriptPath);
                 }
@@ -106,6 +91,6 @@ public class BeanShellComponentAdapter implements ComponentAdapter {
         return instance;
     }
 
-    public void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
+    public void verify() throws UnsatisfiableDependenciesException {
     }
 }

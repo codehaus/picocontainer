@@ -10,19 +10,13 @@
 package org.picoextras.jmx;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.extras.DecoratingComponentAdapter;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
+import javax.management.*;
 
 /**
  * @author James Strachan
@@ -30,44 +24,40 @@ import javax.management.ObjectName;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
+public class MX4JComponentAdapter extends DecoratingComponentAdapter {
 
     private final MBeanServer mbeanServer;
-    private Object componentInstance;
 
     /**
      * @param mbeanServer
      */
-    public NanoMXComponentAdapter(MBeanServer mbeanServer, ComponentAdapter delegate) {
+    public MX4JComponentAdapter(MBeanServer mbeanServer, ComponentAdapter delegate) {
         super(delegate);
         this.mbeanServer = mbeanServer;
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (componentInstance == null) {
-            componentInstance = super.getComponentInstance(picoContainer);
+    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Object componentInstance = super.getComponentInstance();
 
-            ObjectName name = null;
-            try {
-                name = asObjectName(getComponentKey());
-                Object mbean = asMBean(componentInstance);
-                mbeanServer.registerMBean(mbean, name);
-            } catch (MalformedObjectNameException e) {
-                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
-            } catch (MBeanRegistrationException e) {
-                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
-            } catch (NotCompliantMBeanException e) {
-                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
-            } catch (InstanceAlreadyExistsException e) {
-                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
-            }
-            return componentInstance;
+        ObjectName name = null;
+        try {
+            name = asObjectName(getComponentKey());
+            Object mbean = asMBean(componentInstance);
+            mbeanServer.registerMBean(mbean, name);
+        } catch (MalformedObjectNameException e) {
+            throw new MX4JInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+        } catch (MBeanRegistrationException e) {
+            throw new MX4JInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+        } catch (NotCompliantMBeanException e) {
+            throw new MX4JInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+        } catch (InstanceAlreadyExistsException e) {
+            throw new MX4JInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
         }
         return componentInstance;
     }
 
     public static Object asMBean(Object component) {
-        return new NanoMBean(component);
+        return new PicoContainerMBean(component);
     }
 
     /**

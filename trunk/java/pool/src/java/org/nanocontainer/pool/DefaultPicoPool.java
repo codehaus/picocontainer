@@ -77,7 +77,7 @@ public class DefaultPicoPool implements PicoPool {
         maxWait = config.getMaxWait();
         pico = new DefaultPicoContainer(config.getComponentAdapterFactory());
         if (config.getPoolParentContainer() != null) {
-            pico.addParent(config.getPoolParentContainer());
+            pico.setParent(config.getPoolParentContainer());
         }
     }
 
@@ -220,7 +220,8 @@ public class DefaultPicoPool implements PicoPool {
     protected Object makeComponent() throws PicoPoolException {
         //Create new "uncached" component
         ComponentAdapter componentAdapter = new TransientComponentAdapter(implementation, implementation);
-        Object object = componentAdapter.getComponentInstance(pico);
+        componentAdapter.setContainer(pico);
+        Object object = componentAdapter.getComponentInstance();
         return object;
     }
 

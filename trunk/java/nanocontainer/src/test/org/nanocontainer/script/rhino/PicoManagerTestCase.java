@@ -3,18 +3,29 @@ package org.picoextras.script.rhino;
 import junit.framework.TestCase;
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picoextras.script.PicoCompositionException;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
+import org.picoextras.integrationkit.ContainerAssembler;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Collection;
+import java.lang.reflect.Proxy;
 
 public class PicoManagerTestCase extends TestCase {
+
+    private PicoContainer assemble(Reader script) {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        ContainerAssembler assembler = new PicoManager(script);
+        assembler.assembleContainer(pico, null);
+        return pico;
+    }
 
     public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
@@ -22,40 +33,35 @@ public class PicoManagerTestCase extends TestCase {
                 "var parentContainer = new PicoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  registerComponentImplementation('" + FooTestComp.class.getName() + "');\n" +
-                "}\n" +
-                "pico.setPicoScriptable(parentContainer)\n"
+                "}\n"
         );
 
-        PicoContainer rootContainer = new PicoManager().execute(PicoScriptable.class, script);
+        PicoContainer pico = assemble(script);
 
         assertEquals("Instantiated Object should be a FooTestComp", FooTestComp.class,
-                rootContainer.getComponentInstances().get(0).getClass());
+                pico.getComponentInstances().get(0).getClass());
     }
 
     public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-                "var caf = new Packages.org.picocontainer.extras.ImplementationHidingComponentAdapterFactory();\n" +
-                "var parentContainer = new PicoScriptable(caf);\n" +
+                "var parentContainer = new PicoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  registerComponentImplementation('org.picoextras.testmodel.WebServerConfig','org.picoextras.testmodel.DefaultWebServerConfig');\n" +
                 "  registerComponentImplementation('org.picoextras.testmodel.WebServer','org.picoextras.testmodel.WebServerImpl');\n" +
-                "}\n" +
-                "pico.setPicoScriptable(parentContainer)\n"
+                "}\n"
         );
 
-        PicoContainer rootContainer = new PicoManager().execute(PicoScriptable.class, script);
+        MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory());
+        ContainerAssembler assembler = new PicoManager(script);
+        assembler.assembleContainer(pico, null);
 
-        Object wsc = rootContainer.getComponentInstance(WebServerConfig.class);
-        Object ws = rootContainer.getComponentInstance(WebServer.class);
-
-        assertTrue(ws instanceof WebServer);
-        assertFalse(ws instanceof WebServerImpl);
-
-        ws = rootContainer.getComponentInstances().get(1);
+        Object wsc = pico.getComponentInstance(WebServerConfig.class.getName());
+        Object ws = pico.getComponentInstance(WebServer.class.getName());
 
         assertTrue(ws instanceof WebServer);
         assertFalse(ws instanceof WebServerImpl);
+        assertTrue(Proxy.isProxyClass(ws.getClass()));
 
         assertEquals("ClassLoader should be the same for both components", ws.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
@@ -75,28 +81,28 @@ public class PicoManagerTestCase extends TestCase {
         Reader script = new StringReader(
                 "var parentContainer = new PicoScriptable();\n" +
                 "with (parentContainer) {\n" +
-                "  registerComponentImplementation('foo','" + FooTestComp.class.getName() + "');\n" +
-                "  var childContainer = new PicoScriptable();\n" +
+                "  registerComponentImplementation('parentComponent','" + FooTestComp.class.getName() + "');\n" +
+                "  var childContainer = new PicoScriptable(parentContainer);\n" +
                 "  with (childContainer) {\n" +
-                "    addParent(parentContainer);\n" +
                 "    addFileClassPathJar(\"" + canonicalPath + "\");\n" +
-                "    registerComponentImplementation('bar','TestComp');\n" +
+                "    registerComponentImplementation('childComponent','TestComp');\n" +
                 "  }\n" +
-                "}\n" +
-                "pico.setPicoScriptable(parentContainer)\n");
+                "  registerComponentInstance('child1', childContainer)" +
+                "}\n");
+        PicoContainer pico = assemble(script);
 
-        PicoContainer rootContainer = new PicoManager().execute(PicoScriptable.class, script);
+        Object parentComponent = pico.getComponentInstance("parentComponent");
 
-        Object fooTestComp = rootContainer.getComponentInstance("foo");
-        assertNotNull("Container should have a 'foo' component", fooTestComp);
+        PicoContainer childContainer = (PicoContainer) pico.getComponentInstance("child1");
+        Object childComponent = childContainer.getComponentInstance("childComponent");
 
-        Collection childContainers = rootContainer.getChildContainers();
-        PicoContainer childContainer = (PicoContainer) childContainers.iterator().next();
-        Object barTestComp = childContainer.getComponentInstance("bar");
-
-        assertNotNull("Container should have a 'bar' component", barTestComp);
-        assertFalse("ClassLoader should not be the same for both components", fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader());
-        assertTrue("ClassLoader for FooTestComp should not the parent of Bar's", fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader().getParent());
+        assertNotSame(parentComponent.getClass().getClassLoader(), childComponent.getClass().getClassLoader());
+        /*
+        system cl -> loads FooTestComp
+          parent container cl
+            child container cl -> loads TestComp
+        */
+        assertSame(parentComponent.getClass().getClassLoader(), childComponent.getClass().getClassLoader().getParent().getParent());
     }
 
     public void testRegisterComponentInstance() throws JavaScriptException, IOException {
@@ -105,17 +111,14 @@ public class PicoManagerTestCase extends TestCase {
                 "with (picoS) {\n" +
                 "  registerComponentInstance( new Packages." + FooTestComp.class.getName() + "());\n" +
                 "  registerComponentInstance( 'foo', new Packages." + FooTestComp.class.getName() + "());\n" +
-                "}\n" +
-                "pico.setPicoScriptable(picoS)\n"
+                "}\n"
         );
 
-        PicoContainer pico = new PicoManager().execute(PicoScriptable.class, script);
+        PicoContainer pico = assemble(script);
 
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(0).getClass());
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(1).getClass());
-
     }
-
 
     public static class FooTestComp {
 

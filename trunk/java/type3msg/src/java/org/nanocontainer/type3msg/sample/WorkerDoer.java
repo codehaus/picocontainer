@@ -20,7 +20,6 @@ public class WorkerDoer implements Worker {
 
     public void work(UnitOfWork task) {
         doneTasks.add(task.getName());
-        System.out.println("Doing task " + task.getName());
     }
 
     public Collection getDoneTasks() {

@@ -4,11 +4,7 @@ import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -84,8 +80,8 @@ public class NanningComponentAdapterFactory extends DecoratingComponentAdapterFa
             this.componentInterface = componentInterface;
         }
 
-        public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Object component = super.getComponentInstance(picoContainer);
+        public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            Object component = super.getComponentInstance();
             // TODO Nanning will at the moment only aspectify stuff when it has one and only one interface
 
             // the trick: set up first mixin manually with the component as target
@@ -113,9 +109,9 @@ public class NanningComponentAdapterFactory extends DecoratingComponentAdapterFa
             this.aspectSystem = aspectSystem;
         }
 
-        public Object getComponentInstance(MutablePicoContainer picoContainer)
+        public Object getComponentInstance()
                 throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Aspect aspect = (Aspect) super.getComponentInstance(picoContainer);
+            Aspect aspect = (Aspect) super.getComponentInstance();
             getAspectSystem().addAspect(aspect);
             return aspect;
         }

@@ -10,10 +10,10 @@
 
 package org.picoextras.script.xml;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
 import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picoextras.script.PicoCompositionException;
@@ -27,31 +27,40 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
- *
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
+ * @author Jeppe Cramon
  * @version $Revision$
  */
-public class DefaultXmlFrontEnd implements XmlFrontEnd {
+public class DefaultXmlFrontEnd implements ContainerAssembler {
+    private Element rootElement;
 
-    public PicoContainer createPicoContainer(Element rootElement) throws IOException, SAXException, ClassNotFoundException, PicoCompositionException {
-        MutablePicoContainer mutablePicoContainer = getMutablePicoContainerFromContainerAttribute(rootElement);
-        return createPicoContainer(rootElement, mutablePicoContainer);
+    public DefaultXmlFrontEnd(Element rootElement) {
+        this.rootElement = rootElement;
     }
 
-    public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
-            throws IOException, SAXException, ClassNotFoundException, PicoCompositionException {
-
-        ReflectionFrontEnd rootReflectionFrontEnd = new DefaultReflectionFrontEnd(mutablePicoContainer);
-        registerComponentsAndChildContainers(rootReflectionFrontEnd, rootElement);
-
-        return rootReflectionFrontEnd.getPicoContainer();
+    public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
+        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd(getClass().getClassLoader(),container);
+        try {
+            registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+            // TODO throw new AssemblyException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+            // TODO throw new AssemblyException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+            // TODO throw new AssemblyException(e);
+        }
     }
 
-    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, PicoCompositionException {
+    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, PicoCompositionException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
@@ -61,7 +70,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
                 if (name.equals("classpath")) {
-                    registerClasspath(reflectionFrontEnd, (Element) child);
+                    registerClasspathElement(reflectionFrontEnd, (Element) child);
                 }
             }
         }
@@ -74,16 +83,12 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
                 if (name.equals("pseudocomponent")) {
                     registerPseudoComponent(reflectionFrontEnd, (Element) child);
                     componentCount++;
-                }
-                if (name.equals("component")) {
-                    registerComponent(reflectionFrontEnd, (Element) child);
+                } else if (name.equals("component")) {
+                    registerComponentImplementation(reflectionFrontEnd, (Element) child);
                     componentCount++;
-                } else if (name.equals("container")) {
-
-                    MutablePicoContainer mutablePicoContainer = getMutablePicoContainerFromContainerAttribute(child);
-
-                    ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(reflectionFrontEnd, mutablePicoContainer);
-                    registerComponentsAndChildContainers(childFrontEnd, (Element) child);
+                } else if (name.equals("classpath")) {
+                } else {
+                    throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
@@ -92,24 +97,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
     }
 
-    private MutablePicoContainer getMutablePicoContainerFromContainerAttribute(Node child) throws ClassNotFoundException {
-        String picoContainerClassName = ((Element) child).getAttribute("container");
-        String componentAdaptorClassName = ((Element) child).getAttribute("componentadaptor");
-
-        ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
-
-        if (componentAdaptorClassName != null && !componentAdaptorClassName.equals("")) {
-            tempContainer.registerComponentImplementation(ComponentAdapterFactory.class, componentAdaptorClassName);
-        }
-        if (picoContainerClassName == null || picoContainerClassName.equals("")) {
-            tempContainer.registerComponentImplementation(PicoContainer.class, DefaultPicoContainer.class.getName());
-        } else {
-            tempContainer.registerComponentImplementation(picoContainerClassName);
-        }
-        return (MutablePicoContainer) tempContainer.getPicoContainer().getComponentInstance(PicoContainer.class);
-    }
-
-    private void registerClasspath(ReflectionFrontEnd reflectionFrontEnd, Element classpathElement) throws IOException {
+    private void registerClasspathElement(ReflectionFrontEnd reflectionFrontEnd, Element classpathElement) throws IOException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
@@ -135,23 +123,58 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
     }
 
-    private void registerComponent(ReflectionFrontEnd reflectionFrontEnd, Element componentElement) throws ClassNotFoundException {
+    private PicoContainer registerComponentImplementation(ReflectionFrontEnd reflectionFrontEnd, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
         String className = componentElement.getAttribute("class");
-        String stringKey = componentElement.getAttribute("key");
+        if ("".equals(className)) {
+            throw new SAXException("class attribute not specified for " + componentElement.getNodeName());
+        }
 
-        ArrayList hints = new ArrayList();
-        NodeList children = componentElement.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            if (child.getNodeName() == "hint") {
-                hints.add(((Element) child).getAttribute("key"));
+        List parameterTypesList = new ArrayList();
+        List parameterValuesList = new ArrayList();
+        NodeList parameters = componentElement.getChildNodes();
+        for (int i = 0; i < parameters.getLength(); i++) {
+            final Node node = parameters.item(i);
+            if (node.getNodeType() == Document.ELEMENT_NODE) {
+                Element parameterElement = (Element) node;
+                if (parameterElement.getNodeName().equals("parameter")) {
+                    String type = parameterElement.getAttribute("class");
+                    String value = parameterElement.getChildNodes().item(0).getNodeValue();
+                    parameterTypesList.add(type);
+                    parameterValuesList.add(value);
+                }
             }
         }
-
-        if (stringKey == null || stringKey.equals("")) {
-            stringKey = className;
+        String[] parameterTypes = null;
+        String[] parameterValues = null;
+        if(!parameterTypesList.isEmpty()) {
+            parameterTypes = (String[]) parameterTypesList.toArray(new String[parameterTypesList.size()]);
+            parameterValues = (String[]) parameterValuesList.toArray(new String[parameterValuesList.size()]);
         }
-        reflectionFrontEnd.registerComponentImplementation(stringKey, className);
+
+        String key = componentElement.getAttribute("key");
+        ComponentAdapter componentAdapter;
+        if (key == null || key.equals("")) {
+            if(parameterTypes == null) {
+                componentAdapter = reflectionFrontEnd.registerComponentImplementation(className);
+            } else {
+                componentAdapter = reflectionFrontEnd.registerComponentImplementation(className, parameterTypes, parameterValues);
+            }
+        } else {
+            if(parameterTypes == null) {
+                componentAdapter = reflectionFrontEnd.registerComponentImplementation(key, className);
+            } else {
+                componentAdapter = reflectionFrontEnd.registerComponentImplementation(key, className, parameterTypes, parameterValues);
+            }
+        }
+        if (PicoContainer.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+            // the component was actually a container. Recurse further down.
+            MutablePicoContainer childContainer = (MutablePicoContainer) componentAdapter.getComponentInstance();
+            ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(reflectionFrontEnd, childContainer);
+            registerComponentsAndChildContainers(childFrontEnd, componentElement);
+            return childContainer;
+        } else {
+            return null;
+        }
     }
 
     private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {

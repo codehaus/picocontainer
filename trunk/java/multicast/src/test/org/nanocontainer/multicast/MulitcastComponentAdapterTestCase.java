@@ -68,7 +68,7 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         setUpGirls(invoker);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance(pico);
+        Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance();
         kissable.kiss();
 
         assertTrue(girl1.wasKissed());
@@ -81,7 +81,7 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         setUpGirls(invoker);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance(pico);
+        Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance();
 
         wipeGirls();
         kissable.kiss();

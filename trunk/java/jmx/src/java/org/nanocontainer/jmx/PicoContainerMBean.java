@@ -5,35 +5,24 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by James Strachan and Mauro Talevi                          *
+ * Original code by James Strachan                                           *
  *****************************************************************************/
 package org.picoextras.jmx;
 
-import org.picocontainer.PicoRegistrationException;
+import mx4j.AbstractDynamicMBean;
 
 /**
- * A registration exception caused trying to register the component with JMX
- * 
  * @author James Strachan
- * @author Mauro Talevi
- * @author Jeppe Cramon
  * @version $Revision$
  */
-public class NanoMXRegistrationException extends PicoRegistrationException {
-    public NanoMXRegistrationException() {
-        super();
+public class PicoContainerMBean extends AbstractDynamicMBean {
+
+    public PicoContainerMBean(Object component) {
+        setResource(component);
     }
 
-    public NanoMXRegistrationException(String message) {
-        super(message);
-    }
-
-
-    public NanoMXRegistrationException(String message, Exception cause) {
-        super(message, cause);
-    }
-
-    public NanoMXRegistrationException(Throwable cause) {
-        super(cause);
+    /* Method of the second group that is overridden */
+    protected String getMBeanDescription() {
+        return "A simple DynamicMBean";
     }
 }

@@ -14,6 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -21,18 +22,34 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * This class is a front-end to {@link MutablePicoContainer} that uses reflection
  * to register components.
+ * <p/>
  *
- * This class replaces the former StringRegistrationNanoContainer.
+ * @author Aslak Helles&oslash;y
  */
 public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
+    private static final Map primitiveNameToBoxedName = new HashMap();
+    static {
+        primitiveNameToBoxedName.put("int", Integer.class.getName());
+        primitiveNameToBoxedName.put("byte", Byte.class.getName());
+        primitiveNameToBoxedName.put("short", Short.class.getName());
+        primitiveNameToBoxedName.put("long", Long.class.getName());
+        primitiveNameToBoxedName.put("float", Float.class.getName());
+        primitiveNameToBoxedName.put("double", Double.class.getName());
+        primitiveNameToBoxedName.put("boolean", Boolean.class.getName());
+    }
+    private static String getClassName(String primitiveOrClass) {
+        String fromMap = (String) primitiveNameToBoxedName.get(primitiveOrClass);
+        return fromMap != null ? fromMap : primitiveOrClass;
+    }
+
     private final List urls = new ArrayList();
-
     private final StringToObjectConverter converter = new StringToObjectConverter();
-
     private final MutablePicoContainer picoContainer;
 
     // Either supplied specifically or built up by added URLs.
@@ -45,17 +62,13 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
     }
 
     public DefaultReflectionFrontEnd(ClassLoader classLoader) {
-        this(
-                classLoader,
-                new DefaultPicoContainer()
-        );
+        this(classLoader,
+                new DefaultPicoContainer());
     }
 
     public DefaultReflectionFrontEnd(MutablePicoContainer picoContainer) {
-        this(
-                (DefaultReflectionFrontEnd) null,
-                picoContainer
-        );
+        this((DefaultReflectionFrontEnd) null,
+                picoContainer);
     }
 
     public DefaultReflectionFrontEnd(ReflectionFrontEnd parent, MutablePicoContainer picoContainer) {
@@ -63,7 +76,7 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
         this.picoContainer = picoContainer;
         if (parent != null) {
             MutablePicoContainer parentContainer = parent.getPicoContainer();
-            picoContainer.addParent(parentContainer);
+            picoContainer.setParent(parentContainer);
         }
     }
 
@@ -72,42 +85,55 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
     }
 
     public DefaultReflectionFrontEnd() {
-        this(
-                (DefaultReflectionFrontEnd) null,
-                new DefaultPicoContainer()
-        );
+        this((DefaultReflectionFrontEnd) null,
+                new DefaultPicoContainer());
     }
 
-    public void registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        picoContainer.registerComponentImplementation(getClassLoader().loadClass(componentImplementationClassName));
+    public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+        return picoContainer.registerComponentImplementation(loadClass(componentImplementationClassName));
     }
 
-    public void registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
+    public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
+        Class componentImplementation = loadClass(componentImplementationClassName);
+        return picoContainer.registerComponentImplementation(key, componentImplementation);
+    }
+
+    public ComponentAdapter registerComponentImplementation(Object key,
+                                                            String componentImplementationClassName,
+                                                            String[] parameterTypesAsString,
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         Class componentImplementation = getClassLoader().loadClass(componentImplementationClassName);
-        picoContainer.registerComponentImplementation(key, componentImplementation);
+        return registerComponentImplementation(parameterTypesAsString, parameterValuesAsString, key, componentImplementation);
     }
 
-    public void registerComponentImplementation(
-            Object key,
-            String componentImplementationClassName,
-            String[] parameterTypesAsString,
-            String[] parameterValuesAsString
-            ) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+    public ComponentAdapter registerComponentImplementation(String componentImplementationClassName,
+                                                            String[] parameterTypesAsString,
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         Class componentImplementation = getClassLoader().loadClass(componentImplementationClassName);
+        return registerComponentImplementation(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
+    }
+
+    private ComponentAdapter registerComponentImplementation(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Class componentImplementation) throws ClassNotFoundException {
         Parameter[] parameters = new Parameter[parameterTypesAsString.length];
         for (int i = 0; i < parameters.length; i++) {
-            Class paramTypeClass = getClassLoader().loadClass(parameterTypesAsString[i]);
+            Class paramTypeClass = loadClass(parameterTypesAsString[i]);
             Object value = converter.convertTo(paramTypeClass, parameterValuesAsString[i]);
             parameters[i] = new ConstantParameter(value);
         }
-        picoContainer.registerComponentImplementation(key, componentImplementation, parameters);
+        return picoContainer.registerComponentImplementation(key, componentImplementation, parameters);
+    }
+
+    private Class loadClass(final String componentImplementationClassName) throws ClassNotFoundException {
+        String cn = getClassName(componentImplementationClassName);
+        return getClassLoader().loadClass(cn);
     }
 
     /**
      * Sets what classloader to use. This will reset all previously set URLs.
      * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
+     * 
+     * @param classLoader 
      * @see #addClassLoaderURL
-     * @param classLoader
      */
     public void setClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
@@ -117,7 +143,8 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
     /**
      * Adds a new URL.
      * This overrides the ClassLoader that may have been set by setClassLoader(..)
-     * @param url
+     * 
+     * @param url 
      */
     public void addClassLoaderURL(URL url) {
         classLoader = null;

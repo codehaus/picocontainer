@@ -4,8 +4,8 @@ import org.picoextras.gui.model.ComponentNode;
 import org.picoextras.gui.model.BeanPropertyModel;
 import org.picoextras.gui.model.ContainerNode;
 import org.picoextras.gui.model.BeanPropertyTableModel;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;

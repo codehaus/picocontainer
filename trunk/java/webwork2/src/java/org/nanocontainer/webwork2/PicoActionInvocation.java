@@ -13,9 +13,9 @@ import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionProxy;
 import com.opensymphony.xwork.DefaultActionInvocation;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
 
@@ -24,6 +24,8 @@ import java.util.Map;
 
 /**
  * @author Chris Sturm
+ * @author Aslak Helles&oslash;y
+ * @version $Revision$
  */
 public class PicoActionInvocation extends DefaultActionInvocation implements KeyConstants {
 
@@ -43,7 +45,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
         // load action
         try {
             MutablePicoContainer container = new DefaultPicoContainer();
-            container.addParent(getParentContainer());
+            container.setParent(getParentContainer());
 
             Class actionClass = proxy.getConfig().getClazz();
             container.registerComponentImplementation(actionClass);
@@ -54,10 +56,9 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
         }
     }
 
-    private MutablePicoContainer getParentContainer() {
+    private PicoContainer getParentContainer() {
         HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
-        LifecyclePicoAdapter lifecycle = (LifecyclePicoAdapter) ref.get();
-        return (MutablePicoContainer) lifecycle.getPicoContainer();
+        return (PicoContainer) ref.get();
     }
 }

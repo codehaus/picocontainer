@@ -32,7 +32,9 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter(
                 "thekey", ScriptableDemoBean.class, null);
 
-        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico);
+        pico.registerComponent(adapter);
+
+        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance();
 
         assertEquals("Bsh demo script should have set the key", "thekey", bean.key);
 

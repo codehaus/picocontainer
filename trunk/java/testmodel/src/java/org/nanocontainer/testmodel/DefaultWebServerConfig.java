@@ -12,12 +12,18 @@ package org.picoextras.testmodel;
 
 public class DefaultWebServerConfig implements WebServerConfig {
 
+    private int port = 80;
+
     public String getHost() {
         return "*";
     }
 
     public int getPort() {
-        return 80;
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
 }

@@ -30,7 +30,7 @@ public class ContainerNode extends DefaultMutableTreeNode {
             ContainerNode parent = (ContainerNode) getParent();
             MutablePicoContainer parentContainer = parent.createPicoContainer();
             result = new DefaultPicoContainer(propertyFactory);
-            result.addParent(parentContainer);
+            result.setParent(parentContainer);
         } else {
             result = new DefaultPicoContainer(propertyFactory);
         }

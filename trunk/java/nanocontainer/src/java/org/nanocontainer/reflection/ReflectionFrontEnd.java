@@ -13,40 +13,46 @@ package org.picoextras.reflection;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ComponentAdapter;
 
 import java.net.URL;
 
 /**
+ * TODO: rename to ReflectionContainerAdapter?
  * This class is a front-end to {@link MutablePicoContainer} that uses reflection
  * to register components.
- *
+ * <p/>
  * This class replaces the former StringRegistrationNanoContainer.
  */
 public interface ReflectionFrontEnd {
 
-    void registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+    ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    void registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
+    ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
 
-    void registerComponentImplementation(
-            Object key,
-            String componentImplementationClassName,
-            String[] parameterTypesAsString,
-            String[] parameterValuesAsString
-            ) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+    ComponentAdapter registerComponentImplementation(Object key,
+                                                     String componentImplementationClassName,
+                                                     String[] parameterTypesAsString,
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+
+    ComponentAdapter registerComponentImplementation(String componentImplementationClassName,
+                                                     String[] parameterTypesAsString,
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     /**
      * Sets what classloader to use. This will reset all previously set URLs.
      * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
+     * 
+     * @param classLoader 
      * @see #addClassLoaderURL
-     * @param classLoader
      */
     void setClassLoader(ClassLoader classLoader);
 
     /**
      * Adds a new URL.
      * This overrides the ClassLoader that may have been set by setClassLoader(..)
-     * @param url
+     * 
+     * @param url 
      */
     void addClassLoaderURL(URL url);
 

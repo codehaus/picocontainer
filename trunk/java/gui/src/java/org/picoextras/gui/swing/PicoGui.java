@@ -1,8 +1,8 @@
 package org.picoextras.gui.swing;
 
 import org.picoextras.gui.model.*;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.swing.*;
@@ -85,7 +85,7 @@ public class PicoGui extends JPanel {
     public static void main(String[] args) {
         MutablePicoContainer root = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
-        root.addChild(child);
+        child.setParent(root);
         root.registerComponentImplementation(A.class);
 
         PicoGui gui = new PicoGui(root);

@@ -13,10 +13,7 @@ package org.picoextras.nanning;
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.extras.DecoratingComponentAdapter;
@@ -35,8 +32,8 @@ public class NanningComponentAdapter extends DecoratingComponentAdapter {
         this.aspectSystem = aspectSystem;
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Object component = super.getComponentInstance(picoContainer);
+    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Object component = super.getComponentInstance();
         // TODO Nanning will at the moment only aspectify stuff when it has one and only one interface
         if (component.getClass().getInterfaces().length == 1) {
             Class intf = component.getClass().getInterfaces()[0];

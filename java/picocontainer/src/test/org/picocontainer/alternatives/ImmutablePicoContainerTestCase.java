@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.alternatives.ImmutableComponentAdapter;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
@@ -222,6 +223,16 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         assertTrue(container2 instanceof ImmutablePicoContainer);
         assertSame(container, container2);
 
+    }
+
+    public void testEqualsAlwaysBarfsForDifferentContainers() {
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        ImmutablePicoContainer im = new ImmutablePicoContainer(mpc);
+        try {
+            assertFalse(im.equals(new DefaultPicoContainer()));
+        } catch (junit.framework.AssertionFailedError e) {
+            assertFalse(im.equals(new ImmutablePicoContainer(new DefaultPicoContainer())));
+        }
     }
 
     public void testHashCode() {

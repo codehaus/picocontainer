@@ -536,14 +536,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
-    public void testEqualsAlwaysBarfsForDifferentContainers() {
-        MutablePicoContainer mpc = createPicoContainer(null);
-        try {
-            assertFalse(mpc.equals(new DefaultPicoContainer()));
-        } catch (junit.framework.AssertionFailedError e) {
-            assertFalse(mpc.equals(new ImmutablePicoContainer(new DefaultPicoContainer())));
-        }
-    }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;

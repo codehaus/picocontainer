@@ -4,21 +4,6 @@
   <part id="general">
     <title>General</title>
 
-    <faq id="without-pico">
-      <question>
-        Is a single Uber|Super|BorgCollectivePicoContainer in development? Something that can do all things 
-        for all people in all deployment situations?
-      </question>
-      <answer>
-        <p>
-          No. We are delivering small interoperable containers and components of containers. There will never be a 
-          quest for the BorgContainer. We encourage diversity and compatibility with the essential idea here - 
-          components designed along the PicoContainer principles (dependancies and config in constructors). 
-        </p>
-        <source>bla bla</source>
-      </answer>
-    </faq>
-
     <faq id="why-another">
       <question>
         Why another IoC framework?
@@ -29,12 +14,24 @@
           cumbersome nature, we got together to write what we believe is the simplest possible IoC design. One 
           perhaps that considers the so-design component as more important that the container.
         </p>
-        <source>bla bla</source>
       </answer>
     </faq>
 
+    <faq id="uber-pico">
+      <question>
+        Is a single Uber|Super|BorgCollectivePicoContainer in development? Something that can do all things 
+        for all people in all deployment situations?
+      </question>
+      <answer>
+        <p>
+          No. We are delivering small interoperable containers and components of containers. There will never be a 
+          quest for the BorgContainer. We encourage diversity and compatibility with the essential idea here - 
+          components designed along the PicoContainer principles (dependancies and config in constructors). 
+        </p>
+      </answer>
+    </faq>
 
-    <faq id="without-pico">
+    <faq id="required-pico">
       <question>
         Do I have to use PicoContainer to manage or use components designed for it?
       </question>
@@ -43,25 +40,8 @@
           No. Components are instantiable and configurable without useing PicoContainer. This was one of the 
           design goals. 
         </p>
-        
-        <source>bla bla</source>
       </answer>
     </faq>
-
-    <faq id="without-pico">
-      <question>
-        Do I have to use PicoContainer to manage or use components designed for it?
-      </question>
-      <answer>
-        <p>
-          No. Components are instantiable and configurable without useing PicoContainer. This was one of the 
-          design goals. 
-        </p>
-        
-        <source>bla bla</source>
-      </answer>
-    </faq>
-
 
     <faq id="tdd">
       <question>
@@ -73,8 +53,6 @@
           that we are making/committing un tested code. At those rare moments we switch some attention 
           to test coverage and whip out the electric cattle prod to reprimand the offender (usually Paul). 
         </p>
-        
-        <source>bla bla</source>
       </answer>
     </faq>
 
@@ -99,15 +77,23 @@
 
     <faq id="multiple-impls">
       <question>
-        How do I provide multiple imple?
-      </question>
+        If I register a component with a registry key that is not a java.lang.Class,
+        I realise I can have multiple instances registered with different names.
+        How are these dependencies automatically resolved for a new component that needs this
+        named instance passed to its constructor?
+     </question>
       <answer>
         <p>
-          In order for Pico to unambigiously deduce what dependencies your component have. If you require 
-          your component to have several constructors for other purposes, consider creating a Pico-compatible 
-          wrapper or sub-class. We commonly create a 'Default' sub-class, in it's fairly empty constructor, NullObject implementations are passed up the optional superclass parameters as well as real defaults if they 
-          are available. 
+          These dependencies need to be manually bound at configuration time by doing
         </p>
+        <source>
+container.registerComponent(
+    SomeComponent.class, 
+    new Parameter[] { 
+        new ComponentParameter(keyUsedToRegisterSomeOtherCompoent) 
+    }
+);
+        </source>
       </answer>
     </faq>
 
@@ -119,8 +105,6 @@
         <p>
           Yes great, We also pass in configuration by constructor. This is not the simplest mode of operation of the default PicoContainer, but it is by no means hard.
         </p>
-        
-        <source>bla bla</source>
       </answer>
     </faq>
 

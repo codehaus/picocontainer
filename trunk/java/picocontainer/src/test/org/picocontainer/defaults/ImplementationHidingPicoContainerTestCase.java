@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
@@ -50,8 +49,5 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
             // expected.
         }
     }
-    
-    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
-        // TODO - address why this fails.
-    }
+
 }

@@ -94,6 +94,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
+        componentAdapter.setContainer(this);        
         return pc.registerComponent(componentAdapter);
     }
 

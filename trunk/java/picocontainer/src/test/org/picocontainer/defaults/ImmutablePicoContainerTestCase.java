@@ -10,25 +10,16 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
+import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
-import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVerificationException;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
 
 /**
  * @author Paul Hammant
@@ -219,5 +210,14 @@ public class ImmutablePicoContainerTestCase extends TestCase {
 
     }
 
+    public void testHashCode() {
+        DefaultPicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponentImplementation(Map.class, HashMap.class);
+        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
+        assertNotSame(mpc,ipc);
+        ImmutablePicoContainer ipc2 = new ImmutablePicoContainer(mpc);
+        assertNotSame(ipc2,ipc);
+        assertEquals(ipc2,ipc);
+    }
 
 }

@@ -32,13 +32,15 @@ public class ComponentParameter implements Parameter, Serializable {
         this.componentType = componentType;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws PicoIntrospectionException {
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws PicoIntrospectionException {
         ComponentAdapter result;
         if (componentKey != null) {
             result = picoContainer.getComponentAdapter(componentKey);
-        } else {
+        } else if(componentType != null) {
             result = picoContainer.getComponentAdapterOfType(componentType);
-        }
+        } else {
+            result = picoContainer.getComponentAdapterOfType(expectedType);
+		}
         return result;
     }
 

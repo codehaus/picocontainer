@@ -30,7 +30,7 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new InstanceComponentAdapter(value, value);
     }
 }

@@ -19,7 +19,7 @@
         (based on constructors) is no longer mandatory.
       </action>
 
-      <action dev="tirsen" type="add">
+      <action dev="rinkrank" type="add">
         A Bean-style component factory is provided for components 
         implemented as Java Beans. (Empty constructors and setXxx 
         methods taking one argument).

@@ -315,34 +315,38 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
+    public void testAsCallsChildContainersRecursively() throws PicoRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoStartException {
+
+        MorphingHierarchicalPicoContainer childContainer = new MorphingHierarchicalPicoContainer(
+                            new NullContainer(),
+                            new NullLifecycleManager(),
+                            new DefaultComponentFactory());
+
+        childContainer.registerComponent(PeelableComponent.class);
+        childContainer.registerComponent(PeelableAndWashableComponent.class);
+        childContainer.start();
+
+        MorphingHierarchicalPicoContainer parentContainer = new MorphingHierarchicalPicoContainer(
+                            new NullContainer(),
+                            new NullLifecycleManager(),
+                            new DefaultComponentFactory());
+
+        parentContainer.registerComponent(MorphingHierarchicalPicoContainer.class, childContainer);
+        parentContainer.start();
+
+        ((Washable)parentContainer.as(Washable.class)).wash();
+        ((Peelable)parentContainer.as(Peelable.class)).peel();
+
+        PeelableComponent pComp =
+                (PeelableComponent) childContainer.getComponent(PeelableComponent.class);
+        PeelableAndWashableComponent peelNWash =
+                (PeelableAndWashableComponent) childContainer.getComponent(PeelableAndWashableComponent.class);
+
+        assertNotNull(peelNWash);
+        assertNotNull(pComp);
+        assertTrue(pComp.wasPeeled);
+        assertTrue(peelNWash.wasWashed);
 
     }
-
-//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
-//
-//        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
-//                new MorphingHierarchicalPicoContainer(
-//                        new NullContainer(),
-//                        new NullLifecycleManager(),
-//                        new DefaultComponentFactory())
-//                .as(PeelableAndWashableContainer.class);
-//
-//        pawContainer.registerComponent(PeelableComponent.class);
-//        pawContainer.registerComponent(PeelableAndWashableComponent.class);
-//
-//        pawContainer.start();
-//
-//        pawContainer.wash();
-//        pawContainer.peel();
-//
-//        PeelableComponent pComp = (PeelableComponent) pawContainer.getComponent(PeelableComponent.class);
-//        PeelableAndWashableComponent peelNWash = (PeelableAndWashableComponent) pawContainer.getComponent(PeelableAndWashableComponent.class);
-//
-//        assertTrue(pComp.wasPeeled);
-//        assertTrue(peelNWash.wasWashed);
-//
-//    }
-
 
 }

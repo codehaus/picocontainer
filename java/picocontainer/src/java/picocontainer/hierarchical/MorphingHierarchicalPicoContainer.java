@@ -13,30 +13,20 @@ package picocontainer.hierarchical;
 import picocontainer.PicoContainer;
 import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
-import picocontainer.ClassRegistrationPicoContainer;
 
 import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.InvocationHandler;
-import java.util.Map;
-import java.util.HashMap;
+
 
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
 
     public static final int REVERSE_INSTANTIATION_ORDER = 11;
     public static final int INSTANTIATION_ORDER = 22;
-    private Map picoMethodMap = new HashMap();
 
     public MorphingHierarchicalPicoContainer(PicoContainer parentContainer, LifecycleManager startableLifecycleManager, ComponentFactory componentFactory) {
         super(parentContainer, startableLifecycleManager, componentFactory);
-
-        // Experiment - see PeelableAndWashableContainer in test case.
-        Method[] picoMethods = ClassRegistrationPicoContainer.class.getMethods();
-        for (int i = 0; i < picoMethods.length; i++) {
-            Method picoMethod = picoMethods[i];
-            picoMethodMap.put(picoMethod, null);
-        }
     }
 
     /**
@@ -60,7 +50,7 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 interfaces,
-                new ComponentsInvocationHandler());
+                new AsInvocationHandler(this));
     }
 
     /**
@@ -77,13 +67,13 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 new Class[] {theInterface},
-                new LifecycleInvocationHandler(direction));
+                new AsLifecycleInvocationHandler(direction));
     }
 
-    class LifecycleInvocationHandler implements InvocationHandler {
+    class AsLifecycleInvocationHandler implements InvocationHandler {
         private int direction;
 
-        LifecycleInvocationHandler(int direction) {
+        AsLifecycleInvocationHandler(int direction) {
             if (direction != MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER && direction != MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER) {
                 throw new IllegalArgumentException("Illegal argument - direction whould be one of REVERSE_INSTANTIATION_ORDER or INSTANTIATION_ORDER");
             }
@@ -92,10 +82,6 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-            if (picoMethodMap.containsKey(method) && proxy instanceof ClassRegistrationPicoContainer) {
-                // how to do super.invoke() ????
-            }
 
             switch (direction) {
                 case MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER:
@@ -113,24 +99,50 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
             return null;
         }
 
+        private void invokeOnComponent(Object component, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+            Class declaringInterface = method.getDeclaringClass();
+            if ( component instanceof MorphingHierarchicalPicoContainer) {
+                MorphingHierarchicalPicoContainer childContainer = (MorphingHierarchicalPicoContainer)component;
+                Object childContainerAs = childContainer.asLifecycle(declaringInterface, direction);
+                method.invoke(childContainerAs, args);
+            }
+            else {
+                if (declaringInterface.isAssignableFrom(component.getClass())) {
+                    method.invoke(component, args);
+                }
+            }
+        }
+
    }
 
-    class ComponentsInvocationHandler implements InvocationHandler {
+    static class AsInvocationHandler implements InvocationHandler {
+        private PicoContainer container;
+
+        AsInvocationHandler(PicoContainer container) {
+            this.container = container;
+        }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Object[] components = getComponents();
+            invokeOnComponents(container.getComponents(), method, args);
+            return null;
+        }
+
+        private void invokeOnComponents(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
             for (int i = 0; i < components.length; i++) {
                 invokeOnComponent(components[i], method, args);
             }
-            return null;
         }
-    }
 
-    private void invokeOnComponent(Object component, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-        Class declaringInterface = method.getDeclaringClass();
-        if (declaringInterface.isAssignableFrom(component.getClass())) {
-            method.invoke(component, args);
+        private void invokeOnComponent(Object component, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+            Class declaringInterface = method.getDeclaringClass();
+            if (declaringInterface.isAssignableFrom(component.getClass())) {
+                method.invoke(component, args);
+            }
+            else if (component instanceof PicoContainer) {
+                invokeOnComponents( ((PicoContainer)component).getComponents(), method, args );
+            }
         }
+
     }
 
 }

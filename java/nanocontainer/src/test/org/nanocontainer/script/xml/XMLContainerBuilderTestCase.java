@@ -13,7 +13,6 @@ package org.nanocontainer.script.xml;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
-import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.PicoContainer;
@@ -36,38 +35,42 @@ import java.io.StringReader;
 public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+
         Reader script = new StringReader("" +
                 "<container>" +
+                "  <component class='java.lang.StringBuffer'/>" +
                 "  <component class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "  <component key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-        assertEquals(2, pico.getComponentInstances().size());
+        assertEquals(3, pico.getComponentInstances().size());
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
     }
 
     public void testAPicocontainerCanHostItself() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
-                "<component class='org.picocontainer.defaults.DefaultPicoContainer'>" +
+                "<container>" +
                 "  <component class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component key='child1' class='org.picocontainer.defaults.DefaultPicoContainer'>" +
+                "  <component class='java.lang.StringBuffer'/>" +
+                "  <container>" +
                 "    <component key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
-                "  </component>" +
-                "</component>");
+                "  </container>" +
+                "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
 
-        PicoContainer childContainer = (PicoContainer) pico.getComponentInstance("child1");
-        assertNotNull(childContainer.getComponentInstance(WebServer.class.getName()));
+        StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
+        assertTrue(sb.indexOf("-WebServerImpl") != -1);
     }
 
     public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
 
+
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
+        testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
 
         assertNotNull("The testcomp.jar system property should point to nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
@@ -81,45 +84,32 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "    <element file='" + testCompJar.getCanonicalPath() + "'/>" +
                 "  </classpath>" +
                 "  <component key='foo' class='TestComp'/>" +
-                "  <component key='child1' class='org.picocontainer.defaults.DefaultPicoContainer'>" +
+                "  <container>" +
                 "    <classpath>" +
                 "      <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
                 "    </classpath>" +
                 "    <component key='bar' class='TestComp2'/>" +
-//TODO-NOLOAD                "    <component key='child2' class='org.picocontainer.defaults.DefaultPicoContainer'>" +
-//                "      <component class='"+TestCompThatTalks.class+"'/>" +
-//                "    </component>" +
-                "  </component>" +
-                "  <component key='sb' class='java.lang.StringBuffer'/>" +
+                "  </container>" +
+                "  <component class='java.lang.StringBuffer'/>" +
                 "</container>");
 
+
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+
 
         Object fooTestComp = pico.getComponentInstance("foo");
         assertNotNull("Container should have a 'foo' component", fooTestComp);
 
-        PicoContainer childContainer = (PicoContainer) pico.getComponentInstance("child1");
-        Object barTestComp = childContainer.getComponentInstance("bar");
-        assertNotNull("Container should have a 'bar' component", barTestComp);
+        StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
+        assertTrue("Container should have instantiated a 'TestComp2' component", sb.indexOf("-TestComp2") != -1);
 
-        ClassLoader fooLoader = fooTestComp.getClass().getClassLoader();
-        ClassLoader barLoader = barTestComp.getClass().getClassLoader();
-        assertSame("foo classloader should be parent of bar", fooLoader,
-                barLoader.getParent());
 
-        StringBuffer sb = (StringBuffer) pico.getComponentInstance("sb");
-//        System.out.println("--> " + sb.toString());
-//TODO        assertTrue("Talkative TestComp Should have been instantiated", (sb.toString().indexOf("TestCompThatTalks.instantiated") != -1));
 
     }
 
-    public static class TestCompThatTalks {
-        public TestCompThatTalks(StringBuffer sb) {
-            sb.append("TestCompThatTalks.instantiated");
-        }
-    }
 
     public void testUnknownclassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
+
 
         try {
             Reader script = new StringReader("" +

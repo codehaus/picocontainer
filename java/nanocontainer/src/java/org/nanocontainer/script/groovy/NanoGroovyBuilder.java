@@ -152,10 +152,8 @@ public class NanoGroovyBuilder extends BuilderSupport {
         SoftCompositionPicoContainer softPico = (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
 
         if (parent != null) {
-            System.out.println("--> Setting parent");
             parent.addChildContainer(softPico);
         } else {
-            System.out.println("--> Not Setting parent");
         }
         return softPico;
     }

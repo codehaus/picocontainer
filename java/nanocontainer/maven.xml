@@ -25,6 +25,11 @@
                  srcdir="${basedir}/target/test-classes" listfiles="true">
           <classpath refid="test.classpath"/>
         </groovyc>
+        <delete>
+            <fileset dir="${basedir}/target/test-classes">
+                <include name="**/TestComp*"/>
+            </fileset>
+        </delete>
     </postGoal>
     
     

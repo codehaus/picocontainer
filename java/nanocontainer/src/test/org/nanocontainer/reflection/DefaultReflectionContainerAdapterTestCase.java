@@ -70,13 +70,28 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         assertEquals("hello22", thing.getValue());
     }
 
+    public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
+
+        try {
+            DefaultReflectionContainerAdapter dfca = new DefaultReflectionContainerAdapter();
+            dfca.registerComponentImplementation("foo", "TestComp");
+            Object o = dfca.getPicoContainer().getComponentInstance("foo");
+            fail("Not expected");
+        } catch (ClassNotFoundException expected) {
+        } catch (Exception e) {
+            fail("Not expected");
+        }
+
+    }
+
     public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException, ClassNotFoundException {
+
         String testcompJarFileName = System.getProperty("testcomp.jar");
 
         // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
+        testcompJarFileName = "D:\\OSS\\PN\\java\\nanocontainer\\src\\test-comp\\TestComp.jar";
 
-        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        assertNotNull("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         assertTrue(testCompJar.isFile());
@@ -85,7 +100,11 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         // Set up parent
         ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
         parentContainerAdapter.addClassLoaderURL(testCompJar.toURL());
+
         parentContainerAdapter.registerComponentImplementation("parentTestComp", "TestComp");
+
+        parentContainerAdapter.registerComponentImplementation("java.lang.StringBuffer");
+
 
         PicoContainer parentContainerAdapterPico = parentContainerAdapter.getPicoContainer();
         Object parentTestComp = parentContainerAdapterPico.getComponentInstance("parentTestComp");
@@ -98,10 +117,12 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
         PicoContainer childContainerAdapterPico = childContainerAdapter.getPicoContainer();
         Object childTestComp = childContainerAdapterPico.getComponentInstance("childTestComp");
+
         assertEquals("TestComp2", childTestComp.getClass().getName());
 
         assertNotSame(parentTestComp, childTestComp);
-        assertEquals("parentTestComp classloader should be parent of childTestComp classloader",
+
+        assertSame("parentTestComp classloader should be parent of childTestComp classloader",
                 parentTestComp.getClass().getClassLoader(),
                 childTestComp.getClass().getClassLoader().getParent());
 
@@ -117,7 +138,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
+        testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
         assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());

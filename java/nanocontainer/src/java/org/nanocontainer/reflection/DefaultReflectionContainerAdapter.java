@@ -32,6 +32,9 @@ import java.util.Map;
 
 public class DefaultReflectionContainerAdapter implements ReflectionContainerAdapter {
     private static final Map primitiveNameToBoxedName = new HashMap();
+    private boolean clLocked;
+    private ClassLoader componentClassLoader;
+
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
         primitiveNameToBoxedName.put("byte", Byte.class.getName());
@@ -50,41 +53,35 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     private final StringToObjectConverter converter = new StringToObjectConverter();
     private final MutablePicoContainer picoContainer;
 
-    // Either supplied specifically or built up by added URLs.
-    private ClassLoader classLoader;
-    private ReflectionContainerAdapter parent;
+    private final ClassLoader parentClassLoader;
 
     public DefaultReflectionContainerAdapter(ClassLoader classLoader, MutablePicoContainer picoContainer) {
-        this.classLoader = classLoader;
+        this.parentClassLoader = classLoader;
         this.picoContainer = picoContainer;
     }
 
     public DefaultReflectionContainerAdapter(ClassLoader classLoader) {
         this(classLoader,
                 new DefaultPicoContainer());
+
     }
 
     public DefaultReflectionContainerAdapter(MutablePicoContainer picoContainer) {
-        this((DefaultReflectionContainerAdapter) null,
-                picoContainer);
-    }
-
-    public DefaultReflectionContainerAdapter(ReflectionContainerAdapter parent, MutablePicoContainer picoContainer) {
-        this.parent = parent;
+        parentClassLoader = DefaultReflectionContainerAdapter.class.getClassLoader();
         this.picoContainer = picoContainer;
-        if (parent != null) {
-            MutablePicoContainer parentContainer = parent.getPicoContainer();
-            picoContainer.setParent(parentContainer);
-        }
     }
 
     public DefaultReflectionContainerAdapter(ReflectionContainerAdapter parent) {
-        this(parent, new DefaultPicoContainer());
+        parentClassLoader = parent.getComponentClassLoader();
+        picoContainer = new DefaultPicoContainer(parent.getPicoContainer());
+        parent.getPicoContainer().addChildContainer(picoContainer);
     }
 
+    /**
+     * Beware - no parent container and no parent classloader.
+     */
     public DefaultReflectionContainerAdapter() {
-        this((DefaultReflectionContainerAdapter) null,
-                new DefaultPicoContainer());
+        this(DefaultReflectionContainerAdapter.class.getClassLoader(), new DefaultPicoContainer());
     }
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
@@ -100,14 +97,14 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
                                                             String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
                                                             String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        Class componentImplementation = getClassLoader().loadClass(componentImplementationClassName);
+        Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
         return registerComponentImplementation(parameterTypesAsString, parameterValuesAsString, key, componentImplementation);
     }
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
                                                             String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        Class componentImplementation = getClassLoader().loadClass(componentImplementationClassName);
+        Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
         return registerComponentImplementation(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
     }
 
@@ -123,7 +120,8 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
 
     private Class loadClass(final String componentImplementationClassName) throws ClassNotFoundException {
         String cn = getClassName(componentImplementationClassName);
-        return getClassLoader().loadClass(cn);
+        ClassLoader classLoader = getComponentClassLoader();
+        return classLoader.loadClass(cn);
     }
 
     /**
@@ -134,8 +132,9 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
      * @see #addClassLoaderURL
      */
     public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-        urls.clear();
+//        this.classLoader = classLoader;
+        throw new UnsupportedOperationException("argggh");
+//        urls.clear();
     }
 
     /**
@@ -145,28 +144,52 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
      * @param url
      */
     public void addClassLoaderURL(URL url) {
-        classLoader = null;
+    //    classLoader = null;
+        if (clLocked) throw new IllegalStateException("Foo!!!!");
         urls.add(url);
     }
 
-    private ClassLoader getParentClassLoader() {
-        if (parent != null) {
-            return parent.getClassLoader();
-        } else {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            return cl == null ? cl : DefaultReflectionContainerAdapter.class.getClassLoader();
-        }
-    }
+    public ClassLoader getComponentClassLoader() {
+        URL[] urlz = (URL[]) urls.toArray(new URL[urls.size()]);
+        clLocked = true;
 
-    public ClassLoader getClassLoader() {
-        if (classLoader == null) {
-            URL[] urlz = (URL[]) urls.toArray(new URL[urls.size()]);
-            classLoader = new URLClassLoader(urlz, getParentClassLoader());
+        if (componentClassLoader == null) {
+            componentClassLoader = new FooClassLoader(urlz, parentClassLoader);
         }
-        return classLoader;
+
+        return componentClassLoader;
     }
 
     public MutablePicoContainer getPicoContainer() {
         return picoContainer;
+    }
+
+    public static class FooClassLoader extends URLClassLoader {
+        URL[] urls;
+        public FooClassLoader(URL[] urls, ClassLoader parent) {
+            super(urls, parent);
+            this.urls = urls;
+        }
+
+        public String toString() {
+            return "FCL(parent:" + (getParent() != null ? ""+System.identityHashCode(getParent()) : "x") + " - URLS("+prtURLs()+")";
+        }
+
+        public Class loadClass(String name) throws ClassNotFoundException {
+            return super.loadClass(name);
+        }
+
+        protected Class findClass(String name) throws ClassNotFoundException {
+            return super.findClass(name);
+        }
+
+        private String prtURLs() {
+            String foo = "";
+            for (int i = 0; i < urls.length; i++) {
+                URL url = urls[i];
+                foo = foo + url.toString() + ",";
+            }
+            return foo;
+        }
     }
 }

@@ -29,6 +29,8 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     public void testContainerCanBeBuiltWithParent() {
         // * imports are not supported by groovy yet, so the GroovyContainerBuilder won't either.
         Reader script = new StringReader("" +
+                "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
+                "pico2 = builder.container()\n" +
                 "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
                 "pico.registerComponentInstance(\"hello\", \"Groovy\")\n");
         PicoContainer parent = new DefaultPicoContainer();

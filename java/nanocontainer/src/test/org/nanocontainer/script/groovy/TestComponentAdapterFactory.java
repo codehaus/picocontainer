@@ -16,12 +16,10 @@ public class TestComponentAdapterFactory extends DefaultComponentAdapterFactory 
     public StringBuffer sb;
 
     public TestComponentAdapterFactory(StringBuffer sb) {
-        System.out.println("--> hello");
         this.sb = sb;
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        System.out.println("--> hello 2");
         sb.append("called");
         return super.createComponentAdapter(componentKey, componentImplementation, parameters);    //To change body of overridden methods use File | Settings | File Templates.
     }

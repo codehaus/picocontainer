@@ -13,13 +13,13 @@ package org.nanocontainer.script.xml;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -72,24 +72,16 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
             Class cfaClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
-            MutablePicoContainer result = new DefaultPicoContainer(componentAdapterFactory, parentContainer);
-            populateContainer(result);
+            DefaultSoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
+                    parentContainer);
+            registerComponentsAndChildContainers(result, rootElement);
             return result;
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
         } catch (InstantiationException e) {
             throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
             throw new PicoCompositionException(e);
-        }
-    }
-
-    private void populateContainer(MutablePicoContainer container) {
-        try {
-            ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter(classLoader, container);
-            registerComponentsAndChildContainers(reflectionContainerAdapter, rootElement);
-        } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException("Class Not Found: " + e.getMessage(), e);
         } catch (IOException e) {
             throw new PicoCompositionException(e);
         } catch (SAXException e) {
@@ -97,7 +89,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerComponentsAndChildContainers(ReflectionContainerAdapter reflectionContainerAdapter, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
+
+    private void registerComponentsAndChildContainers(SoftCompositionPicoContainer parentContainer, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
@@ -107,7 +100,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
                 if (name.equals("classpath")) {
-                    registerClasspathElement(reflectionContainerAdapter, (Element) child);
+                    registerClasspathElement(parentContainer, (Element) child);
                 }
             }
         }
@@ -118,10 +111,15 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
                 if (name.equals("pseudocomponent")) {
-                    registerPseudoComponent(reflectionContainerAdapter, (Element) child);
+                    registerPseudoComponent(parentContainer, (Element) child);
                     count++;
                 } else if (name.equals("component")) {
-                    registerComponentImplementation(reflectionContainerAdapter, (Element) child);
+                    registerComponentImplementation(parentContainer, (Element) child);
+                    count++;
+                } else if (name.equals("container")) {
+                    SoftCompositionPicoContainer newChild = new DefaultSoftCompositionPicoContainer(parentContainer.getComponentClassLoader(), parentContainer);
+                    parentContainer.addChildContainer(newChild);
+                    registerComponentsAndChildContainers(newChild, (Element) child);
                     count++;
                 } else if (name.equals("classpath")) {
                 } else {
@@ -203,15 +201,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 componentAdapter = reflectionContainerAdapter.registerComponentImplementation(key, className, parameterTypes, parameterValues);
             }
         }
-        if (PicoContainer.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-            // the component was actually a container. Recurse further down.
-            MutablePicoContainer childContainer = (MutablePicoContainer) componentAdapter.getComponentInstance();
-            ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(reflectionContainerAdapter, childContainer);
-            registerComponentsAndChildContainers(childContainerAdapter, componentElement);
-            return childContainer;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     private void registerPseudoComponent(ReflectionContainerAdapter pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {

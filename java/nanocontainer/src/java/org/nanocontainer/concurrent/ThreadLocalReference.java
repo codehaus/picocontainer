@@ -10,7 +10,10 @@
 
 package org.nanocontainer.concurrent;
 
+
 import org.picocontainer.defaults.ObjectReference;
+
+import java.io.Serializable;
 
 
 /**
@@ -20,9 +23,9 @@ import org.picocontainer.defaults.ObjectReference;
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalReference
-        implements ObjectReference {
+        implements ObjectReference, Serializable {
 
-    private ThreadLocal instance = new ThreadLocal();
+    private transient ThreadLocal instance = new ThreadLocal();
 
     /**
      * @see org.picocontainer.defaults.ObjectReference#get()

@@ -25,17 +25,17 @@ import java.io.Serializable;
  * @author Michael Ward
  * @version $Revision$
  */
-public class JMXComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
+public class MBeanComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
 
-	public JMXComponentAdapterFactory() {
+	public MBeanComponentAdapterFactory() {
 		this(new DefaultComponentAdapterFactory());
 	}
 
-	public JMXComponentAdapterFactory(ComponentAdapterFactory delegate) {
+	public MBeanComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new JMXComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
+        return new MBeanComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

@@ -31,7 +31,7 @@ public class JMXTestFixture {
 	}
 
 	public static ComponentAdapter createJMXComponentAdapter(ObjectName objectName) {
-        return new JMXComponentAdapterFactory().createComponentAdapter(objectName, FooBar.class, null);
+        return new MBeanComponentAdapterFactory().createComponentAdapter(objectName, FooBar.class, null);
     }
 
 	public static MBeanInfo createMBeanInfo() {

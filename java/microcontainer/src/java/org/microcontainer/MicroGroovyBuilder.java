@@ -1,29 +1,33 @@
 package org.microcontainer;
 
-import groovy.util.BuilderSupport;
-import groovy.lang.Closure;
-
-import java.util.*;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.File;
-
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Parameter;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.jmx.MBeanComponentAdapterFactory;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.script.groovy.NanoGroovyBuilder;
+import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
-import org.nanocontainer.script.groovy.PicoBuilderException;
-import org.nanocontainer.script.groovy.NanoGroovyBuilder;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.jmx.JMXComponentAdapterFactory;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+
+import groovy.lang.Closure;
+import groovy.util.BuilderSupport;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * todo this class should be removed or refactored to extend NanoGroovyBuilder.
@@ -115,7 +119,7 @@ public class MicroGroovyBuilder  extends BuilderSupport {
 		parentContainer.registerComponentInstance(clazz.getName().concat("MBeanInfo"), mBeanInfo);
 
 		// register the MBean
-		ComponentAdapter ca = new JMXComponentAdapterFactory().createComponentAdapter(key, clazz, null);
+		ComponentAdapter ca = new MBeanComponentAdapterFactory().createComponentAdapter(key, clazz, null);
 		parentContainer.registerComponent(ca);
 		
 		return parentContainer;

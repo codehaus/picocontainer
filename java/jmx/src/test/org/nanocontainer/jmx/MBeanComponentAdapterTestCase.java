@@ -23,7 +23,7 @@ import javax.management.MBeanServerFactory;
  * @author Michael Ward
  * @version $Revision$
  */
-public class JMXComponentAdapterTestCase extends TestCase {
+public class MBeanComponentAdapterTestCase extends TestCase {
 	private MutablePicoContainer pico;
     private MBeanServer mbeanServer;
 	private ObjectName objectName;

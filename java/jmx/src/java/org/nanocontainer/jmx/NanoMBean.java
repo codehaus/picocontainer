@@ -18,15 +18,15 @@ import javax.management.MBeanInfo;
  * @author Michael Ward
  * @version $Revision$
  */
-public class PicoContainerMBean extends AbstractDynamicMBean {
+public class NanoMBean extends AbstractDynamicMBean {
 
-    public PicoContainerMBean(Object componentInstance, MBeanInfo mBeanInfo) {
+    public NanoMBean(Object componentInstance, MBeanInfo mBeanInfo) {
         setResource(componentInstance);
 		setMBeanInfo(mBeanInfo);
     }
 
     /* Method of the second group that is overridden */
     protected String getMBeanDescription() {
-        return "PicoContainerMBean: " + getResource().toString();
+        return "NanoMBean: " + getResource().toString();
     }
 }

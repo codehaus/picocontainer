@@ -14,20 +14,40 @@ import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 
 /**
- * Implementation of XMLComponentInstanceFactory that uses XStream to unmarshal
- * DOM elements.
+ * Implementation of XMLComponentInstanceFactory that uses 
+ * XStream to unmarshal DOM elements.
  *
  * @author Paul Hammant
  * @author Marcos Tarruella
+ * @author Mauro Talevi
  */
 public class XStreamComponentInstanceFactory implements XMLComponentInstanceFactory {
+	/** The XStream used to unmarshal the DOM element */
+	private XStream xstream;
+
+	/**
+	 * Creates an XStreamComponentInstanceFactory with the default instance
+	 * of XStream
+	 */
+	public XStreamComponentInstanceFactory(){
+		this(new XStream());
+	}
+	
+	/**
+	 * Creates an XStreamComponentInstanceFactory for a given instance
+	 * of XStream
+	 * @param xstream the XStream instance
+	 */
+	public XStreamComponentInstanceFactory(XStream xstream){
+		this.xstream = xstream;
+	}
+	
     /**
      * {@inheritDoc}
      *
      * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
      */
     public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
-        XStream xs = new XStream();
-        return xs.unmarshal(new DomReader(element));
+        return xstream.unmarshal(new DomReader(element));
     }
 }

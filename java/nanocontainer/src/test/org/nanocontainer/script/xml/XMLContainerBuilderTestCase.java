@@ -220,12 +220,41 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertEquals("Hello", instance.toString());
     }
 
+    public void testComponentInstanceWithContainerFactoryAndKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+        Reader script = new StringReader("" +
+                "<container component-instance-factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$ContainerTestFactory'>" +
+                "  <component-instance factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'" +
+                "						key='firstKey'>" +
+                "    <config-or-whatever/>" +
+                "  </component-instance>" +
+                "  <component-instance key='secondKey'>" +
+                "    <config-or-whatever/>" +
+                "  </component-instance>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
+        Object first = pico.getComponentInstance("firstKey");
+        assertNotNull(first);
+        assertTrue(first instanceof String);
+        assertEquals("Hello", first.toString());
+        Object second = pico.getComponentInstance("secondKey");
+        assertNotNull(second);
+        assertTrue(second instanceof String);
+        assertEquals("ContainerHello", second.toString());
+    }
+
     public static class TestFactory implements XMLComponentInstanceFactory {
         public Object makeInstance(PicoContainer pico, Element elem) throws ClassNotFoundException {
             return "Hello";
         }
     }
 
+    public static class ContainerTestFactory implements XMLComponentInstanceFactory {
+        public Object makeInstance(PicoContainer pico, Element elem) throws ClassNotFoundException {
+            return "ContainerHello";
+        }
+    }
+    
     public void testInstantiationOfComponentsWithParams() throws IOException, SAXException, ClassNotFoundException, ParserConfigurationException {
         Reader script = new StringReader("" +
                 "<container>" +

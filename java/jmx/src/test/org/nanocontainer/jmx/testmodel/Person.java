@@ -15,25 +15,38 @@ import javax.management.MBeanInfo;
 
 import org.picocontainer.testmodel.PersonBean;
 
+
 /**
  * @author J&ouml;rg Schaible
  */
 public class Person extends PersonBean implements PersonMBean {
     // PersonBean already fulfills PersonMBean interface
-    private static MBeanAttributeInfo[] attributes;
 
+    private static MBeanAttributeInfo[] attributes;
     static {
-        attributes = new MBeanAttributeInfo[] {
-            new MBeanAttributeInfo("Name", String.class.getName(), "desc", true, true, false)
-        };
+        attributes = new MBeanAttributeInfo[]{new MBeanAttributeInfo("Name", String.class.getName(), "desc", true, true, false)};
     }
 
+    /**
+     * Default constructor.
+     */
     public Person() {
         setName("John Doe");
     }
 
+    /**
+     * Construct a named person.
+     * @param name The person's name.
+     */
+    public Person(final String name) {
+        setName(name);
+    }
+
+    /**
+     * @return Returns an explicit MBeanInfo for Person.
+     */
     public static MBeanInfo createMBeanInfo() {
-        return new MBeanInfo(Person.class.getName(), "description", attributes, null, null, null);
+        return new MBeanInfo(Person.class.getName(), "Description of Person", attributes, null, null, null);
     }
 
 }

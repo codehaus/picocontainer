@@ -20,15 +20,28 @@ import org.picocontainer.PicoRegistrationException;
  */
 public class JMXRegistrationException extends PicoRegistrationException {
 
+	/**
+	 * Construct a JMXRegistrationException with a particular message.
+	 * @param message the description of the exception
+	 */
 	public JMXRegistrationException(final String message) {
 		super(message);
 	}
 
+    /**
+     * Construct a JMXRegistrationException with a causing {@link Throwable}.
+     * @param cause the cause
+     */
 	public JMXRegistrationException(final Throwable cause) {
 		super(cause);
 	}
 
-	public JMXRegistrationException(String message, Throwable cause) {
+    /**
+     * Construct a JMXRegistrationException with a causing {@link Throwable} and a particular message.
+     * @param message the description of the exception
+     * @param cause the cause
+     */
+	public JMXRegistrationException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 }

@@ -12,7 +12,10 @@ package org.microcontainer.jmx;
 
 import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.jmx.DynamicMBeanProvider;
+import org.nanocontainer.jmx.JMXRegistrationException;
 import org.nanocontainer.jmx.JMXVisitor;
+import org.nanocontainer.jmx.RegisteredMBeanConstructingProvider;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -33,7 +36,7 @@ import java.lang.reflect.Method;
 public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDelegate {
 
 	protected MBeanServer mBeanServer;
-	protected String currentKey; // the key the parent component is mapped too
+	protected Object currentKey; // the key the parent component is mapped too
 	protected Object currentClass; // the implementation class registered to pico
 	protected MutablePicoContainer picoContainer;
 
@@ -52,7 +55,9 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 				return createJmxNode(attributes);
 			} catch (MalformedObjectNameException e) {
 				new NanoContainerMarkupException(e);
-			}
+			} catch (ClassNotFoundException e) {
+                new NanoContainerMarkupException(e);
+            }
 		}
 
 		throw new NanoContainerMarkupException("can't handle " + name);
@@ -60,32 +65,31 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 
 	public void rememberComponentKey(Map attributes) {
         currentClass = attributes.get("class");
-
-		Object key = attributes.get("key");
-
-		if (key instanceof Class) {
-			currentKey = ((Class) key).getName();
-		} else {
-			currentKey = (String) key;
-		}
-
+		currentKey = attributes.get("key");
 	}
 
-	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException {
-		String description = (String)attributes.get("description");
-		JMXVisitor jmxVisitor = new JMXVisitor();
+	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException, ClassNotFoundException {
+        MBeanServer server = (MBeanServer)picoContainer.getComponentInstanceOfType(MBeanServer.class);
+        if (server == null) {
+            throw new JMXRegistrationException("A MBeanServer must be registered within the PicoContainer");
+        }
+        RegisteredMBeanConstructingProvider registrar = new RegisteredMBeanConstructingProvider();
+		JMXVisitor jmxVisitor = new JMXVisitor(server, new DynamicMBeanProvider[] {registrar});
+        String description = (String)attributes.get("description");
 		ObjectName objectName = new ObjectName((String) attributes.remove("key"));
 		List operations = (List) attributes.remove("operations");
 		Class componentImplementation = getComponentImplementation(currentClass);
+        String managementName = (String)attributes.get("management");
+        Class management = managementName != null ? componentImplementation.getClassLoader().loadClass(managementName) : null;
 
 		// Build MBeanInfo
 		List methods = getMatchingMethods(operations, componentImplementation);
 
-		// todo need to handle attributes and constructors and notifications  
+		// todo need to handle attributes and constructors and notifications
 		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
-		MBeanInfo mBeanInfo = new MBeanInfo(currentKey, description, null, null, mBeanOperationInfos, null);
+		MBeanInfo mBeanInfo = new MBeanInfo(componentImplementation.getName(), description, null, null, mBeanOperationInfos, null);
 
-		jmxVisitor.register(objectName, mBeanInfo);
+        registrar.register(currentKey, objectName, management, mBeanInfo);
 		picoContainer.accept(jmxVisitor);
 		return picoContainer;
 	}

@@ -14,11 +14,12 @@ pico = builder.container(parent:parent) {
 	component(key:org.microcontainer.test.TestComp, class:"org.microcontainer.test.hopefullyhidden.TestCompImpl")
 	component(key:org.microcontainer.testapi.TestPromotable, class:"org.microcontainer.test.hopefullyhidden.TestPromotableImpl")
 
-    // register MBeanServer... todo this should be hidden
+    // register MBeanServer and DynamicMBeanFactory ... todo this should be hidden
     component(key:javax.management.MBeanServer, instance:MBeanServerFactory.newMBeanServer())
+    component(key:org.nanocontainer.jmx.DynamicMBeanFactory, class:org.nanocontainer.jmx.mx4j.MX4JDynamicMBeanFactory)
 
     component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl') {
-    	jmx(key:'domain:wilma=default', operations:['helloCalled'], description:'This is the wilma mbeanInfo escription' )    	
+    	jmx(key:'domain:wilma=default', operations:['helloCalled'], description:'This is the wilma mbeanInfo escription' )
     }
 }
 

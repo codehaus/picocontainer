@@ -29,6 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl
-        implements InputSourceRegistrationNanoContainer {
+public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl implements Serializable,
+        InputSourceRegistrationNanoContainer {
     private static final String ADD_METHOD_PREFIX = "add";
     private static final String SET_METHOD_PREFIX = "set";
     private final DocumentBuilder documentBuilder;

@@ -15,8 +15,9 @@ import org.picocontainer.PicoInstantiationException;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class NullContainer implements PicoContainer {
+public class NullContainer implements PicoContainer, Serializable {
     public boolean hasComponent(Object compType) {
         return false;
     }

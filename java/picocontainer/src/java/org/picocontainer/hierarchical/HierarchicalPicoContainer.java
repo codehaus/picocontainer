@@ -39,8 +39,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.io.Serializable;
 
-public class HierarchicalPicoContainer extends DefaultPicoContainer implements RegistrationPicoContainer {
+public class HierarchicalPicoContainer extends DefaultPicoContainer implements RegistrationPicoContainer, Serializable {
 
     private final PicoContainer parentContainer;
 

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;
+import java.io.Serializable;
 
 /**
  * CompositePicoContainer2 aggregates the the contents of more
@@ -34,7 +35,7 @@ import java.util.Collections;
  * constructor puts paid to that).
  *
  */
-public class CompositePicoContainer2 implements PicoContainer {
+public class CompositePicoContainer2 implements PicoContainer, Serializable {
 
     private final List containers = new ArrayList();
     private final ComponentRegistry componentRegistry;

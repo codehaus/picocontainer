@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
@@ -26,7 +27,7 @@ import org.picocontainer.defaults.NullContainer;
 import org.nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
-        implements InputSourceRegistrationNanoContainer
+        implements InputSourceRegistrationNanoContainer, Serializable
 {
 
     private final DocumentBuilder documentBuilder;

@@ -21,8 +21,9 @@ import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.io.Serializable;
 
-public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
+public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
 
     private final RegistrationPicoContainer picoContainer;
     private ArrayList classLoaders = new ArrayList();

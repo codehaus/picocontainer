@@ -24,13 +24,14 @@ import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
  * @version $Revision: 1.15 $
  */
-public class NanningNanoContainer extends HierarchicalPicoContainer {
+public class NanningNanoContainer extends HierarchicalPicoContainer implements Serializable {
     private final AspectSystem aspectSystem;
 
     private RegistrationPicoContainer serviceAndAspectContainer;

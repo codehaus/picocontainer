@@ -15,9 +15,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -56,8 +53,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                                        final Class componentImplementation,
                                        Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
-        // prepare adapter independent stuff
-        sortedMatchingConstructors = getSortedMatchingConstructors();
     }
 
     /**
@@ -89,6 +84,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
+        if(sortedMatchingConstructors == null) {
+            sortedMatchingConstructors = getSortedMatchingConstructors();
+        }
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
             List adapterDependencies = new ArrayList();
             boolean failedDependency = false;
@@ -252,15 +250,5 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             });
         }
         return matchingConstructors;
-    }
-
-    private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.defaultWriteObject();
-    }
-    
-    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        stream.defaultReadObject();
-        // we must initialize ourselves again
-        sortedMatchingConstructors = getSortedMatchingConstructors();
     }
 }

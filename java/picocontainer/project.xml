@@ -286,6 +286,10 @@
             <id>jmock</id>
             <version>SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <id>xstream</id>
+            <version>0.6-rc1</version>
+        </dependency>
 
     </dependencies>
 

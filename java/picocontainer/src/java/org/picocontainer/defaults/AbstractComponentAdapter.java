@@ -29,8 +29,8 @@ import java.lang.reflect.Modifier;
  * @since 1.0
  */
 public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {
-    private final Object componentKey;
-    private final Class componentImplementation;
+    private Object componentKey;
+    private Class componentImplementation;
     private PicoContainer container;
 
     /**

@@ -29,28 +29,42 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException {
-        try {
-            return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
-        } catch (final IntrospectionException e) {
-            ///CLOVER:OFF
-            throw new PicoIntrospectionException() {
-                public String getMessage() {
-                    return "Couldn't introspect bean:" + e.getMessage();
-                }
-            };
-            ///CLOVER:ON
+        return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
+    }
+
+    public static class PicoBeanInfoInitializationException extends PicoIntrospectionException {
+        protected PicoBeanInfoInitializationException(String message, Exception cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class NoSuchPropertyException extends PicoInitializationException {
+        public NoSuchPropertyException(String message) {
+            super(message);
         }
     }
 
     public static class Adapter extends DecoratingComponentAdapter {
         private final Map propertyValues = new HashMap();
         private PropertyDescriptor[] propertyDescriptors;
+        private Map propertyDescriptorMap = new HashMap();
 
-        public Adapter(ComponentAdapter delegate) throws IntrospectionException {
+        public Adapter(ComponentAdapter delegate) throws PicoBeanInfoInitializationException {
             super(delegate);
 
-            BeanInfo beanInfo = Introspector.getBeanInfo(delegate.getComponentImplementation());
-            propertyDescriptors = beanInfo.getPropertyDescriptors();
+            try {
+                BeanInfo beanInfo = Introspector.getBeanInfo(delegate.getComponentImplementation());
+                propertyDescriptors = beanInfo.getPropertyDescriptors();
+                for (int i = 0; i < propertyDescriptors.length; i++) {
+                    PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
+                    propertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
+                }
+            } catch (IntrospectionException e) {
+                ///CLOVER:OFF
+                throw new PicoBeanInfoInitializationException(
+                        "Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
+                ///CLOVER:ON
+            }
         }
 
         public Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException {
@@ -76,6 +90,19 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             }
 
             return result;
+        }
+
+        public void setPropertyValue(String propertyName, Object value) throws NoSuchPropertyException {
+            propertyValues.put(getPropertyDescriptor(propertyName), value);
+        }
+
+        private PropertyDescriptor getPropertyDescriptor(String propertyName) throws NoSuchPropertyException {
+            PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+            if( propertyDescriptor == null ) {
+                throw new NoSuchPropertyException( getDelegate().getComponentImplementation().getName() +
+                        " does not have a settable property named " + propertyName);
+            }
+            return propertyDescriptor;
         }
 
         public void setPropertyValue(PropertyDescriptor propertyDescriptor, Object value) {

@@ -29,7 +29,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
+                "builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()\n" +
                 "pico = builder.container(parent:parent) { \n" +
                 "  component(StringBuffer)\n" +
                 "}");

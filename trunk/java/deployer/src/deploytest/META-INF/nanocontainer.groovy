@@ -1,4 +1,4 @@
-builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()
+builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()
 pico = builder.container(parent:parent) {
  component(instance:'Groovy')
  component(key:'zap', class:foo.bar.Zap)

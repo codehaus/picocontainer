@@ -35,7 +35,7 @@ import org.nanocontainer.aop.dynaop.DynaopPointcutsFactory;
 import org.nanocontainer.aop.dynaop.DynaopPointcutsFactory;
 import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
-import org.nanocontainer.script.groovy.NanoGroovyBuilder;
+import org.nanocontainer.script.groovy.NanoContainerBuilder;
 import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -45,14 +45,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Extends <code>org.nanocontainer.script.groovy.NanoGroovyBuilder</code> to
+ * Extends <code>org.nanocontainer.script.groovy.NanoContainerBuilder</code> to
  * provide support for adding aspects.
  * 
  * @author Stephen Molitor
  * @version $Revision$
- * @see org.nanocontainer.script.groovy.NanoGroovyBuilder
+ * @see org.nanocontainer.script.groovy.NanoContainerBuilder
  */
-public class NanoAopGroovyBuilder extends NanoGroovyBuilder {
+public class NanoAopGroovyBuilder extends NanoContainerBuilder {
 
     private PointcutsFactory pointcutsFactory;
     private AspectablePicoContainer currentPico;

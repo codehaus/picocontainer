@@ -32,7 +32,7 @@ import java.util.Vector;
 public class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
 
     private String groovyScript = 
-            "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
+            "builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()\n" +
             "pico = builder.container(parent:parent) { \n" +
             "  component(StringBuffer)\n" +
             "}";

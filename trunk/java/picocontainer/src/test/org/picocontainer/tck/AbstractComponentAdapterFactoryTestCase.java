@@ -37,6 +37,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
         assertEquals(componentAdapter, componentAdapter);
+        assertTrue(!componentAdapter.equals("blah"));
     }
 
     public void testRegisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {

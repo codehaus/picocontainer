@@ -16,15 +16,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.HashSet;
+import java.lang.reflect.Array;
 
 /**
- * This component adapter is capable of instantiating various Map and Collections.
+ * This component adapter is capable of instantiating Arrays, Maps and Collections of certain types.
  * The contents of these instances depends on the keyType and valueType arguments.
  * <p/>
- * This makes it possible to support depenencies on generic collections.
+ * This makes it possible to support depenencies on arrays and generic collections.
  * <p/>
- * This class is currently not used. It will be used internally by ConstructorInjectionComponentAdapter
- * once generics are supported (scheduled for post-1.0 release).
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -42,7 +41,9 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
         this.collectionType = collectionType;
 
         // The order of tests are significant. The least generic types last.
-        if (List.class.isAssignableFrom(collectionType)) {
+        if (Array.class.isAssignableFrom(collectionType)) {
+            collectionClass = Array.class;
+        } else if (List.class.isAssignableFrom(collectionType)) {
             collectionClass = ArrayList.class;
         } else if (SortedSet.class.isAssignableFrom(collectionType)) {
             collectionClass = TreeSet.class;
@@ -61,11 +62,24 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
         List adaptersOfType = getContainer().getComponentAdaptersOfType(valueType);
-        if (Map.class.isAssignableFrom(collectionType)) {
-            return getMapInstance(adaptersOfType);
+        if (Array.class.isAssignableFrom(collectionType)) {
+            return getArrayInstance(adaptersOfType);
+        } else if (Map.class.isAssignableFrom(collectionType)) {
+                return getMapInstance(adaptersOfType);
         } else {
             return getCollectionInstance(adaptersOfType);
         }
+    }
+
+    private Object[] getArrayInstance(List adaptersOfType) {
+        Object[] result = (Object[]) Array.newInstance(valueType, adaptersOfType.size());
+        int i = 0;
+        for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            result[i] = componentAdapter.getComponentInstance();
+            i++;
+        }
+        return result;
     }
 
     private Collection getCollectionInstance(List adaptersOfType) {

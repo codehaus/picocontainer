@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -81,14 +82,20 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             for (int j = 0; j < currentParameters.length; j++) {
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
                 if (adapter == null) {
-//                    ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j], genericParameterTypes[j]);
-//                    if (genericCollectionComponentAdapter != null) {
-//                        genericCollectionComponentAdapter.setContainer(getContainer());
-//                        adapterDependencies.add(genericCollectionComponentAdapter);
-//                    } else {
+                    // perhaps it is an array or a generic collection
+                    if (parameterTypes[j].getComponentType() != null) {
+                        ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j].getComponentType());
+                        if (genericCollectionComponentAdapter != null) {
+                            genericCollectionComponentAdapter.setContainer(getContainer());
+                            adapterDependencies.add(genericCollectionComponentAdapter);
+                        } else {
+                            failedDependency = true;
+                            unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                        }
+                    } else {
                         failedDependency = true;
                         unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-//                    }
+                    }
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
@@ -143,6 +150,17 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             }
         }
         return greediestConstructor;
+    }
+
+    private ComponentAdapter getGenericCollectionComponentAdapter(Class componentType) {
+        GenericCollectionComponentAdapter result = null;
+
+        if(getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
+            return null;
+        } else {
+            Object componentKey = new Object[]{this, componentType};
+            return new GenericCollectionComponentAdapter(componentKey, null, componentType, Array.class);
+        }
     }
 
 //    private ComponentAdapter getGenericCollectionComponentAdapter(Class parameterType, Type genericType) {

@@ -13,8 +13,8 @@ package org.picocontainer.lifecycle;
 import org.picocontainer.PicoContainer;
 
 /**
- * @author Aslak
  * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @author Ward Cunningham
  */
 public interface LifecyclePicoAdapter extends Lifecycle {

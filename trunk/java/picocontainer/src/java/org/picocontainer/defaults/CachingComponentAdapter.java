@@ -18,6 +18,7 @@ import org.picocontainer.extras.DecoratingComponentAdapter;
 
 /**
  * This ComponentAdapter caches the instance.
+ * @version $Revision$
  */
 public class CachingComponentAdapter extends DecoratingComponentAdapter {
 

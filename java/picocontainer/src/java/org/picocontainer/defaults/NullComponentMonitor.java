@@ -10,8 +10,6 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentMonitor;
-
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

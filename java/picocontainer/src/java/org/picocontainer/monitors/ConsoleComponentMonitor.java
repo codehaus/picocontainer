@@ -10,43 +10,47 @@
 
 package org.picocontainer.monitors;
 
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
 
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
  * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class ConsoleComponentMonitor implements ComponentMonitor {
+    private PrintWriter out;
 
-    ///CLOVER:OFF
+    public ConsoleComponentMonitor(Writer out) {
+        this.out = new PrintWriter(out);
+    }
 
     public void instantiating(Constructor constructor) {
-        System.out.println("ComonentMonitor: instantiating constructor: " + constructor.toString());
+        out.println("PicoContainer: instantiating " + constructor.toString());
     }
 
     public void instantiated(Constructor constructor, long beforeTime, long duration) {
-        System.out.println("ComonentMonitor: instantiated constructor: " + constructor.toString() + "[ " + duration + "millis]");
+        out.println("PicoContainer: instantiated " + constructor.toString() + " [" + duration + "ms]");
     }
 
     public void instantiationFailed(Constructor constructor, Exception e) {
-        System.out.println("ComonentMonitor: instantiationFailed constructor: " + constructor.toString() + ", reason '" + e.getMessage() + "'");
+        out.println("PicoContainer: instantiation failed: " + constructor.toString() + ", reason: '" + e.getMessage() + "'");
     }
 
     public void invoking(Method method, Object instance) {
-        System.out.println("ComonentMonitor: invoking constructor: " + method.toString());
+        out.println("PicoContainer: invoking " + method.toString() + " on " + instance);
     }
 
     public void invoked(Method method, Object instance, long duration) {
-        System.out.println("ComonentMonitor: invoking constructor: " + method.toString() + "[instance " + System.identityHashCode(instance) + "]");
+        out.println("PicoContainer: invoked " + method.toString() + " on " + instance + " [" + duration + "ms]");
     }
 
     public void invocationFailed(Method method, Object instance, Exception e) {
-        System.out.println("ComonentMonitor: invoking constructor: " + method.toString() + "instance " + System.identityHashCode(instance) + "], reason '" + e.getMessage() + "'");
+        out.println("PicoContainer: invocation failed: " + method.toString() + " on " + instance + ", reason: '" + e.getMessage() + "'");
     }
-
-    ///CLOVER:ON
-
 }

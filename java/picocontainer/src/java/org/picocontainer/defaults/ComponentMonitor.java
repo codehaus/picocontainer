@@ -8,13 +8,15 @@
  * Original code by Paul Hammant & Obie Fernandez & Aslak                    *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.defaults;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
- * @author Paul Hammant & Obie Fernandez & Aslak Hellesoy
+ * @author Paul Hammant
+ * @author Obie Fernandez
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public interface ComponentMonitor {

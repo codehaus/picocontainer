@@ -11,7 +11,7 @@
 package org.nanocontainer.reflection;
 
 import org.nanocontainer.NanoPicoContainer;
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleManager;

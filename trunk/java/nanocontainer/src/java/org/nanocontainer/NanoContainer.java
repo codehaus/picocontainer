@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.xml.EmptyXmlCompositionException;
+import org.picoextras.script.xml.EmptyXmlCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;

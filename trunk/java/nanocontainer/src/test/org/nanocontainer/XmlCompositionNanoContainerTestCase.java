@@ -122,7 +122,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.picoextras.xml.XStreamXmlPseudoComponentFactory'>" +
+                        "    <pseudocomponent factory='org.picoextras.script.xml.XStreamXmlPseudoComponentFactory'>" +
                         "       <org.picoextras.testmodel.WebServerConfigStub>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +
@@ -143,7 +143,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.picoextras.xml.BeanXmlPseudoComponentFactory'>" +
+                        "    <pseudocomponent factory='org.picoextras.script.xml.BeanXmlPseudoComponentFactory'>" +
                         "       <org.picoextras.testmodel.WebServerConfigBean>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +

@@ -8,7 +8,7 @@
  * Original code by Jeppe Cramon                                             *
  *****************************************************************************/
 
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
-import org.picoextras.xml.EmptyXmlCompositionException;
+import org.picoextras.script.xml.EmptyXmlCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
@@ -58,7 +58,7 @@ public class ParameterXmlFrontEnd implements XmlFrontEnd {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.picoextras.xml.XmlFrontEnd#createPicoContainer(org.w3c.dom.Element)
+	 * @see org.picoextras.script.xml.XmlFrontEnd#createPicoContainer(org.w3c.dom.Element)
 	 */
 	public PicoContainer createPicoContainer(Element rootElement)
 		throws

@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.rhino.DefaultNanoRhinoScriptable;
-import org.picoextras.rhino.NanoRhinoManager;
+import org.picoextras.script.rhino.DefaultNanoRhinoScriptable;
+import org.picoextras.script.rhino.NanoRhinoManager;
 import org.picocontainer.PicoCompositionException;
 
 import java.io.IOException;

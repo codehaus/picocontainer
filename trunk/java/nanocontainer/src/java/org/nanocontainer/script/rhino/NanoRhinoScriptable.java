@@ -6,14 +6,13 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
+package org.picoextras.script.rhino;
 
-package org.picoextras.xml;
+import org.picocontainer.MutablePicoContainer;
+import org.mozilla.javascript.Scriptable;
 
-public class EmptyXmlCompositionException extends XmlFrontEndException {
-    public EmptyXmlCompositionException() {
-    }
+public interface NanoRhinoScriptable extends Scriptable {
 
-    public String getMessage() {
-        return "No components in the XML composition";
-    }
+    MutablePicoContainer getPicoContainer();
+
 }

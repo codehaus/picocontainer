@@ -6,13 +6,14 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
 import junit.framework.TestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.picoextras.xml.BeanXmlPseudoComponentFactory;
+import org.picoextras.script.xml.BeanXmlPseudoComponentFactory;
+import org.picoextras.script.xml.TestPseudoComp;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,10 +31,10 @@ public class BeanXmlPseudoComponentFactoryTestCase extends TestCase {
         BeanXmlPseudoComponentFactory xsf = new BeanXmlPseudoComponentFactory();
 
                 StringReader sr = new StringReader("" +
-                        "<org.picoextras.xml.TestPseudoComp>" +
+                        "<org.picoextras.script.xml.TestPseudoComp>" +
                           "<foo>10</foo>" +
                           "<bar>hello</bar>" +
-                        "</org.picoextras.xml.TestPseudoComp>"
+                        "</org.picoextras.script.xml.TestPseudoComp>"
                     );
         InputSource is = new InputSource(sr);
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

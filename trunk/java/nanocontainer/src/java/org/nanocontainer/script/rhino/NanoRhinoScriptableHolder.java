@@ -1,4 +1,6 @@
-package org.picoextras.rhino;
+package org.picoextras.script.rhino;
+
+import org.picoextras.script.rhino.NanoRhinoScriptable;
 
 public class NanoRhinoScriptableHolder {
 

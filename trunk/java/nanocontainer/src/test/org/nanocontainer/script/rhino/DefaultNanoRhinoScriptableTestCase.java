@@ -1,11 +1,11 @@
-package org.picoextras.rhino;
+package org.picoextras.script.rhino;
 
 import junit.framework.TestCase;
-import org.picoextras.testmodel.WebServer;
-import org.picoextras.testmodel.WebServerImpl;
-import org.picoextras.testmodel.WebServerConfig;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.testmodel.WebServer;
+import org.picoextras.testmodel.WebServerConfig;
+import org.picoextras.testmodel.WebServerImpl;
 
 import java.io.File;
 import java.io.IOException;

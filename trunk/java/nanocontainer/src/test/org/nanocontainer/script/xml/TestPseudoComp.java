@@ -7,31 +7,24 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
-import org.picocontainer.PicoCompositionException;
+public class TestPseudoComp {
+    private int foo;
+    private String bar;
 
-/**
- * @author Jeppe Cramon
- */
-public class XmlFrontEndException extends PicoCompositionException {
-
-	public XmlFrontEndException() {
-	}
-
-	/**
-	 * @param cause
-	 */
-	public XmlFrontEndException(Throwable cause) {
-		super(cause);
-	}
-
-    public XmlFrontEndException(String message, Throwable cause) {
-        super(message, cause);
+    public int getFoo() {
+        return foo;
+    }
+    public String getBar() {
+        return bar;
     }
 
-    public XmlFrontEndException(String message) {
-        super(message);
+    public void setFoo(int foo) {
+        this.foo = foo;
     }
 
+    public void setBar(String bar) {
+        this.bar = bar;
+    }
 }

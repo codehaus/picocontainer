@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoCompositionException;
@@ -134,7 +134,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <pseudocomponent factory='org.picoextras.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
+                "    <pseudocomponent factory='org.picoextras.script.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
                 "      <config-or-whatever/>"+
                 "    </pseudocomponent>" +
                 "</container>"));

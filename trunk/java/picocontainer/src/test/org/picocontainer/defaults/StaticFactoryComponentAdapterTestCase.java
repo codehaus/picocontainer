@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Leo Simmons & Jörg Schaible                              *
+ * Original code by Leo Simmons & Joerg Schaible                             *
  *****************************************************************************/
 package org.picocontainer.defaults;
 
@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 /**
  * @author J&ouml;rg Schaible
  */
-public class StaticFactoryComponentAdapterTest
+public class StaticFactoryComponentAdapterTestCase
         extends TestCase {
 
     public void testStaticFactoryInAction() {

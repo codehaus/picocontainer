@@ -24,9 +24,9 @@ import javax.management.modelmbean.RequiredModelMBean;
 
 
 /**
- * A factory for DynamicMBeans, that creates MBean instances using the provided classes {@link StandardMBean} and
- * {@link ModelMBean} of the JMX specification. The implementation offers special support for StandardMBeans following the
- * naming convention for their management interface using the class name of the component with an appended <em>MBean</em>.
+ * A factory for DynamicMBeans, that creates MBean instances using the classes {@link StandardMBean} and {@link ModelMBean}
+ * provided by the JMX specification. The implementation offers special support for StandardMBeans following the naming
+ * convention for their management interface using the class name of the component with an appended <em>MBean</em>.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -54,9 +54,9 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
                 try {
                     mBean.setManagedResource(componentInstance, "ObjectReference");
                 } catch (final InvalidTargetObjectTypeException e) {
-                    // Ignore, "ObjectReference" is a valid reference type
+                    // N/A: "ObjectReference" is a valid reference type
                 } catch (final InstanceNotFoundException e) {
-                    // Ignore, the instance was a valid object
+                    // N/A: the instance was a valid object
                 }
                 return mBean;
             } else {

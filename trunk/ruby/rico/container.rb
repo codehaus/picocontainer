@@ -71,17 +71,13 @@ module Rico
     def multicaster
       return Multicaster.new(self)
     end
-    
-    # Allow for simple API. See containertest.test_simple_intuituve_api
-    def method_missing(name, *args)
-      eq = name.to_s.index('=')
-      key = (eq ? name.to_s[0,eq].intern : name)
-      
-      if(!args.empty?)
-        register_component_implementation key, *args  
-      else
-        component_instance key
-      end
+
+    def []=(key, *args)
+      register_component_implementation(key, *args)
+    end
+
+    def [](key)
+      component_instance(key)
     end
 
   private

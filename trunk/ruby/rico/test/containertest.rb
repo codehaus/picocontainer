@@ -279,12 +279,12 @@ class ContainerTest < Test::Unit::TestCase
     assert_equal("foo", with_prop.foo)
   end
   
-  def test_simple_intuituve_api
+  def test_simple_hash_api
     rico = Container.new
     # Synonym for rico.register_component_implementation(:wp, WithProp)
-    rico.wp = WithProp
+    rico[:wp] = WithProp
     # Synonym for rico.component_implementation(:wp).foo = "hey"
-    rico.wp.foo = "hey"
-    assert_equal("hey", rico.wp.foo)
+    rico[:wp].foo = "hey"
+    assert_equal("hey", rico[:wp].foo)
   end
 end

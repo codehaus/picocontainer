@@ -88,6 +88,15 @@
         <role>Java Developer</role> 
       </roles> 
     </developer>     
+    <developer> 
+      <name>Chris Stevenson</name> 
+      <id>skizz</id> 
+      <email>skizz@codehaus.org</email> 
+      <organization></organization> 
+      <roles> 
+        <role>Java Developer</role> 
+      </roles> 
+    </developer>     
   </developers>
 
   <dependencies/>

@@ -350,24 +350,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return null;
     }
 
+    /**
+    * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+    */
     public void verify() throws PicoVerificationException {
-        List nestedVerificationExceptions = new ArrayList();
-        for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            try {
-                componentAdapter.verify(this);
-            } catch (PicoVerificationException e) {
-                nestedVerificationExceptions.add(e.getNestedExceptions());
-            }
-        }
-
-        if (!nestedVerificationExceptions.isEmpty()) {
-            throw new PicoVerificationException(nestedVerificationExceptions);
-        }
+        accept(new VerifyingVisitor());
     }
 
     /**
-     * @deprecated 1.1 - Use accept(LifecycleVisitor.STARTER)
+     * @deprecated since 1.1 - Use accept(LifecycleVisitor.STARTER)
      */
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -377,7 +368,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated 1.1 - Use accept(LifecycleVisitor.STOPPER)
+     * @deprecated since 1.1 - Use accept(LifecycleVisitor.STOPPER)
      */
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -387,7 +378,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated 1.1 - Use accept(LifecycleVisitor.DISPOSER)
+     * @deprecated since 1.1 - Use accept(LifecycleVisitor.DISPOSER)
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");

@@ -35,6 +35,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.VerifyingVisitor;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -387,7 +388,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(ComponentA.class);
         pico.registerComponentImplementation(ComponentE.class);
         try {
-            pico.verify();
+            pico.accept(new VerifyingVisitor());
             fail("we expect a PicoVerificationException");
         } catch (PicoVerificationException e) {
             List nested = e.getNestedExceptions();

@@ -60,7 +60,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
     public String toString() {
         StringBuffer buffer = new StringBuffer(this.getClass().getName());
         buffer.append("[");
-        buffer.append(super.toString());
+        buffer.append(delegate.toString());
         buffer.append("]");
         return buffer.toString();
     }

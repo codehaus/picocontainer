@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
@@ -39,11 +40,11 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
         return delegate.getComponentInstance(container);
     }
 
-    public void verify(PicoContainer container) {
+    public void verify(PicoContainer container) throws PicoVerificationException {
         delegate.verify(container);
     }
 

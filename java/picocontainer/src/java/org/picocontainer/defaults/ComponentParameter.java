@@ -13,9 +13,12 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVerificationException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A ComponentParameter should be used to pass in a particular component
@@ -111,7 +114,9 @@ public class ComponentParameter implements Parameter, Serializable {
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         final ComponentAdapter result = resolveAdapter(container, adapter, expectedType);
         if (result == null) {
-            throw new PicoIntrospectionException(expectedType.getClass().getName() + "not resolvable");
+            final List list = new LinkedList();
+            list.add(new PicoIntrospectionException(expectedType.getClass().getName() + "not resolvable"));
+            throw new PicoVerificationException(list);
         }
         result.verify(container);
     }

@@ -356,8 +356,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             try {
                 componentAdapter.verify(this);
-            } catch (UnsatisfiableDependenciesException e) {
-                nestedVerificationExceptions.add(e);
+            } catch (PicoVerificationException e) {
+                nestedVerificationExceptions.add(e.getNestedExceptions());
             }
         }
 

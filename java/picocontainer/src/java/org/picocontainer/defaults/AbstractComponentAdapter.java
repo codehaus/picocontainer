@@ -1,6 +1,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
@@ -13,6 +14,7 @@ import java.lang.reflect.Modifier;
 public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {
     private final Object componentKey;
     private final Class componentImplementation;
+    private PicoContainer container;
 
     protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentImplementation == null) {
@@ -55,5 +57,13 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
 
     public String toString() {
         return getClass().getName() + "[" + getComponentKey() + "]";
+    }
+
+    public PicoContainer getContainer() {
+        return container;
+    }
+
+    public void setContainer(PicoContainer picoContainer) {
+        this.container = picoContainer;
     }
 }

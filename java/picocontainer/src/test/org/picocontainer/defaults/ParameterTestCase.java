@@ -1,12 +1,7 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.*;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -17,25 +12,6 @@ import org.picocontainer.testmodel.Touchable;
  * @version $Revision: 1.7 $
  */
 public class ParameterTestCase extends TestCase {
-    public void testComponentSpecificationHandlesPrimtiveTypes() {
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(String.class, String.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
-        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
-        assertFalse(ConstructorComponentAdapter.isAssignableFrom(Integer.class, String.class));
-        assertFalse(ConstructorComponentAdapter.isAssignableFrom(Double.class, String.class));
-    }
-
-    static class TestClass {
-        public TestClass(String s1, String s2, String s3) {
-        }
-    }
 
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -43,7 +19,7 @@ public class ParameterTestCase extends TestCase {
         ComponentParameter parameter = new ComponentParameter(Touchable.class);
 
         assertNotNull(pico.getComponentInstance(Touchable.class));
-        Touchable touchable = (Touchable) parameter.resolveAdapter(pico).getComponentInstance(pico);
+        Touchable touchable = (Touchable) parameter.resolveAdapter(pico).getComponentInstance();
         assertNotNull(touchable);
     }
 
@@ -51,7 +27,7 @@ public class ParameterTestCase extends TestCase {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        assertSame(value, parameter.resolveAdapter(picoContainer).getComponentInstance(picoContainer));
+        assertSame(value, parameter.resolveAdapter(picoContainer).getComponentInstance());
     }
 
     public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {

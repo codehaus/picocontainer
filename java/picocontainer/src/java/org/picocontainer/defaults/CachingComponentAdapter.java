@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,10 +10,7 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.extras.DecoratingComponentAdapter;
 
 import java.io.Serializable;
@@ -35,10 +32,10 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
         this.instanceReference = instanceReference;
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer)
+    public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
-            instanceReference.set(super.getComponentInstance(picoContainer));
+            instanceReference.set(super.getComponentInstance());
         }
         return instanceReference.get();
     }

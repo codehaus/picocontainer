@@ -15,9 +15,27 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public interface PicoContainer {
+public interface PicoContainer extends Lifecycle {
     /**
-     * Gets a component instance.
+     * Checks for the presence of a particular component.
+     *
+     * @param componentKey key of the component to look for.
+     * @return true if there is a component for this key.
+     * @deprecated We don't need this. Can be determined with
+     * {@link #getComponentInstance(Object)} != null.
+     */
+    boolean hasComponent(Object componentKey);
+
+    /**
+     * Get all the component keys.
+     * @return all the component keys.
+     * @deprecated We don't need to expose this. The collection can be constructed outside
+     * with data from {@link #getComponentAdapters()}.
+     */
+    Collection getComponentKeys();
+
+    /**
+     * Gets a component instance registered with a specific key.
      *
      * @param componentKey key the component was registered with.
      * @return an instantiated component.
@@ -27,7 +45,17 @@ public interface PicoContainer {
     Object getComponentInstance(Object componentKey) throws PicoException;
 
     /**
-     * Gets all the registered component instances in the container.
+     * Finds a component instance matching the type, looking in parent if
+     * not found in self (unless parent is null).
+     *
+     * @param componentType type of the component.
+     * @return the adapter matching the class.
+     */
+    Object getComponentInstanceOfType(Class componentType);
+
+    /**
+     * Gets all the registered component instances in the container, including
+     * those in the parent (unless it is null).
      * The components are returned in their order of instantiation, which
      * depends on the dependency order between components.
      *
@@ -38,51 +66,11 @@ public interface PicoContainer {
     List getComponentInstances() throws PicoException;
 
     /**
-     * Gets component instances that are registered, but not managed by the container.
-     *
-     * @return unmanaged components.
-     */
-    List getUnmanagedComponentInstances() throws PicoException;
-
-    /**
-     * Checks for the presence of a particular component.
-     *
-     * @param componentKey key of the component to look for.
-     * @return true if there is a component for this key.
-     */
-    boolean hasComponent(Object componentKey);
-
-    /**
-     * Get all the component keys.
-     * @return all the component keys.
-     */
-    List getComponentKeys();
-
-    /**
-     * Get the child containers of this container. Any given container instance should not use
-     * the child containers to resolve components, but rahter their parents. This method
-     * is available merely to be able to traverse trees of containers, and is not used by the
-     * container itself.
-     * @return a Collection of {@link PicoContainer}.
-     * @see #getParentContainers()
-     */
-    Collection getChildContainers();
-
-    /**
-     * Get the parent containers of this container. In a purely hierarchical (tree structure) container,
-     * there will be 0..1 parents. However, it is possible to have several parents to construct graphs.
-     * A container will look in its parents if a component can be found in self.
+     * Get the parent container of this container.
      *
      * @return a Collection of {@link PicoContainer}.
      */
-    List getParentContainers();
-
-    /**
-     * Finds a ComponentAdapter matching the key.
-     *
-     * @param componentKey key of the component.
-     */
-    ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+    PicoContainer getParent();
 
     /**
      * Verifies that the dependencies for all the registered components can be satisfied
@@ -91,4 +79,28 @@ public interface PicoContainer {
      * @throws PicoVerificationException if there are unsatisifiable dependencies.
      */
     void verify() throws PicoVerificationException;
+
+    /**
+     * Finds a ComponentAdapter matching the key, looking in parent if
+     * not found in self (unless parent is null).
+     *
+     * @param componentKey key of the component.
+     * @return the adapter matching the key.
+     */
+    ComponentAdapter getComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+
+    /**
+     * Finds a ComponentAdapter matching the type, looking in parent if
+     * not found in self (unless parent is null).
+     *
+     * @param componentType type of the component.
+     * @return the adapter matching the class.
+     */
+    ComponentAdapter getComponentAdapterOfType(Class componentType);
+
+    /**
+     * Return all adapters (not including the adapters from the parent).
+     * @return Collection of {@link ComponentAdapter}.
+     */
+    Collection getComponentAdapters();
 }

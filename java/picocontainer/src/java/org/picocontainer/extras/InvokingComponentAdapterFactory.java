@@ -1,10 +1,6 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -62,9 +58,9 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
             }
         }
 
-        public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             if (componentInstance == null) {
-                componentInstance = super.getComponentInstance(picoContainer);
+                componentInstance = super.getComponentInstance();
 
                 if (method != null) {
                     try {

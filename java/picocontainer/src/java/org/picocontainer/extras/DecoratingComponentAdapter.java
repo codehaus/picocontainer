@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,11 +10,7 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -41,18 +37,23 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        picoContainer.registerOrderedComponentAdapter(this);
-        Object instance = delegate.getComponentInstance(picoContainer);
-        picoContainer.addOrderedComponentAdapter(this);
-        return instance;
+    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return delegate.getComponentInstance();
     }
 
-    public void verify(PicoContainer picoContainer) {
-        delegate.verify(picoContainer);
+    public void verify() {
+        delegate.verify();
+    }
+
+    public PicoContainer getContainer() {
+        return delegate.getContainer();
     }
 
     public ComponentAdapter getDelegate() {
         return delegate;
+    }
+
+    public void setContainer(PicoContainer picoContainer) {
+        delegate.setContainer(picoContainer);
     }
 }

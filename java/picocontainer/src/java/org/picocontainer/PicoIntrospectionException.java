@@ -1,19 +1,23 @@
 package org.picocontainer;
 
 /**
- *
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public abstract class PicoIntrospectionException extends PicoRegistrationException {
-    protected PicoIntrospectionException() {
+public class PicoIntrospectionException extends PicoRegistrationException {
+    public PicoIntrospectionException() {
     }
 
-    protected PicoIntrospectionException(String message) {
+    public PicoIntrospectionException(String message) {
         super(message);
     }
 
-    protected PicoIntrospectionException(String message, Exception cause) {
+    public PicoIntrospectionException(Throwable cause) {
+        super(cause);
+    }
+
+    public PicoIntrospectionException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -2,43 +2,12 @@ package org.picocontainer.tck;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.CyclicDependencyException;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.Washable;
-import org.picocontainer.testmodel.WashableTouchable;
+import org.picocontainer.*;
+import org.picocontainer.defaults.*;
+import org.picocontainer.testmodel.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
@@ -47,25 +16,174 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer();
 
-    protected final MutablePicoContainer createPicoContainerWithTouchableAndDependency() throws
+    protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
             PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        return pico;
 
+    }
+
+    protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws
+            PicoRegistrationException, PicoIntrospectionException {
+        MutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
         pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        pico.registerComponentImplementation(DependsOnTouchable.class);
         return pico;
     }
 
-    protected final PicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
-            PicoRegistrationException, PicoIntrospectionException {
-        MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(DependsOnTouchable.class);
-        return pico;
-
-    }
-
+    // TODO: remove? redundant test.
     public void testNewContainerIsNotNull() throws PicoRegistrationException, PicoIntrospectionException {
-        assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependency());
+        assertNotNull(createPicoContainerWithTouchableAndDependsOnTouchable());
+    }
+
+    public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
+        PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+
+        assertTrue("Container should have Touchable component",
+                pico.hasComponent(Touchable.class));
+        assertTrue("Container should have DependsOnTouchable component",
+                pico.hasComponent(DependsOnTouchable.class));
+        assertTrue("Component should be instance of Touchable",
+                pico.getComponentInstance(Touchable.class) instanceof Touchable);
+        assertTrue("Component should be instance of DependsOnTouchable",
+                pico.getComponentInstance(DependsOnTouchable.class) instanceof DependsOnTouchable);
+        assertTrue("should not have non existent component", !pico.hasComponent(Map.class));
+    }
+
+    public void testRegistersSingleInstance() throws PicoException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+        StringBuffer sb = new StringBuffer();
+        pico.registerComponentInstance(sb);
+        assertSame(sb, pico.getComponentInstance(StringBuffer.class));
+    }
+
+    public void testContainerIsSerializable() throws PicoException, PicoInitializationException,
+            IOException, ClassNotFoundException {
+
+        PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+        oos.writeObject(pico);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+
+        pico = (PicoContainer) ois.readObject();
+
+        DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
+        assertNotNull(dependsOnTouchable);
+        SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
+
+        assertTrue(touchable.wasTouched);
+    }
+
+    public void testGettingComponentWithMissingDependencyFails() throws PicoException, PicoRegistrationException {
+        try {
+            PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
+            picoContainer.getComponentInstance(DependsOnTouchable.class);
+            fail("should need a Touchable");
+        } catch (UnsatisfiableDependenciesException e) {
+            assertEquals(DependsOnTouchable.class, e.getUnsatisfiableComponentImplementation());
+            final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            assertEquals(1, unsatisfiableDependencies.size());
+            assertEquals(Touchable.class, unsatisfiableDependencies.iterator().next());
+        }
+    }
+
+    public void testDuplicateRegistration() throws Exception {
+        try {
+            MutablePicoContainer pico = createPicoContainer();
+            pico.registerComponentImplementation(Object.class);
+            pico.registerComponentImplementation(Object.class);
+            fail("Should have failed with duplicate registration");
+        } catch (DuplicateComponentKeyRegistrationException e) {
+            assertTrue("Wrong key", e.getDuplicateKey() == Object.class);
+        }
+    }
+
+    public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookeUp() throws PicoException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+        final HashMap map = new HashMap();
+        pico.registerComponentInstance(Map.class, map);
+        assertSame(map, pico.getComponentInstance(Map.class));
+    }
+
+    public void testAmbiguousResolution() throws PicoRegistrationException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation("ping", String.class);
+        pico.registerComponentInstance("pong", "pang");
+        try {
+            pico.getComponentInstance(String.class);
+        } catch (AmbiguousComponentResolutionException e) {
+            assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
+        }
+    }
+
+    public void testLookupWithUnregisteredKeyReturnsNull() throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        assertNull(pico.getComponentInstance(String.class));
+    }
+
+    public static class ListAdder {
+        public ListAdder(Collection list) {
+            list.add("something");
+        }
+    }
+
+    public void TODOtestMulticasterResolution() throws PicoRegistrationException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+
+        pico.registerComponentImplementation(ListAdder.class);
+        pico.registerComponentImplementation("a", ArrayList.class);
+        pico.registerComponentImplementation("l", LinkedList.class);
+
+        pico.getComponentInstance(ListAdder.class);
+
+        List a = (List) pico.getComponentInstance("a");
+        assertTrue(a.contains("something"));
+
+        List l = (List) pico.getComponentInstance("l");
+        assertTrue(l.contains("something"));
+    }
+
+    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(ComponentD.class);
+
+        try {
+            pico.getComponentInstance(ComponentD.class);
+        } catch (UnsatisfiableDependenciesException e) {
+            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            assertEquals(2, unsatisfiableDependencies.size());
+            assertTrue(unsatisfiableDependencies.contains(ComponentE.class));
+            assertTrue(unsatisfiableDependencies.contains(ComponentB.class));
+
+            assertTrue(e.getMessage().indexOf("class " + ComponentE.class.getName()) != -1);
+            assertTrue(e.getMessage().indexOf("class " + ComponentB.class.getName()) != -1);
+        }
+    }
+
+    public void testCyclicDependencyThrowsCyclicDependencyException() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(ComponentB.class);
+        pico.registerComponentImplementation(ComponentD.class);
+        pico.registerComponentImplementation(ComponentE.class);
+
+        try {
+            pico.getComponentInstance(ComponentD.class);
+            fail();
+        } catch (CyclicDependencyException e) {
+            final List dDependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
+            final List reportedDependencies = Arrays.asList(e.getDependencies());
+            assertEquals(dDependencies, reportedDependencies);
+        } catch (StackOverflowError e) {
+            fail();
+        }
+    }
+
+    public void testRemovalNonRegisteredComponentAdapterWorksAndReturnsNull() {
+        final MutablePicoContainer picoContainer = createPicoContainer();
+        assertNull(picoContainer.unregisterComponent("COMPONENT DOES NOT EXIST"));
     }
 
     /**
@@ -98,162 +216,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
                 reversedPicoContainer.getComponentInstances().get(0) instanceof String);
         assertFalse("instances should be created in same order as adapters are created",
                 reversedPicoContainer.getComponentInstances().get(1) instanceof String);
-    }
-
-
-    public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
-        PicoContainer pico = createPicoContainerWithTouchableAndDependency();
-
-        assertTrue("Container should have Touchable component",
-                pico.hasComponent(Touchable.class));
-        assertTrue("Container should have DependsOnTouchable component",
-                pico.hasComponent(DependsOnTouchable.class));
-        assertTrue("Component should be instance of Touchable",
-                pico.getComponentInstance(Touchable.class) instanceof Touchable);
-        assertTrue("Component should be instance of DependsOnTouchable",
-                pico.getComponentInstance(DependsOnTouchable.class) instanceof DependsOnTouchable);
-        assertTrue("should not have non existent component", !pico.hasComponent(Map.class));
-    }
-
-    public void testRegistersSingleInstance() throws PicoException, PicoInitializationException {
-        MutablePicoContainer pico = createPicoContainer();
-        StringBuffer sb = new StringBuffer();
-        pico.registerComponentInstance(sb);
-        assertSame(sb, pico.getComponentInstance(StringBuffer.class));
-    }
-
-    public void testContainerIsSerializable() throws PicoException, PicoInitializationException,
-            IOException, ClassNotFoundException {
-
-        PicoContainer pico = createPicoContainerWithTouchableAndDependency();
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-
-        oos.writeObject(pico);
-
-        // yeah yeah, is not needed.
-        pico = null;
-
-        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
-
-        pico = (PicoContainer) ois.readObject();
-
-        DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
-        assertNotNull(dependsOnTouchable);
-        SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
-
-        assertTrue("hello should have been called in Touchable", touchable.wasTouched);
-    }
-
-    public void testGettingComponentWithMissingDependencyFails() throws PicoException, PicoRegistrationException {
-        try {
-            PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
-            picoContainer.getComponentInstance(DependsOnTouchable.class);
-            fail("should need a Touchable");
-        } catch (NoSatisfiableConstructorsException e) {
-            assertEquals(DependsOnTouchable.class, e.getUnsatisfiableComponentImplementation());
-        }
-    }
-
-    public void testGettingSameComponentTwiceGivesSameComponent() throws PicoException {
-        MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(Object.class, Object.class);
-        assertSame(
-                pico.getComponentInstance(Object.class),
-                pico.getComponentInstance(Object.class)
-        );
-    }
-
-    public void testDuplicateRegistration() throws Exception {
-        try {
-            MutablePicoContainer pico = createPicoContainer();
-            pico.registerComponentImplementation(Object.class, Object.class);
-            pico.registerComponentImplementation(Object.class, Object.class);
-            fail("Should have barfed with duplicate registration");
-        } catch (DuplicateComponentKeyRegistrationException e) {
-            assertTrue("Wrong key", e.getDuplicateKey() == Object.class);
-        }
-    }
-
-    public void testByInstanceRegistration() throws PicoException, PicoInitializationException {
-        MutablePicoContainer pico = createPicoContainerWithTouchableAndDependency();
-        pico.registerComponentInstance(Map.class, new HashMap());
-        assertEquals("Wrong number of comps in the internals", 3, pico.getComponentInstances().size());
-        assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, pico.getComponentInstance(Map.class).getClass());
-    }
-
-    public void testAmbiguousResolution() throws PicoRegistrationException, PicoInitializationException {
-        MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation("ping", String.class);
-        pico.registerComponentInstance("pong", "pang");
-        try {
-            pico.getComponentInstance(String.class);
-        } catch (AmbiguousComponentResolutionException e) {
-            assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
-        }
-    }
-
-    public void testNoResolution() throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        MutablePicoContainer pico = createPicoContainer();
-        assertNull(pico.getComponentInstance(String.class));
-    }
-
-    public static class ListAdder {
-        public ListAdder(Collection list) {
-            list.add("something");
-        }
-    }
-
-    public void TODOtestMulticasterResolution() throws PicoRegistrationException, PicoInitializationException {
-        MutablePicoContainer pico = createPicoContainer();
-
-        pico.registerComponentImplementation(ListAdder.class);
-        pico.registerComponentImplementation("a", ArrayList.class);
-        pico.registerComponentImplementation("l", LinkedList.class);
-
-        pico.getComponentInstance(ListAdder.class);
-
-        List a = (List) pico.getComponentInstance("a");
-        assertTrue(a.contains("something"));
-
-        List l = (List) pico.getComponentInstance("l");
-        assertTrue(l.contains("something"));
-    }
-
-    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
-        MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(D.class);
-
-        try {
-            pico.getComponentInstance(D.class);
-        } catch (NoSatisfiableConstructorsException e) {
-            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(2, unsatisfiableDependencies.size());
-            assertTrue(unsatisfiableDependencies.contains(E.class));
-            assertTrue(unsatisfiableDependencies.contains(B.class));
-
-            assertTrue(e.getMessage().indexOf("class " + E.class.getName()) != -1);
-            assertTrue(e.getMessage().indexOf("class " + B.class.getName()) != -1);
-        }
-    }
-
-    public void testCyclicDependencyThrowsCyclicDependencyException() {
-        MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(B.class);
-        pico.registerComponentImplementation(D.class);
-        pico.registerComponentImplementation(E.class);
-
-        try {
-            pico.getComponentInstance(D.class);
-            fail();
-        } catch (CyclicDependencyException e) {
-            final List dDependencies = Arrays.asList(D.class.getConstructors()[0].getParameterTypes());
-            final List reportedDependencies = Arrays.asList(e.getDependencies());
-            assertEquals(dDependencies, reportedDependencies);
-        } catch (StackOverflowError e) {
-            fail();
-        }
     }
 
     public static class NeedsTouchable {
@@ -318,69 +280,42 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals("something", jms.path);
     }
 
-    public void testChildContainerCanBeAddedAndRemoved() {
-        MutablePicoContainer parent = createPicoContainer();
-        MutablePicoContainer child = createPicoContainer();
-
-        assertTrue(parent.addChild(child));
-        assertFalse(parent.addChild(child));
-        assertTrue(child.getParentContainers().contains(parent));
-        assertTrue(parent.getChildContainers().contains(child));
-
-        assertTrue(parent.removeChild(child));
-        assertFalse(parent.removeChild(child));
-        assertFalse(child.getParentContainers().contains(parent));
-        assertFalse(parent.getChildContainers().contains(child));
-
-    }
-
-    public void testParentContainerCanBeAddedAndRemoved() {
-        MutablePicoContainer parent = createPicoContainer();
-        MutablePicoContainer child = createPicoContainer();
-
-        assertTrue(child.addParent(parent));
-        assertFalse(child.addParent(parent));
-        assertTrue(child.getParentContainers().contains(parent));
-        assertTrue(parent.getChildContainers().contains(child));
-
-        assertTrue(child.removeParent(parent));
-        assertFalse(child.removeParent(parent));
-        assertFalse(child.getParentContainers().contains(parent));
-        assertFalse(parent.getChildContainers().contains(child));
-
-    }
-
-    public static class A {
-        public A(B b, C c) {
+    public static class ComponentA {
+        public ComponentA(ComponentB b, ComponentC c) {
             Assert.assertNotNull(b);
             Assert.assertNotNull(c);
         }
     }
 
-    public static class B {
+    public static class ComponentB {
     }
 
-    public static class C {
+    public static class ComponentC {
     }
 
-    public static class D {
-        public D(E e, B b) {
+    public static class ComponentD {
+        public ComponentD(ComponentE e, ComponentB b) {
             Assert.assertNotNull(e);
             Assert.assertNotNull(b);
         }
     }
 
-    public static class E {
-        public E(D d) {
+    public static class ComponentE {
+        public ComponentE(ComponentD d) {
             Assert.assertNotNull(d);
         }
     }
 
+    public static class ComponentF {
+        public ComponentF(ComponentA a) {
+            Assert.assertNotNull(a);
+        }
+    }
 
     public void testAggregatedVerificationException() {
         MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(A.class);
-        pico.registerComponentImplementation(E.class);
+        pico.registerComponentImplementation(ComponentA.class);
+        pico.registerComponentImplementation(ComponentE.class);
         try {
             pico.verify();
             fail("we expect a PicoVerificationException");
@@ -388,12 +323,19 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             List nested = e.getNestedExceptions();
             assertEquals(2, nested.size());
 
-            Set bc = new HashSet(Arrays.asList(new Class[]{B.class, C.class}));
-            assertTrue(nested.contains(new NoSatisfiableConstructorsException(A.class, bc)));
+            Set bc = new HashSet(Arrays.asList(new Class[]{ComponentB.class, ComponentC.class}));
+            assertTrue(nested.contains(new UnsatisfiableDependenciesException(ComponentA.class, bc)));
 
-            Set d = new HashSet(Arrays.asList(new Class[]{D.class}));
-            assertTrue(nested.contains(new NoSatisfiableConstructorsException(E.class, d)));
+            Set d = new HashSet(Arrays.asList(new Class[]{ComponentD.class}));
+            assertTrue(nested.contains(new UnsatisfiableDependenciesException(ComponentE.class, d)));
         }
+    }
+
+    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
+        final InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter("", new Object());
+        final MutablePicoContainer picoContainer = createPicoContainer();
+        picoContainer.registerComponent(componentAdapter);
+        assertSame(picoContainer, componentAdapter.getContainer());
     }
 
 }

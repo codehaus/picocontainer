@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,11 +10,7 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -25,27 +21,23 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Instantiates components using IoC type 3. That means trying to
- * pass the constructor arguments created by other ComponentAdapters
- * in the container.
+ * Instantiates components using Constructor-Based Dependency Injection.
  * {@inheritDoc}
- *
- * @author Jon Tirs&eacute;n
+ * 
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
+ * @author Jon Tirs&eacute;n
  * @author Zohar Melamed
  * @version $Revision$
  */
 public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
-    private List satisfiableConstructorsCache;
-    private Constructor greediestConstructor;
-
     /**
      * Explicitly specifies parameters, if null uses default parameters.
-     *
-     * @param componentKey
-     * @param componentImplementation
-     * @param parameters
+     * 
+     * @param componentKey            
+     * @param componentImplementation 
+     * @param parameters              
      */
     public ConstructorComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
@@ -55,125 +47,92 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
     /**
      * Use default parameters.
-     *
-     * @param componentKey
-     * @param componentImplementation
+     * 
+     * @param componentKey            
+     * @param componentImplementation 
      */
     public ConstructorComponentAdapter(Object componentKey,
                                        Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
-    public Class[] getDependencies(PicoContainer picoContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Constructor constructor = getConstructor(picoContainer);
+    protected Class[] getMostSatisfiableDependencyTypes(PicoContainer dependencyContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Constructor constructor = getGreediestSatisifableConstructor(dependencyContainer);
         return constructor.getParameterTypes();
     }
 
     /**
      * @return The greediest satisfiable constructor
      */
-    protected Constructor getConstructor(PicoContainer picoContainer) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (greediestConstructor == null) {
-            List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
-            List satisfiableConstructors = getSatisfiableConstructors(allConstructors, picoContainer);
+    protected Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
+        List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, dependencyContainer);
 
-            // now we'll just take the biggest one
-            greediestConstructor = null;
-            Set conflicts = new HashSet();
-            for (int i = 0; i < satisfiableConstructors.size(); i++) {
-                Constructor currentConstructor = (Constructor) satisfiableConstructors.get(i);
-                if (greediestConstructor == null) {
-                    greediestConstructor = currentConstructor;
-                } else if (greediestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
-                    conflicts.clear();
-                    greediestConstructor = currentConstructor;
-                } else if (greediestConstructor.getParameterTypes().length == currentConstructor.getParameterTypes().length) {
-                    conflicts.add(greediestConstructor);
-                    conflicts.add(currentConstructor);
-                }
+        // now we'll just take the biggest one
+        Constructor greediestConstructor = null;
+        Set conflicts = new HashSet();
+        for (int i = 0; i < satisfiableConstructors.size(); i++) {
+            Constructor currentConstructor = (Constructor) satisfiableConstructors.get(i);
+            if (greediestConstructor == null) {
+                greediestConstructor = currentConstructor;
+            } else if (greediestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
+                conflicts.clear();
+                greediestConstructor = currentConstructor;
+            } else if (greediestConstructor.getParameterTypes().length == currentConstructor.getParameterTypes().length) {
+                conflicts.add(greediestConstructor);
+                conflicts.add(currentConstructor);
             }
-            if (!conflicts.isEmpty()) {
-                throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
-            }
+        }
+        if (!conflicts.isEmpty()) {
+            throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         }
         return greediestConstructor;
     }
 
-    private List getSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (satisfiableConstructorsCache == null) {
-            satisfiableConstructorsCache = new ArrayList();
-            Set failedDependencies = new HashSet();
-            for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
-                boolean failedDependency = false;
-                Constructor constructor = (Constructor) iterator.next();
-                Class[] parameterTypes = constructor.getParameterTypes();
-                Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+    private List getAllSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        List satisfiableConstructors = new ArrayList();
+        Set unusableAdapters = new HashSet();
+        for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
+            boolean failedDependency = false;
+            Constructor constructor = (Constructor) iterator.next();
+            Class[] parameterTypes = constructor.getParameterTypes();
+            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes, picoContainer);
 
-                for (int i = 0; i < currentParameters.length; i++) {
-                    ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer);
-                    if (adapter == null) {
+            for (int i = 0; i < currentParameters.length; i++) {
+                ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer);
+                if (adapter == null) {
+                    failedDependency = true;
+                    unusableAdapters.add(parameterTypes[i]);
+                } else {
+                    // we can't depend on ourself
+                    if (adapter.equals(this)) {
                         failedDependency = true;
-                        failedDependencies.add(parameterTypes[i]);
-                    } else {
-                        // we can't depend on ourself
-                        if (adapter.equals(this)) {
-                            failedDependency = true;
-                            failedDependencies.add(parameterTypes[i]);
-                        }
-                        if (getComponentKey().equals(adapter.getComponentKey())) {
-                            failedDependency = true;
-                            failedDependencies.add(parameterTypes[i]);
-                        }
+                        unusableAdapters.add(parameterTypes[i]);
+                    }
+                    if (getComponentKey().equals(adapter.getComponentKey())) {
+                        failedDependency = true;
+                        unusableAdapters.add(parameterTypes[i]);
                     }
                 }
-                if (!failedDependency) {
-                    satisfiableConstructorsCache.add(constructor);
-                }
             }
-            if (satisfiableConstructorsCache.isEmpty()) {
-                throw new NoSatisfiableConstructorsException(getComponentImplementation(), failedDependencies);
+            if (!failedDependency) {
+                satisfiableConstructors.add(constructor);
             }
         }
-
-        return satisfiableConstructorsCache;
+        if (satisfiableConstructors.isEmpty()) {
+            throw new UnsatisfiableDependenciesException(getComponentImplementation(), unusableAdapters);
+        }
+        return satisfiableConstructors;
     }
 
-    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) {
+    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
         Object[] result = new Object[adapterDependencies.length];
         for (int i = 0; i < adapterDependencies.length; i++) {
             ComponentAdapter adapterDependency = adapterDependencies[i];
-            result[i] = adapterDependency.getComponentInstance(picoContainer);
+            PicoContainer adapterOwner = adapterDependency.getContainer();
+            result[i] = adapterDependency.getComponentInstance();
         }
         return result;
-    }
-
-    // TODO: remove? Only used from ParameterTestCase
-    public static boolean isAssignableFrom(Class actual, Class requested) {
-        if (actual == char.class || actual == Character.class) {
-            return requested == char.class || requested == Character.class;
-        }
-        if (actual == double.class || actual == Double.class) {
-            return requested == double.class || requested == Double.class;
-        }
-        if (actual == float.class || actual == Float.class) {
-            return requested == float.class || requested == Float.class;
-        }
-        if (actual == int.class || actual == Integer.class) {
-            return requested == int.class || requested == Integer.class;
-        }
-        if (actual == long.class || actual == Long.class) {
-            return requested == long.class || requested == Long.class;
-        }
-        if (actual == short.class || actual == Short.class) {
-            return requested == short.class || requested == Short.class;
-        }
-        if (actual == byte.class || actual == Byte.class) {
-            return requested == byte.class || requested == Byte.class;
-        }
-        if (actual == boolean.class || actual == Boolean.class) {
-            return requested == boolean.class || requested == Boolean.class;
-        }
-        return actual.isAssignableFrom(requested);
     }
 
     public boolean equals(Object object) {

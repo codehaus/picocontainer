@@ -1,5 +1,7 @@
 package org.picocontainer;
 
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+
 /**
  * A component adapter is responsible for providing
  * a specific component instance.
@@ -22,19 +24,24 @@ public interface ComponentAdapter {
      * Gets the component instance. This method will usually create
      * a new instance for each call (an exception is {@link org.picocontainer.defaults.CachingComponentAdapter}).
      *
-     * @param dependencyContainer container where the adapter can look for
-     *  dependent component instances.
      * @return the component instance.
      * @throws PicoInitializationException if the component couldn't be instantiated
      */
-    Object getComponentInstance(MutablePicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException;
+    Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Verify that all dependencies for this adapter can be satisifed.
-     * 
-     * @param picoContainer container where the dependencied fot this adapter will be resolved.
+     *
      * @throws PicoIntrospectionException if the dependencies cannot be resolved.
      */
-    void verify(PicoContainer picoContainer) throws PicoIntrospectionException;
+    void verify() throws UnsatisfiableDependenciesException;
 
+    PicoContainer getContainer();
+
+    /**
+     * Sets the container in which this instance is registered, called by the container upon
+     * registration.
+     * @param picoContainer
+     */
+    void setContainer(PicoContainer picoContainer);
 }

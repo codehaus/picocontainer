@@ -2,14 +2,13 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 
 public class TransientComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
         ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter("blah", Object.class);
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        Object o1 = componentAdapter.getComponentInstance(pico);
-        Object o2 = componentAdapter.getComponentInstance(pico);
+        Object o1 = componentAdapter.getComponentInstance();
+        Object o2 = componentAdapter.getComponentInstance();
+        assertNotNull(o1);
         assertNotSame(o1, o2);
     }
 
@@ -49,16 +48,16 @@ public class TransientComponentAdapterTestCase extends TestCase {
 
     public void testSuccessfulVerificationWithNoDependencies() {
         InstantiatingComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", A.class);
-        componentAdapter.verify(null);
+        componentAdapter.verify();
     }
 
     public void testFailingVerificationWithUnsatisfiedDependencies() {
         ComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", B.class);
+        componentAdapter.setContainer(new DefaultPicoContainer());
         try {
-            componentAdapter.verify(new DefaultPicoContainer());
-            fail("Expected NoSatisfiableConstructorsException");
-        } catch (NoSatisfiableConstructorsException e) {
-            // ok
+            componentAdapter.verify();
+            fail();
+        } catch (UnsatisfiableDependenciesException e) {
         }
     }
 

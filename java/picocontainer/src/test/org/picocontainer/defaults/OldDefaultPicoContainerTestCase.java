@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,14 +11,7 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.*;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -143,7 +136,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponentInstances().size());
 
-        Peelable myPeelableContainer = (Peelable) pico.getComponentMulticaster();
+        Peelable myPeelableContainer = (Peelable) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
 
         myPeelableContainer.peel();
 
@@ -157,132 +150,101 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInitializationException {
+// TODO REMOVE? Probably covered sufficiently by DefaultPicoContainerLifecycleTestCase
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        pico.registerComponentImplementation(PeelableComponent.class);
-        pico.registerComponentImplementation(CoincidentallyPeelableComponent.class);
-        pico.registerComponentImplementation(PeelableAndWashableComponent.class);
-
-        Object myPeelableAndWashableContainer = pico.getComponentMulticaster();
-
-        ((Washable) myPeelableAndWashableContainer).wash();
-
-        PeelableComponent peelableComponent =
-                (PeelableComponent) pico.getComponentInstance(PeelableComponent.class);
-        CoincidentallyPeelableComponent notReallyPeelableComponent =
-                (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
-        PeelableAndWashableComponent washAndPeel =
-                (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
-
-        assertFalse(washAndPeel.wasPeeled);
-        assertTrue(washAndPeel.wasWashed);
-
-        ((Peelable) myPeelableAndWashableContainer).peel();
-
-        assertTrue(peelableComponent.wasPeeled);
-        assertTrue(washAndPeel.wasPeeled);
-        assertTrue(washAndPeel.wasWashed);
-        assertFalse(notReallyPeelableComponent.wasPeeled);
-
+//        DefaultPicoContainer pico = new DefaultPicoContainer();
+//
+//        pico.registerComponentImplementation(PeelableComponent.class);
+//        pico.registerComponentImplementation(CoincidentallyPeelableComponent.class);
+//        pico.registerComponentImplementation(PeelableAndWashableComponent.class);
+//
+//        Object myPeelableAndWashableContainer = pico.getComponentMulticaster();
+//
+//        ((Washable) myPeelableAndWashableContainer).wash();
+//
+//        PeelableComponent peelableComponent =
+//                (PeelableComponent) pico.getComponentInstance(PeelableComponent.class);
+//        CoincidentallyPeelableComponent notReallyPeelableComponent =
+//                (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
+//        PeelableAndWashableComponent washAndPeel =
+//                (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
+//
+//        assertFalse(washAndPeel.wasPeeled);
+//        assertTrue(washAndPeel.wasWashed);
+//
+//        ((Peelable) myPeelableAndWashableContainer).peel();
+//
+//        assertTrue(peelableComponent.wasPeeled);
+//        assertTrue(washAndPeel.wasPeeled);
+//        assertTrue(washAndPeel.wasWashed);
+//        assertFalse(notReallyPeelableComponent.wasPeeled);
+//
     }
 
     public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInitializationException {
+// TODO REMOVE? Probably covered sufficiently by DefaultPicoContainerLifecycleTestCase
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        //an unmanaged component
-        PeelableComponent peelableComponent = new PeelableComponent();
-        pico.registerComponentInstance(PeelableComponent.class, peelableComponent);
-
-        //some managed ones
-        pico.registerComponentImplementation(CoincidentallyPeelableComponent.class);
-        pico.registerComponentImplementation(PeelableAndWashableComponent.class);
-
-        Object myPeelableAndWashableContainer = pico.getComponentMulticaster(true, true);
-
-        ((Washable) myPeelableAndWashableContainer).wash();
-
-        CoincidentallyPeelableComponent notReallyPeelableComponent =
-                (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
-        PeelableAndWashableComponent washAndPeel =
-                (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
-
-        assertFalse(washAndPeel.wasPeeled);
-        assertTrue(washAndPeel.wasWashed);
-
-        ((Peelable) myPeelableAndWashableContainer).peel();
-
-        assertTrue(peelableComponent.wasPeeled);
-        assertTrue(washAndPeel.wasPeeled);
-        assertTrue(washAndPeel.wasWashed);
-        assertFalse(notReallyPeelableComponent.wasPeeled);
-
+//        DefaultPicoContainer pico = new DefaultPicoContainer();
+//
+//        //an unmanaged component
+//        PeelableComponent peelableComponent = new PeelableComponent();
+//        pico.registerComponentInstance(PeelableComponent.class, peelableComponent);
+//
+//        //some managed ones
+//        pico.registerComponentImplementation(CoincidentallyPeelableComponent.class);
+//        pico.registerComponentImplementation(PeelableAndWashableComponent.class);
+//
+//        Object myPeelableAndWashableContainer = pico.getComponentMulticaster(true, true);
+//
+//        ((Washable) myPeelableAndWashableContainer).wash();
+//
+//        CoincidentallyPeelableComponent notReallyPeelableComponent =
+//                (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
+//        PeelableAndWashableComponent washAndPeel =
+//                (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
+//
+//        assertFalse(washAndPeel.wasPeeled);
+//        assertTrue(washAndPeel.wasWashed);
+//
+//        ((Peelable) myPeelableAndWashableContainer).peel();
+//
+//        assertTrue(peelableComponent.wasPeeled);
+//        assertTrue(washAndPeel.wasPeeled);
+//        assertTrue(washAndPeel.wasWashed);
+//        assertFalse(notReallyPeelableComponent.wasPeeled);
+//
     }
 
     public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
+// TODO REMOVE? Probably covered sufficiently by DefaultPicoContainerLifecycleTestCase
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        Recorder recorder = new Recorder();
-
-        pico.registerComponentInstance(Recorder.class, recorder);
-
-        pico.registerComponentImplementation(RecordingAware2.class, RecordingAware2.class);
-        pico.registerComponentImplementation(RecordingAware3.class, RecordingAware3.class);
-        pico.registerComponentImplementation(RecordingAware4.class, RecordingAware4.class);
-
-        pico.getComponentInstances();
-
-        assertEquals("instantiated RecordingAware2", recorder.getWhatHappened(0));
-        assertEquals("instantiated RecordingAware3", recorder.getWhatHappened(1));
-        assertEquals("instantiated RecordingAware4", recorder.getWhatHappened(2));
-
-        recorder.clear();
-
-        Object washableContainer =
-                pico.getComponentMulticaster(false, true);
-
-        ((Washable) washableContainer).wash();
-
-        assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
-        assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
-        assertEquals("RecordingAware2.wash()", recorder.getWhatHappened(2));
-
-    }
-
-    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        Recorder recorder = new Recorder();
-
-        RecordingAware2 unmanagedComponent = new RecordingAware2(recorder);
-
-        recorder.clear();
-
-        pico.registerComponentInstance(Recorder.class, recorder);
-        pico.registerComponentInstance(RecordingAware2.class, unmanagedComponent);
-        pico.registerComponentImplementation(RecordingAware3.class);
-        pico.registerComponentImplementation(RecordingAware4.class);
-
-        pico.getComponentInstances();
-
-        assertEquals("instantiated RecordingAware3", recorder.getWhatHappened(0));
-        assertEquals("instantiated RecordingAware4", recorder.getWhatHappened(1));
-
-        recorder.clear();
-
-        Object washableContainer =
-                pico.getComponentMulticaster(false, false);
-
-        ((Washable) washableContainer).wash();
-
-        assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
-        assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
-        assertTrue(
-                "Unmanaged components should not be called by an getComponentMulticaster() proxy",
-                !recorder.thingsThatHappened.contains("RecordingAware2.wash()"));
+//        DefaultPicoContainer pico = new DefaultPicoContainer();
+//
+//        Recorder recorder = new Recorder();
+//
+//        pico.registerComponentInstance(Recorder.class, recorder);
+//
+//        pico.registerComponentImplementation(RecordingAware2.class, RecordingAware2.class);
+//        pico.registerComponentImplementation(RecordingAware3.class, RecordingAware3.class);
+//        pico.registerComponentImplementation(RecordingAware4.class, RecordingAware4.class);
+//
+//        pico.getComponentInstances();
+//
+//        assertEquals("instantiated RecordingAware2", recorder.getWhatHappened(0));
+//        assertEquals("instantiated RecordingAware3", recorder.getWhatHappened(1));
+//        assertEquals("instantiated RecordingAware4", recorder.getWhatHappened(2));
+//
+//        recorder.clear();
+//
+//        Object washableContainer =
+//                pico.getComponentMulticaster(false, true);
+//
+//        ((Washable) washableContainer).wash();
+//
+//        assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
+//        assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
+//        assertEquals("RecordingAware2.wash()", recorder.getWhatHappened(2));
+//
     }
 
     public void testPeelableAndWashable() throws PicoInitializationException, PicoRegistrationException {
@@ -292,7 +254,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(PeelableComponent.class);
         pico.registerComponentImplementation(PeelableAndWashableComponent.class);
 
-        Object proxy = pico.getComponentMulticaster();
+        Object proxy = new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -398,7 +360,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(OrangeFactory.class);
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) pico.getComponentMulticaster();
+        FoodFactory foodFactory = (FoodFactory) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
@@ -472,10 +434,10 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
     public void testGetComponentSpecification() throws PicoRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        assertNull(pico.findImplementingComponentAdapter(Touchable.class));
+        assertNull(pico.getComponentAdapterOfType(Touchable.class));
         pico.registerComponentImplementation(SimpleTouchable.class);
-        assertNotNull(pico.findImplementingComponentAdapter(SimpleTouchable.class));
-        assertNotNull(pico.findImplementingComponentAdapter(Touchable.class));
+        assertNotNull(pico.getComponentAdapterOfType(SimpleTouchable.class));
+        assertNotNull(pico.getComponentAdapterOfType(Touchable.class));
     }
 
 
@@ -532,75 +494,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         assertNotNull("Object two the same", pico.getComponentInstance("two"));
 
         assertNull("Lookup of unknown key should return null", pico.getComponentInstance("unknown"));
-    }
-
-    public void testRegistrationByInterfaceAndName() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        Webster one = new Webster(new ArrayList());
-        Webster two = new Webster(new ArrayList());
-
-        pico.registerComponentImplementation(DependsOnTouchable.class);
-        pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        pico.registerComponentInstance("one", one);
-        pico.registerComponentInstance("two", two);
-
-        assertEquals("Wrong number of comps in the internals", 4, pico.getComponentInstances().size());
-
-        assertTrue("There should have been a Fred in the internals", pico.hasComponent(DependsOnTouchable.class));
-        assertTrue(
-                "There should have been a SimpleTouchable in the internals",
-                pico.getComponentInstance(SimpleTouchable.class) != null);
-
-        assertEquals("Looking up one Touchable", one, pico.getComponentInstance("one"));
-        assertEquals("Looking up two Touchable", two, pico.getComponentInstance("two"));
-
-        assertTrue("Object one the same", one == pico.getComponentInstance("one"));
-        assertTrue("Object two the same", two == pico.getComponentInstance("two"));
-
-        assertEquals("Lookup of unknown key should return null", null, pico.getComponentInstance("unknown"));
-    }
-
-    public void testRegisterByNameResolvesToInterfaceRegisteredComponents() throws Exception {
-        // TODO we should add some kind of findImplementatingComponents() method to PicoContainer!
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        pico.registerComponentImplementation("fred", DependsOnTouchable.class);
-        pico.registerComponentImplementation("fred2", DependsOnTouchable.class);
-        pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-
-
-        assertEquals("Wrong number of comps in the internals", 3, pico.getComponentInstances().size());
-
-        assertTrue("There should have been a Touchable in the internals", pico.hasComponent(Touchable.class));
-        assertTrue(
-                "There should have been a SimpleTouchable in the internals",
-                pico.getComponentInstance(SimpleTouchable.class) != null);
-
-        DependsOnTouchable fred = (DependsOnTouchable) pico.getComponentInstance("fred");
-        DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponentInstance("fred2");
-
-        assertTrue("Found fred", fred != null);
-        assertTrue("Found fred2", fred2 != null);
-
-        // let's check that the Touchable's have been resolved
-        assertTrue("fred should have a Touchable", fred.getTouchable() != null);
-        assertTrue("fred2 should have a Touchable", fred2.getTouchable() != null);
-
-        assertEquals("Lookup of unknown key should return null", null, pico.getComponentInstance("unknown"));
-    }
-
-    public void testUnmanagedCompsAreNotEligibleForComposite() throws Exception {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentInstance(Map.class, new HashMap());
-
-        try {
-            Map map = (Map) pico.getComponentMulticaster();
-            fail("Unmanaged components should not make it into the multicaster: " + map);
-        } catch (ClassCastException e) {
-            // expected
-        }
     }
 
     public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
@@ -696,12 +589,19 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                         return componentImplementation;
                     }
 
-                    public Object getComponentInstance(MutablePicoContainer componentRegistry)
+                    public Object getComponentInstance()
                             throws PicoInitializationException {
                         return touchable;
                     }
 
-                    public void verify(PicoContainer picoContainer) {
+                    public void verify() {
+                    }
+
+                    public PicoContainer getContainer() {
+                        return null;
+                    }
+
+                    public void setContainer(PicoContainer picoContainer) {
 
                     }
                 };

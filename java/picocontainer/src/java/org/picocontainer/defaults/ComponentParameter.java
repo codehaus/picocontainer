@@ -1,11 +1,9 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
 /**
  * A ComponentParameter should be used to pass in a particular component
@@ -22,12 +20,24 @@ import java.io.Serializable;
 public class ComponentParameter implements Parameter, Serializable {
 
     private Object componentKey;
+    private Class componentType;
 
     public ComponentParameter(Object componentKey) {
         this.componentKey = componentKey;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws PicoIntrospectionException {
-        return picoContainer.findComponentAdapter(componentKey);
+    public ComponentParameter(Class componentType) {
+        this.componentType = componentType;
     }
+
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws PicoIntrospectionException {
+        ComponentAdapter result;
+        if (componentKey != null) {
+            result = picoContainer.getComponentAdapter(componentKey);
+        } else {
+            result = picoContainer.getComponentAdapterOfType(componentType);
+        }
+        return result;
+    }
+
 }

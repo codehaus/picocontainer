@@ -1,12 +1,8 @@
 package org.picocontainer.extras;
 
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.*;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -25,11 +21,11 @@ public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
         return super.getComponentImplementation();
     }
 
-    public synchronized Object getComponentInstance(MutablePicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException {
-        return super.getComponentInstance(dependencyContainer);
+    public synchronized Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+        return super.getComponentInstance();
     }
 
-    public synchronized void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
-        super.verify(picoContainer);
+    public synchronized void verify() throws UnsatisfiableDependenciesException {
+        super.verify();
     }
 }

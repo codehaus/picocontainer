@@ -1,23 +1,15 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Instantiates components using IoC type 2. That means trying to
- * pass the bean setters arguments created by other ComponentAdapters
- * in the container.
+ * Instantiates components using Setter-Based Dependency Injection. 
  * {@inheritDoc}
  *
  * @author Aslak Helles&oslash;y
@@ -28,7 +20,7 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
         super(componentKey, componentImplementation, parameters);
     }
 
-    public Class[] getDependencies(PicoContainer picoContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Class[] getMostSatisfiableDependencyTypes(PicoContainer dependencyContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Method[] setters = getSetters();
         Class[] dependencies = new Class[setters.length];
         for (int i = 0; i < setters.length; i++) {
@@ -37,39 +29,37 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
         return dependencies;
     }
 
-    protected Object instantiateComponent(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Object result = super.instantiateComponent(adapterDependencies, picoContainer);
-        setDependencies(result, adapterDependencies, picoContainer);
+    protected Object instantiateComponent(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Object result = super.instantiateComponent(adapterDependencies, dependencyContainer);
+        setDependencies(result, adapterDependencies, dependencyContainer);
         return result;
     }
 
-    protected Constructor getConstructor(PicoContainer picoContainer) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
             return getComponentImplementation().getConstructor(new Class[0]);
         } catch (NoSuchMethodException e) {
-            throw new NoSatisfiableConstructorsException(getComponentImplementation(), Collections.EMPTY_SET);
+            throw new UnsatisfiableDependenciesException(getComponentImplementation(), Collections.EMPTY_SET);
         } catch (SecurityException e) {
-            throw new NoSatisfiableConstructorsException(getComponentImplementation(), Collections.EMPTY_SET);
+            throw new UnsatisfiableDependenciesException(getComponentImplementation(), Collections.EMPTY_SET);
         }
     }
 
-    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) {
+    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
         return null;
     }
 
-    private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) {
+    private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
         Method[] setters = getSetters();
         for (int i = 0; i < setters.length; i++) {
             Method setter = setters[i];
-            Object dependency = adapterDependencies[i].getComponentInstance(picoContainer);
+            ComponentAdapter adapterDependency = adapterDependencies[i];
+            PicoContainer adapterOwner = adapterDependency.getContainer();
+            Object dependency = adapterDependency.getComponentInstance();
             try {
                 setter.invoke(componentInstance, new Object[]{dependency});
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                throw new PicoIntrospectionException(e);
             }
         }
     }

@@ -7,14 +7,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
- * Helper class for finding interfaces of objects.
+ * Helper class for finding implemented interfaces of classes and objects.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class InterfaceFinder {
+public class InterfaceFinder implements Serializable {
     public static Method equals;
     public static Method hashCode;
 

@@ -10,6 +10,6 @@
 
 package picocontainer.lifecycle;
 
-public interface Stoppable {
-    void stop() throws Exception;
+public interface Lifecycle extends Startable, Stoppable, Disposable
+{
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -18,7 +18,7 @@ import picocontainer.defaults.NullContainer;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
-public class LifecyclePicoContainer extends HierarchicalPicoContainer implements Startable, Stoppable, Disposable {
+public class LifecyclePicoContainer extends HierarchicalPicoContainer implements Lifecycle {
 
     private Startable startableAggregatedComponent;
     private Stoppable stoppableAggregatedComponent;

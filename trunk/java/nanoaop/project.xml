@@ -38,8 +38,8 @@
         </dependency>
         
         <dependency>
-          <id>jakarta-oro</id>
-          <version>2.0.7</version>
+          <id>oro</id>
+          <version>2.0.8</version>
         </dependency>
 
         <!-- test time only -->

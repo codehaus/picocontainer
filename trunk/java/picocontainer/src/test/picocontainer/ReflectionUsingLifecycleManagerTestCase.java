@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.sql.SQLException;
 
+import picocontainer.testmodel.UnaccessibleStartComponent;
+
 public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
 
     public void testStartInvocation() {
@@ -83,18 +85,14 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
         }
     }
 
-    public void testNonPublicStartInvocation() throws PicoStartException {
+    public void testPrivateStartInvocation() throws PicoStartException {
 
         ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
 
         final ArrayList messages = new ArrayList();
 
-        lm.startComponent(new Object() {
-            protected void start() {
-                messages.add("started");
-            }
-        });
-        assertEquals(0, messages.size());
+        lm.startComponent(new UnaccessibleStartComponent(messages));
+        assertEquals("Should not have started", 0, messages.size());
 
     }
 

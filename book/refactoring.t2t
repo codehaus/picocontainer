@@ -1,0 +1,23 @@
+Constructor Dependency Injection, with PicoContainer
+Refactoring
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
+
+= Refactoring =
+
+There are a number of Refactoring operations that are particularly appropriate to Constructor Dependency Injection components.
+
+== Extract Interface ==
+
+== Make Constructor ==
+
+Ctrl-Ins in IDEA.
+
+== Field to Constructor Dependency Injection ==
+
+(new refactoring, option for adjust existing ctors vs duplication of ctors)
+
+User clicks on field and actions refactoring, all ctors are adjusted to have new param or are duplicated with new param.
+
+== Setter to Constructor Dependency Injection ==
+
+(new refactoring, tickbox option of remove setter, tickbox for adjust vs clone as above)

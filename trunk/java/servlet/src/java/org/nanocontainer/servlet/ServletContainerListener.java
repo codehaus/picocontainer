@@ -8,16 +8,20 @@
  *****************************************************************************/
 package org.picoextras.servlet;
 
+import org.nanocontainer.script.jython.JythonContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
-import org.picoextras.script.jython.JythonContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.io.StringReader;
 import java.util.Enumeration;
 

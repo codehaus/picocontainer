@@ -13,13 +13,13 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerConfigComp;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -41,7 +41,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
                 "    <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         assertEquals(2, pico.getComponentInstances().size());
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
     }
@@ -54,7 +54,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
                 "    </component>" +
                 "</component>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
 
         PicoContainer childContainer = (PicoContainer) pico.getComponentInstance("child1");
@@ -86,7 +86,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
                 "    </component>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object fooTestComp = pico.getComponentInstance("foo");
         assertNotNull("Container should have a 'foo' component", fooTestComp);
@@ -108,7 +108,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
             Reader script = new StringReader("<container>" +
                     "      <component class='Foo'/>" +
                     "</container>");
-            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
             fail("Should have thrown a ClassNotFoundException");
         } catch (RuntimeException cnfe) {
         }
@@ -118,19 +118,19 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
 
         try {
             Reader script = new StringReader("<container/>");
-            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         } catch (EmptyCompositionException cnfe) {
         }
     }
 
     public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("<container>" +
-                "    <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
+                "    <pseudocomponent factory='org.picoextras.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
                 "      <config-or-whatever/>" +
                 "    </pseudocomponent>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         assertNotNull(pico.getComponentInstances().get(0));
         assertTrue(pico.getComponentInstances().get(0) instanceof String);
         assertEquals("Hello", pico.getComponentInstances().get(0).toString());
@@ -151,7 +151,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
                 "  </component>" +
                 "  <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         assertNotNull(pico.getComponentInstance(WebServerConfigComp.class));
         WebServerConfigComp config = (WebServerConfigComp) pico.getComponentInstanceOfType(WebServerConfigComp.class);
         assertEquals("localhost", config.getHost());
@@ -163,7 +163,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
 
         assertTrue(wsc instanceof WebServerConfig);

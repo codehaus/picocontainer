@@ -2,10 +2,8 @@
 <project>
 
     <pomVersion>3</pomVersion>
-    <name>PicoExtras</name>
-    <id>nano</id>
+    <name>PicoContainer</name>
     <groupId>picocontainer</groupId>
-    <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
     <url>http://www.picoextras.org/${pom.artifactId}/</url>
     <organization>
         <name>Codehaus</name>

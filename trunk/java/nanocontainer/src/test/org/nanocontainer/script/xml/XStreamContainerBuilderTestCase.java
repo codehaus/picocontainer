@@ -9,27 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
-import org.picoextras.integrationkit.PicoAssemblyException;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
-
-
+import org.picocontainer.PicoContainer;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
-import org.picoextras.testmodel.WebServer;
-import org.picoextras.testmodel.WebServerConfig;
-import org.picoextras.testmodel.WebServerConfigComp;
 import org.picoextras.testmodel.WebServerImpl;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 /**
  * test case for container creation off xml via xstream
  */
@@ -62,7 +53,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLi
 				"	 </implementation>" + 
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
         assertEquals(5, pico.getComponentInstances().size());
         assertEquals("foo bar",pico.getComponentInstance("foo"));
         assertEquals(new Integer(239),pico.getComponentInstance("bar"));

@@ -20,10 +20,10 @@
         <available file="${basedir}/swt/lib/swt.jar" property="swt" value="dummy/*"/>
         <property name="swt" value="swt/*"/>
 
-        <available file="${basedir}/picoidea/lib/openapi.jar" property="idea" value="dummy/*"/>
-        <property name="idea" value="picoidea/*"/>
+        <available file="${basedir}/idea/lib/openapi.jar" property="idea" value="dummy/*"/>
+        <property name="idea" value="idea/*"/>
 
-        <property name="excludes" value="pool/*,groovypico/*,${swt},${idea}"/>
+        <property name="excludes" value="pool/*,${swt},${idea}"/>
         <echo>Excluded from build: ${excludes}</echo>
 
         <maven:reactor

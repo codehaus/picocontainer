@@ -47,6 +47,14 @@ namespace PicoContainer
 		IList ComponentInstances { get; }
 
 		/// <summary>
+		/// Returns a List of components of a certain componentType. The list is ordered by instantiation order,
+		/// starting with the components instantiated first at the beginning.
+		/// </summary>
+		/// <param name="componentType">the searched type.</param>
+		/// <returns>List of components</returns>
+		IList GetComponentInstancesOfType(Type componentType);
+
+		/// <summary>
 		/// Get the parent of this container, or <example>null</example> if this container does not have a parent.
 		/// </summary>
 		IPicoContainer Parent { get; }

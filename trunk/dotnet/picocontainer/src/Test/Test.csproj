@@ -89,6 +89,11 @@
                     AssemblyName = "System.Xml"
                     HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
+                <Reference
+                    Name = "nmock"
+                    AssemblyName = "nmock"
+                    HintPath = "..\..\lib\nmock.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -135,6 +140,11 @@
                 />
                 <File
                     RelPath = "Defaults\DefaultLazyInstantiationTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\DefaultLifecycleManagerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -18,7 +18,7 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter {
     }
 
     public Object getComponentInstance(MutablePicoContainer picoContainer) {
-        if(picoContainer != null && !registered) {
+        if(!registered) {
             picoContainer.registerOrderedComponentAdapter(this);
             picoContainer.addOrderedComponentAdapter(this);
             registered = true;
@@ -27,6 +27,5 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter {
     }
 
     public void verify(PicoContainer picoContainer) {
-
     }
 }

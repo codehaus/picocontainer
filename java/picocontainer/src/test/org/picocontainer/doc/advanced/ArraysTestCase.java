@@ -146,7 +146,7 @@ public class ArraysTestCase
 
         //      START SNIPPET: emptyArray
 
-        Parameter parameter = new CollectionComponentParameter(true);
+        Parameter parameter = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
 
         Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);

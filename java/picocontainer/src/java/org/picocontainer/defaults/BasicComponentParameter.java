@@ -10,11 +10,13 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVisitor;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 
 
@@ -33,7 +35,12 @@ import java.lang.reflect.Field;
  * @version $Revision$
  */
 public class BasicComponentParameter
-        extends AbstractComponentParameter {
+        implements Parameter, Serializable {
+    
+    /**
+     * <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor.
+     */
+    public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();
 
     private Object componentKey;
 
@@ -52,6 +59,17 @@ public class BasicComponentParameter
     public BasicComponentParameter() {
     }
 
+    /**
+     * Check wether the given Parameter can be statisfied by the container.
+     * 
+     * @return <code>true</code> if the Parameter can be verified.
+     * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,
+     *           org.picocontainer.ComponentAdapter, java.lang.Class)
+     */
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+        return resolveAdapter(container, adapter, expectedType) != null;
+    }
+
     public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
             throws PicoInstantiationException {
         // type check is done in isResolvable
@@ -64,7 +82,24 @@ public class BasicComponentParameter
         return result;
     }
 
-    protected ComponentAdapter[] getResolvingAdapters(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
+        if (componentAdapter == null) {
+            throw new PicoIntrospectionException(expectedType.getName() + " is not resolvable");
+        }
+        componentAdapter.verify(container);
+    }
+
+    /**
+     * Visit the current {@link Parameter}.
+     * 
+     * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
+     */
+    public void accept(final PicoVisitor visitor) {
+        visitor.visitParameter(this);
+    }
+
+    private ComponentAdapter resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
 
         final ComponentAdapter result = getTargetAdapter(container, expectedType);
         if (result == null) {
@@ -83,7 +118,7 @@ public class BasicComponentParameter
                     final Field field = result.getComponentImplementation().getField("TYPE");
                     final Class type = (Class) field.get(result.getComponentInstance(null));
                     if (expectedType.isAssignableFrom(type)) {
-                        return new ComponentAdapter[]{ result };
+                        return result;
                     }
                 } catch (NoSuchFieldException e) {
                 } catch (IllegalArgumentException e) {
@@ -93,7 +128,7 @@ public class BasicComponentParameter
             }
             return null;
         }
-        return new ComponentAdapter[]{ result };
+        return result;
     }
 
     private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType) {

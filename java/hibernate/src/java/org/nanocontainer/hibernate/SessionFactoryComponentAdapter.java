@@ -59,7 +59,7 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
      */
     public SessionFactoryComponentAdapter(Object componentKey, Parameter parameter) {
         this.componentKey = componentKey;
-        this.configurationParameter = parameter == null ? new ComponentParameter() : parameter;
+        this.configurationParameter = parameter == null ? ComponentParameter.DEFAULT : parameter;
     }
 
 

@@ -198,7 +198,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
             new ConstantParameter("a"),
             new ConstantParameter(new Integer(3)),
             new ConstantParameter("b"),
-            new ComponentParameter()
+            ComponentParameter.DEFAULT
         });
 
         Animal animal = (Animal) pico.getComponentInstance(Animal.class);

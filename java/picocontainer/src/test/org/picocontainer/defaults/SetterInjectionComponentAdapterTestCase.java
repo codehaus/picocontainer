@@ -19,10 +19,13 @@ import org.picocontainer.testmodel.PurseBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
+
+public class SetterInjectionComponentAdapterTestCase
+        extends AbstractComponentAdapterTestCase {
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
      */
     protected Class getComponentAdapterType() {
@@ -31,48 +34,56 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#createDefaultComponentAdapterFactory()
      */
     protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
         return new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory());
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
-        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ConstantParameter("Pico Container") });
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
-        picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[] { new ComponentParameter() });
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
-     */
-    protected ComponentAdapter prepDEF_visitable() {
-        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ConstantParameter("Pico Container") });
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[]{new ConstantParameter(
+                "Pico Container")});
     }
 
     /**
      * {@inheritDoc}
+     * 
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[]{ComponentParameter.DEFAULT});
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
+     */
+    protected ComponentAdapter prepDEF_visitable() {
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[]{new ConstantParameter(
+                "Pico Container")});
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
@@ -81,47 +92,54 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_isAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
         picoContainer.registerComponentImplementation(PersonBean.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, MoneyPurse.class, new Parameter[] { 
-                new ComponentParameter(),
-                new ConstantParameter(new Double(100.0))
-        }));
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
+                PurseBean.class, MoneyPurse.class, new Parameter[]{
+                        ComponentParameter.DEFAULT, new ConstantParameter(new Double(100.0))}));
     }
-    
-    public static class MoneyPurse extends PurseBean {
+
+    public static class MoneyPurse
+            extends PurseBean {
         double money;
+
         public double getMoney() {
             return money;
         }
+
         public void setMoney(double money) {
             this.money = money;
         }
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepVER_verificationFails(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepVER_verificationFails(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
         picoContainer.registerComponentImplementation(PersonBean.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, MoneyPurse.class, new Parameter[] { new ComponentParameter() }));
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
+                PurseBean.class, MoneyPurse.class, new Parameter[]{ComponentParameter.DEFAULT}));
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_createsNewInstances(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
 
-    public static class Ghost extends PersonBean {
+    public static class Ghost
+            extends PersonBean {
         public Ghost() {
             throw new VerifyError("test");
         }
@@ -129,14 +147,16 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_errorIsRethrown(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(Ghost.class, Ghost.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(Ghost.class, Ghost.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
 
-    public static class DeadBody extends PersonBean {
+    public static class DeadBody
+            extends PersonBean {
         public DeadBody() throws Exception {
             throw new RuntimeException("test");
         }
@@ -144,14 +164,16 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_runtimeExceptionIsRethrown(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
 
-    public static class HidingPersion extends PersonBean {
+    public static class HidingPersion
+            extends PersonBean {
         public HidingPersion() throws Exception {
             throw new Exception("test");
         }
@@ -159,29 +181,35 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
             MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(HidingPersion.class, HidingPersion.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(
+                HidingPersion.class, HidingPersion.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_dependenciesAreResolved(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
         picoContainer.registerComponentImplementation(PersonBean.class);
-        return new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() });
+        return new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
 
-    public static class WealthyPerson extends PersonBean {
+    public static class WealthyPerson
+            extends PersonBean {
         PurseBean purse;
+
         public PurseBean getPurse() {
             return purse;
         }
+
         public void setPurse(PurseBean purse) {
             this.purse = purse;
         }
@@ -189,24 +217,28 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_failingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
         picoContainer.registerComponentImplementation(PersonBean.class, WealthyPerson.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() }));
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
+                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT}));
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_failingInstantiationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentInstance("Pico Container");
         picoContainer.registerComponentImplementation(PersonBean.class, WealthyPerson.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() }));
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
+                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT}));
     }
-    
+
     public static class A {
         private B b;
         private String string;
@@ -336,7 +368,8 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
     // TODO PICO-188
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
-        MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
+        MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(
+                new SetterInjectionComponentAdapterFactory()));
 
         pico.registerComponentImplementation(Yin.class);
         pico.registerComponentImplementation(Yang.class);

@@ -194,7 +194,7 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.registerComponentImplementation(
                 AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
-                new Parameter[]{new ComponentParameter(true)});
+                new Parameter[]{ComponentParameter.ARRAY_ALLOW_EMPTY});
         AnotherGenericCollectionBowl bowl = (AnotherGenericCollectionBowl) pico
                 .getComponentInstance(AnotherGenericCollectionBowl.class);
         assertNotNull(bowl);
@@ -270,7 +270,7 @@ public class CollectionComponentParameterTestCase
     public void testVerify() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter dummy = new InstanceComponentAdapter("foo", "bar");
-        CollectionComponentParameter parameterNonEmpty = new CollectionComponentParameter(false);
+        CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
         pico.registerComponentImplementation(Shark.class);
         parameterNonEmpty.verify(pico, dummy, Fish[].class);
         try {
@@ -279,7 +279,7 @@ public class CollectionComponentParameterTestCase
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
-        CollectionComponentParameter parameterEmpty = new CollectionComponentParameter(true);
+        CollectionComponentParameter parameterEmpty = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
         parameterEmpty.verify(pico, dummy, Fish[].class);
         parameterEmpty.verify(pico, dummy, Cod[].class);
     }

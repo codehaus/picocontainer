@@ -32,10 +32,9 @@ public class ParameterTestCase extends TestCase {
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        ComponentParameter parameter = new ComponentParameter();
 
         assertNotNull(pico.getComponentInstance(Touchable.class));
-        Touchable touchable = (Touchable) parameter.resolveInstance(pico, adapter, Touchable.class);
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class);
         assertNotNull(touchable);
     }
 
@@ -58,9 +57,8 @@ public class ParameterTestCase extends TestCase {
 
     public void testComponentParameterRespectsExpectedType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        Parameter parameter = new ComponentParameter();
         ComponentAdapter adapter = picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        assertNull(parameter.resolveInstance(picoContainer, adapter, TestCase.class));
+        assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class));
     }
 	
 	
@@ -84,10 +82,9 @@ public class ParameterTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class));
 
-        parameter = new ComponentParameter();
         ComponentAdapter adapter = picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
 
-        assertNull(parameter.resolveInstance(picoContainer, adapter, TestCase.class));
+        assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class));
     }
 
     public void testConstantParameterWithPrimitives() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {

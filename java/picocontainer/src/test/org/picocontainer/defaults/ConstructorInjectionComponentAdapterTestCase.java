@@ -20,10 +20,13 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-public class ConstructorInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
+
+public class ConstructorInjectionComponentAdapterTestCase
+        extends AbstractComponentAdapterTestCase {
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
      */
     protected Class getComponentAdapterType() {
@@ -32,12 +35,13 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter("foo", A.class);
     }
-    
+
     public static class A {
         public A() {
             fail("verification should not instantiate");
@@ -52,6 +56,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
@@ -61,41 +66,45 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
     protected ComponentAdapter prepDEF_visitable() {
-        return new ConstructorInjectionComponentAdapter("bar", B.class, new Parameter[] { new ComponentParameter() });
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_isAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
-        picoContainer.registerComponentImplementation(SimpleTouchable.class);
-        return new ConstructorInjectionComponentAdapter(NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[] {
-                new ComponentParameter(),
-                new ConstantParameter("Name")
-        });
+        return new ConstructorInjectionComponentAdapter("bar", B.class, new Parameter[]{ComponentParameter.DEFAULT});
     }
 
     /**
      * {@inheritDoc}
+     * 
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_isAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(SimpleTouchable.class);
+        return new ConstructorInjectionComponentAdapter(
+                NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[]{
+                        ComponentParameter.DEFAULT, new ConstantParameter("Name")});
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return prepSER_isSerializable(picoContainer);
     }
-    
-    public static class NamedDependsOnTouchable extends DependsOnTouchable {
+
+    public static class NamedDependsOnTouchable
+            extends DependsOnTouchable {
         public NamedDependsOnTouchable(Touchable t, String name) {
             super(t);
         }
@@ -103,6 +112,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepVER_verificationFails(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepVER_verificationFails(MutablePicoContainer picoContainer) {
@@ -111,6 +121,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_createsNewInstances(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
@@ -122,9 +133,10 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
             throw new VerifyError("test");
         }
     }
-    
+
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_errorIsRethrown(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
@@ -139,12 +151,13 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_runtimeExceptionIsRethrown(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter(RuntimeThrowing.class, RuntimeThrowing.class);
     }
-    
+
     public static class NormalExceptionThrowing {
         public NormalExceptionThrowing() throws Exception {
             throw new Exception("test");
@@ -153,21 +166,24 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
+            MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
     }
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_dependenciesAreResolved(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentImplementation(SimpleTouchable.class);
         return new ConstructorInjectionComponentAdapter(DependsOnTouchable.class, DependsOnTouchable.class);
     }
-    
+
     public static class C1 {
         public C1(C2 c2) {
             fail("verification should not instantiate");
@@ -182,6 +198,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_failingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
@@ -193,6 +210,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepRES_failingInstantiationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
@@ -233,8 +251,9 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         }
     }
 
-    // TODO test fails currently, since non accessible ctors are filtered out, because of PICO-201.
-    // Maybe we can activate it again with some kind of SecurityManager & Policy combination? 
+    // TODO test fails currently, since non accessible ctors are filtered out, because of
+    // PICO-201.
+    // Maybe we can activate it again with some kind of SecurityManager & Policy combination?
     public void XXXtestIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
@@ -245,7 +264,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
             assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
-    
+
     public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
@@ -291,11 +310,12 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     static public class Component201 {
         public Component201(final String s) {
         }
+
         protected Component201(final Integer i, final Boolean b) {
             fail("Wrong constructor taken.");
         }
     }
-    
+
     // http://jira.codehaus.org/browse/PICO-201
     public void testShouldNotConsiderNonPublicConstructors() {
         DefaultPicoContainer pico = new DefaultPicoContainer();

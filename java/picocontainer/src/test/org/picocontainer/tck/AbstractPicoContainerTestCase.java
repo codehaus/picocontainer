@@ -616,7 +616,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         ComponentAdapter hashSetAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashSet.class, HashSet.class));
         ComponentAdapter stringAdapter = parent.registerComponent(new InstanceComponentAdapter(String.class, "foo"));
         ComponentAdapter arrayListAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class));
-        Parameter componentParameter = new BasicComponentParameter();
+        Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
         ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class, new Parameter[] {
                     componentParameter,

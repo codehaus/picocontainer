@@ -29,8 +29,8 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         recorded.registerComponentImplementation("thing",
                 ThingThatTakesParamsInConstructor.class,
                 new Parameter[]{
-                    new ComponentParameter(),
-                    new ComponentParameter()
+                    ComponentParameter.DEFAULT,
+                    ComponentParameter.DEFAULT,
                 });
 
         MutablePicoContainer slave = new DefaultPicoContainer();

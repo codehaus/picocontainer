@@ -82,7 +82,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new ComponentParameter();
+            componentParameters[i] = ComponentParameter.DEFAULT;
         }
         return componentParameters;
     }

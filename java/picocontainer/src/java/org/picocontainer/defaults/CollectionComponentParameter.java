@@ -10,11 +10,14 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVisitor;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,8 +44,17 @@ import java.util.TreeSet;
  * @since 1.1
  */
 public class CollectionComponentParameter
-        extends AbstractComponentParameter {
+        implements Parameter, Serializable {
 
+    /**
+     * Use <code>ARRAY</code> as {@link Parameter} for an Array that must have elements.
+     */
+    public static final CollectionComponentParameter ARRAY = new CollectionComponentParameter();
+    /**
+     * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter} for an Array that may have no elements.
+     */
+    public static final CollectionComponentParameter ARRAY_ALLOW_EMPTY = new CollectionComponentParameter(true);
+    
     private final boolean emptyCollection;
     private final Class componentKeyType;
     private final Class componentValueType;
@@ -173,6 +185,15 @@ public class CollectionComponentParameter
     }
 
     /**
+     * Visit the current {@link Parameter}.
+     * 
+     * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
+     */
+    public void accept(final PicoVisitor visitor) {
+        visitor.visitParameter(this);
+    }
+
+    /**
      * @see org.picocontainer.defaults.AbstractComponentParameter#getResolvingAdapters(org.picocontainer.PicoContainer,
      *           org.picocontainer.ComponentAdapter, java.lang.Class)
      */
@@ -245,10 +266,10 @@ public class CollectionComponentParameter
             // The order of tests are significant. The least generic types last.
             if (List.class.isAssignableFrom(collectionType)) {
                 collectionType = ArrayList.class;
-//            } else if (BlockingQueue.class.isAssignableFrom(collectionType)) {
-//                collectionType = ArrayBlockingQueue.class;
-//            } else if (Queue.class.isAssignableFrom(collectionType)) {
-//                collectionType = LinkedList.class;
+                //            } else if (BlockingQueue.class.isAssignableFrom(collectionType)) {
+                //                collectionType = ArrayBlockingQueue.class;
+                //            } else if (Queue.class.isAssignableFrom(collectionType)) {
+                //                collectionType = LinkedList.class;
             } else if (SortedSet.class.isAssignableFrom(collectionType)) {
                 collectionType = TreeSet.class;
             } else if (Set.class.isAssignableFrom(collectionType)) {
@@ -282,8 +303,8 @@ public class CollectionComponentParameter
             // The order of tests are significant. The least generic types last.
             if (SortedMap.class.isAssignableFrom(collectionType)) {
                 collectionType = TreeMap.class;
-//            } else if (ConcurrentMap.class.isAssignableFrom(collectionType)) {
-//                collectionType = ConcurrentHashMap.class;
+                //            } else if (ConcurrentMap.class.isAssignableFrom(collectionType)) {
+                //                collectionType = ConcurrentHashMap.class;
             } else if (Map.class.isAssignableFrom(collectionType)) {
                 collectionType = HashMap.class;
             }

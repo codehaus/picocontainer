@@ -63,14 +63,22 @@ public class PicoActionFactory extends ActionFactory implements KeyConstants {
     }
 
     protected Action instantiateAction(Class actionClass) {
-        MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer());
+        MutablePicoContainer container = new DefaultPicoContainer(getParentContainer());
         container.registerComponentImplementation(actionClass);
         return (Action) container.getComponentInstance(actionClass);
     }
 
-    private MutablePicoContainer getRequestContainer() {
+	/**
+	 * obtain parent container. first try in servlet, than in action context
+	 */
+    private MutablePicoContainer getParentContainer() {
         HttpServletRequest request = ServletActionContext.getRequest();
-        ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+        ObjectReference ref;
+		if(request != null) {
+			ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+		} else {
+			ref = new ActionContextScopeObjectReference(REQUEST_CONTAINER);
+		}
         return (MutablePicoContainer) ref.get();
     }
 }

@@ -12,20 +12,19 @@ package org.nanocontainer.script.groovy;
 
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.reflection.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.File;
 
 /**
  * Builds trees of PicoContainers and Pico components using GroovyMarkup
@@ -59,38 +58,21 @@ public class NanoGroovyBuilder extends BuilderSupport {
         Object parent = getCurrent();
         if (name.equals("container")) {
             return createContainerNode(parent, attributes);
-        } else if (name.equals("softContainer")) {
-            return createSoftContainerNode(parent, attributes);
         } else if (parent instanceof MutablePicoContainer) {
             return createChildOfContainerNode(parent, name, attributes);
-        } else if (parent instanceof ReflectionContainerAdapter) {
-            return createChildOfSoftContainerNode(parent, name, attributes);
         }
         throw new PicoBuilderException("Uknown method: '" + name + "'");
     }
 
-    private Object createChildOfSoftContainerNode(Object parent, Object name, Map attributes) {
-        ReflectionContainerAdapter reflectionContainerAdapter = (ReflectionContainerAdapter) parent;
-        MutablePicoContainer parentContainer = (MutablePicoContainer) reflectionContainerAdapter.getPicoContainer();
-
-        if (name.equals("component")) {
-            return createSoftComponentNode(attributes, reflectionContainerAdapter, name);
-        } else if (name.equals("bean")) {
-            //TODO reflectionize
-            return createBeanNode(attributes, parentContainer);
-        } else if (name.equals("classpathElement")) {
-            return createClassPathElementNode(attributes, reflectionContainerAdapter);
-        }
-        throw new PicoBuilderException("Method: '" + name + "' must be a child of a softContainer element");
-    }
-
     private Object createChildOfContainerNode(Object parent, Object name, Map attributes) {
-        MutablePicoContainer parentContainer = (MutablePicoContainer) parent;
-
+        SoftCompositionPicoContainer parentContainer = (SoftCompositionPicoContainer) parent;
         if (name.equals("component")) {
             return createComponentNode(attributes, parentContainer, name);
         } else if (name.equals("bean")) {
             return createBeanNode(attributes, parentContainer);
+        } else if (name.equals("classpathelement")) {
+            return createClassPathElementNode(attributes, parentContainer);
+
         }
         throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
     }
@@ -104,31 +86,11 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return answer;
     }
 
-    private Object createSoftContainerNode(Object parent, Map attributes) {
-        PicoContainer parentContainer = null;
-        System.out.println("-->1");
-
-        if (parent instanceof MutablePicoContainer) {
-            System.out.println("-->2");
-
-            parentContainer = (PicoContainer) parent;
-        }
-        System.out.println("-->3");
-
-        MutablePicoContainer container = createContainer(attributes, parentContainer);
-        System.out.println("-->4");
-
-        ReflectionContainerAdapter rca = new DefaultReflectionContainerAdapter(container);
-        System.out.println("-->5");
-
-        return rca;
-    }
-
     private Object createClassPathElementNode(Map attributes, ReflectionContainerAdapter reflectionContainerAdapter) {
+
         String path = (String) attributes.remove("path");
         URL pathURL = null;
         try {
-            System.out.println("--> 6 " + path);
             if (path.toLowerCase().startsWith("http://")) {
                 pathURL = new URL(path);
             } else {
@@ -163,25 +125,6 @@ public class NanoGroovyBuilder extends BuilderSupport {
         }
     }
 
-    private Object createSoftComponentNode(Map attributes, ReflectionContainerAdapter rca, Object name) {
-        String impl = (String) attributes.remove("class");
-        if (impl != null) {
-            String key = (String) attributes.remove("key");
-            try {
-                if (key != null) {
-                    rca.registerComponentImplementation(key, impl);
-                } else {
-                    rca.registerComponentImplementation(impl);
-                }
-            } catch (ClassNotFoundException e) {
-                throw new PicoBuilderException("Class not found for key '"+key+"', impl '"+impl+"", e);
-            }
-            return name;
-        } else {
-            throw new PicoBuilderException("Must specify a class attribute for a component");
-        }
-    }
-
     protected Object createNode(Object name, Map attributes, Object value) {
         return createNode(name, attributes);
     }
@@ -189,9 +132,9 @@ public class NanoGroovyBuilder extends BuilderSupport {
     protected MutablePicoContainer createContainer(Map attributes, PicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         if (adapterFactory != null) {
-            return new DefaultPicoContainer(adapterFactory, parent);
+            return new SoftCompositionPicoContainer(adapterFactory, parent);
         } else {
-            return new DefaultPicoContainer(parent);
+            return new SoftCompositionPicoContainer(parent);
         }
     }
 

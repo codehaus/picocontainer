@@ -108,10 +108,11 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
 //    void testSoftInstantiateWithChildContainer() {
 //
 //        File testCompJar = new File(System.getProperty("testcomp.jar"));
+//        compJarPath = testCompJar.getCanonicalPath()
 //
 //        builder = new NanoGroovyBuilder()
-//        pico = builder.softContainer {
-//            classpathElement(path:testCompJar.getCanonicalPath())
+//        pico = builder.container {
+//            classpathelement(compJarPath)
 //            component("TestComp")
 //            softContainer() {
 //                component("TestComp2")

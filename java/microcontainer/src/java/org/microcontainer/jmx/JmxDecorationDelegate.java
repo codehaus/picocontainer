@@ -12,16 +12,15 @@ package org.microcontainer.jmx;
 
 import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import org.nanocontainer.jmx.MBeanComponentAdapterFactory;
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.jmx.JMXVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.microcontainer.impl.AliasComponentAdapter;
 
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.management.MalformedObjectNameException;
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
@@ -34,53 +33,60 @@ import java.lang.reflect.Method;
 public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDelegate {
 
 	protected MBeanServer mBeanServer;
+	protected String currentKey; // the key the parent component is mapped too
+	protected Object currentClass; // the implementation class registered to pico
+	protected MutablePicoContainer picoContainer;
 
 	public ComponentAdapterFactory decorate(ComponentAdapterFactory componentAdapterFactory, Map attributes) {
 		return componentAdapterFactory;
 	}
 
 	public MutablePicoContainer decorate(MutablePicoContainer picoContainer) {
+		this.picoContainer = picoContainer;
 		return picoContainer;
 	}
 
 	public Object createNode(Object name, Map attributes, Object parentElement) {
-        if(name.equals("jmx")) {
-			return createJmxNode(attributes, (NanoContainer)parentElement);
-		}
-		else if(name.equals("component")) {
-            return createComponent(attributes, (JmxDefinition)parentElement);
+		if (name.equals("jmx")) {
+			try {
+				return createJmxNode(attributes);
+			} catch (MalformedObjectNameException e) {
+				new NanoContainerMarkupException(e);
+			}
 		}
 
-		throw new NanoContainerMarkupException("can't handle " + name );
+		throw new NanoContainerMarkupException("can't handle " + name);
 	}
 
 	public void rememberComponentKey(Map attributes) {
+        currentClass = attributes.get("class");
+
+		Object key = attributes.get("key");
+
+		if (key instanceof Class) {
+			currentKey = ((Class) key).getName();
+		} else {
+			currentKey = (String) key;
+		}
+
 	}
 
-	/**
-	 * Create a component which is a child of the jmx node
-	 */
-	protected Object createComponent(Map attributes, JmxDefinition jmxDefinition) {
-		MutablePicoContainer picoContainer = jmxDefinition.getPicoContainer();
-		Object key = attributes.remove("key"); // interface
-		Class componentImplementation = getComponentImplementation(attributes.remove("class"));
+	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException {
+		String description = (String)attributes.get("description");
+		JMXVisitor jmxVisitor = new JMXVisitor();
+		ObjectName objectName = new ObjectName((String) attributes.remove("key"));
+		List operations = (List) attributes.remove("operations");
+		Class componentImplementation = getComponentImplementation(currentClass);
 
-		// Now MBean stuff...
-		List methods = getMatchingMethods(jmxDefinition.getOperations(), componentImplementation);
+		// Build MBeanInfo
+		List methods = getMatchingMethods(operations, componentImplementation);
+
+		// todo need to handle attributes and constructors and notifications  
 		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
+		MBeanInfo mBeanInfo = new MBeanInfo(currentKey, description, null, null, mBeanOperationInfos, null);
 
-		// register the MBeanInfo
-		String className = componentImplementation.getName();
-		MBeanInfo mBeanInfo = new MBeanInfo(className, "description", null, null, mBeanOperationInfos, null);
-		picoContainer.registerComponentInstance(className.concat("MBeanInfo"), mBeanInfo);
-
-		// register the MBean to the objectName (as a key)
-		ComponentAdapter ca = new MBeanComponentAdapterFactory().createComponentAdapter(jmxDefinition.getKey(), componentImplementation, null);
-		picoContainer.registerComponent(ca);
-
-		// also register the implementation as a key to pico
-		picoContainer.registerComponent(new AliasComponentAdapter(key, ca));
-
+		jmxVisitor.register(objectName, mBeanInfo);
+		picoContainer.accept(jmxVisitor);
 		return picoContainer;
 	}
 
@@ -88,12 +94,11 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 	 * get the class regardless of whether it was defined as a class of the Class name from the groovy script
 	 */
 	protected Class getComponentImplementation(Object clazz) {
-		if(clazz instanceof Class) {
-			return (Class)clazz;
-		}
-		else {
+		if (clazz instanceof Class) {
+			return (Class) clazz;
+		} else {
 			try {
-				return Class.forName((String)clazz);
+				return Class.forName((String) clazz);
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}
@@ -125,7 +130,7 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 			for (int j = 0; j < operations.size(); j++) {
 				String methodName = (String) operations.get(j);
 
-				if(method.getName().equals(methodName)) {
+				if (method.getName().equals(methodName)) {
 					matching.add(method);
 				}
 			}
@@ -135,18 +140,7 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 	}
 
 	protected MBeanServer getMBeanServer(MutablePicoContainer picoContainer) {
-		return (MBeanServer)picoContainer.getComponentInstance(MBeanServer.class);
+		return (MBeanServer) picoContainer.getComponentInstance(MBeanServer.class);
 	}
 
-	protected Object createJmxNode(Map attributes, NanoContainer nanoContainer) {
-		String key = (String)attributes.remove("key");
-		List operations = (List)attributes.remove("operations");
-
-		// build the bean
-		JmxDefinition jmxDefinition = new JmxDefinition(nanoContainer.getPico());
-		jmxDefinition.setKey(key);
-		jmxDefinition.setOperations(operations);
-
-		return jmxDefinition;
-	}
 }

@@ -13,8 +13,8 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.testmodel.Wilma;
 
 import javax.management.MBeanServer;
-import javax.management.MBeanInfo;
 import javax.management.ObjectName;
+import javax.management.MBeanInfo;
 
 /**
  * @author Michael Ward
@@ -24,17 +24,17 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 	private ObjectReference containerRef = new SimpleReference();
 	private ObjectReference parentContainerRef = new SimpleReference();
 
-	public void testScript() throws Exception {
+	public void testScriptWithJmxNode() throws Exception {
 
 		Reader script = new StringReader("" +
 				"import org.nanocontainer.script.groovy.NanoContainerBuilder\n" +
 				"import org.microcontainer.jmx.JmxDecorationDelegate\n" +
 				"\n" +
 				"builder = new NanoContainerBuilder(new JmxDecorationDelegate())\n" +
-				"pico = builder.container {\n" +
-				"	component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.newMBeanServer())\n" +
-				"	jmx(key:'domain:wilma=default', operations:['helloCalled']) {\n" +
-				"   	component(key:org.nanocontainer.testmodel.Wilma, class:org.nanocontainer.testmodel.WilmaImpl)\n" +
+				"pico = builder.container() {\n" +
+				"	component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
+				" 	component(key:org.nanocontainer.testmodel.Wilma, class:org.nanocontainer.testmodel.WilmaImpl) {\n" +
+				"		jmx(key:'domain:wilma=default', operations:['helloCalled'], description:'jmx description text')\n" +
 				"   }\n" +
 				"}");
 
@@ -42,14 +42,13 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 		MBeanServer mBeanServer = (MBeanServer)pico.getComponentInstance(MBeanServer.class);
 
 		ObjectName objectName = new ObjectName("domain:wilma=default");
-		Wilma wilma = (Wilma)pico.getComponentInstance(objectName.getCanonicalName());
-		assertEquals("Wilma should be registered to the object name and the key (Wilma interface)", wilma, pico.getComponentInstance(Wilma.class));
-		wilma.hello();
 
-		// MBeanInfo is registered to the implementation
-		MBeanInfo mBeanInfo = (MBeanInfo)pico.getComponentInstance("org.nanocontainer.testmodel.WilmaImplMBeanInfo");
-		assertNotNull(mBeanInfo);
-		assertEquals("Only one operation should be defined in the MBeanInfo", 1, mBeanInfo.getOperations().length);
+		MBeanInfo mBeanInfo = mBeanServer.getMBeanInfo(objectName);
+		assertEquals("jmx description text", mBeanInfo.getDescription());
+		assertEquals(1, mBeanInfo.getOperations().length);
+
+		Wilma wilma = (Wilma)pico.getComponentInstance(Wilma.class);
+		wilma.hello();
 
 		Boolean called = (Boolean)mBeanServer.invoke(objectName, "helloCalled", null, null);
 		assertTrue(called.booleanValue());
@@ -60,4 +59,5 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 		builder.buildContainer(containerRef, parentContainerRef, scope, true);
 		return (PicoContainer) containerRef.get();
 	}
+
 }

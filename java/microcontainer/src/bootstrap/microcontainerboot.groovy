@@ -11,8 +11,8 @@ nano = builder.container(parent:parent) {
 
 	component(key:javax.management.MBeanServer, instance:MBeanServerFactory.createMBeanServer("microcontainer"))
 
-  	jmx(key:'microcontainer:kernel=default', operations:['size']) {
-    	component(key:org.microcontainer.Kernel, class:org.microcontainer.impl.DefaultKernel)
+  	component(key:org.microcontainer.Kernel, class:org.microcontainer.impl.DefaultKernel) {
+  		jmx(key:'microcontainer:kernel=default', operations:['size'])
     }
 }
 

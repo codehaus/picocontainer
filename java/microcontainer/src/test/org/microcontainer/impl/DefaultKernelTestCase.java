@@ -297,10 +297,10 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 		PicoContainer root = kernel.getRootContainer("test");
 		MBeanServer mBeanServer = (MBeanServer)root.getComponentInstance(MBeanServer.class);
 
-		Wilma wilma = (Wilma)root.getComponentInstance(objectName.getCanonicalName());
+		Wilma wilma = (Wilma)root.getComponentInstance("wilma");
 		wilma.hello();
 
-		MBeanInfo mBeanInfo = (MBeanInfo)root.getComponentInstance("org.nanocontainer.testmodel.WilmaImplMBeanInfo");
+		MBeanInfo mBeanInfo = mBeanServer.getMBeanInfo(objectName);
 		assertNotNull(mBeanInfo);
 
 		Boolean called = (Boolean)mBeanServer.invoke(objectName, "helloCalled", null, null);

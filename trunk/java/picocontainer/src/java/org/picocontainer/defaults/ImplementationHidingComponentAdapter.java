@@ -46,7 +46,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
     }
 
-    private final InterfaceFinder interfaceFinder = new InterfaceFinder();
     private final boolean strict;
 
     /**
@@ -77,7 +76,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
             interfaces = new Class[] {(Class) getDelegate().getComponentKey()};
         } else {
-            interfaces = interfaceFinder.getAllInterfaces(getDelegate().getComponentImplementation());
+            interfaces = ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation());
         }
         if (interfaces.length == 0) {
             if(strict) {
@@ -111,12 +110,12 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Class declaringClass = method.getDeclaringClass();
             if (declaringClass.equals(Object.class)) {
-                if (method.equals(InterfaceFinder.hashCode)) {
+                if (method.equals(ClassHierarchyIntrospector.hashCode)) {
                     // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                     // return cached proxies. We want a unique hashCode for each created proxy!
                     return new Integer(System.identityHashCode(this));
                 }
-                if (method.equals(InterfaceFinder.equals)) {
+                if (method.equals(ClassHierarchyIntrospector.equals)) {
                     return new Boolean(proxy == args[0]);
                 }
                 // If it's any other method defined by Object, call on ourself.

@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +22,7 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class InterfaceFinder implements Serializable {
+public class ClassHierarchyIntrospector {
     /** the {@link Object#equals(Object)} method. */ 
     public static Method equals;
     /** the {@link Object#hashCode()} method. */ 
@@ -43,13 +42,16 @@ public class InterfaceFinder implements Serializable {
             ///CLOVER:ON
         }
     }
+    
+    private ClassHierarchyIntrospector() {
+    }
 
     /**
      * Get all the interfaces implemented by a list of objects.
      * @param objects the list of objects to consider.
      * @return an array of interfaces.
      */
-    public Class[] getAllInterfaces(List objects) {
+    public static Class[] getAllInterfaces(List objects) {
         Set interfaces = new HashSet();
         for (Iterator iterator = objects.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
@@ -68,7 +70,7 @@ public class InterfaceFinder implements Serializable {
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
      */
-    public Class[] getAllInterfaces(Class clazz) {
+    public static Class[] getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
@@ -97,7 +99,7 @@ public class InterfaceFinder implements Serializable {
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void}.class</code> for an empty array.
      */
-    public Class getClass(Object[] objects) {
+    public static Class getMostCommonSuperclass(Object[] objects) {
         Class clazz = Void.class;
         boolean found = false;
         if (objects != null && objects.length > 0) {

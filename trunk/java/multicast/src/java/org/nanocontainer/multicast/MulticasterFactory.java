@@ -12,7 +12,7 @@ package org.nanocontainer.multicast;
 
 import org.nanocontainer.proxy.ProxyFactory;
 import org.nanocontainer.proxy.StandardProxyFactory;
-import org.picocontainer.defaults.InterfaceFinder;
+import org.picocontainer.defaults.ClassHierarchyIntrospector;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class MulticasterFactory {
         Object[] targets = copy.toArray();
 
         if(classOrInterface == null) {
-            classOrInterface = new InterfaceFinder().getClass(objectsToAggregateCallFor.toArray());
+            classOrInterface = ClassHierarchyIntrospector.getMostCommonSuperclass(objectsToAggregateCallFor.toArray());
         }
         if(interfaces == null) {
-            interfaces = new InterfaceFinder().getAllInterfaces(objectsToAggregateCallFor);
+            interfaces = ClassHierarchyIntrospector.getAllInterfaces(objectsToAggregateCallFor);
         }
 
         return proxyFactory.createProxy(classOrInterface, interfaces, new AggregatingInvocationInterceptor(this, targets, invoker, proxyFactory));

@@ -2,7 +2,7 @@ package org.nanocontainer.multicast;
 
 import org.nanocontainer.proxy.InvocationInterceptor;
 import org.nanocontainer.proxy.ProxyFactory;
-import org.picocontainer.defaults.InterfaceFinder;
+import org.picocontainer.defaults.ClassHierarchyIntrospector;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,12 +29,12 @@ public class AggregatingInvocationInterceptor implements InvocationInterceptor {
     public Object intercept(Object proxy, Method method, Object[] args) throws Throwable {
         Class declaringClass = method.getDeclaringClass();
         if (declaringClass.equals(Object.class)) {
-            if (method.equals(org.picocontainer.defaults.InterfaceFinder.hashCode)) {
+            if (method.equals(ClassHierarchyIntrospector.hashCode)) {
                 // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                 // return cached proxies. We want a unique hashCode for each created proxy!
                 return new Integer(System.identityHashCode(AggregatingInvocationInterceptor.this));
             }
-            if (method.equals(org.picocontainer.defaults.InterfaceFinder.equals)) {
+            if (method.equals(ClassHierarchyIntrospector.equals)) {
                 return new Boolean(proxy == args[0]);
             }
             // If it's any other method defined by Object, call on ourself.
@@ -55,7 +55,7 @@ public class AggregatingInvocationInterceptor implements InvocationInterceptor {
         if(methodReturnType.isInterface()) {
             actualReturnType = methodReturnType;
         } else {
-            actualReturnType = new InterfaceFinder().getClass(results.toArray());
+            actualReturnType = ClassHierarchyIntrospector.getMostCommonSuperclass(results.toArray());
         }
         if (results.size() == 1) {
             // Got exactly one result. Just return that.

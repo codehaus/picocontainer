@@ -13,16 +13,16 @@ favours loose coupling between classes. Loose coupling in turn favours:<br>
   <li>Classes that are easier to test</li>
   <li>Systems that are easier to assemble and configure</li>
 </ul>
-<h2>DIP</h2>
+<h3>DIP</h3>
 Another well-known synonym for IoC is DIP (Dependency Inversion
 Principle). This is described in an excellent paper written by Robert
 C. Martin: <a
  href="http://www.objectmentor.com/resources/articles/dip.pdf">dip.pdf</a><br>
-<h2>The Hollywood Principle<br>
-</h2>
+<h3>The Hollywood Principle<br>
+</h3>
 A third nickname for IoC is "The Hollywood
 Principle" ("Don't call us we'll call you").<br>
-<h2>Explanation</h2>
+<h3>Explanation</h3>
 Simply put, a class (or as we often say, a component) designed
 according to IoC does not go off and get other components that
 it needs in order to do its job. It instead declares them to its boss,
@@ -32,7 +32,7 @@ control of the dependencies for a given class is <span
  style="font-style: italic;">inverted</span>. It is no longer the class
 itself that establishes its own dependencies, but "something" on the
 outside.<br>
-<h2>Examples</h2>
+<h3>Examples</h3>
 Without worrying about the generations of IoC that let us arrive at
 the PicoContainer design, here is the simplest possible IoC component :<br>
 <pre style="margin-left: 40px;">public interface Bookmaker {<br>   void bet();<br>
@@ -51,7 +51,7 @@ different assembly.<br>
 <br>
 Here are some other smells along the same line :<br>
 <pre style="margin-left: 40px;">public class AppleImpl implements Apple {<br>  private static Orange orange = OrangeFactory.getOrange();<br>&nbsp; public Apple() {<br>&nbsp; }<br>&nbsp; // other methods<br>}</pre>
-<h2>Configuration</h2>
+<h3>Configuration</h3>
 Sometimes we see configuration like so ...<br>
 <pre style="margin-left: 40px;">public class BigFatComponent {<br>&nbsp;&nbsp;String config01;<br>&nbsp;&nbsp;String config02;<br>&nbsp;&nbsp;public BigFatComponent() {<br>&nbsp;&nbsp;&nbsp;&nbsp;ResourceFactory resources = new ResourceFactory(new File("mycomp.properties"));<br>&nbsp;&nbsp;&nbsp;&nbsp;config01 = resources.get("config01");<br>&nbsp;&nbsp;&nbsp;&nbsp;config02 = resources.get("config02");<br>&nbsp;&nbsp;}<br>&nbsp; // other methods<br>}</pre>
 In the IoC world, it might be better to see the following for simple

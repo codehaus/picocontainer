@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+  <title>Lifecycle</title>
 </head>
 <body>
-<h1>Lifecycle</h1>
-<h2>No Lifecycle</h2>
+<h3>No Lifecycle</h3>
 For really simple PicoContainer compatible components, you would not
 bother with a lifecycle beyond Instantiation and Garbage Collection -
 both of which are consequences of basic use of say
 DefaultPicoContainer.
-<h2>Simple lifecycle - LifecyclePicoAdapter
-</h2>
+<h3>Simple lifecycle - LifecyclePicoAdapter
+</h3>
 With LifecyclePicoAdapter, we have provided a very simple set of
 interfaces for start(), stop() and dispose()....<br>
 <br>
@@ -29,7 +29,7 @@ A component that needs adaption ...<br>
 Or...<br>
 <pre style="margin-left: 40px;">public BananaDelegate implements Banana, Startable, Stoppable {<br>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();<br>&nbsp;&nbsp;&nbsp; public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();<br>&nbsp;&nbsp;&nbsp; }<br>}&nbsp;<br></pre>
 <span style="font-weight: bold;"></span>
-<h2>Custom lifecycles</h2>
+<h3>Custom lifecycles</h3>
 <p>Custom lifecycle management is a common requirement for components.
 Probably because it is so crucial there are many competing
 implementations, and

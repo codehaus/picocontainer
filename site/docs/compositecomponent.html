@@ -3,7 +3,8 @@
 <head>
 </head>
 <body>
-<h2>The ComponentMulticaster</h2>
+<h1>Composite Components</h1>
+<h3>The ComponentMulticaster</h3>
 <p>Say you have an interface:</p>
 <pre>    public interface Peelable {<br>        void peel();<br>    }</pre>
 <p>If you have a container that is full of objects that are Peelable:</p>
@@ -29,7 +30,7 @@ interface in the same way:</p>
 <p>Of course the mash() method is only applied to any components that
 implement the interface Mashable. So you can't accidentally mash() an
 Apple or an Orange.</p>
-<h2>Advantages of the component multicaster </h2>
+<h3>Advantages of the component multicaster </h3>
 <p>Totally decoupled lifecycle methods are possible, because
 PicoContainer will
 generate a proxy for <b>any</b> interface even if it is in a package

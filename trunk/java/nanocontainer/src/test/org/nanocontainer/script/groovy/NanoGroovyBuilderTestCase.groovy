@@ -122,24 +122,26 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertTrue(wsc.getPort() == 4321)
     }
 
-//      TODO NANO-89
-//      TODO - this one fails because the classpathelement 'path' attribute is inaccessible
-//             to the env that needs it.
-//      void testSoftInstantiateWithChildContainerWithDynamicClassPath() {
-//
-//        File testCompJar = new File(System.getProperty("testcomp.jar"));
-//        compJarPath = testCompJar.getCanonicalPath()
-//        builder = new NanoGroovyBuilder()
-//        pico = builder.container {
-//            classpathelement(path:compJarPath)
-//            component("TestComp")
-//            container() {
-//                component("TestComp2")
+      void testSoftInstantiateWithChildContainerWithDynamicClassPath() {
+
+        File testCompJar = new File(System.getProperty("testcomp.jar"))
+        testCompJar2 = new File(testCompJar.getParent(),"TestComp2.jar")
+        compJarPath = testCompJar.getCanonicalPath()
+        compJarPath2 = testCompJar2.getCanonicalPath()
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            classpathelement(path:compJarPath)
+            component(class:"TestComp")
+//            child = container() {
+//                classpathelement(path:compJarPath2)
+//                component(class:"TestComp2")
 //            }
-//        }
-//        comps = pico.getComponentInstances()
-//        assertEquals(1, comps.size())
-//    }
+//            assertNotNull(child.getComponentInstance("TestComp2"))
+        }
+        comps = pico.getComponentInstances()
+        assertTrue(comps.size() == 1)
+    }
 
 
     protected void startAndStop(pico) {

@@ -3,7 +3,7 @@
 <html>
 Guess the magic word: ${action.message}
 
-<form action="demo.nano">
+<form action="demo.groovy">
   <input name="magic" type="text" value="${action.magic}"/>
   <input type="submit" value="Set new message"/>
 </form>

@@ -2,7 +2,6 @@ package org.nanocontainer.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.codehaus.groovy.syntax.SyntaxException;
 import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
@@ -15,13 +14,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
 /**
  * Dispatcher servlet for NanoWeb.
@@ -63,6 +65,21 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
 
             httpServletRequest.setAttribute("action", action);
             dispatcher.dispatch(httpServletRequest, httpServletResponse, actionPath, result);
+        } catch (ScriptException e) {
+            // Print the stack trace and the script (for debugging)
+            PrintWriter writer = httpServletResponse.getWriter();
+            writer.println("<html>");
+            writer.println("<pre>");
+            e.printStackTrace(writer);
+            writer.println(httpServletRequest.getRequestURI());
+            URL scriptURL = e.getScriptURL();
+            InputStream in = scriptURL.openStream();
+            int c;
+            while((c=in.read()) != -1) {
+                writer.write(c);
+            }
+            writer.println("</pre>");
+            writer.println("</html>");
         } finally {
             try {
                 containerLauncher.killContainer();
@@ -72,7 +89,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         }
     }
 
-    private Object getAction(String key, ServletRequest request) throws ServletException {
+    private Object getAction(String key, ServletRequest request) throws ServletException, ScriptException {
         MutablePicoContainer container = getRequestContainer(request);
         // Try to get an action as specified in the configuration
         Object action = container.getComponentInstance(key);
@@ -80,9 +97,8 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             // Try to get an action from a script (groovy)
             try {
                 action = getScriptAction(key, container);
-            } catch (SyntaxException e) {
-                throw new ServletException(e);
             } catch (IOException e) {
+                log("Failed to load action class", e);
                 throw new ServletException(e);
             }
         }
@@ -93,7 +109,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         return action;
     }
 
-    private Object getScriptAction(String key, MutablePicoContainer container) throws SyntaxException, IOException {
+    private Object getScriptAction(String key, MutablePicoContainer container) throws IOException, ScriptException {
         URL scriptURL = getServletContext().getResource(key);
         Object result = null;
         if (scriptURL != null) {
@@ -126,8 +142,9 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         List valuesAsList = Arrays.asList((String[]) value);
         try {
             Ognl.setValue(parameterKey, action, valuesAsList);
-        } catch (OgnlException e1) {
-            throw new ServletException(e1);
+        } catch (OgnlException e) {
+            log("Failed to set property with OGNL", e);
+            throw new ServletException(e);
         }
     }
 
@@ -137,7 +154,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             String view = (String) execute.invoke(action, null);
             return view;
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Failed to execute action " + action.getClass().getName(), e);
             throw new ServletException(e);
         }
     }

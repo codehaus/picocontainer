@@ -9,7 +9,6 @@
 package org.picoextras.webwork2;
 
 import com.opensymphony.webwork.dispatcher.ServletDispatcher;
-import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.ServletRequestContainerLauncher;
 
 import javax.servlet.ServletException;
@@ -24,8 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public class PicoServletDispatcher extends ServletDispatcher implements KeyConstants {
-
+public class PicoServletDispatcher extends ServletDispatcher {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
@@ -36,7 +34,5 @@ public class PicoServletDispatcher extends ServletDispatcher implements KeyConst
         } finally {
             containerLauncher.killContainer();
         }
-
     }
-
 }

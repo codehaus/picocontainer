@@ -1,19 +1,26 @@
 <?xml version="1.0"  encoding="ISO-8859-1"?>
 
 <!DOCTYPE project [
-    <!ENTITY % entities-locator SYSTEM "file:locator.ent"> %entities-locator;
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+    <!ENTITY ouml "&#246;">
 ]>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>&ver-picocontainer;</currentVersion>
+    <currentVersion>1.0-RC-1-SNAPSHOT</currentVersion>
 
-    &org-codehaus;
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
     <inceptionYear>2003</inceptionYear>
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
+    <description>Small footprint IoC container</description>
     <shortDescription>Small footprint IoC container</shortDescription>
     <description>
         PicoContainer is a small, simple container for arbitrary components. It is embeddable and
@@ -65,100 +72,163 @@
         <version>
             <id>1.0-beta-2</id>
             <name>1.0-beta-2</name>
-            <tag>PICOCONTAINER_1_0_BETA_2</tag>
+            <tag>PICOCONTAINER_1_0_BETA_1</tag>
         </version>
         <version>
             <id>1.0-beta-3</id>
             <name>1.0-beta-3</name>
-            <tag>PICOCONTAINER_1_0_BETA_3</tag>
-        </version>
-        <version>
-            <id>1.0-beta-5</id>
-            <name>1.0-beta-5</name>
-            <tag>PICOCONTAINER_1_0_BETA_5</tag>
-        </version>
-        <version>
-            <id>1.0-RC1</id>
-            <name>1.0-RC1</name>
             <tag>HEAD</tag>
         </version>
     </versions>
 
     <mailingLists>
         <mailingList>
-            <name>PicoContainer Users</name>
-            <subscribe>&mail-list;/picocontainer-user</subscribe>
-            <unsubscribe>&mail-list;/picocontainer-user</unsubscribe>
-            <archive>&mail-archive;/picocontainer-user</archive>
-        </mailingList>
-        <mailingList>
             <name>PicoContainer Developers</name>
-            <subscribe>&mail-list;/picocontainer-dev</subscribe>
-            <unsubscribe>&mail-list;/picocontainer-dev</unsubscribe>
-            <archive>&mail-archive;/picocontainer-dev</archive>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
         </mailingList>
         <mailingList>
             <name>PicoContainer CVS Commits (CVSSpam)</name>
-            <subscribe>&mail-list;/picocontainer-commits</subscribe>
-            <unsubscribe>&mail-list;/picocontainer-commits</unsubscribe>
-            <archive>&mail-archive;/picocontainer-commits</archive>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
         </mailingList>
     </mailingLists>
 
     <developers>
-        <developer>&dev-PaulHammant;
-            <roles>&role-projectleader;&role-javadeveloper;</roles>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
         </developer>
-        <developer>&dev-AslakHellesøy;
-            <roles>&role-projectleader;&role-javadeveloper;</roles>
+        <developer>
+            <name>Aslak Helles&oslash;y</name>
+            <id>rinkrank</id>
+            <email>rinkrank@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
         </developer>
-        <developer>&dev-JonTirsén;
-            <roles>&role-javadeveloper;</roles>
+        <developer>
+            <name>Jon Tirs&eacute;n</name>
+            <id>tirsen</id>
+            <email>tirsen@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
         </developer>
-        <developer>&dev-ChrisStevenson;
-            <roles>&role-javadeveloper;</roles>
-        </developer>
-        <developer>&dev-ThomasHeller;
-            <roles>&role-javadeveloper;</roles>
-        </developer>
-        <developer>&dev-JörgSchaible;
-            <roles>&role-javadeveloper;</roles>
+        <developer>
+            <name>Chris Stevenson</name>
+            <id>skizz</id>
+            <email>skizz@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
         </developer>
     </developers>
 
     <dependencies>
 
         <!-- test time only -->
-        <dependency>&dep-junit;</dependency>
-        <dependency>&dep-jmock;</dependency>
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
     <contributors>
-        &con-JoeWalnes;
-        &con-MikeHogan;
-        &con-JamesStrachan;
-        &con-SteveFreeman;
-        &con-StacyCurl;
-        &con-LeoSimmons;
-        &con-ZoharMelamed;
-        &con-DanNorth;
-        &con-RafalKrzewski;
-        &con-PaoloSilvera;
-        &con-MichaelRettig;
-        &con-MircoNovakovic;
-        &con-LaurentEtiemble;
-        &con-MathiasBogaert;
-        &con-VincentTence;
-        &con-RaoChejarla;
-        &con-AapoLaakkonen;
-        &con-KevinONeill;
-        &con-JeppeCramon;
-        &con-AdamRosien;
-        &con-GillesPhilippart;
-        &con-CalvinYu;
-        &con-MattHo;
+        <contributor>
+            <name>Joe Walnes</name>
+        </contributor>
+        <contributor>
+            <name>Mike Hogan</name>
+        </contributor>
+        <contributor>
+            <name>James Strachan</name>
+        </contributor>
+        <contributor>
+            <name>Steve Freeman</name>
+        </contributor>
+        <contributor>
+            <name>Stacy Curl</name>
+        </contributor>
+        <contributor>
+            <name>Leo Simons</name>
+        </contributor>
+        <contributor>
+            <name>Zohar Melamed</name>
+        </contributor>
+        <contributor>
+            <name>Dan North</name>
+        </contributor>
+        <contributor>
+            <name>Thomas Heller</name>
+        </contributor>
+        <contributor>
+            <name>Rafal Krzewski</name>
+        </contributor>
+        <contributor>
+            <name>Paulo Silvera</name>
+        </contributor>
+        <contributor>
+            <name>Michael Rettig</name>
+        </contributor>
+        <contributor>
+            <name>J&ouml;rg Schaible</name>
+        </contributor>
+        <contributor>
+            <name>Mirco Novakovic</name>
+        </contributor>
+        <contributor>
+            <name>Laurent Etiemble</name>
+        </contributor>
+        <contributor>
+            <name>Mathias Bogaert</name>
+        </contributor>
+        <contributor>
+            <name>Vincent Tence</name>
+        </contributor>
+        <contributor>
+            <name>Rao Chejarla</name>
+        </contributor>
+        <contributor>
+            <name>Aapo Laakkonen</name>
+        </contributor>
+        <contributor>
+            <name>Kevin O'Neill</name>
+        </contributor>
+        <contributor>
+            <name>Jeppe Cramon</name>
+        </contributor>
+        <contributor>
+            <name>Adam Rosien</name>
+        </contributor>
+        <contributor>
+            <name>Gilles Philippart</name>
+        </contributor>
+        <contributor>
+            <name>Calvin Yu</name>
+        </contributor>
+        <contributor>
+            <name>Matt Ho</name>
+        </contributor>
     </contributors>
+
+    <dependemcies>
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+    </dependemcies>
 
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE project [
-    <!ENTITY % entities-locator SYSTEM "file:locator.ent"> %entities-locator;
-]>
-
 <project>
-    <extend>${basedir}/../project.xml</extend>
+  <extend>${basedir}/../project.xml</extend>
     <groupId>nanocontainer</groupId>
-    <id>nanocontainer-type3msg</id>
-    <name>nanocontainer-type3msg</name>
-    <currentVersion>&ver-nanocontainer-type3msg;</currentVersion>
+  <id>nanocontainer-type3msg</id>
+  <name>nanocontainer-type3msg</name>
+  <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
 
-    <dependencies>
-        <dependency>&dep-picocontainer;</dependency>
-    </dependencies>
+  <dependencies>
+  
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-RC-1-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>  
+  
+  </dependencies>
 
 </project>

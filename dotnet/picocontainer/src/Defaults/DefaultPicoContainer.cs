@@ -222,17 +222,22 @@ namespace PicoContainer.Defaults
 
 		public IList ComponentInstances
 		{
-			get { return GetComponentInstancesOfType(null); }
+			get { return GetComponentInstancesOfType(typeof(object)); }
 		}
 
 		public IList GetComponentInstancesOfType(Type componentType)
 		{
-			IDictionary adapterToInstanceMap = new Hashtable();
+			if (componentType == null) 
+			{
+				return new ArrayList();
+			}
+
+			Hashtable adapterToInstanceMap = new Hashtable();
 			foreach (IComponentAdapter componentAdapter in componentAdapters)
 			{
-				if (componentType == null || componentType.IsAssignableFrom(componentAdapter.ComponentImplementation))
+				if (componentType.IsAssignableFrom(componentAdapter.ComponentImplementation)) 
 				{
-					object componentInstance = componentAdapter.ComponentInstance;
+					Object componentInstance = GetInstance(componentAdapter);
 					adapterToInstanceMap.Add(componentAdapter, componentInstance);
 
 					// This is to ensure all are added. (Indirect dependencies will be added
@@ -240,27 +245,51 @@ namespace PicoContainer.Defaults
 					AddOrderedComponentAdapter(componentAdapter);
 				}
 			}
+			
 			IList result = new ArrayList();
-			foreach (object componentAdapter in orderedComponentAdapters)
+			foreach (IComponentAdapter componentAdapter in orderedComponentAdapters)
 			{
-				object componentInstance = adapterToInstanceMap[componentAdapter];
-				if (componentInstance != null)
+				Object componentInstance = adapterToInstanceMap[componentAdapter];
+				if (componentInstance != null) 
 				{
 					// may be null in the case of the "implicit" adapter
 					// representing "this".
 					result.Add(componentInstance);
 				}
 			}
-			return ArrayList.ReadOnly(result);
+			
+			return result;
 		}
 
+		private object GetInstance(IComponentAdapter componentAdapter) 
+		{
+			// check wether this is our adapter
+			// we need to check this to ensure up-down dependencies cannot be followed
+			bool isLocal = componentAdapters.Contains(componentAdapter);
+
+			if (isLocal) 
+			{
+				Object instance = componentAdapter.GetComponentInstance(this);
+				AddOrderedComponentAdapter(componentAdapter);
+
+				return instance;
+			} 
+			else if (parent != null) 
+			{
+				return parent.GetComponentInstance(componentAdapter.ComponentKey);
+			}
+
+			// TODO: decide .. exception or null?
+			// exceptrion: mx: +1, joehni +1
+			return null;
+		}
 
 		public object GetComponentInstance(object componentKey)
 		{
 			IComponentAdapter componentAdapter = GetComponentAdapter(componentKey);
 			if (componentAdapter != null)
 			{
-				return componentAdapter.ComponentInstance;
+				return GetInstance(componentAdapter);
 			}
 			else
 			{
@@ -271,14 +300,38 @@ namespace PicoContainer.Defaults
 		public object GetComponentInstanceOfType(Type componentType)
 		{
 			IComponentAdapter componentAdapter = GetComponentAdapterOfType(componentType);
-			return componentAdapter == null ? null : componentAdapter.ComponentInstance;
+			return componentAdapter == null ? null : FindInstance(componentAdapter);
+		}
+
+		private object FindInstance(IComponentAdapter componentAdapter) 
+		{
+			// check wether this is our adapter
+			// we need to check this to ensure up-down dependencies cannot be followed
+			bool isLocal = componentAdapters.Contains(componentAdapter);
+
+			if (isLocal) 
+			{
+				Object instance = componentAdapter.GetComponentInstance(this);
+
+				AddOrderedComponentAdapter(componentAdapter);
+
+				return instance;
+			} 
+			else if (parent != null) 
+			{
+				return parent.GetComponentInstance(componentAdapter.ComponentKey);
+			}
+
+			// TODO: decide .. exception or null?
+			// exceptrion: mx: +1, joehni +1
+			return null;
 		}
 
 		public IComponentAdapter UnregisterComponentByInstance(object componentInstance)
 		{
 			foreach (IComponentAdapter componentAdapter in ComponentAdapters)
 			{
-				if (componentAdapter.ComponentInstance.Equals(componentInstance))
+				if (componentAdapter.GetComponentInstance(this).Equals(componentInstance))
 				{
 					return UnregisterComponent(componentAdapter.ComponentKey);
 				}
@@ -327,7 +380,7 @@ namespace PicoContainer.Defaults
 			{
 				try
 				{
-					componentAdapter.Verify();
+					componentAdapter.Verify(this);
 				}
 				catch (UnsatisfiableDependenciesException e)
 				{

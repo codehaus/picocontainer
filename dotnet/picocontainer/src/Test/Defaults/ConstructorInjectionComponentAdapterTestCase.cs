@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NUnit.Framework;
 using PicoContainer.Defaults;
 using PicoContainer;
@@ -59,10 +60,11 @@ namespace Test.Defaults
 			}
 		}
 
-		public void testSuccessfulVerificationWithNoDependencies()
+		[Test]
+		public void SuccessfulVerificationWithNoDependencies()
 		{
 			InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (A));
-			componentAdapter.Verify();
+			componentAdapter.Verify(componentAdapter.Container);
 		}
 
 		[ExpectedException(typeof (UnsatisfiableDependenciesException))]
@@ -70,7 +72,7 @@ namespace Test.Defaults
 		{
 			IComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (B));
 			componentAdapter.Container = new DefaultPicoContainer();
-			componentAdapter.Verify();
+			componentAdapter.Verify(componentAdapter.Container);
 			Assert.Fail();
 		}
 
@@ -90,7 +92,8 @@ namespace Test.Defaults
 			}
 		}
 
-		public void testFailingVerificationWithCyclicDependencyException()
+		[Test]
+		public void FailingVerificationWithCyclicDependencyException()
 		{
 			DefaultPicoContainer picoContainer = new DefaultPicoContainer();
 			picoContainer.RegisterComponentImplementation(typeof (C1));
@@ -103,7 +106,6 @@ namespace Test.Defaults
 			catch (CyclicDependencyException e)
 			{
 				String message = e.Message;
-
 				Assert.IsTrue(message.IndexOf("C1") + message.IndexOf("C2") > 0);
 			}
 		}
@@ -115,7 +117,8 @@ namespace Test.Defaults
 			}
 		}
 
-		public void testFailingVerificationWithPicoInitializationException()
+		[Test]
+		public void FailingVerificationWithPicoInitializationException()
 		{
 			DefaultPicoContainer picoContainer = new DefaultPicoContainer();
 			picoContainer.RegisterComponentImplementation(typeof (A));

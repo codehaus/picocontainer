@@ -164,12 +164,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\BeanPropertyComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\BeanPropertyComponentAdapterFactory.cs"
+                    RelPath = "Defaults\BasicComponentParameter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -180,6 +175,11 @@
                 />
                 <File
                     RelPath = "Defaults\CachingComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\CollectionComponentParameter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -245,6 +245,11 @@
                 />
                 <File
                     RelPath = "Defaults\IComponentMonitor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ICyclicDependencyGuard.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -320,6 +325,11 @@
                 />
                 <File
                     RelPath = "Defaults\SynchronizedComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ThreadStaticCyclicDependencyGuard.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -50,16 +50,14 @@ namespace PicoContainer
 		///                                                            container.</exception>
 		object ComponentInstance { get; }
 
+		object GetComponentInstance(IPicoContainer container);
+
 		/// 
 		/// <summary>
 		///  Property containing the container in which this instance is registered, called by the container upon registration
 		/// </summary>
 		IPicoContainer Container { get; set; }
 
-		/// <summary>
-		/// Verify that all dependencies for this adapter can be satisifed.
-		/// </summary>
-		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
-		void Verify();
+		void Verify(IPicoContainer container);
 	}
 }

@@ -164,7 +164,6 @@ namespace Test.Defaults
 			}
 		}
 
-
 		[Test]
 		public void OrderOfInstantiationWithoutAdapter()
 		{
@@ -369,8 +368,7 @@ namespace Test.Defaults
 		public void DefaultPicoContainerRegisteredAsComponentGetsHostingContainerAsParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			parent.RegisterComponentImplementation("child", typeof (DefaultPicoContainer));
-			DefaultPicoContainer child = (DefaultPicoContainer) parent.GetComponentInstance("child");
+			DefaultPicoContainer child = (DefaultPicoContainer) parent.MakeChildContainer();
 			Assert.AreSame(parent, child.Parent);
 		}
 
@@ -378,8 +376,7 @@ namespace Test.Defaults
 		public void GetComponentInstancesOnParentContainerHostedChildContainerDoesntReturnParentAdapter()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			parent.RegisterComponentImplementation("child", typeof (DefaultPicoContainer));
-			DefaultPicoContainer child = (DefaultPicoContainer) parent.GetComponentInstance("child");
+			DefaultPicoContainer child = (DefaultPicoContainer) parent.MakeChildContainer();
 			Assert.AreEqual(0, child.ComponentInstances.Count);
 		}
 
@@ -457,8 +454,7 @@ namespace Test.Defaults
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation("recording", typeof (StringBuilder));
 			parent.RegisterComponentImplementation(typeof (A));
-			parent.RegisterComponentImplementation("child", typeof (DefaultPicoContainer));
-			DefaultPicoContainer child = (DefaultPicoContainer) parent.GetComponentInstance("child");
+			IMutablePicoContainer child = parent.MakeChildContainer();
 			child.RegisterComponentImplementation(typeof (B));
 			parent.Start();
 			parent.Stop();

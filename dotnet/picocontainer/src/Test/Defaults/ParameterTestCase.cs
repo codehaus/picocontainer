@@ -20,7 +20,7 @@ namespace Test.Defaults
 			ComponentParameter parameter = new ComponentParameter(typeof (ITouchable));
 
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (ITouchable)));
-			ITouchable touchable = (ITouchable) parameter.ResolveAdapter(pico, typeof (ITouchable)).ComponentInstance;
+			ITouchable touchable = (ITouchable) parameter.ResolveInstance(pico, null, typeof (ITouchable));
 			Assert.IsNotNull(touchable);
 		}
 
@@ -30,7 +30,7 @@ namespace Test.Defaults
 			Object value = new Object();
 			ConstantParameter parameter = new ConstantParameter(value);
 			IMutablePicoContainer picoContainer = new DefaultPicoContainer();
-			Assert.AreSame(value, parameter.ResolveAdapter(picoContainer, typeof (object)).ComponentInstance);
+			Assert.AreSame(value, parameter.ResolveInstance(picoContainer, null,typeof (object)));
 		}
 
 		[Test]

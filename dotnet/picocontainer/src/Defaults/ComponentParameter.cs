@@ -25,53 +25,132 @@ namespace PicoContainer.Defaults
 	/// </remarks>
 	/// </summary>
 	[Serializable]
-	public class ComponentParameter : IParameter
+	public class ComponentParameter : BasicComponentParameter
 	{
-		private object componentKey;
+		/**
+	 * <code>DEFAULT</code> is an instance of ComponentParameter using the default constructor.
+	 */
+		public static readonly ComponentParameter DEFAULT = new ComponentParameter();
+		/**
+		 * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
+		 */
+		public static readonly ComponentParameter ARRAY = new ComponentParameter(false);
+		/**
+		 * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
+		 * elements.
+		 */
+		public static readonly ComponentParameter ARRAY_ALLOW_EMPTY = new ComponentParameter(true);
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="componentKey">the key of the desired component</param>
-		public ComponentParameter(object componentKey)
+		private readonly IParameter collectionParameter;
+
+		/**
+		 * Expect a parameter matching a component of a specific key.
+		 * 
+		 * @param componentKey the key of the desired component
+		 */
+		public ComponentParameter(Object componentKey) : this(componentKey, null)
 		{
-			this.componentKey = componentKey;
+			
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ComponentParameter()
+		/**
+		 * Expect any scalar paramter of the appropriate type or an {@link java.lang.reflect.Array}.
+		 */
+		public ComponentParameter() : this(false)
+		{
+			
+		}
+
+		/**
+		 * Expect any scalar paramter of the appropriate type or an {@link java.lang.reflect.Array}.
+		 * Resolve the parameter even if no compoennt is of the array's component type.
+		 * 
+		 * @param emptyCollection <code>true</code> allows an Array to be empty
+		 * @since 1.1
+		 */
+		public ComponentParameter(bool emptyCollection) :
+			this(null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY)
+		{
+			
+		}
+
+		/**
+		 * Expect any scalar paramter of the appropriate type or the collecting type
+		 * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
+		 * The components in the collection will be of the specified type.
+		 * 
+		 * @param componentValueType the component's type (ignored for an Array)
+		 * @param emptyCollection <code>true</code> allows the collection to be empty
+		 * @since 1.1
+		 */
+		public ComponentParameter(Type componentValueType, bool emptyCollection) : 
+			this(null, new CollectionComponentParameter(componentValueType, emptyCollection))
 		{
 		}
 
-		/// <summary>
-		/// Get the component adapter for the key.
-		/// <remarks>
-		/// If the component key is null the component returned will be located using the type
-		/// </remarks>
-		/// </summary>
-		/// <param name="picoContainer">The container to search in for the component</param>
-		/// <param name="expectedType">The type that should be returned</param>
-		/// <returns>The component adapter</returns>
-		public IComponentAdapter ResolveAdapter(IPicoContainer picoContainer, Type expectedType)
+		/**
+		 * Expect any scalar paramter of the appropriate type or the collecting type
+		 * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
+		 * The components in the collection will be of the specified type and their adapter's key
+		 * must have a particular type.
+		 * 
+		 * @param componentKeyType the component adapter's key type
+		 * @param componentValueType the component's type (ignored for an Array)
+		 * @param emptyCollection <code>true</code> allows the collection to be empty
+		 * @since 1.1
+		 */
+		public ComponentParameter(Type componentKeyType, Type componentValueType, bool emptyCollection) 
+			: this(null, new CollectionComponentParameter(componentKeyType, componentValueType, emptyCollection))
 		{
-			IComponentAdapter result;
+			
+		}
 
-			if (componentKey != null)
-			{
-				result = picoContainer.GetComponentAdapter(componentKey);
-				if (result != null && !expectedType.IsAssignableFrom(result.ComponentImplementation))
-				{
-					result = null;
-				}
-			}
-			else
-			{
-				result = picoContainer.GetComponentAdapterOfType(expectedType);
-			}
+		private ComponentParameter(object componentKey, IParameter collectionParameter) : base(componentKey)
+		{
+			this.collectionParameter = collectionParameter;
+		}
 
+
+		public override object ResolveInstance(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
+		{
+			// type check is done in isResolvable
+			Object result = base.ResolveInstance(container, adapter, expectedType);
+			if (result == null && collectionParameter != null)
+			{
+				result = collectionParameter.ResolveInstance(container, adapter, expectedType);
+			}
 			return result;
+		}
+
+		public override bool IsResolvable(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
+		{
+			if (!base.IsResolvable(container, adapter, expectedType))
+			{
+				if (collectionParameter != null)
+				{
+					return collectionParameter.IsResolvable(container, adapter, expectedType);
+				}
+				return false;
+			}
+			return true;
+		}
+
+
+		public override void Verify(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
+		{
+			try
+			{
+				base.Verify(container, adapter, expectedType);
+			}
+			catch (UnsatisfiableDependenciesException e)
+			{
+				if (collectionParameter != null)
+				{
+					collectionParameter.Verify(container, adapter, expectedType);
+					return;
+				}
+				throw e;
+			}
 		}
 	}
 }

@@ -7,6 +7,8 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 %!include: preface.t2t
 %!include: antipatterns.t2t
 %!include: patterns.t2t
+%!include: dependency-injection.t2t
+%!include: ioc-history.t2t
 %!include: simplepico.t2t
 %!include: hierarchies.t2t
 %!include: servlet.t2t

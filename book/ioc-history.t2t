@@ -1,0 +1,20 @@
+Constructor Dependency Injection - Inverison of Control	
+with PicoContainer
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+
+= Inversion of Control =
+
+== In the beginning ==
+
+Inversion of Control, as a term, was coined in 1998 by Stefano Mazzocchi ....
+
+DIP, Hollywood, OSGi, ATG Dynamo ...
+
+== Characterized ==
+
+Component Instantiation
+Initialisation
+Dependency Resolution
+Configuration
+Lifecycle
+

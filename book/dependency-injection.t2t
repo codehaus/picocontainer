@@ -1,0 +1,9 @@
+Constructor Dependency Injection - Dependency Injection
+with PicoContainer
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+
+= Constructor Dependency Injection =
+
+= Other types of Dependency Injection =
+
+= Non-Injection types of IoC =

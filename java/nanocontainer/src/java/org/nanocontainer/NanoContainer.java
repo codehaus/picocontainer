@@ -14,9 +14,9 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NullPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.defaults.NullPicoContainer;
 
 import java.io.File;
 import java.io.FileReader;
@@ -59,17 +59,17 @@ public class NanoContainer {
         this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), new NullPicoContainer(), NanoContainer.class.getClassLoader());
     }
 
-    public NanoContainer(Reader composition, String language, ClassLoader classLoader) throws ClassNotFoundException {
-        this(composition, language, new NullPicoContainer(), classLoader);
+    public NanoContainer(Reader composition, String extension, ClassLoader classLoader) throws ClassNotFoundException {
+        this(composition, extension, null, classLoader);
     }
 
-    public NanoContainer(Reader composition, String language) throws ClassNotFoundException {
-        this(composition, language, new NullPicoContainer(), NanoContainer.class.getClassLoader());
+    public NanoContainer(Reader composition, String extension) throws ClassNotFoundException {
+        this(composition, extension, null, NanoContainer.class.getClassLoader());
     }
 
-    public NanoContainer(Reader composition, String language, PicoContainer parent, ClassLoader classLoader) throws ClassNotFoundException {
+    public NanoContainer(Reader composition, String extension, PicoContainer parent, ClassLoader classLoader) throws ClassNotFoundException {
 
-        String containerAssemblerClassName = (String) extensionToComposers.get(language);
+        String containerAssemblerClassName = (String) extensionToComposers.get(extension);
         DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
         {
             // disposable.

@@ -10,15 +10,14 @@
 
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -377,22 +376,6 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         public B(StringBuffer recording) {
             super(recording);
         }
-    }
-
-    public void testContainersArePutLastAndTheOthersAreMaintainedInSamePlace() {
-        List l = new ArrayList();
-        l.add("c");
-        l.add(new DefaultPicoContainer());
-        l.add("ComponentB");
-        l.add(new DefaultPicoContainer());
-        l.add("A");
-        l.add(new DefaultPicoContainer());
-        l.add("ComponentD");
-        Collections.sort(l,new StackContainersAtEndComparator());
-        assertEquals("c", l.get(0));
-        assertEquals("ComponentB", l.get(1));
-        assertEquals("A", l.get(2));
-        assertEquals("ComponentD", l.get(3));
     }
 
     public void testComponentsAreStartedBreadthFirstAndStoppedDepthFirst() {

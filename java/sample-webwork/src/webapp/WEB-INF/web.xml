@@ -6,23 +6,16 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            // No need to extend anything, but we must have a method with this signature
-            class DemoBuilder {
-                // NanoContainer will call this method whenever:
-                // o The application starts
-                // o A new session is created
-                // o A new request is created
-                buildContainer(parent, assemblyScope) {
-                    pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
-                    if(assemblyScope instanceof javax.servlet.ServletContext) {
-                        // register application specific components
-                        System.out.println("**** NanoContainer instantiating application components")
-                        pico.registerComponentImplementation(org.nanocontainer.sample.webwork.dao.simple.MemoryCheeseDao)
-                    } else if(assemblyScope instanceof javax.servlet.ServletContext) {
-                    }
-                    return pico
-                }
+            pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
+            if(assemblyScope instanceof javax.servlet.ServletContext) {
+                System.out.println("**** Application pico components instantiated by Groovy")
+                pico.registerComponentImplementation(org.nanocontainer.sample.webwork.dao.simple.MemoryCheeseDao)
+            } else if(assemblyScope instanceof javax.servlet.HttpSession) {
+                System.out.println("**** Session pico components instantiated by Groovy")
+            } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
+                System.out.println("**** Request pico components instantiated by Groovy")
             }
+            return pico
         ]]></param-value>
     </context-param>
 

@@ -20,8 +20,8 @@ import org.apache.commons.vfs.FileSelector;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
@@ -99,13 +99,14 @@ public class Deployer {
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
 
-        String extension = deploymentScript.getName().getExtension();
+        String extension = "." + deploymentScript.getName().getExtension();
 
         ObjectReference result = new SimpleReference();
         Object compositionScope = null;
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
 
-        ContainerBuilder builder = ScriptedContainerBuilder.createBuilder(extension, scriptReader, applicationClassLoader);
+        NanoContainer nanoContainer = new NanoContainer(scriptReader, extension, applicationClassLoader);
+        ContainerBuilder builder = nanoContainer.getContainerBuilder();
         builder.buildContainer(result, parentContainerRef, compositionScope);
 
         return result;

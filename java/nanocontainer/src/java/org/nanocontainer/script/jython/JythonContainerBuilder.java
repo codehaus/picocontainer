@@ -17,6 +17,7 @@ import org.python.util.PythonInterpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.BufferedReader;
 
 /**
  * {@inheritDoc}
@@ -43,9 +44,10 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
         interpreter.set("assemblyScope", assemblyScope);
         interpreter.execfile(new InputStream() {
             public int read() throws IOException {
-                return script.read();
+                int i = script.read();
+                return i;
             }
-        });
+        }, "nanocontainer.py");
         return (MutablePicoContainer) interpreter.get("pico", MutablePicoContainer.class);
     }
 }

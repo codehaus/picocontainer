@@ -11,15 +11,8 @@ package org.nanocontainer.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DynamicConfigurator;
-import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.ConstantParameter;
-import org.nanocontainer.reflection.StringToObjectConverter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 /**

@@ -6,9 +6,10 @@ package org.nanocontainer.ant;
  */
 public class Pung {
     public String text;
+    public Pang pang;
 
-    public Pung(Ping ping, String text){
+    public Pung(Pang pang, String text){
+        this.pang = pang;
         this.text = text;
-        ping.setSomeprop("HELLO");
     }
 }

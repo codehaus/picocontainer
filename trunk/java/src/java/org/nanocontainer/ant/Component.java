@@ -2,11 +2,10 @@ package org.nanocontainer.ant;
 
 import org.apache.tools.ant.DynamicConfigurator;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.IntrospectionHelper;
-import org.apache.tools.ant.Project;
 import org.picocontainer.internals.ConstantParameter;
 import org.picocontainer.internals.Parameter;
 import org.picocontainer.internals.ComponentParameter;
+import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.nanocontainer.reflection.StringToObjectConverter;
 
 import java.util.Map;
@@ -25,6 +24,7 @@ public class Component implements DynamicConfigurator {
     private String className;
     private Map attributes = new HashMap();
     private List parameters = new ArrayList();
+    private String key;
 
     public void setClassname(String className) {
         this.className = className;
@@ -34,20 +34,27 @@ public class Component implements DynamicConfigurator {
         return className;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key != null ? key : getClassname();
+    }
+
     public void setDynamicAttribute(String name, String value) throws BuildException {
         attributes.put(name, value);
     }
 
     public Object createDynamicElement(String string) throws BuildException {
-        return null;
+        throw new BuildException("No sub elements of " + string + " is allowed");
     }
 
-    public void setPropertiesOn(Object instance, Project project) {
-        IntrospectionHelper introspectionHelper = IntrospectionHelper.getHelper(instance.getClass());
+    public void setPropertiesOn(BeanPropertyComponentAdapterFactory.Adapter adapter) throws BeanPropertyComponentAdapterFactory.NoSuchPropertyException {
         for (Iterator i = attributes.keySet().iterator(); i.hasNext();) {
             String name = (String) i.next();
             String value = (String) attributes.get(name);
-            introspectionHelper.setAttribute(project, instance, name, value);
+            adapter.setPropertyValue(name, value);
         }
     }
 

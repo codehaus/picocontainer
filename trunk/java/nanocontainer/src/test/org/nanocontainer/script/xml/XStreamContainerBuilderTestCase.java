@@ -86,10 +86,10 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 			"</container>" 
 		);
 		
-        //PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
 		
-		//TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
-		//assertNotNull(tca);
+		TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
+		assertNotNull(tca);
 	}
 }
 

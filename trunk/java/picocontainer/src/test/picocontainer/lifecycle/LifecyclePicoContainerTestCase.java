@@ -88,9 +88,6 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         }
     }
 
-    // TODO-Chris - try to remove 'implements Startable, Stoppable, Disposable'
-    // Thus making this comp accidentally start()able.
-    // We should be able to get this to work.
     public static class Three implements Startable, Stoppable, Disposable {
         One one;
 

@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import picocontainer.PicoStartException;
 import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServerImpl;
+import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 

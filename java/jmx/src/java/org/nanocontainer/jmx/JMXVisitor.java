@@ -78,7 +78,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 			return ((Class) componentKey).getName();
 		}
 
-		return (String) componentKey;
+		return componentKey.toString();
 	}
 
 	/**

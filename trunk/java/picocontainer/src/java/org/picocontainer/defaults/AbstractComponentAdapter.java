@@ -13,7 +13,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
 import java.io.Serializable;
-import java.lang.reflect.Modifier;
 
 /**
  * Base class for a ComponentAdapter with general functionality.

@@ -19,7 +19,7 @@ public class PicoContainerImpl implements PicoContainer {
     private final StartableLifecycleManager startableLifecycleManager;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
-    private List orderedComps = new ArrayList();
+    private List orderedComponents = new ArrayList();
 
     public PicoContainerImpl(Container parentContainer,
             StartableLifecycleManager startableLifecycleManager) {
@@ -46,11 +46,13 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
-    public void registerComponent(Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    // TODO:ASLAK just declare PicoRegistrationException?
+    public void registerComponent(Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
-    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    // TODO:ASLAK just declare PicoRegistrationException?
+    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         checkConcrete(componentClass);
         checkConstructor(componentClass);
         checkType(componentType, componentClass);
@@ -58,8 +60,13 @@ public class PicoContainerImpl implements PicoContainer {
         registeredComponents.add(new ComponentSpecification(componentType, componentClass));
     }
 
-    private void checkConstructor(Class componentClass) {
-        // TODO
+    private void checkConstructor(Class componentClass) throws WrongNumberOfConstructorsRegistrationException {
+        // TODO move this check to checkConstructor and rename the exception to
+        // WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException
+        Constructor[] constructors = componentClass.getConstructors();
+        if (constructors.length != 1) {
+            throw new WrongNumberOfConstructorsRegistrationException(constructors.length);
+        }
     }
 
     private void checkDuplication(Class componentType) throws DuplicateComponentRegistrationException {
@@ -87,7 +94,7 @@ public class PicoContainerImpl implements PicoContainer {
 
     public void registerComponent(Object component) throws PicoRegistrationException {
         registerComponent(component.getClass(), component);
-        orderedComps.add(component);
+        orderedComponents.add(component);
     }
 
     public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
@@ -109,12 +116,6 @@ public class PicoContainerImpl implements PicoContainer {
                     // hook'em up
                     try {
                         Constructor[] ctors = comp.getConstructors();
-
-                        // TODO move this check to checkConstructor and rename the exception to
-                        // WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException
-                        if (ctors.length != 1) {
-                            throw new WrongNumberOfConstructorsStartException(ctors.length);
-                        }
                         Constructor constructor = ctors[0];
                         Class[] params = constructor.getParameterTypes();
 
@@ -129,12 +130,10 @@ public class PicoContainerImpl implements PicoContainer {
                             componentInstance = makeComponentInstance(constructor, args);
                             // Put the instantiated comp back in the map
                             componentTypeToInstanceMap.put(compType, componentInstance);
-                            orderedComps.add(componentInstance);
+                            orderedComponents.add(componentInstance);
                             progress = true;
                         }
 
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();  //To change body of catch statement use Options | File Templates.
                     } catch (InvocationTargetException e) {
                         throw new PicoInvocationTargetStartException(e);
                     } catch (InstantiationException e) {
@@ -157,19 +156,19 @@ public class PicoContainerImpl implements PicoContainer {
     }
 
     protected void startComponents() throws PicoStartException {
-        for (int i = 0; i < orderedComps.size(); i++) {
-            Object o = (Object) orderedComps.get(i);
+        for (int i = 0; i < orderedComponents.size(); i++) {
+            Object component = orderedComponents.get(i);
             if (startableLifecycleManager != null) {
-                startableLifecycleManager.startComponent(o);
+                startableLifecycleManager.startComponent(component);
             }
         }
     }
 
     protected void stopComponents() throws PicoStopException {
-        for (int i = orderedComps.size() -1 ; i >= 0 ; i--) {
-            Object o = (Object) orderedComps.get(i);
+        for (int i = orderedComponents.size() -1 ; i >= 0 ; i--) {
+            Object component = orderedComponents.get(i);
             if (startableLifecycleManager != null) {
-                startableLifecycleManager.stopComponent(o);
+                startableLifecycleManager.stopComponent(component);
             }
         }
     }
@@ -178,13 +177,15 @@ public class PicoContainerImpl implements PicoContainer {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
             Class componentType = componentSpecification.getComponentType();
-            Class componentClass = componentSpecification.getComponentClass();
             if (componentTypeToInstanceMap.get(componentType) == null) {
                 throw new UnsatisfiedDependencyStartupException(componentType);
             }
         }
     }
 
+    /**
+     * TODO: What's th purpose of this method? Is it supposed to be overridden?? Can we remove it?
+     */
     protected Object makeComponentInstance(Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         return constructor.newInstance(args);
     }
@@ -247,7 +248,7 @@ public class PicoContainerImpl implements PicoContainer {
     public Object getProxy(InvocationHandler invocationHandler) {
         // TODO should fail if container isn't started. Throw checked exception?
         Set interfaces = new HashSet();
-        for (Iterator iterator = orderedComps.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = orderedComponents.iterator(); iterator.hasNext();) {
             Class componentClass = iterator.next().getClass();
             Class[] implemeted = componentClass.getInterfaces();
             List implementedList = Arrays.asList(implemeted);

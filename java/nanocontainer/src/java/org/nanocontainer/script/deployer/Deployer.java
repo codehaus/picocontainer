@@ -15,6 +15,7 @@ import org.picoextras.integrationkit.PicoAssemblyException;
 import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
 import org.nanocontainer.script.jython.JythonContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;

@@ -75,10 +75,7 @@ public class DefaultPicoPool implements PicoPool {
         exhaustedAction = config.getExhaustedAction();
         maxSize = config.getMaxSize();
         maxWait = config.getMaxWait();
-        pico = new DefaultPicoContainer(config.getComponentAdapterFactory());
-        if (config.getPoolParentContainer() != null) {
-            pico.setParent(config.getPoolParentContainer());
-        }
+        pico = new DefaultPicoContainer(config.getComponentAdapterFactory(),config.getPoolParentContainer());
     }
 
     /**

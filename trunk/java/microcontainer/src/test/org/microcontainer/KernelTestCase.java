@@ -11,6 +11,7 @@ package org.megacontainer;
 
 import junit.framework.TestCase;
 import org.megacontainer.impl.DefaultKernel;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -181,4 +182,14 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
+    public void testKernelCanRunInPicoContainer()
+    {
+        // lets keep true to COP principles, shall we?
+        DefaultPicoContainer c = new DefaultPicoContainer();
+        c.registerComponentImplementation(DefaultKernel.class);
+        assertTrue( c.getComponentInstance(Kernel.class) instanceof Kernel );
+        c.start();
+        c.stop();
+        c.dispose();
+    }
 }

@@ -22,7 +22,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
- * @see <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package.
+ * @see <a href="package-summary.html#package_description">See package description for basic overview how to use PicoContainer.</a>
  * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {

@@ -37,6 +37,7 @@ import org.nanocontainer.swing.action.RegisterComponentAction;
 import org.nanocontainer.swing.action.StartContainerAction;
 import org.nanocontainer.swing.action.StopContainerAction;
 import org.nanocontainer.swing.action.UnregisterComponentAction;
+import org.nanocontainer.guimodel.ContainerModel;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public class PicoPlugin implements ProjectComponent {
     private static final String UNREGISTER_COMPONENT_ACTION_ID = "PicoContainer.UnregisterComponent";
 
     private Project project;
-    private ContainerTree tree = new ContainerTree(new DefaultPicoContainer(), IconHelper.getIcon("/nodes/class.png", false));
+    private ContainerTree tree = new ContainerTree(new ContainerModel(new DefaultPicoContainer()), IconHelper.getIcon("/nodes/class.png", false));
     private ClassLoader componentClassLoader;
 
     public PicoPlugin(Project project) {

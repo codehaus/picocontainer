@@ -85,13 +85,13 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         try {
             pico.registerComponent(List.class, messages);
             pico.registerComponent(Dictionary.class, Webster.class);
-
             pico.registerComponent(Thesaurus.class, Webster.class);
             pico.start();
-            assertEquals("Should only habe one instance of Webster", 1,messages.size());
-            Object dict = pico.getComponent(Dictionary.class);
-            Object the = pico.getComponent(Thesaurus.class);
-            assertEquals(dict, the);
+
+            assertEquals("Should only have one instance of Webster", 1,messages.size());
+            Object dictionary = pico.getComponent(Dictionary.class);
+            Object thesaurus = pico.getComponent(Thesaurus.class);
+            assertEquals(dictionary, thesaurus);
 
         } catch (PicoRegistrationException e) {
             fail("Should not have barfed with dupe registration");

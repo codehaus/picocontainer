@@ -156,8 +156,8 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
                 Class componentImplementation = componentSpec.getComponentImplementation();
                 Class componentType = componentSpec.getComponentType();
 
-                boolean reused = resuseImplementationIfAppropriate(componentType, componentImplementation);
                 if (componentTypeToInstanceMap.get(componentType) == null) {
+                    boolean reused = resuseImplementationIfAppropriate(componentType, componentImplementation);
                     if (reused) {
                         progress = true;
                     } else {

@@ -232,10 +232,7 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
     }
 
     public boolean equals(Object obj) {
-        if (obj == delegate) {
-            return true;
-        }
-        return super.equals(obj);
+        return delegate.equals(obj);
     }
 
     public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {

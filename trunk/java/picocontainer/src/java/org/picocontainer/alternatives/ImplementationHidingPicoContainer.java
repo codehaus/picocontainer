@@ -197,10 +197,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     public boolean equals(Object obj) {
-        if (obj == delegate) {
-            return true;
-        }
-        return super.equals(obj);
+        return delegate.equals(obj);
     }
 
 

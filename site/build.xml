@@ -9,6 +9,12 @@
   <target name="get-jars" depends="-init" unless="how.often.does.servlet.jar.change">
     <get dest="lib/servlet.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.3.jar"/>
   </target>
+  
+  <target name="clean">
+    <delete dir="build" />
+    <delete file="site.tar.gz" />
+    <delete file="site.tar" />
+  </target>
 
   <target name="make-site" depends="get-jars">
     <taskdef name="sitemesh"
@@ -42,6 +48,12 @@
         <include name="*.png"/>
         <include name="*.gif"/>
         <include name="*.css"/>
+      </fileset>
+    </copy>
+
+    <copy todir="build/presentations">
+      <fileset dir="presentations">
+        <include name="**/*"/>
       </fileset>
     </copy>
 

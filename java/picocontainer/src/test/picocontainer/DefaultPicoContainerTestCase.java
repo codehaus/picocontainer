@@ -24,8 +24,29 @@ import picocontainer.testmodel.Dictionary;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoStartException, PicoRegistrationException
-    {
+    public void testBasicContainerAsserts() {
+        try {
+            new PicoContainerImpl(null, new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
+            fail("Should have had NPE)");
+        } catch (NullPointerException npe) {
+            // expected
+        }
+        try {
+            new PicoContainerImpl(new DummyContainer(), null, new DummyComponentDecorator());
+            fail("Should have had NPE)");
+        } catch (NullPointerException npe) {
+            // expected
+        }
+        try {
+            new PicoContainerImpl(new DummyContainer(), new DummyStartableLifecycleManagerImpl(), null);
+            fail("Should have had NPE)");
+        } catch (NullPointerException npe) {
+            // expected
+        }
+
+    }
+
+    public void testBasicRegAndStart() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         pico.registerComponent(FredImpl.class);
@@ -33,75 +54,60 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.start();
 
-        assertTrue( "There should have been a Fred in the container", pico.hasComponent( FredImpl.class ) );
-        assertTrue( "There should have been a Wilma in the container", pico.hasComponent( WilmaImpl.class ) );
+        assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
+        assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
 
     }
 
-    public void testTooFew() throws PicoStartException, PicoRegistrationException
-    {
+    public void testTooFewComponents() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         pico.registerComponent(FredImpl.class);
 
-        try
-        {
+        try {
             pico.start();
             fail("should need a wilma");
-        }
-        catch (UnsatisfiedDependencyStartupException e)
-        {
+        } catch (UnsatisfiedDependencyStartupException e) {
             // expected
             assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
 
         }
     }
 
-    public void testDupeImplementations() throws PicoRegistrationException {
+    public void testDupeImplementationsOfComponents() throws PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         pico.registerComponent(Dictionary.class, Webster.class);
-        try
-        {
+        try {
             pico.registerComponent(Thesaurus.class, Webster.class);
             fail("Should have barfed with dupe registration");
-        }
-        catch (DuplicateComponentClassRegistrationException e)
-        {
+        } catch (DuplicateComponentClassRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == Webster.class);
         }
     }
 
-    public void testDupeTypesWithClass() throws PicoStartException, PicoRegistrationException
-    {
+    public void testDupeTypesWithClass() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         pico.registerComponent(WilmaImpl.class);
-        try
-        {
+        try {
             pico.registerComponent(WilmaImpl.class);
             fail("Should have barfed with dupe registration");
-        }
-        catch (DuplicateComponentTypeRegistrationException e)
-        {
+        } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
         }
     }
 
-    public void testDupeTypesWithObject() throws PicoStartException, PicoRegistrationException
-    {
+    public void testDupeTypesWithObject() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         pico.registerComponent(WilmaImpl.class);
-        try
-        {
+        try {
             pico.registerComponent(WilmaImpl.class, new WilmaImpl());
             fail("Should have barfed with dupe registration");
-        }
-        catch (DuplicateComponentTypeRegistrationException e)
-        {
+        } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
         }
@@ -123,18 +129,15 @@ public class DefaultPicoContainerTestCase extends TestCase {
         // Register a confused Fred
         pico.registerComponent(FredImpl.class);
 
-        try
-        {
+        try {
             pico.start();
             fail("Fred should have been confused about the two Wilmas");
-        }
-        catch (AmbiguousComponentResolutionException e)
-        {
+        } catch (AmbiguousComponentResolutionException e) {
             // expected
 
-            List ambiguous = Arrays.asList( e.getAmbiguousClasses() );
-            assertTrue( ambiguous.contains( DerivedWilma.class ));
-            assertTrue( ambiguous.contains( WilmaImpl.class ));
+            List ambiguous = Arrays.asList(e.getAmbiguousClasses());
+            assertTrue(ambiguous.contains(DerivedWilma.class));
+            assertTrue(ambiguous.contains(WilmaImpl.class));
         }
     }
 
@@ -146,8 +149,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.start();
 
-        assertTrue( "There should have been a Fred in the container", pico.hasComponent( FredImpl.class ) );
-        assertTrue( "There should have been a Wilma in the container", pico.hasComponent( WilmaImpl.class ) );
+        assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
+        assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
     }
 
     public void testRegisterComponentWithObjectBadType() {
@@ -155,23 +158,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         try {
             pico.registerComponent(Serializable.class, new Object());
-            fail( "Shouldn't be able to register an Object as Serializable" );
+            fail("Shouldn't be able to register an Object as Serializable");
         } catch (PicoRegistrationException e) {
 
         }
 
     }
 
-    public void testRegistrationMismatch() throws PicoStartException, PicoRegistrationException
-    {
+    public void testComponnentRegistrationMismatch() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
-        try
-        {
+        try {
             pico.registerComponent(Collection.class, WilmaImpl.class);
-        }
-        catch (AssignabilityRegistrationException e)
-        {
+        } catch (AssignabilityRegistrationException e) {
             //expected
         }
 
@@ -186,8 +185,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.start();
 
-        assertTrue( "There should have been a FlintstonesImpl in the container", pico.hasComponent( FlintstonesImpl.class ) );
-	}
+        assertTrue("There should have been a FlintstonesImpl in the container", pico.hasComponent(FlintstonesImpl.class));
+    }
 
     public void testParentContainer() throws PicoRegistrationException, PicoStartException {
 
@@ -212,34 +211,40 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.start();
 
-        assertFalse( "Wilma should not have been passed through the parent container", pico.hasComponent( Wilma.class ) );
+        assertFalse("Wilma should not have been passed through the parent container", pico.hasComponent(Wilma.class));
 
-        assertTrue( "There should have been a FredImpl in the container", pico.hasComponent( FredImpl.class ) );
+        assertTrue("There should have been a FredImpl in the container", pico.hasComponent(FredImpl.class));
 
     }
 
     public static class One {
         List msgs = new ArrayList();
+
         public One() {
             ping("One");
         }
+
         public void ping(String s) {
             msgs.add(s);
         }
+
         public List getMsgs() {
             return msgs;
         }
     }
+
     public static class Two {
         public Two(One one) {
             one.ping("Two");
         }
     }
+
     public static class Three {
         public Three(One one, Two two) {
             one.ping("Three");
         }
     }
+
     public static class Four {
         public Four(Two two, Three three, One one) {
             one.ping("Four");
@@ -258,19 +263,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.start();
 
-        assertTrue( "There should have been a 'One' in the container", pico.hasComponent( One.class ) );
+        assertTrue("There should have been a 'One' in the container", pico.hasComponent(One.class));
 
         One one = (One) pico.getComponent(One.class);
 
         // instantiation - would be difficult to do these in the wrong order!!
-        assertEquals("Should be four elems",4,one.getMsgs().size());
+        assertEquals("Should be four elems", 4, one.getMsgs().size());
         assertEquals("Incorrect Order of Instantiation", "One", one.getMsgs().get(0));
         assertEquals("Incorrect Order of Instantiation", "Two", one.getMsgs().get(1));
         assertEquals("Incorrect Order of Instantiation", "Three", one.getMsgs().get(2));
         assertEquals("Incorrect Order of Instantiation", "Four", one.getMsgs().get(3));
 
         // post instantiation startup
-        assertEquals("Should be four elems",4,osm.getStarted().size());
+        assertEquals("Should be four elems", 4, osm.getStarted().size());
         assertEquals("Incorrect Order of Starting", One.class, osm.getStarted().get(0));
         assertEquals("Incorrect Order of Starting", Two.class, osm.getStarted().get(1));
         assertEquals("Incorrect Order of Starting", Three.class, osm.getStarted().get(2));
@@ -279,7 +284,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.stop();
 
         // post instantiation shutdown - REVERSE order.
-        assertEquals("Should be four elems",4,osm.getStopped().size());
+        assertEquals("Should be four elems", 4, osm.getStopped().size());
         assertEquals("Incorrect Order of Stopping", Four.class, osm.getStopped().get(0));
         assertEquals("Incorrect Order of Stopping", Three.class, osm.getStopped().get(1));
         assertEquals("Incorrect Order of Stopping", Two.class, osm.getStopped().get(2));
@@ -304,7 +309,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         try {
-            pico.registerComponent( Runnable.class );
+            pico.registerComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
         } catch (PicoRegistrationException e) {
             // ok
@@ -313,16 +318,24 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
 
     public static class A {
-        public A(B b){}
+        public A(B b) {
+        }
     }
+
     public static class B {
-        public B(C c, D d){}
+        public B(C c, D d) {
+        }
     }
+
     public static class C {
-        public C(A a, B b) {}
+        public C(A a, B b) {
+        }
     }
+
     public static class D {
-        public D() {System.out.println("D instantiated");}
+        public D() {
+            System.out.println("D instantiated");
+        }
     }
 
     // TODO uncomment this and make it pass
@@ -336,7 +349,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
             pico.registerComponent(D.class);
 
             pico.start();
-            fail( "Should have gotten a CircularDependencyRegistrationException" );
+            fail("Should have gotten a CircularDependencyRegistrationException");
         } catch (CircularDependencyRegistrationException e) {
             // ok
         }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picoextras-swt</id>
+  <name>picoextras-swt</name>
+
+  <dependencies>
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>picoextras-swing</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
+            <id>swt</id>
+            <version></version>
+        </dependency>
+
+        <dependency>
+            <id>boot</id>
+            <version></version>
+        </dependency>
+
+        <dependency>
+            <id>jface</id>
+            <version></version>
+        </dependency>
+
+        <dependency>
+            <id>runtime</id>
+            <version></version>
+        </dependency>
+
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>picoextras-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+  </dependencies>
+
+</project>

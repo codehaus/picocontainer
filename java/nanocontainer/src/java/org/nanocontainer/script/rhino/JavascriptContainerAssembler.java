@@ -8,17 +8,16 @@ import org.picoextras.integrationkit.ContainerAssembler;
 
 import java.io.Reader;
 
-// TODO rename to JavascriptContainerAssembler
 /**
  * This ContainerAssembler uses Javascript to assemble the container.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public class PicoManager implements ContainerAssembler {
+public class JavascriptContainerAssembler implements ContainerAssembler {
     private Reader javascript;
 
-    public PicoManager(Reader javascript) {
+    public JavascriptContainerAssembler(Reader javascript) {
         this.javascript = javascript;
     }
 

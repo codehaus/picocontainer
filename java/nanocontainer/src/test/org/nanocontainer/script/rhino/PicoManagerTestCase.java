@@ -22,7 +22,7 @@ public class PicoManagerTestCase extends TestCase {
 
     private PicoContainer assemble(Reader script) {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ContainerAssembler assembler = new PicoManager(script);
+        ContainerAssembler assembler = new JavascriptContainerAssembler(script);
         assembler.assembleContainer(pico, null);
         return pico;
     }
@@ -53,7 +53,7 @@ public class PicoManagerTestCase extends TestCase {
         );
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory());
-        ContainerAssembler assembler = new PicoManager(script);
+        ContainerAssembler assembler = new JavascriptContainerAssembler(script);
         assembler.assembleContainer(pico, null);
 
         Object wsc = pico.getComponentInstance(WebServerConfig.class.getName());

@@ -4,7 +4,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.microcontainer.DeploymentException;
-import org.microcontainer.McaDeployer;
 import org.microcontainer.DeploymentScriptHandler;
 import org.microcontainer.ClassLoaderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
@@ -22,18 +21,17 @@ import java.io.Reader;
  */
 public class GroovyDeploymentScriptHandler implements DeploymentScriptHandler {
 	protected ClassLoaderFactory classLoaderFactory = null;
-	protected McaDeployer mcaDeployer = null;
+	protected File workingDir = null;
 
-	public GroovyDeploymentScriptHandler(McaDeployer mcaDeployer) {
-		// todo picotize
-		this.classLoaderFactory = new DefaultClassLoaderFactory(mcaDeployer);
-		this.mcaDeployer = mcaDeployer;
+	public GroovyDeploymentScriptHandler(ClassLoaderFactory classLoaderFactory, File workingDir) {
+		this.classLoaderFactory = classLoaderFactory;
+		this.workingDir = workingDir;
 	}
 
 	public PicoContainer handle(String contextName, boolean autoStart) throws DeploymentException {
 		try {
 			ClassLoader classLoader = classLoaderFactory.build(contextName);
-			File path = new File(mcaDeployer.getWorkingDir(), contextName); // actual path to work/contextName
+			File path = new File(workingDir, contextName); // actual path to work/contextName
 			FileReader script = new FileReader(new File(path, "composition.groovy"));
 
 			// build the container from the script

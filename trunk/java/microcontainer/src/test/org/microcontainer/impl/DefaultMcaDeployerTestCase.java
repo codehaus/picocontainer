@@ -26,7 +26,7 @@ public class DefaultMcaDeployerTestCase extends TestCase {
 	private File unitTestDir;
 
 	protected void setUp() throws Exception {
-		deployer = new DefaultMcaDeployer();
+		deployer = TestFixture.createDefaultMcaDeployer();
 		unitTestDir = new File("work/unittest");
 	}
 
@@ -53,8 +53,7 @@ public class DefaultMcaDeployerTestCase extends TestCase {
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
-		DefaultMcaDeployer mcaDeployer = new DefaultMcaDeployer();
-		mcaDeployer.handleRemoteMCA(unitTestDir, connection);
+		deployer.handleRemoteMCA(unitTestDir, connection);
 
 		validateMcaDeployedToWorkingDir();
 

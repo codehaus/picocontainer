@@ -16,7 +16,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,7 +32,7 @@ import java.util.Vector;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class ImmutablePicoContainerTestCase extends TestCase {
+public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testImmutingofNullBarfs() {
         try {
@@ -258,5 +261,21 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         //   interface MutablePicoContainer extends PicoContainer implements Startable, Disposable {}
         // That despite breaking (marginally) backwards compatability.
         // - Paul
+    }
+
+    public void testVisitingOfImmutableContainerWorks() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        Object foo = new Object();
+        pico.registerComponentInstance(foo);
+
+        Mock fooVisitor = new Mock(PicoVisitor.class);
+        fooVisitor.expects(once()).method("visitContainer").with(eq(pico));
+        fooVisitor.expects(once()).method("visitComponentInstance").with(same(foo));
+
+        ImmutablePicoContainer ipc = new ImmutablePicoContainer(pico);
+
+        ipc.accept((PicoVisitor) fooVisitor.proxy(), null, true);
+
+
     }
 }

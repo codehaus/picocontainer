@@ -69,16 +69,6 @@
                     AssemblyName = "System"
                     HintPath = "..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
             </References>
         </Build>
         <Files>
@@ -89,27 +79,27 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ComponentAdapter.cs"
+                    RelPath = "IComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MutablePicoContainer.cs"
+                    RelPath = "IMutablePicoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Parameter.cs"
+                    RelPath = "IParameter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoConfigurationException.cs"
+                    RelPath = "IPicoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.cs"
+                    RelPath = "IStartable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -139,12 +129,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\AbstractComponentAdapter.cs"
+                    RelPath = "PicoVerificationException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\AggregatingProxy.cs"
+                    RelPath = "Defaults\AbstractComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -159,7 +149,27 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\ComponentAdapterFactory.cs"
+                    RelPath = "Defaults\BeanComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\BeanPropertyComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\BeanPropertyComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\CachingComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\CachingComponentAdapterFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -174,22 +184,32 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\ConstructorComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ConstructorComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\CyclicDependencyException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\DecoratingComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\DecoratingComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\DefaultComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\DefaultComponentFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\DefaultComponentMulticasterFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -204,7 +224,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\IComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ImplementationHidingComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ImplementationHidingComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\InstanceComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\InstantiatingComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -214,7 +254,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\NoSatisfiableConstructorsException.cs"
+                    RelPath = "Defaults\IObjectReference.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ISwappable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -229,67 +274,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\SimpleReference.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SynchronizedComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SynchronizedComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\TooManySatisfiableConstructorsException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\TransientComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\ComponentMulticasterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\DecoratingComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\DecoratingComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\DefaultLifecyclePicoAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\DefaultLifecyclePicoContainer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\ImplementationHidingComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Extras\InvokingComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Lifeycle\Lifecycle.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Lifeycle\LifecyclePicoAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Lifeycle\Startable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Lifeycle\Stoppable.cs"
+                    RelPath = "Defaults\UnsatisfiableDependenciesException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

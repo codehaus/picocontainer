@@ -2,8 +2,10 @@ package org.picocontainer.doc.advanced;
 
 import junit.framework.TestCase;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.defaults.CollectionComponentParameter;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.CollectionComponentParameterTestCase.Bowl;
@@ -143,5 +145,30 @@ public class MapsTestCase
         assertEquals(2, bowl.cods.size());
 
         // END SNIPPET: scopeOverlay
+    }
+    
+    public void testShouldCreateBowlWithoutTom() {
+
+        // START SNIPPET: individualSelection
+
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponentImplementation("Tom", Cod.class);
+        mpc.registerComponentImplementation("Dick", Cod.class);
+        mpc.registerComponentImplementation("Harry", Cod.class);
+        mpc.registerComponentImplementation("Sharky", Shark.class);
+        mpc.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new CollectionComponentParameter(Fish.class, false),
+            new CollectionComponentParameter(Cod.class, false) {
+                protected boolean evaluate(ComponentAdapter adapter) {
+                    return !"Tom".equals(adapter.getComponentKey());
+                }
+            }
+        });
+        Cod tom = (Cod) mpc.getComponentInstance("Tom");
+        Bowl bowl = (Bowl) mpc.getComponentInstance(Bowl.class);
+        assertTrue(bowl.fishes.values().contains(tom));
+        assertFalse(bowl.cods.values().contains(tom));
+
+        // END SNIPPET: individualSelection
     }
 }

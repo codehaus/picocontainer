@@ -241,6 +241,27 @@ public class CollectionComponentParameterTestCase
         assertEquals(2, bowl.cods.length);
     }
 
+    public void testBowlWithoutTom() {
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponentImplementation("Tom", Cod.class);
+        mpc.registerComponentImplementation("Dick", Cod.class);
+        mpc.registerComponentImplementation("Harry", Cod.class);
+        mpc.registerComponentImplementation(Shark.class);
+        mpc.registerComponentImplementation(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
+            new CollectionComponentParameter(Cod.class, false) {
+                protected boolean evaluate(ComponentAdapter adapter) {
+                    return !"Tom".equals(adapter.getComponentKey());
+                }
+            },
+            new CollectionComponentParameter(Fish.class, false)
+        });
+        CollectedBowl bowl = (CollectedBowl) mpc.getComponentInstance(CollectedBowl.class);
+        Cod tom = (Cod) mpc.getComponentInstance("Tom");
+        assertEquals(4, bowl.fishes.length);
+        assertEquals(2, bowl.cods.length);
+        assertFalse(Arrays.asList(bowl.cods).contains(tom));
+    }
+
     public static class DependsOnAll {
         public DependsOnAll(Set set, SortedSet sortedSet, Collection collection, List list, SortedMap sortedMap, Map map
         // , ConcurrentMap concurrentMap, Queue queue, BlockingQueue blockingQueue

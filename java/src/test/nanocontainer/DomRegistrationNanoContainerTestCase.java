@@ -19,14 +19,14 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServer;
 import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class DomRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, ParserConfigurationException, PicoInstantiationException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +
@@ -38,7 +38,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     }
 
     // Same test asa bove, but with components defined in an external XML file.
-    public void testFromFile() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException, FileNotFoundException {
+    public void testFromFile() throws PicoRegistrationException, ParserConfigurationException, PicoInstantiationException, ClassNotFoundException, FileNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         File xmlFile = getFileForXMLComponentRegistration();
         nc.registerComponents(new InputSource(new FileReader(xmlFile)));
@@ -46,7 +46,8 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
-    public void testResourceBundleConfig() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException {
+    // This is more a demo than a test.  Compare ResourceBundleWebServerConfig to DefaultWebServerConfig.
+    public void testResourceBundleConfig() throws PicoRegistrationException, ParserConfigurationException, PicoInstantiationException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +
@@ -57,7 +58,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
-    public void testParametersCanBePassedToComponent() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException {
+    public void testParametersCanBePassedToComponent() throws PicoRegistrationException, ParserConfigurationException, PicoInstantiationException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +
@@ -71,7 +72,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertEquals("a string99", thing.getValue());
     }
 
-    public void testDigesterConfig() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException {
+    public void testDigesterConfig() throws PicoRegistrationException, ParserConfigurationException, PicoInstantiationException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +

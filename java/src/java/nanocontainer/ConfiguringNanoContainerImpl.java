@@ -34,7 +34,7 @@ import java.util.Iterator;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInvocationTargetInitailizationException;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
@@ -105,7 +105,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInstantiationException {
         super.instantiateComponents();
         final Object[] components = getComponents();
         for (int i = 0; i < components.length; i++) {

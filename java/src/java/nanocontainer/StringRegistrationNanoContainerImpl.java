@@ -13,7 +13,7 @@ package nanocontainer;
 import nanocontainer.reflection.StringToObjectConverter;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
@@ -76,7 +76,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInstantiationException {
         picoContainer.instantiateComponents();
     }
 

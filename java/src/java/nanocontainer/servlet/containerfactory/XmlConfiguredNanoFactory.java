@@ -52,7 +52,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         }
     }
 
-    private void configureAndStart(String configName, InputSourceRegistrationNanoContainer container) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException, IOException {
+    private void configureAndStart(String configName, InputSourceRegistrationNanoContainer container) throws PicoRegistrationException, ClassNotFoundException, PicoInstantiationException, IOException {
         InputStream in = getConfigInputStream(configName);
         try {
             container.registerComponents(new InputSource(in));
@@ -74,7 +74,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                 }
                 try {
                     container.instantiateComponents();
-                } catch (PicoInitializationException e) {
+                } catch (PicoInstantiationException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not instantiateComponents container", e);
                 }

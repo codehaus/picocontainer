@@ -1,10 +1,12 @@
 require 'rico/container'
 
 module Rico
-  #
-  # A simple chained container that implements the GoF Decorator pattern
-  #
+=begin
+  A simple chained container that implements the GoF Decorator pattern
+  Author: Dan North
+=end
   class ChainedContainer < Container
+  
     def initialize parent = Container.new
       super()
       @parent = parent
@@ -19,9 +21,13 @@ module Rico
       @parent.multicast(method, *args)
     end
     
-    protected
-    def spec(key)
-      return @specs[key] || @parent.spec(key)
+    def component_instance(key)
+      begin
+        return super
+      rescue UnresolvableComponentError
+        return @parent.component_instance(key)
+      end
     end
+
   end
 end

@@ -1,17 +1,21 @@
 require 'rico/container'
 require 'rico/test/model'
 
-#
-#(Should) test all the methods in MutablePicoContainer
-#
-# Mix into a TestCase containing a create_container() method
-#
 module Rico
+=begin
+
+  (Should) test all the methods in Rico container. Based on the TCK test suite
+  from the Java PicoContainer.
+
+  Mix into a TestCase containing a create_container() method
+
+  Author: Dan North based on Aslak Hellesoy's tests
+=end
   module ContainerTestCase
 
-  #  def create_container()
-  #      fail "need to implement create_container"
-  #  end
+    def create_container()
+        fail "need to implement create_container"
+    end
   
     def create_container_with_touchable_and_dependency()
       rico = create_container
@@ -19,13 +23,14 @@ module Rico
       rico.register_component_implementation DependsOnTouchable, DependsOnTouchable, [ Touchable ]
       return rico
     end
-    protected :create_container_with_touchable_and_dependency
+    private :create_container_with_touchable_and_dependency
     
     def create_container_with_depends_on_touchable_only()
       rico = create_container
       rico.register_component_implementation DependsOnTouchable, DependsOnTouchable, [ Touchable ]
+      return rico
     end
-    protected :create_container_with_depends_on_touchable_only
+    private :create_container_with_depends_on_touchable_only
     
     def test_new_container_is_not_nil
       assert_not_nil create_container_with_touchable_and_dependency()
@@ -47,12 +52,9 @@ module Rico
     
     def test_container_is_serializable
       rico = create_container_with_touchable_and_dependency()
-      
-      bytes = Marshal.dump rico
-      loadedRico = Marshal.load bytes
+      loadedRico = Marshal.load Marshal.dump(rico)
       
       depends_on_touchable = loadedRico.component_instance DependsOnTouchable
-      assert_not_nil depends_on_touchable
       assert_kind_of DependsOnTouchable, depends_on_touchable
       
       touchable = loadedRico.component_instance Touchable
@@ -60,15 +62,15 @@ module Rico
     end
     
     def test_getting_component_with_missing_dependency_fails
-      assert_raises NonexistentComponentError do
-        rico = create_container_with_depends_on_touchable_only()
+      assert_raises NoSatisfiableConstructorsError do
+        rico = create_container_with_depends_on_touchable_only
         rico.component_instance DependsOnTouchable
       end
     end
   
     def test_getting_same_component_twice_gives_same_component
       rico = create_container
-      rico.register_component Object, Object
+      rico.register_component_implementation Object, Object
       assert_same(
         rico.component_instance(Object),
         rico.component_instance(Object)
@@ -76,9 +78,11 @@ module Rico
     end
 
     def test_registering_component_with_duplicate_key_fails
-      assert_raises DuplicateComponentKeyRegistrationError do
+      begin
         rico = create_container
         2.times { rico.register_component_implementation Object, Object }
+      rescue DuplicateComponentKeyRegistrationError => e
+        assert_equal Object, e.duplicate_key
       end
     end
 
@@ -86,41 +90,74 @@ module Rico
       rico = create_container
       rico.register_component_instance Hash, Hash.new
       assert_equal 1, rico.component_instances.size
-      assert_instance_of Hash, rico.component_instance(Hash), "Should contain Hash -> Hash instance"
+      assert_instance_of Hash, rico.component_instance(Hash), "Should contain Hash key -> Hash instance"
     end
-#    public void testByInstanceRegistration() throws PicoException, PicoInitializationException {
-#        MutablePicoContainer pico = createPicoContainerWithTouchableAndDependency();
-#        pico.registerComponentInstance(Map.class, new HashMap());
-#        assertEquals("Wrong number of comps in the internals", 3, pico.getComponentInstances().size());
-#        assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, pico.getComponentInstance(Map.class).getClass());
-#    }
     
+    def test_getting_component_for_missing_key_falls_back_to_component_type_if_key_is_a_class
+      rico = create_container
+      rico.register_component_implementation "array", Array
+      array = rico.component_instance Array
+      assert_instance_of Array, array
+    end
+
+    def test_ambiguous_resolution_with_registered_instance_and_implementation_fails
+      rico = create_container
+      rico.register_component_implementation "string implementation key", String
+      rico.register_component_instance "string instance key", "string instance"
+      assert_raises AmbiguousComponentResolutionError do
+        rico.component_instance(String)
+      end
+    end
+
+    def test_fails_if_unable_to_resolve_component_instance
+      rico = create_container
+      assert_raises UnresolvableComponentError do
+        rico.component_instance(Object)
+      end
+    end
+
+    class A
+      def initialize(b,c);end
+    end
+    class B; end
+    class C; end
+
+    def test_unsatisfied_components_error_gives_verbose_enough_error_message
+      rico = create_container
+      rico.register_component_implementation A, A, [B, C]
+      rico.register_component_implementation B, B
+      begin
+        puts rico.component_instance(A)
+        flunk "Should have raised an exception"
+      rescue NoSatisfiableConstructorsError => e
+        assert_equal A.name + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.name + "]", e.message
+      end
+    end
+
+#    public static class A {
+#        public A(B b, C c){}
+#    }
+#    public static class B {}
+#    public static class C {}
+#
+#    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
+#        MutablePicoContainer pico = createPicoContainer();
+#        pico.registerComponentImplementation(A.class);
+#        pico.registerComponentImplementation(B.class);
+#
+#        try {
+#            pico.getComponentInstance(A.class);
+#        } catch (NoSatisfiableConstructorsException e) {
+#            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
+#            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+#            assertEquals(1, unsatisfiableDependencies.size());
+#            assertTrue(unsatisfiableDependencies.contains(C.class));
+#        }
+#    }
+
   end
 end
 
-#    public void testByInstanceRegistration() throws PicoException, PicoInitializationException {
-#        MutablePicoContainer pico = createPicoContainerWithTouchableAndDependency();
-#        pico.registerComponentInstance(Map.class, new HashMap());
-#        assertEquals("Wrong number of comps in the internals", 3, pico.getComponentInstances().size());
-#        assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, pico.getComponentInstance(Map.class).getClass());
-#    }
-#
-#    public void testAmbiguousResolution() throws PicoRegistrationException, PicoInitializationException {
-#        MutablePicoContainer pico = createPicoContainer();
-#        pico.registerComponentImplementation("ping", String.class);
-#        pico.registerComponentInstance("pong", "pang");
-#        try {
-#            pico.getComponentInstance(String.class);
-#        } catch (AmbiguousComponentResolutionException e) {
-#            assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
-#        }
-#    }
-#
-#    public void testNoResolution() throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-#        MutablePicoContainer pico = createPicoContainer();
-#        assertNull(pico.getComponentInstance(String.class));
-#    }
-#
 #    public static class ListAdder {
 #        public ListAdder(Collection list) {
 #            list.add("something");

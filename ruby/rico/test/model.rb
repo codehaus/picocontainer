@@ -1,4 +1,7 @@
-# Contains all the (simple) test classes for the test model
+=begin
+  Contains all the (simple) test classes for the test model
+  Author: Dan North
+=end
 module Rico
 
 	class Touchable

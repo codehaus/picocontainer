@@ -47,6 +47,12 @@
     </dependency>   
     
     <dependency>
+      <id>commons-logging</id>
+      <version>1.0.3</version>
+      <url>http://jakarta.apache.org/commons/logging.html</url>
+    </dependency>
+
+    <dependency>
       <id>log4j</id>
       <version>1.2.8</version>
     </dependency>   

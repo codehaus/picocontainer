@@ -1,0 +1,25 @@
+<project default="default" xmlns:j="jelly:core" xmlns:u="jelly:util" >
+
+  <postGoal name="test:compile">
+    <attainGoal name="setclasspath"/>
+    <attainGoal name="groovy:compile-tests"/>
+  </postGoal>
+    
+  <goal name="setclasspath">
+	<path id="test.classpath">
+	    <pathelement path="${maven.build.dest}"/>
+	    <pathelement path="target/classes"/>
+	    <pathelement path="target/test-classes"/>
+	    <path refid="maven.dependency.classpath"/>
+	</path>
+  </goal>
+  
+  <goal name="groovy:compile-tests" prereqs="java:compile, setclasspath"
+  		description="Compiles the Groovy unit test cases">
+    <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="test.classpath"/> 
+    <groovyc destdir="${basedir}/target/test-classes" srcdir="${basedir}/src/test" listfiles="false">
+      <classpath refid="test.classpath"/>
+    </groovyc>
+  </goal>
+  
+</project>

@@ -11,11 +11,11 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+import junit.framework.Assert;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.PicoRegistrationException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -359,7 +359,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
 
         public void dispose() {
-            recording.append("<" + code());
+            recording.append("!" + code());
         }
 
         private String code() {
@@ -407,4 +407,23 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
         assertEquals("<A<BB>A>", parent.getComponentInstance("recording").toString());
     }
+
+    public static class NotStartable {
+        public NotStartable() {
+            Assert.fail("Shouldn't be instantiated");
+        }
+    }
+
+    public void testOnlyStartableComponentsAreInstantiatedOnStart() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation("recording", StringBuffer.class);
+        pico.registerComponentImplementation(A.class);
+        pico.registerComponentImplementation(NotStartable.class);
+        pico.start();
+        pico.stop();
+        pico.dispose();
+        assertEquals("<AA>!A", pico.getComponentInstance("recording").toString());
+
+    }
+
 }

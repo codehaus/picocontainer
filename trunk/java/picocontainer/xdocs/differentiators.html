@@ -74,14 +74,94 @@ little dificult for coders to easily assemble applications.<br>
 The Eclipse platform is very compelling.&nbsp; It supports the notion
 of a pluggable application concept. Each component statically accesses
 other components via a factory (which at least Paul does not like),
-though it is clear that some complex classloader magic is goin on.<br>
+though it is clear that some complex classloader magic is going on.<br>
 <h2>Other IoC container / component designs</h2>
 <h3>Avalon-Framework and associated containers</h3>
 Apache hosts a project that has been running for years called Avalon.
-It has many components that fit that design and many containers.&nbsp;
+It has many components that fit that its design and many
+containers.&nbsp;
 Avalon components are characterised by implementation of many optional
 interfaces. Avalon components are distributed with meta-information in
-XML.<br>
+XML in the jar file.<br>
+<br>
+<table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left; width: 60%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; font-weight: bold;">Avalon
+Interface<br>
+      </td>
+      <td style="vertical-align: top; font-weight: bold;">PicoContainer
+equivalent<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">LogEnabled</td>
+      <td style="vertical-align: top;">No logging design<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Contextualizable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Serviceable (used to be called
+Composable) </td>
+      <td style="vertical-align: top;">Args in Constructor<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Configurable</td>
+      <td style="vertical-align: top;">Args in Constructor<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Parameterizable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Initializable</td>
+      <td style="vertical-align: top;">Constructor is eqivalent
+lifecycle place.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Startable</td>
+      <td style="vertical-align: top;">Startable<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Suspendable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Recontextualizable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Recomposable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Reconfigurable</td>
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Reparameterizable</td>
+      <td style="vertical-align: top;">n/a<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Stoppable</td>
+      <td style="vertical-align: top;">Stoppable</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Disposable</td>
+      <td style="vertical-align: top;">Disposable</td>
+    </tr>
+  </tbody>
+</table>
+<br>
 <h3>Carbon </h3>
 todo<br>
 <br>

@@ -5,7 +5,7 @@
 <body>
 <h1>PicoNirvana</h1>
 In an ideal world we see PicoContainer principles being applied to a
-lot of different parts of Java :<br>
+lot of different container/component aspects of Java :<br>
 <h2>Servlet</h2>
 Currently the servlet spec advises that a servlet should..<br>
 <ol>
@@ -76,6 +76,38 @@ yet).<br>
 <pre>&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;  </pre>
 <pre>}</pre>
 Sadly, this remains far fetched, due to a dearth of Open Source Servlet
-containers.
+containers.<br>
+<h2>Enterprise Bean</h2>
+Same story :<br>
+<br>
+<pre>
+public interface StockQuoteService {</pre>
+<pre>
+&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);</pre>
+<pre>
+}</pre>
+<pre>public class DefaultStockQuoteService implements StockQuoteService {</pre>
+<pre>&nbsp;&nbsp;&nbsp; QuoteRecorder quoteRecorder;</pre>
+<pre>&nbsp;&nbsp;&nbsp; public DefaultStockQuoteService(QuoteRecorderquoteRecorder) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.quoteRecorder =quoteRecorder;</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp;&nbsp; public void BigDecimal getQuote(String stockTicker) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; quoteRecorder.recordQuote(stockTicker);</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new BigDecimal()// TODO - makereal</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>
+}</pre>
+<h2>Desktop Operating System</h2>
+Getting boring now :<br>
+<br>
+<pre>public class QuotePanel extends JPanel implements {</pre>
+<pre>&nbsp;&nbsp;&nbsp; StockQuoteService stockQuoteService;</pre>
+<pre>&nbsp;&nbsp;&nbsp; public QuotePanel(StockQuoteService sqs) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockQuoteService = sqs;</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.add(new JTextField(""),BorderLayout.CENTER);</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //etc</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>}</pre>
+<br>
 </body>
 </html>

@@ -2,15 +2,13 @@ package org.nanocontainer.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.Factory;
-import net.sf.cglib.proxy.InvocationHandler;
 import net.sf.cglib.proxy.Proxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -33,7 +31,7 @@ public class CGLIBProxyFactory implements ProxyFactory {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(classOrInterface);
         enhancer.setInterfaces(interfaces);
-        enhancer.setCallback(new InvocationInterceptorAdapter(invocationInterceptor));
+        enhancer.setCallback(new CGLIBInvocationInterceptorAdapter(invocationInterceptor));
         Constructor constructor = getConstructor(classOrInterface);
         Class[] params = constructor.getParameterTypes();
         Object[] args = new Object[params.length];
@@ -79,15 +77,4 @@ public class CGLIBProxyFactory implements ProxyFactory {
         return Factory.class.isAssignableFrom(clazz) || Proxy.isProxyClass(clazz);
     }
 
-    private class InvocationInterceptorAdapter implements InvocationHandler {
-        private final InvocationInterceptor invocationInterceptor;
-
-        public InvocationInterceptorAdapter(InvocationInterceptor invocationInterceptor) {
-            this.invocationInterceptor = invocationInterceptor;
-        }
-
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return invocationInterceptor.intercept(proxy, method, args);
-        }
-    }
 }

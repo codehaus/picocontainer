@@ -2,12 +2,10 @@ package org.nanocontainer.proxy;
 
 import org.picocontainer.defaults.InterfaceFinder;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationHandler;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -23,7 +21,7 @@ public class StandardProxyFactory implements ProxyFactory {
             }
             interfaces = (Class[]) interfaceSet.toArray(new Class[interfaceSet.size()]);
         }
-        return Proxy.newProxyInstance(getClass().getClassLoader(), interfaces, new InvocationInterceptorAdapter(invocationInterceptor));
+        return Proxy.newProxyInstance(getClass().getClassLoader(), interfaces, new StandardInvocationInterceptorAdapter(invocationInterceptor));
     }
 
     public boolean canProxy(Class type) {
@@ -34,15 +32,4 @@ public class StandardProxyFactory implements ProxyFactory {
         return Proxy.isProxyClass(clazz);
     }
 
-    private class InvocationInterceptorAdapter implements InvocationHandler {
-        private final InvocationInterceptor invocationInterceptor;
-
-        public InvocationInterceptorAdapter(InvocationInterceptor invocationInterceptor) {
-            this.invocationInterceptor = invocationInterceptor;
-        }
-
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return invocationInterceptor.intercept(proxy, method, args);
-        }
-    }
 }

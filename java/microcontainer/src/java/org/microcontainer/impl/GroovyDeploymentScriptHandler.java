@@ -2,12 +2,16 @@ package org.microcontainer.impl;
 
 import org.picocontainer.PicoContainer;
 import org.microcontainer.ClassLoaderFactory;
+import org.microcontainer.jmx.JmxDecorationDelegate;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
+import org.nanocontainer.script.groovy.NanoContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 
 import java.io.FileReader;
 import java.io.File;
 import java.io.Reader;
+
+import groovy.lang.Binding;
 
 /**
  * @author Michael Ward
@@ -32,6 +36,16 @@ public class GroovyDeploymentScriptHandler extends AbstractDeploymentScriptHandl
         public MicroGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
             super(script, classLoader);
         }
+
+		/**
+		 * Let's automatically register the builder to Groovy Binding so it's available in the script
+		 */
+		protected void handleBinding(Binding binding) {
+     		super.handleBinding(binding);
+
+			NanoContainerBuilder builder = new NanoContainerBuilder(new JmxDecorationDelegate());
+			binding.setVariable("builder", builder);
+		}
 
         protected void autoStart(PicoContainer container) {
             // no

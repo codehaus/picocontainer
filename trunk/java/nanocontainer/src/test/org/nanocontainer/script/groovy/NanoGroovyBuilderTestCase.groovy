@@ -89,24 +89,21 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         }
     }
 
-//    TODO NANO-90
-//    TODO - The CAF is not being passed into the ctor of the SoftPico.
-//    See NanoGroovyBuilder.java
-//    void testInstantiateWithBespokeComponentAdaptor() {
+    void testInstantiateWithBespokeComponentAdaptor() {
 
-//        sb = new StringBuffer();
+        sb = new StringBuffer();
 
-//        builder = new NanoGroovyBuilder()
-//        caf = new TestComponentAdapterFactory(sb)
-//        pico = builder.container(adapterFactory:caf) {
-//            component(key:WebServerConfig, class:DefaultWebServerConfig)
-//            component(key:WebServer, class:WebServerImpl)
-//        }
+        builder = new NanoGroovyBuilder()
+        caf = new TestComponentAdapterFactory(sb)
+        pico = builder.container(adapterFactory:caf) {
+            component(key:WebServerConfig, class:DefaultWebServerConfig)
+            component(key:WebServer, class:WebServerImpl)
+        }
 
-//        startAndStop(pico)
+        startAndStop(pico)
 
-//        assertTrue(sb.toString().indexOf("called") != -1)
-//    }
+        assertTrue(sb.toString().indexOf("called") != -1)
+    }
 
     void testInstantiateWithInlineConfiguration() {
 

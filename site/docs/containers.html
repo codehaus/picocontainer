@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Containers</h1>
+PicoContainer (the project) ships with a few containers.
+<h2>DefaultPicoContainer</h2>
+The basic PicoContainer.&nbsp; No frills.&nbsp; This one has component
+registration by class.<br>
+<h2>CompositePicoContainer</h2>
+This one takes an array of PicoContainers to build a contrived single
+container. You may use that container as the parent to others. Thus
+trees of containers are not the only design.<br>
+<br>
+Any Pico-style container that honors the PicoContainer interface can be
+eligible for inclusion in the composite. These could be
+DefaultPicoContainer or any other the Nano containers (sister project),
+or those from third parties.<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Inversion of Control<br>
+</h1>
+Inversion of Control (IoC) is an object-oriented design pattern that
+favours loose coupling between classes. Loose coupling in turn favours:<br>
+<ul>
+  <li>More reusable classes<br>
+  </li>
+  <li>Classes that are easier to test</li>
+  <li>Systems that are easier to assemble and configure</li>
+</ul>
+<h2>DIP</h2>
+Another well-known synonym for IoC is DIP (Dependency Inversion
+Principle). This is described in an excellent paper written by Robert
+C. Martin: <a
+ href="http://www.objectmentor.com/resources/articles/dip.pdf">dip.pdf</a><br>
+<h2>The Hollywood Principle<br>
+</h2>
+A third nickname for IoC is "The Hollywood
+Principle" ("Don't call us we'll call you").<br>
+<h2>Explanation</h2>
+Simply put, a class (or as we often say, a component) designed
+according to IoC does not go off and get other components that
+it needs in order to do its job. It instead declares them to its boss,
+and
+the boss supplies them. Thus the name IoC/DIP/Hollywood Principle. The
+control of the dependencies for a given class is <span
+ style="font-style: italic;">inverted</span>. It is no longer the class
+itself that establishes its own dependencies, but "something" on the
+outside.<br>
+<h2>Examples</h2>
+Without worrying about the generations of IoC that let us arrive at
+the PicoContainer design, here is the simplest possible IoC component :<br>
+<pre>public interface Bookmaker {</pre>
+<pre>   void bet();<br></pre>
+<pre>}</pre>
+<pre><br>public interface Orange {</pre>
+<pre>&nbsp; // methods</pre>
+<pre>}</pre>
+<pre><br>public class AppleImpl implements Apple {</pre>
+<pre>&nbsp; private Orange orange;</pre>
+<pre>&nbsp; public AppleImpl(Orange orange) {</pre>
+<pre>&nbsp;&nbsp;&nbsp; this.orange = orange;</pre>
+<pre>&nbsp; }</pre>
+<pre>&nbsp; // other methods</pre>
+<pre>}</pre>
+<br>
+Here are some common smells that should lead you to refactor to IoC :<br>
+<br>
+<pre>public class AppleImpl implements Apple{</pre>
+<pre>&nbsp; private Orange orange;</pre>
+<pre>&nbsp; public Apple() {</pre>
+<pre>&nbsp;&nbsp;&nbsp; this.orange = new OrangeImpl();</pre>
+<pre>&nbsp; }</pre>
+<pre>&nbsp; // other methods</pre>
+<pre>}</pre>
+<br>
+The problem is that you are tied to the OrangleImpl <em>implementation</em>
+for provision of Orange
+<em>services</em>. Simply put, the above apple cannot be a
+(configurable) component. It's an
+application. All hard coded. Not reusable. It is going to be very
+difficult to have multiple instances in the same classloader with
+different assembly.<br>
+<br>
+Here are some other smells along the same line :<br>
+<br>
+<pre>public class AppleImpl implements Apple {</pre>
+<pre>  private static Orange orange = OrangeFactory.getOrange();</pre>
+<pre>&nbsp; public Apple() {</pre>
+<pre>&nbsp; }</pre>
+<pre>&nbsp; // other methods</pre>
+<pre>}</pre>
+<h2>Configuration</h2>
+Sometimes we see configuration like so ...<br>
+<pre>public class BigFatComponent {</pre>
+<pre>&nbsp;&nbsp;String config01;</pre>
+<pre>&nbsp;&nbsp;String config02;</pre>
+<pre>&nbsp;&nbsp;public BigFatComponent() {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;ResourceFactory resources = new ResourceFactory(new File("mycomp.properties"));</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;config01 = resources.get("config01");</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;config02 = resources.get("config02");</pre>
+<pre>&nbsp;&nbsp;}</pre>
+<pre>&nbsp; // other methods</pre>
+<pre>}</pre>
+In the IoC world, it might be better to see the following for simple
+designs :<br>
+<pre>public class BigFatComponent {</pre>
+<pre>&nbsp;&nbsp;String config01;<br>  String config02;</pre>
+<pre>&nbsp;&nbsp;public BigFatComponent(String config01, String config02) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config01;</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config02;</pre>
+<pre>&nbsp;&nbsp;}</pre>
+<pre>&nbsp; // other methods</pre>
+<pre>}</pre>
+Or this for more complex ones ..<br>
+<pre>public interface BigFatComponentConfig {</pre>
+<pre>&nbsp;&nbsp;String getConfig01();</pre>
+<pre>&nbsp;&nbsp;String getConfig02();</pre>
+<pre>}</pre>
+<pre></pre>
+<pre>public class BigFatComponent {</pre>
+<pre>&nbsp;&nbsp;String config01;</pre>
+<pre>&nbsp;&nbsp;String config02;</pre>
+<pre>&nbsp;&nbsp;public BigFatComponent(BigFatComponentConfig config) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config.getConfig01();</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config.getConfig02();</pre>
+<pre>&nbsp;&nbsp;}</pre>
+<pre>&nbsp;&nbsp;// other methods</pre>
+<pre>}</pre>
+Where there could be many different implementations of
+BigFatComponentConfig:<br>
+<ul>
+  <li>Hard codes (a default impl)</li>
+  <li>One that takes config from an XML document (file, URL, inlined in
+using class)</li>
+  <li>Properties File.</li>
+</ul>
+It is the deployers or container maker's choice.<br>
+<br>
+Of course, in all of these discussuions, it is important to point out
+that logging is a common exception to the IoC rule. Apache has two
+static logging frameworks that are in common use - Commons-Logging and
+Log4J.<br>
+</body>
+</html>

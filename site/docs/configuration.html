@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Configuration</h1>
+<br>
+Consider a component a that requires configuration :<br>
+<br>
+<pre>&nbsp;&nbsp;&nbsp; class Foo {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public Foo(String fooName, Integer barNumber) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<br>
+Clearly the two strings are not components.&nbsp; What we need is a way
+of passing in those parameters at runtime. Possibily interleaved with
+real components.<br>
+<br>
+<pre>&nbsp;&nbsp;&nbsp; MutablePicoContainer pico = new DefaultPicoContainer();</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.registerComponent(Foo.class);</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, String.class, "foo");</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, Integer.class, new Integer(33);</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.start();</pre>
+<br>
+Obviously you'd have some soft coded implementation rather than that
+hard coded above.&nbsp; We're trying to illustrate the intermingling of
+components and configuration.&nbsp; Well perhaps we are if you consider
+the follwoing component :<br>
+<br>
+<pre>&nbsp;&nbsp;&nbsp; class Foo {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public Foo(Wilma wilma, String fooName, FredImpl fred, Integer barNumber) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp;&nbsp; }<br><br>    ....<br></pre>
+<pre>&nbsp;&nbsp;&nbsp; PicoContainer pico = new HierarchicalPicoContainer.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.registerComponent(Foo.class);</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.registerComponent(Wilma.class, WilmaImpl.class);<br><br>&nbsp;&nbsp;&nbsp; pico.registerComponent(FredImpl.class);<br><br>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, String.class, "foo");</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, Integer.class, new Integer(33);</pre>
+<pre>&nbsp;&nbsp;&nbsp; pico.start();</pre>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<decorators defaultdir="/decorators">
+
+    <decorator name="main" page="decorator.html">
+        <pattern>*</pattern>
+    </decorator>
+
+</decorators>

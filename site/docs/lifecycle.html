@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Lifecycle</h1>
+<h2>No Lifecycle</h2>
+For really simple PicoContainer compatible components, you would not
+bother with a lifecycle beyond Instantiation and Garbage Collection -
+both of which are consequences of basic use of say DefaultPicoContainer.
+<h2>Simple lifecycle - LifecyclePicoAdapter
+</h2>
+With LifecyclePicoAdapter, we have provided a very simple set of
+interfaces for start(), stop() and dispose()....<br>
+<br>
+The LifecyclePicoAdapter honors the classic lifecycle concepts for
+components.&nbsp; These are start(), stop() and dispose().&nbsp; If any
+of the components implements one of the applicable interfaces, the
+calling of the same method on th econtainer ( post
+instantiateComponent() ) will find that the call is pecolated though to
+it.&nbsp; The container is forgiving, as it is just fine if some of
+none of the components contained are Startable etc.<br>
+<br>
+Suitable components :<br>
+<br>
+<pre>public Peach implements Startable, Stoppable, Disposable {</pre>
+<pre>&nbsp;&nbsp; public void start() { }</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>&nbsp;&nbsp; public void dispose() { }</pre>
+<pre>}</pre>
+<pre><br>public Kiwi implements Stoppable {</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>}</pre>
+<br>
+A component that needs adaption ...<br>
+<br>
+<pre>public BananaImpl implement Banana {</pre>
+<pre>&nbsp;&nbsp; public void banana() {}</pre>
+<pre>&nbsp;&nbsp; public void start() { }</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>}</pre>
+<pre><br>public BananaExtender extends BananaImpl </pre>
+<pre>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{</pre>
+<pre>}</pre>
+<br>
+Or...<br>
+<br>
+<pre>public BananaDelegate implements Banana, Startable, Stoppable {</pre>
+<pre>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();</pre>
+<pre>&nbsp;&nbsp;&nbsp; public void start() {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp;&nbsp; public void stop() {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>}&nbsp;<br></pre>
+<span style="font-weight: bold;"></span>
+<h2>Custom lifecycles</h2>
+<p>Custom lifecycle management is a common requirement for components.
+Probably because it is so crucial there are many competing
+implementations, and
+each has its own passionate group of advocates.</p>
+<p>Pico tries to avoid controversy by being completely agnostic about
+the
+lifecycle/lifecycles that it supports. Pico does have an implementation
+of a simple lifecycle (see org.picocontainer.lifecycle and
+PicoLifecyleAdapter) but this is there
+only as a convenience.</p>
+<p>Instead of mandating a single restrictive lifecycle, Pico provides
+hooks that allow you to plug in almost any concievable lifecycle (or
+for that matter any other 'aggregated' behaviour).&nbsp; As it happens
+the PicoLifecycleAdapter uses the getCompositeComponent() feature of
+PicoContainer.<br>
+</p>
+<br>
+</body>
+</html>

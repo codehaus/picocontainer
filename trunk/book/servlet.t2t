@@ -1,5 +1,5 @@
-Constructor Dependency Injection - Servlets
-with PicoContainer
+Constructor Dependency Injection, with PicoContainer 
+Servlets
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
 = Using PicoContainer in Web Applications =

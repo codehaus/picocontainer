@@ -85,22 +85,22 @@ public class HierarchicalPicoContainer extends DefaultPicoContainer implements R
         return result;
     }
 
-    public Collection getComponentKeys() {
+    public Set getComponentKeys() {
         // Get my own types
         Set types = new HashSet(super.getComponentKeys());
         // Get those from my parent.
         types.addAll(parentContainer.getComponentKeys());
 
-        return Collections.unmodifiableCollection(types);
+        return Collections.unmodifiableSet(types);
     }
 
-    public Collection getComponents() {
+    public Set getComponents() {
         // Get my own comps
         Set comps = new HashSet(super.getComponents());
         // Get those from my parent.
         comps.addAll(parentContainer.getComponents());
 
-        return Collections.unmodifiableCollection(comps);
+        return Collections.unmodifiableSet(comps);
     }
 
 

@@ -16,9 +16,8 @@ import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 import org.picocontainer.testmodel.WilmaImpl;
 import org.picocontainer.*;
 
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class CompositePicoContainerTestCase extends TestCase {
     private RegistrationPicoContainer pico;
@@ -82,16 +81,16 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == String.class ? acomp : null;
             }
 
-            public Collection getComponents() {
-                List list = new ArrayList();
-                list.add(acomp);
-                return list;
+            public Set getComponents() {
+                Set result = new HashSet();
+                result.add(acomp);
+                return result;
             }
 
-            public Collection getComponentKeys() {
-                List list = new ArrayList();
-                list.add(String.class);
-                return list;
+            public Set getComponentKeys() {
+                Set result = new HashSet();
+                result.add(String.class);
+                return result;
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
@@ -117,16 +116,16 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == Integer.class ? bcomp : null;
             }
 
-            public Collection getComponents() {
-                List list = new ArrayList();
-                list.add(bcomp);
-                return list;
+            public Set getComponents() {
+                Set result = new HashSet();
+                result.add(bcomp);
+                return result;
             }
 
-            public Collection getComponentKeys() {
-                List list = new ArrayList();
-                list.add(Integer.class);
-                return list;
+            public Set getComponentKeys() {
+                Set result = new HashSet();
+                result.add(Integer.class);
+                return result;
 
             }
 

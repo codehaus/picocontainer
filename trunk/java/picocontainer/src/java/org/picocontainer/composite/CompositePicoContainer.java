@@ -18,7 +18,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,24 +80,24 @@ public class CompositePicoContainer extends DefaultPicoContainer implements Seri
         return answer;
     }
 
-    public Collection getComponentKeys() {
+    public Set getComponentKeys() {
         Set componentTypes = new HashSet();
         componentTypes.addAll(super.getComponentKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        return Collections.unmodifiableCollection(componentTypes);
+        return Collections.unmodifiableSet(componentTypes);
     }
 
-    public Collection getComponents() {
+    public Set getComponents() {
         Set components = new HashSet();
         components.addAll(super.getComponents());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
             components.addAll(container.getComponents());
         }
-        return Collections.unmodifiableCollection(components);
+        return Collections.unmodifiableSet(components);
     }
 
 

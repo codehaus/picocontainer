@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.io.Serializable;
 
 /**
@@ -76,19 +77,21 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Collection getComponentInstanceKeys() {
+    public Set getComponentInstanceKeys() {
         Set types = componentKeyToInstanceMap.keySet();
-        return Collections.unmodifiableCollection(types);
+        return Collections.unmodifiableSet(types);
     }
 
-    public Collection getComponentInstances() {
-        ArrayList list = new ArrayList();
-        Set types = componentKeyToInstanceMap.entrySet();
-        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
-            Map.Entry e = (Map.Entry) iterator.next();
-            list.add(e.getValue());
-        }
-        return Collections.unmodifiableCollection(list);
+    public Set getComponentInstances() {
+//        ArrayList list = new ArrayList();
+//        Set types = componentKeyToInstanceMap.entrySet();
+//        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
+//            Map.Entry e = (Map.Entry) iterator.next();
+//            list.add(e.getValue());
+//        }
+        Set result = new HashSet();
+        result.addAll(componentKeyToInstanceMap.values());
+        return Collections.unmodifiableSet(result);
     }
 
     public ComponentSpecification getComponentSpec(Object componentKey) {

@@ -11,6 +11,7 @@
 package org.picocontainer;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * PicoContainer - guaranteed to resolve the needs of components
@@ -37,13 +38,13 @@ public interface PicoContainer {
      * Get all components (random order).
      * @return A collection of components.
      */
-    Collection getComponents();
+    Set getComponents();
 
     /**
      * Get all component types (random order).
      * @return A collection of component types.
      */
-    Collection getComponentKeys();
+    Set getComponentKeys();
 
     /**
      * Initialize the container.

@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
 import java.util.Collections;
 import java.io.Serializable;
 
@@ -74,14 +73,14 @@ public class CompositePicoContainer2 implements PicoContainer, Serializable {
         return answer;
     }
 
-    public Collection getComponentKeys() {
+    public Set getComponentKeys() {
         Set componentTypes = new HashSet();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        return Collections.unmodifiableCollection(componentTypes);
+        return Collections.unmodifiableSet(componentTypes);
     }
 
     public void instantiateComponents() {
@@ -93,19 +92,19 @@ public class CompositePicoContainer2 implements PicoContainer, Serializable {
         return componentRegistry.getComponentInstance(componentKey) != null;
     }
 
-    public Collection getComponents() {
+    public Set getComponents() {
         Set componentTypes = new HashSet();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        List list = new ArrayList();
+        Set set = new HashSet();
         for (Iterator iterator = componentTypes.iterator(); iterator.hasNext();) {
             Object key = (Object) iterator.next();
-            list.add(getComponent(key));
+            set.add(getComponent(key));
         }
-        return Collections.unmodifiableCollection(list);
+        return Collections.unmodifiableSet(set);
     }
 
     public Object getCompositeComponent() {

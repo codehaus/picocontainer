@@ -13,8 +13,8 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
 
-import java.util.Collection;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.Collections;
 import java.io.Serializable;
 
 public class NullContainer implements PicoContainer, Serializable {
@@ -26,12 +26,12 @@ public class NullContainer implements PicoContainer, Serializable {
         return null;
     }
 
-    public Collection getComponents() {
-        return new ArrayList();
+    public Set getComponents() {
+        return Collections.EMPTY_SET;
     }
 
-    public Collection getComponentKeys() {
-        return new ArrayList();
+    public Set getComponentKeys() {
+        return Collections.EMPTY_SET;
     }
 
     public void instantiateComponents() throws PicoInstantiationException {

@@ -27,6 +27,12 @@
                 - Removing child containers is impossible.
             </action>
 
+            <action dev="tastapod" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-61">PICO-61</a>
+                - Lazy assignment in TransientComponentAdapter is too lazy.
+            </action>
+
             <action dev="paul" type="fix">
                 Use of weak references for parent containers to avoid memory leaks.
             </action>

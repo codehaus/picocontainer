@@ -19,6 +19,7 @@ import java.util.*;
 /**
  * @author Jon Tirs&eacute;n
  * @author Zohar Melamed
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class TransientComponentAdapter extends AbstractComponentAdapter {
@@ -31,10 +32,10 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * Explicitly specifies parameters, if null uses default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
-     * @param parameters              
+     *
+     * @param componentKey
+     * @param componentImplementation
+     * @param parameters
      */
     public TransientComponentAdapter(final Object componentKey,
                                      final Class componentImplementation,
@@ -45,9 +46,9 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * Use default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
+     *
+     * @param componentKey
+     * @param componentImplementation
      */
     public TransientComponentAdapter(Object componentKey,
                                      Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {

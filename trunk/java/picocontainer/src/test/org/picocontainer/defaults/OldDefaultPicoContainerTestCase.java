@@ -198,6 +198,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                 (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
+ ;
 
         assertFalse(washAndPeel.wasPeeled);
         assertTrue(washAndPeel.wasWashed);

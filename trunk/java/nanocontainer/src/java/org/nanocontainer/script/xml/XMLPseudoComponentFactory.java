@@ -12,6 +12,17 @@ package org.nanocontainer.script.xml;
 
 import org.w3c.dom.Element;
 
+/**
+ * Factory that creates instances from DOM Elements
+ * @author Paul Hammant
+ * @author Marcos Tarruella
+ */
 public interface XMLPseudoComponentFactory {
-    Object makeInstance(Element elem) throws ClassNotFoundException;
+    /**
+     * Creates an instance of an Object from a DOM Element
+     * @param element the DOM Element
+     * @return An Object instance 
+     * @throws ClassNotFoundException
+     */
+    Object makeInstance(Element element) throws ClassNotFoundException;
 }

@@ -11,7 +11,7 @@
 package nanocontainer.aggregating;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
@@ -47,7 +47,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testGetProxy() throws PicoRegistrationException, PicoInitializationException {
+    public void testGetProxy() throws PicoRegistrationException, PicoInstantiationException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
@@ -73,7 +73,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         assertEquals("Zap", foo.getBar());
     }
 
-    public void testNoInvocationHandler() throws PicoRegistrationException, PicoInitializationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testNoInvocationHandler() throws PicoRegistrationException, PicoInstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 

@@ -35,7 +35,7 @@ public class NanningNanoContainer extends AspectSystem {
         serviceAndAspectContainer.registerComponent(compomentImplementation);
     }
 
-    public void start() throws PicoInitializationException {
+    public void start() throws PicoInstantiationException {
         serviceAndAspectContainer.instantiateComponents();
         Object[] components = serviceAndAspectContainer.getComponents();
         for (int i = 0; i < components.length; i++) {

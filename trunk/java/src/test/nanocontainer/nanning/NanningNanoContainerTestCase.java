@@ -9,7 +9,7 @@ import com.tirsen.nanning.Invocation;
 import com.tirsen.nanning.Aspects;
 import com.tirsen.nanning.MixinInstance;
 import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 
 /**
@@ -107,14 +107,14 @@ public class NanningNanoContainerTestCase extends TestCase {
         container = new NanningNanoContainer();
     }
 
-    public void testStartService() throws PicoInitializationException, PicoRegistrationException {
+    public void testStartService() throws PicoInstantiationException, PicoRegistrationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.start();
 
         assertNotNull(container.getComponent(TransactionManager.class));
     }
 
-    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInitializationException {
+    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInstantiationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.start();
@@ -124,7 +124,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertNotNull(transactionAspect.transactionManager);
     }
 
-    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInitializationException {
+    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInstantiationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
@@ -139,7 +139,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     /**
      * The 'acceptance-test' for the example.
      */
-    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInitializationException, Exception {
+    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
@@ -152,7 +152,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertEquals("instantiateComponents commit ", transactionManager.transactionLog.toString());
     }
 
-    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInitializationException, Exception {
+    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, FailingComponent.class);

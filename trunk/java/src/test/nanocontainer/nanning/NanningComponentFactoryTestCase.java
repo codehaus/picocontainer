@@ -18,7 +18,7 @@ import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
@@ -65,7 +65,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
-    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInitializationException {
+    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInstantiationException {
 
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {

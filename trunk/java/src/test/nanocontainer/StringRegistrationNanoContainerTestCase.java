@@ -11,21 +11,21 @@
 package nanocontainer;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServerImpl;
 import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
         nc.instantiateComponents();
     }
 
-    public void testProvision() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
+    public void testProvision() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
@@ -45,7 +45,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInitializationException {
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInstantiationException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 

@@ -18,13 +18,13 @@ import org.xml.sax.InputSource;
 
 import java.io.StringReader;
 
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 
 public class NanoNanoTestCase extends TestCase {
 
     public void testStringRegistrationNanoContainerImpl()
-            throws PicoRegistrationException, PicoInitializationException,
+            throws PicoRegistrationException, PicoInstantiationException,
             ClassNotFoundException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
@@ -39,7 +39,7 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException {
+    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoInstantiationException {
 
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
@@ -47,7 +47,7 @@ public class NanoNanoTestCase extends TestCase {
     }
 
     public void testDomRegistrationNanoContainerImpl()
-            throws PicoRegistrationException, PicoInitializationException,
+            throws PicoRegistrationException, PicoInstantiationException,
             ParserConfigurationException, ClassNotFoundException {
 
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
@@ -65,7 +65,7 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException {
+    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws PicoRegistrationException, ClassNotFoundException, PicoInstantiationException {
         nc2.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
                 "      <component class=\"nanocontainer.testmodel.DefaultWebServerConfig\"/>" +

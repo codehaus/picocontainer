@@ -70,7 +70,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
      * populate contaiber off root element. we process instance &amp; implementation
      * nodes here
      */
-    private void populateContainer(MutablePicoContainer container) {
+    public void populateContainer(MutablePicoContainer container) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -149,14 +149,24 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
 
         // ok , we processed our children. insert implementation
         Parameter[] parameterArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-
-        if (key == null || "".equals(key)) {
-            // without  key. clazz is our key
-            container.registerComponentImplementation(clazz, clazz, parameterArray);
-        } else {
-            // with key
-            container.registerComponentImplementation(key, clazz, parameterArray);
-        }
+		if(parameters.size() > 0) {
+			if (key == null || "".equals(key)) {
+				// without  key. clazz is our key
+				container.registerComponentImplementation(clazz, clazz, parameterArray);
+			} else {
+				// with key
+				container.registerComponentImplementation(key, clazz, parameterArray);
+			}
+		} else {
+			if (key == null || "".equals(key)) {
+				// without  key. clazz is our key
+				container.registerComponentImplementation(clazz, clazz);
+			} else {
+				// with key
+				container.registerComponentImplementation(key, clazz);
+			}
+			
+		}
     }
 
     /**

@@ -13,8 +13,7 @@ public class BespokeNanoRhinoScriptable extends DefaultNanoRhinoScriptable {
         used = true;
     }
 
-    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr)
-            throws ClassNotFoundException {
+    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
         return DefaultNanoRhinoScriptable.jsConstructor(cx, args, ctorObj, inNewExpr);
     }
 

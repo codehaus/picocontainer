@@ -27,21 +27,24 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
         return "NanoRhinoScriptable";
     }
 
-    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) throws ClassNotFoundException {
-        DefaultReflectionFrontEnd defaultReflectionFrontEnd;
+    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        ReflectionFrontEnd reflectionFrontEnd = null;
         if (args.length == 1) {
-            ComponentAdapterFactory caf = null;
-            {
-                DefaultReflectionFrontEnd tmpFrontEnd = new DefaultReflectionFrontEnd();
-                tmpFrontEnd.registerComponentWithClassKey(ComponentAdapterFactory.class.getName(), (String) args[0]);
-                caf = (ComponentAdapterFactory) tmpFrontEnd.getPicoContainer().getComponentInstance(ComponentAdapterFactory.class);
+            Object arg = ((NativeJavaObject) args[0]).unwrap();
+            if (arg instanceof ComponentAdapterFactory) {
+                reflectionFrontEnd = new DefaultReflectionFrontEnd(new DefaultPicoContainer((ComponentAdapterFactory) arg));
+            } else if (arg instanceof MutablePicoContainer) {
+                reflectionFrontEnd = new DefaultReflectionFrontEnd((MutablePicoContainer) arg);
+            } else if (arg instanceof ReflectionFrontEnd) {
+                reflectionFrontEnd = (ReflectionFrontEnd) arg;
+            } else {
+                throw new IllegalArgumentException("Argument passed in should be a ComponentAdaptorFactory or a MutablePicoContainer");
             }
-            defaultReflectionFrontEnd = new DefaultReflectionFrontEnd(new DefaultPicoContainer(caf));
         } else {
-            defaultReflectionFrontEnd = new DefaultReflectionFrontEnd();
+            reflectionFrontEnd = new DefaultReflectionFrontEnd();
         }
         DefaultNanoRhinoScriptable rhino = new DefaultNanoRhinoScriptable();
-        rhino.reflectionFrontEnd = defaultReflectionFrontEnd;
+        rhino.reflectionFrontEnd = reflectionFrontEnd;
         return rhino;
     }
 
@@ -69,6 +72,5 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
         DefaultNanoRhinoScriptable parent = (DefaultNanoRhinoScriptable) thisObj;
         DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];
         parent.reflectionFrontEnd.getPicoContainer().addChild(child.reflectionFrontEnd.getPicoContainer());
-
     }
 }

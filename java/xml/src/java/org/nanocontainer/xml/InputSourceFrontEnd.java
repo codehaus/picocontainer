@@ -1,8 +1,6 @@
 package org.nanocontainer.xml;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
@@ -16,13 +14,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
 
 /**
+ * This class builds up a hierarchy of PicoContainers from an XML configuration file.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -38,18 +34,29 @@ public class InputSourceFrontEnd {
         this(DocumentBuilderFactory.newInstance().newDocumentBuilder());
     }
 
-    public PicoContainer createPicoContainer(InputSource inputSource) throws IOException, SAXException, ClassNotFoundException {
+    public PicoContainer createPicoContainer(InputSource inputSource) throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
         Document document = documentBuilder.parse(inputSource);
         Element containerElement = document.getDocumentElement();
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        ReflectionFrontEnd reflectionFrontEnd = new ReflectionFrontEnd(pico);
-        registerComponentsAndChildContainers(reflectionFrontEnd, containerElement);
+        ReflectionFrontEnd rootReflectionFrontEnd = new ReflectionFrontEnd();
+        registerComponentsAndChildContainers(rootReflectionFrontEnd, containerElement);
 
-        return pico;
+        return rootReflectionFrontEnd.getPicoContainer();
     }
 
-    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, MalformedURLException {
+    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, EmptyXmlConfigurationException {
         NodeList children = containerElement.getChildNodes();
+        // register classpath first, regardless of order in the document.
+        for(int i = 0; i < children.getLength(); i++) {
+            Node child = children.item(i);
+            short type = child.getNodeType();
+            if(type == Document.ELEMENT_NODE) {
+                String name = child.getNodeName();
+                if(name.equals("classpath")) {
+                    registerClasspath(reflectionFrontEnd, (Element)child);
+                }
+            }
+        }
+        int componentCount = 0;
         for(int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             short type = child.getNodeType();
@@ -57,34 +64,43 @@ public class InputSourceFrontEnd {
                 String name = child.getNodeName();
                 if(name.equals("component")) {
                     registerComponent(reflectionFrontEnd, (Element)child);
+                    componentCount++;
                 } else if(name.equals("container")) {
-                    registerContainer(reflectionFrontEnd, (Element)child);
+                    ReflectionFrontEnd childFrontEnd = new ReflectionFrontEnd(reflectionFrontEnd);
+                    registerComponentsAndChildContainers(childFrontEnd, (Element)child);
                 }
             }
+        }
+        if(componentCount == 0) {
+            throw new EmptyXmlConfigurationException();
         }
     }
 
 
-    private void registerClassLoaders(ReflectionFrontEnd reflectionFrontEnd, Element containerElement, ClassLoader parentClassLoader) throws MalformedURLException {
-        List jarNames = new ArrayList();
-        NodeList children = containerElement.getChildNodes();
+    private void registerClasspath(ReflectionFrontEnd reflectionFrontEnd, Element classpathElement) throws IOException {
+        NodeList children = classpathElement.getChildNodes();
         for(int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             short type = child.getNodeType();
             if(type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
-                if(name.equals("jarfile")) {
-                    String jarName = ((Element)child).getAttribute("location");
-                    jarNames.add(jarName);
+                if(name.equals("element")) {
+                    String fileName = ((Element)child).getAttribute("file");
+                    String urlSpec = ((Element)child).getAttribute("url");
+                    URL url = null;
+                    if(urlSpec != null && !"".equals(urlSpec)) {
+                        url = new URL(urlSpec);
+                    } else {
+                        File file = new File(fileName);
+                        if(!file.exists()) {
+                            throw new IOException(file.getAbsolutePath() + " doesn't exist" );
+                        }
+                        url = file.toURL();
+                    }
+                    reflectionFrontEnd.addURL(url);
                 }
             }
         }
-        URL[] urls = new URL[jarNames.size()];
-        for (int i=0; i < urls.length; i++) {
-            urls[i] = new File((String)jarNames.get(i)).toURL();
-        }
-        ClassLoader classLoader = new URLClassLoader(urls, parentClassLoader);
-        reflectionFrontEnd.addComponentClassLoader(classLoader);
     }
 
     private void registerComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException {
@@ -94,14 +110,5 @@ public class InputSourceFrontEnd {
             key = className;
         }
         pico.registerComponent(key, className);
-    }
-
-    private void registerContainer(ReflectionFrontEnd reflectionFrontEnd, Element element) throws ClassNotFoundException, MalformedURLException {
-        MutablePicoContainer parent = reflectionFrontEnd.getPicoContainer();
-        DefaultPicoContainer delegatingPicoContainer = new DefaultPicoContainer();
-        delegatingPicoContainer.addParent(parent);
-        ReflectionFrontEnd childFrontEnd = new ReflectionFrontEnd(delegatingPicoContainer);
-        registerClassLoaders(childFrontEnd, element, parent.getClass().getClassLoader());
-        registerComponentsAndChildContainers(childFrontEnd, element);
     }
 }

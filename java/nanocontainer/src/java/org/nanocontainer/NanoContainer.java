@@ -11,6 +11,8 @@ package org.nanocontainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.nanocontainer.xml.EmptyXmlConfigurationException;
+
 import java.io.Reader;
 import java.util.*;
 
@@ -30,12 +32,12 @@ public abstract class NanoContainer {
         configure(configuration);
     }
 
-    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyNanoContainerException {
+    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlConfigurationException {
         LifecyclePicoAdapter lpa = new DefaultLifecyclePicoAdapter(picoContainer);
         lifecycleAdapters.add(lpa);
         List comps = picoContainer.getComponentInstances();
         if (comps.size() == 0) {
-            throw new EmptyNanoContainerException();
+            throw new EmptyXmlConfigurationException();
         }
         monitor.componentsInstantiated(picoContainer);
         Collection childContainers = picoContainer.getChildContainers();

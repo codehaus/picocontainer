@@ -11,6 +11,7 @@ package org.nanocontainer;
 import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 import org.nanocontainer.xml.InputSourceFrontEnd;
+import org.nanocontainer.xml.EmptyXmlConfigurationException;
 import org.picocontainer.PicoContainer;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +35,7 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
         super(nanoContainerXml, monitor);
     }
 
-    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, EmptyNanoContainerException {
+    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource is = new InputSource(nanoContainerXml);
         InputSourceFrontEnd isfe = new InputSourceFrontEnd();
         final PicoContainer rootContainer = isfe.createPicoContainer(is);

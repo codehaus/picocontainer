@@ -9,11 +9,9 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Disposable;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.Startable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,22 +28,6 @@ import java.util.List;
  * @since 1.1
  */
 public class LifecycleVisitor extends AbstractPicoVisitor {
-
-    private static final Method START;
-    private static final Method STOP;
-    private static final Method DISPOSE;
-
-    static {
-        try {
-            START = Startable.class.getMethod("start", null);
-            STOP = Startable.class.getMethod("stop", null);
-            DISPOSE = Disposable.class.getMethod("dispose", null);
-        } catch (NoSuchMethodException e) {
-            ///CLOVER:OFF
-            throw new InternalError(e.getMessage());
-            ///CLOVER:ON
-        }
-    }
 
     private final Method method;
     private final Class type;
@@ -79,19 +61,19 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
             }
             for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
                 Object o = iterator.next();
-//                ComponentInteraction componentInteraction = null;
                 try {
-                    //                  componentInteraction = componentMonitor.invoking(method, o, "Lifecycle Visitation");
+                    componentMonitor.invoking(method, o);
+                    long startTime = System.currentTimeMillis();
                     method.invoke(o, null);
-                    //                componentInteraction.complete();
+                    componentMonitor.invoked(method, o, System.currentTimeMillis() - startTime);
                 } catch (IllegalArgumentException e) {
-                    //              componentInteraction.failed(e);
+                    componentMonitor.invocationFailed(method, o, e);
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (IllegalAccessException e) {
-                    //            componentInteraction.failed(e);
+                    componentMonitor.invocationFailed(method, o, e);
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (InvocationTargetException e) {
-                    //          componentInteraction.failed(e);
+                    componentMonitor.invocationFailed(method, o, e);
                     throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
                 }
             }
@@ -112,36 +94,6 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
 
     public void visitParameter(Parameter parameter) {
         checkTraversal();
-    }
-
-    /**
-     * Invoke the standard PicoContainer lifecycle for {@link Startable#start()}.
-     *
-     * @param node The node to start the traversal.
-     */
-    public static void start(Object node) {
-        new LifecycleVisitor(START, Startable.class, true).traverse(node);
-        ;
-    }
-
-    /**
-     * Invoke the standard PicoContainer lifecycle for {@link Startable#stop()}.
-     *
-     * @param node The node to start the traversal.
-     */
-    public static void stop(Object node) {
-        new LifecycleVisitor(STOP, Startable.class, false).traverse(node);
-        ;
-    }
-
-    /**
-     * Invoke the standard PicoContainer lifecycle for {@link Disposable#dispose()}.
-     *
-     * @param node The node to start the traversal.
-     */
-    public static void dispose(Object node) {
-        new LifecycleVisitor(DISPOSE, Disposable.class, false).traverse(node);
-        ;
     }
 
 }

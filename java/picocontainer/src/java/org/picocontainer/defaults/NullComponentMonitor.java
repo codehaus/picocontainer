@@ -14,6 +14,7 @@ import org.picocontainer.ComponentMonitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @author Paul Hammant & Obie Fernandez
@@ -29,6 +30,15 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void instantiationFailed(Constructor constructor, Exception e) {
+    }
+
+    public void invoking(Method method, Object instance) {
+    }
+
+    public void invoked(Method method, Object instance, long duration) {
+    }
+
+    public void invocationFailed(Method method, Object instance, Exception e) {
     }
 
     public static synchronized NullComponentMonitor getInstance() {

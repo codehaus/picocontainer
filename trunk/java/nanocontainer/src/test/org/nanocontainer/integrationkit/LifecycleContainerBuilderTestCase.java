@@ -17,6 +17,7 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
         final Mock childStartable = new Mock(Startable.class);
         childStartable.expect("start");
+        childStartable.expect("stop");
 
         ContainerComposer containerAssembler = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {

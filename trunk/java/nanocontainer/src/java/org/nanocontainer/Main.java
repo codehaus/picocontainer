@@ -11,11 +11,12 @@ package org.nanocontainer;
 
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.script.jython.JythonContainerAssembler;
-import org.picoextras.script.rhino.JavascriptContainerAssembler;
+import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.picoextras.script.rhino.JavascriptContainerBuilder;
 import org.picoextras.script.xml.XMLContainerBuilder;
+import org.picoextras.script.jython.JythonContainerBuilder;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
@@ -36,9 +37,9 @@ public class Main {
     private static final Map extensionToAssemblerMap = new HashMap();
 
     static {
-        extensionToAssemblerMap.put(".js", JavascriptContainerAssembler.class);
+        extensionToAssemblerMap.put(".js", JavascriptContainerBuilder.class);
         extensionToAssemblerMap.put(".xml", XMLContainerBuilder.class);
-        extensionToAssemblerMap.put(".py", JythonContainerAssembler.class);
+        extensionToAssemblerMap.put(".py", JythonContainerBuilder.class);
     }
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
@@ -62,7 +63,7 @@ public class Main {
 
     };
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
+    public static void main(String[] args) throws Exception, InstantiationException {
         List options = getOptions(args);
 
         String monitor = "";
@@ -118,18 +119,18 @@ public class Main {
     but at a much higher level of abstraction. It would be more reusable, since it would enable monitoring
     outside the scope of nano. It could be useful in e.g. WebWork or other environments.
 
-    I think it should be up to the ContainerBuilder instances (in integrationkit) to decide what kind of
+    I think it should be up to the ContainerComposer instances (in integrationkit) to decide what kind of
     monitor/InvocationInterceptor to use.
 
     AH
     */
-    private static void buildAndStartContainer(String composition, NanoContainerMonitor nanoContainerMonitor) throws IllegalAccessException, InstantiationException {
+    private static void buildAndStartContainer(String composition, NanoContainerMonitor nanoContainerMonitor) throws Exception, InstantiationException {
         final String extension = composition.substring(composition.indexOf("."));
         Class containerAssemblerClass = (Class) extensionToAssemblerMap.get(extension);
 
         // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
-        ContainerAssembler ca = (ContainerAssembler) containerAssemblerClass.newInstance();
-        final ContainerBuilder cb = new org.picoextras.integrationkit.DefaultLifecycleContainerBuilder(ca);
+        ContainerComposer ca = (ContainerComposer) containerAssemblerClass.newInstance();
+        final ContainerBuilder cb = new DefaultLifecycleContainerBuilder(null);
 
         final ObjectReference containerRef = new SimpleReference();
 
@@ -139,7 +140,14 @@ public class Main {
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
-                cb.killContainer(containerRef);
+                System.out.println("Shutting Down NanoContainer");
+                try {
+                    cb.killContainer(containerRef);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    System.out.println("Exiting VM");
+                }
             }
         };
         Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));

@@ -8,7 +8,7 @@
     <property name="format" value="html"/>
     
     <target name="clean">
-        <delete file="target"/>
+        <delete dir="target"/>
     </target>
 
     <target name="slurp">

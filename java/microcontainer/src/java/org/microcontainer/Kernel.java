@@ -32,6 +32,8 @@ public interface Kernel {
 
     PicoContainer getRootContainer(String context);
 
+	int size();
+
     void start(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 
     void stop(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings

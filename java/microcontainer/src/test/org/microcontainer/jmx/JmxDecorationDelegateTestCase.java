@@ -4,13 +4,13 @@ import junit.framework.TestCase;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Map;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.testmodel.Wilma;
 
 import javax.management.MBeanServer;
 import javax.management.MBeanInfo;
@@ -30,26 +30,26 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 				"builder = new org.microcontainer.MicroGroovyBuilder()\n" +
 				"pico = builder.container(parent:parent) {\n" +
 				"	component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.newMBeanServer())\n" +
-				"	jmx(key:'domain:map=default', operations:['size']) {\n" +
-				"   	component(key:java.util.Map, class:java.util.HashMap)\n" +
+				"	jmx(key:'domain:wilma=default', operations:['helloCalled']) {\n" +
+				"   	component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl')\n" +
 				"   }\n" +
 				"}");
 
 		PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 		MBeanServer mBeanServer = (MBeanServer)pico.getComponentInstance(MBeanServer.class);
 
-		ObjectName objectName = new ObjectName("domain:map=default");
-		Map map = (Map)pico.getComponentInstance(objectName.getCanonicalName());
-		map.put("hello", "world");
-		map.put("foo", "bar");
+		ObjectName objectName = new ObjectName("domain:wilma=default");
+		Wilma wilma = (Wilma)pico.getComponentInstance(objectName.getCanonicalName());
+		assertEquals("Wilma should be registered to the object name and the key", wilma, pico.getComponentInstance("wilma"));
+		wilma.hello();
 
 		// MBeanInfo is registered to the implementation
-		MBeanInfo mBeanInfo = (MBeanInfo)pico.getComponentInstance("java.util.HashMapMBeanInfo");
+		MBeanInfo mBeanInfo = (MBeanInfo)pico.getComponentInstance("org.nanocontainer.testmodel.WilmaImplMBeanInfo");
 		assertNotNull(mBeanInfo);
 		assertEquals("Only one operation should be defined in the MBeanInfo", 1, mBeanInfo.getOperations().length);
 
-		Integer size = (Integer)mBeanServer.invoke(objectName, "size", null, null);
-		assertEquals(2, size.intValue());
+		Boolean called = (Boolean)mBeanServer.invoke(objectName, "helloCalled", null, null);
+		assertTrue(called.booleanValue());
 	}
 
 	protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer, Object scope) {

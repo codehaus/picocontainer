@@ -7,7 +7,7 @@
 
     <!-- action types are add/update/fix/remove -->
     <body>
-        <release version="1.0" date="In CVS">
+        <release version="1.0-beta-4" date="In CVS">
 
             <action dev="rinkrank" type="add">
                 Fixed 
@@ -55,6 +55,12 @@
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-69">PICO-69</a>
                 - Added SynchronizedComponentAdapter.
+            </action>
+
+            <action dev="paul" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-70">PICO-70</a>
+                - Container hierachies aren't serializable.
             </action>
 
             <action dev="rinkrank" type="add">

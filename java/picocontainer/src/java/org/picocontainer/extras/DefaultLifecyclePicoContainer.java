@@ -71,7 +71,7 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return lifecyclePicoAdapter.isDisposed();
     }
 
-    public Collection getComponentKeys() {
+    public List getComponentKeys() {
         return mutablePicoContainer.getComponentKeys();
     }
 
@@ -121,6 +121,10 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
 
     public boolean removeParent(MutablePicoContainer parent) {
         return mutablePicoContainer.removeParent(parent);
+    }
+
+    public List getComponentAdapters() {
+        return mutablePicoContainer.getComponentAdapters();
     }
 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {

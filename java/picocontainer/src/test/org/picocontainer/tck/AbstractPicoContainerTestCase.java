@@ -17,6 +17,7 @@ import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -66,6 +67,39 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testNewContainerIsNotNull() throws PicoRegistrationException, PicoIntrospectionException {
         assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependency());
     }
+
+    /**
+     * Important! Nanning really, really depends on this!
+     */
+    public void testComponentAdapterRegistrationOrderIsMaintained() {
+        ConstructorComponentAdapter c1 = new ConstructorComponentAdapter("1", Object.class);
+        ConstructorComponentAdapter c2 = new ConstructorComponentAdapter("2", String.class);
+
+        MutablePicoContainer picoContainer = createPicoContainer();
+        picoContainer.registerComponent(c1);
+        picoContainer.registerComponent(c2);
+        assertEquals("registration order should be maintained",
+                Arrays.asList(new Object[] {c1, c2}), picoContainer.getComponentAdapters());
+
+        picoContainer.getComponentInstances(); // create all the instances at once
+        assertFalse("instances should be created in same order as adapters are created",
+                picoContainer.getComponentInstances().get(0) instanceof String);
+        assertTrue("instances should be created in same order as adapters are created",
+                picoContainer.getComponentInstances().get(1) instanceof String);
+
+        MutablePicoContainer reversedPicoContainer = createPicoContainer();
+        reversedPicoContainer.registerComponent(c2);
+        reversedPicoContainer.registerComponent(c1);
+        assertEquals("registration order should be maintained",
+                Arrays.asList(new Object[] {c2, c1}), reversedPicoContainer.getComponentAdapters());
+
+        reversedPicoContainer.getComponentInstances(); // create all the instances at once
+        assertTrue("instances should be created in same order as adapters are created",
+                reversedPicoContainer.getComponentInstances().get(0) instanceof String);
+        assertFalse("instances should be created in same order as adapters are created",
+                reversedPicoContainer.getComponentInstances().get(1) instanceof String);
+    }
+
 
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependency();

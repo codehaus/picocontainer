@@ -28,6 +28,8 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
         picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         picoContainer.unregisterComponent(Touchable.class);
 
+        assertTrue(picoContainer.getComponentAdapters().isEmpty());
+        assertTrue(picoContainer.getComponentKeys().isEmpty());
         assertTrue(picoContainer.getComponentInstances().isEmpty());
     }
 
@@ -44,7 +46,7 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
     public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, AssignabilityRegistrationException, PicoInitializationException, DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException, AmbiguousComponentResolutionException {
         picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         picoContainer.unregisterComponent(Touchable.class);
-        assertNull(picoContainer.getComponentInstance(Touchable.class));
+        assertNull("instance should be removed after unregistering component", picoContainer.getComponentInstance(Touchable.class));
     }
 
     public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
@@ -52,7 +54,7 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
         picoContainer.unregisterComponent(Touchable.class);
 
         picoContainer.registerComponentImplementation(Touchable.class, AlternativeTouchable.class);
-        Object component = picoContainer.getComponentInstances().iterator().next();
+        Object component = picoContainer.getComponentInstances().get(0);
 
         assertEquals(AlternativeTouchable.class, component.getClass());
     }

@@ -23,16 +23,22 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     private final List componentInstances = new ArrayList();
 
     private final Invoker invoker;
-    private InvocationInterceptor invocationInterceptor;
+    private final InvocationInterceptor invocationInterceptor;
+    private final MulticasterFactory multicasterFactory;
 
-    public MulticastingComponentAdapter(Object key, Class componentImplementation, InvocationInterceptor invocationInterceptor, Invoker invoker) {
+    public MulticastingComponentAdapter(Object key, Class componentImplementation, InvocationInterceptor invocationInterceptor, Invoker invoker, MulticasterFactory multicasterFactory) {
         super(key, componentImplementation);
-        this.invocationInterceptor = invocationInterceptor;
         this.invoker = invoker;
+        this.invocationInterceptor = invocationInterceptor;
+        this.multicasterFactory = multicasterFactory;
+    }
+
+    public MulticastingComponentAdapter(Object key, Class componentImplementation) {
+        this(key, componentImplementation, new NullInvocationInterceptor(), new MulticastInvoker(), new StandardProxyMulticasterFactory());
     }
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-        return new DefaultComponentMulticasterFactory().createComponentMulticaster(
+        return multicasterFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
                 componentInstances,
                 true,
@@ -44,6 +50,10 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     public void verify() throws PicoIntrospectionException {
     }
 
+    /**
+     * Adds an object this component adapter will multicast to.
+     * @param componentInstance instance to multicast to.
+     */
     public void addComponentInstance(Object componentInstance) {
         componentInstances.add(componentInstance);
     }

@@ -1,0 +1,30 @@
+Some TODOs we should take care of before beta release.
+The names are only suggestions from Aslak. Feel free to change them.
+And also feel free to nuke this document and put everything in JIRA.
+
+++ PicoContainer
+
+FAQ                  - Jon
+100% test coverage   - Paul
+Cglib support	     - Aslak
+Demo application     - Joe
+Finalise Lifecycle   - Mike
+Lifecycle docs       - Chris
+Consolidate docs     - Aslak
+Release process docs - Aslak
+Release alpha-2      - Paul
+
+++ NanoContainer
+
+Use reactor for each container impl in nano/containers - ???
+Make NanningNanoContainer -> NanningContainer implements PicoContainer
+Start component subproject in nano/components
+
+++ Both
+
+Put all important todos in code (and this file) in JIRA (changelog) - ???
+Put license in all headers with Jalopy
+Fix checkstyle
+Refactor/fix what Simian and PMD say
+Set up a cron job at codehaus (damagecontrol) - Aslak
+Write Javadocs and use @author

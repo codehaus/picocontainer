@@ -1,1 +1,0 @@
-All of this stuff will move to http://proxytoys.codehaus.org/ and/or org.nanocontainer.proxytoys

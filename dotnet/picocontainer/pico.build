@@ -1,5 +1,5 @@
 <project name="Pico" default="all" basedir=".">
-	<property name="build.dir" value="src\bin\debug"/>
+	<property name="build.dir" value="build"/>
 	
 	<target name="clean">
 		<delete dir="src/bin" failonerror="false"/>
@@ -11,6 +11,7 @@
 		<csc target="library" output="${build.dir}\PicoContainer.dll" debug="true">
 			<sources basedir="src">
 				<includes name="**.cs"/>
+				<excludes name="Test\**"/>				
 			</sources>
 			<references>
 				<includes name="lib\*.dll"/>

@@ -10,16 +10,16 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import javax.management.MBeanServer;
 import java.io.Serializable;
 
-public class NanoMXComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class MX4JComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
     private MBeanServer mbeanServer;
     private ComponentAdapterFactory delegate;
 
-    public NanoMXComponentAdapterFactory(MBeanServer mbeanServer, ComponentAdapterFactory componentAdapterFactory) {
+    public MX4JComponentAdapterFactory(MBeanServer mbeanServer, ComponentAdapterFactory componentAdapterFactory) {
         this.mbeanServer = mbeanServer;
         delegate = componentAdapterFactory;
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new NanoMXComponentAdapter(mbeanServer, delegate.createComponentAdapter(componentKey, componentImplementation, parameters));
+        return new MX4JComponentAdapter(mbeanServer, delegate.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

@@ -1,39 +1,42 @@
 package org.picoextras.script.rhino;
 
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.picocontainer.PicoContainer;
-import org.picoextras.script.PicoCompositionException;
+import org.picocontainer.MutablePicoContainer;
+import org.picoextras.integrationkit.ContainerAssembler;
 
-import java.io.IOException;
 import java.io.Reader;
 
-public class PicoManager {
-    public PicoContainer execute(Class scriptableClass, Reader javascript) throws PicoCompositionException, IOException, JavaScriptException {
+// TODO rename to JavascriptContainerAssembler
+/**
+ * This ContainerAssembler uses Javascript to assemble the container.
+ *
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
+ */
+public class PicoManager implements ContainerAssembler {
+    private Reader javascript;
+
+    public PicoManager(Reader javascript) {
+        this.javascript = javascript;
+    }
+
+    public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
+        // A tad ugly. Must be a better way.
+        PicoScriptable.picoContainer = container;
         Context cx = Context.enter();
         try {
             Scriptable scriptable = cx.initStandardObjects(null);
-            defineClass(scriptable, scriptableClass);
-            PicoScriptableHolder holder = new PicoScriptableHolder();
-
-            Scriptable jsArgs = Context.toObject(holder, scriptable);
-            scriptable.put("pico", scriptable, jsArgs);
-
+            ScriptableObject.defineClass(scriptable, PicoScriptable.class);
             cx.evaluateReader(scriptable, javascript, "<cmd>", 1, null);
-            return holder.getPicoScriptable().getPicoContainer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO AssemblyException
+            throw new RuntimeException(e);
         } finally {
             Context.exit();
-        }
-
-    }
-
-    private void defineClass(Scriptable scriptable, Class rhinoClass) throws PicoCompositionException {
-        try {
-            ScriptableObject.defineClass(scriptable, rhinoClass);
-        } catch (final Exception e) {
-            throw new PicoCompositionException(e);
+            PicoScriptable.picoContainer = null;
         }
     }
 }

@@ -18,19 +18,19 @@ import org.picocontainer.PicoInitializationException;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class NanoMXInitializationException extends PicoInitializationException {
-    public NanoMXInitializationException() {
+public class MX4JInitializationException extends PicoInitializationException {
+    public MX4JInitializationException() {
     }
 
-    public NanoMXInitializationException(String message) {
+    public MX4JInitializationException(String message) {
         super(message);
     }
 
-    public NanoMXInitializationException(Throwable cause) {
+    public MX4JInitializationException(Throwable cause) {
         super(cause);
     }
 
-    public NanoMXInitializationException(String message, Throwable cause) {
+    public MX4JInitializationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -1,0 +1,20 @@
+Testsuite: org.picoextras.pool.PicoPoolTestCase
+Tests run: 9, Failures: 1, Errors: 0, Time elapsed: 2.323 sec
+
+Testcase: testCreatePoolWithPico took 0.14 sec
+Testcase: testFailOnExhaust took 0 sec
+Testcase: testBlockExpiryOnExhaust took 1.001 sec
+Testcase: testBlockOnExhaust took 1.092 sec
+	FAILED
+null
+junit.framework.AssertionFailedError
+	at org.picoextras.pool.PicoPoolTestCase.testBlockOnExhaust(PicoPoolTestCase.java:137)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+
+Testcase: testBlockOnExhaustTestcase: testGrowOnExhaust took 0 sec
+Testcase: testDependantPoolObject took 0 sec
+Testcase: testPoolObjectVisibility took 0 sec
+Testcase: testClearPool took 0.01 sec
+Testcase: testPoolComponentAdapter took 0.03 sec

@@ -20,9 +20,20 @@
         </dependency>
 
         <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>picoextras-integrationkit</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
             <groupId>rhino</groupId>
             <artifactId>js</artifactId>
             <version>1.5R4.1</version>
+        </dependency>
+
+        <dependency>
+            <id>jython</id>
+            <version>2.1</version>
         </dependency>
 
         <dependency>

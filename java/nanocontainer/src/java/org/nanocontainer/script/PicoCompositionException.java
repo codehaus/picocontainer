@@ -2,6 +2,10 @@ package org.picoextras.script;
 
 import org.picocontainer.PicoException;
 
+/**
+ * @deprecated Rename to PicoAssemblyException and throw from
+ * {@link org.picoextras.integrationkit.ContainerAssembler}.
+ */
 public class PicoCompositionException extends PicoException {
 
     protected Throwable cause;

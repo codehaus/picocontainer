@@ -26,7 +26,7 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
 
         PicoContainer pico = task.getPicoContainer();
 
-        Ping ping = (Ping) pico.getComponentInstance(Ping.class);
+        Ping ping = (Ping) pico.getComponentInstance(Ping.class.getName());
         assertNotNull(ping);
         assertTrue(ping.wasExecuted);
     }
@@ -53,11 +53,11 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
         // Now see if the task did the job properly
         PicoContainer pico = task.getPicoContainer();
 
-        Pung pung = (Pung) pico.getComponentInstance(Pung.class);
+        Pung pung = (Pung) pico.getComponentInstance(Pung.class.getName());
         assertNotNull(pung);
         assertEquals("bajs", pung.text);
 
-        Pang pang = (Pang) pico.getComponentInstance(Pang.class);
+        Pang pang = (Pang) pico.getComponentInstance(Pang.class.getName());
         assertNotNull(pang);
         assertSame(pung.pang, pang);
     }

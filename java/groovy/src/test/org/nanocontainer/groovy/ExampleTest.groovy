@@ -1,8 +1,7 @@
 package org.picoextras.groovy
 
-import org.picocontainer.defaults.NoSatisfiableConstructorsException
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory
-import org.picocontainer.extras.DefaultLifecyclePicoAdapter
+import org.picocontainer.defaults.LifecycleAdapter
 
 import org.picoextras.testmodel.DefaultWebServerConfig
 import org.picoextras.testmodel.WebServer

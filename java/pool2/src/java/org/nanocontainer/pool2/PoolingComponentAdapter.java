@@ -1,8 +1,6 @@
 package org.picoextras.pool2;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoException;
+import org.picocontainer.*;
 import org.picocontainer.extras.DecoratingComponentAdapter;
 
 import java.util.LinkedList;
@@ -45,7 +43,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         this(delegate, DEFAULT_SIZE);
     }
 
-    public synchronized Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoException {
+    public synchronized Object getComponentInstance() throws PicoException {
         Object componentInstance = null;
         final int availableSize = available.size();
         if (availableSize > 0) {
@@ -53,7 +51,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         } else {
             // none available. grow or wait.
             if (getTotalSize() < maxPoolSize) {
-                componentInstance = super.getComponentInstance(picoContainer);
+                componentInstance = super.getComponentInstance();
             } else {
                 // can't grow more. wait for one to become available.
                 try {

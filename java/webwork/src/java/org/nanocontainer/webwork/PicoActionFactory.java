@@ -64,7 +64,7 @@ public class PicoActionFactory extends ActionFactory implements KeyConstants {
 
     protected Action instantiateAction(Class actionClass) {
         MutablePicoContainer container = new DefaultPicoContainer();
-        container.addParent(getParentContainer());
+        container.setParent(getParentContainer());
         container.registerComponentImplementation(actionClass);
         return (Action) container.getComponentInstance(actionClass);
     }

@@ -7,8 +7,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -34,18 +32,16 @@ public class DefaultLifecycleContainerBuilderTestCase extends TestCase {
 
         SimpleObjectReference parentRef = new SimpleObjectReference();
         MutablePicoContainer parentC = new DefaultPicoContainer();
-        DefaultLifecyclePicoAdapter parentCLifecycle = new DefaultLifecyclePicoAdapter(parentC);
-        parentRef.set(parentCLifecycle);
+        parentRef.set(parentC);
 
         SimpleObjectReference childRef = new SimpleObjectReference();
 
         builder.buildContainer(childRef, parentRef, (ContainerAssembler) containerAssembler.proxy(), "test");
-        LifecyclePicoAdapter childContainerLifecycle = (LifecyclePicoAdapter) childRef.get();
-        PicoContainer childContainer = childContainerLifecycle.getPicoContainer();
-        assertTrue(childContainer.getParentContainers().contains(parentC));
+        PicoContainer childContainer = (PicoContainer) childRef.get();
+        assertSame(parentC, childContainer.getParent());
 
         builder.killContainer(childRef);
-        assertFalse(childContainer.getParentContainers().contains(parentC));
+        assertNull(childContainer.getParent());
     }
 
 }

@@ -11,15 +11,16 @@
 package org.picoextras.reflection;
 
 import junit.framework.TestCase;
-import org.picocontainer.*;
-import org.picoextras.testmodel.DefaultWebServerConfig;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
 import org.picoextras.testmodel.WebServerImpl;
 
+import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collection;
-import java.util.Vector;
 
 public class DefaultReflectionFrontEndTestCase extends TestCase {
 
@@ -34,7 +35,6 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServerImpl");
 
-        assertTrue("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().hasComponent(WebServerImpl.class));
         assertNotNull("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
     }
@@ -53,7 +53,8 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
-        reflectionFrontEnd.registerComponentImplementation(className,
+        reflectionFrontEnd.registerComponentImplementation(
+                "thing",
                 className,
                 new String[]{
                     "java.lang.String",
@@ -62,74 +63,51 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
                 new String[]{
                     "hello",
                     "22"
-                });
+                }
+        );
 
         ThingThatTakesParamsInConstructor thing =
-                (ThingThatTakesParamsInConstructor) reflectionFrontEnd.getPicoContainer().getComponentInstance(ThingThatTakesParamsInConstructor.class);
+                (ThingThatTakesParamsInConstructor) reflectionFrontEnd.getPicoContainer().getComponentInstance("thing");
         assertNotNull("component not present", thing);
         assertEquals("hello22", thing.getValue());
     }
 
-    public void testGetComponentTypes() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
-
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
-
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServerImpl");
-
-        Collection keys = reflectionFrontEnd.getPicoContainer().getComponentKeys();
-        assertEquals("There should be 2 keys", 2, keys.size());
-        assertTrue("There should be a One key", keys.contains(DefaultWebServerConfig.class));
-    }
-
-    public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoException, PicoRegistrationException {
-
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd(DefaultWebServerConfig.class.getClassLoader());
-
-        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
-
-        Collection keys = reflectionFrontEnd.getPicoContainer().getComponentKeys();
-        assertEquals("There should be 1 key", 1, keys.size());
-
-        try {
-            reflectionFrontEnd.getPicoContainer().getComponentInstance(Vector.class);
-            //fail("should have barfed");
-        } catch (ClassCastException e) {
-            // ecpected
-        }
-    }
-
     public void testChildFrontEndCanRelyOnParentFrontEnd() throws MalformedURLException, ClassNotFoundException {
+        String testcompJarFileName = System.getProperty("testcomp.jar");
+
+        // Paul's path to TestComp. PLEASE do not take out.
+        //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
+
+        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        File testCompJar = new File(testcompJarFileName);
+        File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
+        assertTrue(testCompJar.isFile());
+        assertTrue(testCompJar2.isFile());
+
+        // Set up parent
         ReflectionFrontEnd parentFrontEnd = new DefaultReflectionFrontEnd();
-
-        parentFrontEnd.addClassLoaderURL(findResource("TestComp.jar"));
-
-        parentFrontEnd.registerComponentImplementation("foo", "TestComp");
+        parentFrontEnd.addClassLoaderURL(testCompJar.toURL());
+        parentFrontEnd.registerComponentImplementation("parentTestComp", "TestComp");
 
         PicoContainer parentFrontEndPico = parentFrontEnd.getPicoContainer();
-        Object fooTestComp = parentFrontEndPico.getComponentInstance("foo");
-        assertEquals("TestComp", fooTestComp.getClass().getName());
+        Object parentTestComp = parentFrontEndPico.getComponentInstance("parentTestComp");
+        assertEquals("TestComp", parentTestComp.getClass().getName());
 
+        // Set up child
         ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
-        childFrontEnd.addClassLoaderURL(findResource("TestComp2.jar"));
-
-        childFrontEnd.registerComponentImplementation("bar", "TestComp2");
+        childFrontEnd.addClassLoaderURL(testCompJar2.toURL());
+        childFrontEnd.registerComponentImplementation("childTestComp", "TestComp2");
 
         PicoContainer childFrontEndPico = childFrontEnd.getPicoContainer();
-        Object barTestComp = childFrontEndPico.getComponentInstance("bar");
-        assertEquals("TestComp2", barTestComp.getClass().getName());
+        Object childTestComp = childFrontEndPico.getComponentInstance("childTestComp");
+        assertEquals("TestComp2", childTestComp.getClass().getName());
 
-        assertNotSame(fooTestComp, barTestComp);
-        assertEquals("foo classloader should be parent of bar",
-                fooTestComp.getClass().getClassLoader(), barTestComp.getClass().getClassLoader().getParent());
-        Collection childContainers = parentFrontEndPico.getChildContainers();
-        assertTrue(childContainers.contains(childFrontEndPico));
-    }
+        assertNotSame(parentTestComp, childTestComp);
+        assertEquals("parentTestComp classloader should be parent of childTestComp classloader",
+                parentTestComp.getClass().getClassLoader(),
+                childTestComp.getClass().getClassLoader().getParent());
 
-    private URL findResource(String resourcePath) {
-        URL resource = getClass().getResource("/" + resourcePath);
-        assertNotNull("add " + resourcePath + " to the class-path", resource);
-        return resource;
+        assertSame(parentFrontEndPico, childFrontEndPico.getParent());
     }
 
     public static class AnotherFooComp {
@@ -139,20 +117,26 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException, ClassNotFoundException {
         ReflectionFrontEnd parentFrontEnd = new DefaultReflectionFrontEnd();
 
+        String testcompJarFileName = System.getProperty("testcomp.jar");
+        // Paul's path to TestComp. PLEASE do not take out.
+        //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
+        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        File testCompJar = new File(testcompJarFileName);
+        assertTrue(testCompJar.isFile());
+
         parentFrontEnd.registerComponentImplementation("foo", "org.picoextras.testmodel.DefaultWebServerConfig");
 
         Object fooWebServerConfig = parentFrontEnd.getPicoContainer().getComponentInstance("foo");
         assertEquals("org.picoextras.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
-        childFrontEnd.addClassLoaderURL(findResource("TestComp.jar"));
+        childFrontEnd.addClassLoaderURL(testCompJar.toURL());
         childFrontEnd.registerComponentImplementation("bar", "TestComp");
 
         Object barTestComp = childFrontEnd.getPicoContainer().getComponentInstance("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());
 
-        assertNotSame("components should not have same ClassLoader",
-                fooWebServerConfig.getClass().getClassLoader(), barTestComp.getClass().getClassLoader());
+        assertNotSame(fooWebServerConfig.getClass().getClassLoader(), barTestComp.getClass().getClassLoader());
 
         // This kludge is needed because IDEA, Eclipse and Maven have different numbers of
         // classloaders in their hierachies for junit invocation.

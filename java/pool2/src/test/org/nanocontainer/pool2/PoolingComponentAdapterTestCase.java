@@ -19,33 +19,33 @@ public class PoolingComponentAdapterTestCase extends TestCase {
     }
 
     public void testNewIsInstantiatedOnEachRequest() {
-        Object borrowed0 = componentAdapter.getComponentInstance(pico);
-        Object borrowed1 = componentAdapter.getComponentInstance(pico);
+        Object borrowed0 = componentAdapter.getComponentInstance();
+        Object borrowed1 = componentAdapter.getComponentInstance();
 
         assertNotSame(borrowed0, borrowed1);
     }
 
     public void testInstancesCanBeRecycled() {
-        Object borrowed0 =  componentAdapter.getComponentInstance(pico);
-        Object borrowed1 = componentAdapter.getComponentInstance(pico);
-        Object borrowed2 = componentAdapter.getComponentInstance(pico);
+        Object borrowed0 =  componentAdapter.getComponentInstance();
+        Object borrowed1 = componentAdapter.getComponentInstance();
+        Object borrowed2 = componentAdapter.getComponentInstance();
 
         assertNotSame(borrowed0, borrowed1);
         assertNotSame(borrowed1, borrowed2);
 
         componentAdapter.returnComponentInstance(borrowed1);
 
-        Object borrowed = componentAdapter.getComponentInstance(pico);
+        Object borrowed = componentAdapter.getComponentInstance();
         assertSame(borrowed1, borrowed);
     }
 
     public void testPoolIsFifo() {
-        Object borrowed0 = componentAdapter.getComponentInstance(pico);
-        Object borrowed1 = componentAdapter.getComponentInstance(pico);
+        Object borrowed0 = componentAdapter.getComponentInstance();
+        Object borrowed1 = componentAdapter.getComponentInstance();
         componentAdapter.returnComponentInstance(borrowed0);
         componentAdapter.returnComponentInstance(borrowed1);
-        Object borrowed2 = componentAdapter.getComponentInstance(pico);
-        Object borrowed3 = componentAdapter.getComponentInstance(pico);
+        Object borrowed2 = componentAdapter.getComponentInstance();
+        Object borrowed3 = componentAdapter.getComponentInstance();
 
         assertSame(borrowed0, borrowed2);
         assertSame(borrowed1, borrowed3);
@@ -94,13 +94,13 @@ public class PoolingComponentAdapterTestCase extends TestCase {
             }
         };
 
-        borrowed[0] = componentAdapter2.getComponentInstance(pico);
-        borrowed[1] = componentAdapter2.getComponentInstance(pico);
+        borrowed[0] = componentAdapter2.getComponentInstance();
+        borrowed[1] = componentAdapter2.getComponentInstance();
         returner.start();
 
         // should block
         order.append("main ");
-        borrowed[2] = componentAdapter2.getComponentInstance(pico);
+        borrowed[2] = componentAdapter2.getComponentInstance();
         order.append("main");
 
         returner.join();
@@ -117,10 +117,10 @@ public class PoolingComponentAdapterTestCase extends TestCase {
     public void testFailsWhenExhausted() {
         final PoolingComponentAdapter componentAdapter2 =
                 new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class), 2, 0);
-        Object borrowed0 = componentAdapter2.getComponentInstance(pico);
-        Object borrowed1 = componentAdapter2.getComponentInstance(pico);
+        Object borrowed0 = componentAdapter2.getComponentInstance();
+        Object borrowed1 = componentAdapter2.getComponentInstance();
         try {
-            Object borrowed2 = componentAdapter2.getComponentInstance(pico);
+            Object borrowed2 = componentAdapter2.getComponentInstance();
         } catch (ExhaustedException e) {
         }
     }
@@ -129,11 +129,11 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         final PoolingComponentAdapter componentAdapter2 =
                 new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class), 5);
         assertEquals(0, componentAdapter2.getTotalSize());
-        Object borrowed0 = componentAdapter2.getComponentInstance(pico);
+        Object borrowed0 = componentAdapter2.getComponentInstance();
         assertEquals(1, componentAdapter2.getTotalSize());
-        Object borrowed1 = componentAdapter2.getComponentInstance(pico);
+        Object borrowed1 = componentAdapter2.getComponentInstance();
         assertEquals(2, componentAdapter2.getTotalSize());
-        Object borrowed2 = componentAdapter2.getComponentInstance(pico);
+        Object borrowed2 = componentAdapter2.getComponentInstance();
         assertEquals(3, componentAdapter2.getTotalSize());
 
         assertNotSame(borrowed0, borrowed1);

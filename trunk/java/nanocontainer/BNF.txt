@@ -2,20 +2,26 @@
 NanoContainer BNF syntax
 
 Terminology:
-    <S> ::= D  Symbol S uniquely defined by the content of definition D 
-    <E>*     repeat expression E zero or more times 
-    <E>+     repeat expression E one or more times 
-    <E>?     optional expression E  
-    <A>|<B>  either A or B 
+    <S> ::= D  	Symbol S uniquely defined by the content of definition D 
+    <E>*     	repeat expression E zero or more times 
+    <E>+     	repeat expression E one or more times 
+    <E>?     	optional expression E  
+    {<A>|<B>}  	either A or B 
 
 Syntax:
-<container> ::= <classpath>* <container>* <component>* 
+<container> ::= <classpath>* 
+				<container>* 
+				<component-implementation>* 
+				<component-adapter>* 
+				<component-instance>*
 
 <container> ::= <container-class> <container-parent> <assembly-scope>
 
-<container-class> ::= Implements org.nanocontainer.SoftCompositionPicoContainer
+<container-class> ::= <pico-container>
 
-<container-parent> ::= Implements org.nanocontainer.SoftCompositionPicoContainer | <null>
+<container-parent> ::= { <pico-container> | <null> }
+
+<pico-container> ::= org.nanocontainer.SoftCompositionPicoContainer reference
 
 <null> ::= Null reference
 
@@ -25,11 +31,11 @@ Syntax:
  
 <classloader-url> ::= java.net.URL  
 
-<component> ::= <component-adapter> | <component-implementation> | <component-instance>
+<component-implementation> ::= <key>? <implementation-class> <parameter>*
 
-<component-adapter> ::= {<adapter-class>|<adapter-factory} <key> {<implementation-class> <parameters>* |<instance>}
-
-<component-implementation> ::= <key>? <implementation-class> <parameter>* 
+<component-adapter> ::= { <adapter-class> | <adapter-factory } 
+						<key> 
+						{ <implementation-class> <parameters>* | <instance> } 
 
 <component-instance> ::= <key>? <instance>
 
@@ -37,16 +43,17 @@ Syntax:
 
 <adapter-factory> :== java.lang.Class
 
-<key> :== java.lang.Object
-
 <implementation-class> :== java.lang.Class
 
-<instance> :== java.lang.Object | <instance-factory>
+<instance> :== { java.lang.Object | <instance-factory> }
 
 <instance-factory> :== java.lang.Class
  
-<parameter> :== <component-parameter> | <constant-parameter>
+<parameter> :== { <component-parameter> | <constant-parameter> }
 
 <component-parameter> :== <key>
 
 <constant-parameter> :== <instance>
+
+<key> :== java.lang.Object
+

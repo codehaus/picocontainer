@@ -260,6 +260,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         }
     }
 
+    // TODO: Fails with versions of cglib >= 2.0.1
     public void testShouldBeAbleToHandleMutualDependenciesWithoutInterfaceImplSeparation() {
         MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new HotSwappingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(),
                 new CglibProxyFactory())));

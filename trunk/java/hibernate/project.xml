@@ -42,8 +42,9 @@
             <version>0.7</version>
         </dependency>
         <dependency>
-            <id>cglib</id>
-            <version>full-2.0</version>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-full</artifactId>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <id>commons-collections</id>
@@ -54,9 +55,14 @@
             <version>1.7.2-rc1</version>
         </dependency>
         <dependency>
+            <groupId>geronimo-spec</groupId>
+            <artifactId>geronimo-spec-jta</artifactId>
+            <version>1.0.1B-rc2</version>
+        </dependency>
+        <!--dependency>
             <id>jta</id>
             <version>1.0.1B</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <id>xml-apis</id>
             <version>1.0.b2</version>

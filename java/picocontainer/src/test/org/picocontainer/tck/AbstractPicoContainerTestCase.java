@@ -49,7 +49,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
@@ -125,8 +124,9 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertEquals(1, unsatisfiableDependencies.size());
 
             // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
-            Object unstaisifed = unsatisfiableDependencies.iterator().next();
-            assertEquals(Touchable.class, unstaisifed);
+            List unstaisifed = (List) unsatisfiableDependencies.iterator().next();
+            assertEquals(1, unstaisifed.size());
+            assertEquals(Touchable.class, unstaisifed.get(0));
         }
     }
 
@@ -194,15 +194,15 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             pico.getComponentInstance(ComponentD.class);
         } catch (UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            // The set now contains a list containing the two dependencies in
-            // order. Therefore, we can't use the original code. - mparaz
+            assertEquals(1, unsatisfiableDependencies.size());
 
+            List list = (List) unsatisfiableDependencies.iterator().next();
 
             final List expectedList = new ArrayList(2);
             expectedList.add(ComponentE.class);
             expectedList.add(ComponentB.class);
 
-            assertEquals(new HashSet(expectedList), unsatisfiableDependencies);
+            assertEquals(expectedList, list);
         }
     }
 

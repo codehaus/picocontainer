@@ -305,14 +305,15 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testRegisterAbstractShouldFail() {
+    public void testRegisterAbstractShouldFail() throws PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
         try {
             pico.registerComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (PicoRegistrationException e) {
-            // ok
+        } catch (NotConcreteRegistrationException e) {
+            assertEquals(Runnable.class,e.getComponentClass());
+            assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
     }
 

@@ -11,7 +11,7 @@
 package org.nanocontainer;
 
 import org.nanocontainer.reflection.StringToObjectConverter;
-import org.nanocontainer.script.groovy.NanoContainerBuilderException;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -144,7 +144,7 @@ public class DefaultNanoContainer implements NanoContainer {
         if (componentClassLoader == null) {
             URL[] urlz = (URL[]) urls.toArray(new URL[urls.size()]);
             componentClassLoaderLocked = true;
-            componentClassLoader = new DRCAClassLoader(urlz, parentClassLoader);
+            componentClassLoader = new URLPrintingClassLoader(urlz, parentClassLoader);
         }
         return componentClassLoader;
     }
@@ -153,25 +153,29 @@ public class DefaultNanoContainer implements NanoContainer {
         return picoContainer;
     }
 
-    public static class DRCAClassLoader extends URLClassLoader {
-        public DRCAClassLoader(URL[] urls, ClassLoader parent) {
+    public static class URLPrintingClassLoader extends URLClassLoader {
+        public URLPrintingClassLoader(URL[] urls, ClassLoader parent) {
             super(urls, parent);
         }
 
-        public String toString() {
-            return "FCL(parent:" + (getParent() != null ? "" + System.identityHashCode(getParent()) : "x") + " - URLS(" + getPrettyURLs() + ")";
-        }
-
         public Class loadClass(String name) throws ClassNotFoundException {
-            return super.loadClass(name);
+            try {
+                return super.loadClass(name);
+            } catch (ClassNotFoundException e) {
+                throw new ClassNotFoundException(getPrettyURLs(), e);
+            }
         }
 
         protected Class findClass(String name) throws ClassNotFoundException {
-            return super.findClass(name);
+            try {
+                return super.findClass(name);
+            } catch (ClassNotFoundException e) {
+                throw new ClassNotFoundException(getPrettyURLs(), e);
+            }
         }
 
         private String getPrettyURLs() {
-            String result = "";
+            String result = "Classloader URLs (classpath):\n";
             URL[] urls = getURLs();
             for (int i = 0; i < urls.length; i++) {
                 URL url = urls[i];
@@ -187,7 +191,7 @@ public class DefaultNanoContainer implements NanoContainer {
             Object componentInstance = picoContainer.getComponentInstanceOfType(compType);
             return componentInstance;
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerBuilderException("Can't resolve class as type '" + componentType + "'");
+            throw new NanoContainerMarkupException("Can't resolve class as type '" + componentType + "'");
         }
     }
 

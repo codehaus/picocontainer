@@ -20,9 +20,11 @@ import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
+import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.NullNanoContainerBuilderDecorationDelegate;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -90,17 +92,22 @@ public class NanoContainerBuilder extends BuilderSupport {
         Object current = getCurrent();
         if (current != null && current instanceof GroovyObject) {
             return createChildBuilder(current, name, attributes);
-        } else {
+        } else if (current == null || current instanceof NanoContainer) {
             NanoContainer parent = (NanoContainer) current;
             if (name.equals("container")) {
                 return createChildContainer(attributes, parent);
             } else {
                 try {
-                    return createChildOfContainerNode(parent, name, attributes);
+                    return createChildOfContainerNode(parent, name, attributes, current);
                 } catch (ClassNotFoundException e) {
-                    throw new NanoContainerBuilderException("ClassNotFoundException:" + e.getMessage(), e);
+                    throw new NanoContainerMarkupException("ClassNotFoundException:" + e.getMessage(), e);
                 }
             }
+        } else if ("component".equals(current)) {
+            // we don't know how to handle it - delegate to the decorator.
+            return nanoContainerBuilderDecorationDelegate.createNode(name, attributes, current);
+        } else {
+            throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' node under component");
         }
     }
 
@@ -109,7 +116,7 @@ public class NanoContainerBuilder extends BuilderSupport {
         return groovyObject.invokeMethod(name.toString(), attributes);
     }
 
-    private Object createChildOfContainerNode(NanoContainer parentContainer, Object name, Map attributes) throws ClassNotFoundException {
+    private Object createChildOfContainerNode(NanoContainer parentContainer, Object name, Map attributes, Object current) throws ClassNotFoundException {
         if (name.equals("component")) {
             nanoContainerBuilderDecorationDelegate.rememberComponentKey(attributes);
             return createComponentNode(attributes, parentContainer, name);
@@ -126,7 +133,7 @@ public class NanoContainerBuilder extends BuilderSupport {
             return createNewBuilderNode(attributes, parentContainer);
         } else {
             // we don't know how to handle it - delegate to the decorator.
-            return nanoContainerBuilderDecorationDelegate.createChildOfContainerNode(attributes, name);
+            return nanoContainerBuilderDecorationDelegate.createNode(name, attributes, current);
         }
     }
 
@@ -138,7 +145,7 @@ public class NanoContainerBuilder extends BuilderSupport {
         try {
             factory.registerComponentImplementation(GroovyObject.class, builderClass);
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerBuilderException("ClassNotFoundException " + builderClass);
+            throw new NanoContainerMarkupException("ClassNotFoundException " + builderClass);
         }
         Object componentInstance = factory.getPico().getComponentInstance(GroovyObject.class);
         return componentInstance;
@@ -155,7 +162,7 @@ public class NanoContainerBuilder extends BuilderSupport {
                 pathURL = new File(path).toURL();
             }
         } catch (MalformedURLException e) {
-            throw new NanoContainerBuilderException("classpath '" + path + "' malformed ", e);
+            throw new NanoContainerMarkupException("classpath '" + path + "' malformed ", e);
         }
         nanoContainer.addClassLoaderURL(pathURL);
         return pathURL;
@@ -188,7 +195,7 @@ public class NanoContainerBuilder extends BuilderSupport {
             key = key == null ? instance.getClass() : key;
             nano.getPico().registerComponentInstance(key, instance);
         } else {
-            throw new NanoContainerBuilderException("Must specify a class attribute for a component");
+            throw new NanoContainerMarkupException("Must specify a class attribute for a component");
         }
 
         return name;
@@ -199,10 +206,7 @@ public class NanoContainerBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
-    //TODO - two adapterFactory attributes ??
     protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
-
-
         ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) attributes.remove("componentAdapterFactory");
         componentAdapterFactory = componentAdapterFactory != null ? componentAdapterFactory : new DefaultComponentAdapterFactory();
         ComponentAdapterFactory wrappedComponentAdapterFactory = nanoContainerBuilderDecorationDelegate.decorate(componentAdapterFactory, attributes);
@@ -227,7 +231,7 @@ public class NanoContainerBuilder extends BuilderSupport {
     protected Object createBean(Map attributes) {
         Class type = (Class) attributes.remove("beanClass");
         if (type == null) {
-            throw new NanoContainerBuilderException("Bean must have a beanClass attribute");
+            throw new NanoContainerMarkupException("Bean must have a beanClass attribute");
         }
         try {
             Object bean = type.newInstance();
@@ -240,9 +244,9 @@ public class NanoContainerBuilder extends BuilderSupport {
             }
             return bean;
         } catch (IllegalAccessException e) {
-            throw new NanoContainerBuilderException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
+            throw new NanoContainerMarkupException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
         } catch (InstantiationException e) {
-            throw new NanoContainerBuilderException("Failed to create bean of type " + type + "'. Reason: " + e, e);
+            throw new NanoContainerMarkupException("Failed to create bean of type " + type + "'. Reason: " + e, e);
         }
     }
 

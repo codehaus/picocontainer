@@ -16,8 +16,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.DomReader;
 import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -72,11 +72,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (IOException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (ParserConfigurationException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
     }
 
@@ -103,14 +103,14 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     try {
                         insertImplementation(container, (Element) child);
                     } catch (ClassNotFoundException e) {
-                        throw new PicoCompositionException(e);
+                        throw new NanoContainerMarkupException(e);
                     }
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
                 } else if (ADAPTER.equals(name)) {
                     insertAdapter(container, (Element) child);
                 } else {
-                    throw new PicoCompositionException("Unsupported element:" + name);
+                    throw new NanoContainerMarkupException("Unsupported element:" + name);
                 }
             }
         }
@@ -136,7 +136,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 container.registerComponent((ComponentAdapter) nested.getComponentInstanceOfType(ComponentAdapter.class));
             }
         } catch (ClassNotFoundException ex) {
-            throw new PicoCompositionException(ex);
+            throw new NanoContainerMarkupException(ex);
         }
 
     }
@@ -148,7 +148,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
         if (klass == null || "".equals(klass)) {
-            throw new PicoCompositionException("class specification is required for component implementation");
+            throw new NanoContainerMarkupException("class specification is required for component implementation");
         }
 
         Class clazz = classLoader.loadClass(klass);
@@ -171,7 +171,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     // create constant with xstream
                     parseResult = parseElementChild((Element) child);
                     if (parseResult == null) {
-                        throw new PicoCompositionException("could not parse constant parameter");
+                        throw new NanoContainerMarkupException("could not parse constant parameter");
                     }
                     parameters.add(new ConstantParameter(parseResult));
                 } else if (DEPENDENCY.equals(name)) {
@@ -181,7 +181,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     if (dependencyKey == null || "".equals(dependencyKey)) {
                         dependencyClass = ((Element) child).getAttribute(CLASS);
                         if (dependencyClass == null || "".equals(dependencyClass)) {
-                            throw new PicoCompositionException("either key or class must be present for dependency");
+                            throw new NanoContainerMarkupException("either key or class must be present for dependency");
                         } else {
                             parameters.add(new ComponentParameter(classLoader.loadClass(dependencyClass)));
                         }
@@ -222,7 +222,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String key = rootElement.getAttribute(KEY);
         Object result = parseElementChild(rootElement);
         if (result == null) {
-            throw new PicoCompositionException("no content could be parsed in instance");
+            throw new NanoContainerMarkupException("no content could be parsed in instance");
         }
         if (key != null && !"".equals(key)) {
             // insert with key
@@ -261,11 +261,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             populateContainer(result);
             return result;
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (InstantiationException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (IllegalAccessException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
     }
 }

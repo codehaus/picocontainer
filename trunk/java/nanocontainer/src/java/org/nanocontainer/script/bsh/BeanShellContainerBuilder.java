@@ -2,7 +2,7 @@ package org.nanocontainer.script.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
@@ -33,7 +33,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
             i.eval(script, i.getNameSpace(), "nanocontainer.bsh");
             return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
     }
 }

@@ -2,14 +2,14 @@ package picocontainer.aggregated;
 
 import junit.framework.TestCase;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.PicoContainer;
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStopException;
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 public class AggregatedContainersContainerTestCase extends TestCase {
-    private PicoContainer pico;
+    private ClassRegistrationPicoContainer pico;
     private AggregatedContainersContainer.Filter filter;
 
     public void setUp() throws PicoRegistrationException {
@@ -62,7 +62,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
     }
 
     public void testGetToFilterFor() {
-        assertSame("The Container to filter for should be the one made in setUp", pico, filter.getSubject());
+        assertSame("The PicoContainer to filter for should be the one made in setUp", pico, filter.getSubject());
     }
 
     public void testBasic() {
@@ -70,7 +70,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
         final String acomp = "hello";
         final Integer bcomp = new Integer(123);
 
-        Container a = new Container() {
+        PicoContainer a = new PicoContainer() {
             public boolean hasComponent(Class compType) {
                 return compType == String.class;
             }
@@ -88,7 +88,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
         };
 
-        Container b = new Container() {
+        PicoContainer b = new PicoContainer() {
             public boolean hasComponent(Class compType) {
                 return compType == Integer.class;
             }
@@ -106,7 +106,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
         };
 
-        AggregatedContainersContainer acc = new AggregatedContainersContainer(new Container[] {a, b});
+        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[] {a, b});
 
         assertTrue(acc.hasComponent(String.class));
         assertTrue(acc.hasComponent(Integer.class));
@@ -118,7 +118,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void testEmpty() {
 
-        AggregatedContainersContainer acc = new AggregatedContainersContainer(new Container[0]);
+        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[0]);
         assertTrue(acc.hasComponent(String.class) == false);
         assertTrue(acc.getComponent(String.class) == null);
         assertTrue(acc.getComponents().length == 0);

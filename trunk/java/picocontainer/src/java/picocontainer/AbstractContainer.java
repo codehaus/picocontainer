@@ -1,12 +1,12 @@
 package picocontainer;
 
 /**
- * Abstract baseclass for various Container implementations.
+ * Abstract baseclass for various PicoContainer implementations.
  * 
  * @author Aslak Hellesoy
  * @version $Revision$
  */
-public abstract class AbstractContainer implements Container {
+public abstract class AbstractContainer implements PicoContainer {
 
     public final Object[] getComponents() {
         Class[] componentTypes = getComponentTypes();

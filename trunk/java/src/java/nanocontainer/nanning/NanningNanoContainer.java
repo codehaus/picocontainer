@@ -11,8 +11,8 @@ import com.tirsen.nanning.config.AspectSystem;
  * @version $Revision$
  */
 public class NanningNanoContainer extends AspectSystem {
-    PicoContainer serviceAndAspectContainer;
-    PicoContainer componentContainer;
+    ClassRegistrationPicoContainer serviceAndAspectContainer;
+    ClassRegistrationPicoContainer componentContainer;
 
     public NanningNanoContainer() {
         serviceAndAspectContainer = new HierarchicalPicoContainer.Default();

@@ -10,7 +10,7 @@
 
 package nanocontainer.aggregating;
 
-import picocontainer.Container;
+import picocontainer.PicoContainer;
 import picocontainer.aggregated.AggregatedContainersContainer;
 
 import java.lang.reflect.InvocationHandler;
@@ -27,14 +27,14 @@ public class AggregatingNanoContainer extends AggregatedContainersContainer.Filt
     /** Cached */
     private Object proxy;
 
-    public AggregatingNanoContainer(Container containerToAggregateComponentsFor,
+    public AggregatingNanoContainer(PicoContainer containerToAggregateComponentsFor,
                                     InvocationHandler invocationHandler) {
         super(containerToAggregateComponentsFor);
         setInvocationHandler(invocationHandler);
     }
 
     public static class Default extends AggregatingNanoContainer {
-        public Default(Container containerToAggregateComponentsFor) {
+        public Default(PicoContainer containerToAggregateComponentsFor) {
             super(containerToAggregateComponentsFor, null);
         }
     }

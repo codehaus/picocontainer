@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) ClassRegistrationPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -28,8 +28,8 @@ package picocontainer.hierarchical;
 
 
 import picocontainer.AbstractContainer;
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.Container;
 import picocontainer.StartableLifecycleManager;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoRegistrationException;
@@ -53,9 +53,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-public class HierarchicalPicoContainer extends AbstractContainer implements PicoContainer {
+public class HierarchicalPicoContainer extends AbstractContainer implements ClassRegistrationPicoContainer {
 
-    private final Container parentContainer;
+    private final PicoContainer parentContainer;
     private final StartableLifecycleManager startableLifecycleManager;
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
@@ -68,7 +68,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     private boolean initialized;
     private boolean started;
 
-    public HierarchicalPicoContainer(Container parentContainer,
+    public HierarchicalPicoContainer(PicoContainer parentContainer,
                                      StartableLifecycleManager startableLifecycleManager,
                                      ComponentFactory componentFactory) {
         if (parentContainer == null) {
@@ -93,7 +93,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     public static class WithParentContainer extends HierarchicalPicoContainer {
-        public WithParentContainer(Container parentContainer) {
+        public WithParentContainer(PicoContainer parentContainer) {
             super(parentContainer, new NullStartableLifecycleManager(), new DefaultComponentFactory());
         }
     }
@@ -193,7 +193,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             startComponents();
             started = true;
         } else {
-            throw new IllegalStateException("Container Started Already");
+            throw new IllegalStateException("PicoContainer Started Already");
         }
     }
 
@@ -278,13 +278,13 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             stopComponents();
             started = false;
         } else {
-            throw new IllegalStateException("Container Not started");
+            throw new IllegalStateException("PicoContainer Not started");
         }
     }
 
     private void checkNotDisposedOf() {
         if (disposedOf == true) {
-            throw new IllegalStateException("Container Disposed Of");
+            throw new IllegalStateException("PicoContainer Disposed Of");
         }
     }
 

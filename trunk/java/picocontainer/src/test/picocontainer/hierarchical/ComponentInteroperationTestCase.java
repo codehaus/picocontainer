@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) ClassRegistrationPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -15,7 +15,7 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.hierarchical.OverriddenPicoTestContainer;
 import picocontainer.hierarchical.NullStartableLifecycleManager;
 import picocontainer.hierarchical.DuplicateComponentTypeRegistrationException;
-import picocontainer.PicoContainer;
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.hierarchical.UnsatisfiedDependencyStartupException;
@@ -28,7 +28,7 @@ public class ComponentInteroperationTestCase extends TestCase {
     {
 
         WilmaImpl wilma = new WilmaImpl();
-        PicoContainer pico = new OverriddenPicoTestContainer(wilma, new NullStartableLifecycleManager());
+        ClassRegistrationPicoContainer pico = new OverriddenPicoTestContainer(wilma, new NullStartableLifecycleManager());
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);

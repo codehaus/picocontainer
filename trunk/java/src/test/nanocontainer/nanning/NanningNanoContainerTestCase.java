@@ -7,6 +7,7 @@ import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MethodInterceptor;
 import com.tirsen.nanning.Invocation;
 import com.tirsen.nanning.Aspects;
+import com.tirsen.nanning.MixinInstance;
 import junit.framework.TestCase;
 import picocontainer.PicoStartException;
 import picocontainer.PicoRegistrationException;
@@ -44,6 +45,10 @@ public class NanningNanoContainerTestCase extends TestCase {
 
         public void introduce(AspectInstance instance) {
             // nothing to introduce
+        }
+
+        public void adviseMixin(AspectInstance aspectInstance, MixinInstance mixinInstance) {
+            //TODO - Jon
         }
 
         public void advise(AspectInstance instance) {

@@ -10,8 +10,8 @@
 
 package nanocontainer;
 
+import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.Container;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
@@ -25,11 +25,11 @@ import nanocontainer.reflection.StringToObjectConverter;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
-    private final PicoContainer picoContainer;
+    private final ClassRegistrationPicoContainer picoContainer;
     private ArrayList classLoaders = new ArrayList();
     private StringToObjectConverter converter;
 
-    public StringRegistrationNanoContainerImpl(Container parentContainer, ClassLoader classLoader, StringToObjectConverter converter) {
+    public StringRegistrationNanoContainerImpl(PicoContainer parentContainer, ClassLoader classLoader, StringToObjectConverter converter) {
         this.picoContainer = makePicoContainer(parentContainer);
         if (classLoader != null) {
             classLoaders.add(classLoader);
@@ -37,7 +37,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         this.converter = converter;
     }
 
-    protected PicoContainer makePicoContainer(Container parentContainer) {
+    protected ClassRegistrationPicoContainer makePicoContainer(PicoContainer parentContainer) {
         return new HierarchicalPicoContainer.WithParentContainer(parentContainer);
     }
 
@@ -48,7 +48,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
     }
 
     public static class WithParentContainer extends StringRegistrationNanoContainerImpl {
-        public WithParentContainer(Container parentContainer) {
+        public WithParentContainer(PicoContainer parentContainer) {
             super(parentContainer, StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter());
         }
     }

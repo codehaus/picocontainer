@@ -3,7 +3,7 @@
 # http://www.picocontainer.org/
 #
 # Author: Aslak Hellesoy
-
+# 
 require 'ftools'
 
 temp="___tmp___.htm"

@@ -4,7 +4,7 @@ import javax.management.MBeanServerFactory
 
 builder = new MicroGroovyBuilder()
 
-nano = builder.container(parent:parent, class:"org.picocontainer.defaults.DefaultPicoContainer") {
+nano = builder.container(parent:parent) {
   	classpathelement(path:"lib/hidden/microcontainer-impl-0.1-SNAPSHOT.jar");
 	component(key:org.microcontainer.McaDeployer, class:"org.microcontainer.impl.DefaultMcaDeployer")
 	component(class:"org.microcontainer.impl.MicroBeanShellConsole")

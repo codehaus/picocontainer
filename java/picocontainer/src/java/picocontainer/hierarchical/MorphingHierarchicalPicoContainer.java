@@ -10,138 +10,116 @@
 
 package picocontainer.hierarchical;
 
-import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
+import picocontainer.ComponentFactory;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.InvocationHandler;
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
-
-    public static final int REVERSE_INSTANTIATION_ORDER = 11;
-    public static final int INSTANTIATION_ORDER = 22;
 
     public MorphingHierarchicalPicoContainer(PicoContainer parentContainer, ComponentFactory componentFactory) {
         super(parentContainer, componentFactory);
     }
 
     /**
-     * Returns a proxy that impements the specified interface.
+     * Shorthand for {@link #getMultipleInheritanceProxy(boolean, boolean)}(true, true).
+     * @return a proxy.
+     */
+    public Object getMultipleInheritanceProxy() {
+        return getMultipleInheritanceProxy( true, true);
+    }
+
+    /**
+     * Returns a proxy that implements the union of all the components'
+     * interfaces.
      * Calling a method on the returned Object will call the
      * method on all components in the container that implement
      * that interface.
      *
-     * This version will call the method on all comonents in this container
-     * (ie those returned by {@see getComponents()})
+     * @param callInInstantiationOrder whether to call the methods in the order of instantiation
+     * @param callInInstantiationOrder whether to exclude components registered with {@link #registerComponent(Class, Object)}
+     * or {@link #registerComponent(Object)}
      */
-    public Object as(Class theInterface) {
-        return as(new Class[]{theInterface});
-    }
-
-    /**
-     * Returns a proxy that impements the specified set of interfaces.
-     * @see #as(Class)
-     */
-    public Object as(Class[] interfaces) {
+    public Object getMultipleInheritanceProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
-                interfaces,
-                new AsInvocationHandler(this));
+                getComponentInterfaces(),
+                new ComponentsInvocationHandler(callInInstantiationOrder, callUnmanagedComponents));
     }
 
-    /**
-     * Generates a proxy that can be used to call the interfaces methods
-     * on all components managed by this container, ie. those components
-     * that were instantiated by this container. It is assumed that
-     * compoenents passed in already instantiated are managed externally.
-     *
-     * Lifecycle methods can be called in wither {@link INSTANTIATION_ORDER},
-     * that is the order in which the container created them, or
-     * {@link REVERSE_INSTANTIATION_ORDER}.
-     */
-    public Object asLifecycle(Class theInterface, int direction) {
-        return Proxy.newProxyInstance(
-                getClass().getClassLoader(),
-                new Class[] {theInterface},
-                new AsLifecycleInvocationHandler(direction));
-    }
+    private class ComponentsInvocationHandler implements InvocationHandler {
+        private boolean callInInstantiationOrder;
+        private boolean callUnmanagedComponents;
 
-    class AsLifecycleInvocationHandler implements InvocationHandler {
-        private int direction;
-
-        AsLifecycleInvocationHandler(int direction) {
-            if (direction != MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER && direction != MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER) {
-                throw new IllegalArgumentException("Illegal argument - direction whould be one of REVERSE_INSTANTIATION_ORDER or INSTANTIATION_ORDER");
-            }
-            this.direction = direction;
-
+        public ComponentsInvocationHandler(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+            this.callInInstantiationOrder = callInInstantiationOrder;
+            this.callUnmanagedComponents = callUnmanagedComponents;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-            switch (direction) {
-                case MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER:
-                    for (int i = 0; i < orderedComponents.size(); i++) {
-                        invokeOnComponent(orderedComponents.get(i), method, args);
-                    }
-                    break;
-                case MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER:
-                    for (int i = orderedComponents.size() - 1; i >= 0; i--) {
-                        invokeOnComponent(orderedComponents.get(i), method, args);
-                    }
-                    break;
-            }
+            List orderedComponentsCopy = new ArrayList(orderedComponents);
 
-            return null;
+            if( !callInInstantiationOrder ) {
+                // reverse the list
+                Collections.reverse(orderedComponentsCopy);
+            }
+            Object[] components = orderedComponentsCopy.toArray();
+            return invokeOnComponents(components, method, args);
         }
 
-        private void invokeOnComponent(Object component, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-            Class declaringInterface = method.getDeclaringClass();
-            if ( component instanceof MorphingHierarchicalPicoContainer) {
-                MorphingHierarchicalPicoContainer childContainer = (MorphingHierarchicalPicoContainer)component;
-                Object childContainerAs = childContainer.asLifecycle(declaringInterface, direction);
-                method.invoke(childContainerAs, args);
-            }
-            else {
-                if (declaringInterface.isAssignableFrom(component.getClass())) {
-                    method.invoke(component, args);
+        private Object invokeOnComponents(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+            Object result = null;
+            int invokeCount = 0;
+            for (int i = 0; i < components.length; i++) {
+                Class declarer = method.getDeclaringClass();
+                boolean isValidType = declarer.isAssignableFrom(components[i].getClass());
+                boolean isUnmanaged = unmanagedComponents.contains(components[i]);
+                boolean exclude = !callUnmanagedComponents && isUnmanaged;
+                if (isValidType && !exclude) {
+                    // It's ok to call the method on this one
+                    Object resultCandidate = method.invoke(components[i], args);
+                    invokeCount++;
+                    if( invokeCount == 1 ) {
+                        result = resultCandidate;
+                    } else {
+                        result = null;
+                    }
                 }
             }
+            return result;
         }
-
-   }
-
-    static class AsInvocationHandler implements InvocationHandler {
-        private PicoContainer container;
-
-        AsInvocationHandler(PicoContainer container) {
-            this.container = container;
-        }
-
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            invokeOnComponents(container.getComponents(), method, args);
-            return null;
-        }
-
-        private void invokeOnComponents(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-            for (int i = 0; i < components.length; i++) {
-                invokeOnComponent(components[i], method, args);
-            }
-        }
-
-        private void invokeOnComponent(Object component, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-            Class declaringInterface = method.getDeclaringClass();
-            if (declaringInterface.isAssignableFrom(component.getClass())) {
-                method.invoke(component, args);
-            }
-            else if (component instanceof PicoContainer) {
-                invokeOnComponents( ((PicoContainer)component).getComponents(), method, args );
-            }
-        }
-
     }
 
+    /**
+     * Get all the interfaces implemented by the registered component instances.
+     * @return an array of interfaces implemented by the concrete component instances.
+     */
+    private final Class[] getComponentInterfaces() {
+        Set interfaces = new HashSet();
+        Object[] components = getComponents();
+        for (int i = 0; i < components.length; i++) {
+            Class componentClass = components[i].getClass();
+            // Strangely enough Class.getInterfaces() does not include the interfaces
+            // implemented by superclasses. So we must loop up the hierarchy.
+            while( componentClass != null ) {
+                Class[] implemeted = componentClass.getInterfaces();
+                List implementedList = Arrays.asList(implemeted);
+                interfaces.addAll(implementedList);
+                componentClass = componentClass.getSuperclass();
+            }
+        }
+
+        Class[] result = (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return result;
+    }
 }

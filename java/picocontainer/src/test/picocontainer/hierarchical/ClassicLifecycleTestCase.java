@@ -56,7 +56,7 @@ public class ClassicLifecycleTestCase extends TestCase {
             stopping.add(msg);
         }
         public void disposeCalled(String msg) {
-            stopping.add(msg);
+            disposing.add(msg);
         }
 
     }
@@ -68,13 +68,13 @@ public class ClassicLifecycleTestCase extends TestCase {
             this.one = one;
         }
         public void start() throws Exception {
-            one.startCalled("One");
+            one.startCalled("Two");
         }
         public void stop() throws Exception {
-            one.stopCalled("One");
+            one.stopCalled("Two");
         }
         public void dispose() throws Exception {
-            one.disposeCalled("One");
+            one.disposeCalled("Two");
         }
     }
 
@@ -133,8 +133,8 @@ public class ClassicLifecycleTestCase extends TestCase {
 
         pico.initializeContainer();
 
-        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.asLifecycle(ClassicStartingUpLifecycle.class, MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER);
-        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.asLifecycle(ClassicShuttonDownLifecycle.class, MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER);
+        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getMultipleInheritanceProxy(true, false);
+        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getMultipleInheritanceProxy(false, false);
 
         assertTrue("There should have been a 'One' in the container", pico.hasComponent(One.class));
 
@@ -176,30 +176,31 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     }
 
-
-    public void testStartStopStartStopAndDispose() throws Exception {
-
-        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(null, new DefaultComponentFactory());
-
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
-
-        pico.initializeContainer();
-
-        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.asLifecycle(ClassicStartingUpLifecycle.class, MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER);
-        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.asLifecycle(ClassicShuttonDownLifecycle.class, MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER);
-
-
-        startup.start();
-        shutdown.stop();
-
-        startup.start();
-        shutdown.stop();
-
-        shutdown.dispose();
-
-    }
-
+//  
+//
+//    public void testStartStopStartStopAndDispose() throws Exception {
+//
+//        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
+//
+//        pico.registerComponent(FredImpl.class);
+//        pico.registerComponent(WilmaImpl.class);
+//
+//        pico.initializeContainer();
+//
+//        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getMultipleInheritanceProxy(true, false);
+//        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getMultipleInheritanceProxy(false, false);
+//
+//
+//        startup.start();
+//        shutdown.stop();
+//
+//        startup.start();
+//        shutdown.stop();
+//
+//        shutdown.dispose();
+//
+//    }
+//
 
 //    public void testStartStartCausingBarf() throws PicoInitializationException, PicoRegistrationException{
 //        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();

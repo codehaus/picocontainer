@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.util.Vector;
 import javax.servlet.ServletContext;
@@ -88,7 +88,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
                 .method("getResourceAsStream")
                 .with(eq("/config/nanocontainer.groovy"))
-                .will(returnValue(new StringBufferInputStream(groovyScript)));
+                .will(returnValue(new ByteArrayInputStream(groovyScript.getBytes())));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(BUILDER), isA(GroovyContainerBuilder.class));
@@ -176,7 +176,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
         		.method("getResourceAsStream")
         		.with(eq("nanowar/composer-config.xml"))
-        		.will(returnValue(new StringBufferInputStream(composerScript)));
+        		.will(returnValue(new ByteArrayInputStream(composerScript.getBytes())));
         servletContextMock.expects(once())
 				.method("setAttribute")
 				.with(eq(BUILDER), isA(DefaultLifecycleContainerBuilder.class));

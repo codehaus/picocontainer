@@ -2,9 +2,9 @@ package org.nanocontainer.nanowar.nanoweb;
 
 import junit.framework.TestCase;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -53,7 +53,7 @@ public class CachingScriptClassLoaderTestCase extends TestCase {
         }
 
         public InputStream getInputStream() throws IOException {
-            return new StringBufferInputStream(GROOVY_CLASS);
+            return new ByteArrayInputStream(GROOVY_CLASS.getBytes());
         }
 
         public void setLastModified(long lastModified) {

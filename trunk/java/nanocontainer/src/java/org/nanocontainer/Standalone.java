@@ -28,9 +28,8 @@ public class Standalone {
     private static final char COMPOSITION_OPT = 'c';
     private static final char QUIET_OPT = 'q';
     private static final char NOWAIT_OPT = 'n';
-    private static final Options OPTIONS = createOptions();
 
-    private static final Options createOptions() {
+    static final Options createOptions() {
         Options options = new Options();
         options.addOption(String.valueOf(HELP_OPT), "help", false,
                 "print this message and exit");
@@ -47,8 +46,9 @@ public class Standalone {
 
     public static void main(String[] args) {
         CommandLine cl = null;
+        Options options = createOptions();
         try {
-            cl = getCommandLine(args);
+            cl = getCommandLine(args, options);
         } catch (ParseException e) {
             System.out.println("Error in parsing arguments: ");
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class Standalone {
         }
 
         if (cl.hasOption(HELP_OPT)) {
-            printUsage();
+            printUsage(options);
             System.exit(0);
         }
         if (cl.hasOption(VERSION_OPT)) {
@@ -66,7 +66,7 @@ public class Standalone {
 
         String composition = cl.getOptionValue(COMPOSITION_OPT);
         if (composition == null) {
-            printUsage();
+            printUsage(options);
             System.exit(0);
         }
         boolean quiet = cl.hasOption(QUIET_OPT);
@@ -145,21 +145,21 @@ public class Standalone {
     }
 
 
-    static CommandLine getCommandLine(String[] args) throws ParseException {
+    static CommandLine getCommandLine(String[] args, Options options) throws ParseException {
         if (args.length == 0) {
             throw new ParseException("No arguments specified");
         }
         CommandLineParser parser = new PosixParser();
-        return parser.parse(OPTIONS, args);
+        return parser.parse(options, args);
     }
 
-    private static void printUsage() {
+    private static void printUsage(Options options) {
         final String lineSeparator = System.getProperty("line.separator");
 
         final StringBuffer usage = new StringBuffer();
         usage.append(lineSeparator);
         usage.append("ScriptedContainerBuilderFactory: Standalone -c <composition> [-q|-n|-h|-v]");
-        usage.append(OPTIONS.getOptions());
+        usage.append(options.getOptions());
         System.out.println(usage.toString());
     }
 

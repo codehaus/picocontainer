@@ -21,6 +21,7 @@ import java.util.Hashtable;
 
 import javax.ejb.EJBHome;
 import javax.ejb.EJBObject;
+import javax.naming.CommunicationException;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
@@ -194,8 +195,9 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
                 throw new ServiceUnavailableException("EJB named " + m_name + " not found", e);
             } catch (final NamingException e) {
                 final Throwable rootCause = e.getRootCause();
-                if (rootCause != null && rootCause instanceof SocketTimeoutException) {
-                    // Server down, did not have a connection yet
+                if (rootCause != null
+                        && (rootCause instanceof SocketTimeoutException || rootCause instanceof NoSuchObjectException)) {
+                    // Server down, did not have a connection or JNDI not stuffed yet
                     throw new ServiceUnavailableException("Timeout occured creating EJB named " + m_name, e);
                 } else {
                     throw new PicoInitializationException("InitialContext has no EJB named " + m_name, e);

@@ -22,23 +22,23 @@ import javax.management.MBeanInfo;
 import java.text.MessageFormat;
 
 /**
- * Allows for registering non-MBean instances to the MBeanServer by wrapping them in a PicoContainerMBean.
+ * Allows for registering non-MBean instances to the MBeanServer by wrapping them in a NanoMBean.
  * Usage requires that an associated MBeanInfo be registered with PicoContainer. The MBeanInfo registered MUSR
  *
- * @see PicoContainerMBean
+ * @see NanoMBean
  * @author Michael Ward
  * @version $Revision$
  */
-public class JMXComponentAdapter extends DecoratingComponentAdapter {
+public class MBeanComponentAdapter extends DecoratingComponentAdapter {
 	public static final String MBEAN_INFO_ERROR = "The Key \"{0}\" was not registered with the container (Key can either be a Class or String)";
 
-	public JMXComponentAdapter(ComponentAdapter delegate) {
+	public MBeanComponentAdapter(ComponentAdapter delegate) {
 		super(delegate);
 	}
 
 	public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 		Object componentInstance = super.getComponentInstance(pico);
-		Object mbean = new PicoContainerMBean(componentInstance, getMBeanInfo(pico, componentInstance));
+		Object mbean = new NanoMBean(componentInstance, getMBeanInfo(pico, componentInstance));
 
 		// register with MBean Server
 		MBeanServerHelper.register(pico, this, mbean);

@@ -1,0 +1,48 @@
+<project default="txt2tags">
+    
+    <!-- 
+     ! Override this with -D on the command line if the java module 
+     ! is not checked out as a sibling to the book module.
+    -->
+    <property name="java.module.url" value="file:../java"/>
+    
+    <target name="slurp">
+        <taskdef classname="snippet.ant.SlurpTask" name="slurp">
+            <classpath>
+                <fileset dir="lib"/>
+            </classpath>
+        </taskdef>
+        <echo>${java.module.url}</echo>
+        
+
+        <mkdir dir="target/url-replaced"/>
+        <copy todir="target/url-replaced" overwrite="true">
+            <fileset dir=".">
+                <include name="*.t2t"/>
+            </fileset>
+        </copy>
+        <replace dir="target/url-replaced" token="@JAVA_MODULE_URL@" value="${java.module.url}"/>
+        
+        <mkdir dir="target/slurped"/>
+        <slurp dir="target/url-replaced" todir="target/slurped" snippetStartMarkup="```" snippetEndMarkup="```">
+            <include name="*.t2t"/>
+        </slurp>
+    </target>
+    
+    <target name="txt2tags" depends="slurp">
+        <exec dir="." executable="python">
+            <arg line="txt2tags/txt2tags"/>
+            <arg line="--target"/>
+            <arg line="html"/>
+            <arg line="--outfile"/>
+            <arg line="target/book.html"/>
+            <arg line="--toc"/>
+            <arg line="--enum-title"/>
+            <arg line="target/slurped/book.t2t"/>
+        </exec>
+    </target>
+    
+    <target name="deploy" depends="txt2tags">
+        <copy file="book.html" todir="/home/projects/picocontainer/public_html"/>
+    </target>
+</project>

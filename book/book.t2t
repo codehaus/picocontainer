@@ -13,7 +13,8 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 %!include: hierarchies.t2t
 %!include: nanocontainer.t2t
 %!include: nanocontainer-groovy.t2t
-%!include: servlet.t2t
+%!include: nanowar-basics.t2t
+%!include: nanowar-eda.t2t
 %!include: decomposing-hairball-casestudy.t2t
 %!include: ioc-history.t2t
 

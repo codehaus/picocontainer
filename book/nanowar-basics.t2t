@@ -1,0 +1,24 @@
+Constructor Dependency Injection, with PicoContainer 
+NanoContainer
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+
+= NanoContainer =
+
+Look at this nice Juicer
+
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/org/picocontainer/doc/introduction/Juicer.java}
+
+Nice, huh?
+
+- Nanowar Servlet basics
+  - current servlet limitations and drawbacks
+    - testing
+    - configuration
+- configuration/code
+  - web.xml
+  - composition script options. mechanism, not script details (which will be in the main nanocontainer chapter)
+  - pure servlets
+  - webwork
+  - xwork/ww2
+  - struts
+  - nanowar

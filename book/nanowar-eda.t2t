@@ -1,0 +1,11 @@
+Constructor Dependency Injection, with PicoContainer 
+NanoContainer
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+
+= NanoContainer =
+
+- Describe how to do distributed event-driven architecture (EDA) based on nanowar and Doug Lea's concurrency library.
+  - Use a simple, soon-to-be checked in servlet and proxy impl using XStream over HTTP.
+  - How to propagate events from server to client and client to server
+  
+- Maybe some terse description on EDA in general, and how DI/Pico fits into the picture.

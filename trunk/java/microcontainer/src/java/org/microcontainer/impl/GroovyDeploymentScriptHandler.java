@@ -36,7 +36,7 @@ public class GroovyDeploymentScriptHandler {
 
 			// build the container from the script
 			GroovyContainerBuilder gcb = new MicroGroovyContainerBuilder(script, classLoader);
-			MutablePicoContainer parent = new DefaultNanoPicoContainer(classLoader);
+			DefaultNanoPicoContainer parent = new DefaultNanoPicoContainer(classLoader);
 			parent.registerComponentInstance("workingDir", path);
 
             PicoContainer picoContainer = buildContainer(contextName, gcb, parent);
@@ -60,6 +60,7 @@ public class GroovyDeploymentScriptHandler {
         builder.buildContainer(containerRef, parentContainerRef, contextName, true);
         return (PicoContainer) containerRef.get();
     }
+
     private class MicroGroovyContainerBuilder extends GroovyContainerBuilder {
 
         public MicroGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,7 +10,7 @@
 
 package org.picocontainer.lifecycle;
 
-public interface LifecyclePicoAdaptor extends Lifecycle {
+public interface LifecyclePicoAdapter extends Lifecycle {
 
     boolean isStarted();
 

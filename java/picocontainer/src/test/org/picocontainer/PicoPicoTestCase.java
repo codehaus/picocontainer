@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -14,30 +14,25 @@ import junit.framework.TestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Can Pico host itself ?
  */
 public class PicoPicoTestCase extends TestCase {
 
-    public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInitializationException {
+    public void testDefaultPicoContainer() throws PicoException, PicoInitializationException {
 
-        DefaultPicoContainer pc = new DefaultPicoContainer.Default();
-        pc.registerComponentByClass(DefaultPicoContainer.Default.class);
-//        pc.instantiateComponents();
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(DefaultPicoContainer.class);
 
-        tryDefaultPicoContainer((DefaultPicoContainer) pc.getComponent(DefaultPicoContainer.Default.class));
+        MutablePicoContainer hostedPico = (MutablePicoContainer) pico.getComponentInstance(DefaultPicoContainer.class);
+        hostedPico.registerComponentImplementation(DependsOnTouchable.class);
+        hostedPico.registerComponentImplementation(SimpleTouchable.class);
+
+        assertTrue(hostedPico.hasComponent(DependsOnTouchable.class));
+        assertTrue(hostedPico.hasComponent(SimpleTouchable.class));
 
     }
 
-    private void tryDefaultPicoContainer(DefaultPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
-
-        pc2.registerComponentByClass(DependsOnTouchable.class);
-        pc2.registerComponentByClass(SimpleTouchable.class);
-
-//        pc2.instantiateComponents();
-
-        assertTrue("There should have been a Fred in the internals", pc2.hasComponent(DependsOnTouchable.class));
-        assertTrue("There should have been a Touchable in the internals", pc2.hasComponent(SimpleTouchable.class));
-    }
 }

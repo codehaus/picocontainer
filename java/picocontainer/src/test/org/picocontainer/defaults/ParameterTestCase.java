@@ -4,10 +4,7 @@ import junit.framework.TestCase;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.internals.*;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.*;
 
 
 /**
@@ -27,39 +24,29 @@ public class ParameterTestCase extends TestCase {
         }
     }
 
-//  I don't think this is something we need to assert anymore, as the
-//  getParameters() now does it lazily. And the parameters can't
-//
-//    public void testComponentAdapterCreatesDefaultParameters() throws PicoIntrospectionException {
-//        DefaultComponentAdapter componentAdapter =
-//                new DefaultComponentAdapter(null, TestClass.class);
-//        assertEquals(3, componentAdapter.getParameters().length);
-//    }
-
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
-        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
-        DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
-        pico.registerComponent(Touchable.class, SimpleTouchable.class);
+        AbstractPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         ComponentParameter parameter = new ComponentParameter(Touchable.class);
 
-        assertNotNull(pico.getComponent(Touchable.class));
-        Touchable touchable = (Touchable) parameter.resolveAdapter(dcr).instantiateComponent(dcr);
+        assertNotNull(pico.getComponentInstance(Touchable.class));
+        Touchable touchable = (Touchable) parameter.resolveAdapter(pico).getComponentInstance(pico);
         assertNotNull(touchable);
     }
 
-    public void testConstantParameter() throws PicoInitializationException {
+    public void testConstantParameter() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
-        assertSame(value, parameter.resolveAdapter(null).instantiateComponent(null));
+        assertSame(value, parameter.resolveAdapter(null).getComponentInstance(null));
     }
 
     public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer();
         SimpleTouchable touchable = new SimpleTouchable();
-        pico.registerComponent(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[]{
+        pico.registerComponentImplementation(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[]{
             new ConstantParameter(touchable)
         });
-        pico.getComponents();
+        pico.getComponentInstances();
         assertTrue(touchable.wasTouched);
     }
 

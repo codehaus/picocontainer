@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,8 +11,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.testmodel.Touchable;
@@ -23,11 +21,11 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
         return new DefaultComponentAdapterFactory();
     }
 
-    public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException {
+    public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-        Object comp = componentAdapter.instantiateComponent(componentRegistry);
+        Object comp = componentAdapter.getComponentInstance(picoContainer);
         assertNotNull(comp);
         assertTrue(comp instanceof SimpleTouchable);
     }

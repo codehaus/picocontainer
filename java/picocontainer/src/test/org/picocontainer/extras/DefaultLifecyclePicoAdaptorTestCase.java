@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -17,7 +17,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Disposable;
-import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         List disposing = new ArrayList();
 
         public One() {
-            System.out.println("new One");
             instantiation("One");
         }
 
@@ -86,7 +85,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Two(One one) {
-            System.out.println("new Two");
             one.instantiation("Two");
             this.one = one;
         }
@@ -108,7 +106,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Three(One one, Two two) {
-            System.out.println("new Three");
             one.instantiation("Three");
             this.one = one;
         }
@@ -130,7 +127,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Four(Two two, Three three, One one) {
-            System.out.println("new Four");
             one.instantiation("Four");
             this.one = one;
         }
@@ -151,14 +147,14 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testOrderOfInstantiationWithoutAdaptor() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        pico.registerComponentByClass(Four.class);
-        pico.registerComponentByClass(Two.class);
-        pico.registerComponentByClass(One.class);
-        pico.registerComponentByClass(Three.class);
+        pico.registerComponentImplementation(Four.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Three.class);
 
-        assertEquals(4, pico.getComponents().size());
+        assertEquals(4, pico.getComponentInstances().size());
 
         Startable startup = (Startable) pico.getComponentMulticaster(true, false);
         Stoppable shutdown = (Stoppable) pico.getComponentMulticaster(false, false);
@@ -166,7 +162,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
         assertTrue("There should have been a 'One' in the internals", pico.hasComponent(One.class));
 
-        One one = (One) pico.getComponent(One.class);
+        One one = (One) pico.getComponentInstance(One.class);
 
         // instantiation - would be difficult to do these in the wrong order!!
         assertEquals("Should be four elems", 4, one.getInstantiating().size());
@@ -182,17 +178,17 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testStartStopStartStopAndDispose() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
-        pico.registerComponentByClass(One.class);
-        pico.registerComponentByClass(Two.class);
-        pico.registerComponentByClass(Three.class);
-        pico.registerComponentByClass(Four.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(Three.class);
+        pico.registerComponentImplementation(Four.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
 
-        One one = (One) pico.getComponent(One.class);
+        One one = (One) pico.getComponentInstance(One.class);
 
         // instantiation - would be difficult to do these in the wrong order!!
         assertEquals("Should be four elems", 4, one.getInstantiating().size());
@@ -237,14 +233,14 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testStartStartCausingBarf() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
 
         assertTrue(lifecycle.isStopped());
         lifecycle.start();
@@ -259,14 +255,14 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     }
 
     public void testStartStopStopCausingBarf() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
         assertTrue(lifecycle.isStopped());
         lifecycle.start();
         assertTrue(lifecycle.isStarted());
@@ -282,14 +278,14 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     }
 
     public void testDisposeDisposeCausingBarf() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
         lifecycle.start();
         lifecycle.stop();
         assertFalse(lifecycle.isDisposed());
@@ -306,14 +302,14 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
 
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
         lifecycle.start();
         lifecycle.stop();
         lifecycle.dispose();
@@ -363,22 +359,22 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     }
 
     public void testStartStopOfDaemonizedThread() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
-        pico.registerComponentByClass(FooRunnable.class);
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
+        pico.registerComponentImplementation(FooRunnable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
         lifecycle.start();
         assertTrue(lifecycle.isStarted());
         Thread.sleep(100);
         lifecycle.stop();
         assertTrue(lifecycle.isStopped());
 
-        FooRunnable foo = (FooRunnable) pico.getComponent(FooRunnable.class);
+        FooRunnable foo = (FooRunnable) pico.getComponentInstance(FooRunnable.class);
         assertEquals(1, foo.runCount());
         lifecycle.start();
         assertTrue(lifecycle.isStarted());
@@ -391,15 +387,15 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testForgivingNatureOfLifecycleAdapter() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
         // Touchable is not Startable (etc). This internals should be able to handle the
         // fact that none of the comps are Startable (etc).
-        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentImplementation(SimpleTouchable.class);
 
-        pico.getComponents();
+        pico.getComponentInstances();
 
         assertTrue(lifecycle.isStopped());
         lifecycle.start();

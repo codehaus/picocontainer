@@ -5,8 +5,27 @@
         <author email="rinkrank@codehaus.org">Aslak Hellesoy</author>
     </properties>
 
+    <!-- action types are add/update/fix/remove -->
     <body>
         <release version="1.0-beta-2" date="In CVS">
+
+            <action dev="rinkrank" type="update">
+                Big refactoring making the API simpler. This was needed because
+                there was no clear separation of concerns between the old
+                ComponentRegistry and PicoContainer interfaces (and the implementing
+                classes). This led to a lot of confusion and offered too many
+                ways to do things. The API is now less ambiguous, and there is no
+                "expert" or "normal" ways to use PicoContainer. One interface, one way.
+            </action>
+
+            <action dev="rinkrank" type="update">
+                CompositePicoContainer and HierarchicalComponentRegistry
+                were replaced by DecoratingPicoContainer.
+            </action>
+
+            <action dev="rinkrank" type="remove">
+                Removed ComponentRegistry by merging it with PicoContainer.
+            </action>
 
             <action dev="rinkrank" type="update">
                 Fixed

@@ -1,6 +1,9 @@
-package org.picocontainer.internals;
+package org.picocontainer.defaults;
 
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.util.List;
 
@@ -23,13 +26,17 @@ public interface ComponentAdapter {
 
     /**
      * Gets the component instance. Subsequent calls to this method
-     * with the same arguments should return the same object.
+     * with the same arguments should return the same object (it should
+     * be caching).
+     * <p>
+     * This method should also register the instantiated component with the
+     * pico container
      *
-     * @param componentRegistry registries where the adapter can look for
+     * @param picoContainer registries where the adapter can look for
      *  dependent component instances
      * @return the component instance
      * @throws PicoInitializationException if the component couldn't be instantiated
      */
-    Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException;
+    Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
 }

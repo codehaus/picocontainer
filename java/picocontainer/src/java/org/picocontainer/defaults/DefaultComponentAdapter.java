@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -12,17 +12,15 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 
-import java.io.Serializable;
 import java.util.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
+public class DefaultComponentAdapter extends AbstractComponentAdapter {
 
-    private final Object componentKey;
-    private final Class componentImplementation;
     private Parameter[] parameters;
     private Object componentInstance;
 
@@ -35,9 +33,8 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      */
     public DefaultComponentAdapter(final Object componentKey,
                                    final Class componentImplementation,
-                                   Parameter[] parameters) {
-        this.componentKey = componentKey;
-        this.componentImplementation = componentImplementation;
+                                   Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation);
         this.parameters = parameters;
     }
 
@@ -48,19 +45,11 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      * @param componentImplementation
      */
     public DefaultComponentAdapter(Object componentKey,
-                                   Class componentImplementation) {
+                                   Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
-    protected Parameter[] createDefaultParameters(Class[] parameters) {
-        ComponentParameter[] componentParameters = new ComponentParameter[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new ComponentParameter(parameters[i]);
-        }
-        return componentParameters;
-    }
-
-    public Class[] getDependencies(ComponentRegistry componentRegistry) throws PicoIntrospectionException, AmbiguousComponentResolutionException {
+    public Class[] getDependencies(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor constructor = getConstructor(componentRegistry);
         return constructor.getParameterTypes();
     }
@@ -70,9 +59,9 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      * @return
      * @throws org.picocontainer.defaults.TooManySatisfiableConstructorsException
      */
-    private Constructor getConstructor(ComponentRegistry componentRegistry) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException {
+    private Constructor getConstructor(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
-        List allConstructors = Arrays.asList(componentImplementation.getConstructors());
+        List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
         List satisfiableConstructors = getSatisfiableConstructors(allConstructors, componentRegistry);
 
         // now we'll just take the biggest one
@@ -91,15 +80,15 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
             }
         }
         if(!conflicts.isEmpty()) {
-            throw new TooManySatisfiableConstructorsException(componentImplementation, conflicts);
+            throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         }
         if (biggestConstructor == null) {
-            throw new NoSatisfiableConstructorsException(componentImplementation);
+            throw new NoSatisfiableConstructorsException(getComponentImplementation());
         }
         return biggestConstructor;
     }
 
-    private List getSatisfiableConstructors(List constructors, ComponentRegistry componentRegistry) throws AmbiguousComponentResolutionException {
+    private List getSatisfiableConstructors(List constructors, MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List result = new ArrayList();
         for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
             Constructor constructor = (Constructor) iterator.next();
@@ -127,48 +116,40 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
         return result;
     }
 
-    public Object getComponentKey() {
-        return componentKey;
-    }
-
-    public Class getComponentImplementation() {
-        return componentImplementation;
-    }
-
-    public Object instantiateComponent(ComponentRegistry componentRegistry)
-            throws PicoInitializationException {
+    public Object getComponentInstance(AbstractPicoContainer mutablePicoContainer)
+            throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
-            Class[] dependencyTypes = getDependencies(componentRegistry);
+            Class[] dependencyTypes = getDependencies(mutablePicoContainer);
             ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
 
-            Parameter[] componentParameters = getParameters(componentRegistry);
+            Parameter[] componentParameters = getParameters(mutablePicoContainer);
             for (int i = 0; i < adapterDependencies.length; i++) {
-                adapterDependencies[i] = componentParameters[i].resolveAdapter(componentRegistry);
+                adapterDependencies[i] = componentParameters[i].resolveAdapter(mutablePicoContainer);
             }
-            componentInstance = createComponent(adapterDependencies, componentRegistry);
+            componentInstance = createComponent(adapterDependencies, mutablePicoContainer);
 
-            componentRegistry.addOrderedComponentInstance(componentInstance);
+            mutablePicoContainer.addOrderedComponentInstance(componentInstance);
 
         }
         return componentInstance;
     }
 
-    private Object createComponent(ComponentAdapter[] adapterDependencies, ComponentRegistry componentRegistry) throws PicoInitializationException, TooManySatisfiableConstructorsException {
+    private Object createComponent(ComponentAdapter[] adapterDependencies, AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
-            Constructor constructor = getConstructor(componentRegistry);
+            Constructor constructor = getConstructor(picoContainer);
             Object[] parameters = new Object[adapterDependencies.length];
             for (int i = 0; i < adapterDependencies.length; i++) {
                 ComponentAdapter adapterDependency = adapterDependencies[i];
-                parameters[i] = adapterDependency.instantiateComponent(componentRegistry);
+                parameters[i] = adapterDependency.getComponentInstance(picoContainer);
             }
 
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetInitializationException(e.getCause());
         } catch (InstantiationException e) {
-            throw new RuntimeException(e);
+            throw new PicoInvocationTargetInitializationException(e);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new PicoInvocationTargetInitializationException(e);
         }
     }
 
@@ -182,13 +163,9 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
         return actual.isAssignableFrom(requested);
     }
 
-    private Parameter[] getParameters(ComponentRegistry componentRegistry) {
+    private Parameter[] getParameters(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (parameters == null) {
-            try {
-                return createDefaultParameters(getDependencies(componentRegistry));
-            } catch (PicoIntrospectionException e) {
-                throw new IllegalStateException("Unable to create default parameters:" + e.getMessage());
-            }
+            return createDefaultParameters(getDependencies(componentRegistry));
         } else {
             return parameters;
         }
@@ -200,4 +177,13 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
        return getComponentKey().equals(other.getComponentKey()) &&
                 getComponentImplementation().equals(other.getComponentImplementation());
     }
+
+    private Parameter[] createDefaultParameters(Class[] parameters) {
+        ComponentParameter[] componentParameters = new ComponentParameter[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            componentParameters[i] = new ComponentParameter(parameters[i]);
+        }
+        return componentParameters;
+    }
+
 }

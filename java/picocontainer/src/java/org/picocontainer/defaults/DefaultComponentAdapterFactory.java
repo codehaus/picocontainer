@@ -1,8 +1,6 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.io.Serializable;
@@ -15,7 +13,7 @@ public class DefaultComponentAdapterFactory implements ComponentAdapterFactory, 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
-            throws PicoIntrospectionException {
+            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new DefaultComponentAdapter(componentKey, componentImplementation, parameters);
     }
 }

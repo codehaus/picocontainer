@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -12,7 +12,8 @@ package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.*;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.*;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -26,7 +27,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
-            throws PicoIntrospectionException {
+            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
@@ -35,9 +36,9 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
             super(delegate);
         }
 
-        public Object instantiateComponent(ComponentRegistry componentRegistry)
-                throws PicoInitializationException {
-            Object component = super.instantiateComponent(componentRegistry);
+        public Object getComponentInstance(AbstractPicoContainer picoContainer)
+                throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            Object component = super.getComponentInstance(picoContainer);
             // TODO: search for all interfaces for component-implementation instead
             // There is code for this in DefaultComponentMulticasterFactory. Reuse that. (Static? Util class?)
             Class[] interfaces = new Class[]{(Class) getComponentKey()};

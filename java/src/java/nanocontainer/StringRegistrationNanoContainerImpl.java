@@ -14,7 +14,7 @@ import nanocontainer.reflection.StringToObjectConverter;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInitializationException;
-vimport picocontainer.PicoRegistrationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 

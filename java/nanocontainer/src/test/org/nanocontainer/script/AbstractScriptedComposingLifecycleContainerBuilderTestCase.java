@@ -22,7 +22,7 @@ public abstract class AbstractScriptedComposingLifecycleContainerBuilderTestCase
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
-    protected PicoContainer buildContainer(ScriptedComposingLifecycleContainerBuilder builder, PicoContainer parentContainer) {
+    protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
         parentContainerRef.set(parentContainer);
         builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE");
         return (PicoContainer) containerRef.get();

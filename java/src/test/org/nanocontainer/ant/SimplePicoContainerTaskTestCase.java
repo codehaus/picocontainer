@@ -2,6 +2,9 @@ package org.nanocontainer.ant;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.extras.InvokingComponentAdapterFactory;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -9,15 +12,15 @@ import org.picocontainer.PicoException;
  */
 public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTestCase {
 
-    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoException {
+    public void testPicoContainerTaskWithPropertyButWithoutParameters() throws PicoException {
         Component pongComp = new Component();
         pongComp.setClassname(Pong.class.getName());
-        task.addConfiguredComponent(pongComp);
+        task.addComponent(pongComp);
 
         Component pingComp = new Component();
         pingComp.setClassname(Ping.class.getName());
         pingComp.setDynamicAttribute("someprop", "HELLO");
-        task.addConfiguredComponent(pingComp);
+        task.addComponent(pingComp);
 
         task.execute();
 
@@ -31,7 +34,7 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
     public void testPicoContainerTaskWithParameters() throws PicoException {
         Component pangComp = new Component();
         pangComp.setClassname(Pang.class.getName());
-        task.addConfiguredComponent(pangComp);
+        task.addComponent(pangComp);
 
         Component pungComp = new Component();
         pungComp.setClassname(Pung.class.getName());
@@ -44,7 +47,7 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
         Component.ConstantParam constantParam = pungComp.createConstant();
         constantParam.setValue("bajs");
 
-        task.addConfiguredComponent(pungComp);
+        task.addComponent(pungComp);
         task.execute();
 
         // Now see if the task did the job properly
@@ -60,6 +63,10 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
     }
 
     protected PicoContainerTask createPicoContainerTask() {
-        return new PicoContainerTask();
+        return new PicoContainerTask() {
+            protected MutablePicoContainer createPicoContainer(InvokingComponentAdapterFactory invokingFactory) {
+                return new DefaultPicoContainer(invokingFactory);
+            }
+        };
     }
 }

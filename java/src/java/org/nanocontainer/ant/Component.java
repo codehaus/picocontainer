@@ -22,7 +22,7 @@ import java.util.ListIterator;
  */
 public class Component implements DynamicConfigurator {
     private String className;
-    private Map attributes = new HashMap();
+    private Map properties = new HashMap();
     private List parameters = new ArrayList();
     private String key;
 
@@ -43,20 +43,20 @@ public class Component implements DynamicConfigurator {
     }
 
     public void setDynamicAttribute(String name, String value) throws BuildException {
-        attributes.put(name, value);
+        properties.put(name, value);
     }
 
     public Object createDynamicElement(String string) throws BuildException {
         throw new BuildException("No sub elements of " + string + " is allowed");
     }
 
-    public void setPropertiesOn(BeanPropertyComponentAdapterFactory.Adapter adapter) throws BeanPropertyComponentAdapterFactory.NoSuchPropertyException {
-        for (Iterator i = attributes.keySet().iterator(); i.hasNext();) {
-            String name = (String) i.next();
-            String value = (String) attributes.get(name);
-            adapter.setPropertyValue(name, value);
-        }
-    }
+//    public void setPropertiesOn(BeanPropertyComponentAdapterFactory.Adapter adapter) throws BeanPropertyComponentAdapterFactory.NoSuchPropertyException {
+//        for (Iterator i = properties.keySet().iterator(); i.hasNext();) {
+//            String name = (String) i.next();
+//            String value = (String) properties.get(name);
+//            adapter.setPropertyValue(name, value);
+//        }
+//    }
 
     public ConstantParam createConstant() {
         ConstantParam constant = new ConstantParam();
@@ -82,6 +82,10 @@ public class Component implements DynamicConfigurator {
         ComponentParam param = new ComponentParam();
         parameters.add(param);
         return param;
+    }
+
+    public Map getProperties() {
+        return properties;
     }
 
     public static abstract class AbstractParam {

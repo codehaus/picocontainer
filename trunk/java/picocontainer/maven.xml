@@ -1,4 +1,22 @@
 <project default="binary:install">
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy" prereqs="jar:deploy"/>
+
+    <goal name="pico:tck-jar">
+        <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">
+            <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}" />
+        </jar>
+    </goal>
+
+    <postGoal name="jar:install">
+        <attainGoal name="pico:tck-jar" />
+        <property name="jardir__" value="${maven.repo.local}/${pom.artifactDirectory}/jars"/>
+        <mkdir dir="${jardir__}"/>
+        <copy
+            file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            todir="${jardir__}"
+            overwrite="true"
+        />
+    </postGoal>
+
 </project>

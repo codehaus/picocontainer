@@ -8,7 +8,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -148,42 +147,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * Returns an object (in fact, a dynamic proxy) that implements the union
-     * of all the interfaces of the currently registered components.
-     * <p>
-     * Casting this object to any of those interfaces and then calling a method
-     * on it will result in that call being multicast to all the components implementing
-     * that given interface.
-     * <p>
-     * This is a simple yet extremely powerful way to handle lifecycle of components.
-     * Component writers can invent their own lifecycle interfaces, and then use the multicaster
-     * to invoke the method in one go.
-     *
-     * @param callInInstantiationOrder whether or not to call the method in the order of instantiation,
-     *    which depends on the components' inter-dependencies.
-     * @param callUnmanagedComponents whether or not to multicast to components that are not managed
-     *    by this container.
-     * @return a multicaster object.
+     * @deprecated Use {@link DefaultComponentMulticasterPicoAdapter).
      */
     public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        // TODO: take a MultiCasterFactory as argument. That way we can support
-        // multicasters based on reflection (e.g. look for execute() methods) too.
-        // Nice for ppl who want lifecycle by following naming conventions
-        // on methods instead of implementing interfaces. --Aslak
-        // P.S. That functionality is implemented in InvokingComponentAdapterFactory D.S.
-        ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
-
-        List componentsToMulticast = getComponentInstances();
-        if (!callUnmanagedComponents) {
-            for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {
-                componentsToMulticast.remove(iterator.next());
-            }
-        }
-        return componentMulticasterFactory.createComponentMulticaster(
-                getClass().getClassLoader(),
-                componentsToMulticast,
-                callInInstantiationOrder
-        );
+        return new DefaultComponentMulticasterPicoAdapter(this).getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 
     /**
@@ -191,7 +158,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * which is the most common usage scenario.
      *
      * @return a multicaster object.
-     * @throws PicoException
+     * @deprecated
      */
     public Object getComponentMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return getComponentMulticaster(true, false);

@@ -28,9 +28,9 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
     private boolean started;
     private boolean disposed;
     private final PicoContainer picoContainer;
-    private final ComponentMulticasterPicoAdapter multicasterAdapter;
+    private final DefaultComponentMulticasterPicoAdapter multicasterAdapter;
 
-    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer, ComponentMulticasterPicoAdapter multicasterAdapter) {
+    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer, DefaultComponentMulticasterPicoAdapter multicasterAdapter) {
         this.picoContainer = picoContainer;
         this.multicasterAdapter = multicasterAdapter;
     }

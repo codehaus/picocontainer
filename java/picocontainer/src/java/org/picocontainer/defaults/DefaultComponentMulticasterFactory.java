@@ -33,7 +33,8 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
     public Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
-            boolean callInReverseOrder
+            boolean callInReverseOrder,
+            Invoker invoker
             ) {
         Class[] interfaces = interfaceFinder.getInterfaces(objectsToAggregateCallFor);
         List copy = new ArrayList(objectsToAggregateCallFor);
@@ -47,7 +48,7 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
         Object result = Proxy.newProxyInstance(
                 classLoader,
                 interfaces,
-                new AggregatingInvocationHandler(classLoader, objects)
+                new AggregatingInvocationHandler(classLoader, objects, invoker)
         );
 
         return result;
@@ -56,10 +57,12 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
     private class AggregatingInvocationHandler implements InvocationHandler {
         private Object[] children;
         private ClassLoader classLoader;
+        private final Invoker invoker;
 
-        public AggregatingInvocationHandler(ClassLoader classLoader, Object[] children) {
+        public AggregatingInvocationHandler(ClassLoader classLoader, Object[] children, Invoker invoker) {
             this.classLoader = classLoader;
             this.children = children;
+            this.invoker = invoker;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -84,21 +87,10 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
             Class returnType = method.getReturnType();
 
             // Lazily created list holding all results.
-            List results = null;
-            for (int i = 0; i < targets.length; i++) {
-                boolean isValidType = declaringClass.isAssignableFrom(targets[i].getClass());
-                if (isValidType) {
-                    // It's ok to call the method on this one
-                    Object componentResult = method.invoke(targets[i], args);
-                    if (results == null) {
-                        results = new ArrayList();
-                    }
-                    results.add(componentResult);
-                }
-            }
+            List results = new ArrayList();
+            invoker.invoke(targets, declaringClass, method, args, results);
 
             Object result;
-
             if (results.size() == 1) {
                 // Got exactly one result. Just return that.
                 result = results.get(0);
@@ -109,7 +101,8 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
                 result = createComponentMulticaster(
                         classLoader,
                         results,
-                        true
+                        true,
+                        invoker
                 );
             } else {
                 // Got multiple results that can't be wrapped in a proxy. Try to instantiate a default object.

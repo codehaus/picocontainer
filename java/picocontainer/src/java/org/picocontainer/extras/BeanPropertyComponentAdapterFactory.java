@@ -66,7 +66,6 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         private final Map propertyValues;
         private PropertyDescriptor[] propertyDescriptors;
         private Map propertyDescriptorMap = new HashMap();
-        private Object componentInstance = null;
 
         public Adapter(ComponentAdapter delegate, Map propertyValues) throws PicoBeanInfoInitializationException {
             super(delegate);
@@ -88,45 +87,51 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         }
 
         public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            if (componentInstance == null) {
-                componentInstance = super.getComponentInstance(picoContainer);
+            final Object componentInstance = super.getComponentInstance(picoContainer);
 
-                if (propertyValues != null) {
-                    Set propertyNames = propertyValues.keySet();
-                    for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
-                        final String propertyName = (String) iterator.next();
-                        final Object propertyValue = propertyValues.get(propertyName);
-                        final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
-                        if (propertyDescriptor == null) {
-                            throw new PicoIntrospectionException() {
-                                public String getMessage() {
-                                    return "Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName();
-                                }
-                            };
-                        }
-                        Method setter = propertyDescriptor.getWriteMethod();
-                        if (setter == null) {
-                            throw new PicoInitializationException() {
-                                public String getMessage() {
-                                    return "There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +
-                                            ". Setter: " + propertyDescriptor.getWriteMethod() +
-                                            ". Getter: " + propertyDescriptor.getReadMethod();
-                                }
-                            };
-                        }
-                        try {
-                            setter.invoke(componentInstance, new Object[]{propertyValue});
-                        } catch (final Exception e) {
-                            throw new PicoInitializationException() {
-                                public String getMessage() {
-                                    return "Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage();
-                                }
-                            };
-                        }
+            if (propertyValues != null) {
+                Set propertyNames = propertyValues.keySet();
+                for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
+                    final String propertyName = (String) iterator.next();
+                    final Object propertyValue = propertyValues.get(propertyName);
+                    final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+                    if (propertyDescriptor == null) {
+                        throw new PicoIntrospectionException() {
+                            public String getMessage() {
+                                return "Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName();
+                            }
+                        };
+                    }
+                    Method setter = propertyDescriptor.getWriteMethod();
+                    if (setter == null) {
+                        throw new PicoInitializationException() {
+                            public String getMessage() {
+                                return "There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +
+                                        ". Setter: " + propertyDescriptor.getWriteMethod() +
+                                        ". Getter: " + propertyDescriptor.getReadMethod();
+                            }
+                        };
+                    }
+                    try {
+                        setter.invoke(componentInstance, new Object[]{ convertType(setter, propertyValue)});
+                    } catch (final Exception e) {
+                        throw new PicoInitializationException(e) {
+                            public String getMessage() {
+                                return "Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage();
+                            }
+                        };
                     }
                 }
             }
             return componentInstance;
+        }
+
+        private Object convertType(Method setter, Object propertyValue) {
+            Class type = setter.getParameterTypes()[0];
+            if(type.equals(Boolean.class) || type.equals(boolean.class)) {
+                return Boolean.valueOf(propertyValue.toString());
+            }
+            return propertyValue;
         }
     }
 }

@@ -118,7 +118,7 @@ public class LifecycleSessionProvider implements SessionProvider, Startable {
      */
     public void close() throws HibernateException {
 		if(session != null) {
-			if (transaction != null && transaction.wasCommitted() &&
+			if (transaction != null && !transaction.wasCommitted() &&
             	!transaction.wasRolledBack()) {
 					transaction.commit();
 					transaction = null;

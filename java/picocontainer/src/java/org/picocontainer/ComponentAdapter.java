@@ -43,6 +43,7 @@ public interface ComponentAdapter {
      * is not required. For example, {@link org.picocontainer.defaults.CachingComponentAdapter} will always return the
      * same instance.
      * 
+     * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @return the component instance.
      * @throws PicoInitializationException if the component could not be instantiated.
      * @throws PicoIntrospectionException  if the component has dependencies which could not be resolved, or
@@ -55,9 +56,17 @@ public interface ComponentAdapter {
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
      * checking that the associated PicoContainer contains all the needed dependnecies.
      *
+     * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @throws PicoVerificationException if one or more dependencies cannot be resolved.
      */
     void verify(PicoContainer container) throws PicoVerificationException;
 
+    /**
+     * Accepts a visitor for this ComponentAdapter. The method is normally called by visiting a {@link PicoContainer}, that 
+     * cascades the visitor also down to all its ComponentAdapter instances.
+     * 
+     * @param visitor the visitor.
+     * @since 1.1
+     */
     void accept(PicoVisitor visitor);
 }

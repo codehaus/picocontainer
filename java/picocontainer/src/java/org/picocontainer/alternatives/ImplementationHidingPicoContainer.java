@@ -173,8 +173,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.removeChildContainer(child);
     }
 
-    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
-        delegate.accept(visitor, componentType, visitInInstantiationOrder);
+    public void accept(PicoVisitor visitor) {
+        delegate.accept(visitor);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {

@@ -134,7 +134,9 @@ public interface MutablePicoContainer extends PicoContainer {
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.
      * Lifecycle events will be cascaded from parent to child
      * as a consequence of this.
+     * 
      * @return the new child container.
+     * @since 1.1
      */
     MutablePicoContainer makeChildContainer();
 
@@ -143,9 +145,18 @@ public interface MutablePicoContainer extends PicoContainer {
      * It will not change the child's view of a parent.  That is determined by the constructor arguments of the child
      * itself. Lifecycle events will be cascaded from parent to child
      * as a consequence of calling this method.
-     * @param child The child container
+     * 
+     * @param child the child container
+     * @since 1.1
      */
     void addChildContainer(PicoContainer child);
 
+    /**
+     * Remove a child container from this container. It will not change the child's view of a parent.
+     * Lifecycle event will no longer be cascaded from the parent to the child.
+     * 
+     * @param child the child container
+     * @since 1.1
+     */
     void removeChildContainer(PicoContainer child);
 }

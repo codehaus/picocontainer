@@ -29,9 +29,5 @@ public class ImplementationHidingNanoPicoContainerTestCase extends AbstractImple
         return new ImplementationHidingNanoPicoContainer(this.getClass().getClassLoader(), parent);
     }
 
-    public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {
-        super.testAcceptShouldIterateOverChildContainersAndAppropriateComponents();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
     // test methods inherited. This container is part compliant.
 }

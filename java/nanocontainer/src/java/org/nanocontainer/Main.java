@@ -11,21 +11,23 @@ package org.nanocontainer;
 
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
-import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
-import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.nanocontainer.script.jython.JythonContainerBuilder;
+import org.xml.sax.InputSource;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.FileReader;
 
 public class Main {
 
@@ -37,9 +39,9 @@ public class Main {
     private static final Map extensionToAssemblerMap = new HashMap();
 
     static {
-        extensionToAssemblerMap.put(".js", JavascriptContainerBuilder.class);
-        extensionToAssemblerMap.put(".xml", XMLContainerBuilder.class);
-        extensionToAssemblerMap.put(".py", JythonContainerBuilder.class);
+        extensionToAssemblerMap.put(".js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
+        extensionToAssemblerMap.put(".xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
+        extensionToAssemblerMap.put(".py", "org.nanocontainer.script.jython.JythonContainerBuilder");
     }
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
@@ -126,12 +128,15 @@ public class Main {
     */
     private static void buildAndStartContainer(String composition, NanoContainerMonitor nanoContainerMonitor) throws Exception, InstantiationException {
         final String extension = composition.substring(composition.indexOf("."));
-        Class containerAssemblerClass = (Class) extensionToAssemblerMap.get(extension);
+        String containerAssemblerClassName = (String) extensionToAssemblerMap.get(extension);
 
         // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
-        ContainerComposer ca = (ContainerComposer) containerAssemblerClass.newInstance();
-        final ContainerBuilder cb = new DefaultLifecycleContainerBuilder(null);
-
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.registerComponentInstance( new FileReader(composition));
+        dpc.registerComponentInstance(Main.class.getClassLoader());
+        DefaultReflectionContainerAdapter defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
+        ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
+        final ContainerBuilder cb = (ContainerBuilder) componentAdapter.getComponentInstance();
         final ObjectReference containerRef = new SimpleReference();
 
         // build and start the container
@@ -213,5 +218,5 @@ public class Main {
         System.exit(0);
     }
 }
-    
+
 

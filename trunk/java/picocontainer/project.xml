@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
+
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
   <pomVersion>3</pomVersion>
   <id>picocontainer</id>
@@ -75,7 +80,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Aslak Helles?y</name>
+      <name>Aslak Helles&oslash;y</name>
       <id>rinkrank</id>
       <email>rinkrank@codehaus.org</email>
       <organization></organization>
@@ -84,7 +89,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Jon Tirsen</name>
+      <name>Jon Tirs&eacute;n</name>
       <id>tirsen</id>
       <email>tirsen@codehaus.org</email>
       <organization></organization>

@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
 
 <project>
   <pomVersion>3</pomVersion>
@@ -65,7 +70,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Aslak Hellesoy</name>
+      <name>Aslak Helles&oslash;y</name>
       <id>rinkrank</id>
       <email>rinkrank@codehaus.org</email>
       <organization></organization>
@@ -73,15 +78,15 @@
         <role>Java Developer</role>
       </roles>
     </developer>
-    <developer> 
-      <name>Jon Tirsen</name> 
-      <id>tirsen</id> 
-      <email>tirsen@codehaus.org</email> 
-      <organization></organization> 
-      <roles> 
-        <role>Java Developer</role> 
-      </roles> 
-    </developer> 
+    <developer>
+      <name>Jon Tirs&eacute;n</name>
+      <id>tirsen</id>
+      <email>tirsen@codehaus.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
     <developer> 
       <name>Joe Walnes</name> 
       <id>joe</id> 

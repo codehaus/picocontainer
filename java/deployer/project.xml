@@ -38,7 +38,7 @@
 
         <dependency>
             <id>commons-logging</id>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
             <url>http://jakarta.apache.org/commons/logging.html</url>
         </dependency>
 

@@ -15,10 +15,12 @@ public class MemoryCheeseDao implements CheeseDao, Startable {
     private Map cheeses = new HashMap();
 
     public void saveCheese(Cheese cheese) {
+        System.out.println("**** MemoryCheeseDao saving cheese: " + cheese.getName());
         cheeses.put(cheese.getName(), cheese);
     }
 
     public Cheese findCheese(String name) {
+        System.out.println("**** MemoryCheeseDao finding cheese: " + name);
         return (Cheese) cheeses.get(name);
     }
 

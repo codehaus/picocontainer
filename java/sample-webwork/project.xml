@@ -56,6 +56,15 @@
             </properties>
         </dependency>
 
+<!-- Uncomment for Servlet containers that don't bundle comons-logging -->
+<!--        <dependency>-->
+<!--            <id>commons-logging</id>-->
+<!--            <version>1.0.2</version>-->
+<!--            <properties>-->
+<!--                <war.bundle>true</war.bundle>-->
+<!--            </properties>-->
+<!--        </dependency>-->
+
         <dependency>
             <id>groovy</id>
             <version>1.0-beta-4-snapshot</version>

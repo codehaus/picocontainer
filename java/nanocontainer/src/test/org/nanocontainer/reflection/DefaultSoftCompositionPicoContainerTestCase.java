@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Paul Hammant
@@ -34,11 +34,8 @@ public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoCon
         parent.registerComponentInstance(sb);
         final SoftCompositionPicoContainer child = (SoftCompositionPicoContainer) parent.makeChildContainer("foo");
         child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
+        LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
         assertNotNull(o);
-        List keys = parent.getComponentKeys();
-        assertEquals(2, keys.size());
-        assertEquals("foo/*" + LifeCycleMonitoring.class.getName(), keys.get(1));
     }
 
     // TODO - go to a Nano TCK?

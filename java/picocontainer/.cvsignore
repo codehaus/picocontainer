@@ -2,6 +2,9 @@ distributions.*
 *.ipr
 *.iws
 *.log
+*.log.*
+.classpath
+.project
 target
 dist
 cachedir

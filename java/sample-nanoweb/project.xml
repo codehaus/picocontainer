@@ -101,7 +101,7 @@
 
         <dependency>
             <id>commons-logging</id>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <properties>
                 <war.bundle>false</war.bundle>
             </properties>

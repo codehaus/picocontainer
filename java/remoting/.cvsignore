@@ -6,3 +6,6 @@ junit*
 *.iws
 *.ipr
 *.iml
+.classpath
+.project
+.externalToolBuilders

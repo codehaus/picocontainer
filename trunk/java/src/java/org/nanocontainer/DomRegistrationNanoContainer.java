@@ -10,7 +10,18 @@
 
 package org.nanocontainer;
 
-import org.w3c.dom.*;
+import org.nanocontainer.reflection.StringToObjectConverter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentRegistry;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -19,22 +30,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Set;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.NullContainer;
-import org.nanocontainer.reflection.StringToObjectConverter;
-
-public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
-        implements InputSourceRegistrationNanoContainer, Serializable
+public class DomRegistrationNanoContainer  implements InputSourceRegistrationNanoContainer, Serializable
 {
 
+    private StringRegistrationNanoContainerImpl stringRegistrationNanoContainer;
     private final DocumentBuilder documentBuilder;
 
-    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, PicoContainer parentContainer, ClassLoader classLoader)
+    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, ClassLoader classLoader,
+                                        ComponentRegistry componentRegistry)
     {
-        super(parentContainer, classLoader, new StringToObjectConverter());
+        stringRegistrationNanoContainer = new StringRegistrationNanoContainerImpl(classLoader, new StringToObjectConverter(), componentRegistry);
         this.documentBuilder = documentBuilder;
     }
 
@@ -42,15 +49,9 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
     {
         public Default() throws ParserConfigurationException
         {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
-        }
-    }
-
-    public static class WithParentContainer extends DomRegistrationNanoContainer
-    {
-        public WithParentContainer(PicoContainer parentContainer) throws ParserConfigurationException
-        {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), parentContainer, DomRegistrationNanoContainer.class.getClassLoader());
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(),
+                DomRegistrationNanoContainer.class.getClassLoader(),
+                new DefaultComponentRegistry());
         }
     }
 
@@ -58,7 +59,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
     {
         public WithCustomDocumentBuilder(DocumentBuilder documentBuilder)
         {
-            super(documentBuilder, new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
+            super(documentBuilder, DomRegistrationNanoContainer.class.getClassLoader(), new DefaultComponentRegistry());
         }
     }
 
@@ -66,9 +67,20 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
     {
         public WithClassLoader(ClassLoader classLoader) throws ParserConfigurationException
         {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), classLoader);
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), classLoader,
+                new DefaultComponentRegistry());
         }
     }
+
+    public static class WithComponentRegistry extends DomRegistrationNanoContainer
+    {
+        public WithComponentRegistry(ComponentRegistry componentRegistry) throws ParserConfigurationException
+        {
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(),
+                DomRegistrationNanoContainer.class.getClassLoader(),
+                componentRegistry);
+        }
+    }        
 
     public void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException
     {
@@ -84,11 +96,11 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
                 Node clazz = attributes.getNamedItem("class");
                 if (type != null)
                 {
-                    registerComponent(type.getNodeValue(), clazz.getNodeValue());
+                    stringRegistrationNanoContainer.registerComponent(type.getNodeValue(), clazz.getNodeValue());
                 }
                 else
                 {
-                    registerComponent(clazz.getNodeValue());
+                    stringRegistrationNanoContainer.registerComponent(clazz.getNodeValue());
                 }
                 addParameters(clazz.getNodeValue(), components.item(i));
             }
@@ -116,8 +128,35 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
             Node paramNode = paramElements.item(i);
             String type = paramNode.getAttributes().getNamedItem("type").getNodeValue();
             String value = paramNode.getFirstChild().getNodeValue();
-            addParameterToComponent(className, type, value);
+            stringRegistrationNanoContainer.addParameterToComponent(className, type, value);
         }
+    }
 
+    public boolean hasComponent(Object componentKey) {
+        return stringRegistrationNanoContainer.hasComponent(componentKey);
+    }
+
+    public Object getComponent(Object componentKey) {
+        return stringRegistrationNanoContainer.getComponent(componentKey);
+    }
+
+    public Set getComponents() {
+        return stringRegistrationNanoContainer.getComponents();
+    }
+
+    public Set getComponentKeys() {
+        return stringRegistrationNanoContainer.getComponentKeys();
+    }
+
+    public void instantiateComponents() throws PicoInitializationException {
+        stringRegistrationNanoContainer.instantiateComponents();
+    }
+
+    public Object getCompositeComponent() {
+        return stringRegistrationNanoContainer.getCompositeComponent();
+    }
+
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        return stringRegistrationNanoContainer.getCompositeComponent();
     }
 }

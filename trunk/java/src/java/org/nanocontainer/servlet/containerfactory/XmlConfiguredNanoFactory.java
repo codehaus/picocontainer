@@ -17,7 +17,9 @@ import org.nanocontainer.servlet.ContainerFactory;
 import org.nanocontainer.servlet.ObjectInstantiator;
 import org.xml.sax.InputSource;
 import org.picocontainer.*;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.hierarchical.HierarchicalComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;
@@ -43,9 +45,11 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
 
     public PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName) {
         try {
-            InputSourceRegistrationNanoContainer container = new DomRegistrationNanoContainer.WithParentContainer(parentContainer);
-            configureAndStart(configName, container);
-            return container;
+            HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentContainer);
+            InputSourceRegistrationNanoContainer childContainer =
+                new DomRegistrationNanoContainer.WithComponentRegistry(hcr);
+            configureAndStart(configName, childContainer);
+            return childContainer;
         } catch (Exception e) {
             // TODO: Better exception
             throw new RuntimeException("Cannot build container for config: " + configName, e);
@@ -66,9 +70,11 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
     public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer) {
         return new ObjectInstantiator() {
             public Object newInstance(Class cls) {
-                RegistrationPicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
+                HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentContainer);
+                RegistrationPicoContainer childContainer = new DefaultPicoContainer.WithComponentRegistry(hcr);
+
                 try {
-                    container.registerComponentByClass(cls);
+                    childContainer.registerComponentByClass(cls);
                 } catch (PicoRegistrationException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not instantiate " + cls.getName(), e);
@@ -77,12 +83,12 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                     throw new RuntimeException("Could not instantiate " + cls.getName(), e);
                 }
                 try {
-                    container.instantiateComponents();
+                    childContainer.instantiateComponents();
                 } catch (PicoInitializationException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not initialize container", e);
                 }
-                return container.getComponent(cls);
+                return childContainer.getComponent(cls);
             }
         };
     }

@@ -10,10 +10,8 @@
 
 package org.nanocontainer;
 
-import org.nanocontainer.MockComponent;
-
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class MockComponentImpl implements MockComponent {
     private int port = 0;

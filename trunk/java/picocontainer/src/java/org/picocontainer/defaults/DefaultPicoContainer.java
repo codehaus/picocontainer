@@ -18,14 +18,13 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 
+import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Collection;
 import java.util.Set;
-import java.io.Serializable;
+
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -48,6 +47,18 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public static class Default extends DefaultPicoContainer {
         public Default() {
             super(new DefaultComponentFactory(), new DefaultComponentRegistry());
+        }
+    }
+
+    public static class WithComponentFactory extends DefaultPicoContainer {
+        public WithComponentFactory(ComponentFactory componentFactory) {
+            super(componentFactory, new DefaultComponentRegistry());
+        }
+    }
+
+    public static class WithComponentRegistry extends DefaultPicoContainer {
+        public WithComponentRegistry(ComponentRegistry componentRegistry) {
+            super(new DefaultComponentFactory(), componentRegistry);
         }
     }
 

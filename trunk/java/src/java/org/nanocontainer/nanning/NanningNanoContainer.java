@@ -12,41 +12,66 @@ package org.nanocontainer.nanning;
 
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentRegistry;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.hierarchical.HierarchicalComponentRegistry;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
  * @version $Revision: 1.15 $
  */
-public class NanningNanoContainer extends HierarchicalPicoContainer implements Serializable {
-    private final AspectSystem aspectSystem;
+public class NanningNanoContainer implements PicoContainer, Serializable {
 
+    private final PicoContainer mainContainer;
+    HierarchicalComponentRegistry hierarchicalComponentRegistry;
+    private final AspectSystem aspectSystem;
     private RegistrationPicoContainer serviceAndAspectContainer;
 
-    public NanningNanoContainer(ComponentFactory componentFactory, 
-                                RegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
-        super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer,
-            new DefaultComponentRegistry());
+    public NanningNanoContainer(RegistrationPicoContainer serviceAndAspectContainer,
+                                PicoContainer mainContainer,
+                                ComponentRegistry componentRegistry,
+                                AspectSystem aspectSystem) {
+        hierarchicalComponentRegistry =
+            new HierarchicalComponentRegistry.WithParentContainerAndChildRegistry(serviceAndAspectContainer, componentRegistry);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
+        this.mainContainer = mainContainer;
         this.aspectSystem = aspectSystem;
     }
 
+    public static class WithNanningComponentFactory extends Default {
+        public WithNanningComponentFactory(AspectSystem aspectSystem, ComponentFactory componentFactory) {
+            super(aspectSystem, new NanningComponentFactory(aspectSystem, componentFactory));
+        }
+    }
+
     public static class Default extends NanningNanoContainer {
-        public Default(AspectSystem aspectSystem) {
-            super(new DefaultComponentFactory(), new DefaultPicoContainer.Default(), aspectSystem);
+        public Default(AspectSystem aspectSystem, NanningComponentFactory componentFactory) {
+            super(new DefaultPicoContainer.WithComponentFactory(componentFactory),
+                  new DefaultPicoContainer.Default(),
+                  new DefaultComponentRegistry(),
+                  aspectSystem);
+        }
+    }
+
+    public static class WithHierachicalComponentRegistry extends NanningNanoContainer {
+        public WithHierachicalComponentRegistry(AspectSystem aspectSystem, NanningComponentFactory componentFactory, HierarchicalComponentRegistry hcr) {
+            super(new DefaultPicoContainer.WithComponentFactory(componentFactory),
+                  new DefaultPicoContainer.WithComponentRegistry(hcr),
+                  new DefaultComponentRegistry(),
+                  aspectSystem);
         }
     }
 
@@ -67,6 +92,30 @@ public class NanningNanoContainer extends HierarchicalPicoContainer implements S
         serviceAndAspectContainer.registerComponentByClass(compomentImplementation);
     }
 
+    public boolean hasComponent(Object componentKey) {
+        return mainContainer.hasComponent(componentKey);
+    }
+
+    public Object getComponent(Object componentKey) {
+        return mainContainer.getComponent(componentKey);
+    }
+
+    public Set getComponents() {
+        return mainContainer.getComponents();
+    }
+
+    public Set getComponentKeys() {
+        return mainContainer.getComponentKeys();
+    }
+
+    public Object getCompositeComponent() {
+        return mainContainer.getCompositeComponent();
+    }
+
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        return mainContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
+    }
+
     public void instantiateComponents() throws PicoInitializationException {
         serviceAndAspectContainer.instantiateComponents();
         Collection components = serviceAndAspectContainer.getComponents();
@@ -78,6 +127,7 @@ public class NanningNanoContainer extends HierarchicalPicoContainer implements S
             }
         }
 
-        super.instantiateComponents();
+        mainContainer.instantiateComponents();
+
     }
 }

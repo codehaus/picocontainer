@@ -25,14 +25,16 @@ public class NanoNanoTestCase extends TestCase {
             ClassNotFoundException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
-        nc.registerComponent("org.picocontainer.hierarchical.HierarchicalPicoContainer$Default");
-        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
+        nc.registerComponent("org.picocontainer.defaults.DefaultComponentRegistry");
+        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$Default");
 
         nc.instantiateComponents();
 
-        assertTrue("Should have a StringRegistrationNanoContainerImpl", nc.hasComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
+        assertTrue("Should have a StringRegistrationNanoContainerImpl",
+            nc.hasComponent(StringRegistrationNanoContainerImpl.Default.class));
 
-        tryUsingStringRegistrationNanoContainer((StringRegistrationNanoContainer) nc.getComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
+        tryUsingStringRegistrationNanoContainer((StringRegistrationNanoContainer)
+            nc.getComponent(StringRegistrationNanoContainerImpl.Default.class));
 
     }
 
@@ -51,15 +53,15 @@ public class NanoNanoTestCase extends TestCase {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
-                "      <component class=\"org.picocontainer.hierarchical.HierarchicalPicoContainer$Default\"/>" +
-                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithParentContainer\"/>" +
+                "      <component class=\"org.picocontainer.defaults.DefaultComponentRegistry\"/>" +
+                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$Default\"/>" +
                 "</conponents>")));
 
         nc.instantiateComponents();
 
-        assertTrue("Should have a DomRegistrationNanoContainer.WithParentContainer", nc.hasComponent(DomRegistrationNanoContainer.WithParentContainer.class));
+        assertTrue("Should have a DomRegistrationNanoContainer.Default", nc.hasComponent(DomRegistrationNanoContainer.Default.class));
 
-        tryUsingInputSourceRegistrationNanoContainer((InputSourceRegistrationNanoContainer) nc.getComponent(DomRegistrationNanoContainer.WithParentContainer.class));
+        tryUsingInputSourceRegistrationNanoContainer((InputSourceRegistrationNanoContainer) nc.getComponent(DomRegistrationNanoContainer.Default.class));
 
     }
 

@@ -12,18 +12,17 @@
 package org.nanocontainer;
 
 import org.nanocontainer.reflection.StringToObjectConverter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.NullContainer;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,15 +45,15 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
     private final Map implConfigurationMap;
 
 
-    public ConfiguringNanoContainerImpl(DocumentBuilder documentBuilder, PicoContainer parentContainer, ClassLoader classLoader) {
-        super(parentContainer, classLoader, new StringToObjectConverter());
+    public ConfiguringNanoContainerImpl(DocumentBuilder documentBuilder, ClassLoader classLoader) {
+        super(classLoader, new StringToObjectConverter(),new DefaultComponentRegistry());
         this.documentBuilder = documentBuilder;
         implConfigurationMap = new HashMap();
     }
 
     public static class Default extends ConfiguringNanoContainerImpl {
         public Default() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), ConfiguringNanoContainerImpl.class.getClassLoader());
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), ConfiguringNanoContainerImpl.class.getClassLoader());
         }
     }
 

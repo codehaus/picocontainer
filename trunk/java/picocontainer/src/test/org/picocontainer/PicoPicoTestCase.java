@@ -13,7 +13,7 @@ package org.picocontainer;
 import junit.framework.TestCase;
 import org.picocontainer.testmodel.FredImpl;
 import org.picocontainer.testmodel.WilmaImpl;
-import org.picocontainer.hierarchical.HierarchicalPicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Can Pico host itself ?
@@ -22,15 +22,15 @@ public class PicoPicoTestCase extends TestCase {
 
     public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInitializationException {
 
-        HierarchicalPicoContainer pc = new HierarchicalPicoContainer.Default();
-        pc.registerComponentByClass(HierarchicalPicoContainer.Default.class);
+        DefaultPicoContainer pc = new DefaultPicoContainer.Default();
+        pc.registerComponentByClass(DefaultPicoContainer.Default.class);
         pc.instantiateComponents();
 
-        tryDefaultPicoContainer((HierarchicalPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
+        tryDefaultPicoContainer((DefaultPicoContainer) pc.getComponent(DefaultPicoContainer.Default.class));
 
     }
 
-    private void tryDefaultPicoContainer(HierarchicalPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
+    private void tryDefaultPicoContainer(DefaultPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
 
         pc2.registerComponentByClass(FredImpl.class);
         pc2.registerComponentByClass(WilmaImpl.class);

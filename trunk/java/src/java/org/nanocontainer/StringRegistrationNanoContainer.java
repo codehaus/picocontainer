@@ -54,8 +54,8 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * list of classloaders to iterate through. As are all parent containers
      * of course.
      *
-     * It is important to point out that one component in say classloader Aa will
-     * not be able to depend on another component is say classloader Bb if the
+     * It is important to point out that one component in say classloader RecordingAware2 will
+     * not be able to depend on another component is say classloader RecordingAware3 if the
      * componentType (and associated classes mentioned directly in that interface)
      * are not mutually visible.  I.e. in a classloader that is visible to both.
      * Thus, if you are going to this level of effort, you might want to separate

@@ -11,28 +11,33 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.Parameter;
-import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.testmodel.FlintstonesImpl;
 import org.picocontainer.testmodel.FredImpl;
 import org.picocontainer.testmodel.Webster;
 import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.FileInputStream;
+import java.util.Vector;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -104,36 +109,36 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class Aa extends RecordingAware implements Washable {
-        public Aa(Recorder recorder) {
+    public static class RecordingAware2 extends RecordingAware implements Washable {
+        public RecordingAware2(Recorder recorder) {
             super(recorder);
         }
 
         public void wash() {
-            recorder.record("Aa.wash()");
+            recorder.record("RecordingAware2.wash()");
         }
     }
 
-    public static class Bb extends RecordingAware implements Washable {
-        public Bb(Recorder recorder, Aa a) {
+    public static class RecordingAware3 extends RecordingAware implements Washable {
+        public RecordingAware3(Recorder recorder, RecordingAware2 a) {
             super(recorder);
             a.toString();
         }
 
         public void wash() {
-            recorder.record("Bb.wash()");
+            recorder.record("RecordingAware3.wash()");
         }
     }
 
-    public static class Cc extends RecordingAware implements Washable {
-        public Cc(Recorder recorder, Aa a, Bb b) {
+    public static class RecordingAware4 extends RecordingAware implements Washable {
+        public RecordingAware4(Recorder recorder, RecordingAware2 a, RecordingAware3 b) {
             super(recorder);
             a.toString();
             b.toString();
         }
 
         public void wash() {
-            recorder.record("Cc.wash()");
+            recorder.record("RecordingAware4.wash()");
         }
     }
 
@@ -235,15 +240,15 @@ public class DefaultPicoContainerTestCase extends TestCase {
         Recorder recorder = new Recorder();
 
         pico.registerComponent(Recorder.class, recorder);
-        pico.registerComponent(Aa.class, Aa.class);
-        pico.registerComponent(Bb.class, Bb.class);
-        pico.registerComponent(Cc.class, Cc.class);
+        pico.registerComponent(RecordingAware2.class, RecordingAware2.class);
+        pico.registerComponent(RecordingAware3.class, RecordingAware3.class);
+        pico.registerComponent(RecordingAware4.class, RecordingAware4.class);
 
         pico.instantiateComponents();
 
-        assertEquals("instantiated Aa", recorder.getWhatHappened(0));
-        assertEquals("instantiated Bb", recorder.getWhatHappened(1));
-        assertEquals("instantiated Cc", recorder.getWhatHappened(2));
+        assertEquals("instantiated RecordingAware2", recorder.getWhatHappened(0));
+        assertEquals("instantiated RecordingAware3", recorder.getWhatHappened(1));
+        assertEquals("instantiated RecordingAware4", recorder.getWhatHappened(2));
 
         recorder.clear();
 
@@ -252,9 +257,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         ((Washable) washableContainer).wash();
 
-        assertEquals("Cc.wash()", recorder.getWhatHappened(0));
-        assertEquals("Bb.wash()", recorder.getWhatHappened(1));
-        assertEquals("Aa.wash()", recorder.getWhatHappened(2));
+        assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
+        assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
+        assertEquals("RecordingAware2.wash()", recorder.getWhatHappened(2));
 
     }
 
@@ -264,19 +269,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         Recorder recorder = new Recorder();
 
-        Aa unmanagedComponent = new Aa(recorder);
+        RecordingAware2 unmanagedComponent = new RecordingAware2(recorder);
 
         recorder.clear();
 
         pico.registerComponent(Recorder.class, recorder);
-        pico.registerComponent(Aa.class, unmanagedComponent);
-        pico.registerComponentByClass(Bb.class);
-        pico.registerComponentByClass(Cc.class);
+        pico.registerComponent(RecordingAware2.class, unmanagedComponent);
+        pico.registerComponentByClass(RecordingAware3.class);
+        pico.registerComponentByClass(RecordingAware4.class);
 
         pico.instantiateComponents();
 
-        assertEquals("instantiated Bb", recorder.getWhatHappened(0));
-        assertEquals("instantiated Cc", recorder.getWhatHappened(1));
+        assertEquals("instantiated RecordingAware3", recorder.getWhatHappened(0));
+        assertEquals("instantiated RecordingAware4", recorder.getWhatHappened(1));
 
         recorder.clear();
 
@@ -285,11 +290,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         ((Washable) washableContainer).wash();
 
-        assertEquals("Cc.wash()", recorder.getWhatHappened(0));
-        assertEquals("Bb.wash()", recorder.getWhatHappened(1));
+        assertEquals("RecordingAware4.wash()", recorder.getWhatHappened(0));
+        assertEquals("RecordingAware3.wash()", recorder.getWhatHappened(1));
         assertTrue(
                 "Unmanaged components should not be called by an getCompositeComponent() proxy",
-                !recorder.thingsThatHappened.contains("Aa.wash()"));
+                !recorder.thingsThatHappened.contains("RecordingAware2.wash()"));
     }
 
     public void testPeelableAndWashable() throws PicoInitializationException, PicoRegistrationException {
@@ -739,7 +744,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testSerializabilityOfContainer() throws NotConcreteRegistrationException, 
+    public void testSerializabilityOfContainer() throws NotConcreteRegistrationException,
         AssignabilityRegistrationException, PicoInitializationException,
         DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException,
         IOException, ClassNotFoundException {
@@ -765,5 +770,273 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }
 
+    public void testTooFewComponents() throws PicoInitializationException, PicoRegistrationException {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponentByClass(FredImpl.class);
+
+        try {
+            pico.instantiateComponents();
+            fail("should need a wilma");
+        } catch (UnsatisfiedDependencyInstantiationException e) {
+            // expected
+            assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
+            assertTrue(e.getMessage().indexOf(FredImpl.class.getName()) > 0);
+
+        }
+    }
+
+    public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        pico.registerComponentByClass(WilmaImpl.class);
+        try {
+            pico.registerComponent(WilmaImpl.class, new WilmaImpl());
+            fail("Should have barfed with dupe registration");
+        } catch (DuplicateComponentKeyRegistrationException e) {
+            // expected
+            assertTrue(e.getDuplicateKey() == WilmaImpl.class);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+        }
+    }
+
+    public static class DerivedWilma extends WilmaImpl {
+        public DerivedWilma() {
+        }
+    }
+
+    public void testAmbiguousHierarchy() throws PicoRegistrationException, PicoInitializationException {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        // Register two Wilmas that Fred will be confused about
+        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DerivedWilma.class);
+
+        // Register a confused Fred
+        pico.registerComponentByClass(FredImpl.class);
+
+        try {
+            pico.instantiateComponents();
+            fail("Fred should have been confused about the two Wilmas");
+        } catch (AmbiguousComponentResolutionException e) {
+            // expected
+
+            List ambiguous = Arrays.asList(e.getResultingKeys());
+            assertTrue(ambiguous.contains(DerivedWilma.class));
+            assertTrue(ambiguous.contains(WilmaImpl.class));
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) > 0);
+        }
+    }
+
+    public void testRegisterComponentWithObjectBadType() throws PicoIntrospectionException {
+        RegistrationPicoContainer pico = new DefaultPicoContainer.Default();
+
+        try {
+            pico.registerComponent(Serializable.class, new Object());
+            fail("Shouldn't be able to register an Object as Serializable");
+            //TODO why?
+        } catch (PicoRegistrationException e) {
+            //TODO contains ?
+
+        }
+
+    }
+
+    public void testComponentRegistrationMismatch() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+        RegistrationPicoContainer pico = new DefaultPicoContainer.Default();
+
+        try {
+            pico.registerComponent(List.class, WilmaImpl.class);
+        } catch (AssignabilityRegistrationException e) {
+            // not worded in message
+            assertTrue(e.getMessage().indexOf(List.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+        }
+
+    }
+
+    public void testMultipleArgumentConstructor() throws Throwable /* fixme */ {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.registerComponentByClass(FlintstonesImpl.class);
+
+        pico.instantiateComponents();
+
+        assertTrue("There should have been a FlintstonesImpl in the container", pico.hasComponent(FlintstonesImpl.class));
+    }
+
+    public void testTooManyContructors() throws PicoRegistrationException, PicoInitializationException {
+
+        RegistrationPicoContainer pico = new DefaultPicoContainer.Default();
+
+        try {
+            pico.registerComponentByClass(Vector.class);
+            fail("Should fail because there are more than one constructors");
+        } catch (NoPicoSuitableConstructorException e) {
+            // expected;
+            assertEquals("Should be right class", Vector.class,  e.getForImplementationClass());
+        }
+
+    }
+
+    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+        RegistrationPicoContainer pico = new DefaultPicoContainer.Default();
+
+        try {
+            pico.registerComponentByClass(Runnable.class);
+            fail("Shouldn't be allowed to register abstract classes or interfaces.");
+        } catch (NotConcreteRegistrationException e) {
+            assertEquals(Runnable.class, e.getComponentImplementation());
+            assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
+        }
+    }
+
+    public void testWithComponentFactory() throws PicoRegistrationException, PicoInitializationException {
+        final WilmaImpl wilma = new WilmaImpl();
+        DefaultPicoContainer pc = new DefaultPicoContainer.WithComponentFactory(new ComponentFactory() {
+            public Object createComponent(ComponentSpecification componentSpec, Object[] args) {
+                return wilma;
+            }
+
+            public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {
+                return new Class[0];
+            }
+        });
+        pc.registerComponentByClass(WilmaImpl.class);
+        pc.instantiateComponents();
+        assertEquals(pc.getComponent(WilmaImpl.class), wilma);
+    }
+
+    public static class Barney {
+        public Barney() {
+            throw new RuntimeException("Whoa!");
+        }
+    }
+
+    public void testInvocationTargetException() throws PicoRegistrationException, PicoInitializationException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponentByClass(Barney.class);
+        try {
+            pico.instantiateComponents();
+        } catch (PicoInvocationTargetInitializationException e) {
+            assertEquals("Whoa!", e.getCause().getMessage());
+            assertTrue(e.getMessage().indexOf("Whoa!") > 0);
+        }
+    }
+
+    interface Animal {
+
+        String getFood();
+    }
+
+    public static class Dino implements Animal {
+        String food;
+
+        public Dino(String food) {
+            this.food = food;
+        }
+
+        public String getFood() {
+            return food;
+        }
+    }
+
+    public static class Dino2 extends Dino {
+        public Dino2(int number) {
+            super(String.valueOf(number));
+        }
+    }
+
+    public static class Dino3 extends Dino {
+        public Dino3(String a, String b) {
+            super(a + b);
+        }
+    }
+
+    public static class Dino4 extends Dino {
+        public Dino4(String a, int n, String b, Wilma wilma) {
+            super(a + n + b + " " + wilma.getClass().getName());
+        }
+    }
+
+    public void testParameterCanBePassedToConstructor() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino.class);
+        pico.addParameterToComponent(Dino.class, String.class, "bones");
+        pico.instantiateComponents();
+
+        Animal animal = (Animal) pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("bones", animal.getFood());
+    }
+
+    public void testParameterCanBePrimitive() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino2.class);
+        pico.addParameterToComponent(Dino2.class, Integer.class, new Integer(22));
+        pico.instantiateComponents();
+
+        Animal animal = (Animal) pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("22", animal.getFood());
+    }
+
+    public void testMultipleParametersCanBePassed() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino3.class);
+        pico.addParameterToComponent(Dino3.class, String.class, "a");
+        pico.addParameterToComponent(Dino3.class, String.class, "b");
+        pico.instantiateComponents();
+
+        Animal animal = (Animal) pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("ab", animal.getFood());
+
+    }
+
+    public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Animal.class, Dino4.class);
+        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.addParameterToComponent(Dino4.class, String.class, "a");
+        pico.addParameterToComponent(Dino4.class, Integer.class, new Integer(3));
+        pico.addParameterToComponent(Dino4.class, String.class, "b");
+        pico.instantiateComponents();
+
+        Animal animal = (Animal) pico.getComponent(Animal.class);
+        assertNotNull("Component not null", animal);
+        assertEquals("a3b org.picocontainer.testmodel.WilmaImpl", animal.getFood());
+    }
+
+    public static interface I {
+    }
+
+    public static class AA implements I {
+        public AA(I i) {
+        }
+    }
+
+    public static class BB implements I {
+        public BB(I i) {
+        }
+    }
+
+    public void testExtendAndDependOnSameType() throws PicoRegistrationException, PicoInitializationException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        pico.registerComponentByClass(AA.class);
+        pico.registerComponentByClass(BB.class);
+
+        try {
+            pico.instantiateComponents();
+            fail("Should have barfed");
+        } catch (AmbiguousComponentResolutionException e) {
+            // Neither can be instantiated without the other.
+        }
+    }
 
 }

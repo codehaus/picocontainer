@@ -9,15 +9,24 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.picocontainer.PicoContainer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public interface NanoContainerMonitor {
-    void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa);
+public class CommonsLoggingNanoContainerMonitor implements NanoContainerMonitor {
 
-    void componentsInstantiated(PicoContainer picoContainer);
+    private Log log = LogFactory.getLog("NanoContainerMonitor");
+
+    public void componentsInstantiated(PicoContainer picoContainer) {
+        log.info("Components Instantiated For Container " + picoContainer);
+    }
+
+    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
+        log.info("ComponentEvent '" + eventName + "'" + lpa);
+    }
 }

@@ -19,16 +19,21 @@ Implementations -<br>
   <li>StringRegistrationNanoContainerImpl&nbsp; - takes a parent
 container<br>
   </li>
-  <li>StringRegistrationNanoContainerImpl.Default - no args<br>
-  </li>
+  <li>StringRegistrationNanoContainerImpl.Default - no args</li>
 </ul>
+<pre>&nbsp;&nbsp;&nbsp; StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
 <h2>InputSourceRegistrationNanoContainer </h2>
-This container takes a single InpoutSource (SAX) .&nbsp; This basically
+This container takes a single InputSource (from the SAX API) .&nbsp;
+This basically
 means that components can be
 soft configured in a single document.&nbsp; The single implementation
 takes
 a DOM document. That document mabe inlined or external to the class
-that uses the container.<br>
+that uses the container. External could be on file system, in jar, on
+URL, in fact anything.<br>
 <br>
 Implementations -<br>
 <ul>
@@ -40,6 +45,13 @@ container</li>
   <li>DomRegistrationNanoContainer.WithDocumentBuilder - document
 builder</li>
 </ul>
+<pre>&nbsp;&nbsp;&nbsp; InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponents(new InputSource(new StringReader(</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;components&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component class=\"nanocontainer.testmodel.DefaultWebServerConfig\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;/components&gt;")));</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
 <h2>AggregatingNanoContainer<br>
 </h2>
 This container takes many components and aggregates them together to
@@ -56,7 +68,9 @@ aggregate components for, invocation handler</li>
   <li>AggregatingNanoContainer.Default - container ro
 aggregate components for</li>
 </ul>
-<h2>NanningComponentFactory</h2>
+<pre>    PicoContainer pc = // some Picocontainer with components in it.</pre>
+<pre>    AggregatedContainersContainer acc = new AggregatedContainersContainer(pc,getComponents());</pre>
+NanningComponentFactory
 The nanning component factory basically adds aspect orientated
 programming (AOP) capability to arbitary components with a normal
 PicoContainer.<br>

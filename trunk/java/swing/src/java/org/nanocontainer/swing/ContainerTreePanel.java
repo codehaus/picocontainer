@@ -21,12 +21,13 @@ import java.awt.event.MouseEvent;
  * @author Laurent Etiemble
  * @version $Revision$
  */
-public class ContainerTreePanel extends JSplitPane {
+public class ContainerTreePanel extends JPanel {
 	private ContainerTree tree;
 	private JTable table;
 
-	public ContainerTreePanel(PicoContainer pico) {
-		super(JSplitPane.VERTICAL_SPLIT);
+	public ContainerTreePanel(PicoContainer pico, JComponent toolbar) {
+        super(new BorderLayout());
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.tree = new ContainerTree(pico);
 		this.table = new JTable();
 
@@ -38,8 +39,11 @@ public class ContainerTreePanel extends JSplitPane {
 		bottomPane.setMinimumSize(new Dimension(300, 150));
 		bottomPane.setPreferredSize(new Dimension(400, 200));
 
-		this.setTopComponent(topPane);
-		this.setBottomComponent(bottomPane);
+		splitPane.setTopComponent(topPane);
+		splitPane.setBottomComponent(bottomPane);
+
+        add(toolbar, BorderLayout.NORTH);
+        add(splitPane, BorderLayout.CENTER);
 
 		// This selection listener update the table according
 		// to the selected node.

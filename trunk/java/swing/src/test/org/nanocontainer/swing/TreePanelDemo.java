@@ -26,7 +26,7 @@ public class TreePanelDemo {
 		container2.registerComponentImplementation(WebServerImpl.class);
 		container3.registerComponentImplementation(WebServerImpl.class);
 
-		ContainerTreePanel panel = new ContainerTreePanel(container1);
+		ContainerTreePanel panel = new ContainerTreePanel(container1, new JLabel("Start"));
 
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);

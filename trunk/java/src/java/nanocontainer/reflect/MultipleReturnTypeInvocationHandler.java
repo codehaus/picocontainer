@@ -1,4 +1,4 @@
-package picocontainer.reflect;
+package nanocontainer.reflect;
 
 import picocontainer.PicoContainer;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author Aslak Hellesoy
  * @version $Revision$
  */
-public class MultipleReturnTypeInvocationHandler extends PicoInvocationHandler {
+public class MultipleReturnTypeInvocationHandler extends ContainerInvocationHandler {
 
     public MultipleReturnTypeInvocationHandler(PicoContainer picoContainer) {
         super(picoContainer);
@@ -34,7 +34,7 @@ public class MultipleReturnTypeInvocationHandler extends PicoInvocationHandler {
         List resultList = new ArrayList();
 
         // Try to invoke the method on all components.
-        Object[] components = getPicoContainer().getComponents();
+        Object[] components = getContainer().getComponents();
         for (int i = 0; i < components.length; i++) {
             Object component = components[i];
             try {

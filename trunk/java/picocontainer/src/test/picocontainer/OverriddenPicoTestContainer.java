@@ -18,23 +18,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverriddenPicoTestContainer extends PicoContainerImpl
+public class OverriddenPicoTestContainer extends PicoContainerImpl.WithStartableLifecycleManager
 {
     private Wilma wilma;
 
     public OverriddenPicoTestContainer(Wilma wilma, StartableLifecycleManager slm)
     {
-        super(null, slm);
+        super(slm);
         this.wilma = wilma;
     }
 
-    protected Object makeComponentInstance(Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException
+    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException
     {
 
         if (constructor.getDeclaringClass() == WilmaImpl.class) {
             return wilma;
         }
-        return super.makeComponentInstance(constructor, args);
+        return super.makeComponentInstance(compType, constructor, args);
     }
 
 

@@ -17,32 +17,44 @@ public class PicoContainerImpl implements PicoContainer {
 
     private final Container parentContainer;
     private final StartableLifecycleManager startableLifecycleManager;
+    private final ComponentDecorator proxyFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
     private List orderedComponents = new ArrayList();
 
     public PicoContainerImpl(Container parentContainer,
-            StartableLifecycleManager startableLifecycleManager) {
+            StartableLifecycleManager startableLifecycleManager,
+            ComponentDecorator proxyFactory) {
+        if (parentContainer == null) {
+            throw new NullPointerException("parentContainer cannot be null");
+        }
+        if (startableLifecycleManager == null) {
+            throw new NullPointerException("startableLifecycleManager cannot be null");
+        }
+        if (proxyFactory == null) {
+            throw new NullPointerException("proxyFactory cannot be null");
+        }
         this.parentContainer = parentContainer;
         this.startableLifecycleManager = startableLifecycleManager;
+        this.proxyFactory = proxyFactory;
     }
 
     public static class Default extends PicoContainerImpl {
         public Default() {
-            super(null, null);
+            super(new DummyContainer(), new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
         }
 
     }
 
     public static class WithParentContainer extends PicoContainerImpl {
         public WithParentContainer(Container parentContainer) {
-            super(parentContainer, null);
+            super(parentContainer, new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
         }
     }
 
     public static class WithStartableLifecycleManager extends PicoContainerImpl {
         public WithStartableLifecycleManager(StartableLifecycleManager startableLifecycleManager) {
-            super(null, startableLifecycleManager);
+            super(new DummyContainer(), startableLifecycleManager, new DummyComponentDecorator());
         }
     }
 
@@ -139,10 +151,10 @@ public class PicoContainerImpl implements PicoContainer {
                         }
                         if (hasNullArgs(args) == false) {
                             Object componentInstance = null;
-                            componentInstance = makeComponentInstance(constructor, args);
-                            // Put the instantiated componentClass back in the map
+                         componentInstance = makeComponentInstance(componentType, constructor, args);
+                            // Put the instantiated comp back in the map
                             componentTypeToInstanceMap.put(componentType, componentInstance);
-                            orderedComponents.add(componentInstance);
+                         orderedComponents.add(componentInstance);
                             progress = true;
                         }
 
@@ -170,18 +182,14 @@ public class PicoContainerImpl implements PicoContainer {
     protected void startComponents() throws PicoStartException {
         for (int i = 0; i < orderedComponents.size(); i++) {
             Object component = orderedComponents.get(i);
-            if (startableLifecycleManager != null) {
-                startableLifecycleManager.startComponent(component);
-            }
+            startableLifecycleManager.startComponent(component);
         }
     }
 
     protected void stopComponents() throws PicoStopException {
         for (int i = orderedComponents.size() -1 ; i >= 0 ; i--) {
             Object component = orderedComponents.get(i);
-            if (startableLifecycleManager != null) {
-                startableLifecycleManager.stopComponent(component);
-            }
+            startableLifecycleManager.stopComponent(component);
         }
     }
 
@@ -195,11 +203,8 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
-    /**
-     * TODO: What's th purpose of this method? Is it supposed to be overridden?? Can we remove it?
-     */
-    protected Object makeComponentInstance(Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        return constructor.newInstance(args);
+    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        return proxyFactory.decorateComponent(type, constructor.newInstance(args));
     }
 
     private Object getComponentForParam(Class parameter) throws AmbiguousComponentResolutionException {
@@ -208,7 +213,7 @@ public class PicoContainerImpl implements PicoContainer {
         // If the parent container has the component type
         // it can be seen to be dominant. No need to check
         // for ambiguities
-        if (parentContainer != null && parentContainer.hasComponent(parameter)) {
+        if (parentContainer.hasComponent(parameter)) {
             return parentContainer.getComponent(parameter);
         }
 
@@ -257,17 +262,4 @@ public class PicoContainerImpl implements PicoContainer {
         return componentTypeToInstanceMap.get(compType) != null;
     }
 
-    public Object getProxy(InvocationHandler invocationHandler) {
-        // TODO should fail if container isn't started. Throw checked exception?
-        Set interfaces = new HashSet();
-        for (Iterator iterator = orderedComponents.iterator(); iterator.hasNext();) {
-            Class componentClass = iterator.next().getClass();
-            Class[] implemeted = componentClass.getInterfaces();
-            List implementedList = Arrays.asList(implemeted);
-            interfaces.addAll(implementedList);
-        }
-
-        Class[] interfaceArray = (Class[]) interfaces.toArray(new Class[interfaces.size()]);
-        return Proxy.newProxyInstance( getClass().getClassLoader(), interfaceArray, invocationHandler);
-    }
 }

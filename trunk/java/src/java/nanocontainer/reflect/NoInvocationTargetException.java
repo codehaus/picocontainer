@@ -1,4 +1,4 @@
-package picocontainer.reflect;
+package nanocontainer.reflect;
 
 import java.lang.reflect.Method;
 import java.util.List;

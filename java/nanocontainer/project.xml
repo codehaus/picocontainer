@@ -106,7 +106,7 @@
         <!-- This should ideally not be necessary when ThreadLocalCA is "fixed" -->
         <dependency>
             <id>proxytoys</id>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 
         <dependency>

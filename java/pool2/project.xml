@@ -15,7 +15,7 @@
 
         <dependency>
             <id>proxytoys</id>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
             <url>http://proxytoys.codehaus.org/</url>
         </dependency>
 

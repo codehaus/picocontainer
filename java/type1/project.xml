@@ -26,7 +26,7 @@
         Only needed in one line of code in Type1Util. AH. -->
         <dependency>
             <id>proxytoys</id>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
         <dependency>
             <id>avalon-framework</id>

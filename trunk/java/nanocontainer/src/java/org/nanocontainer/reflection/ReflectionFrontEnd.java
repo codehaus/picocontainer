@@ -28,8 +28,6 @@ public interface ReflectionFrontEnd {
 
     void registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException;
 
-    void registerComponentWithClassKey(String classKey, String componentImplementationClassName) throws ClassNotFoundException;
-
     void registerComponent(
             Object key,
             String componentImplementationClassName,

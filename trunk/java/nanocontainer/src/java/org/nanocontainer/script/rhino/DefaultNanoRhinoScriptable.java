@@ -63,7 +63,7 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
 
     public static void jsFunction_addComponentWithClassKey(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
         DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
-        rhino.reflectionFrontEnd.registerComponentWithClassKey((String) args[0], (String) args[1]);
+        rhino.reflectionFrontEnd.registerComponent((String) args[0], (String) args[1]);
     }
 
     public static void jsFunction_addComponentInstance(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {

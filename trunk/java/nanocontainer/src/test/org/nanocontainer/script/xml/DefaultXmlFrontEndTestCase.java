@@ -38,8 +38,8 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <component impl='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
-                "    <component typekey='org.picoextras.testmodel.WebServer' impl='org.picoextras.testmodel.WebServerImpl'/>" +
+                "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+                "    <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "</container>"));
 
         XmlFrontEnd inputSourceContainerFactory = new DefaultXmlFrontEnd();
@@ -50,9 +50,9 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <component impl='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+                "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "    <container>" +
-                "        <component typekey='org.picoextras.testmodel.WebServer' impl='org.picoextras.testmodel.WebServerImpl'/>" +
+                "        <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "    </container>" +
                 "</container>"));
 
@@ -81,12 +81,12 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
                 "    <classpath>" +
                 "        <element file='" + testCompJar.getCanonicalPath() + "'/>" +
                 "    </classpath>" +
-                "    <component stringkey='foo' impl='TestComp'/>" +
+                "    <component key='foo' class='TestComp'/>" +
                 "    <container>" +
                 "        <classpath>" +
                 "            <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
                 "        </classpath>" +
-                "        <component stringkey='bar' impl='TestComp2'/>" +
+                "        <component key='bar' class='TestComp2'/>" +
                 "    </container>" +
                 "</container>"));
 
@@ -110,13 +110,12 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         try {
             InputSource inputSource = new InputSource(new StringReader(
                     "<container>" +
-                    "      <component impl='Foo'/>" +
+                    "      <component class='Foo'/>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
             fail("Should have thrown a ClassNotFoundException");
         } catch (ClassNotFoundException cnfe) {
         }
-
     }
 
     public void testInstantiateEmptyXml() throws Exception, SAXException, ParserConfigurationException, IOException {

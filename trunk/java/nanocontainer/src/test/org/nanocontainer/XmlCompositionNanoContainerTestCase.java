@@ -45,11 +45,11 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlCompositionNanoContainer(new StringReader("" +
                 "<container>" +
-                "      <component impl='org.nanocontainer.Xxx$A'/>" +
+                "      <component class='org.nanocontainer.Xxx$A'/>" +
                 "      <container>" +
-                "          <component impl='org.nanocontainer.Xxx$B'/>" +
+                "          <component class='org.nanocontainer.Xxx$B'/>" +
                 "      </container>" +
-                "      <component impl='org.nanocontainer.Xxx$C'/>" +
+                "      <component class='org.nanocontainer.Xxx$C'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -67,10 +67,10 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
             new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
                         "      <container>" +
-                        "          <component impl='org.nanocontainer.Xxx$A'/>" +
+                        "          <component class='org.nanocontainer.Xxx$A'/>" +
                         "      </container>" +
-                        "      <component impl='org.nanocontainer.Xxx$B'/>" +
-                        "      <component impl='org.nanocontainer.Xxx$C'/>" +
+                        "      <component class='org.nanocontainer.Xxx$B'/>" +
+                        "      <component class='org.nanocontainer.Xxx$C'/>" +
                         "</container>"), new MockMonitor());
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch (NoSatisfiableConstructorsException e) {
@@ -85,7 +85,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlCompositionNanoContainer(new StringReader("" +
                 "<container xmlfrontend='org.nanocontainer.BespokeXmlFrontEnd'>" +
-                "      <component impl='org.nanocontainer.Xxx$A'/>" +
+                "      <component class='org.nanocontainer.Xxx$A'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -100,7 +100,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container componentadaptor='" + OverriddenComponentAdapterFactory.class.getName() + "'>" +
-                        "    <component typekey='org.picoextras.testmodel.WebServerConfig' impl='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+                        "    <component typekey='org.picoextras.testmodel.WebServerConfig' class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                         "</container>"), new MockMonitor());
 
         Object wsc = nano.getRootContainer().getComponentInstance(WebServerConfig.class);
@@ -129,7 +129,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
                         "       </org.picoextras.testmodel.WebServerConfigStub>" +
                         "    </pseudocomponent>" +
                         "    <component typekey='org.picoextras.testmodel.WebServer' " +
-                        "               impl='org.picoextras.testmodel.WebServerImpl'/>" +
+                        "               class='org.picoextras.testmodel.WebServerImpl'/>" +
                         "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
@@ -150,7 +150,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
                         "       </org.picoextras.testmodel.WebServerConfigBean>" +
                         "    </pseudocomponent>" +
                         "    <component typekey='org.picoextras.testmodel.WebServer' " +
-                        "               impl='org.picoextras.testmodel.WebServerImpl'/>" +
+                        "               class='org.picoextras.testmodel.WebServerImpl'/>" +
                         "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
@@ -178,7 +178,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
         NanoContainer nano = new XmlCompositionNanoContainer(new StringReader("" +
                 "<container container='"+OverriddenDefaultLifecyclePicoContainer.class.getName()+"'>" +
-                "      <component impl='org.nanocontainer.Xxx$A'/>" +
+                "      <component class='org.nanocontainer.Xxx$A'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
@@ -224,9 +224,9 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         try {
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <component stringkey='one' impl='java.util.ArrayList'/>" +
-                        "    <component stringkey='two' impl='java.util.Vector'/>" +
-                        "    <component impl='"+CollectionNeedingComponent.class.getName()+"'>" +
+                        "    <component stringkey='one' class='java.util.ArrayList'/>" +
+                        "    <component stringkey='two' class='java.util.Vector'/>" +
+                        "    <component class='"+CollectionNeedingComponent.class.getName()+"'>" +
                         "      <hint stringkey='one'/>" +
                         "    </component>" +
                         "</container>"), new MockMonitor());

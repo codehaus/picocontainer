@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.util.List;
+
 
 /**
  * This is the core interface used for registration of components with a container. It is possible to register {@link
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
- * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
+ * @see <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package.
  * @since 1.0
  */
 public interface MutablePicoContainer extends PicoContainer {
@@ -128,10 +128,27 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     ComponentAdapter unregisterComponentByInstance(Object componentInstance);
 
+    // TODO: Document these similar methods. It's not obvious what the difference is.
+
     MutablePicoContainer makeChildContainer();
     MutablePicoContainer makeChildContainer(String name);
     void addChildContainer(PicoContainer child);
+
+    // Can we keep this one only and get rid of the three ones above?
+    // We need a more unambiguous API for child containers(Aslak)
     void addChildContainer(String name, PicoContainer child);
+
+    // Shouldn't this take a PicoContainer? Or even if we keep only
+    // addChildContainer(String name, PicoContainer child), it could take name.
+    // (This is closer to a Map API which should be sufficient for most cases)
     void removeChildContainer(MutablePicoContainer child);
+
+    /**
+     * Returns the LifecycleManager that can be used to manage this container's
+     * (and its components') lifecycle.
+     * @return a LifeCycleManager
+     * @since 1.1
+     */
+    LifecycleManager getLifecycleManager();
 
 }

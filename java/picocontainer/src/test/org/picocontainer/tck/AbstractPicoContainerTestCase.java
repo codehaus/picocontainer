@@ -397,10 +397,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public static class ContainerDependency {
-        private PicoContainer pico;
-
         public ContainerDependency(PicoContainer container) {
-            this.pico = container;
+            assertNotNull(container);
         }
     }
 
@@ -536,8 +534,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         parent.dispose();
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
-
-
 
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;

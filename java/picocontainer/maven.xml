@@ -6,6 +6,7 @@
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy">
         <attainGoal name="jar:deploy"/>
+        <attainGoal name="dc:labeled-deploy"/>
         <attainGoal name="site:deploy"/>
 
         <j:if test="${!pom.currentVersion.endsWith('SNAPSHOT')}">
@@ -37,6 +38,23 @@
             artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
             type="jars"
             />
+    </goal>
+
+    <goal name="dc:labeled-deploy">
+    	<!--
+    	
+    	Not yet enabled. The intent is to have jars with the build label.
+    	
+        <property environment="env"/>
+        <j:if test="${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL') != null}">
+            <copy file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.jar"
+                  tofile="${maven.build.dir}/${pom.artifactId}-BUILD-${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL')}.jar"/>
+            <deploy:artifact
+                artifact="${maven.build.dir}/${pom.artifactId}-BUILD-${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL')}.jar"
+                type="jars"
+                />
+        </j:if>
+        -->
     </goal>
 
     <postGoal name="jar:install">

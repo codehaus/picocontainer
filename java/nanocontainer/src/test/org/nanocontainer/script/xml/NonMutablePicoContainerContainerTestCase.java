@@ -16,6 +16,9 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoException;
+import org.picocontainer.ContainerVisitor;
+import org.picocontainer.ComponentVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.SAXException;
 
@@ -67,6 +70,16 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         }
 
         public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+        }
+
+        public List getComponentInstancesOfType(Class type) throws PicoException {
+            return null;
+        }
+
+        public void accept(ContainerVisitor containerVisitor) {
+        }
+
+        public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
         }
 
         public List getComponentAdaptersOfType(Class componentType) {

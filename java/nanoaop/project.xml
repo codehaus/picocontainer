@@ -2,8 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>nanoaop</id>
-    <name>nanoaop</name>
+    <id>nanocontainer-nanoaop</id>
+    <name>nanocontainer-nanoaop</name>
     <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>

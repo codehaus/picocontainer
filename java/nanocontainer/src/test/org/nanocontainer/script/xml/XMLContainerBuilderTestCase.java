@@ -16,6 +16,7 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -35,7 +36,6 @@ import java.io.StringReader;
 public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
-
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component class='java.lang.StringBuffer'/>" +
@@ -67,8 +67,6 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     }
 
     public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
-
-
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
         //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
@@ -76,6 +74,8 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull("The testcomp.jar system property should point to nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
+        File notStartableJar = new File(testCompJar.getParentFile(), "NotStartable.jar");
+
         assertTrue(testCompJar.isFile());
         assertTrue(testCompJar2.isFile());
 
@@ -88,30 +88,28 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  <container>" +
                 "    <classpath>" +
                 "      <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
+                "      <element file='" + notStartableJar.getCanonicalPath() + "'/>" +
                 "    </classpath>" +
                 "    <component key='bar' class='TestComp2'/>" +
+                "    <component key='phony' class='NotStartable'/>" +
                 "  </container>" +
                 "  <component class='java.lang.StringBuffer'/>" +
                 "</container>");
 
-
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-
+        XMLContainerBuilder builder = new XMLContainerBuilder(script, getClass().getClassLoader());
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(builder, null);
 
         Object fooTestComp = pico.getComponentInstance("foo");
         assertNotNull("Container should have a 'foo' component", fooTestComp);
 
         StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
-        assertTrue("Container should have instantiated a 'TestComp2' component", sb.indexOf("-TestComp2") != -1);
-
-
-
+        assertTrue("Container should have instantiated a 'TestComp2' component because it is Startable", sb.indexOf("-TestComp2") != -1);
+        // We are using the DefaultLifecycleManager, which only instantiates Startable components, and not non-Startable components.
+        assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.indexOf("-NotStartable") == -1);
     }
 
 
     public void testUnknownclassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
-
-
         try {
             Reader script = new StringReader("" +
                     "<container>" +
@@ -123,12 +121,11 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         }
     }
 
-    public void testUnknownclassThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
-
+    public void testEmptyScriptThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
         try {
             Reader script = new StringReader("<container/>");
             buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-        } catch (EmptyCompositionException cnfe) {
+        } catch (EmptyCompositionException expected) {
         }
     }
 
@@ -144,7 +141,6 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull(pico.getComponentInstances().get(0));
         assertTrue(pico.getComponentInstances().get(0) instanceof String);
         assertEquals("Hello", pico.getComponentInstances().get(0).toString());
-
     }
 
     public void TODO_testPseudoXMLPseudoComponentFactoryCanBeUsedWithKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
@@ -161,7 +157,6 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull(pico.getComponentInstances().get(0));
         assertTrue(pico.getComponentInstance("foo") instanceof String);
         assertEquals("Hello", pico.getComponentInstance("foo").toString());
-
     }
 
     public static class TestFactory implements XMLPseudoComponentFactory {

@@ -18,6 +18,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.PicoException;
+import org.picocontainer.ContainerVisitor;
+import org.picocontainer.ComponentVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
@@ -183,6 +187,22 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
 
     public void removeChildContainer(MutablePicoContainer child) {
         delegate.removeChildContainer(child);
+    }
+
+    public LifecycleManager getLifecycleManager() {
+        return delegate.getLifecycleManager();
+    }
+
+    public void accept(ContainerVisitor containerVisitor) {
+        delegate.accept(containerVisitor);
+    }
+
+    public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(componentVisitor, componentType, visitInInstantiationOrder);
+    }
+
+    public List getComponentInstancesOfType(Class type) throws PicoException {
+        return delegate.getComponentInstancesOfType(type);
     }
 
     // --------------------

@@ -10,20 +10,20 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.Startable;
+import org.picocontainer.ContainerVisitor;
+import org.picocontainer.ComponentVisitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -59,15 +59,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
+    private final LifecycleManagerFactory lifecycleManagerFactory;
     private PicoContainer parent;
     private List componentAdapters = new ArrayList();
 
     // Keeps track of instantiation order.
     private List orderedComponentAdapters = new ArrayList();
-    private boolean started = false;
-    private boolean disposed = false;
 
     protected Map namedChildContainers = new HashMap();
+    private LifecycleManager lifecycleManager;
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -80,22 +80,38 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param parent                  the parent container.
+     * @param lifecycleManagerFactory the LifecycleManagerFactory to use.
+     * @param parent                  the parent container (used for component dependency lookups).
      */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, LifecycleManagerFactory lifecycleManagerFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
+        this.lifecycleManagerFactory = lifecycleManagerFactory;
         this.parent = parent;
     }
 
     /**
-     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and a parent container.
+     * Creates a new container with a {@link DefaultLifecycleManagerFactory} and a parent container.
+     *
+     * @param componentAdapterFactory the ComponentAdapterFactory to use.
+     * @param parent                  the parent container (used for component dependency lookups).
+     */
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+        this(componentAdapterFactory, new DefaultLifecycleManagerFactory(), parent);
+    }
+
+    /**
+     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory},
+     * a {@link DefaultLifecycleManagerFactory} and a parent container.
      */
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
 
     /**
-     * Creates a new container with a custom ComponentAdapterFactory and no parent container.
+     * Creates a new container with a custom ComponentAdapterFactory, a
+     * {@link DefaultLifecycleManagerFactory} and no parent container.
+     *
+     * @param componentAdapterFactory the ComponentAdapterFactory to use.
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
         this(componentAdapterFactory, null);
@@ -106,6 +122,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public DefaultPicoContainer() {
         this(new DefaultComponentAdapterFactory(), null);
+    }
+
+    /**
+     * Creates a new container with a {@link DefaultComponentAdapterFactory} and no parent container.
+     *
+     * @param lifecycleManagerFactory the LifecycleManagerFactory to use.
+     */
+    public DefaultPicoContainer(LifecycleManagerFactory lifecycleManagerFactory) {
+        this(new DefaultComponentAdapterFactory(), lifecycleManagerFactory, null);
     }
 
     public Collection getComponentAdapters() {
@@ -157,7 +182,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 found.add(componentAdapter);
             }
         }
-        return Collections.unmodifiableList(found);
+        return found;
     }
 
     /**
@@ -290,7 +315,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 result.add(componentInstance);
             }
         }
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
@@ -338,65 +363,25 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
+    /**
+     * @deprecated Use {@link #getLifecycleManager()}.start()
+     */
     public void start() {
-        if (disposed) throw new IllegalStateException("Already disposed");
-        if (started) throw new IllegalStateException("Already started");
-        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
-        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            Startable startable = ((Startable) iterator.next());
-            startable.start();
-        }
-        Iterator it = namedChildContainers.values().iterator();
-        while (it.hasNext()) {
-            PicoContainer pc = (PicoContainer) it.next();
-            pc.getComponentInstances();
-            pc.start();
-        }
-        started = true;
+        getLifecycleManager().start();
     }
 
+    /**
+     * @deprecated Use {@link #getLifecycleManager()}.start()
+     */
     public void stop() {
-        if (disposed) throw new IllegalStateException("Already disposed");
-        if (!started) throw new IllegalStateException("Not started");
-        Iterator it = namedChildContainers.values().iterator();
-        while (it.hasNext()) {
-            PicoContainer pc = (PicoContainer) it.next();
-            pc.stop();
-        }
-        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
-        Collections.reverse(componentInstances);
-        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            ((Startable) iterator.next()).stop();
-        }
-        started = false;
+        getLifecycleManager().stop();
     }
 
+    /**
+     * @deprecated Use {@link #getLifecycleManager()}.start()
+     */
     public void dispose() {
-        if (disposed) throw new IllegalStateException("Already disposed");
-        Iterator it = namedChildContainers.values().iterator();
-        while (it.hasNext()) {
-            PicoContainer pc = (PicoContainer) it.next();
-            pc.dispose();
-        }
-        List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Disposable.class);
-        Collections.reverse(componentInstances);
-        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            ((Disposable) iterator.next()).dispose();
-        }
-        if (parent instanceof MutablePicoContainer) {
-            ((MutablePicoContainer) parent).removeChildContainer(this);
-        }
-        parent = null;
-        namedChildContainers = null;
-        disposed = true;
-
-    }
-
-    private List getComponentInstancesOfTypeWithContainerAdaptersLast(Class type) {
-        List result = new ArrayList();
-        result.addAll(getComponentInstancesOfType(type));
-        Collections.sort(result, new StackContainersAtEndComparator());
-        return result;
+        getLifecycleManager().dispose();
     }
 
     public MutablePicoContainer makeChildContainer() {
@@ -404,7 +389,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer(String name) {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, lifecycleManagerFactory, this);
         addChildContainer(name, pc);
         return pc;
     }
@@ -431,24 +416,33 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
-    /**
-     * This comparator makes sure containers are always stacked at the end of the collection,
-     * leaving the order of the others unchanged. This is needed in order to have proper
-     * breadth-first traversal when calling lifecycle methods on container hierarchies.
-     *
-     * @author Aslak Helles&oslash;y
-     * @version $Revision: 1.4 $
-     */
-    class StackContainersAtEndComparator implements Comparator {
-        public int compare(Object o1, Object o2) {
-            if (PicoContainer.class.isInstance(o1)) {
-                return 1;
-            }
-            if (PicoContainer.class.isInstance(o2)) {
-                return -1;
-            }
-            return 0;
+    public LifecycleManager getLifecycleManager() {
+        if (lifecycleManager == null) {
+            lifecycleManager = lifecycleManagerFactory.createLifecycleManager(this);
         }
+        return lifecycleManager;
+    }
+
+    public void accept(ContainerVisitor containerVisitor) {
+        for (Iterator iterator = getChildContainers().iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            containerVisitor.visit(child);
+        }
+    }
+
+    public void accept(ComponentVisitor componentVisitor, Class ofType, boolean visitInInstantiationOrder) {
+        List componentInstances = getComponentInstancesOfType(ofType);
+        if(!visitInInstantiationOrder) {
+            Collections.reverse(componentInstances);
+        }
+        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+            Object o = iterator.next();
+            componentVisitor.visitComponentInstance(o);
+        }
+    }
+
+    private Collection getChildContainers() {
+        return namedChildContainers.values();
     }
 
     protected Map getNamedContainers() {

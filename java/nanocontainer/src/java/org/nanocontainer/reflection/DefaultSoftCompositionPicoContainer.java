@@ -19,6 +19,9 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.ComponentVisitor;
+import org.picocontainer.ContainerVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -189,6 +192,14 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         delegate.removeChildContainer(child);
     }
 
+    public LifecycleManager getLifecycleManager() {
+        return delegate.getLifecycleManager();
+    }
+
+    public List getComponentInstancesOfType(Class type) throws PicoException {
+        return delegate.getComponentInstancesOfType(type);
+    }
+
     // ----  from reflection adapter -----
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
@@ -237,4 +248,11 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         }
     }
 
+    public void accept(ContainerVisitor containerVisitor) {
+        delegate.accept(containerVisitor);
+    }
+
+    public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(componentVisitor, componentType, visitInInstantiationOrder);
+    }
 }

@@ -72,9 +72,9 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
                 "child.registerComponentImplementation('childComponent','TestComp')\n" +
-                "pico.addChildContainer(child)\n" +
                 "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance('childComponent'))"); // ugly hack for testing
-        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
+        JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, getClass().getClassLoader());
+        PicoContainer pico = buildContainer(builder, null);
 
         Object parentComponent = pico.getComponentInstance("parentComponent");
 

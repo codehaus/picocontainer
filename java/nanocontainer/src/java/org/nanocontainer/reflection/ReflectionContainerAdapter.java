@@ -24,6 +24,8 @@ import org.picocontainer.PicoRegistrationException;
  * with the adapted container). This adapter API is used primarily by the various scripting
  * based {@link org.nanocontainer.integrationkit.ContainerComposer}s in the org.nanocontainer.script
  * package.
+ *
+ * @author Paul Hammant
  */
 public interface ReflectionContainerAdapter {
 

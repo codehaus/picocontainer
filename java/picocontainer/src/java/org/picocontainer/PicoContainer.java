@@ -112,8 +112,28 @@ public interface PicoContainer extends Startable, Disposable {
      * Callback method from the implementation to keep track of the instantiation order. <b>This method is not intended
      * to be called explicitly by clients of the API!</b>
      * 
-     * @param componentAdapter the freshly added {@link ComponentAdapter}
+     * @param componentAdapter the {@link ComponentAdapter} to add.
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
+
+    /**
+     * Returns a List of components of a certain type. The list is ordered by instantiation order,
+     * starting with the components instaqntiated first at the beginning.
+     * @return a List of components.
+     * @since 1.1
+     */
+    List getComponentInstancesOfType(Class type) throws PicoException;
+
+    /**
+     * Accepts a visitor that should visit the child containers.
+     * @since 1.1
+     */
+    void accept(ContainerVisitor containerVisitor);
+
+    /**
+     * Accepts a visitor that should visit the component instances.
+     * @since 1.1
+     */
+    void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder);
 
 }

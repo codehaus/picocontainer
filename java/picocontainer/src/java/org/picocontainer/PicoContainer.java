@@ -17,7 +17,7 @@ import java.util.List;
  * has accessor methods (in addition to  the {@link #verify()} method). In order to register components in a
  * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
  * 
- * @see org.picocontainer the package description has a basic overview of how to use the picocontainer package.
+ * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

@@ -14,7 +14,7 @@ package org.picocontainer;
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
  * instance} or {@link #registerComponent(ComponentAdapter) a ComponentAdapter}.
  *
- * @see org.picocontainer the package description has a basic overview of how to use the picocontainer package. 
+ * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

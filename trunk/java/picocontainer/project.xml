@@ -10,7 +10,7 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>1.1-SNAPSHOT</currentVersion>
+    <currentVersion>1.1-beta-1</currentVersion>
 
     <organization>
         <name>Codehaus</name>
@@ -37,6 +37,19 @@
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
         <url>http://cvs.picocontainer.codehaus.org/viewrep/picocontainer/java/picocontainer</url>
     </repository>
+
+    <versions>
+        <version>
+            <id>1.1-beta-1</id>
+            <name>1.1-beta-1</name>
+            <tag>PICOCONTAINER_RELEASE_1_1_BETA_1</tag>
+        </version>
+        <version>
+            <id>1.0</id>
+            <name>1.0</name>
+            <tag>PICOCONTAINER_RELEASE_1_0</tag>
+        </version>
+    </versions>
 
     <developers>
         <developer>

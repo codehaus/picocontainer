@@ -1,8 +1,0 @@
-TODO list for nanoaop:
-
-1.  Create NanoaopXMLBuilder
-2.  BeanShell, Python, etc. support
-3.  Consider alternate Nanning implementation (org.nanocontainer.nanoaop.nanning)
-4.  Create doc / user's guide in Confluence
-5.  If and when nanning backend is added to nanoaop, remove nanocontainer.nanning from CVS if everyone is OK with that.
-

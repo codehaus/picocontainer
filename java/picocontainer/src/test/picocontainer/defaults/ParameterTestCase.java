@@ -5,10 +5,7 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
 import picocontainer.testmodel.FredImpl;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInitializationException;
-import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.*;
 
 
 /**
@@ -16,15 +13,25 @@ import picocontainer.ClassRegistrationPicoContainer;
  * @version $Revision$
  */
 public class ParameterTestCase extends TestCase {
-    public void testComponentSpecificationIsAssignableFrom() {
+    public void testComponentSpecificationHandlesPrimtiveTypes() {
         assertTrue(ComponentSpecification.isAssignableFrom(Integer.class, Integer.TYPE));
         assertTrue(ComponentSpecification.isAssignableFrom(Integer.TYPE, Integer.class));
         assertTrue(ComponentSpecification.isAssignableFrom(String.class, String.class));
         assertFalse(ComponentSpecification.isAssignableFrom(Integer.class, String.class));
     }
 
-    public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
-        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+    static class TestClass {
+        public TestClass(String s1, String s2, String s3) {}
+    }
+
+    public void testComponentSpecificationCreatesDefaultParameters() throws PicoIntrospectionException {
+        ComponentSpecification componentSpec =
+                new ComponentSpecification(new DefaultComponentFactory(), null, TestClass.class);
+        assertEquals(3, componentSpec.getParameters().length);
+    }
+
+    public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
+        RegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
 
@@ -41,7 +48,7 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
-        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+        RegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         WilmaImpl wilma = new WilmaImpl();
         pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[]{
             new ConstantParameter(wilma)

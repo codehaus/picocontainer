@@ -78,7 +78,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
         nc.instantiateComponents();
 
-        List types = Arrays.asList(nc.getComponentTypes());
+        List types = Arrays.asList(nc.getComponentKeys());
         assertEquals("There should be 2 types", 2, types.size());
         assertTrue("There should be a One type", types.contains(DefaultWebServerConfig.class));
     }
@@ -91,7 +91,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
         nc.instantiateComponents();
 
-        List types = Arrays.asList(nc.getComponentTypes());
+        List types = Arrays.asList(nc.getComponentKeys());
         assertEquals("There should be 1 types", 1, types.size());
 
         try

@@ -14,16 +14,18 @@ import picocontainer.PicoInstantiationException;
 
 public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException {
     private Class classThatNeedsDeps;
+    private Object componentKey;
     private Class neededDep;
 
-    public UnsatisfiedDependencyInstantiationException(Class classThatNeeds, Class neededDep) {
+    public UnsatisfiedDependencyInstantiationException(Class classThatNeeds, Object componentKey, Class neededDep) {
         this.classThatNeedsDeps = classThatNeeds;
+        this.componentKey = componentKey;
         this.neededDep = neededDep;
     }
 
     public String getMessage() {
         return "Component " + classThatNeedsDeps.getName() + " needs " +
-                (neededDep == null ? "unnamed dependencies" : neededDep.getName());
+                (componentKey == null ? neededDep.getName() : componentKey);
     }
 
     public Class getClassThatNeedsDeps() {

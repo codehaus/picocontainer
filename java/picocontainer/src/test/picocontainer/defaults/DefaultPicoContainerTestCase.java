@@ -387,7 +387,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public void testRecursiveAggregation()
             throws NotConcreteRegistrationException, AssignabilityRegistrationException,
-            DuplicateComponentTypeRegistrationException, PicoInitializationException {
+            DuplicateComponentKeyRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponentByClass(Recorder.class);
         pico.registerComponentByClass(AppleFactory.class);
@@ -436,7 +436,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-//    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
+//    public static interface PeelableAndWashableContainer extends PeelableAndWashable, RegistrationPicoContainer {
 //
 //    }
 
@@ -478,7 +478,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }
 
-    public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
+    public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         assertNull(pico.findImplementingComponentSpecification(Wilma.class));
@@ -520,4 +520,24 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertNotNull(wilma);
     }
 
+    public void testMultipleImplementationsAccessedThroughKey()
+            throws PicoInitializationException, PicoRegistrationException, PicoInvocationTargetInitializationException
+    {
+        WilmaImpl wilma1 = new WilmaImpl();
+        WilmaImpl wilma2 = new WilmaImpl();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent("wilma1", wilma1);
+        pico.registerComponent("wilma2", wilma2);
+        pico.registerComponent("fred1", FredImpl.class, new Parameter[] { new ComponentParameter("wilma1") });
+        pico.registerComponent("fred2", FredImpl.class, new Parameter[] { new ComponentParameter("wilma2") });
+
+        pico.instantiateComponents();
+
+        FredImpl fred1 = (FredImpl) pico.getComponent("fred1");
+        FredImpl fred2 = (FredImpl) pico.getComponent("fred2");
+
+        assertFalse(fred1 == fred2);
+        assertSame(wilma1, fred1.getWilma());
+        assertSame(wilma2, fred2.getWilma());
+    }
 }

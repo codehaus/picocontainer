@@ -27,7 +27,7 @@ TODO (Aslak):
 package picocontainer.hierarchical;
 
 import picocontainer.defaults.DefaultPicoContainer;
-import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.RegistrationPicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
 import picocontainer.defaults.DefaultComponentFactory;
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HierarchicalPicoContainer extends DefaultPicoContainer implements ClassRegistrationPicoContainer {
+public class HierarchicalPicoContainer extends DefaultPicoContainer implements RegistrationPicoContainer {
 
     private final PicoContainer parentContainer;
 
@@ -71,24 +71,24 @@ public class HierarchicalPicoContainer extends DefaultPicoContainer implements C
         }
     }
 
-    public Object getComponent(Class componentType) {
+    public Object getComponent(Object componentKey) {
         // First look in myself
-        Object result = super.getComponent(componentType);
+        Object result = super.getComponent(componentKey);
 
         // Then look in parent if we had nothing
         if (result == null) {
-            result = parentContainer.getComponent(componentType);
+            result = parentContainer.getComponent(componentKey);
         }
         return result;
     }
 
-    public Class[] getComponentTypes() {
+    public Object[] getComponentKeys() {
         // Get my own types
-        List myTypes = Arrays.asList(super.getComponentTypes());
+        List myTypes = Arrays.asList(super.getComponentKeys());
 
         // Get those from my parent.
         Set types = new HashSet(myTypes);
-        types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
+        types.addAll(Arrays.asList(parentContainer.getComponentKeys()));
 
         return (Class[]) types.toArray(new Class[types.size()]);
     }

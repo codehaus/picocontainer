@@ -11,17 +11,13 @@
 package picocontainer.composite;
 
 import junit.framework.TestCase;
-import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.WilmaImpl;
+import picocontainer.*;
 
 public class CompositePicoContainerTestCase extends TestCase {
-    private ClassRegistrationPicoContainer pico;
+    private RegistrationPicoContainer pico;
     private CompositePicoContainer.Filter filter;
 
     public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
@@ -74,19 +70,19 @@ public class CompositePicoContainerTestCase extends TestCase {
         final Integer bcomp = new Integer(123);
 
         PicoContainer a = new PicoContainer() {
-            public boolean hasComponent(Class compType) {
-                return compType == String.class;
+            public boolean hasComponent(Object compKey) {
+                return compKey == String.class;
             }
 
-            public Object getComponent(Class compType) {
-                return compType == String.class ? acomp : null;
+            public Object getComponent(Object compKey) {
+                return compKey == String.class ? acomp : null;
             }
 
             public Object[] getComponents() {
                 return new Object[]{acomp};
             }
 
-            public Class[] getComponentTypes() {
+            public Object[] getComponentKeys() {
                 return new Class[]{String.class};
             }
 
@@ -105,19 +101,19 @@ public class CompositePicoContainerTestCase extends TestCase {
         };
 
         PicoContainer b = new PicoContainer() {
-            public boolean hasComponent(Class compType) {
-                return compType == Integer.class;
+            public boolean hasComponent(Object compKey) {
+                return compKey == Integer.class;
             }
 
-            public Object getComponent(Class compType) {
-                return compType == Integer.class ? bcomp : null;
+            public Object getComponent(Object compKey) {
+                return compKey == Integer.class ? bcomp : null;
             }
 
             public Object[] getComponents() {
                 return new Object[]{bcomp};
             }
 
-            public Class[] getComponentTypes() {
+            public Object[] getComponentKeys() {
                 return new Class[]{Integer.class};
             }
 

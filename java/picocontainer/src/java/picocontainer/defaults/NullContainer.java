@@ -14,11 +14,11 @@ import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
 
 public class NullContainer implements PicoContainer {
-    public boolean hasComponent(Class compType) {
+    public boolean hasComponent(Object compType) {
         return false;
     }
 
-    public Object getComponent(Class compType) {
+    public Object getComponent(Object compType) {
         return null;
     }
 
@@ -26,7 +26,7 @@ public class NullContainer implements PicoContainer {
         return new Object[0];
     }
 
-    public Class[] getComponentTypes() {
+    public Object[] getComponentKeys() {
         return new Class[0];
     }
 

@@ -16,6 +16,7 @@ import com.tirsen.nanning.config.AspectSystem;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.defaults.ComponentSpecification;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -32,14 +33,15 @@ class NanningComponentFactory implements ComponentFactory {
         this.decoratedComponentFactory = decoratedComponentFactory;
     }
 
-    public Object createComponent(Object componentType, Class componentImplementation, Class[] dependencies, Object[] dependencyInstances) throws PicoInitializationException {
-        Object component = decoratedComponentFactory.createComponent(componentType, componentImplementation, dependencies, dependencyInstances);
+    public Object createComponent(ComponentSpecification componentSpec, Object[] dependencyInstances) throws PicoInitializationException {
+        Object component = decoratedComponentFactory.createComponent(componentSpec, dependencyInstances);
 
-        // Nanning will only aspectify stuff when its type is an interface
-        if (((Class)componentType).isInterface()) {
+        // TODO Nanning will at the moment only aspectify stuff when it has one and only one interface
+        if (component.getClass().getInterfaces().length == 1) {
+            Class intf = component.getClass().getInterfaces()[0];
             // the trick: set up first mixin manually with the component as target
             AspectInstance aspectInstance = new AspectInstance();
-            MixinInstance mixin = new MixinInstance((Class)componentType, component);
+            MixinInstance mixin = new MixinInstance(intf, component);
             aspectInstance.addMixin(mixin);
 
             // let the aspects do its work

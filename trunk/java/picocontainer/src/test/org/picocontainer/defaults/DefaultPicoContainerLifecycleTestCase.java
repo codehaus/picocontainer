@@ -75,6 +75,14 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
     }
 
+    public static class FiveTriesToBeMalicious extends RecordingLifecycle {
+        public FiveTriesToBeMalicious(StringBuffer sb, PicoContainer pc) {
+            super(sb);
+            sb.append("Whao! Should not get instantiated!!");
+        }
+    }
+
+
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -214,31 +222,37 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testGetComponentInstancesOnParentContainerHostedChildContainerDoesntReturnParentAdapter() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponentImplementation("child", DefaultPicoContainer.class);
-        DefaultPicoContainer child = (DefaultPicoContainer) parent.getComponentInstance("child");
+        MutablePicoContainer child = parent.makeChildContainer();
         assertEquals(0, child.getComponentInstances().size());
     }
 
     public void testComponentsAreStartedBreadthFirstAndStoppedAndDisposedDepthFirst() {
-//        <container>
-//              <component class='A'/>
-//              <container>
-//                  <component class='B'/>
-//              </container>
-//              <component class='C'/>
-//        </container>
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.registerComponentImplementation(Two.class);
         parent.registerComponentImplementation("recording", StringBuffer.class);
         parent.registerComponentImplementation(One.class);
-        parent.registerComponentInstance("child", new DefaultPicoContainer(parent));
-        DefaultPicoContainer child = (DefaultPicoContainer) parent.getComponentInstance("child");
+        MutablePicoContainer child = parent.makeChildContainer();
         child.registerComponentImplementation(Three.class);
         parent.start();
         parent.stop();
         parent.dispose();
 
         assertEquals("<One<Two<ThreeThree>Two>One>!Three!Two!One", parent.getComponentInstance("recording").toString());
+    }
+
+    public void testMaliciousComponentCannotExistInAChildContainerAndSeeAnyElementOfContainerHierarchy() {
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation(Two.class);
+        parent.registerComponentImplementation("recording", StringBuffer.class);
+        parent.registerComponentImplementation(One.class);
+        MutablePicoContainer child = parent.makeChildContainer();
+        child.registerComponentImplementation(Three.class);
+        child.registerComponentImplementation(FiveTriesToBeMalicious.class);
+        try {
+            parent.start();
+            fail();
+        } catch (UnsatisfiableDependenciesException expected) {
+        }
     }
 
     public static class NotStartable {

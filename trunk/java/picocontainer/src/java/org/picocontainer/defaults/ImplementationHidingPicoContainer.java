@@ -19,6 +19,9 @@ import org.picocontainer.PicoVerificationException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.lang.ref.WeakReference;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -32,7 +35,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     private final InnerMutablePicoContainer pc;
     private final ComponentAdapterFactory caf;
-
+    private ArrayList childContainers = new ArrayList();
 
     /**
      * Creates a new container with a parent container.
@@ -157,18 +160,58 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     public void start() {
         pc.start();
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.start();
+            } else {
+                it.remove();
+            }
+        }
     }
 
     public void stop() {
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.stop();
+            } else {
+                it.remove();
+            }
+        }
         pc.stop();
     }
 
     public void dispose() {
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.dispose();
+            } else {
+                it.remove();
+            }
+        }
         pc.dispose();
     }
 
     public PicoContainer getImmutable() {
         return pc.getImmutable();
+    }
+
+    public MutablePicoContainer makeChildContainer() {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
+        childContainers.add(new WeakReference(pc));
+        return pc;
+    }
+
+    public void addChildContainer(MutablePicoContainer child) {
+        childContainers.add(new WeakReference(child));        
     }
 
     private class InnerMutablePicoContainer extends DefaultPicoContainer {

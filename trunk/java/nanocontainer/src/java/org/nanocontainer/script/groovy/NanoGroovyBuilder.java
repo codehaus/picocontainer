@@ -16,7 +16,6 @@ import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -80,9 +79,9 @@ public class NanoGroovyBuilder extends BuilderSupport {
     }
 
     private Object createContainerNode(Object parent, Map attributes) {
-        PicoContainer parentContainer = null;
+        MutablePicoContainer parentContainer = null;
         if (parent instanceof MutablePicoContainer) {
-            parentContainer = (PicoContainer) parent;
+            parentContainer = (MutablePicoContainer) parent;
         }
         MutablePicoContainer answer = createContainer(attributes, parentContainer);
         return answer;
@@ -131,7 +130,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes, PicoContainer parent) {
+    protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         Class containerImpl = (Class) attributes.remove("class");
         if (containerImpl == null) {
@@ -147,7 +146,14 @@ public class NanoGroovyBuilder extends BuilderSupport {
         DefaultPicoContainer dpc2 = new DefaultPicoContainer(dpc);
         dpc2.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
 
-        return (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
+        SoftCompositionPicoContainer softPico = (SoftCompositionPicoContainer) dpc2.getComponentInstance(SoftCompositionPicoContainer.class);
+        if (parent != null) {
+            System.out.println("--> Setting parent");
+            parent.addChildContainer(softPico);
+        } else {
+            System.out.println("--> Not Setting parent");
+        }
+        return softPico;
     }
 
     protected Object createBean(Map attributes) {

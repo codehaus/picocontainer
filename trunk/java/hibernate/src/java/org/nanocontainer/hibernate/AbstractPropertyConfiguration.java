@@ -10,6 +10,7 @@
 package org.nanocontainer.hibernate;
 
 import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.MappingException;
 
@@ -24,7 +25,9 @@ import java.io.IOException;
  * @author    Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version   $Revision$
  */
-public abstract class AbstractPropertyConfiguration extends Configuration {
+public abstract class AbstractPropertyConfiguration extends Configuration implements SessionFactoryProvider {
+	
+	SessionFactory sessionFactory;
     /**
      * configure from properties contained on class path
      *
@@ -35,6 +38,7 @@ public abstract class AbstractPropertyConfiguration extends Configuration {
     protected AbstractPropertyConfiguration(String properties) throws HibernateException, IOException {
         addProperties(loadProperties(properties));
         registerClasses();
+		sessionFactory = buildSessionFactory();
     }
 
     /**
@@ -46,9 +50,13 @@ public abstract class AbstractPropertyConfiguration extends Configuration {
     protected AbstractPropertyConfiguration(Properties properties) throws HibernateException {
         addProperties(properties);
         registerClasses();
+		sessionFactory = buildSessionFactory();
     }
 
 
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
     /**
      * we do not allow to instantiate us without proper properties
      */

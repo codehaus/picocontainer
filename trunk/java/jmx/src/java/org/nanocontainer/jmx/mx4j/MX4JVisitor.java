@@ -16,23 +16,19 @@ import org.picocontainer.PicoContainer;
 
 
 /**
- * JMXVisitor that automatically
+ * JMXVisitor that defaults to a uses MX4JDynamicMBeanFactory. The implementation will automatically instantiate and use a
+ * {@link MX4JDynamicMBeanFactory}if no {@link DynamicMBeanFactory}was registered in the visited {@link PicoContainer}.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
 public class MX4JVisitor extends JMXVisitor {
-    private DynamicMBeanFactory dynamicMBeanFactory;
 
-    protected DynamicMBeanFactory getDynamicMBeanFactory(final PicoContainer picoContainer) {
-        final DynamicMBeanFactory factory = (DynamicMBeanFactory)picoContainer.getComponentInstance(DynamicMBeanFactory.class);
-        if (factory == null) {
-            if (dynamicMBeanFactory == null) {
-                dynamicMBeanFactory = new MX4JDynamicMBeanFactory();
-            }
-            return dynamicMBeanFactory;
-        } else {
-            return factory;
-        }
+    /**
+     * Create and return a {@link MX4JDynamicMBeanFactory}.
+     * @see org.nanocontainer.jmx.JMXVisitor#createDynamicMBeanFactory()
+     */
+    protected DynamicMBeanFactory createDynamicMBeanFactory() {
+        return new MX4JDynamicMBeanFactory();
     }
 
 }

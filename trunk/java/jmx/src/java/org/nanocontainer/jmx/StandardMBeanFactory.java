@@ -20,15 +20,21 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 
 /**
+ * A factory for DynamicMBeans that can create at least {@link StandardMBean} instances.
  * @author Michael Ward
  * @author J&ouml,rg Schaible
  * @version $Revision$
  */
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 
-	public static final String BUILD_STANDARDMBEAN_ERROR =
+	private static final String BUILD_STANDARDMBEAN_ERROR =
 				"{0} must be an instance of {1}, or {2} should define the interface to use as a proxy.";
 
+    /**
+     * This method will throw a JMXRegistrationException, since the creation of a DynamicMBean with an explicit MBeanInfo is not
+     * supported by this implementation.
+     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
+     */
     public DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo) {
         throw new JMXRegistrationException("A DynamicMBeanFactory instance supporting DynamicMBean creation with an MBeanInfo MUST be registered with the container");
     }

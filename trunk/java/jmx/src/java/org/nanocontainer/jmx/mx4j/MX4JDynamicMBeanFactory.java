@@ -16,7 +16,7 @@ import javax.management.MBeanInfo;
 import org.nanocontainer.jmx.StandardMBeanFactory;
 
 /**
- * This is the default factory for creating DynamicMBean instances however it is tied specifically to MX4J. Those
+ * This is the a factory for creating DynamicMBean instances. However it is tied specifically to MX4J. Those
  * not interested in being dependent on MX4J should implement another Factory and register it to the container.
  *
  * @author Michael Ward
@@ -24,6 +24,10 @@ import org.nanocontainer.jmx.StandardMBeanFactory;
  */
 public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
 
+	/**
+	 * {@inheritDoc}
+	 * @see org.nanocontainer.jmx.StandardMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
+	 */
 	public DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo) {
 		return new MX4JDynamicMBean(componentInstance, mBeanInfo);
 	}

@@ -27,6 +27,7 @@ import javax.management.modelmbean.RequiredModelMBean;
  * A factory for DynamicMBeans, that creates MBean instances using the classes {@link StandardMBean} and {@link ModelMBean}
  * provided by the JMX specification. The implementation offers special support for StandardMBeans following the naming
  * convention for their management interface using the class name of the component with an appended <em>MBean</em>.
+ * 
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -35,13 +36,14 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
      * Create a StandardMBean for the component.
+     * 
      * @param componentInstance {@inheritDoc}
      * @param management The management interface. If <code>null</code> the implementation will use the interface complying
-     *                   with the naming convention for management interfaces.
+     *                  with the naming convention for management interfaces.
      * @param mBeanInfo The {@link MBeanInfo} to use. If <code>null</code> the {@link StandardMBean} will use an automatically
-     *                   generated one.
+     *                  generated one.
      * @return Returns a {@link StandardMBean}. If the <strong>mBeanInfo</strong> was not null, it is an instance of a
-     *               {@link StandardNanoMBean}.
+     *              {@link StandardNanoMBean}.
      * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
@@ -90,6 +92,7 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
      * unless the caller has provided a {@link MBeanInfo}, the class name of the MBean is retrieved a MBeanInfo that defines
      * this name. Following the naming conventions is the name of the management interface the same as the class name of the
      * MBean with an appended <em>MBean</em>. The {@link ClassLoader} of the type is used to load the interface type.
+     * 
      * @param type The class of the MBean.
      * @param mBeanInfo The {@link MBeanInfo} for the MBean. May be <code>null</code>.
      * @return Returns the default management interface.
@@ -97,6 +100,8 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
      * @since 1.0
      */
     public Class getDefaultManagementInterface(final Class type, final MBeanInfo mBeanInfo) throws ClassNotFoundException {
-        return type.getClassLoader().loadClass((mBeanInfo == null ? type.getName() : mBeanInfo.getClassName()) + "MBean");
+        final ClassLoader classLoader = type.getClassLoader() != null ? type.getClassLoader() : Thread.currentThread()
+                .getContextClassLoader();
+        return classLoader.loadClass((mBeanInfo == null ? type.getName() : mBeanInfo.getClassName()) + "MBean");
     }
 }

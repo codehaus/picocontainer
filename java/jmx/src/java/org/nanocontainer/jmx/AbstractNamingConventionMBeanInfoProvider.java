@@ -18,6 +18,7 @@ import org.picocontainer.PicoContainer;
 /**
  * Abstract base class for MBeanInfoProvider that search MBeanInfo in the PicoContainer registered with a key that follows
  * naming conventions.
+ * 
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -26,13 +27,13 @@ public abstract class AbstractNamingConventionMBeanInfoProvider implements MBean
     /**
      * Locate a MBeanInfo as component in a PicoContainer. If no component is registered using the name of the MBeanInfo as key,
      * the method turns the name into a type and searches again.
+     * 
      * @param mBeanInfoName The name of the {@link MBeanInfo} used as key.
      * @param picoContainer The {@link PicoContainer} used for the lookup.
      * @param classLoader The {@link ClassLoader} used to load the type of the key.
      * @return Returns the MBeanInfo instance or <code>null</code>.
      */
-    protected MBeanInfo instantiateMBeanInfo(
-            final String mBeanInfoName, final PicoContainer picoContainer, final ClassLoader classLoader) {
+    protected MBeanInfo instantiateMBeanInfo(final String mBeanInfoName, final PicoContainer picoContainer, ClassLoader classLoader) {
         MBeanInfo mBeanInfo = null;
         try {
             mBeanInfo = (MBeanInfo)picoContainer.getComponentInstance(mBeanInfoName);
@@ -40,6 +41,9 @@ public abstract class AbstractNamingConventionMBeanInfoProvider implements MBean
             // wrong type, search goes on
         }
         if (mBeanInfo == null) {
+            if (classLoader == null) {
+                classLoader = Thread.currentThread().getContextClassLoader();
+            }
             try {
                 final Class mBeanInfoType = classLoader.loadClass(mBeanInfoName);
                 if (MBeanInfo.class.isAssignableFrom(mBeanInfoType)) {

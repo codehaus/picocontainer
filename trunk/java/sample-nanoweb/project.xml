@@ -107,6 +107,14 @@
             </properties>
         </dependency>
 
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
         <!-- For acceptance test only -->
 
         <dependency>

@@ -196,10 +196,12 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             } else if (e.getTargetException() instanceof Error) {
                 throw (Error) e.getTargetException();
             }
-            throw new PicoInvocationTargetInitializationException(e.getTargetException()); // <here>
+            throw new PicoInvocationTargetInitializationException(e.getTargetException());
         } catch (InstantiationException e) {
-            // Handled by prior invocation of checkConcrete() is superclass. Caught and rethrown in line marked <here> above.
-            throw new RuntimeException("Should never get here");
+            // can't get her because checkConcrete() will catch it earlier
+            ///CLOVER:OFF
+            throw new PicoInitializationException("Should never get here");
+            ///CLOVER:ON
         } catch (IllegalAccessException e) {
             throw new PicoInitializationException(e);
         } finally {

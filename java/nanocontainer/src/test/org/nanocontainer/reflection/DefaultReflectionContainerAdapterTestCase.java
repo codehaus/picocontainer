@@ -89,7 +89,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         String testcompJarFileName = System.getProperty("testcomp.jar");
 
         // Paul's path to TestComp. PLEASE do not take out.
-        testcompJarFileName = "D:\\OSS\\PN\\java\\nanocontainer\\src\\test-comp\\TestComp.jar";
+        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
 
         assertNotNull("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);

@@ -8,7 +8,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;

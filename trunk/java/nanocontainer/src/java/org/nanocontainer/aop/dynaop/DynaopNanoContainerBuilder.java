@@ -11,7 +11,7 @@ package org.nanocontainer.aop.dynaop;
 
 import org.nanocontainer.aop.defaults.AopDecorationDelegate;
 import org.nanocontainer.script.groovy.NanoContainerBuilder;
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
 
 /**
  * A {@link org.nanocontainer.script.groovy.NanoContainerBuilder} that supports

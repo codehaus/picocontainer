@@ -13,7 +13,7 @@ package org.picocontainer.defaults;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Startable;

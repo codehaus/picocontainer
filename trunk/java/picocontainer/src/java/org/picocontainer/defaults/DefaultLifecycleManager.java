@@ -10,7 +10,6 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;

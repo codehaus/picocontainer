@@ -12,7 +12,7 @@ package org.picocontainer.defaults;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;

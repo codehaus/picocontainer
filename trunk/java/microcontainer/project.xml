@@ -74,24 +74,24 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.1</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <id>nanocontainer</id>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-jmx</artifactId>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-beta-4</version>
+            <version>1.0-beta-5-SNAPSHOT</version>
         </dependency>
 
         <dependency>

@@ -120,7 +120,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.nanocontainer.xstream.XStreamXmlPseudoComponentFactory'>" +
+                        "    <pseudocomponent factory='org.nanocontainer.xml.XStreamXmlPseudoComponentFactory'>" +
                         "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +

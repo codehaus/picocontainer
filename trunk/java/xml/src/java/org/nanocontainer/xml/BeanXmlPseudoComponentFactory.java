@@ -6,11 +6,10 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.beanconfig;
+package org.nanocontainer.xml;
 
 import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
 import org.nanocontainer.reflection.ReflectionFrontEnd;
-import org.nanocontainer.xml.XmlPseudoComponentFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

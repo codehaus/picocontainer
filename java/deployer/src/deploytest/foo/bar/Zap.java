@@ -19,17 +19,24 @@ import org.picocontainer.Startable;
 public class Zap implements Startable {
     private final String hello;
     private String toString = "Not started";
+    private boolean started = false;
 
     public Zap(String hello) {
         this.hello = hello;
     }
 
     public void start() {
+        if(started) throw new IllegalStateException("Already started");
         toString = hello + " Started";
+        System.out.println(toString() + hashCode());
+        started = true;
     }
 
     public void stop() {
-
+        if(!started) throw new IllegalStateException("Not started");
+        toString = hello + " Stopped";
+        System.out.println(toString() + hashCode());
+        started = false;
     }
 
     public String toString() {

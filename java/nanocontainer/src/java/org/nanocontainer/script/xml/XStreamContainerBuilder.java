@@ -12,16 +12,16 @@ package org.nanocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.xml.dom.DomXMLReader;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,6 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -65,27 +66,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-
-        MutablePicoContainer container = createContainer();
-        try {
-            containerRef.set(container);
-            populateContainer(container, rootElement);
-
-        } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
-            //} catch (IOException e) {
-            //    throw new PicoCompositionException(e);
-        } catch (SAXException e) {
-            throw new PicoCompositionException(e);
-        }
-    }
-
     /**
      * populate contaiber off root element. we process instance &amp; implementation
      * nodes here
      */
-    protected void populateContainer(MutablePicoContainer container, Element rootElement) throws SAXException, ClassNotFoundException {
+    private void populateContainer(MutablePicoContainer container) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -97,7 +82,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
             if (type == Document.ELEMENT_NODE) {
                 name = child.getNodeName();
                 if (IMPLEMENTATION.equals(name)) {
-                    insertImplementation(container, (Element) child);
+                    try {
+                        insertImplementation(container, (Element) child);
+                    } catch (ClassNotFoundException e) {
+                        throw new PicoCompositionException(e);
+                    }
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
                 } else {
@@ -110,7 +99,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     /**
      * process implementation node
      */
-    protected void insertImplementation(MutablePicoContainer container, Element rootElement) throws SAXException, ClassNotFoundException {
+    protected void insertImplementation(MutablePicoContainer container, Element rootElement) throws ClassNotFoundException {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
         if (klass == null || "".equals(klass)) {
@@ -119,7 +108,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
 
         Class clazz = classLoader.loadClass(klass);
 
-        ArrayList parameters = new ArrayList();
+        List parameters = new ArrayList();
 
         NodeList children = rootElement.getChildNodes();
         Node child;
@@ -174,7 +163,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
      * process instance node. we get key from atributes ( if any ) and leave content
      * to xstream. we allow only one child node inside. ( first  one wins )
      */
-    protected void insertInstance(MutablePicoContainer container, Element rootElement) throws SAXException, ClassNotFoundException {
+    protected void insertInstance(MutablePicoContainer container, Element rootElement) {
         String key = rootElement.getAttribute(KEY);
         Object result = parseElementChild(rootElement);
         if (result == null) {
@@ -192,7 +181,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     /**
      * parse element child with xstream and provide object
      */
-    protected Object parseElementChild(Element rootElement) throws SAXException, ClassNotFoundException {
+    protected Object parseElementChild(Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         for (int i = 0; i < children.getLength(); i++) {
@@ -204,8 +193,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
         return null;
     }
 
-
-    protected MutablePicoContainer createContainer() {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {
@@ -213,7 +201,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
             }
             Class cfaClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
-            return new DefaultPicoContainer(componentAdapterFactory);
+            DefaultPicoContainer result = new DefaultPicoContainer(componentAdapterFactory, parentContainer);
+            populateContainer(result);
+            return result;
         } catch (ClassNotFoundException e) {
             throw new PicoCompositionException(e);
         } catch (InstantiationException e) {
@@ -222,5 +212,4 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
             throw new PicoCompositionException(e);
         }
     }
-
 }

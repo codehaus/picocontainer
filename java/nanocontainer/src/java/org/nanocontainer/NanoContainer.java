@@ -33,7 +33,7 @@ public class NanoContainer {
     public static final String XML = ".xml";
     public static final String BEANSHELL = ".bsh";
 
-    protected static final Map extensionToComposers = new HashMap();
+    private static final Map extensionToComposers = new HashMap();
 
     static {
         extensionToComposers.put(JAVASCRIPT, "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
@@ -43,9 +43,7 @@ public class NanoContainer {
         extensionToComposers.put(BEANSHELL, "org.nanocontainer.script.bsh.BeanShellContainerBuilder");
     }
 
-    protected ScriptedContainerBuilder containerBuilder;
-
-    protected ObjectReference containerRef;
+    private ScriptedContainerBuilder containerBuilder;
 
     public NanoContainer(File compositionFile, PicoContainer parent, ClassLoader classLoader) throws IOException, ClassNotFoundException {
         this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), parent, classLoader);
@@ -80,12 +78,8 @@ public class NanoContainer {
         }
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance();
-        containerRef = new SimpleReference();
         final ObjectReference parentRef = new SimpleReference();
         parentRef.set(parent);
-
-        // build and start the container
-        containerBuilder.buildContainer(containerRef, parentRef, null);
     }
 
     private static File fileExists(File compositionFile) {
@@ -99,10 +93,6 @@ public class NanoContainer {
 
     private static String getLanguage(File compositionFile) throws IOException {
         return compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().lastIndexOf("."));
-    }
-
-    public void killContainer() {
-        containerBuilder.killContainer(containerRef);
     }
 
     public ScriptedContainerBuilder getContainerBuilder() {

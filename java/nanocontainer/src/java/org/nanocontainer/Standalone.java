@@ -9,7 +9,8 @@
 
 package org.nanocontainer;
 
-import org.nanocontainer.NanoContainer;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
@@ -104,12 +105,15 @@ public class Standalone {
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
+        final ObjectReference containerRef = new SimpleReference();
+        nanoContainer.getContainerBuilder().buildContainer(containerRef, null, null);
+
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
                 System.out.println("Shutting Down NanoContainer");
                 try {
-                    nanoContainer.killContainer();
+                    nanoContainer.getContainerBuilder().killContainer(containerRef);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -123,7 +127,8 @@ public class Standalone {
 
     private static List getOptions(String[] args) {
         if (args.length == 0) {
-            System.err.println("NanoContainer: Needs a configuation file as a parameter");
+            System.err.println("No arguments specified");
+            printUsage();
             System.exit(10);
         }
 
@@ -152,7 +157,6 @@ public class Standalone {
         final StringBuffer msg = new StringBuffer();
 
         msg.append(lineSeparator);
-        msg.append("Foo!");
 
         /*
          * Notice that the next line uses CLUtil.describeOptions to generate the

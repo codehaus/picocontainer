@@ -19,9 +19,9 @@ public class MemoryCheeseDao implements CheeseDao, Startable {
         cheeses.put(cheese.getName(), cheese);
     }
 
-    public Cheese findCheese(String name) {
-        System.out.println("**** MemoryCheeseDao finding cheese: " + name);
-        return (Cheese) cheeses.get(name);
+    public Cheese findCheese(Cheese example) {
+        System.out.println("**** MemoryCheeseDao finding cheese: " + example);
+        return (Cheese) cheeses.get(example.getName());
     }
 
     public void start() {

@@ -8,9 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
 /**
@@ -20,7 +19,7 @@ import org.picocontainer.defaults.ObjectReference;
  */
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
-    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
+    public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
 
@@ -30,8 +29,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         // hold on to it
         containerRef.set(container);
     }
-
-    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
 
     public void killContainer(ObjectReference containerRef){
         try {
@@ -44,7 +41,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-		return new DefaultPicoContainer(parentContainer);
-	}
+    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
+    protected abstract MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
 }

@@ -12,7 +12,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.deployer;
+package org.nanocontainer.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelectInfo;
@@ -27,12 +27,11 @@ import org.picocontainer.defaults.SimpleReference;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * This class is capable of deploying an application from any kind of file system
  * supported by <a href="http://jakarta.apache.org/commons/sandbox/vfs/">Jakarta VFS</a>.
- * (Like local files, zip files etc.)
+ * (Like local files, zip files etc.) - following the NanoContainer scripting model.
  *
  * The root folder to deploy must have the following file structure:
  * <pre>
@@ -82,7 +81,12 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Aslak Helles&oslash;y
  */
-public class Deployer {
+public class NanoContainerDeployer implements Deployer {
+    private final FileSystemManager fileSystemManager;
+
+    public NanoContainerDeployer(FileSystemManager fileSystemManager) {
+        this.fileSystemManager = fileSystemManager;
+    }
 
     /**
      * Deploys an application.
@@ -94,7 +98,7 @@ public class Deployer {
      * @throws org.apache.commons.vfs.FileSystemException if the file structure was bad.
      * @throws org.nanocontainer.integrationkit.PicoCompositionException if the deployment failed for some reason.
      */
-    public ObjectReference deploy(FileObject applicationFolder, FileSystemManager fileSystemManager, ClassLoader parentClassLoader, ObjectReference parentContainerRef) throws FileSystemException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef) throws FileSystemException, ClassNotFoundException {
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, fileSystemManager, parentClassLoader);
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
@@ -102,12 +106,11 @@ public class Deployer {
         String extension = "." + deploymentScript.getName().getExtension();
 
         ObjectReference result = new SimpleReference();
-        Object compositionScope = null;
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
 
         NanoContainer nanoContainer = new NanoContainer(scriptReader, extension, applicationClassLoader);
         ContainerBuilder builder = nanoContainer.getContainerBuilder();
-        builder.buildContainer(result, parentContainerRef, compositionScope);
+        builder.buildContainer(result, parentContainerRef, null);
 
         return result;
     }

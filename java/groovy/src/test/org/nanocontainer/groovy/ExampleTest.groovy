@@ -1,13 +1,13 @@
-package org.picoextras.groovy
+package org.nanocontainer.groovy
 
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory
 import org.picocontainer.defaults.LifecycleAdapter
 
-import org.picoextras.testmodel.DefaultWebServerConfig
-import org.picoextras.testmodel.WebServer
-import org.picoextras.testmodel.WebServerConfig
-import org.picoextras.testmodel.WebServerConfigBean
-import org.picoextras.testmodel.WebServerImpl
+import org.nanocontainer.testmodel.DefaultWebServerConfig
+import org.nanocontainer.testmodel.WebServer
+import org.nanocontainer.testmodel.WebServerConfig
+import org.nanocontainer.testmodel.WebServerConfigBean
+import org.nanocontainer.testmodel.WebServerImpl
 
 class ExampleTest extends GroovyTestCase {
     

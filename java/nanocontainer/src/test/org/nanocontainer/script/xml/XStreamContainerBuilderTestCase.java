@@ -21,14 +21,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-/**
- * test case for container creation off xml via xstream
- */
+
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-
 	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
-        Reader script = new StringReader("<container>" +
+        Reader script = new StringReader( "" +
+                "<container>" +
                 "    <instance key='foo'>" +
                 "    	<string>foo bar</string>" +
                 "    </instance>" +

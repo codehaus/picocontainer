@@ -23,8 +23,8 @@ import java.util.Map;
  * @version $Revision$
  */
 public class IconHelper {
-    public static final String DEFAULT_COMPONENT_ICON = "/org/picoextras/swing/icons/defaultcomponent.gif";
-    public static final String PICO_CONTAINER_ICON = "/org/picoextras/swing/icons/picocontainer.gif";
+    public static final String DEFAULT_COMPONENT_ICON = "/org/nanocontainer/swing/icons/defaultcomponent.gif";
+    public static final String PICO_CONTAINER_ICON = "/org/nanocontainer/swing/icons/picocontainer.gif";
 
     private static Map images = new HashMap();
 

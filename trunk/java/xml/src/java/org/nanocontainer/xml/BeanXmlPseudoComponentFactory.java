@@ -35,7 +35,7 @@ public class BeanXmlPseudoComponentFactory implements XmlPseudoComponentFactory 
             Node n = nl.item(i);
             if (n instanceof Element) {
                 Element e = (Element) n;
-                setBeanProperty(o, e.getNodeName(), e.getChildNodes().item(0).toString());
+                setBeanProperty(o, e.getNodeName(), e.getChildNodes().item(0).getNodeValue());
             }
         }
         return o;

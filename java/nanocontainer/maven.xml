@@ -1,4 +1,6 @@
 <project>
+    <goal name="binary:install" prereqs="jar:install"/>
+
     <postGoal name="test:compile">
         <copy todir="${basedir}/target/test-classes">
             <fileset dir="${basedir}/src/test"/>

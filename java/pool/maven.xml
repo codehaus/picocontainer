@@ -1,6 +1,3 @@
 <project default="jar:install">
-
-    <postGoal name="test:compile">
-    </postGoal>
-
+    <goal name="binary:install" prereqs="jar:install"/>
 </project>

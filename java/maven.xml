@@ -1,14 +1,14 @@
 <project
-    default="jar-install"
+    default="binary:install"
     xmlns:j="jelly:core"
     xmlns:maven="jelly:maven"
     xmlns:ant="jelly:ant">
 
     <goal
-        name="jar-install"
-        description="Build each sub project into a jar">
+        name="binary:install"
+        description="Build each sub project into a binary">
 
-        <property name="goals" value="jar:install"/>
+        <property name="goals" value="binary:install"/>
         <attainGoal name="generic"/>
 
     </goal>

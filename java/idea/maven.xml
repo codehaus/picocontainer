@@ -1,5 +1,7 @@
 <project xmlns:j="jelly:core" xmlns:u="jelly:util">
 
+    <goal name="binary:install" prereqs="jar:install"/>
+
     <postGoal name="java:compile">
         <unjar
             dest="${maven.build.dir}/classes"

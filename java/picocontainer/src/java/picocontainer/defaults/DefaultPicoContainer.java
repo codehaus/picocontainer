@@ -41,6 +41,20 @@ import java.lang.reflect.Modifier;
  */
 public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
+    private static Method equals;
+    private static Method hashCode;
+
+    static{
+        try {
+            equals = Object.class.getMethod("equals", new Class[] {Object.class});
+            hashCode = Object.class.getMethod("hashCode", null);
+        } catch (NoSuchMethodException e) {
+            throw new InternalError();
+        } catch (SecurityException e) {
+            throw new InternalError();
+        }
+    }
+
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
@@ -98,7 +112,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
      */
     public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return createAggregateProxy(
-                getComponentInterfaces(),
+                getInterfaces(getComponents()),
                 orderedComponents,
                 callUnmanagedComponents ? Collections.EMPTY_LIST : unmanagedComponents,
                 callInInstantiationOrder
@@ -138,50 +152,64 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return invokeOnChildren(children, method, args);
+            Class declaringClass = method.getDeclaringClass();
+            if( declaringClass.equals(Object.class) ) {
+                if(method.equals(hashCode)) {
+					// Return the hashCode of ourself, as Proxy.newProxyInstance() may
+					// return cached proxies. We want a unique hashCode for each created proxy!
+                    return new Integer(System.identityHashCode(AggregatingInvocationHandler.this));
+                }
+                if(method.equals(equals)) {
+                    return new Boolean(proxy == args[0]);
+                }
+                // If the method is defined by Object (like hashCode or equals), call
+                // on ourself. This is a bit of a hack, but actually ok in most cases.
+                AggregatingInvocationHandler me = AggregatingInvocationHandler.this;
+                return method.invoke(me, args);
+            } else {
+                return invokeOnTargetsOfSameTypeAsDeclaringClass(declaringClass, children, method, args);
+            }
         }
 
-        private Object invokeOnChildren(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+        private Object invokeOnTargetsOfSameTypeAsDeclaringClass(Class declaringClass, Object[] targets, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+            Class returnType = method.getReturnType();
+
             // Lazily created list holding all results.
             List results = null;
-            for (int i = 0; i < components.length; i++) {
-                Class declarer = method.getDeclaringClass();
-                boolean isValidType = declarer.isAssignableFrom(components[i].getClass());
-                boolean exclude = excludes.contains(components[i]);
+            for (int i = 0; i < targets.length; i++) {
+                boolean isValidType = declaringClass.isAssignableFrom(targets[i].getClass());
+                boolean exclude = excludes.contains(targets[i]);
                 if (isValidType && !exclude) {
                     // It's ok to call the method on this one
-                    Object result = method.invoke(components[i], args);
-                    if (result != null && !result.getClass().isPrimitive()) {
-                        // Only add to the results if the result is not null and isn't a primitive.
-                        if (results == null) {
-                            results = new ArrayList();
-                        }
-                        results.add(result);
+                    Object componentResult = method.invoke(targets[i], args);
+                    if (results == null) {
+                        results = new ArrayList();
                     }
+                    results.add(componentResult);
                 }
             }
 
             Object result;
-            Class returnType = method.getReturnType();
 
             if (results == null) {
-                // Method wasn't called. Return null
-                result = null;
+                // Method wasn't called. Try to instantiate a default object.
+                result = returnType.equals(Void.TYPE) ? null : returnType.newInstance();
             } else if (results.size() == 1) {
                 // Got exactly one result. Just return that.
                 result = results.get(0);
             } else if (returnType.isInterface()) {
                 // We have two or more results
                 // We can make a new proxy that aggregates all the results.
+                Class[] resultInterfaces = getInterfaces(results.toArray());
                 result = createAggregateProxy(
-                        new Class[]{returnType},
+                        resultInterfaces,
                         results,
                         excludes,
                         true
                 );
             } else {
-                // Got m,ultiple results that can't be wrapped in a proxy. Return null.
-                result = null;
+                // Got multiple results that can't be wrapped in a proxy. Try to instantiate a default object.
+                result = returnType.equals(Void.TYPE) ? null : returnType.newInstance();
             }
 
             return result;
@@ -189,14 +217,13 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
     }
 
     /**
-     * Get all the interfaces implemented by the registered component instances.
-     * @return an array of interfaces implemented by the concrete component instances.
+     * Get all the interfaces implemented by an array of objects.
+     * @return an array of interfaces.
      */
-    private final Class[] getComponentInterfaces() {
+    private final Class[] getInterfaces(Object[] objects) {
         Set interfaces = new HashSet();
-        Object[] components = getComponents();
-        for (int i = 0; i < components.length; i++) {
-            Class componentClass = components[i].getClass();
+        for (int i = 0; i < objects.length; i++) {
+            Class componentClass = objects[i].getClass();
             // Strangely enough Class.getInterfaces() does not include the interfaces
             // implemented by superclasses. So we must loop up the hierarchy.
             while (componentClass != null) {
@@ -219,10 +246,10 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
             parameters[i] = createDefaultParameter();
         }
 
-        registerComponent(componentImplementation, componentType, parameters);
+        registerComponent(componentType, componentImplementation, parameters);
     }
 
-    public void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
+    public void registerComponent(Class componentType, Class componentImplementation, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
@@ -356,7 +383,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         // if the component does not exist yet, instantiate it lazily
         createComponent(componentSpec);
 
-        comp = componentTypeToInstanceMap.get(componentType);
+        comp = getComponent(componentType);
 
         return comp;
     }

@@ -21,6 +21,7 @@ import picocontainer.testmodel.WilmaImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.UndeclaredThrowableException;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -339,6 +340,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public static interface Food {
         void eat();
+        int magic();
     }
 
     public abstract static class AbstractFood extends RecordingAware implements Food {
@@ -347,13 +349,25 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class Apple extends AbstractFood {
+    public static interface Boozable {
+        String getBooze();
+    }
+
+    public static class Apple extends AbstractFood implements Boozable {
         public Apple(Recorder recorder) {
             super(recorder);
         }
 
         public void eat() {
             recorder.record("Apple eaten");
+        }
+
+        public int magic() {
+            return 5;
+        }
+
+        public String getBooze() {
+            return "Calvados";
         }
     }
 
@@ -364,6 +378,10 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         public void eat() {
             recorder.record("Orange eaten");
+        }
+
+        public int magic() {
+            return 11;
         }
     }
 
@@ -379,20 +397,36 @@ public class DefaultPicoContainerTestCase extends TestCase {
         // Get the proxy for AppleFactory and OrangeFactory
         FoodFactory foodFactory = (FoodFactory) pico.getAggregateComponentProxy();
 
-// TODO uncomment this
-//        int foodFactoryCode = foodFactory.hashCode();
-//        assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
+        int foodFactoryCode = foodFactory.hashCode();
+        assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
 
         // Get the proxied Food and eat it. Should eat the orange and apple in one go.
         Food food = foodFactory.makeFood();
         food.eat();
 
         String s = food.toString();
-        assertNull("toString() should return null", s);
-        // Try to call a method returning a primitive.
+        assertTrue("toString() should return the result from the invocation handler", s.indexOf("AggregatingInvocationHandler") != -1);
 
-// TODO uncomment. Should be tested too
-//        int foodCode = food.hashCode();
+        // Try to call a hashCode on a "recursive" proxy.
+        int foodCode = food.hashCode();
+
+        // Try to call a method returning a primitive.
+        try {
+            int magic = food.magic();
+            fail("Should fail because there is no sensible return value");
+        } catch (UndeclaredThrowableException e) {
+            // That's expected, and ok.
+        }
+
+        // Get some booze. Should be ok since only one is Boozable
+        Boozable boozable = (Boozable) food;
+        assertEquals("Calvados", boozable.getBooze());
+
+        // Test hashCode() and equals(Object)
+        List list = new ArrayList();
+        list.add(food);
+        assertTrue(list.contains(food));
+        assertEquals(food, food);
 
         // Get the recorder so we can see if the apple and orange were actually eaten
         Recorder recorder = (Recorder) pico.getComponent(Recorder.class);

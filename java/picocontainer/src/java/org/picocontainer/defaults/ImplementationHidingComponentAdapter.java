@@ -76,8 +76,10 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             }
         }
         final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
-        return Proxy.newProxyInstance(getClass().getClassLoader(),
-                swappableAugmentedInterfaces, delegatingInvocationHandler);
+        return Proxy.newProxyInstance(
+                getClass().getClassLoader(),
+                swappableAugmentedInterfaces,
+                delegatingInvocationHandler);
     }
 
     private Object getDelegatedComponentInstance() {

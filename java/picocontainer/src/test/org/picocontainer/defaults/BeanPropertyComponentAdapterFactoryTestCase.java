@@ -135,7 +135,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
 
-        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter("foo", Foo.class, null);
+        BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter) factory.createComponentAdapter("foo", Foo.class, null);
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -160,7 +160,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(impl, impl, null);
+        BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter) factory.createComponentAdapter(impl, impl, null);
         adapter.setProperties(properties);
         return adapter;
     }
@@ -178,7 +178,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("boolean_", "true");
         properties.put("file_", "/foo/bar");
         properties.put("url_", "http://www.picocontainer.org/");
-        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(Primitives.class, Primitives.class, null);
+        BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter) factory.createComponentAdapter(Primitives.class, Primitives.class, null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives) adapter.getComponentInstance();
 
@@ -202,7 +202,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(A.class, A.class, null);
+        BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapterFactory.BeanPropertyComponentAdapter) factory.createComponentAdapter(A.class, A.class, null);
         adapter.setProperties(properties);
         picoContainer.registerComponent(adapter);
         A a = (A) picoContainer.getComponentInstance(A.class);

@@ -289,9 +289,10 @@ public class DefaultPicoPool implements PicoPool {
      * @see org.picoextras.pool.PicoPool#clearPool()
      */
     public void clearPool() {
-        Iterator iter = pico.getComponentKeys().iterator();
+        Iterator iter = pico.getComponentAdapters().iterator();
         while (iter.hasNext()) {
-            pico.unregisterComponent(iter.next());
+            final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+            pico.unregisterComponent(componentAdapter.getComponentKey());
         }
         activeMap.clear();
         poolKeys.clear();

@@ -27,7 +27,7 @@ import org.picocontainer.defaults.SimpleReference;
 /**
  * @author Stephen Molitor
  */
-public class AopNanoGroovyBuilderTestCase extends TestCase {
+public class AopNanoGroovyBuilderTestCase2 extends TestCase {
 
     public void testContainerScopedAdvice() throws PicoCompositionException {
         Reader script = new StringReader(
@@ -60,8 +60,9 @@ public class AopNanoGroovyBuilderTestCase extends TestCase {
                         + "cuts = builder.pointcuts()\n"
                         + "pico = builder.container() {\n"
                         + "    component(key:Dao, class:DaoImpl) {\n"
-                        + "        aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), mixinClass:IdentifiableMixin)\n"
-                        + "    }\n" + "}");
+                        + "        aspect(methodCut:cuts.allMethods(), mixinClass:IdentifiableMixin)\n"
+                        + "    }\n" 
+                        + "}");
 
         AspectablePicoContainer pico = (AspectablePicoContainer) buildContainer(new GroovyContainerBuilder(script,
                 getClass().getClassLoader()), null);

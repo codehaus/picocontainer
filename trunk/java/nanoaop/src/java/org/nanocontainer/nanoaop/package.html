@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<p>
+Nanoaop lets you configure aspects on components in a {@link org.picocontainer.PicoContainer}.  Two kinds of advice are supported, interceptors and mixins.   An interceptor is invoked around method calls.   Nanaop interceptors implement the <code>org.aopalliance.interceptor.MethodInterceptor</code> interface.  Mixins allow you to add new methods an behavior to an existing object.  You can think of them as a way of dynamically providing multiple inheritance in java.  Mixins can be any kind of object; they are not required to extend or implement anything.  You can configure aspects with nanoaop in Java, or using groovy.  Advice can be configured for all components in a container, using pointcuts, or advice can be applied to just one component.  Advice objects may themselves be components supplied by the container, with dependencies on other components.  Currently, nanoaop uses <a href="http://dynaop.dev.java.net">dynaop</a> to apply the aspects.  Other backends may be supported in the future.
+
+<h2>Configuring Aspects</h2>
+For the following examples, we'll use the following logging interceptor:
+
+<pre>
+    public class LoggingInterceptor implements import org.aopalliance.intercept.MethodInterceptor {
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            System.out.println("start");
+            Object result = invocation.proceed();
+            System.out.println("end");
+            return result;
+        }
+    }
+</pre>
+
+We'll also assume that we have a <code>Dao</code> interface, with an implementation class <code>DaoImpl</code>.  
+
+<h3>Java Configuration</h3>
+The primary interface for configuring aspects in Java is {@link org.nanocontainer.nanoaop.AspectablePicoContainer}.  To create one you need a {@link org.nanocontainer.nanoaop.AspectablePicoContainerFactory}.  The following example applies our logging interceptor to all methods of all instances of <code>Dao</code> in the container:
+
+<pre>
+    AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
+    AspectablePicoContainer pico = containerFactory.createContainer();
+    PointcutsFactory cuts = pico.getPointcutsFactory();
+    
+    LoggingInterceptor logger = new LoggingInterceptor();
+    pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+    pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), logger);
+
+    Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+    dao.aMethod(); // will print 'startend'
+</pre>
+
+If we wanted to apply our interceptor to just one component, we could do the following:
+
+<pre>
+    pico.registerComponentImplementation("myDao", DaoImpl.class);
+    pico.registerInterceptor(cuts.component(Dao.class), cuts.allMethods(), logger);
+</pre>
+
+Note that components and aspects can be registered in any order.  An aspect can be registered before the component it applies to.  In the example above, we could have reversed the two lines and registered the interceptor before the component.
+
+<p>
+Advice objects may themselves be components in the <code>PicoContainer</code>:
+
+<pre>
+    pico.registerComponentImplementation("logger", LoggingInterceptor.class);
+    pico.registerComponentImplementation("myDao", DaoImpl.class);
+
+    // you can specifyi the component key of the advice object:
+    pico.registerInterceptor(cuts.component(Dao.class), cuts.allMethods(), "logger");
+</pre>
+
+<h2>Groovy Configuration</h2>
+To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.groovy.AopNanoGroovyBuilder}.  Applying an interceptor to just one component might look something like this:
+
+<pre>
+    logger = new LoggingInterceptor()
+    builder = new AopNanoGroovyBuilder()
+    cuts = builder.pointcuts()
+
+    pico = builder.container() {
+        component(key:Dao, class:DaoImpl) {
+            aspect(methodCut:cuts.allMethods(), interceptor:logger)
+        }
+    }
+</pre>
+
+</body>
+</html>

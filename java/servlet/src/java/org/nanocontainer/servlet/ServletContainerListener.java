@@ -114,27 +114,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         return (ContainerBuilder) assemblerRef.get();
     }
 
-//    private ContainerComposer loadAssembler(ServletContext context) {
-//        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, BUILDER);
-//        //TODO Is this right? It still feel like a mouthful.
-//        String className = context.getInitParameter("picoextras-servlet-container-composer");
-//        ContainerComposer result = null;
-//        try {
-//            result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();
-//        } catch (Exception e) {
-//            // Don't use exception chaining to be JDK 1.3 compatible
-//            //TODO Use a PicoException derived exception (Paul)?
-//            throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
-//        }
-//        assemblerRef.set(result);
-//        return result;
-//    }
-//
-//    private ContainerComposer getAssembler(ServletContext context) {
-//        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-//        return (ContainerComposer) assemblerRef.get();
-//    }
-
     private void killContainer(ObjectReference containerRef) {
         if (containerRef.get() != null) {
             containerKiller.killContainer(containerRef);

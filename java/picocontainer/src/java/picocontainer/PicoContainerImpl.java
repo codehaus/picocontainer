@@ -20,13 +20,14 @@ import java.util.Iterator;
 
 public class PicoContainerImpl implements PicoContainer {
 
-    private Container parentContainer;
+    private final Container parentContainer;
     private final StartableLifecycleManager startableLifecycleManager;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
     private List orderedComps = new ArrayList();
 
-    public PicoContainerImpl(Container parentContainer, StartableLifecycleManager startableLifecycleManager) {
+    public PicoContainerImpl(Container parentContainer,
+            StartableLifecycleManager startableLifecycleManager) {
         this.parentContainer = parentContainer;
         this.startableLifecycleManager = startableLifecycleManager;
     }
@@ -124,8 +125,7 @@ public class PicoContainerImpl implements PicoContainer {
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();  //To change body of catch statement use Options | File Templates.
                     } catch (InvocationTargetException e) {
-                        e.getCause().printStackTrace();
-                        //e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                        throw new PicoInvocationTargetStartException(e);
                     } catch (InstantiationException e) {
                         e.printStackTrace();  //To change body of catch statement use Options | File Templates.
                     } catch (IllegalAccessException e) {
@@ -150,8 +150,6 @@ public class PicoContainerImpl implements PicoContainer {
             Object o = (Object) orderedComps.get(i);
             if (startableLifecycleManager != null) {
                 startableLifecycleManager.startComponent(o);
-            } else {
-                startComponent(o);
             }
         }
     }
@@ -161,8 +159,6 @@ public class PicoContainerImpl implements PicoContainer {
             Object o = (Object) orderedComps.get(i);
             if (startableLifecycleManager != null) {
                 startableLifecycleManager.stopComponent(o);
-            } else {
-                stopComponent(o);
             }
         }
     }
@@ -232,10 +228,5 @@ public class PicoContainerImpl implements PicoContainer {
         return componentTypeToInstanceMap.get(compType) != null;
     }
 
-    protected void startComponent(Object component) {
-    }
-
-    protected void stopComponent(Object component) {
-    }
 
 }

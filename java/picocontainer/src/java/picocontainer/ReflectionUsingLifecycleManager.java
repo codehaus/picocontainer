@@ -12,6 +12,7 @@ package picocontainer;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 public class ReflectionUsingLifecycleManager implements StartableLifecycleManager {
 
@@ -21,15 +22,17 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
     public void startComponent(Object component) throws PicoStartException {
         try {
             Method method = component.getClass().getMethod("start", NOPARMS);
-            method.invoke(component, NOARGS);
+            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+               method.invoke(component, NOARGS);
+            }
         } catch (NoSuchMethodException e) {
             // fine.
         } catch (SecurityException e) {
-            // could be running in applet space or other
+            throw new SecurityStartException(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            throw new IllegalStateException("Will never happen!");
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            throw new PicoInvocationTargetStartException(e.getCause());
         }
 
     }

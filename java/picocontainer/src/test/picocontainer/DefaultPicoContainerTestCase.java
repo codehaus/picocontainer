@@ -230,7 +230,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public void testOrderOfInstantiation() throws PicoRegistrationException, PicoStartException, PicoStopException {
 
-        OveriddenPicoTestContainer pico = new OveriddenPicoTestContainer(null);
+        OverriddenStartableLifecycleManager osm = new OverriddenStartableLifecycleManager();
+        OverriddenPicoTestContainer pico = new OverriddenPicoTestContainer(null, osm);
 
         pico.registerComponent(Four.class);
         pico.registerComponent(Two.class);
@@ -244,27 +245,27 @@ public class DefaultPicoContainerTestCase extends TestCase {
         One one = (One) pico.getComponent(One.class);
 
         // instantiation - would be difficult to do these in the wrong order!!
-        assertEquals("Should be four elems",one.getMsgs().size(),4);
+        assertEquals("Should be four elems",4,one.getMsgs().size());
         assertEquals("Incorrect Order of Instantiation", "One", one.getMsgs().get(0));
         assertEquals("Incorrect Order of Instantiation", "Two", one.getMsgs().get(1));
         assertEquals("Incorrect Order of Instantiation", "Three", one.getMsgs().get(2));
         assertEquals("Incorrect Order of Instantiation", "Four", one.getMsgs().get(3));
 
         // post instantiation startup
-        assertEquals("Should be four elems",pico.getStarted().size(),4);
-        assertEquals("Incorrect Order of Starting", One.class, pico.getStarted().get(0));
-        assertEquals("Incorrect Order of Starting", Two.class, pico.getStarted().get(1));
-        assertEquals("Incorrect Order of Starting", Three.class, pico.getStarted().get(2));
-        assertEquals("Incorrect Order of Starting", Four.class, pico.getStarted().get(3));
+        assertEquals("Should be four elems",4,osm.getStarted().size());
+        assertEquals("Incorrect Order of Starting", One.class, osm.getStarted().get(0));
+        assertEquals("Incorrect Order of Starting", Two.class, osm.getStarted().get(1));
+        assertEquals("Incorrect Order of Starting", Three.class, osm.getStarted().get(2));
+        assertEquals("Incorrect Order of Starting", Four.class, osm.getStarted().get(3));
 
         pico.stop();
 
         // post instantiation shutdown - REVERSE order.
-        assertEquals("Should be four elems",pico.getStopped().size(),4);
-        assertEquals("Incorrect Order of Stopping", Four.class, pico.getStopped().get(0));
-        assertEquals("Incorrect Order of Stopping", Three.class, pico.getStopped().get(1));
-        assertEquals("Incorrect Order of Stopping", Two.class, pico.getStopped().get(2));
-        assertEquals("Incorrect Order of Stopping", One.class, pico.getStopped().get(3));
+        assertEquals("Should be four elems",4,osm.getStopped().size());
+        assertEquals("Incorrect Order of Stopping", Four.class, osm.getStopped().get(0));
+        assertEquals("Incorrect Order of Stopping", Three.class, osm.getStopped().get(1));
+        assertEquals("Incorrect Order of Stopping", Two.class, osm.getStopped().get(2));
+        assertEquals("Incorrect Order of Stopping", One.class, osm.getStopped().get(3));
 
     }
 

@@ -48,15 +48,15 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * {@inheritDoc}
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
-                                       final Class componentImplementation,
-                                       Parameter[] parameters,
-                                       boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                           final Class componentImplementation,
+                                           Parameter[] parameters,
+                                           boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
     public SetterInjectionComponentAdapter(final Object componentKey,
-                                       final Class componentImplementation,
-                                       Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                           final Class componentImplementation,
+                                           Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, false);
     }
 
@@ -72,8 +72,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         } catch (SecurityException e) {
             throw new PicoInvocationTargetInitializationException(e);
         }
-        
-        if(setters == null) {
+
+        if (setters == null) {
             initializeSetterAndTypeLists();
         }
 
@@ -83,7 +83,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
-            for(int j = 0; j < setterTypes.length; j++) {
+            for (int j = 0; j < setterTypes.length; j++) {
                 if (matchingTypeList.get(j) == null) {
                     final ComponentAdapter adapter = parameter.resolveAdapter(getContainer(), setterTypes[j]);
                     if (adapter != null && !adapter.equals(this) && !getComponentKey().equals(adapter.getComponentKey())) {
@@ -93,11 +93,11 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                     }
                 }
             }
-            if(failedDependency) {
+            if (failedDependency) {
                 nonMatchingParameterPositions.add(new Integer(i));
             }
         }
-        
+
         final Set unsatisfiableDependencyTypes = new HashSet();
         for (int i = 0; i < matchingTypeList.size(); i++) {
             if (matchingTypeList.get(i) == null) {
@@ -110,7 +110,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
 
         if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoInitializationException("Following parameters do not match any of the setters for "
-                    + getComponentImplementation() +  ": " + nonMatchingParameterPositions.toString());
+                    + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         adapterInstantiationOrderTrackingList.addAll(matchingTypeList);
         return constructor;
@@ -128,9 +128,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             instantiating = true;
             final Object componentInstance = newInstance(constructor, null);
             for (int i = 0; i < setters.size(); i++) {
-                final Method setter = (Method)setters.get(i);
-                final ComponentAdapter adapter = (ComponentAdapter)adapterInstantiationOrderTrackingList.get(i);
-                setter.invoke(componentInstance, new Object[]{ adapter.getComponentInstance() });
+                final Method setter = (Method) setters.get(i);
+                final ComponentAdapter adapter = (ComponentAdapter) adapterInstantiationOrderTrackingList.get(i);
+                setter.invoke(componentInstance, new Object[]{adapter.getComponentInstance()});
             }
 
             return componentInstance;
@@ -160,16 +160,16 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             final Class[] parameterTypes = method.getParameterTypes();
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
-                String methodName = method.getName();   
+                String methodName = method.getName();
                 boolean isBeanStyle = methodName.length() >= 4 && methodName.startsWith("set") && Character.isUpperCase(methodName.charAt(3));
                 if (isBeanStyle) {
-                    String attribute = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4); 
+                    String attribute = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
                     setters.add(method);
                     setterNames.add(attribute);
                     typeList.add(parameterTypes[0]);
                 }
             }
         }
-        setterTypes = (Class[])typeList.toArray(new Class[0]);
+        setterTypes = (Class[]) typeList.toArray(new Class[0]);
     }
 }

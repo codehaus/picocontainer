@@ -21,7 +21,7 @@ public class ChainingDispatcher implements Dispatcher {
         for (int i = 0; i < views.length; i++) {
             String view = views[i];
             URL viewURL = servletContext.getResource(view);
-            if(viewURL != null) {
+            if (viewURL != null) {
                 RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(view);
                 if (httpServletRequest.getAttribute("javax.servlet.include.servlet_path") == null) {
                     requestDispatcher.forward(httpServletRequest, httpServletResponse);

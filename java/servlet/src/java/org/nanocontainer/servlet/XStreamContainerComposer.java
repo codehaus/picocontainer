@@ -24,29 +24,29 @@ import java.io.InputStreamReader;
 /**
  * container composer reading from xml files via xstream. it pulls configuration from
  * xml files placed on classpath of web application ( WEB-INF/classes/ ) , and their names are:
- * nano-application.xml , nano-session.xml and nano-request.xml 
+ * nano-application.xml , nano-session.xml and nano-request.xml
  *
- * @author Konstantin Pribluda ( konstantin[at]infodesire.com ) 
+ * @author Konstantin Pribluda ( konstantin[at]infodesire.com )
  * @version $Revision$
  */
 public class XStreamContainerComposer implements ContainerComposer {
-	
-	// for now, we just use hardvired configuration files. 
+
+    // for now, we just use hardvired configuration files.
     public final static String APPLICATION_CONFIG = "nano-application.xml";
     public final static String SESSION_CONFIG = "nano-session.xml";
     public final static String REQUEST_CONFIG = "nano-request.xml";
-	
-	
-	// request and session level container recorders. 
-	// we do not need one for application scope - this happens really seldom
+
+
+    // request and session level container recorders.
+    // we do not need one for application scope - this happens really seldom
     private ContainerRecorder requestRecorder;
     private ContainerRecorder sessionRecorder;
-	
+
     /**
      * Constructor for the ContainerAssembler object
      */
     public XStreamContainerComposer() {
-		
+
         requestRecorder = new ContainerRecorder(new DefaultPicoContainer());
         sessionRecorder = new ContainerRecorder(new DefaultPicoContainer());
 		
@@ -57,30 +57,28 @@ public class XStreamContainerComposer implements ContainerComposer {
         // create and populate session scope
         XStreamContainerBuilder sessionBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(SESSION_CONFIG)), Thread.currentThread().getContextClassLoader());
         sessionBuilder.populateContainer(sessionRecorder.getContainerProxy());
-		
-	}
-	
- 	/**
-     * compose desired container 
+
+    }
+
+    /**
+     * compose desired container
      *
-     * @param container  Description of Parameter
-     * @param scope      Description of Parameter
+     * @param container Description of Parameter
+     * @param scope     Description of Parameter
      */
     public void composeContainer(MutablePicoContainer container, Object scope) {
-		
+
         if (scope instanceof ServletContext) {
 
             XStreamContainerBuilder appBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(APPLICATION_CONFIG)), Thread.currentThread().getContextClassLoader());
             appBuilder.populateContainer(container);
-        }
-        else if (scope instanceof HttpSession) {
-			try {
+        } else if (scope instanceof HttpSession) {
+            try {
                 sessionRecorder.replay(container);
             } catch (Exception ex) {
                 throw new PicoCompositionException("session container composition failed", ex);
             }
-        }
-        else if (scope instanceof HttpServletRequest) {
+        } else if (scope instanceof HttpServletRequest) {
             try {
                 requestRecorder.replay(container);
             } catch (Exception ex) {

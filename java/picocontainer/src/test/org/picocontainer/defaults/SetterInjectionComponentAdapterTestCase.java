@@ -164,7 +164,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
 
         protected RecordingLifecycle() {
         }
-        
+
         public void setRecording(StringBuffer recording) {
             this.recording = recording;
         }
@@ -195,6 +195,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     public static class Two extends RecordingLifecycle {
         public Two() {
         }
+
         public void setOne(One one) {
         }
     }
@@ -202,8 +203,10 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     public static class Three extends RecordingLifecycle {
         public Three() {
         }
+
         public void setOne(One one) {
         }
+
         public void setTwo(Two two) {
         }
     }
@@ -211,22 +214,21 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     public static class Four extends RecordingLifecycle {
         public Four() {
         }
+
         public void setOne(One one) {
         }
+
         public void setTwo(Two two) {
         }
+
         public void setThree(Three three) {
         }
     }
 
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(
-                new CachingComponentAdapterFactory(
-                        new SetterInjectionComponentAdapterFactory()));
-        pico.registerComponent(
-                new CachingComponentAdapter(
-                        new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
+        pico.registerComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
         pico.registerComponentImplementation(Four.class);
         pico.registerComponentImplementation(Two.class);
         pico.registerComponentImplementation(One.class);
@@ -242,12 +244,8 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
 
     public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(
-                new CachingComponentAdapterFactory(
-                        new SetterInjectionComponentAdapterFactory()));
-        pico.registerComponent(
-                new CachingComponentAdapter(
-                        new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
+        pico.registerComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
         pico.registerComponentImplementation(Four.class);
         pico.registerComponentImplementation(Two.class);
         pico.registerComponentImplementation(One.class);
@@ -286,9 +284,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
 
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
-        MutablePicoContainer pico = new DefaultPicoContainer(
-                new CachingComponentAdapterFactory(
-                            new SetterInjectionComponentAdapterFactory()));
+        MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
 
         pico.registerComponentImplementation(Yin.class);
         pico.registerComponentImplementation(Yang.class);

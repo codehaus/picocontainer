@@ -27,8 +27,7 @@ import java.io.StringReader;
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testSimpleConfigurationIsPossible() {
-        Reader script = new StringReader(
-                "from org.nanocontainer.testmodel import *\n" +
+        Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation(WebServerImpl)\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n");

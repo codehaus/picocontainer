@@ -25,10 +25,10 @@ public class ContextComboBox extends JComboBox {
         super(model);
         this.model = model;
         setEditable(true);
-        setEditor(new BasicComboBoxEditor(){
+        setEditor(new BasicComboBoxEditor() {
             {
                 textField = (JTextField) getEditorComponent();
-                textField.getDocument().addDocumentListener(new DocumentListener(){
+                textField.getDocument().addDocumentListener(new DocumentListener() {
                     public void changedUpdate(DocumentEvent e) {
                         updatePopup();
                     }
@@ -42,13 +42,13 @@ public class ContextComboBox extends JComboBox {
                     }
                 });
 
-                textField.addActionListener(new ActionListener(){
+                textField.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("item = " + item);
                         setSelectedItem(item);
-                        updateField=false;
+                        updateField = false;
                         textField.setText(item.toString());
-                        updateField=true;
+                        updateField = true;
                     }
                 });
             }
@@ -71,7 +71,7 @@ public class ContextComboBox extends JComboBox {
                 public void run() {
                     model.setFilter(text);
                     hidePopup();
-                    if(model.getSize() > 0) {
+                    if (model.getSize() > 0) {
                         showPopup();
                         setSelectedIndex(0);
                         repaint();

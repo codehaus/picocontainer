@@ -12,14 +12,13 @@ package org.picocontainer;
  * this interface is used inside a {@link PicoContainer} for every registered component or instance.  Each
  * <code>ComponentAdapter</code> instance has to have a key which is unique within that container. The key itself is
  * either a class type (normally an interface) or an identifier.
- * 
- * @see MutablePicoContainer an extension of the PicoContainer interface which allows you to modify the contents of the
- *      container.
-
+ *
  * @author Jon Tirs&eacute;n
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
+ * @see MutablePicoContainer an extension of the PicoContainer interface which allows you to modify the contents of the
+ *      container.
  * @since 1.0
  */
 public interface ComponentAdapter {
@@ -70,9 +69,8 @@ public interface ComponentAdapter {
     /**
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
      * checking that the associated PicoContainer contains all the needed dependnecies.
-     * 
-     * @throws PicoVerificationException
-     *          if one or more dependencies cannot be resolved.
+     *
+     * @throws PicoVerificationException if one or more dependencies cannot be resolved.
      */
     void verify() throws PicoVerificationException;
 }

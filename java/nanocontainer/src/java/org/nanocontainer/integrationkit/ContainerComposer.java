@@ -14,6 +14,7 @@ import org.picocontainer.MutablePicoContainer;
  * Interface for composing a container.
  * See <a href="http://wiki.opensymphony.com/space/PicoContainer+Integration">WebWork PicoContainer Integration</a>
  * for sample usage.
+ *
  * @author Joe Walnes <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public interface ContainerComposer {
@@ -22,9 +23,9 @@ public interface ContainerComposer {
      * Compose the container. This typically involves assembly (registration)
      * and configuration (setting primitive arguments) of components.
      *
-     * @param container container to compose
+     * @param container        container to compose
      * @param compositionScope scope of the container. This variable can be used as a hint to determine
-     *      exactly what components should be registered.
+     *                         exactly what components should be registered.
      */
     void composeContainer(MutablePicoContainer container, Object compositionScope);
 

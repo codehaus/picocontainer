@@ -14,6 +14,7 @@ public class ClientInvoker implements Invoker {
     private final ByRefKey key;
     private final RemotingInterceptor interceptor;
     private static Method getKey;
+
     {
         try {
             getKey = KeyHolder.class.getMethod("getKey", null);
@@ -28,7 +29,7 @@ public class ClientInvoker implements Invoker {
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if(getKey.equals(method)) {
+        if (getKey.equals(method)) {
             return key;
         }
         Invocation invocation = new Invocation(method.getName(), method.getParameterTypes(), args);

@@ -28,7 +28,7 @@ import java.util.Set;
 
 /**
  * Instantiates components using Constructor Injection.
- * <p>
+ * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
@@ -50,9 +50,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * will be used.
      */
     public ConstructorInjectionComponentAdapter(final Object componentKey,
-                                       final Class componentImplementation,
-                                       Parameter[] parameters,
-                                       boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                                final Class componentImplementation,
+                                                Parameter[] parameters,
+                                                boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
@@ -64,7 +64,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * Use default parameters.
      */
     public ConstructorInjectionComponentAdapter(Object componentKey,
-                                       Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                                Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
@@ -72,7 +72,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
-        if(sortedMatchingConstructors == null) {
+        if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
@@ -115,7 +115,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 }
             }
             if (!failedDependency) {
-                if(conflicts.size() == 0 && greediestConstructor == null) {
+                if (conflicts.size() == 0 && greediestConstructor == null) {
                     greediestConstructor = constructor;
                     adapterInstantiationOrderTrackingList.addAll(adapterDependencies);
                 } else if (conflicts.size() == 0 && greediestConstructor.getParameterTypes().length > parameterTypes.length) {
@@ -123,7 +123,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                     break;
                 } else {
                     if (greediestConstructor != null) {
-                    	conflicts.add(greediestConstructor);
+                        conflicts.add(greediestConstructor);
                         greediestConstructor = null;
                     }
                     conflicts.add(constructor);
@@ -158,7 +158,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     private ComponentAdapter getGenericCollectionComponentAdapter(Class componentType) {
-        if(getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
+        if (getContainer().getComponentAdaptersOfType(componentType).size() == 0) {
             return null;
         } else {
             Object componentKey = new Object[]{this, componentType};
@@ -223,7 +223,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         }
         return result;
     }
-    
+
     private List getSortedMatchingConstructors() {
         List matchingConstructors = new ArrayList();
         Constructor[] allConstructors = getComponentImplementation().getDeclaredConstructors();
@@ -238,7 +238,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (parameters == null) {
             Collections.sort(matchingConstructors, new Comparator() {
                 public int compare(Object arg0, Object arg1) {
-                    return ((Constructor)arg1).getParameterTypes().length - ((Constructor)arg0).getParameterTypes().length;
+                    return ((Constructor) arg1).getParameterTypes().length - ((Constructor) arg0).getParameterTypes().length;
                 }
             });
         }

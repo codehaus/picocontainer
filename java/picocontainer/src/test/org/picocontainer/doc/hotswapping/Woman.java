@@ -1,7 +1,6 @@
 package org.picocontainer.doc.hotswapping;
 
 
-
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -10,4 +9,5 @@ package org.picocontainer.doc.hotswapping;
 public interface Woman {
     Man getMan();
 }
+
 // END SNIPPET: class

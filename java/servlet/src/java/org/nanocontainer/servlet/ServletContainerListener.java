@@ -69,12 +69,12 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();
-            if(initParameter.startsWith("nanocontainer")) {
+            if (initParameter.startsWith("nanocontainer")) {
                 String extension = initParameter.substring(initParameter.lastIndexOf('.'));
                 String builderClassName = NanoContainer.getBuilderClassName(extension);
                 String script = context.getInitParameter(initParameter);
                 Reader scriptReader;
-                if(script.trim().startsWith("/") && !(script.trim().startsWith("//") || script.trim().startsWith("/*"))) {
+                if (script.trim().startsWith("/") && !(script.trim().startsWith("//") || script.trim().startsWith("/*"))) {
                     // the script isn't inlined, but in a separate file.
                     scriptReader = new InputStreamReader(context.getResourceAsStream(script));
                 } else {
@@ -83,7 +83,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
                 return nanoContainer.getContainerBuilder();
             }
-            if(initParameter.equals(ContainerComposer.class.getName())) {
+            if (initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
                 ContainerComposer containerComposer = (ContainerComposer) Thread.currentThread().getContextClassLoader().loadClass(containerComposerClassName).newInstance();
                 return new DefaultLifecycleContainerBuilder(containerComposer);
@@ -146,5 +146,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         }
     }
 
-    private abstract class ContainerKillerHelper implements HttpSessionBindingListener, Serializable {}
+    private abstract class ContainerKillerHelper implements HttpSessionBindingListener, Serializable {
+    }
 }

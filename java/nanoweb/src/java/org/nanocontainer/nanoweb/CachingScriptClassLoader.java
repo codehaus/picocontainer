@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * Loads classes from scripts and caches them based on the URL's
  * timestamp.
+ *
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
  * @version $Revision$
@@ -27,13 +28,13 @@ public class CachingScriptClassLoader {
         String urlAsString = scriptURL.toExternalForm();
         URLConnection urlConnection = scriptURL.openConnection();
         Long lastLoaded = (Long) scriptLoadTimestamps.get(urlAsString);
-        if(lastLoaded == null) {
+        if (lastLoaded == null) {
             lastLoaded = NEVER;
         }
 
         // Reload the class or reuse the cached class if the scriptURL hasn't changed.
         Class scriptClass;
-        if(lastLoaded.longValue() < urlConnection.getLastModified()) {
+        if (lastLoaded.longValue() < urlConnection.getLastModified()) {
             scriptClass = loadAndCache(scriptURL, urlConnection);
         } else {
             scriptClass = (Class) scriptClasses.get(urlAsString);

@@ -35,7 +35,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import java.io.Serializable;
 
 /**
- *  <p><code>PicoPoolComponentAdapterFactory</code> TODO (document class)
+ * <p><code>PicoPoolComponentAdapterFactory</code> TODO (document class)
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
@@ -62,10 +62,9 @@ public class PicoPoolComponentAdapterFactory implements ComponentAdapterFactory,
     /* (non-Javadoc)
      * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
      */
-    public ComponentAdapter createComponentAdapter(
-            Object componentKey,
-            Class componentImplementation,
-            Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey,
+                                                   Class componentImplementation,
+                                                   Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (pool == null) {
             pool = new DefaultPicoPool(componentImplementation);

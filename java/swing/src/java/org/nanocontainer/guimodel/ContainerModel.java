@@ -71,7 +71,7 @@ public class ContainerModel {
         int i = 0;
         for (Iterator it = componentAdapters.iterator(); it.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) it.next();
-            if(componentAdapter instanceof InstanceComponentAdapter) {
+            if (componentAdapter instanceof InstanceComponentAdapter) {
                 InstanceComponentAdapter instanceComponentAdapter = (InstanceComponentAdapter) componentAdapter;
                 result[i++] = instanceComponentAdapter.getComponentInstance();
             } else {

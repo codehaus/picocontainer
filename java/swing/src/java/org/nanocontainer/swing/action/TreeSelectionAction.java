@@ -42,7 +42,7 @@ public abstract class TreeSelectionAction extends AbstractAction {
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 selected = e.getPath().getLastPathComponent();
-                if(selected instanceof MutablePicoContainer) {
+                if (selected instanceof MutablePicoContainer) {
                     selectedContainer = (MutablePicoContainer) selected;
                     selectedAdapter = null;
                 } else {

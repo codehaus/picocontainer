@@ -53,8 +53,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
-        reflectionFrontEnd.registerComponentImplementation(
-                "thing",
+        reflectionFrontEnd.registerComponentImplementation("thing",
                 className,
                 new String[]{
                     "java.lang.String",
@@ -63,8 +62,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
                 new String[]{
                     "hello",
                     "22"
-                }
-        );
+                });
 
         ThingThatTakesParamsInConstructor thing =
                 (ThingThatTakesParamsInConstructor) reflectionFrontEnd.getPicoContainer().getComponentInstance("thing");

@@ -52,12 +52,12 @@ public class ReferenceTestCase extends MockObjectTestCase {
     private Mock createMock(final Class clazz) {
         Mock mock = mock(clazz);
         mock.expects(once())
-            .method("setAttribute")
-            .with(eq(key), eq(value));
+                .method("setAttribute")
+                .with(eq(key), eq(value));
         mock.expects(once())
-            .method("getAttribute")
-            .with(eq(key))
-            .will(returnValue(value));
+                .method("getAttribute")
+                .with(eq(key))
+                .will(returnValue(value));
         return mock;
     }
 

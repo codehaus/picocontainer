@@ -34,7 +34,7 @@ public class RegisterComponentAction extends TreeSelectionAction {
         if (className != null) {
             try {
                 Class componentImplementation = componentClassLoader.loadClass(className);
-                ComponentAdapter ca = selectedContainer.registerComponentImplementation("" + i++,  componentImplementation);
+                ComponentAdapter ca = selectedContainer.registerComponentImplementation("" + i++, componentImplementation);
                 containerTreeModel.fire(ca);
             } catch (Exception e) {
                 e.printStackTrace();

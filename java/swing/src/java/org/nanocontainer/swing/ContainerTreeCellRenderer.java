@@ -33,30 +33,29 @@ import java.beans.Introspector;
  * @version $Revision$
  */
 public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
-	private final Icon picoContainerIcon = IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false);
-	private final Icon componentIcon;
+    private final Icon picoContainerIcon = IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false);
+    private final Icon componentIcon;
 
     public ContainerTreeCellRenderer(Icon componentIcon) {
         this.componentIcon = componentIcon;
     }
 
-	public Component getTreeCellRendererComponent(
-		JTree tree,
-		Object value,
-		boolean selected,
-		boolean expanded,
-		boolean leaf,
-		int row,
-		boolean hasFocus) {
-		JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    public Component getTreeCellRendererComponent(JTree tree,
+                                                  Object value,
+                                                  boolean selected,
+                                                  boolean expanded,
+                                                  boolean leaf,
+                                                  int row,
+                                                  boolean hasFocus) {
+        JLabel label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
-		if (value instanceof PicoContainer) {
-			label.setText("PicoContainer");
-			this.setIcon(picoContainerIcon);
-		} else if (value instanceof ComponentAdapter) {
+        if (value instanceof PicoContainer) {
+            label.setText("PicoContainer");
+            this.setIcon(picoContainerIcon);
+        } else if (value instanceof ComponentAdapter) {
             ComponentAdapter componentAdapter = (ComponentAdapter) value;
             TreeModel model = tree.getModel();
-            if(model.isLeaf(value)) {
+            if (model.isLeaf(value)) {
                 label.setText(componentAdapter.getComponentImplementation().getName());
                 try {
                     componentAdapter.verify();
@@ -67,25 +66,25 @@ public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
             } else {
                 label.setText(componentAdapter.getClass().getName());
             }
-			this.setIcon(componentIcon);
-		} else if(value instanceof Class) {
+            this.setIcon(componentIcon);
+        } else if (value instanceof Class) {
             Class clazz = (Class) value;
             label.setText(clazz.getName());
         } else {
-			try {
-				BeanInfo beanInfo = Introspector.getBeanInfo(value.getClass());
-				Image image = beanInfo.getIcon(BeanInfo.ICON_COLOR_16x16);
-				Icon icon;
-				if (image != null) {
-					icon = new ImageIcon(image);
-				} else {
-					icon = componentIcon;
-				}
-				this.setIcon(icon);
-			} catch (IntrospectionException ie) {
-				// Do nothing
-			}
-		}
-		return label;
-	}
+            try {
+                BeanInfo beanInfo = Introspector.getBeanInfo(value.getClass());
+                Image image = beanInfo.getIcon(BeanInfo.ICON_COLOR_16x16);
+                Icon icon;
+                if (image != null) {
+                    icon = new ImageIcon(image);
+                } else {
+                    icon = componentIcon;
+                }
+                this.setIcon(icon);
+            } catch (IntrospectionException ie) {
+                // Do nothing
+            }
+        }
+        return label;
+    }
 }

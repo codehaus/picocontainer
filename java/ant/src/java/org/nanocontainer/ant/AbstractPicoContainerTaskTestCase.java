@@ -14,6 +14,7 @@ import org.apache.tools.ant.Project;
 
 /**
  * Base class for testing of PicoContainerTask implementations.
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

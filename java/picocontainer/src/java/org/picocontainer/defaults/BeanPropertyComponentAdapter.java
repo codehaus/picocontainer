@@ -22,13 +22,14 @@ import java.util.Set;
  * on a component. These properties must be managed manually by the user of the API,
  * and will not be managed by PicoContainer. This class is therefore <em>not</em>
  * the same as {@link SetterInjectionComponentAdapter}, which is a true Setter Injection adapter.
- * <p>
+ * <p/>
  * This adapter is mostly handy for setting various primitive properties via setters.
- * <p>
+ * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
  * </em>
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

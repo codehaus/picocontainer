@@ -15,8 +15,8 @@ public class HierarchyTestCase extends TestCase {
             // START SNIPPET: wontwork
             // Create x hierarchy of containers
             MutablePicoContainer x = new DefaultPicoContainer();
-            MutablePicoContainer y = new DefaultPicoContainer( x );
-            MutablePicoContainer z = new DefaultPicoContainer( x );
+            MutablePicoContainer y = new DefaultPicoContainer(x);
+            MutablePicoContainer z = new DefaultPicoContainer(x);
 
             // Assemble components
             x.registerComponentImplementation(Apple.class);

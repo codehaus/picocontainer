@@ -27,22 +27,22 @@ import java.util.Collections;
 /**
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation
  * (and possibly also initialisation) of component instances.
- * <p>
+ * <p/>
  * When {@link org.picocontainer.ComponentAdapter#getComponentInstance} is called (by PicoContainer),
  * the adapter instance will look for a script with the same name as the component implementation
  * class (but with the .bsh extension). This script must reside in the same folder as the class.
  * (It's ok to have them both in a jar).
- * <p>
+ * <p/>
  * The bsh script's only contract is that it will have to instantiate a bsh variable called
  * "instance".
- * <p>
+ * <p/>
  * The script will have access to the following variables:
  * <ul>
- *   <li>adapter - the adapter calling the script</li>
- *   <li>picoContainer - the MutablePicoContainer calling the adapter</li>
- *   <li>componentKey - the component key</li>
- *   <li>componentImplementation - the component implementation</li>
- *   <li>parameters - the ComponentParameters (as a List)</li>
+ * <li>adapter - the adapter calling the script</li>
+ * <li>picoContainer - the MutablePicoContainer calling the adapter</li>
+ * <li>componentKey - the component key</li>
+ * <li>componentImplementation - the component implementation</li>
+ * <li>parameters - the ComponentParameters (as a List)</li>
  * </ul>
  *
  * @author <a href="mail at leosimons dot com">Leo Simons</a>

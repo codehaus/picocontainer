@@ -11,9 +11,10 @@ package org.nanocontainer.pool2;
 
 /**
  * An interface automatically implemented by the Proxy instances returned
- * from an auto-releasing pool.  It is not necessary to implement this interface 
- * in a custom class. Cast the instance to this interface if you want to release 
+ * from an auto-releasing pool.  It is not necessary to implement this interface
+ * in a custom class. Cast the instance to this interface if you want to release
  * the instance explicitly.
+ *
  * @author J&ouml;rg Schaible
  */
 public interface PooledInstance {

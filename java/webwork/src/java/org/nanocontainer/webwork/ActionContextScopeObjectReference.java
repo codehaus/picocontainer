@@ -22,7 +22,7 @@ public class ActionContextScopeObjectReference implements ObjectReference {
     }
 
     public Object get() {
-        return  ActionContext.getContext().get(key);
+        return ActionContext.getContext().get(key);
     }
 
 }

@@ -26,12 +26,12 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
  * In any case, the proxy will also implement
  * {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making it possible to swap out the underlying
  * subject at runtime.
- * <p>
+ * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link org.picocontainer.defaults.CachingComponentAdapter} around this one.
  * </em>
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -48,7 +48,7 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
         }
 
         public Object get() {
-            if(value == null) {
+            if (value == null) {
                 value = delegate.getComponentInstance();
             }
             return value;
@@ -70,7 +70,7 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
 
     public Object getComponentInstance() {
         Class[] proxyTypes;
-        if(getComponentKey() instanceof Class && proxyFactory.canProxy((Class) getComponentKey())) {
+        if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class) getComponentKey())) {
             proxyTypes = new Class[]{(Class) getComponentKey()};
         } else {
             proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), getComponentImplementation().getInterfaces(), proxyFactory);

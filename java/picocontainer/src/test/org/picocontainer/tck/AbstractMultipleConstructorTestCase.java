@@ -56,7 +56,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         public Multi(One one, int i) {
             message = "one int";
         }
-        
+
         public Multi() {
             message = "none";
         }
@@ -117,23 +117,23 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 
     public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException, PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation("MultiOneTwo", Multi.class, new Parameter[] {
-                new ComponentParameter(),
-                new ComponentParameter("Two"),
+        pico.registerComponentImplementation("MultiOneTwo", Multi.class, new Parameter[]{
+            new ComponentParameter(),
+            new ComponentParameter("Two"),
         });
-        pico.registerComponentImplementation("MultiTwoOne", Multi.class, new Parameter[] {
-                new ComponentParameter("Two"),
-                new ComponentParameter(),
+        pico.registerComponentImplementation("MultiTwoOne", Multi.class, new Parameter[]{
+            new ComponentParameter("Two"),
+            new ComponentParameter(),
         });
-        pico.registerComponentImplementation("MultiOneString", Multi.class, new Parameter[] {
-                new ComponentParameter(),
-                new ConstantParameter(""),
+        pico.registerComponentImplementation("MultiOneString", Multi.class, new Parameter[]{
+            new ComponentParameter(),
+            new ConstantParameter(""),
         });
-        pico.registerComponentImplementation("MultiOneInt", Multi.class, new Parameter[] {
-                new ComponentParameter(),
-                new ConstantParameter(new Integer(5)),
+        pico.registerComponentImplementation("MultiOneInt", Multi.class, new Parameter[]{
+            new ComponentParameter(),
+            new ConstantParameter(new Integer(5)),
         });
-        pico.registerComponentImplementation("MultiNone", Multi.class, new Parameter[] { });
+        pico.registerComponentImplementation("MultiNone", Multi.class, new Parameter[]{});
         pico.registerComponentImplementation(One.class);
         pico.registerComponentImplementation("Two", Two.class);
 

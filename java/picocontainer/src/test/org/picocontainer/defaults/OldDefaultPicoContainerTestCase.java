@@ -254,8 +254,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
     public void testParameterCanBePassedToConstructor() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation(
-                Animal.class,
+        pico.registerComponentImplementation(Animal.class,
                 Dino.class,
                 new Parameter[]{
                     new ConstantParameter("bones")

@@ -10,4 +10,5 @@ public class Superman implements Man {
         return 1000;
     }
 }
+
 // START SNIPPET: class

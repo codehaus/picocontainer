@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 
 /**
- *  <p><code>PooledPicoContainerTestCase</code> tests behaviour of the DefaultPicoPool
+ * <p><code>PooledPicoContainerTestCase</code> tests behaviour of the DefaultPicoPool
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
@@ -29,8 +29,7 @@ public class PicoPoolTestCase extends TestCase {
     public void testCreatePoolWithPico() {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
-        PicoPoolConfiguration config = new PicoPoolConfiguration(
-                WilmaImpl.class, 3, DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
+        PicoPoolConfiguration config = new PicoPoolConfiguration(WilmaImpl.class, 3, DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
                 0, null, null);
 
         pico.registerComponentInstance(config);
@@ -76,14 +75,12 @@ public class PicoPoolTestCase extends TestCase {
         long poolExpiry = 1000;
 
         DefaultPicoPool pool =
-                new DefaultPicoPool(
-                        new PicoPoolConfiguration(
-                                WilmaImpl.class,
-                                2,
-                                DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
-                                poolExpiry,
-                                null,
-                                null));
+                new DefaultPicoPool(new PicoPoolConfiguration(WilmaImpl.class,
+                        2,
+                        DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
+                        poolExpiry,
+                        null,
+                        null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.BLOCK_WHEN_EXHAUSTED);
 
@@ -106,14 +103,12 @@ public class PicoPoolTestCase extends TestCase {
         long poolExpiry = 2000;
 
         DefaultPicoPool pool =
-                new DefaultPicoPool(
-                        new PicoPoolConfiguration(
-                                WilmaImpl.class,
-                                2,
-                                DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
-                                poolExpiry,
-                                null,
-                                null));
+                new DefaultPicoPool(new PicoPoolConfiguration(WilmaImpl.class,
+                        2,
+                        DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
+                        poolExpiry,
+                        null,
+                        null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.BLOCK_WHEN_EXHAUSTED);
 
@@ -141,14 +136,12 @@ public class PicoPoolTestCase extends TestCase {
 
     public void testGrowOnExhaust() {
         DefaultPicoPool pool =
-                new DefaultPicoPool(
-                        new PicoPoolConfiguration(
-                                WilmaImpl.class,
-                                2,
-                                DefaultPicoPool.GROW_WHEN_EXHAUSTED,
-                                0,
-                                null,
-                                null));
+                new DefaultPicoPool(new PicoPoolConfiguration(WilmaImpl.class,
+                        2,
+                        DefaultPicoPool.GROW_WHEN_EXHAUSTED,
+                        0,
+                        null,
+                        null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.GROW_WHEN_EXHAUSTED);
 
@@ -168,14 +161,12 @@ public class PicoPoolTestCase extends TestCase {
         pico.registerComponentImplementation(WilmaImpl.class);
 
         DefaultPicoPool pool =
-                new DefaultPicoPool(
-                        new PicoPoolConfiguration(
-                                FredImpl.class,
-                                2,
-                                DefaultPicoPool.GROW_WHEN_EXHAUSTED,
-                                0,
-                                null,
-                                pico));
+                new DefaultPicoPool(new PicoPoolConfiguration(FredImpl.class,
+                        2,
+                        DefaultPicoPool.GROW_WHEN_EXHAUSTED,
+                        0,
+                        null,
+                        pico));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.GROW_WHEN_EXHAUSTED);
         assertEquals(0, pool.getSize());
@@ -191,14 +182,12 @@ public class PicoPoolTestCase extends TestCase {
         pico.registerComponentImplementation(WilmaImpl.class);
 
         DefaultPicoPool pool =
-                new DefaultPicoPool(
-                        new PicoPoolConfiguration(
-                                FredImpl.class,
-                                2,
-                                DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
-                                0,
-                                null,
-                                pico));
+                new DefaultPicoPool(new PicoPoolConfiguration(FredImpl.class,
+                        2,
+                        DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
+                        0,
+                        null,
+                        pico));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.FAIL_WHEN_EXHAUSTED);
         assertEquals(0, pool.getSize());

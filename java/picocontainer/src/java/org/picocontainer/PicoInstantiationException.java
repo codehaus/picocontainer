@@ -17,14 +17,14 @@ package org.picocontainer;
  * 
  * @version $Revision$
  * @since 1.0
- */ 
+ */
 public class PicoInstantiationException extends PicoInitializationException {
     /**
      * Construct a new exception with the specified cause and the specified detail message.
-     * 
-     * @param message the message detailing the exception. 
-     * @param cause the exception that caused this one.
-     */ 
+     *
+     * @param message the message detailing the exception.
+     * @param cause   the exception that caused this one.
+     */
     protected PicoInstantiationException(final String message, final Throwable cause) {
         super(message, cause);
     }

@@ -13,45 +13,44 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 
 /**
- * implementors provide session session  management. 
+ * implementors provide session session  management.
  *
- * @author    Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version   $Revision$
+ * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
+ * @version $Revision$
  */
 public interface SessionProvider {
-	
+
     /**
-     * provide hibernate session out of factory create new one if necessary, 
+     * provide hibernate session out of factory create new one if necessary,
      *
-     * @return                        The Session value
-     * @exception HibernateException  Description of Exception
+     * @return The Session value
+     * @throws HibernateException Description of Exception
      */
     Session getSession() throws HibernateException;
 
 
-	
-
-	/**
-	 * commit transaction currently underway, and start new one ( as side effect
-	 * hibernate session will be flushed ) 
-	 */
-	void commit() throws HibernateException;
+    /**
+     * commit transaction currently underway, and start new one ( as side effect
+     * hibernate session will be flushed )
+     */
+    void commit() throws HibernateException;
 
     /**
-	 * rollback active transaction if any was started. transaction will be reset
-     * @exception HibernateException  if transaction can not be rolled back
+     * rollback active transaction if any was started. transaction will be reset
+     *
+     * @throws HibernateException if transaction can not be rolled back
      */
     void rollback() throws HibernateException;
 
     /**
-	 * normal session close.  commit transaction is any
-	 */
-	void close() throws HibernateException;
-	
+     * normal session close.  commit transaction is any
+     */
+    void close() throws HibernateException;
+
     /**
-     * reset and clean up everything. shall be used is something went 
-	 * wrong ( for example you received hibernate exception ) 
+     * reset and clean up everything. shall be used is something went
+     * wrong ( for example you received hibernate exception )
      */
     void reset();
-	
+
 }

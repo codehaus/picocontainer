@@ -40,8 +40,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testBasicInstantiationAndContainment() throws PicoException, PicoRegistrationException {
         DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependsOnTouchable();
 
-        assertTrue("Component should be instance of Touchable", Touchable.class.isAssignableFrom(
-                pico.getComponentAdapterOfType(Touchable.class).getComponentImplementation() ));
+        assertTrue("Component should be instance of Touchable", Touchable.class.isAssignableFrom(pico.getComponentAdapterOfType(Touchable.class).getComponentImplementation()));
     }
 
     public void testComponentInstancesFromParentsAreNotDirectlyAccessible() {
@@ -122,16 +121,15 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         pico.registerComponentImplementation(ArrayList.class);
         assertNotNull(pico.getComponentInstance(Thingie.class));
     }
-    
+
     public void getComponentAdaptersOfTypeReturnsUnmodifiableList() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(Thingie.class);
-        try
-        {
+        try {
             pico.getComponentAdaptersOfType(Thingie.class).add("blah");
-            fail( "Expected an exception!" );
+            fail("Expected an exception!");
+        } catch (UnsupportedOperationException th) {
         }
-        catch( UnsupportedOperationException th ) {}
     }
 
 }

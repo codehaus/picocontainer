@@ -17,21 +17,25 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
  */
 public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
     private AutoReleasingPoolingComponentAdapter componentAdapter;
-    
+
     static public interface Identifiable {
         int getId();
     }
+
     static public class InstanceCounter implements Identifiable {
         private static int counter = 0;
         final private int id;
+
         public InstanceCounter() {
             id = counter++;
         }
+
         public int getId() {
             return id;
         }
+
         public boolean equals(Object arg) {
-            return arg instanceof Identifiable && id == ((Identifiable)arg).getId();
+            return arg instanceof Identifiable && id == ((Identifiable) arg).getId();
         }
     }
 
@@ -47,15 +51,15 @@ public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
 
         assertNotSame(borrowed0, borrowed1);
         assertNotSame(borrowed1, borrowed2);
-        
+
         borrowed1 = null;
         System.gc();
 
-        Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance();
+        Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance();
         assertEquals(1, borrowed.getId());
-        
-        ((PooledInstance)borrowed).returnInstanceToPool();
-        
+
+        ((PooledInstance) borrowed).returnInstanceToPool();
+
         Object borrowedReloaded = componentAdapter.getComponentInstance();
         assertEquals(borrowed, borrowedReloaded);
     }
@@ -68,11 +72,11 @@ public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
             assertEquals(InstanceCounter.class, e.getActual());
         }
     }
-    
+
     public void testInternalGCCall() {
         componentAdapter = new AutoReleasingPoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", InstanceCounter.class), 1);
-        for(int i = 0; i < 5; i++) {
-            Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance();
+        for (int i = 0; i < 5; i++) {
+            Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance();
             assertNotNull(borrowed);
             assertEquals(0, borrowed.getId());
         }

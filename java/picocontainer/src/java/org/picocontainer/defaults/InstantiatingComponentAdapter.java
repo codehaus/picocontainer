@@ -48,7 +48,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         Object instance = instantiateComponent(adapterInstantiationOrderTrackingList);
 
         // Now, track the instantiation order
-        for (Iterator it = adapterInstantiationOrderTrackingList.iterator(); it.hasNext(); ) {
+        for (Iterator it = adapterInstantiationOrderTrackingList.iterator(); it.hasNext();) {
             ComponentAdapter dependencyAdapter = (ComponentAdapter) it.next();
             getContainer().addOrderedComponentAdapter(dependencyAdapter);
         }
@@ -58,7 +58,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            if(PicoContainer.class.isAssignableFrom(parameters[i])) {
+            if (PicoContainer.class.isAssignableFrom(parameters[i])) {
                 componentParameters[i] = new ConstantParameter(getContainer());
             } else {
                 componentParameters[i] = new ComponentParameter();
@@ -94,21 +94,26 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     }
 
     protected Object newInstance(Constructor constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        if(allowNonPublicClasses) {
+        if (allowNonPublicClasses) {
             constructor.setAccessible(true);
         }
         return constructor.newInstance(parameters);
     }
 
     /**
-     * Instantiate the object. 
-     * @param adapterInstantiationOrderTrackingList This list is filled with the dependent adapters of the instance.
+     * Instantiate the object.
+     *
+     * @param adapterInstantiationOrderTrackingList
+     *         This list is filled with the dependent adapters of the instance.
      * @return Returns the new instance.
      * @throws PicoInitializationException
      * @throws PicoIntrospectionException
      * @throws AssignabilityRegistrationException
+     *
      * @throws NotConcreteRegistrationException
+     *
      */
     protected abstract Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+
     protected abstract Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 }

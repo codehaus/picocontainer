@@ -139,6 +139,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
             assertTrue(System.currentTimeMillis() - time >= 250);
         }
     }
+
     public void testGrowsAlways() {
         final PoolingComponentAdapter componentAdapter2 =
                 new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), -1);
@@ -150,7 +151,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
                 assertEquals(i, componentAdapter2.getTotalSize());
                 final Object object = componentAdapter2.getComponentInstance();
                 assertNotNull(object);
-                assertEquals(i+1, componentAdapter2.getBusy());
+                assertEquals(i + 1, componentAdapter2.getBusy());
                 assertEquals(0, componentAdapter2.getAvailable());
                 set.add(object);
             }
@@ -159,29 +160,29 @@ public class PoolingComponentAdapterTestCase extends TestCase {
             assertEquals(i, set.size());
 
             for (Iterator iter = set.iterator(); iter.hasNext();) {
-              Object object = iter.next();
-              componentAdapter2.returnComponentInstance(object);
+                Object object = iter.next();
+                componentAdapter2.returnComponentInstance(object);
                 assertEquals(max, componentAdapter2.getTotalSize());
                 assertEquals(--i, componentAdapter2.getBusy());
-                assertEquals(max-i, componentAdapter2.getAvailable());
+                assertEquals(max - i, componentAdapter2.getAvailable());
             }
-            
+
             for (i = 0; i < max; ++i) {
                 assertEquals(max, componentAdapter2.getTotalSize());
                 final Object object = componentAdapter2.getComponentInstance();
                 assertNotNull(object);
-                assertEquals(i+1, componentAdapter2.getBusy());
-                assertEquals(max-i-1, componentAdapter2.getAvailable());
+                assertEquals(i + 1, componentAdapter2.getBusy());
+                assertEquals(max - i - 1, componentAdapter2.getAvailable());
                 set.add(object);
             }
 
             assertEquals(max, set.size());
-            
+
         } catch (ExhaustedException e) {
             fail("This pool should not get exhausted.");
         }
     }
-    
+
     public void testFailsWhenExhausted() {
         final PoolingComponentAdapter componentAdapter2 =
                 new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2);

@@ -4,9 +4,9 @@
 
   <body>
     <links>
-      <item name="NanoContainer"       href="http://www.nanocontainer.org/"/>
       <item name="Download"            href="/download.html"/>
       <item name="Issue Tracker"       href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120"/>
+      <item name="NanoContainer"       href="http://www.nanocontainer.org/"/>
     </links>
 
     <menu name="PicoContainer">

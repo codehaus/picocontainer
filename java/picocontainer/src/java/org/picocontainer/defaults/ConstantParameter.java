@@ -30,7 +30,16 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new InstanceComponentAdapter(value, value);
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws NotConcreteRegistrationException {
+        if(!expectedType.isAssignableFrom(value.getClass())) {
+            if (expectedType.isPrimitive()) {
+                // TODO Ideally we should verify the types here too.
+                return new InstanceComponentAdapter(value, value);
+            } else {
+                return null;
+            }
+        } else {
+            return new InstanceComponentAdapter(value, value);
+        }
     }
 }

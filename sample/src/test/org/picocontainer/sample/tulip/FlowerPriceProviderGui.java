@@ -1,6 +1,6 @@
 package org.picocontainer.sample.tulip;
 
-import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.Startable;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -35,6 +35,9 @@ public class FlowerPriceProviderGui extends FlowerPriceProviderStub implements S
         frame.pack();
         frame.setBounds(100, 100, 300, 600);
         frame.show();
+    }
+
+    public void stop() {
     }
 
     private void changePrices() {

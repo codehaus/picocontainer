@@ -11,8 +11,12 @@ import java.util.Iterator;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
+ *
+ * Is this a dupe of TulipTraderTest that was in sample/java/test/ ???
+ *
+ *
  */
-public class TulipTraderTest extends TestCase {
+public class TulipTraderTest2 extends TestCase {
     private FlowerTickerStub ticker;
     private FlowerMarketStub market;
 

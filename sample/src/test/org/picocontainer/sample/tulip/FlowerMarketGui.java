@@ -1,6 +1,6 @@
 package org.picocontainer.sample.tulip;
 
-import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.Startable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +26,9 @@ public class FlowerMarketGui extends FlowerMarketStub implements Startable {
         frame.pack();
         frame.setBounds(700, 100, 300, 600);
         frame.show();
+    }
+
+    public void stop() {
     }
 
     public void sellBid(String flower) {

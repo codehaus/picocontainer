@@ -16,16 +16,16 @@ import org.nanocontainer.nanoaop.MethodPointcut;
 /**
  * @author Stephen Molitor
  */
-public class DynaopMethodPointcut implements MethodPointcut, dynaop.MethodPointcut {
-    
+public class DynaopMethodPointcut implements dynaop.MethodPointcut, MethodPointcut {
+
     private final dynaop.MethodPointcut delegate;
     
     public DynaopMethodPointcut(dynaop.MethodPointcut delegate) {
         this.delegate = delegate;
     }
-
+    
     public boolean picks(Method method) {
         return delegate.picks(method);
     }
-
+    
 }

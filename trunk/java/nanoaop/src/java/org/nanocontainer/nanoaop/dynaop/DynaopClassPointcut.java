@@ -14,10 +14,10 @@ import org.nanocontainer.nanoaop.ClassPointcut;
 /**
  * @author Stephen Molitor
  */
-public class DynaopClassPointcut implements ClassPointcut, dynaop.ClassPointcut {
+public class DynaopClassPointcut implements dynaop.ClassPointcut, ClassPointcut {
     
     private final dynaop.ClassPointcut delegate;
-    
+
     public DynaopClassPointcut(dynaop.ClassPointcut delegate) {
         this.delegate = delegate;
     }
@@ -25,5 +25,5 @@ public class DynaopClassPointcut implements ClassPointcut, dynaop.ClassPointcut 
     public boolean picks(Class clazz) {
         return delegate.picks(clazz);
     }
-
+    
 }

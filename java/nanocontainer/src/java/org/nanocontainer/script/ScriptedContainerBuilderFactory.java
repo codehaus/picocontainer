@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.HashMap;
@@ -38,6 +37,7 @@ import java.util.Map;
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslah;y
+ * @author Obie Fernandez
  */
 public class ScriptedContainerBuilderFactory {
 
@@ -64,30 +64,44 @@ public class ScriptedContainerBuilderFactory {
     }
 
     public ScriptedContainerBuilderFactory(File compositionFile) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), ScriptedContainerBuilderFactory.class.getClassLoader());
+        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), Thread.currentThread().getContextClassLoader());
     }
 
-    public ScriptedContainerBuilderFactory(URL compositionURL) throws IOException, ClassNotFoundException {
-        this(new InputStreamReader(compositionURL.openStream()), getBuilderClassName(compositionURL), ScriptedContainerBuilderFactory.class.getClassLoader());
+    public ScriptedContainerBuilderFactory(URL compositionURL) throws ClassNotFoundException {
+        this(compositionURL, getBuilderClassName(compositionURL), Thread.currentThread().getContextClassLoader());
     }
 
     public ScriptedContainerBuilderFactory(Reader composition, String builderClass) throws ClassNotFoundException {
-        this(composition, builderClass, ScriptedContainerBuilderFactory.class.getClassLoader());
+        this(composition, builderClass, Thread.currentThread().getContextClassLoader());
     }
 
     public ScriptedContainerBuilderFactory(Reader composition, String builderClass, ClassLoader classLoader) throws ClassNotFoundException {
+        createContainerBuilder(composition, classLoader, builderClass);
+    }
 
+    public ScriptedContainerBuilderFactory(URL compositionURL, String builderClassName, ClassLoader contextClassLoader) throws ClassNotFoundException {
+        createContainerBuilder(compositionURL, contextClassLoader, builderClassName);
+    }
+
+    private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) throws ClassNotFoundException {
         DefaultNanoContainer defaultReflectionContainerAdapter;
         {
             // disposable.
-            DefaultPicoContainer dpc = new DefaultPicoContainer(); // TODO parent?
-            dpc.registerComponentInstance(composition);
-            dpc.registerComponentInstance(classLoader);
-            defaultReflectionContainerAdapter = new DefaultNanoContainer(dpc);
+            DefaultPicoContainer factory = new DefaultPicoContainer();
+            if(composition == null) {
+                throw new NullPointerException("composition can't be null");
+            }
+            factory.registerComponentInstance(composition);
+
+            if(classLoader == null) {
+                // on some weird JVMs (like jeode) Thread.currentThread().getContextClassLoader() returns null !?!?
+                classLoader = getClass().getClassLoader();
+            }
+            factory.registerComponentInstance(classLoader);
+            defaultReflectionContainerAdapter = new DefaultNanoContainer(factory);
         }
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(builderClass);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultReflectionContainerAdapter.getPico());
-
     }
 
     private static File fileExists(File file) throws FileNotFoundException {

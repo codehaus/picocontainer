@@ -11,6 +11,9 @@ package org.nanocontainer.script.xml;
 
 import org.nanocontainer.script.NanoContainerMarkupException;
 
+/**
+ * @deprecated Never thrown anymore
+ */
 public class EmptyCompositionException extends NanoContainerMarkupException {
     public EmptyCompositionException() {
         super("No components in the XML composition");

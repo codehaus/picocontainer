@@ -14,7 +14,9 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
 
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -22,11 +24,19 @@ import java.io.File;
  */
 public class StandaloneTestCase extends TestCase {
 
-    public void testShouldBeAbleToInvokeMainMethod() {
+    public void testShouldBeAbleToInvokeMainMethodWithScriptFromFile() throws IOException, ClassNotFoundException {
         File absoluteScriptPath = getAbsoluteScriptPath();
         Standalone.main(new String[] {
             "-c",
             absoluteScriptPath.getAbsolutePath(),
+            "-n"
+        });
+    }
+
+    public void testShouldBeAbleToInvokeMainMethodWithScriptFromClasspathWithXmlIncludes() throws IOException, ClassNotFoundException {
+        Standalone.main(new String[] {
+            "-r",
+            "/org/nanocontainer/standalone_test.xml",
             "-n"
         });
     }

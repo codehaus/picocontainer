@@ -45,9 +45,9 @@ public class XStreamComponentInstanceFactory implements XMLComponentInstanceFact
     /**
      * {@inheritDoc}
      *
-     * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
+     * @see XMLComponentInstanceFactory#makeInstance(org.picocontainer.PicoContainer,org.w3c.dom.Element,ClassLoader)
      */
-    public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
+    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) throws ClassNotFoundException {
         return xstream.unmarshal(new DomReader(element));
     }
 }

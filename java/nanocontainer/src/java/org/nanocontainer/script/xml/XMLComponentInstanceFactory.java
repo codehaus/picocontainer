@@ -13,6 +13,8 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 
+import java.net.MalformedURLException;
+
 /**
  * Factory that creates instances from DOM Elements
  *
@@ -25,8 +27,9 @@ public interface XMLComponentInstanceFactory {
      *
      * @param container
      * @param element   the DOM Element
+     * @param classLoader
      * @return An Object instance
      * @throws ClassNotFoundException
      */
-    Object makeInstance(PicoContainer container, Element element) throws ClassNotFoundException;
+    Object makeInstance(PicoContainer container, Element element, ClassLoader classLoader) throws ClassNotFoundException, MalformedURLException;
 }

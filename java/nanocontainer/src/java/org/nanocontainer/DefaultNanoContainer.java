@@ -19,6 +19,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -46,7 +47,7 @@ public class DefaultNanoContainer implements NanoContainer {
     }
 
     private final List urls = new ArrayList();
-    private final StringToObjectConverter converter = new StringToObjectConverter();
+    private final StringToObjectConverter confverter = new StringToObjectConverter();
     private final MutablePicoContainer picoContainer;
     private final ClassLoader parentClassLoader;
 
@@ -71,7 +72,7 @@ public class DefaultNanoContainer implements NanoContainer {
     }
 
     public DefaultNanoContainer(MutablePicoContainer picoContainer) {
-        this(DefaultNanoContainer.class.getClassLoader(), picoContainer);
+        this(Thread.currentThread().getContextClassLoader(), picoContainer);
     }
 
     public DefaultNanoContainer(NanoContainer parent) {
@@ -82,7 +83,7 @@ public class DefaultNanoContainer implements NanoContainer {
      * Beware - no parent container and no parent classloader.
      */
     public DefaultNanoContainer() {
-        this(DefaultNanoContainer.class.getClassLoader(), new DefaultPicoContainer());
+        this(Thread.currentThread().getContextClassLoader(), new DefaultPicoContainer());
     }
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
@@ -118,16 +119,15 @@ public class DefaultNanoContainer implements NanoContainer {
     private ComponentAdapter registerComponentImplementation(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Class componentImplementation) throws ClassNotFoundException {
         Parameter[] parameters = new Parameter[parameterTypesAsString.length];
         for (int i = 0; i < parameters.length; i++) {
-            Class paramTypeClass = loadClass(parameterTypesAsString[i]);
-            Object value = converter.convertTo(paramTypeClass, parameterValuesAsString[i]);
+            Object value = BeanPropertyComponentAdapter.convert(parameterTypesAsString[i], parameterValuesAsString[i], getComponentClassLoader());
             parameters[i] = new ConstantParameter(value);
         }
         return picoContainer.registerComponentImplementation(key, componentImplementation, parameters);
     }
 
     private Class loadClass(final String componentImplementationClassName) throws ClassNotFoundException {
-        String cn = getClassName(componentImplementationClassName);
         ClassLoader classLoader = getComponentClassLoader();
+        String cn = getClassName(componentImplementationClassName);
         return classLoader.loadClass(cn);
     }
 

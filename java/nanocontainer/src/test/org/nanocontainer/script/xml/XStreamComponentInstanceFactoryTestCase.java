@@ -52,7 +52,7 @@ public class XStreamComponentInstanceFactoryTestCase extends TestCase {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = db.parse(is);
 
-        Object o = factory.makeInstance(null, doc.getDocumentElement());
+        Object o = factory.makeInstance(null, doc.getDocumentElement(), Thread.currentThread().getContextClassLoader());
         TestBean bean = (TestBean) o;
         assertEquals("hello", bean.getBar());
         assertEquals(10, bean.getFoo());

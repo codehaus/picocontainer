@@ -15,6 +15,7 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,6 +60,16 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         public char char_;
         public File file_;
         public URL url_;
+        public Class class_;
+        public String string_;
+
+        public void setClass_(Class class_) {
+            this.class_ = class_;
+        }
+
+        public void setString_(String string_) {
+            this.string_ = string_;
+        }
 
         public void setBoolean_(boolean boolean_) {
             this.boolean_ = boolean_;
@@ -178,6 +189,8 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("boolean_", "true");
         properties.put("file_", "/foo/bar");
         properties.put("url_", "http://www.picocontainer.org/");
+        properties.put("string_", "g string");
+        properties.put("class_", "javax.swing.JLabel");
         BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(Primitives.class, Primitives.class, null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives) adapter.getComponentInstance(null);
@@ -193,6 +206,8 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         assertEquals(true, primitives.boolean_);
         assertEquals(new File("/foo/bar"), primitives.file_);
         assertEquals(new URL("http://www.picocontainer.org/"), primitives.url_);
+        assertEquals("g string", primitives.string_);
+        assertEquals(JLabel.class, primitives.class_);
     }
 
     public void testSetDependenComponentWillBeSetByTheAdapter() {

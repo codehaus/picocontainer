@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.net.MalformedURLException;
 import java.util.Properties;
 
 /**
@@ -30,32 +31,36 @@ import java.util.Properties;
  */
 public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory {
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
-     */
-    public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
+    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) throws ClassNotFoundException, MalformedURLException {
         String className = element.getNodeName();
-        BeanPropertyComponentAdapter propertyComponentAdapter =
-                new BeanPropertyComponentAdapter(createComponentAdapter(className));
-        propertyComponentAdapter.setProperties(createProperties(element.getChildNodes()));
-        return propertyComponentAdapter.getComponentInstance(pico);
+        Object instance = null;
+
+        if (element.getChildNodes().getLength() == 1) {
+            instance = BeanPropertyComponentAdapter.convert(className, element.getFirstChild().getNodeValue(), classLoader);
+        } else {
+            BeanPropertyComponentAdapter propertyComponentAdapter =
+                    new BeanPropertyComponentAdapter(createComponentAdapter(className, classLoader));
+            Properties properties = createProperties(element.getChildNodes());
+            propertyComponentAdapter.setProperties(properties);
+            instance = propertyComponentAdapter.getComponentInstance(pico);
+        }
+        return instance;
     }
 
-    private ComponentAdapter createComponentAdapter(String className) throws ClassNotFoundException {
-        Class implementation = Class.forName(className);
+    private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader) throws ClassNotFoundException {
+        Class implementation = classLoader.loadClass(className);
         ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
         return factory.createComponentAdapter(className, implementation, new Parameter[]{});
     }
 
-    private Properties createProperties(NodeList nodeList) {
+    private Properties createProperties(NodeList nodes) {
         Properties properties = new Properties();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node n = nodeList.item(i);
-            if (n instanceof Element) {
-                Element e = (Element) n;
-                properties.setProperty(e.getNodeName(), e.getChildNodes().item(0).getNodeValue());
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node n = nodes.item(i);
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                String key = n.getNodeName();
+                String value = n.getFirstChild().getNodeValue();
+                properties.setProperty(key, value);
             }
         }
         return properties;

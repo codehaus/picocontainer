@@ -20,12 +20,14 @@ import org.picocontainer.defaults.SimpleReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Standalone {
 
     private static final char HELP_OPT = 'h';
     private static final char VERSION_OPT = 'v';
     private static final char COMPOSITION_OPT = 'c';
+    private static final char RESOURCE_OPT = 'r';
     private static final char QUIET_OPT = 'q';
     private static final char NOWAIT_OPT = 'n';
 
@@ -37,6 +39,8 @@ public class Standalone {
                 "print the version information and exit");
         options.addOption(String.valueOf(COMPOSITION_OPT), "composition", true,
                 "specify the composition file");
+        options.addOption(String.valueOf(RESOURCE_OPT), "resource", true,
+                "specify the composition file (as a resource read from classpath - like inside a jar)");
         options.addOption(String.valueOf(QUIET_OPT), "quiet", false,
                 "forces ScriptedContainerBuilderFactory to be quiet");
         options.addOption(String.valueOf(NOWAIT_OPT), "nowait", false,
@@ -44,7 +48,7 @@ public class Standalone {
         return options;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         CommandLine cl = null;
         Options options = createOptions();
         try {
@@ -64,24 +68,29 @@ public class Standalone {
             System.exit(0);
         }
 
-        String composition = cl.getOptionValue(COMPOSITION_OPT);
-        if (composition == null) {
-            printUsage(options);
-            System.exit(0);
-        }
         boolean quiet = cl.hasOption(QUIET_OPT);
         boolean nowait = cl.hasOption(NOWAIT_OPT);
         try {
-            buildAndStartContainer(composition, quiet, nowait);
+            String compositionFile = cl.getOptionValue(COMPOSITION_OPT);
+            String compositionResource = cl.getOptionValue(RESOURCE_OPT);
+            if (compositionFile != null) {
+                File composition = new File(compositionFile);
+                buildAndStartContainer(composition, quiet, nowait);
+            } else if (compositionResource != null) {
+                URL composition = Standalone.class.getResource(compositionResource);
+                buildAndStartContainer(composition, quiet, nowait);
+            } else {
+                printUsage(options);
+                System.exit(0);
+            }
         } catch (RuntimeException e) {
             System.err.println("Failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("Failed to start application for IO reasons. Exception message : " + e.getMessage());
-            e.printStackTrace();
+            throw e;
         } catch (ClassNotFoundException e) {
             System.err.println("Failed to start application. A Class was not found. Exception message : " + e.getMessage());
             e.printStackTrace();
+            throw e;
         }
         if (!quiet) {
             System.out.println("Exiting ScriptedContainerBuilderFactory's standalone main method.");
@@ -108,10 +117,18 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(String compositionFileName, final boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
+    private static void buildAndStartContainer(URL composition, final boolean quiet, boolean nowait) throws ClassNotFoundException {
+        final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
+        buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
+    }
 
-        final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(new File(compositionFileName));
+    private static void buildAndStartContainer(File composition, boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
+        final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
+        buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
+    }
 
+
+    private static void buildContainer(final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, boolean nowait, final boolean quiet) {
         final ObjectReference containerRef = new SimpleReference();
         scriptedContainerBuilderFactory.getContainerBuilder().buildContainer(containerRef, null, null, true);
 

@@ -412,10 +412,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    public boolean equals(Object obj) {
-        return super.equals(obj);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
     public void accept(PicoVisitor visitor) {
         visitor.visitContainer(this);
         final List componentAdapters = new ArrayList(getComponentAdapters());

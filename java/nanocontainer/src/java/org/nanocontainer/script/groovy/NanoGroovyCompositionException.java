@@ -22,6 +22,7 @@ public class NanoGroovyCompositionException extends PicoCompositionException {
         StringBuffer sb = new StringBuffer();
         sb.append(super.getMessage() + "\n");
         List errors = compilationFailedException.getUnit().getErrors();
+        // errors can definitely be null:
         if (errors != null) {
             for (int i = 0; i < errors.size(); i++) {
                 Object o = errors.get(i);

@@ -18,6 +18,8 @@ import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.VerifyingVisitor;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -135,7 +137,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         mpc.registerComponentImplementation(Iterator.class, UnsatisfiableIterator.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         try {
-            ipc.verify();
+            ipc.accept(new VerifyingVisitor());
             fail("wrong!");
         } catch (PicoVerificationException e) {
             // expected

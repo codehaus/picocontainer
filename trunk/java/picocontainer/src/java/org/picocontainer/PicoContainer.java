@@ -106,7 +106,8 @@ public interface PicoContainer extends Startable, Disposable {
      * instantiated during the verification process.
      * 
      * @throws PicoVerificationException if there are unsatisifiable dependencies.
-     */
+     * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+    */
     void verify() throws PicoVerificationException;
 
     /**

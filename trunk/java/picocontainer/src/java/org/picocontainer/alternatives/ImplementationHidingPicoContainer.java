@@ -141,7 +141,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.getComponentAdaptersOfType(componentType);
     }
 
-    public void verify() throws PicoVerificationException {
+    /**
+     * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+     */
+   public void verify() throws PicoVerificationException {
         delegate.verify();
     }
 

@@ -13,6 +13,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.VerifyingVisitor;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer();
         pico.registerComponentImplementation(String.class);
         pico.registerComponentImplementation(Runnable.class, MyThread.class);
-        pico.verify();
+        pico.accept(new VerifyingVisitor());
     }
 
     public void testUsageOfADifferentComponentAdapterFactory() {

@@ -16,7 +16,7 @@
 
     <goal
         name="generic"
-        description="Build each sub project with a particular goal. e.g. maven -Dgoals=site:deploy generic">
+        description="Build each sub project with a particular goal. e.g. maven -Dgoals=test generic">
         
         <attainGoal name="cleanall"/>
 

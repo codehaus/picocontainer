@@ -162,7 +162,7 @@ public class ParameterTestCase extends TestCase {
         pico.registerComponentImplementation("B", String.class, new Parameter[]{
             new ConstantParameter("A")
         });
-        pico.verify();
+        pico.accept(new VerifyingVisitor());
     }
 
 }

@@ -68,6 +68,9 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentAdaptersOfType(componentType);
     }
 
+    /**
+     * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+     */
     public void verify() throws PicoVerificationException {
         delegate.verify();
     }

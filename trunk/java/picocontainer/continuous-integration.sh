@@ -33,6 +33,8 @@ export CVS_RSH
 cd $HOME/cvs/pico
 
 cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P
+# After CVS update, this script isn't +x anymore (?). Simple workaround.
+chmod +x continuous-integration.sh
 
 # Clean old builds and make the target folder. Logs go here too.
 rm -Rf target

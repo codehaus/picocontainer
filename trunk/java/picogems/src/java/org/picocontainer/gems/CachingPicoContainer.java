@@ -9,22 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.gems;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * <p/>
@@ -34,15 +27,18 @@ import java.util.List;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class CachingPicoContainer implements MutablePicoContainer, Serializable {
-
-    private final MutablePicoContainer delegate;
+public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
 
     /**
      * Creates a new container with a parent container.
      */
     public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new DefaultPicoContainer(new CachingComponentAdapterFactory(caf), parent);
+        this(parent, new CachingComponentAdapterFactory(caf));
+    }
+
+    private CachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf) {
+        super(new DefaultPicoContainer(caf, parent));
+
     }
 
     /**
@@ -68,113 +64,10 @@ public class CachingPicoContainer implements MutablePicoContainer, Serializable 
     }
 
 
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        return delegate.registerComponentImplementation(componentKey, componentImplementation);
-    }
-
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
-        return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);
-    }
-
-    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
-        return delegate.registerComponentImplementation(componentImplementation);
-    }
-
-    public ComponentAdapter registerComponentInstance(Object componentInstance) throws PicoRegistrationException {
-        return delegate.registerComponentInstance(componentInstance);
-    }
-
-    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
-        return delegate.registerComponentInstance(componentKey, componentInstance);
-    }
-
-    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        return delegate.registerComponent(componentAdapter);
-    }
-
-    public ComponentAdapter unregisterComponent(Object componentKey) {
-        return delegate.unregisterComponent(componentKey);
-    }
-
-    public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
-        return delegate.unregisterComponentByInstance(componentInstance);
-    }
-
-    public Object getComponentInstance(Object componentKey) {
-        return delegate.getComponentInstance(componentKey);
-    }
-
-    public Object getComponentInstanceOfType(Class componentType) {
-        return delegate.getComponentInstanceOfType(componentType);
-    }
-
-    public List getComponentInstances() {
-        return delegate.getComponentInstances();
-    }
-
-    public PicoContainer getParent() {
-        return delegate.getParent();
-    }
-
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
-        return delegate.getComponentAdapter(componentKey);
-    }
-
-    public ComponentAdapter getComponentAdapterOfType(Class componentType) {
-        return delegate.getComponentAdapterOfType(componentType);
-    }
-
-    public Collection getComponentAdapters() {
-        return delegate.getComponentAdapters();
-    }
-
-    public List getComponentAdaptersOfType(Class componentType) {
-        return delegate.getComponentAdaptersOfType(componentType);
-    }
-
-    /**
-     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
-     */
-    public void verify() throws PicoVerificationException {
-        delegate.verify();
-    }
-
-    public void start() {
-        delegate.start();
-    }
-
-    public void stop() {
-        delegate.stop();
-    }
-
-    public void dispose() {
-        delegate.dispose();
-    }
-
     public MutablePicoContainer makeChildContainer() {
         ImplementationHidingCachingPicoContainer pc = new ImplementationHidingCachingPicoContainer(this);
-        delegate.addChildContainer(pc);
+        getDelegate().addChildContainer(pc);
         return pc;
-
     }
 
-    public boolean addChildContainer(PicoContainer child) {
-        return delegate.addChildContainer(child);
-    }
-
-    public boolean removeChildContainer(PicoContainer child) {
-        return delegate.removeChildContainer(child);
-    }
-
-    public void accept(PicoVisitor visitor) {
-        delegate.accept(visitor);
-    }
-
-    public List getComponentInstancesOfType(Class type) throws PicoException {
-        return delegate.getComponentInstancesOfType(type);
-    }
-
-    public boolean equals(Object obj) {
-        return delegate.equals(obj) || this == obj;
-    }
 }

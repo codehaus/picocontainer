@@ -164,10 +164,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.dispose();
     }
 
-    public PicoContainer getImmutable() {
-        return delegate.getImmutable();
-    }
-
     public MutablePicoContainer makeChildContainer() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
         delegate.addChildContainer(pc);

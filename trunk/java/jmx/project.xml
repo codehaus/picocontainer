@@ -10,11 +10,22 @@
             <id>picocontainer</id>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>       
+        </dependency>
 
         <dependency>
             <id>mx4j</id>
             <version>2.0.1</version>
+        </dependency>
+
+		<dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        </dependency>
+
+		<dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
         </dependency>
 
     </dependencies>

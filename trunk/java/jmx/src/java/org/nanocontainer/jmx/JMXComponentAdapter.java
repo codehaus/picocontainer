@@ -17,8 +17,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoInitializationException;
 
-import javax.management.*;
-import java.util.ArrayList;
+import javax.management.MBeanInfo;
+import java.text.MessageFormat;
 
 /**
  * Allows for registering non-MBean instances to the MBeanServer by wrapping them in a PicoContainerMBean.
@@ -29,6 +29,8 @@ import java.util.ArrayList;
  * @version $Revision$
  */
 public class JMXComponentAdapter extends DecoratingComponentAdapter {
+	public static final String MBEAN_INFO_ERROR = "The Key \"{0}\" was not registered with the container (Key can either be a Class or String)";
+
 	public JMXComponentAdapter(ComponentAdapter delegate) {
 		super(delegate);
 	}
@@ -43,19 +45,28 @@ public class JMXComponentAdapter extends DecoratingComponentAdapter {
 	}
 
 	protected MBeanInfo getMBeanInfo(Object componentInstance) {
-		String mBeanInfoName = componentInstance.getClass().toString().concat("MBeanInfo");
-		MBeanInfo mBeanInfo = (MBeanInfo)getContainer().getComponentInstance(mBeanInfoName);
+		String key = componentInstance.getClass().getName().concat("MBeanInfo");
+		MBeanInfo mBeanInfo = (MBeanInfo)getContainer().getComponentInstance(key);
 
 		if(mBeanInfo == null) {
 			try {
 				// see if the MBeanInfo is registered to the Class (per Jörg Schaible suggestion)
-				Class clazz = Class.forName(mBeanInfoName);
+                Class clazz = Class.forName(key);
 				mBeanInfo = (MBeanInfo)getContainer().getComponentInstance(clazz);
 			} catch (ClassNotFoundException e) {
-				throw new MBeanInfoMissingException(new ArrayList());
+				throwMBeanInfoMissingException(key);
 			}
 		}
 
+		if(mBeanInfo == null) { // An MBeanInfo MUST be registered
+			throwMBeanInfoMissingException(key);
+		}
+
 		return mBeanInfo;
+	}
+
+	protected void throwMBeanInfoMissingException(String name) {
+		String msg = MessageFormat.format(MBEAN_INFO_ERROR, new Object[] {name});
+		throw new MBeanInfoMissingException(msg);
 	}
 }

@@ -33,21 +33,8 @@ public class JMXComponentAdapterTestCase extends TestCase {
 		objectName = new ObjectName("pico:name=one");
     }
 
-	private ComponentAdapter createJMXComponentAdapter() {
-        return new JMXComponentAdapterFactory(new DefaultComponentAdapterFactory())
-				.createComponentAdapter(objectName, SampleMBean.class, null);
-    }
-
-	private MBeanInfo createMBeanInfo() {
-		MBeanAttributeInfo[] attributes = new MBeanAttributeInfo[] {
-			new MBeanAttributeInfo("Count", int.class.toString(), "desc", true, false, false)
-		};
-
-		return new MBeanInfo(SampleMBean.class.toString(), "desc", attributes, null, null, null);
-	}
-
 	public void testMissingMBeanInfo() throws Exception {
-		pico.registerComponent(createJMXComponentAdapter());
+		pico.registerComponent(JMXTestFixture.createJMXComponentAdapter(objectName));
 
 		try {
 			pico.getComponentInstances();
@@ -56,22 +43,22 @@ public class JMXComponentAdapterTestCase extends TestCase {
 		}
 	}
 
-	public void testSuccessful() throws Exception {
-		// register the MBeanInfo
-		pico.registerComponentInstance(SampleMBean.class.toString() + "MBeanInfo", createMBeanInfo());
-		pico.registerComponent(createJMXComponentAdapter());
+	public void testMBeanInfoRegisteredAsString() throws Exception {
+		pico.registerComponentInstance(FooBarMBeanInfo.class.getName(), JMXTestFixture.createMBeanInfo());
+		validateAgainstMBeanServer();
+	}
+
+	public void testMBeanInfoRegisteredAsClass() throws Exception {
+        pico.registerComponentInstance(FooBarMBeanInfo.class, JMXTestFixture.createFooBarMBeanInfo());
+		validateAgainstMBeanServer();
+	}
+
+	protected void validateAgainstMBeanServer() throws Exception {
+		pico.registerComponent(JMXTestFixture.createJMXComponentAdapter(objectName));
 
 		assertFalse(mbeanServer.isRegistered(objectName));
 		pico.getComponentInstances(); // does the actual registration to the MBeanServer
 		assertTrue(mbeanServer.isRegistered(objectName));
 		assertEquals(new Integer(1), mbeanServer.getAttribute(objectName, "Count"));
     }
-
-	public void testMBeanInfoRegisteredAsString() throws Exception {
-		// todo
-	}
-
-	public void testMBeanInfoRegisteredAsClass() throws Exception {
-        // todo
-	}
 }

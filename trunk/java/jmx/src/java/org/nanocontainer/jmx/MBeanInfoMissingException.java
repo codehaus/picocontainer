@@ -13,6 +13,7 @@ package org.nanocontainer.jmx;
 import org.picocontainer.PicoVerificationException;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * An MBean's associated MBeanInfo is not registered with the container
@@ -20,7 +21,16 @@ import java.util.List;
  * @author Michael Ward
  * @version $Revision$
  */
-public class MBeanInfoMissingException extends PicoVerificationException{
+public class MBeanInfoMissingException extends PicoVerificationException {
+
+	public MBeanInfoMissingException() {
+		this(new ArrayList());
+	}
+
+	public MBeanInfoMissingException(Object nested) {
+		this();
+		getNestedExceptions().add(nested);
+	}
 
 	public MBeanInfoMissingException(List nestedExceptions) {
 		super(nestedExceptions);

@@ -16,7 +16,10 @@ package org.nanocontainer.jmx;
  * @author Michael Ward
  * @version $Revision$
  */
-public interface SampleInterface {
+public class FooBar {
 
-	int getCount();
+	public int getCount() {
+		return 1;
+	}
+
 }

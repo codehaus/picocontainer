@@ -87,13 +87,13 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         Collection proxyCollection = (Collection) proxy;
         Foo foo = (Foo) proxy;
 
-        Method put = Map.class.getMethod("put", new Class[] {Object.class, Object.class});
+        Method put = Map.class.getMethod("put", new Class[]{Object.class, Object.class});
 
         //TODO-Aslak - Try to force a NoInvocationTargetException ? (PH)
 
         proxyCollection.add("Foo");
         try {
-            put.invoke(foo, new Object[] {"zap","zap"});
+            put.invoke(foo, new Object[]{"zap", "zap"});
         } catch (IllegalArgumentException e) {
             // expected
         }

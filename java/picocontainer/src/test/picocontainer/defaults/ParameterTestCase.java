@@ -19,8 +19,7 @@ public class ParameterTestCase extends TestCase {
         assertFalse(ComponentSpecification.isAssignableFrom(Integer.class, String.class));
     }
 
-    public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException
-    {
+    public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
@@ -40,7 +39,7 @@ public class ParameterTestCase extends TestCase {
     public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         WilmaImpl wilma = new WilmaImpl();
-        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[] {
+        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[]{
             new ConstantParameter(wilma)
         });
         pico.instantiateComponents();

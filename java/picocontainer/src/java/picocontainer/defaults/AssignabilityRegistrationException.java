@@ -12,19 +12,16 @@ package picocontainer.defaults;
 
 import picocontainer.PicoRegistrationException;
 
-public class AssignabilityRegistrationException extends PicoRegistrationException
-{
+public class AssignabilityRegistrationException extends PicoRegistrationException {
     private final Class type;
     private final Class clazz;
 
-    public AssignabilityRegistrationException(Class type, Class clazz)
-    {
+    public AssignabilityRegistrationException(Class type, Class clazz) {
         this.type = type;
         this.clazz = clazz;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
     }
 }

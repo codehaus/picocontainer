@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationHandler;
 public abstract class ContainerInvocationHandler implements InvocationHandler {
     private PicoContainer container;
 
-    protected ContainerInvocationHandler( PicoContainer container ) {
+    protected ContainerInvocationHandler(PicoContainer container) {
         this.container = container;
     }
 

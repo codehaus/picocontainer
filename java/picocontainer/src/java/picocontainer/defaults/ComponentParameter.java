@@ -10,8 +10,7 @@ import picocontainer.PicoIntrospectionException;
  */
 public class ComponentParameter implements Parameter {
     public Object resolve(PicoContainer picoContainer, ComponentSpecification compSpec, Class requestedType)
-            throws PicoInstantiationException, PicoIntrospectionException
-    {
+            throws PicoInstantiationException, PicoIntrospectionException {
         // TODO figure out a way to remove this ugly cast?
         Object value = ((DefaultPicoContainer) picoContainer).createComponent(requestedType);
 

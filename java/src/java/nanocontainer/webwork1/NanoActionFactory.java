@@ -38,14 +38,14 @@ public class NanoActionFactory extends ActionFactory {
     public Action getActionImpl(String name) throws Exception {
         Class actionClass = loadClass(name);
         ObjectInstantiator instantiater = findInstantiater();
-        Action result = (Action)instantiater.newInstance(actionClass);
+        Action result = (Action) instantiater.newInstance(actionClass);
         return result;
     }
 
     private ObjectInstantiator findInstantiater() {
         HttpServletRequest request = ServletActionContext.getRequest();
         ObjectHolder instantiaterHolder = new RequestScopeObjectHolder(request, BaseLifecycleListener.INSTANTIATER_KEY);
-        return (ObjectInstantiator)instantiaterHolder.get();
+        return (ObjectInstantiator) instantiaterHolder.get();
     }
 
     private Class loadClass(String name) {

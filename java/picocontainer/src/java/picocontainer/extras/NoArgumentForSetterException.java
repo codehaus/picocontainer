@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class NoArgumentForSetterException extends PicoIntrospectionException{
+public class NoArgumentForSetterException extends PicoIntrospectionException {
     private Method setter;
 
     public NoArgumentForSetterException(Method setter) {

@@ -20,7 +20,7 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
     private ClassRegistrationPicoContainer serviceAndAspectContainer;
 
     public NanningNanoContainer(ComponentFactory componentFactory, ClassRegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
-        super(new NanningComponentFactory(aspectSystem,componentFactory), serviceAndAspectContainer);
+        super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.aspectSystem = aspectSystem;
     }

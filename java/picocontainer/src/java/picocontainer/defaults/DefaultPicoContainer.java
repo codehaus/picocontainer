@@ -82,7 +82,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
      * @return a proxy.
      */
     public Object getAggregateComponentProxy() {
-        return getAggregateComponentProxy( true, true);
+        return getAggregateComponentProxy(true, true);
     }
 
     /**
@@ -98,31 +98,31 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
      */
     public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return createAggregateProxy(
-            getComponentInterfaces(),
-            orderedComponents,
-            callUnmanagedComponents ? Collections.EMPTY_LIST : unmanagedComponents,
-            callInInstantiationOrder
+                getComponentInterfaces(),
+                orderedComponents,
+                callUnmanagedComponents ? Collections.EMPTY_LIST : unmanagedComponents,
+                callInInstantiationOrder
         );
     }
 
     private Object createAggregateProxy(
-        Class[] interfaces,
-        List objectsToAggregateCallFor,
-        List excludes,
-        boolean callInReverseOrder
-    ) {
+            Class[] interfaces,
+            List objectsToAggregateCallFor,
+            List excludes,
+            boolean callInReverseOrder
+            ) {
         List copy = new ArrayList(objectsToAggregateCallFor);
 
-        if( !callInReverseOrder ) {
+        if (!callInReverseOrder) {
             // reverse the list
             Collections.reverse(copy);
         }
         Object[] objects = copy.toArray();
 
         Object result = Proxy.newProxyInstance(
-            getClass().getClassLoader(),
-            interfaces,
-            new AggregatingInvocationHandler(objects, excludes)
+                getClass().getClassLoader(),
+                interfaces,
+                new AggregatingInvocationHandler(objects, excludes)
         );
 
         return result;
@@ -153,7 +153,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
                     Object result = method.invoke(components[i], args);
                     if (result != null && !result.getClass().isPrimitive()) {
                         // Only add to the results if the result is not null and isn't a primitive.
-                        if( results == null ) {
+                        if (results == null) {
                             results = new ArrayList();
                         }
                         results.add(result);
@@ -164,22 +164,22 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
             Object result;
             Class returnType = method.getReturnType();
 
-            if( results == null ) {
+            if (results == null) {
                 // Method wasn't called. Return null
                 result = null;
-            } else if( results.size() == 1 ) {
+            } else if (results.size() == 1) {
                 // Got exactly one result. Just return that.
                 result = results.get(0);
-            } else if( returnType.isInterface() ) {
+            } else if (returnType.isInterface()) {
                 // We have two or more results
                 // We can make a new proxy that aggregates all the results.
                 result = createAggregateProxy(
-                    new Class[]{returnType},
-                    results,
-                    excludes,
-                    true
+                        new Class[]{returnType},
+                        results,
+                        excludes,
+                        true
                 );
-            } else  {
+            } else {
                 // Got m,ultiple results that can't be wrapped in a proxy. Return null.
                 result = null;
             }
@@ -199,7 +199,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
             Class componentClass = components[i].getClass();
             // Strangely enough Class.getInterfaces() does not include the interfaces
             // implemented by superclasses. So we must loop up the hierarchy.
-            while( componentClass != null ) {
+            while (componentClass != null) {
                 Class[] implemeted = componentClass.getInterfaces();
                 List implementedList = Arrays.asList(implemeted);
                 interfaces.addAll(implementedList);
@@ -292,10 +292,10 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInstantiationException, PicoIntrospectionException {
-            for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
-                ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
-                createComponent(componentSpec);
-            }
+        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+            ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
+            createComponent(componentSpec);
+        }
     }
 
     private Object createComponent(ComponentSpecification componentSpec) throws PicoInstantiationException, PicoIntrospectionException {

@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.extras.ImplementationHidingComponentFactory;
 import picocontainer.PicoInstantiationException;

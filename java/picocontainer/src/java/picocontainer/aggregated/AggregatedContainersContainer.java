@@ -36,12 +36,12 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
 
     public AggregatedContainersContainer(final PicoContainer[] containers) {
         super(new DefaultComponentFactory());
-        if( containers == null ) {
+        if (containers == null) {
             throw new NullPointerException("containers can't be null");
         }
         for (int i = 0; i < containers.length; i++) {
             PicoContainer container = containers[i];
-            if( container == null ) {
+            if (container == null) {
                 throw new NullPointerException("PicoContainer at position " + i + " was null");
             }
         }

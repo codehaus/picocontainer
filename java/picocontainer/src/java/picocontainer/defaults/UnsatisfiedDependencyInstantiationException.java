@@ -12,13 +12,11 @@ package picocontainer.defaults;
 
 import picocontainer.PicoInstantiationException;
 
-public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException
-{
+public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException {
     private Class classThatNeedsDeps;
     private Class neededDep;
 
-    public UnsatisfiedDependencyInstantiationException(Class classThatNeedsDeps)
-    {
+    public UnsatisfiedDependencyInstantiationException(Class classThatNeedsDeps) {
         this.classThatNeedsDeps = classThatNeedsDeps;
     }
 
@@ -27,14 +25,12 @@ public class UnsatisfiedDependencyInstantiationException extends PicoInstantiati
         this.neededDep = neededDep;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return "Component " + classThatNeedsDeps.getName() + " needs " +
                 (neededDep == null ? "unnamed dependencies" : neededDep.getName());
     }
 
-    public Class getClassThatNeedsDeps()
-    {
+    public Class getClassThatNeedsDeps() {
         return classThatNeedsDeps;
     }
 }

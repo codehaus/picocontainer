@@ -12,7 +12,6 @@
 package nanocontainer.servlet.lifecycle;
 
 
-
 import nanocontainer.servlet.holder.SessionScopeObjectHolder;
 
 import nanocontainer.servlet.holder.RequestScopeObjectHolder;
@@ -24,7 +23,6 @@ import nanocontainer.servlet.ObjectHolder;
 import nanocontainer.servlet.ObjectInstantiator;
 
 
-
 import javax.servlet.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,18 +32,15 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
-
 import picocontainer.PicoContainer;
-
 
 
 public class RequestLifecycleFilter extends BaseLifecycleListener implements Filter {
 
 
-
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest)request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         HttpSession session = httpRequest.getSession(true);
 
@@ -57,7 +52,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
         ObjectHolder parentHolder = new SessionScopeObjectHolder(session, CONTAINER_KEY);
 
-        PicoContainer parentContainer = (PicoContainer)parentHolder.get();
+        PicoContainer parentContainer = (PicoContainer) parentHolder.get();
 
 
 
@@ -80,15 +75,12 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
         containerHolder.put(container);
 
 
-
         ObjectHolder instantiaterHolder = new RequestScopeObjectHolder(httpRequest, INSTANTIATER_KEY);
 
         instantiaterHolder.put(instantiater);
 
 
-
         try {
-
 
 
             // process the incoming request
@@ -96,9 +88,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
             filterChain.doFilter(request, response);
 
 
-
         } finally {
-
 
 
             // shutdown container
@@ -106,17 +96,14 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
             destroyContainer(context, containerHolder);
 
 
-
         }
 
     }
 
 
-
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
-
 
 
     public void destroy() {

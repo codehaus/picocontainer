@@ -43,24 +43,24 @@ public class SequentialInvocationHandler extends ContainerInvocationHandler {
         Object targetComponent = null;
         // Try to invoke the method on all components.
         Object[] components = getContainer().getComponents();
-        if( components.length == 0 ) {
-            throw new NoInvocationTargetException(proxy,method);
+        if (components.length == 0) {
+            throw new NoInvocationTargetException(proxy, method);
         }
         boolean success = false;
         for (int i = 0; i < components.length; i++) {
             Object component = components[i];
             try {
-                result = method.invoke( component, args );
+                result = method.invoke(component, args);
                 success = true;
-                if( targetComponent != null ) {
-                    throw new AmbiguousInvocationException(targetComponent,component,method);
+                if (targetComponent != null) {
+                    throw new AmbiguousInvocationException(targetComponent, component, method);
                 }
                 targetComponent = component;
-            } catch( Exception ignore ) {
+            } catch (Exception ignore) {
             }
         }
-        if( success == false ) {
-            throw new NoInvocationTargetException(proxy,method);
+        if (success == false) {
+            throw new NoInvocationTargetException(proxy, method);
         }
         return result;
     }

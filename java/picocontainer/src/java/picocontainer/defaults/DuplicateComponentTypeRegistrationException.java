@@ -12,22 +12,18 @@ package picocontainer.defaults;
 
 import picocontainer.PicoRegistrationException;
 
-public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException
-{
+public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException {
     private Class clazz;
 
-    public DuplicateComponentTypeRegistrationException(Class clazz)
-    {
+    public DuplicateComponentTypeRegistrationException(Class clazz) {
         this.clazz = clazz;
     }
 
-    public Class getDuplicateClass()
-    {
+    public Class getDuplicateClass() {
         return clazz;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return "Class " + clazz.getName() + " duplicated";
     }
 }

@@ -48,9 +48,9 @@ public class MultipleReturnTypeInvocationHandler extends ContainerInvocationHand
         for (int i = 0; i < components.length; i++) {
             Object component = components[i];
             try {
-                Object result = method.invoke( component, args );
-                resultList.add( result );
-            } catch( Exception ignore ) {
+                Object result = method.invoke(component, args);
+                resultList.add(result);
+            } catch (Exception ignore) {
             }
         }
         return resultList.toArray();

@@ -236,7 +236,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getAggregateComponentProxy(false,true);
+                pico.getAggregateComponentProxy(false, true);
 
         ((Washable) washableContainer).wash();
 
@@ -269,7 +269,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getAggregateComponentProxy(false,false);
+                pico.getAggregateComponentProxy(false, false);
 
         ((Washable) washableContainer).wash();
 
@@ -307,6 +307,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public static interface FoodFactory {
         Food makeFood();
+
         int hashCode();
     }
 
@@ -316,7 +317,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class AppleFactory extends AbstractFoodFactory  {
+    public static class AppleFactory extends AbstractFoodFactory {
         public AppleFactory(Recorder recorder) {
             super(recorder);
         }
@@ -395,8 +396,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         // Get the recorder so we can see if the apple and orange were actually eaten
         Recorder recorder = (Recorder) pico.getComponent(Recorder.class);
-        assertTrue( "Apple should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Apple eaten" ) );
-        assertTrue( "Orange should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Orange eaten" ) );
+        assertTrue("Apple should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains("Apple eaten"));
+        assertTrue("Orange should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains("Orange eaten"));
 
     }
 
@@ -429,8 +430,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException
-    {
+    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
@@ -473,8 +473,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //        mockPicoContainer.verify();
 //    }
 
-    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException
-    {
+    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);

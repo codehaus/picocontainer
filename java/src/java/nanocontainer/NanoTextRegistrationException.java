@@ -12,8 +12,7 @@ package nanocontainer;
 
 import picocontainer.PicoRegistrationException;
 
-public class NanoTextRegistrationException extends PicoRegistrationException
-{
+public class NanoTextRegistrationException extends PicoRegistrationException {
     private final String message;
 
     public NanoTextRegistrationException(String message) {

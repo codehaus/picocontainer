@@ -19,8 +19,7 @@ public class WilmaImpl implements Wilma {
         return helloCalled;
     }
 
-    public void hello()
-    {
+    public void hello() {
         helloCalled = true;
     }
 }

@@ -33,6 +33,7 @@ public class NanningNanoContainerTestCase extends TestCase {
 
     public static interface Transaction {
         void commit();
+
         void rollback();
     }
 
@@ -72,7 +73,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         }
     }
 
-    public static interface Component  {
+    public static interface Component {
         void doSomethingRequiringATransaction() throws Exception;
     }
 
@@ -108,7 +109,7 @@ public class NanningNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        container = new NanningNanoContainer(new DefaultComponentFactory(), new DefaultPicoContainer.Default(),new AspectSystem());
+        container = new NanningNanoContainer(new DefaultComponentFactory(), new DefaultPicoContainer.Default(), new AspectSystem());
     }
 
     public void testStartService() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {

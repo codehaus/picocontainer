@@ -28,7 +28,7 @@ public class ImplementationHidingComponentFactory implements ComponentFactory {
         private Object componentInstance;
 
         public ImplementationHidingProxy(Object componentInstance) {
-            if( componentInstance == null ) {
+            if (componentInstance == null) {
                 throw new NullPointerException("componentInstance can't be null");
             }
             this.componentInstance = componentInstance;

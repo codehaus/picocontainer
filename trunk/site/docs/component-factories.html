@@ -9,13 +9,13 @@ A component will be instantiated via a instance of
 ComponentFactory.&nbsp; There is no NullObject implementation of this.
 This is pluggable of course.<br>
 <pre style="margin-left: 40px;">public interface ComponentFactory {<br>&nbsp;&nbsp;&nbsp; Object createComponent(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ComponentSpecification componentSpec,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Object[] instanceDependencies)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws PicoInvocationTargetInitializationException;<br>}</pre>
-<h2>DefaultComponentFactory</h2>
+<h3>DefaultComponentFactory</h3>
 This component factory uses basic reflection to instantiate a component.<br>
-<h2>ImplementationHidingComponentFactory</h2>
+<h3>ImplementationHidingComponentFactory</h3>
 This one hides the implementation of a component from another that
 depends on it. The malicious coder cannot cast the interface back to a
 known implementation,<br>
-<h2><span style="font-weight: bold;">Future ComponentFactories :</span></h2>
+<h3><span style="font-weight: bold;">Future ComponentFactories :</span></h3>
 One that logs instantiations ?<br>
 <br>
 <br>

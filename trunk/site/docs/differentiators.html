@@ -7,11 +7,11 @@
 Pico components (to remind you) are simple java classes that declare
 their dependencies in the constructor(s). No meta XML for dependencies.
 No classes/interfaces to extend/implement.<br>
-<h2>Sun specified nearly-IoC Containers &amp; Component designs</h2>
+<h3>Sun specified nearly-IoC Containers &amp; Component designs</h3>
 It could be said that Sun have created a few container/component
 designs.......<br>
-<h3>Enterprise Java Beans<br>
-</h3>
+<h4>Enterprise Java Beans<br>
+</h4>
 Clearly Entity and Session beans run inside a container.&nbsp; The API
 is well defined, and to varying degrees of success one can deploy EJB
 appllications to WebLogic, WebSphere, Orion and JBoss etc.&nbsp;
@@ -20,7 +20,7 @@ are some mandated
 parent objects and interfaces for various to extend and/or implement.
 Resolution is done by the components themselves via JNDI more often
 than not.<br>
-<h3>Servlets</h3>
+<h4>Servlets</h4>
 Not so obvious - Servlets are contained by a servlet container. They
 are generally bundled with (or replaced by) value added propositions
 like JSP, but it is still a container/component design.&nbsp;&nbsp;
@@ -33,51 +33,51 @@ via RMI or JNDI.&nbsp; In more recent releases of EJB, local interfaces
 rather than RMI may be the mechanism for connection the parent
 components.&nbsp; WebLogic have always provided a optimizing mechanism
 for this interoperation.<br>
-<h3>Applets</h3>
+<h4>Applets</h4>
 Applets, though not so often used by people presently, are a good
 example of Container/Component separations.&nbsp; There is very little
 XML in use by Appletss.&nbsp; Configuration is typlically delivered in
 applet tags in HTML. Applets are granted some access to the parent
 container, the brower, and&nbsp; its DOM model for pages and other
 applets.&nbsp; There little standardisation for Browser as a container.<br>
-<h2>Non IoC container-like things by various<br>
-</h2>
-<h3>Mainable (Sun)<br>
+<h3>Non IoC container-like things by various<br>
 </h3>
+<h4>Mainable (Sun)<br>
+</h4>
 "public static void main(String[] args) {}"&nbsp; Familiar?
 Hopefully not :-) No component that is statically launched is a IoC
 component. This includes static launching of Java Webstart (JNLP)
 applications.<br>
-<h3>Singleton (pattern) </h3>
+<h4>Singleton (pattern) </h4>
 The singleton pattern was detailed in the "Design Patterns" book.&nbsp;
 It seems like a good idea, is typlically statically and publicly
 accessed in Java.&nbsp; Overuse makes for bad solutions.&nbsp; In the
 IoC world we would replace this with a container managed single
 instance.<br>
-<h3>Static Factory (pattern) </h3>
+<h4>Static Factory (pattern) </h4>
 Used in a similar way the Singleton pattern (and similarly detailed in
 "Design Patterns"), this allows disparate classes to create/get other
 components.&nbsp; Very dirty applications result from overuse of static
 factories<br>
-<h3>JNDI</h3>
+<h4>JNDI</h4>
 A huge map of clunkily access components via a very non-IoC mechanism.
 It has to be strapped with much XML to prevent inappropriate
 access.&nbsp; This is not IoC because the component reaches out for
 external component dependancies whenever it feels like.&nbsp; This last
 fact coulds Serlvets and EJB in use.<span style="font-weight: bold;"><br>
 </span>
-<h3><span style="font-weight: bold;"></span>AWT, Swing, SWT (gfx
+<h4><span style="font-weight: bold;"></span>AWT, Swing, SWT (gfx
 toolkits)<br>
-</h3>
+</h4>
 Nice container/component designs. In the case of Swing, perhaps a
 little dificult for coders to easily assemble applications.<br>
-<h3>Eclipse (platform)</h3>
+<h4>Eclipse (platform)</h4>
 The Eclipse platform is very compelling.&nbsp; It supports the notion
 of a pluggable application concept. Each component statically accesses
 other components via a factory (which at least Paul does not like),
 though it is clear that some complex classloader magic is going on.<br>
-<h2>Other IoC container / component designs</h2>
-<h3>Avalon-Framework and associated containers</h3>
+<h3>Other IoC container / component designs</h3>
+<h4>Avalon-Framework and associated containers</h4>
 Apache hosts a project that has been running for years called Avalon.
 It has many components that fit that its design and many
 containers.&nbsp;
@@ -163,7 +163,7 @@ lifecycle place.<br>
   </tbody>
 </table>
 <br>
-<h3>Carbon </h3>
+<h4>Carbon </h4>
 todo<br>
 <br>
 </body>

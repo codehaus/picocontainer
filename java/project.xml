@@ -20,9 +20,9 @@
     <siteDirectory>/www/picocontainer.codehaus.org/java/${pom.artifactId}</siteDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
-        <url>http://picocontainer.cvs.codehaus.org/java/</url>
+        <!--url>http://picocontainer.cvs.codehaus.org/java/</url-->
         <!-- statcvs only works with this one: -->
-        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url-->
+        <url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url>
     </repository>
 
     <!--

@@ -11,7 +11,7 @@
     
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-beta-5-SNAPSHOT</version>
+            <version>1.0-RC-1-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>    
 
@@ -19,13 +19,6 @@
             <id>servletapi</id>
             <version>2.3</version>
         </dependency>
-
-        <dependency>
-            <id>jmock</id>
-            <version>SNAPSHOT</version>
-        </dependency>
-
-        <!-- For test only -->
 
         <dependency>
             <groupId>nanocontainer</groupId>
@@ -41,6 +34,16 @@
         <dependency>
             <id>asm</id>
             <version>1.4.1</version>
+        </dependency>
+
+        <dependency>
+            <id>ognl</id>
+            <version>2.5.1</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
         </dependency>
 
     </dependencies>

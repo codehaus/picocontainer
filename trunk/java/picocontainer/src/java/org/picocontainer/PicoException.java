@@ -89,7 +89,7 @@ public abstract class PicoException extends RuntimeException {
     /**
      * Overridden to provide 1.4 style stack traces on pre-1.4.
      */
-o    public void printStackTrace(PrintWriter s) {
+    public void printStackTrace(PrintWriter s) {
         super.printStackTrace(s);
         if(cause!=null) {
             s.println("Caused by:\n");

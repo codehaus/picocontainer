@@ -85,41 +85,4 @@ public class ArraysTestCase extends TestCase {
         assertEquals(1, cods.length);
         assertTrue(Arrays.asList(cods).contains(cod));
     }
-
-    public static class UngenericCollectionBowl {
-        public UngenericCollectionBowl(Collection fish) {
-        }
-    }
-
-    public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
-        pico.registerComponentImplementation(UngenericCollectionBowl.class);
-        try {
-            pico.getComponentInstance(UngenericCollectionBowl.class);
-            fail();
-        } catch (UnsatisfiableDependenciesException e) {
-            // expected
-        }
-    }
-
-    public static class AnotherGenericCollectionBowl {
-        private final String[] strings;
-
-        public AnotherGenericCollectionBowl(String[] strings) {
-            this.strings = strings;
-        }
-
-        public String[] getStrings() {
-            return strings;
-        }
-    }
-
-    public void testShouldFailWhenThereAreNoComponentsToPutInTheArray() {
-        pico.registerComponentImplementation(AnotherGenericCollectionBowl.class);
-        try {
-            pico.getComponentInstance(AnotherGenericCollectionBowl.class);
-            fail();
-        } catch (UnsatisfiableDependenciesException e) {
-            // expected
-        }
-    }
 }

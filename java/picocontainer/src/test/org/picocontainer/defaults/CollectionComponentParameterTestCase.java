@@ -85,34 +85,16 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    static public class CollectedBowl {
-        private final Cod[] cods;
-        private final Fish[] fishes;
-
-        public CollectedBowl(Collection cods, Collection fishes) {
-            this.cods = (Cod[]) cods.toArray(new Cod[cods.size()]);
-            this.fishes = (Fish[]) fishes.toArray(new Fish[fishes.size()]);
-        }
-    }
-
-    static public class MappedBowl {
-        private final Fish[] fishes;
-
-        public MappedBowl(Map map) {
-            Collection collection = new ArrayList();
-            for (final Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-                final Map.Entry entry = (Map.Entry) iter.next();
-                collection.add(entry.getValue());
-            }
-            this.fishes = (Fish[]) collection.toArray(new Fish[collection.size()]);
-        }
-    }
-
-    public void testNativeArrays() {
+    private MutablePicoContainer getDefaultPicoContainer() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponentImplementation(Bowl.class);
         mpc.registerComponentImplementation(Cod.class);
         mpc.registerComponentImplementation(Shark.class);
+        return mpc;
+    }
+
+    public void testNativeArrays() {
+        MutablePicoContainer mpc = getDefaultPicoContainer();
         Cod cod = (Cod) mpc.getComponentInstanceOfType(Cod.class);
         Bowl bowl = (Bowl) mpc.getComponentInstance(Bowl.class);
         assertEquals(1, bowl.cods.length);
@@ -133,6 +115,16 @@ public class CollectionComponentParameterTestCase
         assertNotSame(bowl.cods[0], bowl.cods[1]);
     }
 
+    static public class CollectedBowl {
+        private final Cod[] cods;
+        private final Fish[] fishes;
+
+        public CollectedBowl(Collection cods, Collection fishes) {
+            this.cods = (Cod[]) cods.toArray(new Cod[cods.size()]);
+            this.fishes = (Fish[]) fishes.toArray(new Fish[fishes.size()]);
+        }
+    }
+
     public void testCollections() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponentImplementation(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
@@ -147,6 +139,15 @@ public class CollectionComponentParameterTestCase
         assertNotSame(bowl.fishes[0], bowl.fishes[1]);
     }
 
+    static public class MappedBowl {
+        private final Fish[] fishes;
+
+        public MappedBowl(Map map) {
+            Collection collection = map.values();
+            this.fishes = (Fish[]) collection.toArray(new Fish[collection.size()]);
+        }
+    }
+
     public void testMaps() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponentImplementation(MappedBowl.class, MappedBowl.class, new Parameter[]{new ComponentParameter(
@@ -156,5 +157,55 @@ public class CollectionComponentParameterTestCase
         MappedBowl bowl = (MappedBowl) mpc.getComponentInstance(MappedBowl.class);
         assertEquals(2, bowl.fishes.length);
         assertNotSame(bowl.fishes[0], bowl.fishes[1]);
+    }
+
+    public static class UngenericCollectionBowl {
+        public UngenericCollectionBowl(Collection fish) {
+        }
+    }
+
+    public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
+        MutablePicoContainer pico = getDefaultPicoContainer();
+        pico.registerComponentImplementation(UngenericCollectionBowl.class);
+        try {
+            pico.getComponentInstance(UngenericCollectionBowl.class);
+            fail();
+        } catch (UnsatisfiableDependenciesException e) {
+            // expected
+        }
+    }
+
+    public static class AnotherGenericCollectionBowl {
+        private final String[] strings;
+
+        public AnotherGenericCollectionBowl(String[] strings) {
+            this.strings = strings;
+        }
+
+        public String[] getStrings() {
+            return strings;
+        }
+    }
+
+    public void testShouldFailWhenThereAreNoComponentsToPutInTheArray() {
+        MutablePicoContainer pico = getDefaultPicoContainer();
+        pico.registerComponentImplementation(AnotherGenericCollectionBowl.class);
+        try {
+            pico.getComponentInstance(AnotherGenericCollectionBowl.class);
+            fail();
+        } catch (UnsatisfiableDependenciesException e) {
+            // expected
+        }
+    }
+
+    public void testAllowsEmptyArraysIfEspeciallySet() {
+        MutablePicoContainer pico = getDefaultPicoContainer();
+        pico.registerComponentImplementation(
+                AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
+                new Parameter[]{new ComponentParameter(true)});
+        AnotherGenericCollectionBowl bowl = (AnotherGenericCollectionBowl) pico
+                .getComponentInstance(AnotherGenericCollectionBowl.class);
+        assertNotNull(bowl);
+        assertEquals(0, bowl.strings.length);
     }
 }

@@ -11,9 +11,12 @@
 package nanocontainer;
 
 import nanocontainer.reflection.StringToObjectConverter;
-import picocontainer.*;
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.PicoContainer;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
-import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;
@@ -54,17 +57,17 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         }
     }
 
-    public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException {
+    public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         picoContainer.registerComponent(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
     }
 
-    public void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException {
+    public void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         Class typeClass = loadClass(typeClassName);
         Class compClass = loadClass(compClassName);
         picoContainer.registerComponent(typeClass, compClass);
     }
 
-    public void addParameterToComponent(String compClassName, String paramClassName, String valueAsString) throws ClassNotFoundException {
+    public void addParameterToComponent(String compClassName, String paramClassName, String valueAsString) throws ClassNotFoundException, PicoIntrospectionException {
         Class compClass = loadClass(compClassName);
         Class paramClass = loadClass(paramClassName);
 
@@ -74,7 +77,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     }
 
-    public void instantiateComponents() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
         picoContainer.instantiateComponents();
     }
 

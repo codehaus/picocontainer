@@ -33,8 +33,8 @@ import java.util.Iterator;
 
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
@@ -80,6 +80,8 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
             throw new NanoTextRegistrationException("SAXException:" + e.getMessage());
         } catch (IOException e) {
             throw new NanoTextRegistrationException("IOException:" + e.getMessage());
+        } catch (PicoIntrospectionException e) {
+
         }
     }
 
@@ -105,7 +107,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void instantiateComponents() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
         super.instantiateComponents();
         final Object[] components = getComponents();
         for (int i = 0; i < components.length; i++) {
@@ -115,7 +117,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 try {
                     installConfiguration(configurationItems, configuree);
                 } catch (InvocationTargetException e) {
-                    throw new picocontainer.PicoInvocationTargetInitailizationException(e);
+                    throw new picocontainer.defaults.PicoInvocationTargetInitailizationException(e);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

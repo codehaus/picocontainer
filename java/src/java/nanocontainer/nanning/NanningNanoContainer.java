@@ -1,22 +1,28 @@
 package nanocontainer.nanning;
 
-import picocontainer.*;
-import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInstantiationException;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
+ * @author Aslak Hellesoy
  * @version $Revision$
  */
-public class NanningNanoContainer extends AspectSystem {
-    ClassRegistrationPicoContainer serviceAndAspectContainer;
-    ClassRegistrationPicoContainer componentContainer;
+public class NanningNanoContainer extends HierarchicalPicoContainer {
+    private final AspectSystem aspectSystem;
 
-    public NanningNanoContainer() {
-        serviceAndAspectContainer = new HierarchicalPicoContainer.Default();
-        componentContainer = new HierarchicalPicoContainer(new NanningComponentFactory(this), serviceAndAspectContainer);
+    private ClassRegistrationPicoContainer serviceAndAspectContainer;
+
+    public NanningNanoContainer(ComponentFactory componentFactory, ClassRegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
+        super(new NanningComponentFactory(aspectSystem,componentFactory), serviceAndAspectContainer);
+        this.serviceAndAspectContainer = serviceAndAspectContainer;
+        this.aspectSystem = aspectSystem;
     }
 
     /**
@@ -24,7 +30,7 @@ public class NanningNanoContainer extends AspectSystem {
      * @param serviceClass
      */
     public void registerServiceOrAspect(Class serviceClass, Class compomentImplementation)
-            throws PicoRegistrationException {
+            throws PicoRegistrationException, PicoIntrospectionException {
         serviceAndAspectContainer.registerComponent(serviceClass, compomentImplementation);
     }
 
@@ -32,29 +38,21 @@ public class NanningNanoContainer extends AspectSystem {
      * Register aspect or service, these will <em>not</em> be weaved by the aspects.
      * @param compomentImplementation
      */
-    public void registerServiceOrAspect(Class compomentImplementation) throws PicoRegistrationException {
+    public void registerServiceOrAspect(Class compomentImplementation) throws PicoRegistrationException, PicoIntrospectionException {
         serviceAndAspectContainer.registerComponent(compomentImplementation);
     }
 
-    public void start() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
         serviceAndAspectContainer.instantiateComponents();
         Object[] components = serviceAndAspectContainer.getComponents();
         for (int i = 0; i < components.length; i++) {
             Object component = components[i];
             if (component instanceof Aspect) {
                 Aspect aspect = (Aspect) component;
-                addAspect(aspect);
+                aspectSystem.addAspect(aspect);
             }
         }
 
-        componentContainer.instantiateComponents();
-    }
-
-    public Object getComponent(Class componentType) throws PicoInvocationTargetInitailizationException, UnsatisfiedDependencyInstantiationException {
-        return componentContainer.getComponent(componentType);
-    }
-
-    public void registerComponent(Class componentType, Class componentImplementation) throws PicoRegistrationException {
-        componentContainer.registerComponent(componentType, componentImplementation);
+        super.instantiateComponents();
     }
 }

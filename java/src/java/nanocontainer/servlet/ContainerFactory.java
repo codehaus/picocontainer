@@ -29,7 +29,7 @@ public interface ContainerFactory {
 
 
 
-    ObjectInstantiater buildInstantiater(PicoContainer parentContainer);
+    ObjectInstantiator buildInstantiator(PicoContainer parentContainer);
 
 
 

@@ -13,19 +13,20 @@ package nanocontainer;
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
 import nanocontainer.testmodel.WebServerImpl;
 import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
         nc.instantiateComponents();
     }
 
-    public void testProvision() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException {
+    public void testProvision() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
@@ -35,7 +36,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         assertTrue("WebServerImpl should exist", nc.getComponent(WebServerImpl.class) instanceof WebServerImpl);
     }
 
-    public void testNoGenerationRegistration() throws PicoRegistrationException {
+    public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         try {
             nc.registerComponent("Foo");
@@ -45,7 +46,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInstantiationException {
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 

@@ -21,7 +21,7 @@ import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
 
 import nanocontainer.servlet.ObjectHolder;
 
-import nanocontainer.servlet.ObjectInstantiater;
+import nanocontainer.servlet.ObjectInstantiator;
 
 
 
@@ -69,7 +69,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
         // and a means to instantiate new objects in the container
 
-        ObjectInstantiater instantiater = getFactory(context).buildInstantiater(container);
+        ObjectInstantiator instantiater = getFactory(context).buildInstantiator(container);
 
 
 

@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nanocontainer.servlet.ObjectHolder;
-import nanocontainer.servlet.ObjectInstantiater;
+import nanocontainer.servlet.ObjectInstantiator;
 import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
 import nanocontainer.servlet.holder.RequestScopeObjectHolder;
 
@@ -37,15 +37,15 @@ public class NanoActionFactory extends ActionFactory {
 
     public Action getActionImpl(String name) throws Exception {
         Class actionClass = loadClass(name);
-        ObjectInstantiater instantiater = findInstantiater();
+        ObjectInstantiator instantiater = findInstantiater();
         Action result = (Action)instantiater.newInstance(actionClass);
         return result;
     }
 
-    private ObjectInstantiater findInstantiater() {
+    private ObjectInstantiator findInstantiater() {
         HttpServletRequest request = ServletActionContext.getRequest();
         ObjectHolder instantiaterHolder = new RequestScopeObjectHolder(request, BaseLifecycleListener.INSTANTIATER_KEY);
-        return (ObjectInstantiater)instantiaterHolder.get();
+        return (ObjectInstantiator)instantiaterHolder.get();
     }
 
     private Class loadClass(String name) {

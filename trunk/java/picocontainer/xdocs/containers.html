@@ -7,56 +7,10 @@
 PicoContainer (the project) ships with a few containers.
 <h2>DefaultPicoContainer</h2>
 The basic PicoContainer.&nbsp; No frills.<br>
-<h2>HierarchicalPicoContainer</h2>
-This one has all the features of The default container plus the ability
-to have a parent container. Useful for building trees of containers. <br>
-<h2>AggregatedContainersContainer</h2>
+<h2>CompositePicoContainer</h2>
 This one takes an array of PicoContainers to build a contrived single
 container. You may use that container as the parent to others. Thus
 trees of containers are not the only design.<br>
-<h2>LifecyclePicoContainer</h2>
-The LifecyclePicoContainer honors the classic lifecycle concepts for
-components.&nbsp; These are start(), stop() and dispose().&nbsp; If any
-of the components implements one of the applicable interfaces, the
-calling of the same method on th econtainer ( post
-instantiateComponent() ) will find that the call is pecolated though to
-it.&nbsp; The container is forgiving, as it is just fine if some of
-none of the components contained are Startable etc.<br>
-<br>
-Suitable components :<br>
-<br>
-<pre>public Peach implements Startable, Stoppable, Disposable {</pre>
-<pre>&nbsp;&nbsp; public void start() { }</pre>
-<pre>&nbsp;&nbsp; public void stop() { }</pre>
-<pre>&nbsp;&nbsp; public void dispose() { }</pre>
-<pre>}</pre>
-<pre><br>public Kiwi implements Stoppable {</pre>
-<pre>&nbsp;&nbsp; public void stop() { }</pre>
-<pre>}</pre>
-<br>
-A component that needs adaption ...<br>
-<br>
-<pre>public BananaImpl implement Banana {</pre>
-<pre>&nbsp;&nbsp; public void banana() {}</pre>
-<pre>&nbsp;&nbsp; public void start() { }</pre>
-<pre>&nbsp;&nbsp; public void stop() { }</pre>
-<pre>}</pre>
-<pre><br>public BananaExtender extends BananaImpl </pre>
-<pre>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{</pre>
-<pre>}</pre>
-<br>
-Or...<br>
-<br>
-<pre>public BananaDelegate implements Banana, Startable, Stoppable {</pre>
-<pre>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void start() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void stop() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>}</pre>
-<br>
 <br>
 </body>
 </html>

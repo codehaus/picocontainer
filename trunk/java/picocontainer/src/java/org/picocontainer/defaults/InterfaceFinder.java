@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Helper class for finding implemented interfaces of classes and objects.
+ * Helper class for introspecting interface and class hierarchies.
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible

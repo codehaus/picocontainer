@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import java.io.Serializable;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
@@ -22,24 +24,23 @@ import org.picocontainer.PicoIntrospectionException;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class SetterInjectionComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class SetterInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
     /**
-     * Constructs a SetterInjectionComponentAdapterFactory.
-     *
-     * @param delegate The delegated {@link ComponentAdapterFactory}
+     * Create a {@link SetterInjectionComponentAdapter}.
+     * @param componentKey The component's key
+     * @param componentImplementation The class of the bean.
+     * @param parameters Any parameters for the setters. If null the adapter solves the
+     * dependencies for all setters internally. Otherwise the number parameters must match
+     * the number of the setter.
+     * @return Returns a new {@link SetterInjectionComponentAdapter}.
+     * @throws PicoIntrospectionException if dependencies cannot be solved
+     * @throws AssignabilityRegistrationException if  the <code>componentKey</code> is a type
+     * that does not match the implementation
+     * @throws NotConcreteRegistrationException if the implementation is an interface or an
+     * abstract class.
      */
-    public SetterInjectionComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
-
-    /**
-     * @return Returns a {@link SetterInjectionComponentAdapter} as wrapper from the {@link ComponentAdapter} of the delegated factory.
-     * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
-     */
-    public ComponentAdapter createComponentAdapter(Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, new Parameter[]{}));
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters);
     }
 }

@@ -55,8 +55,8 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     }
 
     public void testDependenciesAreResolved() {
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, null);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -71,8 +71,8 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, null);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -81,8 +81,8 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         try {
             aAdapter.getComponentInstance();
         } catch (UnsatisfiableDependenciesException e) {
-            e.getUnsatisfiableDependencies().contains(List.class);
-            e.getUnsatisfiableDependencies().contains(String.class);
+            assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
+            assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
         }
     }
 
@@ -93,8 +93,8 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
             new ConstantParameter("YO"),
             new ConstantParameter(list)
         };
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class), aParameters);
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class));
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, aParameters);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -142,10 +142,10 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
-    public void notSureWhatThisIsTestingOrWhyItIsNeeded___testHybrids() {
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, new Parameter[]{}));
-        SetterInjectionComponentAdapter cAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("c", C.class, new Parameter[]{}));
-        SetterInjectionComponentAdapter cNullAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("c0", C.class, null));
+    public void testHybridBeans() {
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
+        SetterInjectionComponentAdapter cAdapter = new SetterInjectionComponentAdapter("c", C.class, null);
+        SetterInjectionComponentAdapter cNullAdapter = new SetterInjectionComponentAdapter("c0", C.class, null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -220,13 +220,11 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
-    // TODO: fails with incorrect order
-    public void XXXtestOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
+    public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer(
                 new CachingComponentAdapterFactory(
-                        new SetterInjectionComponentAdapterFactory(
-                                new ConstructorInjectionComponentAdapterFactory())));
+                        new SetterInjectionComponentAdapterFactory()));
         pico.registerComponent(
                 new CachingComponentAdapter(
                         new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
@@ -243,13 +241,11 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
     }
 
-    // TODO: fails with wrong order
-    public void XXXtestOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
+    public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer(
                 new CachingComponentAdapterFactory(
-                        new SetterInjectionComponentAdapterFactory(
-                                new ConstructorInjectionComponentAdapterFactory())));
+                        new SetterInjectionComponentAdapterFactory()));
         pico.registerComponent(
                 new CachingComponentAdapter(
                         new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));

@@ -1,4 +1,14 @@
-package org.microcontainer;
+/*****************************************************************************
+ * Copyright (C) MicroContainer Organization. All rights reserved.           *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Michael Ward                                             *
+ *****************************************************************************/
+
+package org.microcontainer.jmx;
 
 import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -18,6 +28,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author Michael Ward
+ * @version $Revision$
  */
 public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDelegate {
 
@@ -57,7 +68,7 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		picoContainer.registerComponentImplementation(componentKey, componentImplementation);
 
 		// Now MBean stuff...
-		List methods = getMatchingMethods(jmxDefinition.getMethods(), componentKey);
+		List methods = getMatchingMethods(jmxDefinition.getOperations(), componentKey);
 		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
 
 		// register the MBeanInfo
@@ -112,11 +123,12 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 
 	protected Object createJmxNode(Map attributes, NanoContainer nanoContainer) {
 		String key = (String)attributes.remove("key");
-		List methods = (List)attributes.remove("methods");
+		List operations = (List)attributes.remove("operations");
 
+		// build the bean
 		JmxDefinition jmxDefinition = new JmxDefinition(nanoContainer.getPico());
 		jmxDefinition.setKey(key);
-		jmxDefinition.setMethods(methods);
+		jmxDefinition.setOperations(operations);
 
 		return jmxDefinition;
 	}

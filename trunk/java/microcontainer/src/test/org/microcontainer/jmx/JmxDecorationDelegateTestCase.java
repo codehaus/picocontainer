@@ -1,4 +1,4 @@
-package org.microcontainer;
+package org.microcontainer.jmx;
 
 import junit.framework.TestCase;
 
@@ -24,13 +24,13 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 	private ObjectReference containerRef = new SimpleReference();
 	private ObjectReference parentContainerRef = new SimpleReference();
 
-	public void testIt() throws Exception {
+	public void testScript() throws Exception {
 
 		Reader script = new StringReader("" +
 				"builder = new org.microcontainer.MicroGroovyBuilder()\n" +
 				"pico = builder.container(parent:parent) {\n" +
 				"	component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.newMBeanServer())\n" +
-				"	jmx(key:'microcontainer:kernel=default', methods:['size']) {\n" +
+				"	jmx(key:'domain:map=default', operations:['size']) {\n" +
 				"   	component(key:java.util.Map, class:java.util.HashMap)\n" +
 				"   }\n" +
 				"}");
@@ -38,7 +38,7 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 		PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 		MBeanServer mBeanServer = (MBeanServer)pico.getComponentInstance(MBeanServer.class);
 
-		ObjectName objectName = new ObjectName("microcontainer:kernel=default");
+		ObjectName objectName = new ObjectName("domain:map=default");
 		Map map = (Map)pico.getComponentInstance(objectName.getCanonicalName());
 		map.put("hello", "world");
 		map.put("foo", "bar");
@@ -46,6 +46,7 @@ public class JmxDecorationDelegateTestCase extends TestCase {
 		// MBeanInfo is registered to the implementation
 		MBeanInfo mBeanInfo = (MBeanInfo)pico.getComponentInstance("java.util.HashMapMBeanInfo");
 		assertNotNull(mBeanInfo);
+		assertEquals("Only one operation should be defined in the MBeanInfo", 1, mBeanInfo.getOperations().length);
 
 		Integer size = (Integer)mBeanServer.invoke(objectName, "size", null, null);
 		assertEquals(2, size.intValue());

@@ -18,7 +18,7 @@ import java.util.List;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
-public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     private HotSwappingComponentAdapterFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory(new DefaultComponentAdapterFactory());
     private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(implementationHidingComponentAdapterFactory);
 
@@ -234,4 +234,46 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     protected ComponentAdapterFactory createComponentAdapterFactory() {
         return cachingComponentAdapterFactory;
     }
+
+    public static class Yin {
+        private final Yang yang;
+
+        public Yin(Yang yang) {
+            this.yang = yang;
+        }
+
+        public Yang getYang() {
+            return yang;
+        }
+    }
+
+    public static class Yang {
+        private final Yin yin;
+
+        public Yang(Yin yin) {
+            this.yin = yin;
+        }
+
+        public Yin getYin() {
+            return yin;
+        }
+    }
+
+    public void testShouldBeAbleToHandleMutualDependenciesWithoutInterfaceImplSeparation() {
+        MutablePicoContainer pico = new DefaultPicoContainer(
+                new CachingComponentAdapterFactory(
+                        new HotSwappingComponentAdapterFactory(
+                            new ConstructorInjectionComponentAdapterFactory(),
+                            new CglibProxyFactory())));
+
+        pico.registerComponentImplementation(Yin.class);
+        pico.registerComponentImplementation(Yang.class);
+
+        Yin yin = (Yin) pico.getComponentInstance(Yin.class);
+        Yang yang = (Yang) pico.getComponentInstance(Yang.class);
+
+        assertEquals(yin, yang.getYin());
+        assertEquals(yang, yin.getYang());
+    }
+
 }

@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 

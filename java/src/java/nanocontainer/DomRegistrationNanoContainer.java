@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 import picocontainer.Container;
+import picocontainer.DummyContainer;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
         implements InputSourceRegistrationNanoContainer{
@@ -36,7 +37,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     public static class Default extends DomRegistrationNanoContainer {
         public Default() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), null);
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer());
         }
     }
 
@@ -48,12 +49,11 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     public static class WithCustomDocumentBuilder extends DomRegistrationNanoContainer {
         public WithCustomDocumentBuilder(DocumentBuilder documentBuilder) {
-            super(documentBuilder, null);
+            super(documentBuilder, new DummyContainer());
         }
     }
 
     public void registerComponents(InputSource registration) throws NanoRegistrationException, ClassNotFoundException {
-
         try {
             Document doc = documentBuilder.parse(registration);
             NodeList components = doc.getElementsByTagName("component");
@@ -67,15 +67,11 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
                 } else {
                     registerComponent(clazz.getNodeValue());
                 }
-
             }
         } catch (SAXException e) {
             throw new NanoTextRegistrationException("SAXException:" + e.getMessage());
         } catch (IOException e) {
             throw new NanoTextRegistrationException("IOException:" + e.getMessage());
         }
-
-
     }
-
 }

@@ -29,13 +29,13 @@ public class OveriddenPicoTestContainer extends PicoContainerImpl.Default
         this.wilma = wilma;
     }
 
-    protected Object makeComponentInstance(Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException
+    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException
     {
 
         if (constructor.getDeclaringClass() == WilmaImpl.class) {
             return wilma;
         }
-        return super.makeComponentInstance(constructor, args);
+        return super.makeComponentInstance(compType, constructor, args);
     }
 
     protected void startComponent(Object component) {

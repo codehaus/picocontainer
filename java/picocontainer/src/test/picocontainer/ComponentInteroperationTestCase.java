@@ -26,7 +26,7 @@ public class ComponentInteroperationTestCase extends TestCase {
     {
 
         WilmaImpl wilma = new WilmaImpl();
-        PicoContainer pico = new OverriddenPicoTestContainer(wilma, null);
+        PicoContainer pico = new OverriddenPicoTestContainer(wilma, new DummyStartableLifecycleManagerImpl());
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);

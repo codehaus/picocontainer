@@ -1,6 +1,7 @@
-package picocontainer.reflect;
+package nanocontainer.reflect;
 
 import picocontainer.PicoContainer;
+import picocontainer.Container;
 
 import java.lang.reflect.Method;
 
@@ -12,10 +13,10 @@ import java.lang.reflect.Method;
  * @author Aslak Hellesoy
  * @version $Revision$
  */
-public class SequentialInvocationHandler extends PicoInvocationHandler {
+public class SequentialInvocationHandler extends ContainerInvocationHandler {
 
-    public SequentialInvocationHandler(PicoContainer picoContainer) {
-        super(picoContainer);
+    public SequentialInvocationHandler(Container container) {
+        super(container);
     }
 
     /**
@@ -32,7 +33,7 @@ public class SequentialInvocationHandler extends PicoInvocationHandler {
         Object result = null;
         Object targetComponent = null;
         // Try to invoke the method on all components.
-        Object[] components = getPicoContainer().getComponents();
+        Object[] components = getContainer().getComponents();
         if( components.length == 0 ) {
             throw new NoInvocationTargetException(proxy,method);
         }

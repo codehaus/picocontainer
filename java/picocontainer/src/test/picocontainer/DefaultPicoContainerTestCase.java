@@ -14,11 +14,13 @@ import junit.framework.TestCase;
 
 import java.util.*;
 import java.io.Serializable;
-import java.lang.reflect.UndeclaredThrowableException;
 
+import picocontainer.testmodel.FlintstonesImpl;
+import picocontainer.testmodel.FredImpl;
+import picocontainer.testmodel.Wilma;
+import picocontainer.testmodel.WilmaImpl;
 import picocontainer.testmodel.*;
 import picocontainer.testmodel.Dictionary;
-import picocontainer.reflect.SequentialInvocationHandler;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -309,48 +311,6 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static interface Foo {
-        void setBar(String s);
-    }
-    public static class FooImpl implements Foo {
-        private String bar;
-        public void setBar(String bar) {
-            this.bar = bar;
-        }
-        public String getBar() {
-            return bar;
-        }
-    }
-
-    public void testGetProxy() throws PicoRegistrationException, PicoStartException {
-        PicoContainer pico = new PicoContainerImpl.Default();
-
-        Collection list = new ArrayList();
-        pico.registerComponent( list );
-
-        pico.registerComponent( Foo.class, FooImpl.class );
-        pico.start();
-
-        SequentialInvocationHandler ih = new SequentialInvocationHandler(pico);
-
-        Object proxy = pico.getProxy(ih);
-
-        Collection proxyCollection = (Collection) proxy;
-        Foo proxyFoo  = (Foo) proxy;
-
-        proxyCollection.add("Foo");
-        try {
-            proxyFoo.setBar("Zap");
-        } catch (UndeclaredThrowableException e) {
-            throw e;
-        }
-
-        // Assert that the proxy subjects have changed.
-        assertTrue( "The collection should have a Foo", list.contains("Foo") );
-
-        FooImpl foo = (FooImpl) pico.getComponent(Foo.class);
-        assertEquals( "Zap", foo.getBar() );
-    }
 
     public static class A {
         public A(B b){}
@@ -381,6 +341,4 @@ public class DefaultPicoContainerTestCase extends TestCase {
             // ok
         }
     }
-
-
 }

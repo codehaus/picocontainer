@@ -59,5 +59,4 @@ public interface PicoContainer extends Container {
 
     void stop() throws PicoStopException;
 
-    Object getProxy(InvocationHandler invocationHandler);
 }

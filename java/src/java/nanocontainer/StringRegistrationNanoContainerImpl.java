@@ -16,6 +16,7 @@ import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoContainerImpl;
 import picocontainer.PicoStopException;
+import picocontainer.DummyContainer;
 
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
@@ -32,7 +33,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public static class Default extends StringRegistrationNanoContainerImpl {
         public Default() {
-            super(null);
+            super(new DummyContainer());
         }
     }
 
@@ -69,6 +70,10 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public Object getComponent(Class clazz) {
         return picoContainer.getComponent(clazz);
+    }
+
+    public Object[] getComponents() {
+        return picoContainer.getComponents();
     }
 
 

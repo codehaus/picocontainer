@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-deployer</id>
+    <name>nanocontainer-deployer</name>
+    <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-beta-5-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-reflection</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-vfs</id>
+            <version>20030518103800</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.3</version>
+            <url>http://jakarta.apache.org/commons/logging.html</url>
+        </dependency>
+
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+        </dependency>
+
+        <dependency>
+            <id>groovy</id>
+            <version>1.0-beta-3</version>
+        </dependency>
+
+        <dependency>
+            <id>asm</id>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>1.5R4.1</version>
+        </dependency>
+
+        <dependency>
+            <id>jython</id>
+            <version>2.1</version>
+        </dependency>
+    </dependencies>
+
+</project>

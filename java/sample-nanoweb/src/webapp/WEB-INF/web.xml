@@ -1,24 +1,21 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>WebWork NanoContainer Demo</display-name>
+    <display-name>NanoWeb Demo</display-name>
 
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            import org.picocontainer.defaults.Parameter
-            import org.picocontainer.defaults.ComponentParameter
-            import org.picocontainer.defaults.ConstantParameter
-
             pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 System.out.println("**** Webapp-level pico components registered by Groovy")
-                pico.registerComponentImplementation(org.nanocontainer.sample.webwork.dao.simple.MemoryCheeseDao)
-
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 System.out.println("**** Session-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                 System.out.println("**** Request-level pico components registered by Groovy")
+
+                // Map NanoWeb Actions
+                pico.registerComponentImplementation("/demo.nano", org.nanocontainer.sample.nanoweb.DemoAction)
             }
         ]]></param-value>
     </context-param>
@@ -28,23 +25,26 @@
     </listener>
 
     <servlet>
-        <servlet-name>WebWork</servlet-name>
-        <servlet-class>org.nanocontainer.webwork.PicoServletDispatcher</servlet-class>
+        <servlet-name>NanoWeb</servlet-name>
+        <servlet-class>org.nanocontainer.nanoweb.NanoWebServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
-        <servlet-name>velocity</servlet-name>
-        <servlet-class>webwork.view.velocity.WebWorkVelocityServlet</servlet-class>
+        <servlet-name>NanoVelocity</servlet-name>
+        <servlet-class>org.nanocontainer.nanoweb.NanoWebVelocityServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <!-- For actions -->
     <servlet-mapping>
-        <servlet-name>WebWork</servlet-name>
-        <url-pattern>*.action</url-pattern>
+        <servlet-name>NanoWeb</servlet-name>
+        <url-pattern>*.nano</url-pattern>
     </servlet-mapping>
 
+    <!-- For views (forwarded to by NanoWeb after action execution) -->
     <servlet-mapping>
-        <servlet-name>velocity</servlet-name>
+        <servlet-name>NanoVelocity</servlet-name>
         <url-pattern>*.vm</url-pattern>
     </servlet-mapping>
 </web-app>

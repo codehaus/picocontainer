@@ -1,0 +1,13 @@
+<project default="binary:install"
+    xmlns:deploy="deploy">
+    <goal name="binary:install" prereqs="war:install"/>
+    <goal name="binary:deploy" prereqs="war:install">
+        <deploy:artifact
+            artifact="${maven.build.dir}/${pom.artifactId}.war"
+            type="war"
+            assureDirectoryCommand="mkdir -p"
+            siteCommand="cd @deployDirectory@; chmod g+w ${maven.final.name}.war"
+            />
+
+    </goal>
+</project>

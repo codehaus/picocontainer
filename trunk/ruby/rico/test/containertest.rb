@@ -281,7 +281,9 @@ class ContainerTest < Test::Unit::TestCase
   
   def test_simple_intuituve_api
     rico = Container.new
+    # Synonym for rico.register_component_implementation(:wp, WithProp)
     rico.wp = WithProp
+    # Synonym for rico.component_implementation(:wp).foo = "hey"
     rico.wp.foo = "hey"
     assert_equal("hey", rico.wp.foo)
   end

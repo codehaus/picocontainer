@@ -1,7 +1,10 @@
-import org.nanocontainer.script.groovy.NanoGroovyBuilder
+//import org.nanocontainer.script.groovy.NanoGroovyBuilder
+import org.microcontainer.MicroGroovyBuilder
+import javax.management.MBeanServerFactory
+import javax.management.MBeanOperationInfo;
 import java.io.File
 
-builder = new NanoGroovyBuilder()
+builder = new MicroGroovyBuilder()
 hiddenJarPath = new File(parent.getComponentInstance("workingDir"), "/MCA-INF/hidden/hidden.jar").getCanonicalPath()
 
 builder.container(parent:parent) {
@@ -16,5 +19,12 @@ builder.container(parent:parent) {
     //management(key:'foobar' methods:'put, size') {
     //  component(key:java.util.Map, class:java.util.HashMap)
     //}
+
+    // register MBeanServer
+    component(key:javax.management.MBeanServer, instance:MBeanServerFactory.newMBeanServer())
+
+    // set up MBean*Info for JMX
+    info = new MBeanOperationInfo("size", "return the number of components", null, "int", MBeanOperationInfo.INFO)
+    management(key:'microcontainer:kernel=default', class:'java.util.HashMap', operations:[info])
 }
 

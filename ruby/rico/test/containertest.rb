@@ -13,19 +13,6 @@ class ContainerTest < Test::Unit::TestCase
     assert_equal 0, rico.component_count, "component count"
   end
   
-  def test_new_container_is_stopped
-    rico = Container.new
-    assert rico.stopped?
-  end
-  
-  def test_get_component_in_stopped_container_fails
-    rico = Container.new
-    rico.register_component :object, Object
-    assert_raises ContainerNotStartedError do
-      rico.component :object
-    end
-  end
-  
   def test_get_nonexistent_component_details_fails
     rico = Container.new
     assert_raises NonexistentComponentError, "component class for nonexistent key" do
@@ -36,14 +23,6 @@ class ContainerTest < Test::Unit::TestCase
     end
   end
   
-  def test_register_component_in_started_container_fails
-    rico = Container.new
-    rico.start
-    assert_raises ContainerNotStoppedError do
-      rico.register_component :object, Object
-    end
-  end
-    
   def test_register_component_with_no_dependencies
     rico = Container.new
     rico.register_component :object, Object
@@ -89,7 +68,6 @@ class ContainerTest < Test::Unit::TestCase
   def test_get_component_with_no_dependencies
     rico = Container.new
     rico.register_component :component, SimpleComponent
-    rico.start
     result = rico.component :component
     assert_equal SimpleComponent, result.class
   end
@@ -97,7 +75,6 @@ class ContainerTest < Test::Unit::TestCase
   def test_get_component_twice_gives_same_component
     rico = Container.new
     rico.register_component :component, SimpleComponent
-    rico.start
     one = rico.component :component
     two = rico.component :component
     assert_same one, two
@@ -105,7 +82,6 @@ class ContainerTest < Test::Unit::TestCase
     
   def test_get_component_with_dependencies
     rico = rico_with_dependent_components
-    rico.start
     dependent = rico.component :dependent
     assert_instance_of Needed, dependent.needed
     assert_instance_of AlsoNeeded, dependent.also_needed
@@ -121,7 +97,6 @@ class ContainerTest < Test::Unit::TestCase
   def test_get_component_with_multiple_levels_of_dependencies
     rico = rico_with_dependent_components
     rico.register_component :higher, Higher, [ :dependent ]
-    rico.start
     
     # check top level has dependent
     higher = rico.component :higher
@@ -150,7 +125,6 @@ class ContainerTest < Test::Unit::TestCase
     rico.register_component :common, Common
     rico.register_component :thing1, Thing1, [ :common ]
     rico.register_component :thing2, Thing2, [ :common ]
-    rico.start
     thing1 = rico.component :thing1
     thing2 = rico.component :thing2
     assert_same thing1.common, thing2.common
@@ -162,57 +136,30 @@ class ContainerTest < Test::Unit::TestCase
     rico.register_component :common2, Common
     rico.register_component :thing1, Thing1, [ :common1 ]
     rico.register_component :thing2, Thing2, [ :common2 ]
-    rico.start
     thing1 = rico.component :thing1
     thing2 = rico.component :thing2
     assert_not_same thing1.common, thing2.common
   end
   
-  class StartableComponent
-    include Singleton # so we can check the instance's run state
-    include Rico::RunState
-    def do_start; end
-    def do_stop; end
+  class Washable
+    attr_accessor :washed
   end
   
-  def test_container_starts_components
-    # register startable component
-    rico = Container.new
-    rico.register_component :startable, StartableComponent, [], :instance
-    rico.register_startable :startable, :start, :stop
+  class AlsoWashable
+    attr_accessor :washed
+  end
+  
+  class DontWashMe; end
     
-    # assert not started
-    assert !StartableComponent.instance.started?, "Component should not be started yet"
-    
-    # start container
-    rico.start
-    
-    # assert component was started
-    assert StartableComponent.instance.started?, "Component should have started"
-  end
-  
-  def test_stop_instances
+  def test_multicast_delivers_message_to_all_components
     rico = Container.new
-    rico.register_component :startable, StartableComponent, [], :instance
-    rico.register_startable :startable, :start, :stop
-    rico.start
-    rico.stop
-    assert StartableComponent.instance.stopped?, "Component should have stopped"
-  end
-  
-  class StartableWithoutMixin
-  	def initialize
-  	  @started = false
-  	end
-  	def actual_start
-  		@started = true
-  	end
-  	def actual_stop
-  	    @started = false
-  	end
-  end
-  
-  def test_start_and_stop_startable_component_without_mixin
-    rico = Container.new
+    rico.register_component :washable, Washable
+    rico.register_component :also_washable, AlsoWashable
+    rico.register_component :dont_wash_me, DontWashMe
+    assert_equal nil, rico.component(:washable).washed
+    assert_equal nil, rico.component(:also_washable).washed
+    rico.multicast :washed=, true
+    assert_equal true, rico.component(:washable).washed
+    assert_equal true, rico.component(:also_washable).washed
   end
 end

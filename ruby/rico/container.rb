@@ -24,10 +24,7 @@ module Rico
   end
   
   class Container
-	include RunState
-    
     def initialize
-      super
       @specs = {}
     end
     
@@ -36,14 +33,8 @@ module Rico
     end
     
     def register_component(key, type, dependencies = [], create_method = :new)
-      check_stopped
       dependencies.each { |dep| check_key dep }
       @specs[key] = ComponentSpecification.new type, dependencies, create_method
-    end
-    
-    def register_startable(key, start_method, stop_method)
-      #check_stopped (need test)
-      @specs[key].set_startable start_method, stop_method
     end
     
     def component_class(key)
@@ -60,36 +51,19 @@ module Rico
     end
     
     def component(key)
-      check_started
-      return component_specification(key).component
+      return component_specification(key).component(self)
     end
     
-    def start_component(key)
-    	@specs[key].start_component self
-    end
-    
-    private
-    def do_start
-      @specs.each_value do |spec|
-        spec.start_component self
+    def multicast(method, *args)
+      @specs.each_key do |key|
+        component(key).send(method, *args) if component(key).respond_to? method
       end
     end
     
-    def do_stop
-    	@specs.each_value { |s| s.stop_component }
-    end
-    
+    private
     def check_key(key)
       raise NonexistentComponentError, "Missing component #{key.to_s}" unless @specs.has_key? key
       key
-    end
-    
-    def check_started
-      raise ContainerNotStartedError unless started?
-    end
-    
-    def check_stopped
-      raise ContainerNotStoppedError unless stopped?
     end
   end
 end

@@ -17,7 +17,7 @@ using System.Runtime.Serialization;
  * @version $Revision$
  */
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class UnsatisfiableDependenciesException : PicoIntrospectionException

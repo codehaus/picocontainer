@@ -1,6 +1,6 @@
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	public class SetterInjectionComponentAdapterFactory : IComponentAdapterFactory
 	{

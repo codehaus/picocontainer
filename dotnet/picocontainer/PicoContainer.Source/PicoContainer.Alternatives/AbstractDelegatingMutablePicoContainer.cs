@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace PicoContainer.Alternatives
+namespace PicoContainer.Core.Alternatives
 {
 	[Serializable]
 	public abstract class AbstractDelegatingMutablePicoContainer : IMutablePicoContainer

@@ -1,9 +1,9 @@
 using System.Collections;
 using NUnit.Framework;
-using PicoContainer;
-using PicoContainer.Alternatives;
-using PicoContainer.Defaults;
-using PicoContainer.Tests.Tck;
+using PicoContainer.Core;
+using PicoContainer.Core.Alternatives;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core.Tests.Tck;
 
 namespace Test.Alternatives
 {

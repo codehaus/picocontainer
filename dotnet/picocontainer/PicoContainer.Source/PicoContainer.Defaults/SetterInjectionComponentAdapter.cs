@@ -13,7 +13,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// Instantiates components using empty constructors and Setter Injection

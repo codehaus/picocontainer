@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class BasicComponentParameter : IParameter

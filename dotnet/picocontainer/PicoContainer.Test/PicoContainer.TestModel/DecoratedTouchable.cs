@@ -1,5 +1,5 @@
 
-namespace PicoContainer.Tests.TestModel
+namespace PicoContainer.Core.Tests.TestModel
 {
 	/// <summary>
 	/// Summary description for DecoratedTouchable.

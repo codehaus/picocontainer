@@ -4,8 +4,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using PicoContainer;
-using PicoContainer.Defaults;
+using PicoContainer.Core;
+using PicoContainer.Core.Defaults;
 
 namespace Test.Tck
 {
@@ -372,7 +372,7 @@ namespace Test.Tck
 			if ((GetComponentAdapterNature() & RESOLVING) > 0)
 			{
 				Hashtable cycleInstances = new Hashtable();
-				PicoContainer.Defaults.IObjectReference cycleCheck = new SimpleReference();
+				PicoContainer.Core.Defaults.IObjectReference cycleCheck = new SimpleReference();
 				object[] wrapperDependencies = new Object[] {cycleInstances, cycleCheck};
 				IMutablePicoContainer picoContainer = new DefaultPicoContainer(CreateDefaultComponentAdapterFactory());
 				IComponentAdapter componentAdapter = prepRES_failingVerificationWithCyclicDependencyException(picoContainer);
@@ -410,7 +410,7 @@ namespace Test.Tck
 			if ((GetComponentAdapterNature() & RESOLVING) > 0)
 			{
 				Hashtable cycleInstances = new Hashtable();
-				PicoContainer.Defaults.IObjectReference cycleCheck = new SimpleReference();
+				PicoContainer.Core.Defaults.IObjectReference cycleCheck = new SimpleReference();
 				object[] wrapperDependencies = new Object[] {cycleInstances, cycleCheck};
 				IMutablePicoContainer picoContainer = new DefaultPicoContainer(CreateDefaultComponentAdapterFactory());
 				IComponentAdapter componentAdapter = prepRES_failingInstantiationWithCyclicDependencyException(picoContainer);
@@ -468,11 +468,11 @@ namespace Test.Tck
 	public class CycleDetectorComponentAdapter : DecoratingComponentAdapter
 	{
 		private Hashtable set;
-		private PicoContainer.Defaults.IObjectReference reference;
+		private PicoContainer.Core.Defaults.IObjectReference reference;
 
 		public CycleDetectorComponentAdapter(IComponentAdapter theDelegate,
 		                                     Hashtable set,
-		                                     PicoContainer.Defaults.IObjectReference reference) : base(theDelegate)
+		                                     PicoContainer.Core.Defaults.IObjectReference reference) : base(theDelegate)
 		{
 			this.set = set;
 			this.reference = reference;

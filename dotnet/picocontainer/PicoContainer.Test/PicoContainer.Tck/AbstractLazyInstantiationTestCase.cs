@@ -12,7 +12,7 @@
 using System;
 using NUnit.Framework;
 
-namespace PicoContainer.Tests.Tck
+namespace PicoContainer.Core.Tests.Tck
 {
 	/// <summary>
 	/// Summary description for AbstractLazyInstantiationTestCase.

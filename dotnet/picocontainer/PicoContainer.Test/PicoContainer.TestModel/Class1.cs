@@ -1,6 +1,6 @@
 using System.Collections;
-using PicoContainer.Defaults;
-using PicoContainer;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core;
 
 namespace Test.TestModel
 {

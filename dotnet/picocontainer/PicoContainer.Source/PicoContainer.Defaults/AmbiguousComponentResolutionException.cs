@@ -12,9 +12,9 @@
 using System;
 using System.Text;
 using System.Runtime.Serialization;
-using PicoContainer;
+using PicoContainer.Core;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// The PicoIntrospectionException is thrown when the initialization could be done with more than one

@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Tests.TestModel
+namespace PicoContainer.Core.Tests.TestModel
 {
 	[Serializable]
 	public class AlternativeTouchable : ITouchable

@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
 	/// A component adapter is responsible for providing a specific component instance.

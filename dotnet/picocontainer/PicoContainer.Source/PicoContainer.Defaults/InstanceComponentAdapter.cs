@@ -10,7 +10,7 @@ using System;
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class InstanceComponentAdapter : AbstractComponentAdapter

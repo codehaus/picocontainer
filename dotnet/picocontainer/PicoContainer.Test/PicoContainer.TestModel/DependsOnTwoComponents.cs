@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace PicoContainer.Tests.TestModel
+namespace PicoContainer.Core.Tests.TestModel
 {
 	/// <summary>
 	/// Summary description for DependsOnTwoComponents.

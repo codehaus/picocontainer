@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class NullComponentMonitor : IComponentMonitor

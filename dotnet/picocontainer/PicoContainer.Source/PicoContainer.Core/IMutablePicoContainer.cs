@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
 	/// This is the core interface used for registration of components with a container. 
@@ -27,7 +27,7 @@ namespace PicoContainer
 		/// in the implementing container.</remarks></param>
 		/// <param name="componentImplementation">the concrete component type</param>
 		/// <returns>the associated ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
+		/// <exception cref="PicoRegistrationException">if the registration fails</exception>
 		/// <see cref="RegisterComponentImplementation(Object,Type,IParameter[])"/> a variant of this method that allows more control
 		/// over the parameters passed into the componentImplementation constructor when constructing an instance. 
 		IComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation);
@@ -43,7 +43,7 @@ namespace PicoContainer
 		/// to pass to the constructor when it is instantiated.
 		/// <remarks>Container implementations may ignore one or more of these hints.</remarks></param>
 		/// <returns>the associated ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
+		/// <exception cref="PicoContainer.Core.PicoRegistrationException">if the registration fails</exception>
 		IComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation, IParameter[] parameters);
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace PicoContainer
 		/// <remarks>Calling this method is equivalent to calling <example>RegisterComponentImplementation(componentImplementation, componentImplementation)</example></remarks>
 		/// <param name="componentImplementation">the concrete component type</param>
 		/// <returns>the associated ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
+		/// <exception cref="PicoContainer.Core.PicoRegistrationException">if the registration fails</exception>
 		IComponentAdapter RegisterComponentImplementation(Type componentImplementation);
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace PicoContainer
 		/// </summary>
 		/// <param name="componentInstance">the object to register</param>
 		/// <returns>the associated ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
+		/// <exception cref="PicoContainer.Core.PicoRegistrationException">if the registration fails</exception>
 		IComponentAdapter RegisterComponentInstance(object componentInstance);
 
 		/// <summary>
@@ -76,17 +76,17 @@ namespace PicoContainer
 		/// in the implementing container.</remarks></param>
 		/// <param name="componentInstance">an arbitrary object.</param>
 		/// <returns>the associated ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
+		/// <exception cref="PicoContainer.Core.PicoRegistrationException">if the registration fails</exception>
 		IComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance);
 
 		/// <summary>
-		/// Registers a component via an <see cref="PicoContainer.IComponentAdapter"/>. 
+		/// Registers a component via an <see cref="PicoContainer.Core.IComponentAdapter"/>. 
 		/// </summary>
 		/// <remarks>Use this if you need fine grained control over what ComponentAdapter
 		/// to use for a specific component.</remarks>
 		/// <param name="componentAdapter">the adapter to register</param>
 		/// <returns>the passed in ComponentAdapter.</returns>
-		/// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>    
+		/// <exception cref="PicoContainer.Core.PicoRegistrationException">if the registration fails</exception>    
 		IComponentAdapter RegisterComponent(IComponentAdapter componentAdapter);
 
 		/// <summary>

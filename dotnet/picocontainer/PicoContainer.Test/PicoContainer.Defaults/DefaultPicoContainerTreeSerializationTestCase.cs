@@ -2,9 +2,9 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using PicoContainer;
-using PicoContainer.Defaults;
-using PicoContainer.Tests.Tck;
+using PicoContainer.Core;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core.Tests.Tck;
 
 namespace Test.Defaults
 {

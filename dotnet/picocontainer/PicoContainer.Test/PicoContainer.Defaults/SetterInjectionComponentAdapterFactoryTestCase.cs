@@ -1,6 +1,6 @@
 using System;
-using PicoContainer.Tests.Tck;
-using PicoContainer.Defaults;
+using PicoContainer.Core.Tests.Tck;
+using PicoContainer.Core.Defaults;
 using NUnit.Framework;
 
 namespace Test.Defaults

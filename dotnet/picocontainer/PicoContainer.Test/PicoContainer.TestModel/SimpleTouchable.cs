@@ -10,7 +10,7 @@ using System;
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-namespace PicoContainer.Tests.TestModel
+namespace PicoContainer.Core.Tests.TestModel
 {
 	[Serializable]
 	public class SimpleTouchable : ITouchable

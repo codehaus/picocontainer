@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -94,14 +94,4 @@ public class HierarchicalPicoContainer extends DefaultPicoContainer implements C
         return (Class[]) types.toArray(new Class[types.size()]);
     }
 
-    protected Object getComponentForParam(Class parameter) throws AmbiguousComponentResolutionException {
-        // If the parent container has the component type
-        // it can be seen to be dominant. No need to check
-        // for ambiguities
-        if (parentContainer.hasComponent(parameter)) {
-            return parentContainer.getComponent(parameter);
-        } else {
-            return super.getComponentForParam(parameter);
-        }
-    }
 }

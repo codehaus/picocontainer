@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -30,7 +30,7 @@ public class DummiesTestCase extends TestCase {
                                                      IllegalAccessException,
                                                      InstantiationException {
         picocontainer.defaults.DefaultComponentFactory dcd = new picocontainer.defaults.DefaultComponentFactory();
-        Object decorated = dcd.createComponent(Object.class, Object.class.getConstructor(null), null);
+        Object decorated = dcd.createComponent(Object.class, Object.class, null, null);
         assertNotNull(decorated);
         //TODO check no methods were called, via proxy ?
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -15,15 +15,22 @@ import picocontainer.PicoInstantiationException;
 public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException
 {
     private Class classThatNeedsDeps;
+    private Class neededDep;
 
     public UnsatisfiedDependencyInstantiationException(Class classThatNeedsDeps)
     {
         this.classThatNeedsDeps = classThatNeedsDeps;
     }
 
+    public UnsatisfiedDependencyInstantiationException(Class classThatNeeds, Class neededDep) {
+        this.classThatNeedsDeps = classThatNeeds;
+        this.neededDep = neededDep;
+    }
+
     public String getMessage()
     {
-        return "Class " + classThatNeedsDeps.getName() + " needs unnamed dependencies";
+        return "Component " + classThatNeedsDeps.getName() + " needs " +
+                (neededDep == null ? "unnamed dependencies" : neededDep.getName());
     }
 
     public Class getClassThatNeedsDeps()

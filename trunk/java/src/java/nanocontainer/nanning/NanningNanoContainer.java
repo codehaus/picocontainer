@@ -1,6 +1,7 @@
 package nanocontainer.nanning;
 
 import picocontainer.*;
+import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
@@ -49,7 +50,7 @@ public class NanningNanoContainer extends AspectSystem {
         componentContainer.instantiateComponents();
     }
 
-    public Object getComponent(Class componentType) {
+    public Object getComponent(Class componentType) throws PicoInvocationTargetInitailizationException, UnsatisfiedDependencyInstantiationException {
         return componentContainer.getComponent(componentType);
     }
 

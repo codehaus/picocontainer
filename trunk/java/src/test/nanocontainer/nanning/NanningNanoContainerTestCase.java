@@ -21,7 +21,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     private NanningNanoContainer container;
 
     /**
-     * A very simplified interface to a TransactionManager.
+     * Aa very simplified interface to a TransactionManager.
      */
     public static interface TransactionManager {
         Transaction startTransaction();
@@ -33,7 +33,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     }
 
     /**
-     * A very simplified "declarative" transaction-aspect.
+     * Aa very simplified "declarative" transaction-aspect.
      */
     public static class TransactionAspect implements Aspect {
         Pointcut transactionPointcut = new AllPointcut();

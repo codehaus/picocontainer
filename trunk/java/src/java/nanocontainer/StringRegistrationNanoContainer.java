@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -53,8 +53,8 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * list of classloaders to iterate through. As are all parent containers
      * of course.
      *
-     * It is important to point out that one component in say classloader A will
-     * not be able to depend on another component is say classloader B if the
+     * It is important to point out that one component in say classloader Aa will
+     * not be able to depend on another component is say classloader Bb if the
      * componentType (and associated classes mentioned directly in that interface)
      * are not mutually visible.  I.e. in a classloader that is visible to both.
      * Thus, if you are going to this level of effort, you might want to separate

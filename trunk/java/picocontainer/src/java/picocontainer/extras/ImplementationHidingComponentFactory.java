@@ -11,8 +11,8 @@ import java.lang.reflect.Method;
 
 public class ImplementationHidingComponentFactory extends DefaultComponentFactory {
 
-    public Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
-        Object component = super.createComponent(compType, constructor, args);
+    public Object createComponent(Class compType, Class compImplementation, Class[] dependencies, Object[] args) throws PicoInvocationTargetInitailizationException {
+        Object component = super.createComponent(compType, compImplementation, dependencies, args);
         return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {compType}, new ImplementationHidingProxy(component));
     }
 

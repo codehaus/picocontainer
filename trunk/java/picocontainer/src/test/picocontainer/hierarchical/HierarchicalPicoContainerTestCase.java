@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -13,7 +13,6 @@ package picocontainer.hierarchical;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +29,6 @@ import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.ComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
@@ -271,7 +269,6 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
     }
 
 
-
     public void testTooManyContructors() throws PicoRegistrationException, PicoInstantiationException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
@@ -321,8 +318,8 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public void testWithComponentFactory() throws PicoRegistrationException, PicoInstantiationException {
         final WilmaImpl wilma = new WilmaImpl();
-        HierarchicalPicoContainer pc = new HierarchicalPicoContainer.WithComponentFactory(new ComponentFactory() {
-            public Object createComponent(Class componentType, Constructor constructor, Object[] args) {
+        HierarchicalPicoContainer pc = new HierarchicalPicoContainer.WithComponentFactory(new DefaultComponentFactory() {
+            public Object createComponent(Class componentType, Class compImplementation, Class[] dependencies, Object[] args) {
                 return wilma;
             }
         });
@@ -357,17 +354,17 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
     private void tAestCircularDependencyShouldFail() throws PicoRegistrationException, PicoInstantiationException {
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
 
-   //     try {
-            pico.registerComponent(A.class);
-            pico.registerComponent(B.class);
-            pico.registerComponent(C.class);
-            pico.registerComponent(D.class);
+        //     try {
+        pico.registerComponent(A.class);
+        pico.registerComponent(B.class);
+        pico.registerComponent(C.class);
+        pico.registerComponent(D.class);
 
-            pico.instantiateComponents();
-            fail("Should have gotten a CircularDependencyRegistrationException");
-   //     } catch (CircularDependencyRegistrationException e) {
-            // ok
-   //     }
+        pico.instantiateComponents();
+        fail("Should have gotten a CircularDependencyRegistrationException");
+        //     } catch (CircularDependencyRegistrationException e) {
+        // ok
+        //     }
     }
 
     interface Animal {
@@ -483,18 +480,19 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         //pico.registerComponent(Animal.class, Donkey.class, "donkey");
         //pico.registerComponent(Wilma.class, WilmaImpl.class);
         //try {
-            //pico.registerComponent(Animal.class, Monkey.class);
-            //fail("Expected InconsistentLookupTypeRegistrationException");
+        //pico.registerComponent(Animal.class, Monkey.class);
+        //fail("Expected InconsistentLookupTypeRegistrationException");
         //} catch (InconsistentLookupTypeRegistrationException e) {
         //}
     }
+
     public void testCannotMixLookupTypesWithTypeFirst() throws PicoRegistrationException {
         //final PicoContainer pico = new HierarchicalPicoContainer.Default();
         //pico.registerComponent(Animal.class, Donkey.class);
         //pico.registerComponent(Wilma.class, WilmaImpl.class);
         //try {
-            //pico.registerComponent(Animal.class, Monkey.class, "monkey");
-            //fail("Expected InconsistentLookupTypeRegistrationException");
+        //pico.registerComponent(Animal.class, Monkey.class, "monkey");
+        //fail("Expected InconsistentLookupTypeRegistrationException");
         //} catch (InconsistentLookupTypeRegistrationException e) {
         //}
     }
@@ -528,15 +526,20 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
     }
 
 
-		public static interface I {}
-		public static class AA implements I {
-			public AA(I i) {}
-		}
-		public static class BB implements I {
-			public BB(I i) {}
-		}
+    public static interface I {
+    }
 
-    public void testExtendAndDependOnSameType() throws PicoRegistrationException {
+    public static class AA implements I {
+        public AA(I i) {
+        }
+    }
+
+    public static class BB implements I {
+        public BB(I i) {
+        }
+    }
+
+    public void testExtendAndDependOnSameType() throws PicoRegistrationException, PicoInstantiationException {
 
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
 
@@ -546,10 +549,8 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         try {
             pico.instantiateComponents();
             fail("Should have barfed");
-        } catch (UnsatisfiedDependencyInstantiationException e) {
+        } catch (AmbiguousComponentResolutionException e) {
             // Neither can be instantiated without the other.
-        } catch (PicoInstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         }
     }
 }

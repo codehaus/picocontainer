@@ -109,7 +109,7 @@
     <dependency>
       <id>nanning</id>
       <version>0.8</version>
-      <url>http://nanning.sourceforge.net/</url>
+      <url>http://nanning.codehaus.org/</url>
     </dependency>
 
     <dependency>

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,11 +11,12 @@
 package picocontainer.defaults;
 
 import junit.framework.TestCase;
-import picocontainer.PicoRegistrationException;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.testmodel.FredImpl;
+import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.defaults.WrongNumberOfConstructorsRegistrationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,36 +91,36 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class A extends RecordingAware implements Washable {
-        public A(Recorder recorder) {
+    public static class Aa extends RecordingAware implements Washable {
+        public Aa(Recorder recorder) {
             super(recorder);
         }
 
         public void wash() {
-            recorder.record("A.wash()");
+            recorder.record("Aa.wash()");
         }
     }
 
-    public static class B extends RecordingAware implements Washable {
-        public B(Recorder recorder, A a) {
+    public static class Bb extends RecordingAware implements Washable {
+        public Bb(Recorder recorder, Aa a) {
             super(recorder);
             a.toString();
         }
 
         public void wash() {
-            recorder.record("B.wash()");
+            recorder.record("Bb.wash()");
         }
     }
 
-    public static class C extends RecordingAware implements Washable {
-        public C(Recorder recorder, A a, B b) {
+    public static class Cc extends RecordingAware implements Washable {
+        public Cc(Recorder recorder, Aa a, Bb b) {
             super(recorder);
             a.toString();
             b.toString();
         }
 
         public void wash() {
-            recorder.record("C.wash()");
+            recorder.record("Cc.wash()");
         }
     }
 
@@ -221,15 +222,15 @@ public class DefaultPicoContainerTestCase extends TestCase {
         Recorder recorder = new Recorder();
 
         pico.registerComponent(Recorder.class, recorder);
-        pico.registerComponent(A.class, A.class);
-        pico.registerComponent(B.class, B.class);
-        pico.registerComponent(C.class, C.class);
+        pico.registerComponent(Aa.class, Aa.class);
+        pico.registerComponent(Bb.class, Bb.class);
+        pico.registerComponent(Cc.class, Cc.class);
 
         pico.instantiateComponents();
 
-        assertEquals("instantiated A", recorder.getWhatHappened(0));
-        assertEquals("instantiated B", recorder.getWhatHappened(1));
-        assertEquals("instantiated C", recorder.getWhatHappened(2));
+        assertEquals("instantiated Aa", recorder.getWhatHappened(0));
+        assertEquals("instantiated Bb", recorder.getWhatHappened(1));
+        assertEquals("instantiated Cc", recorder.getWhatHappened(2));
 
         recorder.clear();
 
@@ -238,9 +239,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         ((Washable) washableContainer).wash();
 
-        assertEquals("C.wash()", recorder.getWhatHappened(0));
-        assertEquals("B.wash()", recorder.getWhatHappened(1));
-        assertEquals("A.wash()", recorder.getWhatHappened(2));
+        assertEquals("Cc.wash()", recorder.getWhatHappened(0));
+        assertEquals("Bb.wash()", recorder.getWhatHappened(1));
+        assertEquals("Aa.wash()", recorder.getWhatHappened(2));
 
     }
 
@@ -250,19 +251,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         Recorder recorder = new Recorder();
 
-        A unmanagedComponent = new A(recorder);
+        Aa unmanagedComponent = new Aa(recorder);
 
         recorder.clear();
 
         pico.registerComponent(Recorder.class, recorder);
-        pico.registerComponent(A.class, unmanagedComponent);
-        pico.registerComponent(B.class);
-        pico.registerComponent(C.class);
+        pico.registerComponent(Aa.class, unmanagedComponent);
+        pico.registerComponent(Bb.class);
+        pico.registerComponent(Cc.class);
 
         pico.instantiateComponents();
 
-        assertEquals("instantiated B", recorder.getWhatHappened(0));
-        assertEquals("instantiated C", recorder.getWhatHappened(1));
+        assertEquals("instantiated Bb", recorder.getWhatHappened(0));
+        assertEquals("instantiated Cc", recorder.getWhatHappened(1));
 
         recorder.clear();
 
@@ -271,11 +272,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         ((Washable) washableContainer).wash();
 
-        assertEquals("C.wash()", recorder.getWhatHappened(0));
-        assertEquals("B.wash()", recorder.getWhatHappened(1));
+        assertEquals("Cc.wash()", recorder.getWhatHappened(0));
+        assertEquals("Bb.wash()", recorder.getWhatHappened(1));
         assertTrue(
                 "Unmanaged components should not be called by an getAggregateComponentProxy() proxy",
-                !recorder.thingsThatHappened.contains("A.wash()"));
+                !recorder.thingsThatHappened.contains("Aa.wash()"));
     }
 
     public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInstantiationException {
@@ -428,4 +429,46 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }
 
+    public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, WrongNumberOfConstructorsRegistrationException, AmbiguousComponentResolutionException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        assertNull(pico.findComponentSpecification(Wilma.class));
+        pico.registerComponent(WilmaImpl.class);
+        assertNotNull(pico.findComponentSpecification(WilmaImpl.class));
+        assertNotNull(pico.findComponentSpecification(Wilma.class));
+    }
+
+    public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException {
+        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class);
+        Object comp = componentSpec.instantiateComponent(null);
+        assertNotNull(comp);
+        assertTrue(comp instanceof WilmaImpl);
+    }
+
+//    public void testComponentSpecInstantiateComponentWithOneDependency() throws PicoInvocationTargetInitailizationException {
+//        ComponentSpecification componentSpec = new ComponentSpecification(FredImpl.class, FredImpl.class);
+//
+//        Mock mockPicoContainer = new OrderedMock(PicoContainer.class);
+//        mockPicoContainer.expectAndReturn("getComponent", C.args(C.eq(Wilma.class)), new WilmaImpl());
+//
+//        Object comp = componentSpec.instantiateComponent((PicoContainer) mockPicoContainer.proxy(),
+//                new DefaultComponentFactory());
+//
+//        assertNotNull(comp);
+//        assertTrue(comp instanceof FredImpl);
+//        mockPicoContainer.verify();
+//    }
+
+    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException
+    {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+
+        WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);
+
+        assertNotNull(wilma);
+    }
 }

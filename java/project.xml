@@ -11,21 +11,18 @@
         <logo>http://codehaus.org/codehaus-small.gif</logo>
     </organization>
     <inceptionYear>2003</inceptionYear>
-    <package>org.picoextras</package>
-    <logo>/images/picoextras-logo.png</logo>
-    <shortDescription>PicoContainer Extras</shortDescription>
-    <description>
-    The PicoExtras project is a collection of PicoContainer extensions.
-    </description>
+    <package>org</package>
+    <shortDescription>PicoContainer</shortDescription>
 
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
 
     <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/picoextras.codehaus.org</siteDirectory>
-    <distributionDirectory>/www/picoextras.codehaus.org/builds/</distributionDirectory>
+    <siteDirectory>/www/picocontainer.codehaus.org/java/${pom.artifactId}</siteDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
         <url>http://picocontainer.cvs.codehaus.org/java/</url>
+        <!-- statcvs only works with this one: -->
+        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url-->
     </repository>
 
     <!--

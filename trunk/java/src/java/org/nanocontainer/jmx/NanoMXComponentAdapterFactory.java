@@ -1,8 +1,10 @@
 package org.nanocontainer.jmx;
 
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
 import javax.management.MBeanServer;
@@ -17,7 +19,7 @@ public class NanoMXComponentAdapterFactory implements ComponentAdapterFactory, S
         delegate = componentAdapterFactory;
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException {
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new NanoMXComponentAdapter(mbeanServer, delegate.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

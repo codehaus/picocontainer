@@ -10,16 +10,15 @@
 
 package org.nanocontainer.jmx;
 
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.*;
-import org.picocontainer.internals.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import javax.management.*;
 import java.io.Serializable;
 
 /**
- * A simple PicoContainer which allow multiple implementations of the same interface
+ * A simple OldPicoContainer which allow multiple implementations of the same interface
  * and any component registered with the internals is also registered into JMX
  * for viewing in a JMX management console.
  *
@@ -33,7 +32,7 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
     private MBeanServer mbeanServer;
 
     public NanoMXContainer(MBeanServer mbeanServer, ComponentAdapterFactory componentAdapterFactory) {
-        super(new NanoMXComponentAdapterFactory(mbeanServer, componentAdapterFactory), new DefaultComponentRegistry());
+        super(new NanoMXComponentAdapterFactory(mbeanServer, componentAdapterFactory));
         this.mbeanServer = mbeanServer;
     }
 
@@ -53,13 +52,12 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
      * @param key is the key (or name) used to lookup the component in the future
      * @param component is the component to be registered
      * @throws PicoRegistrationException
-     * @throws PicoIntrospectionException
      */
-    public synchronized void registerComponent(Object key, Object component)
-            throws PicoRegistrationException, PicoIntrospectionException {
+    public synchronized void registerComponentInstance(Object key, Object component)
+            throws PicoRegistrationException {
         try {
             ObjectName name = asObjectName(key);
-            super.registerComponent(key, component);
+            super.registerComponentInstance(key, component);
 
             Object mbean = asMBean(component);
             mbeanServer.registerMBean(mbean, name);
@@ -71,31 +69,10 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
             throw new NanoMXRegistrationException(e);
         } catch (MalformedObjectNameException e) {
             throw new NanoMXRegistrationException(e);
-        } catch (PicoIntrospectionException e) {
-            throw new NanoMXRegistrationException(e);
         } catch (PicoRegistrationException e) {
             throw new NanoMXRegistrationException(e);
         }
     }
-
-    //    /**
-    //     * Looks up the component via the given key
-    //     * @param key is the key of the component to lookup
-    //     * @return the component for the given key or null if one could not be found
-    //     */
-    //    public synchronized Object findComponentInstance(Object key) throws MalformedObjectNameException {
-    //        ObjectName name = asObjectName(key);
-    //        return super.getComponentByKey(name);
-    //    }
-    //
-    //    /**
-    //     * @param key is the key to lookup
-    //     * @return true if there is a component for the given key
-    //     */
-    //    public synchronized boolean hasComponentByKey(Object key) throws MalformedObjectNameException {
-    //        ObjectName name = asObjectName(key);
-    //        return super.hasComponentByKey(name);
-    //    }
 
     /**
      * @param component
@@ -125,27 +102,4 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
             return new ObjectName(text);
         }
     }
-
-    //
-    //    /**
-    //     * Removes the component registered with the given key
-    //     *
-    //     * @param key
-    //     */
-    //    public synchronized void removeComponent(Object key) throws MalformedObjectNameException {
-    //        ObjectName name = asObjectName(key);
-    //        super.removeComponent(name);
-    //    }
-    /* (non-Javadoc)
-     * @see org.picocontainer.RegistrationPicoContainer#registerComponent(java.lang.Object, java.lang.Class)
-     */
-    public void registerComponent(Object componentKey, Class componentImplementation)
-            throws
-            DuplicateComponentKeyRegistrationException,
-            AssignabilityRegistrationException,
-            NotConcreteRegistrationException,
-            PicoIntrospectionException {
-        super.registerComponent(componentKey, componentImplementation);
-    }
-
 }

@@ -1,7 +1,11 @@
 package org.nanocontainer.ant;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -9,7 +13,7 @@ import org.picocontainer.PicoInitializationException;
  */
 public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTestCase {
 
-    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoInitializationException {
+    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Component pongComp = new Component();
         pongComp.setClassname(Pong.class.getName());
         task.addConfiguredComponent(pongComp);
@@ -23,12 +27,12 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
 
         PicoContainer pico = task.getPicoContainer();
 
-        Ping ping = (Ping) pico.getComponent(Ping.class);
+        Ping ping = (Ping) pico.getComponentInstance(Ping.class);
         assertNotNull(ping);
         assertTrue(ping.wasExecuted);
     }
 
-    public void testPicoContainerTaskWithParameters() throws PicoInitializationException {
+    public void testPicoContainerTaskWithParameters() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Component pangComp = new Component();
         pangComp.setClassname(Pang.class.getName());
         task.addConfiguredComponent(pangComp);
@@ -50,11 +54,11 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
         // Now see if the task did the job properly
         PicoContainer pico = task.getPicoContainer();
 
-        Pung pung = (Pung) pico.getComponent(Pung.class);
+        Pung pung = (Pung) pico.getComponentInstance(Pung.class);
         assertNotNull(pung);
         assertEquals("bajs", pung.text);
 
-        Pang pang = (Pang) pico.getComponent(Pang.class);
+        Pang pang = (Pang) pico.getComponentInstance(Pang.class);
         assertNotNull(pang);
         assertSame(pung.pang, pang);
     }

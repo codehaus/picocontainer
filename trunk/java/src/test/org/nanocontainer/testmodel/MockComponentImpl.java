@@ -8,7 +8,9 @@
  * Original code by Mike Hogan                                               *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.testmodel;
+
+import org.nanocontainer.testmodel.MockComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;

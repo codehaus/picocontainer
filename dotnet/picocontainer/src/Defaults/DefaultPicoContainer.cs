@@ -95,7 +95,7 @@ namespace PicoContainer.Defaults {
       return found;
     }
 
-    public void RegisterComponent(IComponentAdapter componentAdapter) {
+    public IComponentAdapter RegisterComponent(IComponentAdapter componentAdapter) {
       object componentKey = componentAdapter.ComponentKey;
       if (componentKeyToAdapterMap.Contains(componentKey)) {
         throw new DuplicateComponentKeyRegistrationException(componentKey);
@@ -103,6 +103,8 @@ namespace PicoContainer.Defaults {
       componentAdapter.Container = this;
       componentAdapters.Add(componentAdapter);
       componentKeyToAdapterMap.Add(componentKey, componentAdapter);
+
+      return componentAdapter;
     }
 
     public IComponentAdapter UnregisterComponent(object componentKey) {

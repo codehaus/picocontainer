@@ -26,15 +26,15 @@ public class NanoNanoTestCase extends TestCase {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("org.picocontainer.defaults.DefaultComponentRegistry");
-        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithContainerArray");
+        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithComponentRegistry");
 
         nc.instantiateComponents();
 
         assertTrue("Should have a StringRegistrationNanoContainerImpl",
-            nc.hasComponent(StringRegistrationNanoContainerImpl.Default.class));
+            nc.hasComponent(StringRegistrationNanoContainerImpl.WithComponentRegistry.class));
 
         tryUsingStringRegistrationNanoContainer((StringRegistrationNanoContainer)
-            nc.getComponent(StringRegistrationNanoContainerImpl.Default.class));
+            nc.getComponent(StringRegistrationNanoContainerImpl.WithComponentRegistry.class));
 
     }
 
@@ -54,14 +54,14 @@ public class NanoNanoTestCase extends TestCase {
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
                 "      <component class=\"org.picocontainer.defaults.DefaultComponentRegistry\"/>" +
-                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithContainerArray\"/>" +
+                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithComponentRegistry\"/>" +
                 "</conponents>")));
 
         nc.instantiateComponents();
 
-        assertTrue("Should have a DomRegistrationNanoContainer.WithContainerArray", nc.hasComponent(DomRegistrationNanoContainer.Default.class));
+        assertTrue("Should have a DomRegistrationNanoContainer.WithContainerArray", nc.hasComponent(DomRegistrationNanoContainer.WithComponentRegistry.class));
 
-        tryUsingInputSourceRegistrationNanoContainer((InputSourceRegistrationNanoContainer) nc.getComponent(DomRegistrationNanoContainer.Default.class));
+        tryUsingInputSourceRegistrationNanoContainer((InputSourceRegistrationNanoContainer) nc.getComponent(DomRegistrationNanoContainer.WithComponentRegistry.class));
 
     }
 

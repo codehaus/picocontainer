@@ -50,6 +50,12 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         }
     }
 
+    public static class WithComponentRegistry extends StringRegistrationNanoContainerImpl {
+        public WithComponentRegistry(ComponentRegistry componentRegistry) {
+            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(), componentRegistry);
+        }
+    }
+
     public static class WithClassLoader extends StringRegistrationNanoContainerImpl {
         public WithClassLoader(ClassLoader classLoader) {
             super(classLoader, new StringToObjectConverter(), new DefaultComponentRegistry());

@@ -70,7 +70,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private boolean disposed = false;
     private Set childContainers = new HashSet();
     private int containerCount;
-    private Map namedChildContainers = new HashMap();
+    protected Map namedChildContainers = new HashMap();
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -298,38 +298,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
-        if (componentKey.toString().startsWith("*")) {
-            String candidateClassName = componentKey.toString().substring(1);
-            Collection cas = getComponentAdapters();
-            for (Iterator it = cas.iterator(); it.hasNext();) {
-                ComponentAdapter ca =  (ComponentAdapter) it.next();
-                Object key = ca.getComponentKey();
-                if (key instanceof Class && candidateClassName.equals(((Class)key).getName())) {
-                    componentAdapter = ca;
-                    break;
-                }
-            }
-        }
         if (componentAdapter != null) {
             return componentAdapter.getComponentInstance();
         } else {
-            return getComponentInstanceFromChild(componentKey);
+            return null;
         }
-    }
-
-    private Object getComponentInstanceFromChild(Object componentKey) {
-        String componentKeyPath = componentKey.toString();
-        int ix = componentKeyPath.indexOf('/');
-        if (ix != -1) {
-            String firstElement = componentKeyPath.substring(0,ix);
-            String remainder = componentKeyPath.substring(ix+1,componentKeyPath.length());
-            Object o = namedChildContainers.get(firstElement);
-            if (o != null) {
-                MutablePicoContainer child = (MutablePicoContainer) o;
-                return child.getComponentInstance(remainder);
-            }
-        }
-        return null;
     }
 
     public Object getComponentInstanceOfType(Class componentType) {
@@ -464,32 +437,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
-    public List getComponentKeys() {
-        ArrayList keys = new ArrayList();
-        Collection cas = getComponentAdapters();
-        for (Iterator iterator = cas.iterator(); iterator.hasNext();) {
-            ComponentAdapter ca =  (ComponentAdapter) iterator.next();
-            Object componentKey = ca.getComponentKey();
-            if (componentKey instanceof Class) {
-                keys.add("*" + ((Class)componentKey).getName());
-            } else {
-                keys.add(componentKey.toString());
-            }
-        }
-        Iterator it = namedChildContainers.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String name = (String) entry.getKey();
-            MutablePicoContainer mpc = (MutablePicoContainer) entry.getValue();
-            List list = mpc.getComponentKeys();
-            for (int i = 0; i < list.size(); i++) {
-                String key = (String) list.get(i);
-                keys.add(name + "/" + key);
-            }
-        }
-        return Collections.unmodifiableList(keys);
-    }
-
     /**
      * This comparator makes sure containers are always stacked at the end of the collection,
      * leaving the order of the others unchanged. This is needed in order to have proper
@@ -508,6 +455,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             }
             return 0;
         }
+    }
+
+    protected Map getNamedContainers() {
+        return namedChildContainers;
     }
 
 }

@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a MutablePicoContainer that supports soft composition and hides implementations where it can.
@@ -36,9 +37,9 @@ import java.util.List;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class ImplementationHidingSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
+public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final MutablePicoContainer delegate;
+    private final ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
@@ -68,7 +69,11 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
         this(ImplementationHidingSoftCompositionPicoContainer.class.getClassLoader(), null);
     }
 
-    public Object getComponentInstance(Object componentKey) {
+    protected Map getNamedContainers() {
+        return delegate.getNamedContainers();
+    }
+
+    public Object getComponentInstanceFromDelegate(Object componentKey) {
         return delegate.getComponentInstance(componentKey);
     }
 
@@ -123,8 +128,6 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
     public void dispose() {
         delegate.dispose();
     }
-
-    // --------------------
 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return delegate.registerComponentImplementation(componentKey, componentImplementation);
@@ -182,10 +185,6 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
         delegate.removeChildContainer(child);
     }
 
-    public List getComponentKeys() {
-        return delegate.getComponentKeys();
-    }
-
     // --------------------
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
@@ -215,6 +214,7 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
     public MutablePicoContainer getPicoContainer() {
         return reflectionAdapter.getPicoContainer();
         // TODO or return this ?
+        // I think so - PH
     }
 
     public ClassLoader getComponentClassLoader() {
@@ -228,6 +228,9 @@ public class ImplementationHidingSoftCompositionPicoContainer implements SoftCom
 
         protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
             componentAdapter.setContainer(ImplementationHidingSoftCompositionPicoContainer.this);
+        }
+        public Map getNamedContainers() {
+            return super.getNamedContainers();
         }
     }
 }

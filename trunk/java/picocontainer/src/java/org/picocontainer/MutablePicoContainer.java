@@ -133,6 +133,5 @@ public interface MutablePicoContainer extends PicoContainer {
     void addChildContainer(PicoContainer child);
     void addChildContainer(String name, PicoContainer child);
     void removeChildContainer(MutablePicoContainer child);
-    List getComponentKeys();
 
 }

@@ -10,7 +10,6 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;

@@ -18,9 +18,9 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 
 import java.io.Reader;
 

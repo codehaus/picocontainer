@@ -1,7 +1,6 @@
 package org.nanocontainer.webwork;
 
 import org.picocontainer.defaults.ObjectReference;
-
 import webwork.action.ActionContext;
 
 /**

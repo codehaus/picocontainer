@@ -11,8 +11,6 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 
 /**
  * @author Aslak Helles&oslash;y

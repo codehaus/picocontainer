@@ -9,15 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import dynaop.Aspects;
 import dynaop.Pointcuts;
 import dynaop.util.Closure;
+import junit.framework.TestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

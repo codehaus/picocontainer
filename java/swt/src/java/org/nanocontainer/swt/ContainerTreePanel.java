@@ -23,12 +23,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
+import org.nanocontainer.guimodel.BeanProperty;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.guimodel.BeanProperty;
-import org.nanocontainer.guimodel.BeanProperty;
-import org.nanocontainer.swt.ComponentAdapterContentProvider;
-import org.nanocontainer.swt.BeanLabelProvider;
-import org.nanocontainer.swt.BeanPropertyEditDialog;
 
 /**
  * An horizontal sash form that displays a PicoContainer tree (top) and a

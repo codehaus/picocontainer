@@ -9,14 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import net.sf.hibernate.cfg.Configuration;
-import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.MappingException;
-
-import java.util.Properties;
+import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.cfg.Configuration;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * abstract base class for property based hibernate configuration. concrete implementation 

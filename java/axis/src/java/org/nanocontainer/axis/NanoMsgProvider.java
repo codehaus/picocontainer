@@ -8,17 +8,17 @@
  *****************************************************************************/
 package org.nanocontainer.axis;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.servlet.KeyConstants;
-import org.nanocontainer.servlet.RequestScopeObjectReference;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Axis provider for message-style services that uses the servlet container

@@ -9,14 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
+import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
-import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

@@ -9,12 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import java.util.Properties;
-
-import org.picocontainer.PicoContainer;
-
 import dynaop.MixinFactory;
 import dynaop.Proxy;
+import org.picocontainer.PicoContainer;
+
+import java.util.Properties;
 
 /**
  * Manufactures mixins from a <code>PicoContainer</code>. Useful when a mixin

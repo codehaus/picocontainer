@@ -1,8 +1,8 @@
 package org.nanocontainer.deployer;
 
-import org.picocontainer.defaults.ObjectReference;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
+import org.picocontainer.defaults.ObjectReference;
 
 /**
  * @author Aslak Helles&oslash;y

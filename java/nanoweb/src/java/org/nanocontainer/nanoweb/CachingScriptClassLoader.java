@@ -1,15 +1,14 @@
 package org.nanocontainer.nanoweb;
 
+import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.syntax.SyntaxException;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collections;
-
-import groovy.lang.GroovyClassLoader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Loads classes from scripts and caches them based on the URL's

@@ -1,13 +1,12 @@
 package org.nanocontainer.proxytoys;
 
-import org.picocontainer.PicoContainer;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.toys.multicast.Multicasting;
+import org.picocontainer.PicoContainer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Factory for creating a multicaster object that multicasts calls to all

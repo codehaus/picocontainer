@@ -1,8 +1,8 @@
 package org.nanocontainer.remoting.rmi;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.RemoteException;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -10,9 +10,9 @@
 package org.picocontainer.defaults;
 
 
-import org.picocontainer.*;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y

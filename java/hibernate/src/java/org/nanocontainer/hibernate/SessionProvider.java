@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import net.sf.hibernate.Session;
 import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Session;
 
 /**
  * implementors provide session session  management. 

@@ -10,16 +10,16 @@
 
 package org.nanocontainer.script.xml;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;

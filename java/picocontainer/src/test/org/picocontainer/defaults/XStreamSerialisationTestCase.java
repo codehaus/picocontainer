@@ -1,12 +1,12 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import junit.framework.TestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 /**
  * @author Aslak Helles&oslash;y

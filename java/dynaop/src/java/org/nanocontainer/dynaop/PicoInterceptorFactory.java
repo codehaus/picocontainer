@@ -9,13 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import java.util.Properties;
-
-import org.picocontainer.PicoContainer;
-
 import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
 import dynaop.Proxy;
+import org.picocontainer.PicoContainer;
+
+import java.util.Properties;
 
 /**
  * Manufactures interceptors from a <code>PicoContainer</code>. Useful when

@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
+import junit.framework.TestCase;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import junit.framework.TestCase;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 
 /**
  * @author Aslak Helles&oslash;y

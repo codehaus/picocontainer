@@ -1,15 +1,21 @@
 package org.nanocontainer.swing;
 
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.guimodel.BeanProperty;
 import org.nanocontainer.guimodel.ComponentAdapterModel;
+import org.picocontainer.ComponentAdapter;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

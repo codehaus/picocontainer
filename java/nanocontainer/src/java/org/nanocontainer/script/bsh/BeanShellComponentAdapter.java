@@ -11,9 +11,11 @@ package org.nanocontainer.script.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import org.picocontainer.*;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AbstractComponentAdapter;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

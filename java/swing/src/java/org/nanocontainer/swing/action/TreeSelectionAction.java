@@ -13,11 +13,11 @@
  */
 package org.nanocontainer.swing.action;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.swing.ContainerTree;
 import org.nanocontainer.swing.ContainerTreeModel;
 import org.nanocontainer.swing.IconHelper;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 
 import javax.swing.AbstractAction;
 import javax.swing.event.TreeSelectionEvent;

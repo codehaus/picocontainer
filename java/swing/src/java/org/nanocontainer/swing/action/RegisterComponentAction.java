@@ -13,8 +13,8 @@
  */
 package org.nanocontainer.swing.action;
 
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.swing.ContainerTree;
+import org.picocontainer.ComponentAdapter;
 
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;

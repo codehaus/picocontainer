@@ -1,9 +1,20 @@
 package org.nanocontainer.swing;
 
-import java.util.*;
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.text.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.TreeSet;
+import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -9,13 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
+import junit.framework.TestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

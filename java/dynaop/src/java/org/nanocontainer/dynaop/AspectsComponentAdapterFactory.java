@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
+import dynaop.Aspects;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
@@ -16,8 +17,6 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-
-import dynaop.Aspects;
 
 /**
  * Creates <code>AspectsComponentAdapter</code> instances.

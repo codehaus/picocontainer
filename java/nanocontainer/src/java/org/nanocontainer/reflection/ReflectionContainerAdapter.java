@@ -11,10 +11,10 @@
 package org.nanocontainer.reflection;
 // TODO: move to org.nanocontainer.script.reflection ?
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentAdapter;
 
 import java.net.URL;
 

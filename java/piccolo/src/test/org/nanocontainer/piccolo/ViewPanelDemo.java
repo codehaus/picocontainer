@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.piccolo;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 

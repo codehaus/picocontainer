@@ -5,9 +5,9 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.File;
 import java.net.URL;
 
 /**

@@ -1,6 +1,8 @@
 package org.nanocontainer.swing;
 
-import javax.swing.*;
+import javax.swing.GrayFilter;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;

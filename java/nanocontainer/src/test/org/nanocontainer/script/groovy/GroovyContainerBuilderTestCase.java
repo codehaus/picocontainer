@@ -13,9 +13,9 @@
  */
 package org.nanocontainer.script.groovy;
 
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import java.io.Reader;
 import java.io.StringReader;

@@ -13,8 +13,8 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolox.util.PFixedWidthStroke;
-import org.picocontainer.PicoContainer;
 import org.nanocontainer.swing.IconHelper;
+import org.picocontainer.PicoContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;

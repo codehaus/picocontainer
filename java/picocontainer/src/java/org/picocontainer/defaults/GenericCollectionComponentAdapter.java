@@ -4,19 +4,19 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.Set;
-import java.util.HashSet;
-import java.lang.reflect.Array;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * This component adapter is capable of instantiating Arrays, Maps and Collections of certain types.

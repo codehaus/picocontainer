@@ -9,11 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.HibernateException;
-
+import net.sf.hibernate.Session;
+import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.Transaction;
 import org.picocontainer.Startable;
 
 /**

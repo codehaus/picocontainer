@@ -9,21 +9,21 @@
  *****************************************************************************/
 package org.nanocontainer.concurrent;
 
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 // TODO: This class should focus on ThreadLocal functionality and not do proxy magic at the same time!
 // TODO: These are two entirely different concerns and should be in different classes. (AH).

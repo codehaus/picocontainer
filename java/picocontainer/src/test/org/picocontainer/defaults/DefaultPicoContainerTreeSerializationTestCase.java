@@ -11,9 +11,9 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 import java.io.ByteArrayInputStream;

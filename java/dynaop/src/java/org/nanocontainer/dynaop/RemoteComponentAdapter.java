@@ -9,12 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import java.net.URL;
-
+import dynaop.remote.Home;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
-import dynaop.remote.Home;
+import java.net.URL;
 
 /**
  * <code>ComponentAdapter</code> that retrieves the component implementation

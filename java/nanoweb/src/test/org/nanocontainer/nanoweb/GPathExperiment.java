@@ -1,11 +1,10 @@
 package org.nanocontainer.nanoweb;
 
+import groovy.lang.GroovyObjectSupport;
+import groovy.lang.Reference;
 import junit.framework.TestCase;
 
 import java.beans.IntrospectionException;
-
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.Reference;
 
 /**
  * See http://jira.codehaus.org/secure/ViewIssue.jspa?id=14385

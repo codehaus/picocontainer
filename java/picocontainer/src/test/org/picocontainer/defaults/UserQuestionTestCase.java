@@ -1,12 +1,12 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.MutablePicoContainer;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class can be used to test out various things asked on the mailing list.

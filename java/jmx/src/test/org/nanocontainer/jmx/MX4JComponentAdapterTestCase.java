@@ -11,18 +11,18 @@
 package org.nanocontainer.jmx;
 
 import junit.framework.TestCase;
+import org.nanocontainer.testmodel.Wilma;
+import org.nanocontainer.testmodel.WilmaImpl;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.testmodel.Wilma;
-import org.nanocontainer.testmodel.WilmaImpl;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
-import javax.management.MBeanServerFactory;
 
 public class MX4JComponentAdapterTestCase extends TestCase {
     private MutablePicoContainer pico;

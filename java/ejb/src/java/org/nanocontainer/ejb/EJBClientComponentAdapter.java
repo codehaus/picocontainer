@@ -9,10 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 

@@ -15,11 +15,11 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
-import java.net.URL;
-import java.net.MalformedURLException;
 
 /**
  * @author Aslak Helles&oslash;y

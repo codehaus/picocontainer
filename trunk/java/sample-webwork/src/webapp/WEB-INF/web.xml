@@ -15,12 +15,11 @@
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                 System.out.println("**** Request-level pico components instantiated by Groovy")
             }
-            return pico
         ]]></param-value>
     </context-param>
 
     <listener>
-        <listener-class>org.nanocontainer.webwork.WebWorkContainerListener</listener-class>
+        <listener-class>org.nanocontainer.servlet.ServletContainerListener</listener-class>
     </listener>
 
     <servlet>

@@ -10,6 +10,7 @@ package org.nanocontainer.webwork;
 
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import webwork.dispatcher.ServletDispatcher;
+import webwork.action.factory.ActionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public class PicoServletDispatcher extends ServletDispatcher {
+
+    public PicoServletDispatcher() {
+        super();
+        ActionFactory.setActionFactory(new WebWorkActionFactory());
+    }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);

@@ -11,22 +11,32 @@ package org.nanocontainer.aop.dynaop;
 
 import org.nanocontainer.aop.defaults.AopDecorationDelegate;
 import org.nanocontainer.script.groovy.NanoContainerBuilder;
+import org.picocontainer.ComponentMonitor;
 
 /**
  * A {@link org.nanocontainer.script.groovy.NanoContainerBuilder} that supports
  * scripting of aspects via dynaop.
- * 
+ *
  * @author Stephen Molitor
  * @version $Revision$
  */
 public class DynaopNanoContainerBuilder extends NanoContainerBuilder {
 
     /**
-     * Creates a new <code>DynaopNanoContainerBuilder</code> that will use 
+     * Creates a new <code>DynaopNanoContainerBuilder</code> that will use
+     * the default @{link DynaopAspectsManager} to apply aspects.
+     */
+    public DynaopNanoContainerBuilder(ComponentMonitor componentMonitor) {
+        super(new AopDecorationDelegate(new DynaopAspectsManager()));
+    }
+
+    /**
+     * Creates a new <code>DynaopNanoContainerBuilder</code> that will use
      * the default @{link DynaopAspectsManager} to apply aspects.
      */
     public DynaopNanoContainerBuilder() {
         super(new AopDecorationDelegate(new DynaopAspectsManager()));
     }
-    
+
+
 }

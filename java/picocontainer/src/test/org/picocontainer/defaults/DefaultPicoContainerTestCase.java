@@ -21,10 +21,10 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -105,7 +105,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         Touchable t = (Touchable) pico.getComponentInstance(DecoratedTouchable.class);
         assertNotNull(t);
     }
-    
+
     public static class Thingie {
         public Thingie(List c) {
             assertNotNull(c);
@@ -169,4 +169,6 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
             assertEquals("class " + doc + " has ambiguous dependency on interface java.util.Collection, resolves to multiple classes: [class java.util.ArrayList, class java.util.LinkedList]", expected.getMessage());
         }
     }
+
+
 }

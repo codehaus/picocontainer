@@ -11,11 +11,13 @@
 package org.nanocontainer.reflection;
 
 import org.nanocontainer.NanoPicoContainer;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.NullComponentMonitor;
 
 import java.io.Serializable;
 
@@ -37,7 +39,12 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        super(new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent), classLoader);
+        this(classLoader, parent, NullComponentMonitor.getInstance());
+
+    }
+
+    public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
+        super(new DefaultPicoContainer(new DefaultComponentAdapterFactory(componentMonitor), parent), classLoader);
 
     }
 
@@ -64,5 +71,5 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
         namedChildContainers.put(name, child);
         return child;
     }
-    
+
 }

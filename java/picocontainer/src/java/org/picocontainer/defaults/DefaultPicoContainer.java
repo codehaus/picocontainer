@@ -68,6 +68,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private boolean started = false;
     private boolean disposed = false;
     private HashSet children = new HashSet();
+//    private ComponentMonitor componentMonitor;
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -83,7 +84,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        if(componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
         this.componentAdapterFactory = componentAdapterFactory;
         this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
     }
@@ -153,7 +154,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getComponentAdaptersOfType(Class componentType) {
-        if(componentType == null) {
+        if (componentType == null) {
             return Collections.EMPTY_LIST;
         }
         List found = new ArrayList();
@@ -270,7 +271,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getComponentInstancesOfType(Class componentType) throws PicoException {
-        if(componentType == null) {
+        if (componentType == null) {
             return Collections.EMPTY_LIST;
         }
 
@@ -351,7 +352,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     /**
      * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
-    */
+     */
     public void verify() throws PicoVerificationException {
         new VerifyingVisitor().traverse(this);
     }
@@ -359,6 +360,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     /**
      * Start the components of this PicoContainer and all its logical child containers.
      * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be started.
+     *
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
@@ -373,6 +375,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     /**
      * Stop the components of this PicoContainer and all its logical child containers.
      * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be stopped.
+     *
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
@@ -387,6 +390,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
      * Any component implementing the lifecycle interface {@link org.picocontainer.Disposable} will be disposed.
+     *
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)

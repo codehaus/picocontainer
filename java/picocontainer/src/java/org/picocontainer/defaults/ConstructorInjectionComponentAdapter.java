@@ -10,6 +10,7 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
@@ -43,9 +44,11 @@ import java.util.Set;
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient List sortedMatchingConstructors;
     private transient Guard instantiationGuard;
-    
+    private ComponentMonitor componentMonitor;
+
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
         protected PicoContainer guardedContainer;
+
         private void setArguments(PicoContainer container) {
             this.guardedContainer = container;
         }
@@ -58,12 +61,14 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     public ConstructorInjectionComponentAdapter(final Object componentKey,
                                                 final Class componentImplementation,
                                                 Parameter[] parameters,
-                                                boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                                boolean allowNonPublicClasses,
+                                                ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+        this.componentMonitor = componentMonitor;
     }
 
     public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        this(componentKey, componentImplementation, parameters, false);
+        this(componentKey, componentImplementation, parameters, false, NullComponentMonitor.getInstance());
     }
 
     /**
@@ -98,7 +103,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 failedDependency = true;
                 break;
             }
-            
+
             if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
                 if (conflicts.isEmpty()) {
                     // we found our match [aka. greedy and satisfied]
@@ -107,7 +112,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                     // fits although not greedy
                     conflicts.add(constructor);
                 }
-            } else  if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
+            } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
                 // satisfied and same size as previous one?
                 conflicts.add(constructor);
                 conflicts.add(greediestConstructor);
@@ -143,39 +148,33 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
-                    long startTime = -1;
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
-//                        if (PicoContainer.SHOULD_LOG) {
-//                            startTime = System.currentTimeMillis();
-//                            System.out.print("PICO: Invoking " + constructor.toString() + "... ");
-//                            System.out.flush();
-//                        }
-                        return newInstance(constructor, parameters);
+                        componentMonitor.instantiating(constructor);
+                        long startTime = System.currentTimeMillis();
+                        Object inst = newInstance(constructor, parameters);
+                        componentMonitor.instantiated(constructor, startTime, System.currentTimeMillis() - startTime);
+                        return inst;
                     } catch (InvocationTargetException e) {
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
+//                        componentInteraction.failed(e);
                         throw new PicoInvocationTargetInitializationException(e.getTargetException());
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
+                        //                      componentInteraction.failed(e);
                         throw new PicoInitializationException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
+                        //                      componentInteraction.failed(e);
                         throw new PicoInitializationException(e);
                         ///CLOVER:ON
-                    } finally {
-//                        if (PicoContainer.SHOULD_LOG) {
-//                            if(startTime != -1) {
-//                                long endTime = System.currentTimeMillis();
-//                                System.out.println("[" + (endTime - startTime) + "ms]");
-//                            }
-//                        }
                     }
                 }
             };

@@ -11,12 +11,12 @@ package org.picocontainer.alternatives;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.VerifyingVisitor;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImplementationHidingPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 
@@ -33,7 +33,9 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
     }
 
     public static class MyThread extends Thread {
-        public MyThread(String s){super(s);}
+        public MyThread(String s) {
+            super(s);
+        }
     }
 
     public void testHidingWithoutParameter() {

@@ -11,6 +11,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -25,7 +26,18 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class DefaultComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+
+    private ComponentMonitor componentMonitor;
+
+    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
+        this.componentMonitor = componentMonitor;
+    }
+
+    public DefaultComponentAdapterFactory() {
+        this.componentMonitor = NullComponentMonitor.getInstance();
+    }
+
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters));
+        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, componentMonitor));
     }
 }

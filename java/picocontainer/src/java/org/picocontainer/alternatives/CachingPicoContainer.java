@@ -11,7 +11,6 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -32,13 +31,12 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
     /**
      * Creates a new container with a parent container.
      */
-    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(parent, new CachingComponentAdapterFactory(caf));
+    public CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent) {
+        super(new DefaultPicoContainer(caf, parent));
     }
 
-    private CachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf) {
-        super(new DefaultPicoContainer(caf, parent));
-
+    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
+        this(new CachingComponentAdapterFactory(caf), parent);
     }
 
     /**
@@ -49,11 +47,11 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     /**
-      * Creates a new container with a parent container.
-      */
-     public CachingPicoContainer(ComponentAdapterFactory caf) {
-         this(caf, null);
-     }
+     * Creates a new container with a parent container.
+     */
+    public CachingPicoContainer(ComponentAdapterFactory caf) {
+        this(caf, null);
+    }
 
 
     /**

@@ -35,7 +35,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -96,7 +95,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             documentBuilder.setEntityResolver(new EntityResolver() {
                 public InputSource resolveEntity(String publicId, String systemId) throws IOException {
-                    URL url = new URL(script,  systemId);
+                    URL url = new URL(script, systemId);
                     return new InputSource(url.openStream());
                 }
             });

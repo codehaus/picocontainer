@@ -44,11 +44,6 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
 
-
-// This should work! There seems to be some residual artifacts between this test and the one above.
-// comment out all tests bar these top two. run the tests. then come back, and comment out the top
-// test and run the suite again. all works then weird, when it was this one that failed in the
-// first attempt.
     void testInstantiateWithChildContainer() {
 
         Xxx.reset()

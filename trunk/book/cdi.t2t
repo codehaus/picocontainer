@@ -1,0 +1,11 @@
+Constructor Dependency Injection
+By the PicoContainer Committers and friends, (c) the PicoContainer committers
+Edition of %%date(%c)
+
+%!include: notices.t2t
+%!include: preface.t2t
+%!include: antipatterns.t2t
+%!include: patterns.t2t
+%!include: simplepico.t2t
+%!include: hierarchies.t2t
+%!include: servlet.t2t

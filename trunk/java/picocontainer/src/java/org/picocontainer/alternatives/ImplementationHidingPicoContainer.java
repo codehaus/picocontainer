@@ -207,7 +207,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             super(componentAdapterFactory, parent);
         }
 
-        public Map getNamedContainers() {
+        protected Map getNamedContainers() {
             return super.getNamedContainers();
         }
 

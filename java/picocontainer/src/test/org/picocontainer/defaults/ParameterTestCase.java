@@ -1,10 +1,10 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.*;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 
 /**
@@ -13,18 +13,18 @@ import org.picocontainer.*;
  */
 public class ParameterTestCase extends TestCase {
     public void testComponentSpecificationHandlesPrimtiveTypes() {
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(String.class, String.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
-        assertTrue(DefaultComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
-        assertFalse(DefaultComponentAdapter.isAssignableFrom(Integer.class, String.class));
-        assertFalse(DefaultComponentAdapter.isAssignableFrom(Double.class, String.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(String.class, String.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
+        assertTrue(TransientComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
+        assertFalse(TransientComponentAdapter.isAssignableFrom(Integer.class, String.class));
+        assertFalse(TransientComponentAdapter.isAssignableFrom(Double.class, String.class));
     }
 
     static class TestClass {

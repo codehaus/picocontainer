@@ -64,11 +64,19 @@ public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAd
 
     /**
      * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
-        picoContainer.registerComponentInstance("Pico Container");
-        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+        return prepSER_isSerializable(picoContainer);
     }
 
     /**

@@ -81,10 +81,18 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
-        return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
+        return prepSER_isSerializable(picoContainer);
     }
     
     public static class NamedDependsOnTouchable extends DependsOnTouchable {

@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+
+
 /**
  * This is the core interface for registration of components.
  *
@@ -83,7 +85,7 @@ public interface MutablePicoContainer extends PicoContainer {
     void registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException;
 
     /**
-     * Unregisters a component.
+     * Unregisters a component by key.
      *
      * @param componentKey key of the component to unregister.
      * @return the associated ComponentAdapter.
@@ -91,8 +93,17 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter unregisterComponent(Object componentKey);
 
     /**
+     * Unregisters a component by instance.
+     *
+     * @param componentInstance the component instance to unregister.
+     * @return the associated ComponentAdapter.
+     */
+    ComponentAdapter unregisterComponentByInstance(Object componentInstance);
+
+    /**
      * Sets the Parent container.
      * @param parent parent container.
      */
     void setParent(PicoContainer parent);
+
 }

@@ -16,6 +16,9 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
@@ -71,4 +74,15 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         } catch (UnsatisfiableDependenciesException e) {
         }
     }
+
+    public void testComponentsCanBeRemovedByInstance() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(ArrayList.class);
+        List list = (List) pico.getComponentInstanceOfType(List.class);
+        pico.unregisterComponentByInstance(list);
+        assertEquals(0, pico.getComponentAdapters().size());
+        assertEquals(0, pico.getComponentInstances().size());
+        assertNull(pico.getComponentInstanceOfType(List.class));
+    }
+
 }

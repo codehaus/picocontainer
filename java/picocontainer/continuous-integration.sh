@@ -54,7 +54,7 @@ else
   else
     # Deploy site only if compile and tests pass. Logs currently not used.
     # Must be run separately to get the files uploaded in the proper dir
-    # on the server
+    # on the server.
     maven jar:deploy &> target/jardeploy.log
     maven dist:deploy &> target/distdeploy.log
   fi

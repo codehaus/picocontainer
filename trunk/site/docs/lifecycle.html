@@ -9,7 +9,7 @@ For really simple PicoContainer compatible components, you would not
 bother with a lifecycle beyond Instantiation and Garbage Collection -
 both of which are consequences of basic use of say
 DefaultPicoContainer.
-<h3>Simple lifecycle - LifecyclePicoAdapter
+<h3>Simple lifecycle - LifecyclePicoAdapter&nbsp;<br>
 </h3>
 With LifecyclePicoAdapter, we have provided a very simple set of
 interfaces for start(), stop() and dispose()....<br>
@@ -17,17 +17,18 @@ interfaces for start(), stop() and dispose()....<br>
 The LifecyclePicoAdapter honors the classic lifecycle concepts for
 components.&nbsp; These are start(), stop() and dispose().&nbsp; If any
 of the components implements one of the applicable interfaces, the
-calling of the same method on th econtainer ( post
-instantiateComponent() ) will find that the call is pecolated though to
+calling of the same method on the container ( post
+instantiation of component ) will find that the call is percolated
+though to
 it.&nbsp; The container is forgiving, as it is just fine if some of
 none of the components contained are Startable etc.<br>
 <br>
 Suitable components :<br>
-<pre style="margin-left: 40px;">public Peach implements Startable, Stoppable, Disposable {<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>&nbsp;&nbsp; public void dispose() { }<br>}<br><br>public Kiwi implements Stoppable {<br>&nbsp;&nbsp; public void stop() { }<br>}</pre>
+<pre style="margin-left: 40px;">public class Peach implements Startable, Stoppable, Disposable {<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>&nbsp;&nbsp; public void dispose() { }<br>}<br><br>public class Kiwi implements Stoppable {<br>&nbsp;&nbsp; public void stop() { }<br>}</pre>
 A component that needs adaption ...<br>
-<pre style="margin-left: 40px;">public BananaImpl implement Banana {<br>&nbsp;&nbsp; public void banana() {}<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>}<br><br>public BananaExtender extends BananaImpl<br>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{<br>}</pre>
+<pre style="margin-left: 40px;">public interface Banana {<br>&nbsp;&nbsp; public void banana();<br>}<br><br>public class BananaImpl implements Banana {<br>&nbsp;&nbsp; public void banana() { }<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>}<br><br>public BananaExtender extends BananaImpl<br>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{<br>}</pre>
 Or...<br>
-<pre style="margin-left: 40px;">public BananaDelegate implements Banana, Startable, Stoppable {<br>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();<br>&nbsp;&nbsp;&nbsp; public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();<br>&nbsp;&nbsp;&nbsp; }<br>}&nbsp;<br></pre>
+<pre style="margin-left: 40px;">public class BananaDelegate implements Banana, Startable, Stoppable {<br>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();<br>&nbsp;&nbsp;&nbsp; public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();<br>&nbsp;&nbsp;&nbsp; }<br>}&nbsp;<br></pre>
 <span style="font-weight: bold;"></span>
 <h3>Custom lifecycles</h3>
 <p>Custom lifecycle management is a common requirement for components.

@@ -8,7 +8,6 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
-
 using System;
 using System.Collections;
 using PicoContainer;
@@ -37,10 +36,14 @@ namespace PicoContainer.Defaults {
 
     public  ICollection ComponentKeys {
       get {
-        Set result = new HashedSet();
-        result.AddAll(componentKeyToAdapterMap.Keys);
+        ArrayList result = new ArrayList();
+        result.AddRange(componentKeyToAdapterMap.Keys);
         foreach (MutablePicoContainer delegator in parents) {
-          result.AddAll(delegator.ComponentKeys);
+          foreach (object o in delegator.ComponentKeys) {
+            if (!result.Contains(o)) {
+              result.Add(o);
+            }
+          }
         }
         return result;
       }
@@ -49,7 +52,8 @@ namespace PicoContainer.Defaults {
     public bool HasComponentAdapter(object adapter) {
       return this.GetComponentAdapters().Contains(adapter);
     }
-    internal ArrayList GetComponentAdapters() {
+
+    public ArrayList GetComponentAdapters() {
       return new ArrayList(componentKeyToAdapterMap.Values);
     }
 
@@ -185,7 +189,7 @@ namespace PicoContainer.Defaults {
     }
 
     public bool HasComponent(object componentKey) {
-      return ((Set)ComponentKeys).Contains(componentKey);
+      return ((ArrayList)ComponentKeys).Contains(componentKey);
     }
 
     public ComponentAdapter FindImplementingComponentAdapter(Type componentType)  {
@@ -240,6 +244,8 @@ namespace PicoContainer.Defaults {
         parent.AddChild(this);
       }
     }
+
+    
   }
 
 }

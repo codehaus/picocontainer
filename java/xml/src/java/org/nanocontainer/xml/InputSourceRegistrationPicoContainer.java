@@ -14,7 +14,7 @@ import org.xml.sax.InputSource;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoContainer;
 
-public interface InputSourceRegistrationNanoContainer extends PicoContainer {
+public interface InputSourceRegistrationPicoContainer extends PicoContainer {
 
     /**
      * Register a list of components expressed in XML form.

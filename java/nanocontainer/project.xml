@@ -34,6 +34,19 @@
     <dependencies>
 
         <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
             <id>junit</id>
             <version>3.8.1</version>
         </dependency>

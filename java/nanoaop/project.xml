@@ -9,6 +9,19 @@
     <dependencies>
 
         <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-asm</artifactId>
             <version>1.0</version>

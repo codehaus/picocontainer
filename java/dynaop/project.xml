@@ -6,6 +6,18 @@
     <name>nanocontainer-dynaop</name>
 
     <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
 
         <dependency>
             <groupId>cglib</groupId>

@@ -103,7 +103,24 @@ class ExampleTest extends GroovyTestCase {
         assertEquals("foobar.com", wsc.getHost())
         assertTrue(wsc.getPort() == 4321)
     }
-    
+
+    void testSoftInstantiateWithChildContainer() {
+
+        File testCompJar = new File(System.getProperty("testcomp.jar"));
+
+        builder = new PicoBuilder()
+        pico = builder.softContainer {
+            classpathElement(testCompJar.getCanonicalPath())
+            component("TestComp")
+            container() {
+                component("TestComp2")
+            }
+        }
+        comps = pico.getComponentInstances()
+        assertEquals(1, comps.size())
+    }
+
+
     protected void startAndStop(pico) {
         pico.start()
         pico.dispose()

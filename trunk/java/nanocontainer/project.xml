@@ -142,6 +142,22 @@
       <version>2.1</version>
     </dependency> 
 
+        <dependency>
+            <id>commons-vfs</id>
+            <version>20030518103800</version>
+        </dependency>
+        
+        <dependency>
+            <id>bsh</id>
+            <version>1.2b7</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>picoextras-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

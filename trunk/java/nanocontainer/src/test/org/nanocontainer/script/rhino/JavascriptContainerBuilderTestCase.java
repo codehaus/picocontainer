@@ -67,11 +67,11 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader(
                 "var pico = new DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
-                "childAdapter = new DefaultReflectionContainerAdapter(new DefaultPicoContainer(pico))\n" +
+                "child = new SoftCompositionPicoContainer(pico)\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
-                "childAdapter.addClassLoaderURL(url)\n" +
-                "childAdapter.registerComponentImplementation('childComponent','TestComp')\n" +
-                "pico.registerComponentInstance('child1', childAdapter.getPicoContainer())");
+                "child.addClassLoaderURL(url)\n" +
+                "child.registerComponentImplementation('childComponent','TestComp')\n" +
+                "pico.registerComponentInstance('child1', child)"); // ugly hack for testing
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object parentComponent = pico.getComponentInstance("parentComponent");

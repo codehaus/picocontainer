@@ -92,9 +92,12 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
 
     private Object getScriptAction(String key, MutablePicoContainer container) throws SyntaxException, IOException {
         URL scriptURL = getClass().getResource(key);
-        Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
-        container.registerComponentImplementation(key, scriptClass);
-        Object result = container.getComponentInstance(key);
+        Object result = null;
+        if (scriptURL != null) {
+            Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
+            container.registerComponentImplementation(key, scriptClass);
+            result = container.getComponentInstance(key);
+        }
         return result;
     }
 

@@ -18,6 +18,7 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. D
 %!include: nanocontainer-groovy.t2t
 %!include: nanowar-basics.t2t
 %!include: nanowar-eda.t2t
+%!include: nanocontainer-jmx.t2t
 %!include: decomposing-hairball-casestudy.t2t
 %!include: ddd.t2t
 %!include: ioc-history.t2t

@@ -17,24 +17,24 @@ package org.picocontainer;
 public interface LifecycleManager {
 
     /**
-     * Invoke the standard PicoContainer lifecycle for {@link Startable#start()} or whatever the implementor's
-     * concept of start is.
+     * Invoke the "start" method on the container's components and child components.
+     * It is up to the implementor to define exactly what a component's "start" method is.
      *
      * @param node The node to start the traversal.
      */
     void start(PicoContainer node);
 
     /**
-     * Invoke the standard PicoContainer lifecycle for {@link Startable#stop()} or whatever the implementor's
-     * concept of stop is.
+     * Invoke the "stop" method on the container's components and child components.
+     * It is up to the implementor to define exactly what a component's "stop" method is.
      *
      * @param node The node to start the traversal.
      */
     void stop(PicoContainer node);
 
     /**
-     * Invoke the standard PicoContainer lifecycle for {@link Disposable#dispose()} or whatever the implementor's
-     * concept of dispose is.
+     * Invoke the "dispose" method on the container's components and child components.
+     * It is up to the implementor to define exactly what a component's "dispose" method is.
      *
      * @param node The node to start the traversal.
      */

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
 
 /**
@@ -26,12 +27,12 @@ import java.util.List;
  * @version $Revision$
  * @since 1.1
  */
-public class LifecycleVisitor extends AbstractPicoVisitor {
+public class LifecycleVisitor extends AbstractPicoVisitor implements Serializable {
 
-    private final Method method;
-    private final Class type;
-    private final boolean visitInInstantiationOrder;
-    private final List componentInstances;
+    private transient Method method;
+    private Class type;
+    private boolean visitInInstantiationOrder;
+    private List componentInstances;
     private ComponentMonitor componentMonitor;
 
     public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {

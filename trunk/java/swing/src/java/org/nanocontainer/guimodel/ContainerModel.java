@@ -24,19 +24,19 @@ import java.util.Iterator;
  * @author Laurent Etiemble
  * @version $Revision$
  */
-public abstract class ContainerModel {
+public class ContainerModel {
     private final MutablePicoContainer pico;
     private boolean expandAdapters = false;
 
-    protected ContainerModel(MutablePicoContainer pico) {
+    public ContainerModel(MutablePicoContainer pico) {
         this.pico = pico;
     }
 
-    protected PicoContainer getRootContainer() {
+    public PicoContainer getRootContainer() {
         return pico;
     }
 
-    protected Object[] getAllChildren(Object node) {
+    public Object[] getAllChildren(Object node) {
         Object[] result = new Object[0];
         if (node instanceof PicoContainer) {
             PicoContainer pc = (PicoContainer) node;
@@ -49,7 +49,7 @@ public abstract class ContainerModel {
         return result;
     }
 
-    protected int getChildIndex(Object parent, Object child) {
+    public int getChildIndex(Object parent, Object child) {
         int index = -1;
         Object[] children = getAllChildren(parent);
         for (int i = 0; i < children.length; i++) {
@@ -61,7 +61,7 @@ public abstract class ContainerModel {
         return index;
     }
 
-    protected Object getChildAt(Object parent, int index) {
+    public Object getChildAt(Object parent, int index) {
         return getAllChildren(parent)[index];
     }
 

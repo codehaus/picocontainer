@@ -1,16 +1,3 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.swing;
 
 import javax.swing.AbstractListModel;
@@ -19,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * @author Aslak Helles&oslash;y
+ * @version $Revision$
+ */
 public class ContextComboBoxModel extends AbstractListModel implements ComboBoxModel{
     private String[] values;
     private List filteredValues = new ArrayList();

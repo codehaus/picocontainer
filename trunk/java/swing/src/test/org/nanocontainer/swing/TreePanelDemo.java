@@ -15,6 +15,7 @@ import org.nanocontainer.testmodel.WebServerImpl;
 import org.nanocontainer.swing.action.RegisterComponentAction;
 import org.nanocontainer.swing.action.AddContainerAction;
 import org.nanocontainer.swing.action.UnregisterComponentAction;
+import org.nanocontainer.guimodel.ContainerModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +41,7 @@ public class TreePanelDemo {
 		container3.registerComponentImplementation(WebServerImpl.class);
 
         JToolBar toolBar = new JToolBar();
-        ContainerTree tree = new ContainerTree(container1, IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
+        ContainerTree tree = new ContainerTree(new ContainerModel(container1), IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
         toolBar.add(new RegisterComponentAction("blah", tree, TreePanelDemo.class.getClassLoader()));
         final AddContainerAction addContainerAction = new AddContainerAction("blah", tree);
         toolBar.add(addContainerAction);

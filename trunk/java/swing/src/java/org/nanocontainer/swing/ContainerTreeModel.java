@@ -1,22 +1,12 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
 package org.nanocontainer.swing;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.nanocontainer.guimodel.ContainerModel;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
+import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.EventListenerList;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
@@ -30,19 +20,20 @@ import java.util.List;
  * @author Laurent Etiemble
  * @version $Revision$
  */
-public class ContainerTreeModel extends ContainerModel implements TreeModel {
+public class ContainerTreeModel implements TreeModel {
     private EventListenerList listenerList = new EventListenerList();
+    private final ContainerModel containerModel;
 
-    public ContainerTreeModel(MutablePicoContainer pico) {
-        super(pico);
+    public ContainerTreeModel(ContainerModel containerModel) {
+        this.containerModel = containerModel;
     }
 
     public Object getRoot() {
-        return getRootContainer();
+        return containerModel.getRootContainer();
     }
 
     public int getChildCount(Object parent) {
-        return getAllChildren(parent).length;
+        return containerModel.getAllChildren(parent).length;
     }
 
     public boolean isLeaf(Object node) {
@@ -50,7 +41,7 @@ public class ContainerTreeModel extends ContainerModel implements TreeModel {
     }
 
     public int getIndexOfChild(Object parent, Object child) {
-        return getChildIndex(parent, child);
+        return containerModel.getChildIndex(parent, child);
     }
 
     public void addTreeModelListener(TreeModelListener l) {
@@ -62,7 +53,7 @@ public class ContainerTreeModel extends ContainerModel implements TreeModel {
     }
 
     public Object getChild(Object parent, int index) {
-        return getChildAt(parent, index);
+        return containerModel.getChildAt(parent, index);
     }
 
     public void valueForPathChanged(TreePath path, Object newValue) {

@@ -153,7 +153,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
     }
 
 
-    public void TODO_POSTPONE_TO_RELEASE_1_1_testOrderOfInstantiationWithoutAdapter() throws Exception {
+    public void testOrderOfInstantiationWithoutAdapter() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
@@ -172,8 +172,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(3).getClass());
     }
 
-
-    public void TODO_POSTPONE_TO_RELEASE_1_0_testStartStopStartStopAndDispose() throws Exception {
+    public void testStartStopStartStopAndDispose() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
@@ -182,9 +181,9 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         pico.registerComponentImplementation(Three.class);
         pico.registerComponentImplementation(Four.class);
 
-        pico.getComponentInstances();
-
         One one = (One) pico.getComponentInstance(One.class);
+
+        pico.getComponentInstances();
 
         // instantiation - would be difficult to do these in the wrong order!!
         assertEquals("Should be four elems", 4, one.getInstantiating().size());
@@ -460,8 +459,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         assertEquals("ComponentD", l.get(3));
     }
 
-
-    public void TODO_POSTPONE_TO_RELEASE_1_1_testComponentsAreStartedBreadthFirstAndStoppedDepthFirst() {
+    public void testComponentsAreStartedBreadthFirstAndStoppedDepthFirst() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.registerComponentImplementation("recording", StringBuffer.class);
         parent.registerComponentImplementation(A.class);

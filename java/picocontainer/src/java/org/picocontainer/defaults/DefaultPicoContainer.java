@@ -24,6 +24,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private PicoContainer parent;
     private final List componentAdapters = new ArrayList();
 
+    // Keeps track of instantiation order. Will be cleared regularly.
+    private final List orderedComponentAdapters = new ArrayList();
+
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
         setParent(parent);
@@ -126,6 +129,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public ComponentAdapter unregisterComponent(Object componentKey) {
         ComponentAdapter adapter = (ComponentAdapter) componentKeyToAdapterCache.remove(componentKey);
         componentAdapters.remove(adapter);
+        orderedComponentAdapters.remove(adapter);
         return adapter;
     }
 
@@ -176,13 +180,34 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return componentAdapter;
     }
 
+    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+        if (!orderedComponentAdapters.contains(componentAdapter)) {
+            orderedComponentAdapters.add(componentAdapter);
+        }
+    }
+
     public List getComponentInstances() throws PicoException {
-        List result = new ArrayList();
+        Map adapterToInstanceMap = new HashMap();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            result.add(componentAdapter.getComponentInstance());
+            Object componentInstance = componentAdapter.getComponentInstance();
+            adapterToInstanceMap.put(componentAdapter, componentInstance);
+
+            // This is to ensure all are added. (Indirect dependencies will be added
+            // from InstantiatingComponentAdapter).
+            addOrderedComponentAdapter(componentAdapter);
         }
-        return result;
+        List result = new ArrayList();
+        for (Iterator iterator = orderedComponentAdapters.iterator(); iterator.hasNext();) {
+            Object componentAdapter = iterator.next();
+            final Object componentInstance = adapterToInstanceMap.get(componentAdapter);
+            if(componentInstance != null) {
+                // may be null in the case of the "implicit" adapter
+                // representing "this".
+                result.add(componentInstance);
+            }
+        }
+        return Collections.unmodifiableList(result);
     }
 
     public Object getComponentInstance(Object componentKey) throws PicoException {

@@ -136,7 +136,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponentInstances().size());
 
-        Peelable myPeelableContainer = (Peelable) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
+        Peelable myPeelableContainer = (Peelable) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         myPeelableContainer.peel();
 
@@ -254,7 +254,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(PeelableComponent.class);
         pico.registerComponentImplementation(PeelableAndWashableComponent.class);
 
-        Object proxy = new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
+        Object proxy = new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -360,7 +360,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(OrangeFactory.class);
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico);
+        FoodFactory foodFactory = (FoodFactory) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);

@@ -26,7 +26,8 @@ public interface ComponentMulticasterAdapter {
      * to invoke the method in one go.
      *
      * @param picoContainer the container containing the components to multicast to.
+     * @param callInInstantiationOrder true if calls should be done in components' instantiation order.
      * @return a multicaster object.
      */
-    public Object getComponentMulticaster(PicoContainer picoContainer);
+    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder);
 }

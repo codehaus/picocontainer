@@ -59,7 +59,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         MutablePicoContainer child = createPicoContainer();
         child.setParent(parent);
 
-        // ComponentF -> A -> ComponentB+ComponentC
+        // ComponentF -> ComponentA -> ComponentB+ComponentC
         child.registerComponentImplementation(ComponentF.class);
         parent.registerComponentImplementation(ComponentA.class);
         child.registerComponentImplementation(ComponentB.class);

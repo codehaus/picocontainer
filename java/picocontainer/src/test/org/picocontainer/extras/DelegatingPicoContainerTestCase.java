@@ -63,7 +63,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         parent.registerComponentImplementation(SimpleTouchable.class);
         child.registerComponentImplementation(DependsOnTouchable.class);
 
-        Object multicaster = new DefaultComponentMulticasterAdapter().getComponentMulticaster(child);
+        Object multicaster = new DefaultComponentMulticasterAdapter().getComponentMulticaster(child, true);
         assertTrue(multicaster instanceof Serializable);
         assertFalse(multicaster instanceof Touchable);
     }

@@ -9,7 +9,6 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.PicoContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +25,7 @@ public class CommonsLoggingNanoContainerMonitor implements NanoContainerMonitor 
         log.info("Components Instantiated For Container " + picoContainer);
     }
 
-    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
-        log.info("ComponentEvent '" + eventName + "'" + lpa);
+    public void componentsLifecycleEvent(String eventName, PicoContainer container) {
+        log.info("ComponentEvent '" + eventName + "'" + container);
     }
 }

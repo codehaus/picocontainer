@@ -9,7 +9,6 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -22,7 +21,7 @@ public class ConsoleNanoContainerMonitor implements NanoContainerMonitor {
         System.out.println("Components Instantiated For Container " + picoContainer);
     }
 
-    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
-        System.out.println("ComponentEvent '" + eventName + "'" + lpa);
+    public void componentsLifecycleEvent(String eventName, PicoContainer container) {
+        System.out.println("ComponentEvent '" + eventName + "'" + container);
     }
 }

@@ -10,7 +10,6 @@
 package org.nanocontainer;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 // TODO can we deprecate this in favour of some sort of InvocationInterceptor
 // that sits closer to the MulticastInvoker? See longer comment inside the Main class.
@@ -21,7 +20,7 @@ import org.picocontainer.lifecycle.LifecyclePicoAdapter;
  * @version $Revision$
  */
 public interface NanoContainerMonitor {
-    void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa);
+    void componentsLifecycleEvent(String eventName, PicoContainer container);
 
     void componentsInstantiated(PicoContainer picoContainer);
 }

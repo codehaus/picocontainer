@@ -9,7 +9,6 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.PicoContainer;
 import org.apache.log4j.Category;
 
@@ -25,7 +24,7 @@ public class Log4JNanoContainerMonitor implements NanoContainerMonitor {
         category.info("Components Instantiated For Container " + picoContainer);
     }
 
-    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
-        category.info("ComponentEvent '" + eventName + "'" + lpa);
+    public void componentsLifecycleEvent(String eventName, PicoContainer container) {
+        category.info("ComponentEvent '" + eventName + "'" + container);
     }
 }

@@ -9,7 +9,6 @@
 package org.nanocontainer;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 import java.util.ArrayList;
 
@@ -23,8 +22,8 @@ public class MockMonitor implements NanoContainerMonitor {
         return name.substring(name.indexOf('$')+1,name.length());
     }
 
-    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
-        monitorRecorder += ("+" + code(lpa.getPicoContainer().getComponentInstances().get(0)) + "_" + eventName);
+    public void componentsLifecycleEvent(String eventName, PicoContainer container) {
+        monitorRecorder += ("+" + code(container.getComponentInstances().get(0)) + "_" + eventName);
     }
 
     public void componentsInstantiated(PicoContainer picoContainer) {

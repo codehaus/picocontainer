@@ -13,7 +13,7 @@ package picocontainer.hierarchical;
 import junit.framework.TestCase;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.hierarchical.OverriddenPicoTestContainer;
-import picocontainer.hierarchical.NullStartableLifecycleManager;
+import picocontainer.defaults.NullLifecycleManager;
 import picocontainer.hierarchical.DuplicateComponentTypeRegistrationException;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
@@ -28,7 +28,7 @@ public class ComponentInteroperationTestCase extends TestCase {
     {
 
         WilmaImpl wilma = new WilmaImpl();
-        ClassRegistrationPicoContainer pico = new OverriddenPicoTestContainer(wilma, new NullStartableLifecycleManager());
+        ClassRegistrationPicoContainer pico = new OverriddenPicoTestContainer(wilma, new picocontainer.defaults.NullLifecycleManager());
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);

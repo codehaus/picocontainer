@@ -18,7 +18,7 @@
     </organization>
     <inceptionYear>2003</inceptionYear>
     <package>org.picocontainer</package>
-    <logo>/images/picocontainer.jpg</logo>
+    <logo>/images/pico-logo.png</logo>
     <description>Small footprint IoC container</description>
     <shortDescription>Small footprint IoC container</shortDescription>
     <description>

@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
 import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;

@@ -7,24 +7,13 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picoextras.xml;
+package org.picoextras.script.xml;
 
-public class TestPseudoComp {
-    private int foo;
-    private String bar;
-
-    public int getFoo() {
-        return foo;
-    }
-    public String getBar() {
-        return bar;
+public class EmptyXmlCompositionException extends XmlFrontEndException {
+    public EmptyXmlCompositionException() {
     }
 
-    public void setFoo(int foo) {
-        this.foo = foo;
-    }
-
-    public void setBar(String bar) {
-        this.bar = bar;
+    public String getMessage() {
+        return "No components in the XML composition";
     }
 }

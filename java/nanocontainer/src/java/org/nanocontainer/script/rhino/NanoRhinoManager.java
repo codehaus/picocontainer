@@ -1,4 +1,4 @@
-package org.picoextras.rhino;
+package org.picoextras.script.rhino;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;

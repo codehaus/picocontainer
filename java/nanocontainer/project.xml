@@ -17,16 +17,10 @@
       <artifactId>picocontainer-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
-
-    <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-xml</artifactId>
-      <version>${pom.currentVersion}</version>
-    </dependency>
     
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-rhino</artifactId>
+      <artifactId>picocontainer-script</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>    
         

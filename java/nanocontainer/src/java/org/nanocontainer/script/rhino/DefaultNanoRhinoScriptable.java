@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.rhino;
+package org.picoextras.script.rhino;
 
 import org.mozilla.javascript.*;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;

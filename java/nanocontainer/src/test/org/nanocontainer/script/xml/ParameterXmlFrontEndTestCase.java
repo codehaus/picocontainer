@@ -8,25 +8,21 @@
  * Original code by Jeppe Cramon                                             *
  *****************************************************************************/
 
-package org.picoextras.xml;
-
-import java.io.IOException;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+package org.picoextras.script.xml;
 
 import junit.framework.TestCase;
-
-import org.picoextras.testmodel.DefaultWebServerConfig;
-import org.picoextras.testmodel.WebServerConfigComp;
-import org.picoextras.xml.ParameterXmlFrontEnd;
-import org.picoextras.xml.XmlFrontEndException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.testmodel.DefaultWebServerConfig;
+import org.picoextras.testmodel.WebServerConfigComp;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * @author Jeppe Cramon

@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-rhino</id>
-  <name>picoextras-rhino</name>
+  <id>picoextras-script</id>
+  <name>picoextras-script</name>
 
   <dependencies>
   
@@ -23,6 +23,11 @@
       <groupId>rhino</groupId>
       <artifactId>js</artifactId>
       <version>1.5R4.1</version>
+    </dependency> 
+    
+    <dependency>
+      <id>xstream</id>
+      <version>0.1-SNAPSHOT</version>
     </dependency> 
     
   </dependencies>

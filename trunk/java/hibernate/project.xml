@@ -5,7 +5,7 @@
     <groupId>nanocontainer</groupId>
     <id>nanocontainer-hibernate</id>
     <name>nanocontainer-hibernate</name>
-    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
 
     <dependencies>
 

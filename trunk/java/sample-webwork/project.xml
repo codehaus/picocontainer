@@ -5,7 +5,7 @@
     <groupId>nanocontainer</groupId>
     <id>nanocontainer-sample-webwork</id>
     <name>nanocontainer-sample-webwork</name>
-    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
 
     <dependencies>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <version>${pom.currentVersion}</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-servlet</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <version>${pom.currentVersion}</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-webwork</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <version>${pom.currentVersion}</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

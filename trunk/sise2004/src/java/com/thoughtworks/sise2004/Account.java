@@ -4,8 +4,17 @@
  */
 package com.thoughtworks.sise2004;
 
-public class Wallet {
+public class Account {
     private long money;
+    private final EmailSender emailSender;
+
+    public Account() {
+        this(EmailSender.NULL_SENDER);
+    }
+
+    public Account(EmailSender emailSender) {
+        this.emailSender = emailSender;
+    }
 
     public long getMoney() {
         long result = money;
@@ -21,11 +30,11 @@ public class Wallet {
         return money;
     }
 
-    public long getMoney(long amount) throws NotEnoughMoneyException {
-        if(amount > money) {
-            throw new NotEnoughMoneyException();
-        }
+    public long getMoney(long amount) {
         money -= amount;
+        if (money < 0) {
+            emailSender.sendMail("erik@thoughtworks.com", "Your account is overdrawn.");
+        }
         return amount;
     }
 }

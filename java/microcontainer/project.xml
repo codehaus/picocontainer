@@ -95,12 +95,6 @@
         </dependency>
 
         <dependency>
-            <groupId>spice</groupId>
-            <artifactId>spice-cli</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
             <id>bsh</id>
             <version>1.2b7</version>
         </dependency>

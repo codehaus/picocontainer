@@ -1,0 +1,3 @@
+class XmlConfigurator
+
+end

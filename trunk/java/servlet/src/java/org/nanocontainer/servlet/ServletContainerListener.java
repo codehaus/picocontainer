@@ -15,6 +15,8 @@ import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.defaults.ImmutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -41,14 +43,33 @@ import java.util.Enumeration;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Aslak Helles&oslash;y
  * @author Philipp Meier
+ * @author Paul Hammant
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
     private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public static final String KILLER_HELPER = "KILLER_HELPER";
+    private final PicoContainer parentContainer;
+
+    /**
+     * With an enahanced Servlet container like Jervlet (http://spice.codehaus.org/sandbox.html)
+     * it is possible for all WAR file instantiables to have a constructor.  This breaks the
+     * current Servlet spec, but hopefully not future ones - Paul
+     * Used by Nanoweb, Nanostruts and other specialist containers, it is OK to have a reference
+     * to a PicoContainer. A PicoContainer perhaps - one specialy constructed for forwarding into
+     * the servlet realm.
+     *
+     * @param parentContainer
+     */
+    public ServletContainerListener(PicoContainer parentContainer) {
+        this.parentContainer = new ImmutablePicoContainer(parentContainer);
+    }
+
+    public ServletContainerListener() {
+        this.parentContainer = null;
+    }
 
     public void contextInitialized(ServletContextEvent event) {
-
         ServletContext context = event.getServletContext();
         try {
             ContainerBuilder containerBuilder = createBuilder(context);
@@ -80,7 +101,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 } else {
                     scriptReader = new StringReader(script);
                 }
-                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
+                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader(), parentContainer);
                 return nanoContainer.getContainerBuilder();
             }
             if (initParameter.equals(ContainerComposer.class.getName())) {

@@ -19,8 +19,9 @@
       <item name="Lifecycle"             href="/lifecycle.html"/>
       <item name="Containers"            href="/containers.html"/>
       <item name="Components"            href="/components.html"/>
+      <item name="Good Citizens"         href="/good-citizens.html"/>
       <item name="Component Factories"   href="/component-factories.html"/>
-      <item name="Composite Components"   href="/compositecomponents.html"/>
+      <item name="Composite Components"  href="/compositecomponents.html"/>
       <item name="Differentiators"       href="/differentiators.html"/>
       <item name="License"               href="/license.html"/>
       <item name="Extras"                href="/extras.html"/>
@@ -30,6 +31,7 @@
       <item name="Related Projects"      href="/related-projects.html"/>
       <item name="People"                href="/people.html"/>
       <item name="Blogs"                 href="/blogs.html"/>
+      <item name="Picosaurus"            href="/picosaurus.html"/>
       <item name="Download"              href="/download.html"/>
     </menu>
     

@@ -67,10 +67,28 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareSerializable(org.picocontainer.MutablePicoContainer)
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestSerializable(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepareSerializable(final MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepareTestSerializable(final MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
+    }
+    
+    public static class NamedDependsOnTouchable extends DependsOnTouchable {
+        public NamedDependsOnTouchable(Touchable t, String name) {
+            super(t);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestShouldBeAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestShouldBeAbleToTakeParameters(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(SimpleTouchable.class);
+        return new ConstructorInjectionComponentAdapter(NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[] {
+                new ComponentParameter(),
+                new ConstantParameter("Name")
+        });
     }
 
     /**

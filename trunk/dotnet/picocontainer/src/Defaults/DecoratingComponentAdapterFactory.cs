@@ -13,6 +13,7 @@ using System;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class DecoratingComponentAdapterFactory : IComponentAdapterFactory
 	{
 		private readonly IComponentAdapterFactory theDelegate;

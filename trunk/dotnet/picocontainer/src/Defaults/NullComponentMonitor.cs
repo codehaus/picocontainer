@@ -3,9 +3,7 @@ using System.Reflection;
 
 namespace PicoContainer.Defaults
 {
-	/// <summary>
-	/// 
-	/// </summary>
+	[Serializable]
 	public class NullComponentMonitor : IComponentMonitor
 	{
 		public void Instantiating(ConstructorInfo constructor)

@@ -65,14 +65,14 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testStringWorks()
+		public void StringWorks()
 		{
 			// Difference in java and .net
 		}
 
 
 		[Test]
-		public void testMultiWithOnlySmallSatisfiedDependencyWorks()
+		public void MultiWithOnlySmallSatisfiedDependencyWorks()
 		{
 			IMutablePicoContainer pico = createPicoContainer();
 			pico.RegisterComponentImplementation(typeof (Multi));
@@ -84,7 +84,7 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testMultiWithBothSatisfiedDependencyWorks()
+		public void MultiWithBothSatisfiedDependencyWorks()
 		{
 			IMutablePicoContainer pico = createPicoContainer();
 			pico.RegisterComponentImplementation(typeof (Multi));
@@ -97,7 +97,7 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails()
+		public void MultiWithTwoEquallyBigSatisfiedDependenciesFails()
 		{
 			IMutablePicoContainer pico = createPicoContainer();
 			pico.RegisterComponentImplementation(typeof (Multi));

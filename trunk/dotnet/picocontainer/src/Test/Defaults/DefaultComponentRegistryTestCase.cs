@@ -34,14 +34,14 @@ namespace Test.Defaults
 
 			picoContainer.RegisterComponent(componentSpecification);
 
-			picoContainer.UnregisterComponent(typeof (Touchable));
+			picoContainer.UnregisterComponent(typeof (ITouchable));
 
 			Assert.IsFalse(picoContainer.ComponentAdapters.Contains(componentSpecification));
 		}
 
 		private IComponentAdapter CreateComponentAdapter()
 		{
-			return new ConstructorInjectionComponentAdapter(typeof (Touchable), typeof (SimpleTouchable));
+			return new ConstructorInjectionComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable));
 		}
 
 	}

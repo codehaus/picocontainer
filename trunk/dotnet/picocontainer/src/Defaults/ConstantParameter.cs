@@ -27,6 +27,7 @@ namespace PicoContainer.Defaults
 	/// <remarks>This includes Strings, Integers or
 	/// any other object that is not registered in the container.</remarks>
 	/// </summary>
+	[Serializable]
 	public class ConstantParameter : IParameter
 	{
 		private readonly object constantValue;

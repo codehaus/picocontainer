@@ -5,6 +5,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Summary description for SetterInjectionComponentAdapterFactory.
 	/// </summary>
+	[Serializable]
 	public class SetterInjectionComponentAdapterFactory : DecoratingComponentAdapterFactory
 	{
 		/// <summary>

@@ -13,10 +13,10 @@ using System;
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for Touchable.
+	/// Summary description for Washable.
 	/// </summary>
-	public interface Touchable
+	public interface IWashable
 	{
-		void touch();
+		void Wash();
 	}
 }

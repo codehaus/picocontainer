@@ -18,12 +18,12 @@ namespace PicoContainer.Tests.TestModel
 	/// </summary>
 	public class DependsOnTouchable
 	{
-		public Touchable touchable;
+		private ITouchable touchable;
 
-		public DependsOnTouchable(Touchable touchable)
+		public DependsOnTouchable(ITouchable touchable)
 		{
 			Assert.IsNotNull(touchable, "Touchable cannot be passed in as null");
-			touchable.touch();
+			touchable.Touch();
 			this.touchable = touchable;
 		}
 

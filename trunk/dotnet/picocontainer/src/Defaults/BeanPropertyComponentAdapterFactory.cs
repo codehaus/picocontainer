@@ -14,6 +14,7 @@ using System.Collections;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class BeanPropertyComponentAdapterFactory : DecoratingComponentAdapterFactory
 	{
 		IDictionary adapterCache = new Hashtable();

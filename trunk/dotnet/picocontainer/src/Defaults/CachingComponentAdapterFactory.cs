@@ -16,6 +16,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Summary description for CachingComponentAdapterFactory.
 	/// </summary>
+	[Serializable]
 	public class CachingComponentAdapterFactory : DecoratingComponentAdapterFactory
 	{
 		public CachingComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate)

@@ -11,26 +11,18 @@
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for SimpleTouchable.
-	/// </summary>
-	public class SimpleTouchable : Touchable
+	public class SimpleTouchable : ITouchable
 	{
-		public SimpleTouchable()
+		private bool wasTouched;
+
+		public bool WasTouched
 		{
-			//
-			// TODO: Add constructor logic here
-			//
+			get { return wasTouched; }
 		}
 
-		#region Touchable Members
-
-		public bool wasTouched;
-
-		public void touch()
+		public void Touch()
 		{
 			wasTouched = true;
 		}
-
-		#endregion
 	}
 }

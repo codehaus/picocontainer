@@ -5,7 +5,7 @@ namespace Test.TestModel
 	/// <summary>
 	/// Summary description for Dictionairy.
 	/// </summary>
-	public interface Dictionairy
+	public interface IDictionairy
 	{
 		//
 		// TODO: Create Interface Definition

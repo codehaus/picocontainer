@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class BeanPropertyComponentAdapter : DecoratingComponentAdapter
 	{
 		private IDictionary properties;

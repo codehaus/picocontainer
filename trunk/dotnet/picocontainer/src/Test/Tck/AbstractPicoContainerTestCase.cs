@@ -10,6 +10,9 @@
  *****************************************************************************/
 
 using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Reflection;
 using System.Collections;
@@ -39,33 +42,33 @@ namespace PicoContainer.Tests.Tck
 			return pico;
 		}
 
-
 		protected IMutablePicoContainer CreatePicoContainerWithTouchableAndDependsOnTouchable()
 		{
 			IMutablePicoContainer pico = CreatePicoContainerWithDependsOnTouchableOnly();
-			pico.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			pico.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
 			return pico;
 		}
 
 		[Test]
-		public void TestNewContainerIsNotNull()
+		public void NewContainerIsNotNull()
 		{
 			Assert.IsNotNull(CreatePicoContainerWithTouchableAndDependsOnTouchable());
 		}
 
 		[Test]
-		public void TestRegisteredComponentsExistAndAreTheCorrectTypes()
+		public void RegisteredComponentsExistAndAreTheCorrectTypes()
 		{
 			IPicoContainer pico = CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
-			Assert.IsNotNull(pico.GetComponentAdapter(typeof (Touchable)));
+			Assert.IsNotNull(pico.GetComponentAdapter(typeof (ITouchable)));
 			Assert.IsNotNull(pico.GetComponentAdapter(typeof (DependsOnTouchable)));
-			Assert.IsTrue(pico.GetComponentInstance(typeof (Touchable)) is Touchable);
+			Assert.IsTrue(pico.GetComponentInstance(typeof (ITouchable)) is ITouchable);
 			Assert.IsTrue(pico.GetComponentInstance(typeof (DependsOnTouchable)) is DependsOnTouchable);
 			Assert.IsNull(pico.GetComponentAdapter(typeof (System.Collections.ICollection)));
 		}
 
-		public void testRegistersSingleInstance()
+		[Test]
+		public void RegistersSingleInstance()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			StringBuilder sb = new StringBuilder();
@@ -73,25 +76,28 @@ namespace PicoContainer.Tests.Tck
 			Assert.AreSame(sb, pico.GetComponentInstance(typeof (StringBuilder)));
 		}
 
-		/*
-		public void testContainerIsSerializable() {
-	PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+		[Test]
+		public void ContainerIsSerializable()
+		{
+			IPicoContainer pico = CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	ObjectOutputStream oos = new ObjectOutputStream(baos);
+			using(Stream stream = new MemoryStream())
+			{
+				// Serialize it to memory
+				IFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(stream, pico);
 
-	oos.writeObject(pico);
-	ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+				// De-Serialize from memory
+				stream.Seek(0,0); // reset stream to begining
+				pico = (IPicoContainer)formatter.Deserialize(stream);
+			}
 
-	pico = (PicoContainer) ois.readObject();
+			DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.GetComponentInstance(typeof(DependsOnTouchable));
+			Assert.IsNotNull(dependsOnTouchable);
+			SimpleTouchable touchable = (SimpleTouchable) pico.GetComponentInstance(typeof(ITouchable));
+			Assert.IsTrue(touchable.WasTouched);
+		}
 
-	DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
-																												assertNotNull(dependsOnTouchable);
-																												SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
-
-																																																	assertTrue(touchable.wasTouched);
-			
-																																															  }*/
 		[Test]
 		public void GettingComponentWithMissingDependencyFails()
 		{
@@ -106,7 +112,7 @@ namespace PicoContainer.Tests.Tck
 				Assert.AreSame(picoContainer.GetComponentAdapterOfType(typeof (DependsOnTouchable)).ComponentImplementation, e.UnsatisfiableComponentAdapter.ComponentImplementation);
 				IList unsatisfiableDependencies = e.UnsatisfiableDependencies;
 				Assert.AreEqual(1, unsatisfiableDependencies.Count);
-				Assert.AreEqual(typeof (Touchable), unsatisfiableDependencies[0]);
+				Assert.AreEqual(typeof (ITouchable), unsatisfiableDependencies[0]);
 			}
 		}
 
@@ -277,9 +283,9 @@ namespace PicoContainer.Tests.Tck
 
 		public class NeedsTouchable
 		{
-			public Touchable touchable;
+			public ITouchable touchable;
 
-			public NeedsTouchable(Touchable touchable)
+			public NeedsTouchable(ITouchable touchable)
 			{
 				this.touchable = touchable;
 			}
@@ -287,9 +293,9 @@ namespace PicoContainer.Tests.Tck
 
 		public class NeedsWashable
 		{
-			public Washable washable;
+			public IWashable washable;
 
-			public NeedsWashable(Washable washable)
+			public NeedsWashable(IWashable washable)
 			{
 				this.washable = washable;
 			}

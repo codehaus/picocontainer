@@ -249,7 +249,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TestModel\Dictionairy.cs"
+                    RelPath = "TestModel\IDictionairy.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -259,22 +259,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestModel\IThesaurus.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\ITouchable.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\IWashable.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestModel\SimpleTouchable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestModel\Thesaurus.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestModel\Touchable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestModel\Washable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

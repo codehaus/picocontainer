@@ -8,7 +8,7 @@ namespace PicoContainer.Tests.TestModel
 	/// </summary>
 	public class DependsOnTwoComponents
 	{
-		public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred)
+		public DependsOnTwoComponents(ITouchable Touchable, DependsOnTouchable fred)
 		{
 			//    Assert.IsNotNull("Touchable cannot be passed in as null", Touchable);
 //      Assert.IsNotNull("DependsOnTouchable cannot be passed in as null", fred);

@@ -17,12 +17,14 @@ namespace PicoContainer.Defaults
 	/// A ComponentParameter should be used to pass in a particular component
 	/// as argument to a different component's constructor. 
 	/// <remarks>
-	/// This is particularly
-	/// useful in cases where several components of the same type have been registered,
-	/// but with a different key. Passing a ComponentParameter as a parameter
-	/// when registering a component will give PicoContainer a hint about what
-	/// other component to use in the constructor.</remarks>
+	/// This is particularly useful in cases where several components of the 
+	/// same type have been registered, but with a different key. Passing a 
+	/// ComponentParameter as a parameter when registering a component will 
+	/// give PicoContainer a hint about what other component to use in the 
+	/// constructor.
+	/// </remarks>
 	/// </summary>
+	[Serializable]
 	public class ComponentParameter : IParameter
 	{
 		private object componentKey;
@@ -72,14 +74,4 @@ namespace PicoContainer.Defaults
 			return result;
 		}
 	}
-
-	/// <summary>
-	/// A ComponentParameter should be used to pass in a particular component
-	/// as argument to a different component's constructor. This is particularly
-	/// useful in cases where several components of the same type have been registered,
-	/// but with a different key. Passing a ComponentParameter as a parameter
-	/// when registering a component will give PicoContainer a hint about what
-	/// other component to use in the constructor.
-	/// </summary
-
 }

@@ -17,6 +17,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Summary description for ImplementationHidingComponentAdapterFactory.
 	/// </summary>
+	[Serializable]
 	public class ImplementationHidingComponentAdapterFactory : DecoratingComponentAdapterFactory
 	{
 		private readonly bool strict;

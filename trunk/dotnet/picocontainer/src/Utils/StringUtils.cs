@@ -7,18 +7,24 @@ namespace PicoContainer.Utils
 	/// </summary>
 	public class StringUtils
 	{
-    private StringUtils() {}
-    public static string ArrayToString(object [] array) {
-      String retval = "";
+		private StringUtils()
+		{
+		}
 
-      for (int i = 0; i < array.Length; i++) {
-        retval = retval + array[i].ToString();
-        if (i+1 < array.Length) {
-          retval += ",";
-        }
-      }
-      return retval;
+		public static string ArrayToString(object[] array)
+		{
+			String retval = "";
 
-    }
+			for (int i = 0; i < array.Length; i++)
+			{
+				retval = retval + array[i].ToString();
+				if (i + 1 < array.Length)
+				{
+					retval += ",";
+				}
+			}
+			return retval;
+
+		}
 	}
 }

@@ -26,7 +26,7 @@ namespace Test.Defaults
 			DefaultPicoContainer parent = new DefaultPicoContainer();
 			DefaultPicoContainer child = new DefaultPicoContainer(parent);
 
-			parent.RegisterComponentImplementation(typeof (Touchable), typeof (AlternativeTouchable));
+			parent.RegisterComponentImplementation(typeof (ITouchable), typeof (AlternativeTouchable));
 			child.RegisterComponentImplementation("key", typeof (SimpleTouchable));
 			child.RegisterComponentImplementation(typeof (DependsOnTouchable));
 
@@ -37,7 +37,7 @@ namespace Test.Defaults
 		public void testResolveFromParentByType()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			parent.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			parent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
 
 			IMutablePicoContainer child = new DefaultPicoContainer(parent);
 			child.RegisterComponentImplementation(typeof (DependsOnTouchable));
@@ -48,11 +48,11 @@ namespace Test.Defaults
 		public void testResolveFromParentByKey()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			parent.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			parent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
 
 			IMutablePicoContainer child = new DefaultPicoContainer(parent);
 			child.RegisterComponentImplementation(typeof (DependsOnTouchable), typeof (DependsOnTouchable),
-			                                      new IParameter[] {new ComponentParameter(typeof (Touchable))});
+			                                      new IParameter[] {new ComponentParameter(typeof (ITouchable))});
 
 			Assert.IsNotNull(child.GetComponentInstance(typeof (DependsOnTouchable)));
 		}
@@ -60,7 +60,7 @@ namespace Test.Defaults
 		public void testResolveFromGrandParentByType()
 		{
 			IMutablePicoContainer grandParent = new DefaultPicoContainer();
-			grandParent.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			grandParent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer(grandParent);
 
@@ -73,13 +73,13 @@ namespace Test.Defaults
 		public void testResolveFromGrandParentByKey()
 		{
 			IMutablePicoContainer grandParent = new DefaultPicoContainer();
-			grandParent.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			grandParent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer(grandParent);
 
 			IMutablePicoContainer child = new DefaultPicoContainer(parent);
 			child.RegisterComponentImplementation(typeof (DependsOnTouchable), typeof (DependsOnTouchable),
-			                                      new IParameter[] {new ComponentParameter(typeof (Touchable))});
+			                                      new IParameter[] {new ComponentParameter(typeof (ITouchable))});
 
 			Assert.IsNotNull(child.GetComponentInstance(typeof (DependsOnTouchable)));
 		}

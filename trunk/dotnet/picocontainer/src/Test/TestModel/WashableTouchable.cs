@@ -15,17 +15,17 @@ namespace PicoContainer.Tests.TestModel
 {
 	/// Summary description for WashableTouchable.
 	/// </summary>
-	public class WashableTouchable : Touchable, Washable
+	public class WashableTouchable : ITouchable, IWashable
 	{
 		public WashableTouchable()
 		{
 		}
 
-		public void touch()
+		public void Touch()
 		{
 		}
 
-		public void wash()
+		public void Wash()
 		{
 		}
 	}

@@ -28,8 +28,8 @@ namespace Test.Defaults
 		{
 			DefaultPicoContainer pico = (DefaultPicoContainer) CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
-			Assert.IsTrue(typeof (Touchable).IsAssignableFrom(
-				pico.GetComponentAdapterOfType(typeof (Touchable)).ComponentImplementation));
+			Assert.IsTrue(typeof (ITouchable).IsAssignableFrom(
+				pico.GetComponentAdapterOfType(typeof (ITouchable)).ComponentImplementation));
 		}
 
 		[Test]

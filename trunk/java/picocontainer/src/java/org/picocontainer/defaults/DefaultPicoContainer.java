@@ -69,7 +69,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
-        setParent(parent);
+        this.parent = parent;
     }
 
     public DefaultPicoContainer(PicoContainer parent) {

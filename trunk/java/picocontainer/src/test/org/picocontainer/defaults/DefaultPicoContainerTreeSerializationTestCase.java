@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 import java.io.ByteArrayInputStream;
@@ -26,8 +27,7 @@ import java.io.ObjectOutputStream;
  * @author Paul Hammant
  */
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
-    protected MutablePicoContainer createPicoContainer() {
-        DefaultPicoContainer parent = new DefaultPicoContainer();
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         DefaultPicoContainer child = new DefaultPicoContainer(parent);
         return child;
     }
@@ -35,7 +35,8 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
     public void testContainerIsDeserializableWithParent() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {
 
-        MutablePicoContainer child = createPicoContainer();
+        PicoContainer parent = createPicoContainer(null);
+        MutablePicoContainer child = createPicoContainer(parent);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);

@@ -17,11 +17,16 @@ import picocontainer.PicoContainerImpl;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Map;
 import java.lang.reflect.UndeclaredThrowableException;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.TestCase;
 import nanocontainer.aggregating.reflect.SequentialInvocationHandler;
 import nanocontainer.aggregating.AggregatingNanoContainer;
+
+import javax.swing.*;
 
 public class AggregatingNanoContainerTestCase extends TestCase {
 
@@ -59,11 +64,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         Foo proxyFoo = (Foo) proxy;
 
         proxyCollection.add("Foo");
-        try {
-            proxyFoo.setBar("Zap");
-        } catch (UndeclaredThrowableException e) {
-            throw e;
-        }
+        proxyFoo.setBar("Zap");
 
         // Assert that the proxy subjects have changed.
         assertTrue("The collection should have a Foo", list.contains("Foo"));
@@ -71,4 +72,34 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         FooImpl foo = (FooImpl) pico.getComponent(Foo.class);
         assertEquals("Zap", foo.getBar());
     }
+
+    public void testNoInvocationHandler() throws PicoRegistrationException, PicoStartException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        PicoContainer pico = new PicoContainerImpl.Default();
+
+        Collection list = new ArrayList();
+        pico.registerComponent(list);
+
+        pico.registerComponent(Foo.class, FooImpl.class);
+        pico.start();
+
+        AggregatingNanoContainer aggContainer = new AggregatingNanoContainer.ComponentsFromContainer(pico, new SequentialInvocationHandler(pico));
+        Object proxy = aggContainer.getProxy();
+
+        Collection proxyCollection = (Collection) proxy;
+        Foo foo = (Foo) proxy;
+
+        Method put = Map.class.getMethod("put", new Class[] {Object.class, Object.class});
+
+        //TODO-Aslak - Try to force a NoInvocationTargetException ? (PH)
+
+        proxyCollection.add("Foo");
+        try {
+            put.invoke(foo, new Object[] {"zap","zap"});
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+
+    }
+
 }

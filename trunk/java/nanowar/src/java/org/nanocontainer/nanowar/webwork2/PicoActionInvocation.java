@@ -16,6 +16,7 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
@@ -45,13 +46,18 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
         Class actionClass = proxy.getConfig().getClass();// changed from getClazz() as of XWork 1.0
 
         PicoContainer requestContainer = getRequestContainer();
-        action = (Action) requestContainer.getComponentInstance(actionClass);
-        if (action == null) {
+        Object actionInstance = requestContainer.getComponentInstance(actionClass);
+        if (actionInstance == null) {
             // The action wasn't registered. Do it ad-hoc here.
             MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
             tempContainer.registerComponentImplementation(actionClass);
-            action = (Action) tempContainer.getComponentInstance(actionClass);
+            actionInstance = tempContainer.getComponentInstance(actionClass);
         }
+        try {
+	        action = (Action) actionInstance;
+		} catch(ClassCastException e) {
+			throw new PicoIntrospectionException("The action of class " + actionInstance.getClass().getName() + " is not assignable to type " + Action.class.getName() + ".", e);
+		}
     }
 
     private PicoContainer getRequestContainer() {

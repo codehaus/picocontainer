@@ -41,10 +41,19 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
         Class[] interfaces;
-        if (getDelegate().getComponentKey() instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
+        Object componentKey = getDelegate().getComponentKey();
+        if (componentKey instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
             interfaces = new Class[]{(Class) getDelegate().getComponentKey()};
+        } else if (componentKey instanceof Class[]) {
+            interfaces = (Class[]) componentKey;
         } else {
             throw new PicoIntrospectionException("Can't hide non interface keyed implementations.");
+        }
+        for (int i = 0; i < interfaces.length; i++) {
+            Class anInterface = interfaces[i];
+            if (!anInterface.isInterface()) {
+                 throw new PicoIntrospectionException("Can't hide non interface keyed implementation :" + anInterface.getName());
+             }
         }
         if (interfaces.length == 0) {
             throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");

@@ -21,29 +21,13 @@
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
     <description>
-        PicoContainer is a small, simple container for arbitrary components. It is embeddable and
-        extentensible.  PicoContainer is designed for server and client
-        side, for small and enterprise applications. There are
-        already quite a few diverse containers that deliver the PicoContainer design.
-        Components can be created for it without importing or extending any
-        interfaces or classes outside of the java.* package.  Components also have no
-        meta-info specification. I.e. no XML. Most importantly of all, components for PicoContainer
-        can be used without PicoContainer for good old-fashioned hard-coded deployments.
-        
-        Some of PicoContainer's greatest assets are its non-intruvesiness, simplicity light weight and extendability.
-        Not mentioning that PicoContainer fits perefectly well with code developed along the lines of TDD and mock objects.
-        
-        And what's in it for you?
-        Code that is more modular (loosely coupled), easy to test, easier to configure, and easier to maintain.
-        
-        PicoContainer is more than an IoC container. It's a tribute to simple, but controlled power.
-       
+        Please refer to the main http://picocontainer.org website for documentation.    
     </description>
-    <shortDescription>Small footprint IoC container</shortDescription>
+    <shortDescription>Small footprint Dependency Injector container</shortDescription>
     <url>http://www.picocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
-    <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/picocontainer.codehaus.org/java</siteDirectory>
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/picocontainer/public_html/reports</siteDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
@@ -94,24 +78,7 @@
     </versions>
 
     <mailingLists>
-        <mailingList>
-            <name>PicoContainer Users</name>
-            <subscribe>http://archive.picocontainer.org/user</subscribe>
-            <unsubscribe>http://archive.picocontainer.org/user</unsubscribe>
-            <archive>http://archive.picocontainer.org/user</archive>
-        </mailingList>
-        <mailingList>
-            <name>PicoContainer Developers</name>
-            <subscribe>http://archive.picocontainer.org/dev</subscribe>
-            <unsubscribe>http://archive.picocontainer.org/dev</unsubscribe>
-            <archive>http://archive.picocontainer.org/dev</archive>
-        </mailingList>
-        <mailingList>
-            <name>PicoContainer Commits and JIRA reports</name>
-            <subscribe>http://archive.picocontainer.org/scm</subscribe>
-            <unsubscribe>http://archive.picocontainer.org/scm</unsubscribe>
-            <archive>http://archive.picocontainer.org/scm</archive>
-        </mailingList>
+
     </mailingLists>
 
     <developers>

@@ -76,7 +76,7 @@ namespace PicoContainer.Defaults {
       // to perform the GetHashCode() method.
       public override IMessage Invoke(IMessage msg) {
         IMethodCallMessage call = (IMethodCallMessage)msg;
-        IConstructionCallMessage ctor = call as IConstructionCallMessage;
+
         IMethodMessage m = msg as IMethodMessage;
         bool isHostSwapCall = call.MethodName == "HotSwap";
         if (delegatedInstance == null) {

@@ -230,11 +230,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\PicoExceptionsTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "PicoContainer.Defaults\SetterInjectionComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

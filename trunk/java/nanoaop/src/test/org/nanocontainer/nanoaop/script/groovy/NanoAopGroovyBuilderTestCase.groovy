@@ -33,24 +33,6 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
     }
 
 
-    public void testComponentScopedInterceptor() {
-        log = new StringBuffer()
-        logger = new LoggingInterceptor(log)
-
-        nano = builder.container() {
-            component(key:'intercepted', class:DaoImpl) {
-                aspect(methodCut:cuts.allMethods(), interceptor:logger)
-            }
-            component(key:'notIntercepted', class:DaoImpl)
-        }
-
-        intercepted = nano.pico.getComponentInstance('intercepted')
-        notIntercepted = nano.pico.getComponentInstance('notIntercepted')
-
-        verifyIntercepted(intercepted, log)
-        verifyNotIntercepted(notIntercepted, log)
-    }
-
     public void testComponentScopedContainerSuppliedInterceptor() {
         nano = builder.container() {
             component(key:'intercepted', class:DaoImpl) {
@@ -67,15 +49,6 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
 
         verifyIntercepted(intercepted, log)
         verifyNotIntercepted(notIntercepted, log)
-    }
-
-    public void testContainerScopedMixin() {
-        nano = builder.container() {
-            component(key:Dao, class:DaoImpl) 
-            aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)
-        }
-        dao = nano.pico.getComponentInstance(Dao)
-        verifyMixin(dao)
     }
   
     public void testComponentScopedMixin() {

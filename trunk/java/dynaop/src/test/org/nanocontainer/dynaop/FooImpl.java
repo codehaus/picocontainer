@@ -9,9 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-/**
- * @author Stephen Molitor
- */
-public interface MyComponent {
-    public abstract void aMethod();
+
+public class FooImpl implements Foo {
+    public FooImpl() { }
+    public void aMethod() { }
 }

@@ -9,50 +9,51 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import dynaop.Aspects;
-import dynaop.ProxyFactory;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
+import dynaop.Aspects;
+
 /**
- * Applies Dynaop advice to component instances. Uses the
- * <code>dynaop.ProxyFactory.wrap</code> method to apply the advice; this
- * requires that the advised classes implement an interface.
+ * Creates <code>DynaopComponentAdapter</code> instances.
  * 
  * @author Stephen Molitor
  */
-public class AspectsComponentAdapter extends DecoratingComponentAdapter {
+public class DynaopComponentAdapterFactory extends
+                DecoratingComponentAdapterFactory {
 
     private Aspects aspects;
 
     /**
-     * Creates a new <code>AspectsComponentAdapter</code>.
+     * Creates a new <code>DynaopComponentAdapterFactory</code>.
      * 
-     * @param aspects
-     *            the collection of Dynaop aspects to apply to component
-     *            instances.
      * @param delegate
-     *            the <code>ComponenetAdapter</code> that will create the
-     *            actual component instances, before wrapping with advise.
+     *            the factory to delegate to.
+     * @param aspects
+     *            the collection of Dynaop advice that will be applied to
+     *            component instances.
      */
-    public AspectsComponentAdapter(Aspects aspects, ComponentAdapter delegate) {
+    public DynaopComponentAdapterFactory(ComponentAdapterFactory delegate,
+                    Aspects aspects) {
         super(delegate);
         this.aspects = aspects;
     }
 
     /**
-     * Retrieves the component instance and applies any Dynaop advice to the
-     * component.
+     * Creates the component adapter.
      * 
-     * @return the (possibly advised) component instance.
-     * @throws PicoInitializationException
-     *             thrown when there is a problem initializing the container or
-     *             some other part of the PicoContainer api, for example, when a
-     *             cyclic dependency between components occurs.
+     * @param componentKey
+     *            the component key.
+     * @param componentImplementation
+     *            the component implementation class.
+     * @param parameters
+     *            the component parameters.
+     * @return the component adapter instance.
      * @throws PicoIntrospectionException
      *             thrown if the component has dependencies which could not be
      *             resolved, or instantiation of the component lead to an
@@ -64,12 +65,13 @@ public class AspectsComponentAdapter extends DecoratingComponentAdapter {
      *             thrown if the component implementation is not concrete and
      *             can not be instantiated.
      */
-    public Object getComponentInstance() throws PicoInitializationException,
-                    PicoIntrospectionException,
+    public ComponentAdapter createComponentAdapter(Object componentKey,
+                    Class componentImplementation, Parameter[] parameters)
+                    throws PicoIntrospectionException,
                     AssignabilityRegistrationException,
                     NotConcreteRegistrationException {
-        return ProxyFactory.getInstance(aspects).wrap(
-                        super.getComponentInstance());
+        return new DynaopComponentAdapter(aspects, super
+                        .createComponentAdapter(componentKey,
+                                        componentImplementation, parameters));
     }
-
 }

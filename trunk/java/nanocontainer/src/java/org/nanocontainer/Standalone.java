@@ -27,6 +27,7 @@ public class Standalone {
     private static final int VERSION_OPT = 'v';
     private static final int COMPOSITION_OPT = 'c';
     private static final int QUIET_OPT = 'q';
+    private static final int NOWAIT_OPT = 'n';
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
@@ -45,7 +46,11 @@ public class Standalone {
         new CLOptionDescriptor("quiet",
                 CLOptionDescriptor.ARGUMENT_DISALLOWED,
                 QUIET_OPT,
-                "forces NanoContainer to be quiet")
+                "forces NanoContainer to be quiet"),
+        new CLOptionDescriptor("nowait",
+                CLOptionDescriptor.ARGUMENT_DISALLOWED,
+                NOWAIT_OPT,
+                "forces NanoContainer to exit after start")
     };
 
     public static void main(String[] args) {
@@ -53,6 +58,7 @@ public class Standalone {
 
         String composition = "";
         boolean quiet = false;
+        boolean nowait = false;
 
         for (Iterator iterator = options.iterator(); iterator.hasNext();) {
             CLOption option = (CLOption) iterator.next();
@@ -61,7 +67,7 @@ public class Standalone {
                 case CLOption.TEXT_ARGUMENT:
                     //This occurs when a user supplies an argument that
                     //is not an option
-                    System.out.println("Unknown argument: " + option.getArgument());
+                    System.err.println("Unknown argument: " + option.getArgument());
                     break;
 
                 case HELP_OPT:
@@ -80,20 +86,27 @@ public class Standalone {
                     quiet = true;
                     break;
 
+                case NOWAIT_OPT:
+                    nowait = true;
+                    break;
+
             }
         }
 
         try {
-            buildAndStartContainer(composition, quiet);
+            buildAndStartContainer(composition, quiet, nowait);
         } catch (RuntimeException e) {
-            System.out.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
+            System.err.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("NanoContainer has failed to start application, for IO reasons. Exception message : " + e.getMessage());
+            System.err.println("NanoContainer has failed to start application, for IO reasons. Exception message : " + e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.out.println("NanoContainer has failed to start application. A Class was not found. Exception message : " + e.getMessage());
+            System.err.println("NanoContainer has failed to start application. A Class was not found. Exception message : " + e.getMessage());
             e.printStackTrace();
+        }
+        if (!quiet) {
+            System.out.println("Exiting NanoContainer's standalone main method.");
         }
     }
 
@@ -117,37 +130,45 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(String compositionFileName, final boolean quiet) throws IOException, ClassNotFoundException {
+    private static void buildAndStartContainer(String compositionFileName, final boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
         final ObjectReference containerRef = new SimpleReference();
         nanoContainer.getContainerBuilder().buildContainer(containerRef, null, null, true);
 
+        if (nowait == false) {
+            setShutdownHook(quiet, nanoContainer, containerRef);
+        } else {
+//            shuttingDown(quiet, nanoContainer, containerRef);
+        }
+    }
+
+    private static void setShutdownHook(final boolean quiet, final NanoContainer nanoContainer, final ObjectReference containerRef) {
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
-                if (!quiet) {
-                    System.out.println("Shutting Down NanoContainer");
-                }
-                try {
-                    nanoContainer.getContainerBuilder().killContainer(containerRef);
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (!quiet) {
-                        System.out.println("Exiting VM");
-                    }
-                }
+                shuttingDown(quiet, nanoContainer, containerRef);
             }
         };
         Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));
+    }
 
+    private static void shuttingDown(final boolean quiet, final NanoContainer nanoContainer, final ObjectReference containerRef) {
+        try {
+            nanoContainer.getContainerBuilder().killContainer(containerRef);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            if (!quiet) {
+                System.out.println("NanoContainer: Exiting Virtual Machine");
+            }
+        }
     }
 
     private static List getOptions(String[] args) {
         if (args.length == 0) {
-            System.err.println("No arguments specified");
+            System.err.println("NanoContainer - No arguments specified");
             printUsage();
             System.exit(10);
         }
@@ -157,7 +178,7 @@ public class Standalone {
         //Make sure that there was no errors parsing
         //arguments
         if (null != parser.getErrorString()) {
-            System.err.println("Error: " + parser.getErrorString());
+            System.err.println("NanoContainer Error: " + parser.getErrorString());
             System.exit(20);
         }
 

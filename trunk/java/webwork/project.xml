@@ -17,7 +17,22 @@
             <artifactId>webwork</artifactId>
             <version>1.4</version>
         </dependency>
+        
+        <dependency>
+            <id>velocity</id>
+            <version>1.5-dev</version>
+        </dependency>
+        
+        <dependency>
+            <id>velocity-tools</id>
+            <version>1.2-dev</version>
+        </dependency>
 
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+        </dependency>
+        
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>

@@ -17,6 +17,8 @@ import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,10 +40,22 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
         super(componentKey, componentImplementation);
+		checkConcrete();
+
         this.parameters = parameters;
         this.allowNonPublicClasses = allowNonPublicClasses;
     }
 
+	
+
+    private void checkConcrete() throws NotConcreteRegistrationException {
+        // Assert that the component class is concrete.
+        boolean isAbstract = (getComponentImplementation().getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
+        if (getComponentImplementation().isInterface() || isAbstract) {
+            throw new NotConcreteRegistrationException(getComponentImplementation());
+        }
+    }
+	
     public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List adapterInstantiationOrderTrackingList = new ArrayList();

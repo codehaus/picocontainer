@@ -47,7 +47,6 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         this.componentKey = componentKey;
         this.componentImplementation = componentImplementation;
         checkTypeCompatibility();
-        checkConcrete();
     }
 
     /**
@@ -75,14 +74,6 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
             if (!componentType.isAssignableFrom(componentImplementation)) {
                 throw new AssignabilityRegistrationException(componentType, componentImplementation);
             }
-        }
-    }
-
-    private void checkConcrete() throws NotConcreteRegistrationException {
-        // Assert that the component class is concrete.
-        boolean isAbstract = (componentImplementation.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
-        if (componentImplementation.isInterface() || isAbstract) {
-            throw new NotConcreteRegistrationException(componentImplementation);
         }
     }
 

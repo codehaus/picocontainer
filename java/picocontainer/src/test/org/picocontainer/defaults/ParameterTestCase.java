@@ -19,7 +19,7 @@ public class ParameterTestCase extends TestCase {
         ComponentParameter parameter = new ComponentParameter(Touchable.class);
 
         assertNotNull(pico.getComponentInstance(Touchable.class));
-        Touchable touchable = (Touchable) parameter.resolveAdapter(pico).getComponentInstance();
+        Touchable touchable = (Touchable) parameter.resolveAdapter(pico, Touchable.class).getComponentInstance();
         assertNotNull(touchable);
     }
 
@@ -27,7 +27,7 @@ public class ParameterTestCase extends TestCase {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        assertSame(value, parameter.resolveAdapter(picoContainer).getComponentInstance());
+        assertSame(value, parameter.resolveAdapter(picoContainer, Object.class).getComponentInstance());
     }
 
     public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {

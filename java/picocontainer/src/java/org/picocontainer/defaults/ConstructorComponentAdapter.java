@@ -91,7 +91,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes, picoContainer);
 
             for (int i = 0; i < currentParameters.length; i++) {
-                ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer);
+                ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer, parameterTypes[i]);
                 if (adapter == null) {
                     failedDependency = true;
                     unsatisfiableDependencyTypes.add(parameterTypes[i]);

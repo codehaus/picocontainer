@@ -80,7 +80,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             };
         }
         for (int i = 0; i < mostSatisfiableDependencyAdapters.length; i++) {
-            mostSatisfiableDependencyAdapters[i] = componentParameters[i].resolveAdapter(dependencyContainer);
+            mostSatisfiableDependencyAdapters[i] = componentParameters[i].resolveAdapter(dependencyContainer, mostSatisfiableDependencyTypes[i]);
         }
         return mostSatisfiableDependencyAdapters;
     }

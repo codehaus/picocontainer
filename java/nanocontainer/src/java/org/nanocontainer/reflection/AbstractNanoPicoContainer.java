@@ -152,7 +152,7 @@ public abstract class AbstractNanoPicoContainer implements NanoPicoContainer, Se
     }
 
     /**
-     * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
      */
     public void verify() throws PicoVerificationException {
         delegate.verify();

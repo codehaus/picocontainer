@@ -1,8 +1,8 @@
 package org.nanocontainer.remoting.rmi;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import junit.framework.TestCase;
-import org.nanocontainer.proxy.CGLIBProxyFactory;
-import org.nanocontainer.proxy.ProxyFactory;
 import org.nanocontainer.remoting.ByRefKey;
 import org.nanocontainer.remoting.Invocation;
 import org.nanocontainer.remoting.RemotingInterceptor;
@@ -30,7 +30,7 @@ public class RemoteInterceptorImplTestCase extends TestCase {
         pico.registerComponentImplementation(ArrayList.class);
         List serverList = (List) pico.getComponentInstance(ArrayList.class);
 
-        ProxyFactory proxyFactory = new CGLIBProxyFactory();
+        ProxyFactory proxyFactory = new CglibProxyFactory();
         RemotingInterceptor remoteInterceptor = new RemoteInterceptorImpl(RegistryHelper.getRegistry(), pico, thangKey, proxyFactory);
         Collection collection = (Collection) remoteInterceptor.invoke(new Invocation("getList", null, null));
         assertSame(serverList, collection);
@@ -38,7 +38,7 @@ public class RemoteInterceptorImplTestCase extends TestCase {
 
     public void testByRefComponentsShouldBeProxied() throws RemoteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ProxyFactory proxyFactory = new CGLIBProxyFactory();
+        ProxyFactory proxyFactory = new CglibProxyFactory();
         ByRefKey thingKey = new ByRefKey("thing");
         ByRefKey thangKey = new ByRefKey("thang");
         ComponentAdapter thingAdapter = pico.registerComponentImplementation(thingKey, Thing.class);

@@ -7,21 +7,20 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.nanocontainer.concurrent;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+import org.picocontainer.defaults.ObjectReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.ThreadLocalReference;
-
 
 /**
  * Unit test for ThreadLocalReference
+ *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalReferenceTest
@@ -44,6 +43,7 @@ public class ThreadLocalReferenceTest
 
         /**
          * Construct an instance.
+         *
          * @param reference
          */
         public RunIt(ObjectReference reference) {
@@ -70,14 +70,15 @@ public class ThreadLocalReferenceTest
 
     /**
      * Test working ThreadLocalReference
+     *
      * @throws InterruptedException
      */
     public final void testThreadLocalReference() throws InterruptedException {
         final ThreadLocalReference reference = new ThreadLocalReference();
         final Thread[] threads = new Thread[]{
-                new Thread(new RunIt(reference), "junit-TLR-1"),
-                new Thread(new RunIt(reference), "junit-TLR-2"),
-                new Thread(new RunIt(reference), "junit-TLR-3")};
+            new Thread(new RunIt(reference), "junit-TLR-1"),
+            new Thread(new RunIt(reference), "junit-TLR-2"),
+            new Thread(new RunIt(reference), "junit-TLR-3")};
         reference.set("Hello");
         for (int i = 0; i < threads.length; i++) {
             threads[i].start();

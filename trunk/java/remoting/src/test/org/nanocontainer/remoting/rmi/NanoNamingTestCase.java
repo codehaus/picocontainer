@@ -1,8 +1,6 @@
 package org.nanocontainer.remoting.rmi;
 
 import junit.framework.TestCase;
-import org.nanocontainer.proxy.CGLIBProxyFactory;
-import org.nanocontainer.proxy.ProxyFactory;
 import org.nanocontainer.remoting.NanoNaming;
 import org.nanocontainer.remoting.ByRefKey;
 import org.nanocontainer.remoting.Thing;
@@ -19,6 +17,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -32,7 +33,7 @@ public class NanoNamingTestCase extends TestCase {
     private ByRefKey thangKey;
 
     public NanoNamingTestCase() throws Exception {
-        proxyFactory = new CGLIBProxyFactory();
+        proxyFactory = new CglibProxyFactory();
     }
 
     public void setUp() throws MalformedURLException, NotBoundException, RemoteException, AlreadyBoundException {

@@ -272,8 +272,8 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         Yin yin = (Yin) pico.getComponentInstance(Yin.class);
         Yang yang = (Yang) pico.getComponentInstance(Yang.class);
 
-        assertEquals(yin, yang.getYin());
-        assertEquals(yang, yin.getYang());
+        assertSame(yin, yang.getYin());
+        assertSame(yang, yin.getYang());
     }
 
 }

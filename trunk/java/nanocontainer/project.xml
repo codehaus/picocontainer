@@ -70,25 +70,26 @@
 
     <dependencies>
         <dependency>
-            <id>junit</id>
-            <version>3.8.1</version>
-        </dependency>
-
-        <dependency>
             <id>picocontainer</id>
             <version>1.0-RC-1-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
 
         <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-beta-1-SNAPSHOT</version>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>1.0-RC-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <id>jmock</id>
-            <version>SNAPSHOT</version>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -137,6 +138,17 @@
         <dependency>
             <id>bsh</id>
             <version>1.2b7</version>
+        </dependency>
+
+        <!-- This should ideally not be necessary when ThreadLocalCA is "fixed" -->
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
         </dependency>
 
     </dependencies>

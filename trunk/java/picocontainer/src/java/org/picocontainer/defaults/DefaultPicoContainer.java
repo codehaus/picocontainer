@@ -371,7 +371,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         disposed = true;
     }
 
-    public List getComponentInstancesOfTypeWithContainerAdaptersLast(Class type) {
+    private List getComponentInstancesOfTypeWithContainerAdaptersLast(Class type) {
         List result = new ArrayList();
         result.addAll(getComponentInstancesOfType(type));
         Collections.sort(result, new StackContainersAtEndComparator());

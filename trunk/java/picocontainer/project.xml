@@ -29,7 +29,7 @@
     <siteAddress>beaver.codehaus.org</siteAddress>
     <siteDirectory>/home/projects/picocontainer/public_html/reports</siteDirectory>
 
-    <distributionSite>picocontainer.codehaus.org</distributionSite>
+    <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>

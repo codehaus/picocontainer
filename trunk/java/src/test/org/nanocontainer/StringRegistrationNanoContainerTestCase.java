@@ -11,20 +11,17 @@
 package org.nanocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoInitializationException;
-import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.Vector;
-import java.util.Collection;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.Vector;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 

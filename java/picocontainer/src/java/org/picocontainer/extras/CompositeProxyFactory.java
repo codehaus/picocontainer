@@ -18,7 +18,7 @@ import java.util.List;
  * @version $Revision$
  */
 public interface CompositeProxyFactory {
-    Object createCompositeProxy(
+    Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder

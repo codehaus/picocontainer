@@ -82,4 +82,16 @@
             <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}" />
         </jar>
     </goal>
+
+    <postGoal name="jar:install">
+        <attainGoal name="pico:tck-jar" />
+        <property name="jardir__" value="${maven.repo.local}/${pom.artifactDirectory}/jars"/>
+        <mkdir dir="${jardir__}"/>    
+        <copy 
+            file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            todir="${jardir__}"
+            overwrite="true"
+        />
+    </postGoal>
+
 </project>

@@ -98,7 +98,7 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         return result;
     }
 
-    public Set getComponentInstanceKeys() {
+    public Collection getComponentInstanceKeys() {
 
         // Get child types
         Set types = new HashSet(childRegistry.getComponentInstanceKeys());
@@ -106,18 +106,18 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstanceKeys());
 
-        return Collections.unmodifiableSet(types);
+        return Collections.unmodifiableCollection(types);
 
     }
 
-    public Set getComponentInstances() {
+    public Collection getComponentInstances() {
         // Get child types
         Set types = new HashSet(childRegistry.getComponentInstances());
 
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstances());
 
-        return Collections.unmodifiableSet(types);
+        return Collections.unmodifiableCollection(types);
     }
 
     public boolean hasComponentInstance(Object componentKey) {

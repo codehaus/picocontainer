@@ -50,7 +50,7 @@ public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Seri
         }
     }
 
-    public Object createCompositeProxy(
+    public Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder
@@ -127,7 +127,7 @@ public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Seri
                 // We have two or more results
                 // We can make a new proxy that aggregates all the results.
                 //Class[] resultInterfaces = getInterfaces(results.toArray());
-                result = createCompositeProxy(
+                result = createComponentMulticaster(
                         classLoader,
                         results,
                         true

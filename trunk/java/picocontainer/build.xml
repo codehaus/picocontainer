@@ -15,7 +15,7 @@
     </property>
     <property name="javadocdir" value="dist/docs/api">
     </property>
-    <property name="final.name" value="picocontainer-1.0-RC1">
+    <property name="final.name" value="picocontainer-1.0">
     </property>
     <target name="init" description="o Initializes some properties">
         <mkdir dir="${libdir}">
@@ -51,7 +51,7 @@
         <delete dir="${distdir}">
         </delete>
     </target>
-    <target name="dist" description="o Create a distribution" depends="jar, javadoc, confluence">
+    <target name="dist" description="o Create a distribution" depends="jar, javadoc">
         <mkdir dir="dist">
         </mkdir>
         <copy todir="dist">
@@ -60,32 +60,6 @@
             <fileset dir="${basedir}" includes="LICENSE*, README*">
             </fileset>
         </copy>
-    </target>
-
-    <target name="confluence">
-        <exec executable="ruby">
-            <arg value="getdocs.rb"/>
-        </exec>
-        <!--
-        The zip created by confluence can't be unzipped with <unzip>. This is because the zip
-        incorrectly has absolute path starting with /PICO. <unzip> won't let us override that,
-        but native unzip will.
-        -->
-        <exec executable="unzip">
-            <arg value="target/docs.zip"/>
-            <arg value="-d"/>
-            <arg value="target"/>
-        </exec>
-
-        <!-- The zip has both /PICO and /pico in the path. Copy both folders to dist/docs in case
-        the distro is built on linux
-        -->
-        <move todir="dist/docs">
-            <fileset dir="target/pico"/>
-        </move>
-        <move todir="dist/docs" failonerror="false">
-            <fileset dir="target/PICO"/>
-        </move>
     </target>
 
     <target name="test" description="o Run the test cases" if="test.failure" depends="internal-test">
@@ -145,9 +119,9 @@
             <format pattern="2004-yyyy" property="year">
             </format>
         </tstamp>
-        <property name="copyright" value="Copyright &amp;copy;  Codehaus. All Rights Reserved.">
+        <property name="copyright" value="Copyright &amp;copy; PicoContainer Organization. All Rights Reserved.">
         </property>
-        <property name="title" value="PicoContainer 1.0-RC1 API">
+        <property name="title" value="PicoContainer 1.0 API">
         </property>
         <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.picocontainer.*">
             <classpath>

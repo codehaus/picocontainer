@@ -134,7 +134,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponents().length);
 
-        Peelable myPeelableContainer = (Peelable) pico.getAggregateComponentProxy();
+        Peelable myPeelableContainer = (Peelable) pico.getCompositeComponent();
 
         myPeelableContainer.peel();
 
@@ -157,7 +157,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy();
+        Object myPeelableAndWashableContainer = pico.getCompositeComponent();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -195,7 +195,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy(true, true);
+        Object myPeelableAndWashableContainer = pico.getCompositeComponent(true, true);
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -236,7 +236,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getAggregateComponentProxy(false, true);
+                pico.getCompositeComponent(false, true);
 
         ((Washable) washableContainer).wash();
 
@@ -269,14 +269,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getAggregateComponentProxy(false, false);
+                pico.getCompositeComponent(false, false);
 
         ((Washable) washableContainer).wash();
 
         assertEquals("Cc.wash()", recorder.getWhatHappened(0));
         assertEquals("Bb.wash()", recorder.getWhatHappened(1));
         assertTrue(
-                "Unmanaged components should not be called by an getAggregateComponentProxy() proxy",
+                "Unmanaged components should not be called by an getCompositeComponent() proxy",
                 !recorder.thingsThatHappened.contains("Aa.wash()"));
     }
 
@@ -289,7 +289,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object proxy = pico.getAggregateComponentProxy();
+        Object proxy = pico.getCompositeComponent();
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -394,7 +394,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.instantiateComponents();
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) pico.getAggregateComponentProxy();
+        FoodFactory foodFactory = (FoodFactory) pico.getCompositeComponent();
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);

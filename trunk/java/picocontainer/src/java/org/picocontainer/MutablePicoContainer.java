@@ -83,14 +83,6 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 
-    /**
-     * Adds a child container. <b>Don't call this method explicitly.</b>
-     * In order to create connected graphs and hierarchies of containers,
-     * use the {@link #addParent(PicoContainer)
-     * method.
-     *
-     * @param child child container to add
-     */
-    void addChild(PicoContainer child);
-    void addParent(PicoContainer parent);
+    void addChild(MutablePicoContainer child);
+    void addParent(MutablePicoContainer parent);
 }

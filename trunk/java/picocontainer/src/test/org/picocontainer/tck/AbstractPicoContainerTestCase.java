@@ -176,7 +176,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         try {
             pico.getComponentInstance(A.class);
         } catch (NoSatisfiableConstructorsException e) {
-            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Usatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
+            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             assertTrue(unsatisfiableDependencies.contains(C.class));

@@ -26,6 +26,7 @@ public class Standalone {
     private static final int HELP_OPT = 'h';
     private static final int VERSION_OPT = 'v';
     private static final int COMPOSITION_OPT = 'c';
+    private static final int QUIET_OPT = 'q';
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
@@ -40,14 +41,18 @@ public class Standalone {
         new CLOptionDescriptor("composition",
                 CLOptionDescriptor.ARGUMENT_REQUIRED,
                 COMPOSITION_OPT,
-                "specify the assembly file")
-
+                "specify the composition file"),
+        new CLOptionDescriptor("quiet",
+                CLOptionDescriptor.ARGUMENT_DISALLOWED,
+                QUIET_OPT,
+                "forces NanoContainer to be quiet")
     };
 
     public static void main(String[] args) {
         List options = getOptions(args);
 
         String composition = "";
+        boolean quiet = false;
 
         for (Iterator iterator = options.iterator(); iterator.hasNext();) {
             CLOption option = (CLOption) iterator.next();
@@ -71,11 +76,15 @@ public class Standalone {
                     composition = option.getArgument();
                     break;
 
+                case QUIET_OPT:
+                    quiet = true;
+                    break;
+
             }
         }
 
         try {
-            buildAndStartContainer(composition);
+            buildAndStartContainer(composition, quiet);
         } catch (RuntimeException e) {
             System.out.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
@@ -108,7 +117,7 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(String compositionFileName) throws IOException, ClassNotFoundException {
+    private static void buildAndStartContainer(String compositionFileName, final boolean quiet) throws IOException, ClassNotFoundException {
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
@@ -118,13 +127,17 @@ public class Standalone {
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
-                System.out.println("Shutting Down NanoContainer");
+                if (!quiet) {
+                    System.out.println("Shutting Down NanoContainer");
+                }
                 try {
                     nanoContainer.getContainerBuilder().killContainer(containerRef);
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
-                    System.out.println("Exiting VM");
+                    if (!quiet) {
+                        System.out.println("Exiting VM");
+                    }
                 }
             }
         };

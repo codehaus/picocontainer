@@ -2,7 +2,7 @@ import org.nanocontainer.script.groovy.NanoGroovyBuilder
 
 builder = new NanoGroovyBuilder()
 
-builder.container(parent:parent) {
+builder.container(parent:parent,class:ImplementationHidingSoftCompositionPicoContainer) {
   classpathelement(path:"lib/hidden/microcontainer-impl-0.1-SNAPSHOT.jar");
   component(key:org.microcontainer.Kernel, class:"org.microcontainer.impl.DefaultKernel")
   component(class:"org.microcontainer.impl.ShutdownPreventer")  

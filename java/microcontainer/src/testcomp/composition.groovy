@@ -12,5 +12,9 @@ builder.container(parent:parent) {
 	// and thus mentioned by name (via the manually added hidden jar above).
 	component(key:org.microcontainer.test.TestComp, class:"org.microcontainer.test.hopefullyhidden.TestCompImpl")
 	component(key:org.microcontainer.testapi.TestPromotable, class:"org.microcontainer.test.hopefullyhidden.TestPromotableImpl")
+    // TODO ...
+    //management(key:'foobar' methods:'put, size') {
+    //  component(key:java.util.Map, class:java.util.HashMap)
+    //}
 }
 

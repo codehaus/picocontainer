@@ -286,6 +286,11 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         c.stop();
         c.dispose();
     }
+
+    public void TODO_testJMXPublication() throws DeploymentException {
+        kernel.deploy(new File("test.mca"));
+        // get "foobar" from JMX ensure a couple of map methods are exposed.
+    }
 }
 
 

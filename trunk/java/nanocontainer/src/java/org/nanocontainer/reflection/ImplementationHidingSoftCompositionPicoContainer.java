@@ -41,20 +41,20 @@ import java.util.Map;
  */
 public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer delegate;
+    private final MutablePicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
+        delegate = new ImplementationHidingPicoContainer(caf, parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(new DefaultComponentAdapterFactory(), parent);
+        delegate = new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
@@ -69,10 +69,6 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
 
     public ImplementationHidingSoftCompositionPicoContainer() {
         this(ImplementationHidingSoftCompositionPicoContainer.class.getClassLoader(), null);
-    }
-
-    protected Map getNamedContainers() {
-        return delegate.getNamedContainers();
     }
 
     public Object getComponentInstanceFromDelegate(Object componentKey) {
@@ -159,27 +155,27 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         return delegate.unregisterComponentByInstance(componentInstance);
     }
 
-    public MutablePicoContainer makeChildContainer() {
-        return makeChildContainer(null);
-    }
-
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = reflectionAdapter.getComponentClassLoader();
-        ImplementationHidingSoftCompositionPicoContainer pc = new ImplementationHidingSoftCompositionPicoContainer(currentClassloader, this);
-        delegate.addChildContainer(name, pc);
-        return pc;
+        ImplementationHidingSoftCompositionPicoContainer child = new ImplementationHidingSoftCompositionPicoContainer(currentClassloader, this);
+        delegate.addChildContainer(child);
+        namedChildContainers.put(name, child);
+        return child;
     }
 
     public void addChildContainer(PicoContainer child) {
         delegate.addChildContainer(child);
+        namedChildContainers.put("containers" + namedChildContainers.size(), child);
     }
 
     public void addChildContainer(String name, PicoContainer child) {
-        delegate.addChildContainer(name, child);
+        delegate.addChildContainer(child);
+        namedChildContainers.put(name, child);
     }
 
     public void removeChildContainer(PicoContainer child) {
         delegate.removeChildContainer(child);
+        super.removeChildContainer(child);
     }
 
     public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
@@ -229,20 +225,4 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         return delegate.equals(obj);
     }
 
-    private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {
-        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-            super(componentAdapterFactory, parent);
-        }
-
-        protected Map getNamedContainers() {
-            return super.getNamedContainers();
-        }
-
-        public boolean equals(Object obj) {
-            if (obj.equals(ImplementationHidingSoftCompositionPicoContainer.this)) {
-                return true;
-            }
-            return super.equals(obj);
-        }
-    }
 }

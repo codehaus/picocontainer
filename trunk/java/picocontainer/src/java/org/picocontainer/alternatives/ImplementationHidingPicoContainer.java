@@ -24,7 +24,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -37,7 +36,7 @@ import java.util.Map;
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final InnerMutablePicoContainer delegate;
+    private final MutablePicoContainer delegate;
     private final ComponentAdapterFactory caf;
 
     /**
@@ -45,7 +44,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
-        delegate = new InnerMutablePicoContainer(caf, parent);
+        delegate = new DefaultPicoContainer(caf, parent);
     }
 
     /**
@@ -166,18 +165,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     }
 
-    public MutablePicoContainer makeChildContainer(String name) {
-        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
-        delegate.addChildContainer(name, pc);
-        return pc;
-    }
-
     public void addChildContainer(PicoContainer child) {
         delegate.addChildContainer(child);
-    }
-
-    public void addChildContainer(String name, PicoContainer child) {
-        delegate.addChildContainer(name, child);
     }
 
     public void removeChildContainer(PicoContainer child) {
@@ -192,31 +181,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.getComponentInstancesOfType(type);
     }
 
-    protected Map getNamedContainers() {
-        return delegate.getNamedContainers();
-    }
-
     public boolean equals(Object obj) {
         return delegate.equals(obj);
-    }
-
-
-    // TODO: Paul this is a vanilla class now ... remove it and use DPC directly ?
-    private class InnerMutablePicoContainer extends DefaultPicoContainer {
-        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-            super(componentAdapterFactory, parent);
-        }
-
-        protected Map getNamedContainers() {
-            return super.getNamedContainers();
-        }
-
-        public boolean equals(Object obj) {
-            if (obj == ImplementationHidingPicoContainer.this) {
-                return true;
-            }
-            return super.equals(obj); 
-        }
     }
 
 }

@@ -9,15 +9,47 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop;
 
+import java.lang.reflect.Method;
+
 /**
  * @author Stephen Molitor
  */
 public interface PointcutsFactory {
 
+    ComponentPointcut component(Object componentKey);
+
     ClassPointcut instancesOf(Class type);
+
+    ClassPointcut className(String regex);
+
+    ClassPointcut oneClass(Class clazz);
+
+    ClassPointcut packageName(String packageName);
+
+    ClassPointcut intersection(ClassPointcut a, ClassPointcut b);
+
+    ClassPointcut union(ClassPointcut a, ClassPointcut b);
+
+    ClassPointcut not(ClassPointcut classPointcut);
 
     MethodPointcut allMethods();
 
-    ComponentPointcut component(Object componentKey);
+    MethodPointcut getMethods();
+
+    MethodPointcut isMethods();
+
+    MethodPointcut setMethods();
+
+    MethodPointcut signature(String regexp);
+
+    MethodPointcut oneMethod(Method method);
+
+    MethodPointcut returnType(ClassPointcut classPointcut);
+
+    MethodPointcut intersection(MethodPointcut a, MethodPointcut b);
+
+    MethodPointcut union(MethodPointcut a, MethodPointcut b);
+
+    MethodPointcut not(MethodPointcut methodPointcut);
 
 }

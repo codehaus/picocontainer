@@ -7,15 +7,29 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
+package org.nanocontainer.nanoaop.dynaop;
 
-import java.lang.reflect.Method;
 
-/**
- * @author Stephen Molitor
- */
-public interface MethodPointcut {
-
-    boolean picks(Method method);
-
+public class Foo {
+    
+    public void apple() {}
+    
+    public void apricot() {}
+    
+    public void banana() {}
+    
+    public String getA() { return "a"; }
+    
+    public String getA(String a) { return "a"; }
+    
+    public boolean isA() { return false; }
+    
+    public String getB() { return "b"; }
+    
+    public boolean isB() { return false; }
+    
+    public void setA(String a) {}
+    
+    public void setB(String b) {}
+    
 }

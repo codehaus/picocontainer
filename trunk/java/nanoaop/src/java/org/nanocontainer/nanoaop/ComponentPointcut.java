@@ -16,4 +16,6 @@ public interface ComponentPointcut {
 
     Object getComponentKey();
     
+    boolean picks(Object componentKey);
+    
 }

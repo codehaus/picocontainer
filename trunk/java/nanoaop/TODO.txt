@@ -1,6 +1,5 @@
 TODO list for nanoaop:
 
-1.  Add more pointcuts to PointcutsFactory (and implementation)
 2.  Add interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer
 3.  Create interface AspectablePicoContainerFactory
 4.  Create class DynaopAspectablePicoContainerFactory, shall use mixin to introduce DynaopAspectsManager into a PicoContainer.

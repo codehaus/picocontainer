@@ -1,5 +1,5 @@
 target
+*.log
 *.iws
 *.ipr
 *.iml
-*.log

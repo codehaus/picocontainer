@@ -25,11 +25,12 @@ public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 	public static final String PROMOTED_PATH = "/MCA-INF/promoted/";
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
-	protected File workDir = null;
+	public static final String DEFAULT_WORK_DIR = "work.dir";
+	private Configuration configuration;
 	private DelegatingClassLoader delegatingClassLoader; // promoted classloaders
 
-	public DefaultClassLoaderFactory(File workDir) {
-		this.workDir = workDir;
+	public DefaultClassLoaderFactory(Configuration configuration) {
+		this.configuration = configuration;
 		this.delegatingClassLoader = new DelegatingClassLoader(this.getClass().getClassLoader());
 	}
 
@@ -61,7 +62,7 @@ public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 	}
 
 	protected URL[] getURLs(String context, String path) {
-		File dir = new File(workDir, context + path);
+		File dir = new File(configuration.getWorkDir(), context + path);
 		File[] files = dir.listFiles();
 
 		if(files == null) {

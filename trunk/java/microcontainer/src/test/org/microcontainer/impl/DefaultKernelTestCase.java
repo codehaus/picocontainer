@@ -16,9 +16,7 @@ import org.microcontainer.McaDeployer;
 import org.microcontainer.DeploymentScriptHandler;
 import org.microcontainer.ClassLoaderFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.Parameter;
 import org.nanocontainer.testmodel.Wilma;
 
 import javax.management.MBeanInfo;
@@ -292,33 +290,20 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     }
 
     public void testKernelCanRunInPicoContainer() {
-        // lets keep true to COP principles, shall we?
-		String workDirKey = "micro.work.dir";
-		String tempDirKey = "micro.temp.dir";
-
         DefaultPicoContainer pico = new DefaultPicoContainer();
 		pico.registerComponentImplementation(Kernel.class, DefaultKernel.class);
 
 		// registers Directories to names
-		pico.registerComponentInstance(workDirKey, new File("work"));
-		pico.registerComponentInstance(tempDirKey, new File("temp"));
+		pico.registerComponentInstance(new DefaultConfiguration());
 
 		// parameters for DefaultMcaDeployer
-		Parameter[] parameters = new Parameter[2];
-		parameters[0] = new ComponentParameter(workDirKey);
-		parameters[1] = new ComponentParameter(tempDirKey);
-		pico.registerComponentImplementation(McaDeployer.class, DefaultMcaDeployer.class, parameters);
+		pico.registerComponentImplementation(McaDeployer.class, DefaultMcaDeployer.class);
 
 		// parameters for Groovy GroovyDeploymentScriptHandler
-		parameters = new Parameter[2];
-		parameters[0] = ComponentParameter.DEFAULT; // uses ClassLoaderFactory
-		parameters[1] = new ComponentParameter(workDirKey);
-		pico.registerComponentImplementation(DeploymentScriptHandler.class, GroovyDeploymentScriptHandler.class, parameters);
+		pico.registerComponentImplementation(DeploymentScriptHandler.class, GroovyDeploymentScriptHandler.class);
 
 		// register for DefaultClassLoader
-		parameters = new Parameter[1];
-		parameters[0] = new ComponentParameter(workDirKey);
-		pico.registerComponentImplementation(ClassLoaderFactory.class, DefaultClassLoaderFactory.class, parameters);
+		pico.registerComponentImplementation(ClassLoaderFactory.class, DefaultClassLoaderFactory.class);
 
 
 		assertNotNull( pico.getComponentInstance(Kernel.class) );

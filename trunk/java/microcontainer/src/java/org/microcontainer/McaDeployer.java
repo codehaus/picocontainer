@@ -10,7 +10,6 @@
 
 package org.microcontainer;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -20,6 +19,5 @@ import java.net.URL;
  */
 public interface McaDeployer {
 
-    File getWorkingDir();
-	void deploy(String context, URL mcaURL) throws IOException;
+    void deploy(String context, URL mcaURL) throws IOException;
 }

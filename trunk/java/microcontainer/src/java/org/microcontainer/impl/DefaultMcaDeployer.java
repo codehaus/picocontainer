@@ -26,24 +26,21 @@ import java.io.*;
  * Responsible for deploying a MCA to the file system.
  */
 public class DefaultMcaDeployer implements McaDeployer {
-	protected File workingDir = null;
-	protected File tempDir = null;
+	private Configuration configuration;
 
-	public DefaultMcaDeployer(File workingDir, File tempDir) {
-		this.workingDir = workingDir;
-		this.tempDir = tempDir;
-
-		this.workingDir.mkdir();
-		this.tempDir.mkdir();
+	public DefaultMcaDeployer(Configuration configuration) {
+		this.configuration = configuration;
+		init();
 	}
 
-	public File getWorkingDir() {
-		return workingDir;
+	private void init() {
+		configuration.getWorkDir().mkdir();
+		configuration.getTempDir().mkdir();
 	}
 
 	public void deploy(String context, URL mcaURL) throws IOException {
 		URLConnection connection = mcaURL.openConnection();
-		File sandboxDir = new File(workingDir, context);
+		File sandboxDir = new File(configuration.getWorkDir(), context);
 		sandboxDir.mkdir();
 
 		if(connection instanceof JarURLConnection) {
@@ -58,6 +55,8 @@ public class DefaultMcaDeployer implements McaDeployer {
 	}
 
 	protected void handleRemoteMCA(File sandboxDir, HttpURLConnection connection) throws IOException {
+		File tempDir = configuration.getTempDir();
+
 		// copy the remote MCA file to the temp dir
 		String mcaFileName = sandboxDir.getName() + ".mca";
 		expand(connection.getInputStream(), tempDir, mcaFileName);

@@ -12,6 +12,7 @@ package org.nanocontainer;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -70,6 +71,10 @@ public class NanoContainer {
     }
 
     public NanoContainer(Reader composition, String builderClass, ClassLoader classLoader) throws ClassNotFoundException {
+        this(composition, builderClass, classLoader, null);
+    }
+
+    public NanoContainer(Reader composition, String builderClass, ClassLoader classLoader, PicoContainer parent) throws ClassNotFoundException {
 
         DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
         {
@@ -81,8 +86,8 @@ public class NanoContainer {
         }
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(builderClass);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance();
-    }
 
+    }
     private static File fileExists(File file) {
         if (file.exists()) {
             return file;

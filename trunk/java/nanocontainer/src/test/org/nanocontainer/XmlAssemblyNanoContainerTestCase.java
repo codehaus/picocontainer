@@ -115,12 +115,34 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertTrue(ws instanceof WebServerImpl);
     }
 
-    public void testInstantiateWithComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithXStreamComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = null;
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
                         "    <pseudocomponent factory='org.nanocontainer.xstream.XStreamXmlPseudoComponentFactory'>" +
+                        "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "         <host>foobar.com</host> " +
+                        "         <port>4321</port> " +
+                        "       </org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "    </pseudocomponent>" +
+                        "    <component typekey='org.nanocontainer.testmodel.WebServer' " +
+                        "               impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "</container>"), new MockMonitor());
+
+        assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
+        WebServerConfig wsc = (WebServerConfig) nano.getRootContainer().getComponentInstance(WebServerConfig.class);
+        assertEquals("foobar.com",wsc.getHost());
+        assertEquals(4321,wsc.getPort());
+    }
+
+    // This one next
+    public void donot_testInstantiateWithBeanComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        NanoContainer nano = null;
+            nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                        "<container>" +
+                        "    <pseudocomponent factory='org.nanocontainer.bean.BeanXmlPseudoComponentFactory'>" +
                         "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +

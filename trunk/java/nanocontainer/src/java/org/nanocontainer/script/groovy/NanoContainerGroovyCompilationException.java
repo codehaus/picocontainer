@@ -2,7 +2,7 @@ package org.nanocontainer.script.groovy;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.NanoContainerMarkupException;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import java.util.List;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class NanoGroovyCompositionException extends PicoCompositionException {
+public class NanoContainerGroovyCompilationException extends NanoContainerMarkupException {
     private CompilationFailedException compilationFailedException;
 
-    public NanoGroovyCompositionException(String message, CompilationFailedException e) {
+    public NanoContainerGroovyCompilationException(String message, CompilationFailedException e) {
         super(message);
         this.compilationFailedException = e;
     }

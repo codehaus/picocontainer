@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,12 +84,12 @@ public class ScriptedContainerBuilderFactory {
 
     }
 
-    private static File fileExists(File file) {
+    private static File fileExists(File file) throws FileNotFoundException {
         if (file.exists()) {
             return file;
         } else {
             //todo a proper exception.
-            throw new RuntimeException("File " + file.getName() + " does not exist.");
+            throw new FileNotFoundException("File " + file.getAbsolutePath() + " does not exist.");
         }
     }
 

@@ -17,7 +17,7 @@ public class NanoRhinoManager {
         try {
             scriptable = cx.initStandardObjects(null);
 
-            defineClass(scriptable, DefaultNanoRhinoScriptable.class);
+            defineClass(scriptable, scriptableClass);
 
             NanoRhinoScriptableHolder nanoHolder = new NanoRhinoScriptableHolder();
             Scriptable jsArgs = Context.toObject(nanoHolder, scriptable);

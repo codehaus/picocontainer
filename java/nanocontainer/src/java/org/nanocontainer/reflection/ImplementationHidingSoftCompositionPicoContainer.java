@@ -231,10 +231,9 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         reflectionAdapter.addClassLoaderURL(url);
     }
 
+    //TODO Should this method be the ReflectionContainerAdapter interface only?
     public MutablePicoContainer getPicoContainer() {
-        return reflectionAdapter.getPicoContainer();
-        // TODO or return this ?
-        // I think so - PH
+        return this;
     }
 
     public ClassLoader getComponentClassLoader() {

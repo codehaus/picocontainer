@@ -4,6 +4,9 @@
 </head>
 <body>
 <h1>Lifecycle</h1>
+<h2>[ Revamp - lifecycle stuff was taken out of Pico recently - watch
+this space - Paul]<br>
+</h2>
 <h2>Initialization Component assembly and configuration.</h2>
 This happens lazily after registration. If you call start() (below) if
 will force the container to iterate thru the components and instantiate
@@ -37,6 +40,27 @@ dispose() can be called on the container and percolated all the way
 thru to the contained components. Once called the container is
 effectively dead. Of course, different pico containers may choose to
 handle this differently.<br>
+<br>
+---<br>
+<br>
+LifecycleContainer Interface<br>
+<br>
+&nbsp; public interface LifecycleContainer extends Container {<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void start() throws PicoStartException;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void stop() throws PicoStopException;<br>
+<br>
+&nbsp; }<br>
+<br>
+This adds some life cycle management to Pico Containers. The
+instantiating class may call start() on the container which, subject to
+implementation does some conceptual start on the components that
+optionally recognize the applicable start design.&nbsp; This may of use
+when a thread is needed to be started (private to the component) for
+some daemonized life. It is a pluggable implementation (along Pico
+Component designs) of course.&nbsp; The default being a NullObject
+implementation.<br>
 <br>
 </body>
 </html>

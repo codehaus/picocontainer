@@ -1,14 +1,16 @@
 package nanocontainer.servlet.lifecycle;
 
-
-
 import nanocontainer.servlet.holder.SessionScopeObjectHolder;
 import nanocontainer.servlet.holder.RequestScopeObjectHolder;
+import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
 import nanocontainer.servlet.ObjectHolder;
+import nanocontainer.servlet.ObjectInstantiater;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
 import picocontainer.Container;
 
 public class RequestLifecycleFilter extends BaseLifecycleListener implements Filter {
@@ -25,16 +27,26 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
         // build a container
         Container container = getFactory(context).buildContainerWithParent(parentContainer, "request");
 
-        // and hold on to it
-        ObjectHolder holder = new RequestScopeObjectHolder(httpRequest, CONTAINER_KEY);
-        holder.put(container);
+        // and a means to instantiate new objects in the container
+        ObjectInstantiater instantiater = getFactory(context).buildInstantiater(container);
+
+        // hold on to them
+        ObjectHolder containerHolder = new RequestScopeObjectHolder(httpRequest, CONTAINER_KEY);
+        containerHolder.put(container);
+
+        ObjectHolder instantiaterHolder = new RequestScopeObjectHolder(httpRequest, INSTANTIATER_KEY);
+        instantiaterHolder.put(instantiater);
 
         try {
+
             // process the incoming request
             filterChain.doFilter(request, response);
+
         } finally {
+
             // shutdown container
-            destroyContainer(context, holder);
+            destroyContainer(context, containerHolder);
+
         }
     }
 
@@ -43,6 +55,4 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
     public void destroy() {
     }
-
 }
-

@@ -8,23 +8,8 @@ public interface ContainerFactory {
 
     Container buildContainerWithParent(Container parentContainer, String configName);
 
+    ObjectInstantiater buildInstantiater(Container parentContainer);
+
     void destroyContainer(Container container);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

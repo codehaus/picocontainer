@@ -44,20 +44,20 @@
     </version>
     <version>
       <id>1.0-alpha-2</id>
-      <name>1.0-alpha-1</name>
+      <name>1.0-alpha-2</name>
       <tag>HEAD</tag>
     </version>
   </versions>
 
   <mailingLists>
     <mailingList>
-      <name>Picocontainer Developers</name>
+      <name>PicoContainer Developers</name>
       <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
       <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
       <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
     </mailingList>
     <mailingList>
-      <name>Picocontainer CVS Commits</name>
+      <name>PicoContainer CVS Commits (CVSSpam)</name>
       <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
       <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
       <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>

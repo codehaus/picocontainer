@@ -9,12 +9,13 @@
 package org.picoextras.groovy;
 
 import junit.framework.Assert;
-import org.picocontainer.Lifecycle;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 
 /**
  * An abstract component and three dependancies used for testing.
  */
-public abstract class Xxx implements Lifecycle {
+public abstract class Xxx implements Startable, Disposable {
 
     public static String componentRecorder = "";
 

@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public interface PicoContainer extends Lifecycle {
+public interface PicoContainer extends Startable, Disposable {
     /**
      * Checks for the presence of a particular component.
      *

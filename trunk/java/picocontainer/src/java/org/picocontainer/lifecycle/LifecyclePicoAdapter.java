@@ -11,14 +11,15 @@
 package org.picocontainer.lifecycle;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.Lifecycle;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 
 /**
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Ward Cunningham
  */
-public interface LifecyclePicoAdapter extends Lifecycle {
+public interface LifecyclePicoAdapter extends Startable, Disposable {
 
     boolean isStarted();
 

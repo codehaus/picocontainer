@@ -10,17 +10,16 @@
 
 package org.picocontainer.extras;
 
-import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.internals.ComponentAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplementationHidingComponentAdapterFactoryTestCase extends TestCase {
+public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
     private static boolean addCalled = false;
 
@@ -37,15 +36,16 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends TestCas
 
     public void testCreatedComponentAdapterCreatesInstancesWhereImplementationIsHidden()
             throws NoSuchMethodException, PicoInitializationException {
-        ImplementationHidingComponentAdapterFactory cf =
-                new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
-        ComponentAdapter componentAdapter = cf.createComponentAdapter(List.class, OneConstructorArrayList.class, null);
-        DefaultComponentRegistry componentRegistry = new DefaultComponentRegistry();
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(List.class, OneConstructorArrayList.class, null);
         Object o = componentAdapter.instantiateComponent(componentRegistry);
         assertTrue(o instanceof List);
         assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");
         assertTrue("Add was called", addCalled);
+    }
+
+    protected ComponentAdapterFactory createComponentAdapterFactory() {
+        return new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
 }

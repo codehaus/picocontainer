@@ -446,7 +446,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-//    public void testPeelableAndWashableContainer() throws CannotDecideWhatConstructorToUseException, PicoRegistrationException, PicoStartException {
+//    public void testPeelableAndWashableContainer() throws TooManySatisfiableConstructorsException, PicoRegistrationException, PicoStartException {
 //
 //        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
 //                new MorphingHierarchicalPicoContainer(

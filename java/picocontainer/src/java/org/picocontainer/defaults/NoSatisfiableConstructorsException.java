@@ -9,18 +9,12 @@ import org.picocontainer.PicoIntrospectionException;
 public class NoSatisfiableConstructorsException extends PicoIntrospectionException {
     private final Class componentImplementation;
 
-    public NoSatisfiableConstructorsException(Class missingComponentImplementation) {
-        if(missingComponentImplementation == null) {
-            throw new NullPointerException("missingComponentImplementation can't be null");
-        }
-        this.componentImplementation = missingComponentImplementation;
+    public NoSatisfiableConstructorsException(Class componentImplementation) {
+        super(componentImplementation.getName() + " doesn't have any satisfiable constructors");
+        this.componentImplementation = componentImplementation;
     }
 
-    public String getMessage() {
-        return componentImplementation.getName() + " doesn't have any satisfiable constructors";
-    }
-
-    public Class getMissingComponentImplementation() {
+    public Class getUnsatisfiableComponentImplementation() {
         return componentImplementation;
     }
 }

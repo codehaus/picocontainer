@@ -12,10 +12,9 @@ package org.picocontainer.internals;
 
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 
-import java.util.List;
-
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public interface Parameter {

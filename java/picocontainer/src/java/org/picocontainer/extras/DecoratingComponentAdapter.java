@@ -38,18 +38,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
         return delegate.instantiateComponent(componentRegistry);
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DecoratingComponentAdapter)) return false;
-
-        final DecoratingComponentAdapter decoratingComponentAdapter = (DecoratingComponentAdapter) o;
-
-        if (!delegate.equals(decoratingComponentAdapter.delegate)) return false;
-
-        return true;
-    }
-
-    public int hashCode() {
-        return delegate.hashCode();
+    public ComponentAdapter getDelegate() {
+        return delegate;
     }
 }

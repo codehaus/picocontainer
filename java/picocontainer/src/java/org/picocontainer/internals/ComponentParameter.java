@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
- * @author Aslak Hellesoy
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class ComponentParameter implements Parameter, Serializable {

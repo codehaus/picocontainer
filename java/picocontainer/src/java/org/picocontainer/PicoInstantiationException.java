@@ -11,4 +11,16 @@
 package org.picocontainer;
 
 public abstract class PicoInstantiationException extends PicoInitializationException {
+    ///CLOVER:OFF
+    protected PicoInstantiationException() {
+    }
+
+    protected PicoInstantiationException(String message) {
+        super(message);
+    }
+
+    protected PicoInstantiationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    ///CLOVER:ON
 }

@@ -10,25 +10,29 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoIntrospectionException;
 
-public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException {
-    private Class classThatNeedsDeps;
-    private Object componentKey;
-    private Class neededDep;
+import java.util.Collection;
 
-    public UnsatisfiedDependencyInstantiationException(Class classThatNeeds, Object componentKey, Class neededDep) {
-        this.classThatNeedsDeps = classThatNeeds;
-        this.componentKey = componentKey;
-        this.neededDep = neededDep;
+public class TooManySatisfiableConstructorsException extends PicoIntrospectionException {
+
+    private Class forClass;
+    private Collection constructors;
+
+    public TooManySatisfiableConstructorsException(Class forClass, Collection constructors) {
+        this.forClass = forClass;
+        this.constructors = constructors;
+    }
+
+    public Class getForImplementationClass() {
+        return forClass;
     }
 
     public String getMessage() {
-        return "Component " + classThatNeedsDeps.getName() + " needs " +
-                (componentKey == null ? neededDep.getName() : componentKey);
+        return "Too many satisfiable constructors:" + constructors.toString();
     }
 
-    public Class getClassThatNeedsDeps() {
-        return classThatNeedsDeps;
+    public Collection getConstructors() {
+        return constructors;
     }
 }

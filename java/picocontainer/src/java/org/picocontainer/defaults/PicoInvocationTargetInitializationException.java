@@ -13,24 +13,10 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoInstantiationException;
 
 public class PicoInvocationTargetInitializationException extends PicoInstantiationException {
-    private final Throwable cause;
-
     public PicoInvocationTargetInitializationException(Throwable cause) {
-        if (cause == null) {
-            throw new IllegalArgumentException("Cause must not be null");
-        }
-        this.cause = cause;
-    }
-
-    public Throwable getCause() {
-        return cause;
-    }
-
-    public String getMessage() {
-        return "InvocationTargetException: "
+        super("InvocationTargetException: "
                 + cause.getClass().getName()
-                + " " + cause.getMessage();
+                + " " + cause.getMessage()
+        , cause);
     }
-
-
 }

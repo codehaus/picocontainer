@@ -5,7 +5,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.CannotDecideWhatConstructorToUseException;
+import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -79,7 +79,9 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         try {
             Multi multi = (Multi) pc.getComponent(Multi.class);
             fail();
-        } catch (CannotDecideWhatConstructorToUseException e) {
+        } catch (TooManySatisfiableConstructorsException e) {
+            assertTrue(e.getMessage().indexOf("Three") == -1);
+            assertEquals(2, e.getConstructors().size());
         }
     }
 }

@@ -92,7 +92,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
             picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
         } catch (NoSatisfiableConstructorsException e) {
-            // expected
+            assertEquals(DependsOnTouchable.class, e.getUnsatisfiableComponentImplementation());
         }
     }
 

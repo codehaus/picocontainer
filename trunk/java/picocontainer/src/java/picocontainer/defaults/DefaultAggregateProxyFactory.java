@@ -26,9 +26,13 @@ public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
             equals = Object.class.getMethod("equals", new Class[] {Object.class});
             hashCode = Object.class.getMethod("hashCode", null);
         } catch (NoSuchMethodException e) {
+            ///CLOVER:OFF
             throw new InternalError();
+            ///CLOVER:ON
         } catch (SecurityException e) {
+            ///CLOVER:OFF
             throw new InternalError();
+            ///CLOVER:ON
         }
     }
 
@@ -46,7 +50,6 @@ public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
         }
         Object[] objects = copy.toArray();
 
-        // TODO result = 
         Object result = Proxy.newProxyInstance(
                 classLoader,
                 interfaces,
@@ -103,10 +106,7 @@ public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
 
             Object result;
 
-            if (results == null) {
-                // Method wasn't called. Try to instantiate a default object.
-                result = returnType.equals(Void.TYPE) ? null : returnType.newInstance();
-            } else if (results.size() == 1) {
+            if (results.size() == 1) {
                 // Got exactly one result. Just return that.
                 result = results.get(0);
             } else if (returnType.isInterface()) {

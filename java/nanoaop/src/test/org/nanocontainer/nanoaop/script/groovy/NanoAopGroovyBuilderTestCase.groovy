@@ -11,7 +11,7 @@ package org.nanocontainer.nanoaop.script.groovy
 
 import org.nanocontainer.nanoaop.*
 import org.nanocontainer.nanoaop.script.groovy
-import org.nanocontainer.script.groovy.PicoBuilderException
+import org.nanocontainer.script.groovy.NanoContainerBuilderException
 import org.picocontainer.defaults.DefaultComponentAdapterFactory
 
 public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {

@@ -17,6 +17,7 @@ import java.io.StringReader;
 
 /**
  * @author Stephen Molitor
+ * @author Paul n Aslak (pairing)
  */
 public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -30,7 +31,9 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
                 "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
-                "builder = new NanoContainerBuilder(cuts)\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
+                "builder = new NanoContainerBuilder(decorator)\n" +
                 "nano = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +

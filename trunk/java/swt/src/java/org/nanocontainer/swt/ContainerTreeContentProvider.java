@@ -11,8 +11,8 @@ package org.nanocontainer.swt;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.picocontainer.MutablePicoContainer;
 import org.nanocontainer.guimodel.ContainerModel;
+import org.picocontainer.MutablePicoContainer;
 
 import java.util.Collection;
 

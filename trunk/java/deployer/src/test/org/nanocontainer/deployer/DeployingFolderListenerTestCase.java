@@ -1,9 +1,8 @@
 package org.nanocontainer.deployer;
 
-import junit.framework.TestCase;
+import org.apache.commons.vfs.FileObject;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.apache.commons.vfs.FileObject;
 
 /**
  * @author Aslak Helles&oslash;y

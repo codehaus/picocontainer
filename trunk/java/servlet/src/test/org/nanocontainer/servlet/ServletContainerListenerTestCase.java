@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.servlet;
 
-import junit.framework.TestCase;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;

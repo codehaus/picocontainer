@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.swt;
 
-import java.beans.PropertyEditor;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -23,6 +21,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nanocontainer.guimodel.BeanProperty;
+
+import java.beans.PropertyEditor;
 
 /**
  * A dialog to edit a bean property

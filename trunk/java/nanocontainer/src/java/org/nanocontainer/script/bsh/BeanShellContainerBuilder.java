@@ -1,14 +1,12 @@
 package org.nanocontainer.script.bsh;
 
-import org.nanocontainer.script.ScriptedContainerBuilder;
+import bsh.EvalError;
+import bsh.Interpreter;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
 import java.io.Reader;
-
-import bsh.Interpreter;
-import bsh.EvalError;
 
 /**
  * @author Aslak Helles&oslash;y

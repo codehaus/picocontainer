@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.util.Set;
 

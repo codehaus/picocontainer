@@ -9,17 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.swing;
 
-import org.picocontainer.MutablePicoContainer;
 import org.nanocontainer.guimodel.ContainerModel;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.TreePath;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import java.util.Arrays;
 
 /**

@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.nanocontainer.swing;
 
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.guimodel.ComponentAdapterModel;
+import org.picocontainer.ComponentAdapter;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A model that takes an Object instance. Property name are in the left column

@@ -4,12 +4,12 @@
  */
 package org.nanocontainer.sample.webwork.dao.simple;
 
-import org.nanocontainer.sample.webwork.dao.CheeseDao;
 import org.nanocontainer.sample.webwork.Cheese;
+import org.nanocontainer.sample.webwork.dao.CheeseDao;
 import org.picocontainer.Startable;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MemoryCheeseDao implements CheeseDao, Startable {
     private Map cheeses = new HashMap();

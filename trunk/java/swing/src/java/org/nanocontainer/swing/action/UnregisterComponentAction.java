@@ -15,9 +15,9 @@
  */
 package org.nanocontainer.swing.action;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.swing.ContainerTree;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 
 import java.awt.event.ActionEvent;
 

@@ -11,10 +11,10 @@
 package org.nanocontainer.pool;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.testmodel.FredImpl;
 import org.nanocontainer.testmodel.WilmaImpl;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.NoSuchElementException;
 

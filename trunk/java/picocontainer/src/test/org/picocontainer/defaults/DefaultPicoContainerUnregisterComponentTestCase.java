@@ -10,7 +10,6 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.AlternativeTouchable;

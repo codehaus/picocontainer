@@ -11,8 +11,8 @@ package org.nanocontainer.swt;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.picocontainer.ComponentAdapter;
 import org.nanocontainer.guimodel.ComponentAdapterModel;
+import org.picocontainer.ComponentAdapter;
 
 /**
  * Provides the data (BeanProperty) to be put inside a table.

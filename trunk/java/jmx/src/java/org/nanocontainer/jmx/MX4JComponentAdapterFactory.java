@@ -14,8 +14,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import javax.management.MBeanServer;
 import java.io.Serializable;

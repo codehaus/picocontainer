@@ -10,9 +10,9 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.Parameter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 /**
  * This Component Adapter maintains a pool of component instances.

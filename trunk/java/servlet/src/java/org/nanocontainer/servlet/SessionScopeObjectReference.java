@@ -10,8 +10,8 @@ package org.nanocontainer.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
 
-import java.io.Serializable;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 
 /**
  * References an object that lives as an attribute of the

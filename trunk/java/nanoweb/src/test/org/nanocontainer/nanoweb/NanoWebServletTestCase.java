@@ -1,6 +1,5 @@
 package org.nanocontainer.nanoweb;
 
-import junit.framework.TestCase;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.ContainerBuilder;
@@ -19,13 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Vector;
-import java.beans.IntrospectionException;
-
-import groovy.lang.MetaClass;
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.GroovyShell;
-import groovy.lang.Binding;
-import groovy.lang.Reference;
 
 /**
  * @author Aslak Helles&oslash;y

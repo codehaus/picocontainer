@@ -9,14 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
+import dynaop.Aspects;
+import dynaop.Pointcuts;
 import junit.framework.TestCase;
-
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-
-import dynaop.Aspects;
-import dynaop.Pointcuts;
 
 /**
  * @author Stephen Molitor

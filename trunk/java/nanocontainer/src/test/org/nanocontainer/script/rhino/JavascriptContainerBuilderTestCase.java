@@ -10,13 +10,13 @@
 package org.nanocontainer.script.rhino;
 
 import org.mozilla.javascript.JavaScriptException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.io.IOException;

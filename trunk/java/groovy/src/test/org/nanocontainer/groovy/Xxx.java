@@ -9,8 +9,8 @@
 package org.nanocontainer.groovy;
 
 import junit.framework.Assert;
-import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.Startable;
 
 /**
  * An abstract component and three dependancies used for testing.

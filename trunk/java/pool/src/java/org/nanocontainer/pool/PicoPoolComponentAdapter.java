@@ -10,10 +10,12 @@
 
 package org.nanocontainer.pool;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  *  <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool

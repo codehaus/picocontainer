@@ -1,11 +1,6 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Uncomment all the tests in this class (as well as the obvious places in

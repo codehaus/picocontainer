@@ -10,7 +10,6 @@
 package org.nanocontainer.dynaop;
 
 import junit.framework.TestCase;
-
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

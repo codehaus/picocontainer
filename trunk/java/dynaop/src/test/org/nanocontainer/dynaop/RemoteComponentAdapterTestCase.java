@@ -9,15 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
-import java.net.URL;
-
+import dynaop.remote.Home;
 import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import dynaop.remote.Home;
+import java.net.URL;
 
 /**
  * @author Stephen Molitor

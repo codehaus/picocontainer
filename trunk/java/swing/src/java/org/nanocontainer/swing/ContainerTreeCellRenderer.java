@@ -9,12 +9,9 @@
  *****************************************************************************/
 package org.nanocontainer.swing;
 
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.Color;
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -22,10 +19,12 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
-
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 
 /**
  * Custom cell-renderer that makes tree nice.

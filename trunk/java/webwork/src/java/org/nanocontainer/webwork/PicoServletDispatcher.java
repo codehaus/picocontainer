@@ -9,8 +9,8 @@
 package org.nanocontainer.webwork;
 
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
-import webwork.dispatcher.ServletDispatcher;
 import webwork.action.factory.ActionFactory;
+import webwork.dispatcher.ServletDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

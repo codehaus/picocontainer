@@ -9,15 +9,14 @@
  *****************************************************************************/
 package org.nanocontainer.dynaop;
 
+import dynaop.Aspects;
+import dynaop.ProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-
-import dynaop.Aspects;
-import dynaop.ProxyFactory;
 
 /**
  * Applies Dynaop advice to component instances. Uses the

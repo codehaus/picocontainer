@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.servlet;
 
-import org.picocontainer.defaults.ObjectReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

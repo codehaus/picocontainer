@@ -1,15 +1,13 @@
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
-
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Arrays;
-
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y

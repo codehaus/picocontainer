@@ -1,11 +1,13 @@
 package org.nanocontainer.remoting.rmi;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import junit.framework.TestCase;
-import org.nanocontainer.remoting.NanoNaming;
 import org.nanocontainer.remoting.ByRefKey;
-import org.nanocontainer.remoting.Thing;
-import org.nanocontainer.remoting.Thang;
+import org.nanocontainer.remoting.NanoNaming;
 import org.nanocontainer.remoting.NanoNamingImpl;
+import org.nanocontainer.remoting.Thang;
+import org.nanocontainer.remoting.Thing;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -16,9 +18,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

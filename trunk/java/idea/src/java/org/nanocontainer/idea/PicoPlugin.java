@@ -24,6 +24,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
+import org.nanocontainer.guimodel.ContainerModel;
 import org.nanocontainer.idea.action.AddContainer;
 import org.nanocontainer.idea.action.RegisterComponent;
 import org.nanocontainer.idea.action.StartContainer;
@@ -37,7 +38,6 @@ import org.nanocontainer.swing.action.RegisterComponentAction;
 import org.nanocontainer.swing.action.StartContainerAction;
 import org.nanocontainer.swing.action.StopContainerAction;
 import org.nanocontainer.swing.action.UnregisterComponentAction;
-import org.nanocontainer.guimodel.ContainerModel;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;

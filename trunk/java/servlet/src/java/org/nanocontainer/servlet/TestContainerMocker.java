@@ -9,18 +9,14 @@
  *****************************************************************************/
 package org.nanocontainer.servlet;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-
-import org.picocontainer.defaults.SimpleReference;
-
+import org.jmock.Mock;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-
-import org.jmock.Mock;
-
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.SimpleReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

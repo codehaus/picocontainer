@@ -9,9 +9,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
-import org.nanocontainer.nanoweb.CachingScriptClassLoader;
-import org.nanocontainer.nanoweb.ScriptException;
-
 /**
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori

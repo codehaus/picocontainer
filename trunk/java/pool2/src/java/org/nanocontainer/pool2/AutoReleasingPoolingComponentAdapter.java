@@ -9,18 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoIntrospectionException;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * <p>This Component Adapter maintains a pool of component instances that are 

@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.script.jython;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.WebServer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.IOException;
 import java.io.Reader;

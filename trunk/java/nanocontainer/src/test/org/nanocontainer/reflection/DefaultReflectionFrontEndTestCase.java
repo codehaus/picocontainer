@@ -11,13 +11,13 @@
 package org.nanocontainer.reflection;
 
 import junit.framework.TestCase;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.nanocontainer.testmodel.WebServerImpl;
 
 import java.io.File;
 import java.net.MalformedURLException;

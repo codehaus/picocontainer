@@ -10,11 +10,11 @@
 
 package org.picocontainer.defaults;
 
-import java.io.Serializable;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+
+import java.io.Serializable;
 
 
 /**

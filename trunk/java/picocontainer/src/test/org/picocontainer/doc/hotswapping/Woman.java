@@ -1,6 +1,6 @@
 package org.picocontainer.doc.hotswapping;
 
-import org.picocontainer.doc.hotswapping.Man;
+
 
 /**
  * @author Aslak Helles&oslash;y

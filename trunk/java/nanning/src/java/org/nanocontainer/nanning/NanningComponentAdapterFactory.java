@@ -13,10 +13,16 @@ import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.io.Serializable;
 import java.util.ArrayList;

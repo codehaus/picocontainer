@@ -67,12 +67,16 @@ public class InterfaceFinder implements Serializable {
         if(clazz.isInterface()) {
             interfaces.add(clazz);
         }
-        // Strangely enough Class.getInterfaces() does not include the interfaces
-        // implemented by superclasses. So we must loop up the hierarchy.
+        // Class.getInterfaces will return only thae interfaces that are 
+        // implemented by the current class. Therefore we must loop up
+        // the hierarchy for the superclasses and the interfaces. 
         while (clazz != null) {
-            Class[] implemeted = clazz.getInterfaces();
-            List implementedList = Arrays.asList(implemeted);
-            interfaces.addAll(implementedList);
+            Class[] implemented = clazz.getInterfaces();
+            for(int i = 0; i < implemented.length; i++) {
+                if (!interfaces.contains(implemented[i])) {
+                    getInterfaces(implemented[i], interfaces);
+                }
+            }
             clazz = clazz.getSuperclass();
         }
     }

@@ -11,7 +11,7 @@
 package org.nanocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.xml.dom.DomXMLReader;
+import com.thoughtworks.xstream.io.xml.DomReader;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
@@ -197,7 +197,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
         for (int i = 0; i < children.getLength(); i++) {
             child = children.item(i);
             if (child.getNodeType() == Document.ELEMENT_NODE) {
-                return (new XStream()).fromXML(new DomXMLReader((Element) child));
+                return (new XStream()).unmarshal(new DomReader((Element) child));
             }
         }
         return null;

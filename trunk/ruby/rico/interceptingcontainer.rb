@@ -18,8 +18,8 @@ module Rico
   end
   
   class InterceptingComponentSpecification < ComponentSpecification
-    def initialize(type, dependencies, create_method, entry_block)
-      super type, dependencies, create_method
+    def initialize(component_class, dependencies, create_method, entry_block)
+      super component_class, dependencies, create_method
       @entry_block = entry_block
     end
     
@@ -34,8 +34,8 @@ module Rico
       @entry_proc = entry_proc
     end
     
-    def create_component_specification(type, dependencies, create_method)
-      return InterceptingComponentSpecification.new(type, dependencies, create_method, @entry_proc)
+    def create_component_specification(component_class, dependencies, create_method)
+      return InterceptingComponentSpecification.new(component_class, dependencies, create_method, @entry_proc)
     end
   end
 end

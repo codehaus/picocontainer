@@ -12,14 +12,14 @@ module Rico
       return @specs.length
     end
     
-    def register_component(key, type, dependencies = [], create_method = :new)
+    def register_component(key, component_class, dependencies = [], create_method = :new)
       dependencies.collect! { |dep| wrap_constant dep } 
       dependencies.each { |dep| check_key dep }
-      @specs[key] = create_component_specification type, dependencies, create_method
+      @specs[key] = create_component_specification component_class, dependencies, create_method
     end
     
     def component_class(key)
-      return spec(key).type
+      return spec(key).component_class
     end
     
     def dependencies(key)
@@ -50,8 +50,8 @@ module Rico
       return @specs[check_key(key)]
     end
     
-    def create_component_specification(type, dependencies, create_method)
-      return ComponentSpecification.new(type, dependencies, create_method)
+    def create_component_specification(component_class, dependencies, create_method)
+      return ComponentSpecification.new(component_class, dependencies, create_method)
     end
     
     private

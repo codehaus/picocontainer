@@ -11,49 +11,51 @@ package org.picoextras.integrationkit;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * This ContainerBuilder uses PicoContainer's standard lifecycle API.
- *
- * TODO rename to LifecycleContainerBuilder when back on MAIN branch
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
- * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
 
-    /**
-     * {@inheritDoc}
-     * Also calls start() on the container.
-     */
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope) {
 
         MutablePicoContainer container = new DefaultPicoContainer();
+        DefaultLifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(container);
 
         if (parentContainerRef != null) {
-            MutablePicoContainer parent = (MutablePicoContainer) parentContainerRef.get();
-            container.setParent(parent);
+            LifecyclePicoAdapter parentLifecycle = (LifecyclePicoAdapter) parentContainerRef.get();
+            MutablePicoContainer parent = (MutablePicoContainer) parentLifecycle.getPicoContainer();
+            container.addParent(parent);
         }
 
         assembler.assembleContainer(container, assemblyScope);
-        container.start();
+        lifecycle.start();
 
         // hold on to it
-        containerRef.set(container);
+        containerRef.set(lifecycle);
     }
 
-    /**
-     * {@inheritDoc}
-     * Also calls stop() and dispose() on the container.
-     */
     public void killContainer(ObjectReference containerRef) {
         try {
-            MutablePicoContainer container = (MutablePicoContainer) containerRef.get();
-            container.stop();
-            container.dispose();
-            container.setParent(null);
+            LifecyclePicoAdapter lifecycle = (LifecyclePicoAdapter) containerRef.get();
+            lifecycle.stop();
+            lifecycle.dispose();
+
+            MutablePicoContainer picoContainer = (MutablePicoContainer) lifecycle.getPicoContainer();
+            List parentsToRemove = new ArrayList(picoContainer.getParentContainers());
+            for (Iterator iterator = parentsToRemove.iterator(); iterator.hasNext();) {
+                picoContainer.removeParent((MutablePicoContainer) iterator.next());
+            }
         } finally {
             containerRef.set(null);
         }
     }
+
 }

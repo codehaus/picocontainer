@@ -33,7 +33,7 @@
   <distributionDirectory>/www/picocontainer.codehaus.org/builds/</distributionDirectory>
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/pico/</url>
+    <url>http://picocontainer.cvs.codehaus.org/pico/</url>
   </repository>
 
   <versions>

@@ -30,8 +30,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         // * imports are not supported by groovy yet, so the GroovyContainerBuilder won't either.
         Reader script = new StringReader("" +
                 "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent);\n" +
-                "pico.registerComponentInstance(\"hello\", \"BeanShell\");\n" +
-                "return pico;\n");
+                "pico.registerComponentInstance(\"hello\", \"BeanShell\");\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent);
         assertSame(parent, pico.getParent());

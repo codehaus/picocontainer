@@ -10,6 +10,7 @@
 package org.nanocontainer.script.groovy;
 
 import org.nanocontainer.aop.Dao;
+import org.nanocontainer.aop.Identifiable;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 
@@ -76,13 +77,84 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         verifyIntercepted(dao, log);
     }
 
+    public void todo_testComponentScopedInterceptor() {
 
+        String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.nanocontainer.aop.*\n" +
+                "log = new StringBuffer()\n" +
+                "logger = new LoggingInterceptor(log)\n" +
+                "\n" +
+                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
+                "builder = new NanoContainerBuilder(decorator) \n" +
+                "nano = builder.container() {\n" +
+                "    component(key:'intercepted', class:DaoImpl) {\n" +
+                "        aspect(methodCut:cuts.allMethods(), interceptor:logger)\n" +
+                "    }\n" +
+                "    component(key:'log', instance:log)\n" +
+                "    component(key:'notIntercepted', class:DaoImpl)\n" +
+                "}\n";
+
+        GroovyContainerBuilder builder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
+
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+
+
+        Dao intercepted = (Dao) pico.getComponentInstance("intercepted");
+        Dao notIntercepted = (Dao) pico.getComponentInstance("notIntercepted");
+        StringBuffer log = (StringBuffer) pico.getComponentInstance("log");
+
+        verifyIntercepted(intercepted, log);
+        verifyNotIntercepted(notIntercepted, log);
+    }
+
+    public void testContainerScopedMixin() {
+
+        String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.nanocontainer.aop.*\n" +
+                "cuts = new org.nanocontainer.aop.dynaop.DynaopPointcutsFactory()\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager(cuts)\n" +
+                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
+                "builder = new NanoContainerBuilder(decorator) \n" +
+                "nano = builder.container() {\n" +
+                "    component(key:Dao, class:DaoImpl) \n" +
+                "    aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)\n" +
+                "}";
+
+        GroovyContainerBuilder builder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
+
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        verifyMixin(dao);
+    }
 
     private void verifyIntercepted(Dao dao, StringBuffer log) {
         String before = log.toString();
         String data = dao.loadData();
         assertEquals("data", data);
         assertEquals(before + "startend", log.toString());
+    }
+
+    private void verifyNotIntercepted(Dao dao, StringBuffer log) {
+        String before = log.toString();
+        String data = dao.loadData();
+        assertEquals("data", data);
+        assertEquals(before, log.toString());
+    }
+
+    private void verifyMixin(Object component) {
+        assertTrue(component instanceof Identifiable);
+        Identifiable identifiable = (Identifiable) component;
+        identifiable.setId("id");
+        assertEquals("id", identifiable.getId());
+    }
+
+    private void verifyNoMixin(Object component) {
+        assertFalse(component instanceof Identifiable);
     }
 
 }

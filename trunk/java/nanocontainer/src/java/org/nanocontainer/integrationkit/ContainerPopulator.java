@@ -15,5 +15,5 @@ import org.picocontainer.MutablePicoContainer;
  * @author Mauro Talevi
  */
 public interface ContainerPopulator {
-	public void populateContainer(MutablePicoContainer container);
+    public void populateContainer(MutablePicoContainer container);
 }

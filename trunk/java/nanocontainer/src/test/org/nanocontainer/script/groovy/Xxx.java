@@ -45,11 +45,12 @@ public abstract class Xxx implements Startable, Disposable {
 
     public static class B extends Xxx {
         A a;
+
         public B(A a) {
             Assert.assertNotNull(a);
             this.a = a;
         }
-        
+
         public A getA() {
             return a;
         }

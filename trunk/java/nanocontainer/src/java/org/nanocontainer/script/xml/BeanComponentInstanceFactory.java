@@ -21,34 +21,35 @@ import org.w3c.dom.NodeList;
 import java.util.Properties;
 
 /**
- * Implementation of XMLComponentInstanceFactory that uses BeanPropertyComponentAdapter 
+ * Implementation of XMLComponentInstanceFactory that uses BeanPropertyComponentAdapter
  * to create instances from DOM elements.
- * 
+ *
  * @author Paul Hammant
  * @author Marcos Tarruella
  * @author Mauro Talevi
  */
 public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory {
-    
+
     /**
      * {@inheritDoc}
+     *
      * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
      */
     public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
         String className = element.getNodeName();
-        BeanPropertyComponentAdapter propertyComponentAdapter = 
-            new BeanPropertyComponentAdapter(createComponentAdapter(className));
+        BeanPropertyComponentAdapter propertyComponentAdapter =
+                new BeanPropertyComponentAdapter(createComponentAdapter(className));
         propertyComponentAdapter.setProperties(createProperties(element.getChildNodes()));
         return propertyComponentAdapter.getComponentInstance(pico);
     }
 
-    private ComponentAdapter createComponentAdapter(String className) throws ClassNotFoundException{
+    private ComponentAdapter createComponentAdapter(String className) throws ClassNotFoundException {
         Class implementation = Class.forName(className);
         ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
-        return factory.createComponentAdapter(className, implementation, new Parameter[]{});        
+        return factory.createComponentAdapter(className, implementation, new Parameter[]{});
     }
 
-    private Properties createProperties(NodeList nodeList){
+    private Properties createProperties(NodeList nodeList) {
         Properties properties = new Properties();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node n = nodeList.item(i);

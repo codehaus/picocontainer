@@ -28,7 +28,7 @@ import java.util.List;
  * This class is serializable. The original container will not be serialized
  * (for performance reasons), but the invocations will, so they can be replayed at the
  * other end of the wire.
- * 
+ *
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
@@ -55,9 +55,11 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
             try {
                 invocation.invoke(target);
             } catch (IllegalAccessException e) {
-                throw new PicoException(e){};
+                throw new PicoException(e) {
+                };
             } catch (InvocationTargetException e) {
-                throw new PicoException(e){};
+                throw new PicoException(e) {
+                };
             }
         }
     }
@@ -88,7 +90,7 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
             Class declaringClass = (Class) in.readObject();
             int n = in.readInt();
             Class[] parameterTypes = new Class[n];
-            for(int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++) {
                 parameterTypes[i] = (Class) in.readObject();
             }
             try {

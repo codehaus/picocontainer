@@ -10,11 +10,11 @@
 package org.nanocontainer.script.xml;
 
 public class TestBeanComposer {
-    
+
     private TestBean bean1;
     private TestBean bean2;
 
-    public TestBeanComposer(TestBean bean1, TestBean bean2){
+    public TestBeanComposer(TestBean bean1, TestBean bean2) {
         this.bean1 = bean1;
         this.bean2 = bean2;
     }
@@ -22,6 +22,7 @@ public class TestBeanComposer {
     public TestBean getBean1() {
         return bean1;
     }
+
     public TestBean getBean2() {
         return bean2;
     }

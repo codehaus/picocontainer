@@ -11,10 +11,10 @@
 package org.nanocontainer.reflection;
 
 import junit.framework.TestCase;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;

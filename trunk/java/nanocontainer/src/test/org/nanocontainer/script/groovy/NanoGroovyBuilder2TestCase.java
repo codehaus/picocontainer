@@ -7,8 +7,8 @@ import org.nanocontainer.script.groovy.Xxx.A;
 import org.nanocontainer.script.groovy.Xxx.B;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -207,7 +207,7 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
 
         A a = new A();
         Mock cafMock = mock(ComponentAdapterFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(same(A.class),same(A.class),eq(null)).will(returnValue(new InstanceComponentAdapter(A.class,a)));
+        cafMock.expects(once()).method("createComponentAdapter").with(same(A.class), same(A.class), eq(null)).will(returnValue(new InstanceComponentAdapter(A.class, a)));
         ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafMock.proxy();
         PicoContainer picoContainer = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, componentAdapterFactory);
         assertSame(a, picoContainer.getComponentInstanceOfType(A.class));

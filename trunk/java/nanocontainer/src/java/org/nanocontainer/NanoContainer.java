@@ -33,9 +33,9 @@ public interface NanoContainer {
     ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
-    
+
     ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException;
-    
+
 
     ComponentAdapter registerComponentImplementation(Object key,
                                                      String componentImplementationClassName,
@@ -51,6 +51,7 @@ public interface NanoContainer {
     /**
      * Returns the wrapped PicoContainer instance (russian doll concept). The method name is short
      * in order to favour the use of nano.pico from Groovy.
+     *
      * @return the wrapped PicoContainer instance.
      */
     MutablePicoContainer getPico();

@@ -14,10 +14,9 @@ import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoContainer;
 
 import java.io.IOException;

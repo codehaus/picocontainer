@@ -33,14 +33,14 @@ import java.util.List;
 
 /**
  * This is a MutablePicoContainer that supports soft composition and hides implementations where it can.
- *
+ * <p/>
  * In terms of implementation it adopts the behaviour of ImplementationHidingPicoContainer
  * and DefaulReflectionContainerAdapter
  *
- * @deprecated Use {@link org.nanocontainer.DefaultNanoContainer)
- * constructed with a {@link org.picocontainer.alternatives.ImplementationHidingPicoContainer}.
  * @author Paul Hammant
  * @version $Revision$
+ * @deprecated Use {@link org.nanocontainer.DefaultNanoContainer)
+ *             constructed with a {@link org.picocontainer.alternatives.ImplementationHidingPicoContainer}.
  */
 public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoContainer implements NanoPicoContainer, Serializable {
 
@@ -198,7 +198,7 @@ public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoConta
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
         return container.registerComponentImplementation(key, componentImplementationClassName);
     }
-    
+
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
         return container.registerComponentImplementation(key, componentImplementationClassName, parameters);
     }

@@ -21,6 +21,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * A {@link ComponentAdapterFactory} for {@link ThreadLocalComponentAdapter} instances.
+ *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterFactory
@@ -29,6 +30,7 @@ public class ThreadLocalComponentAdapterFactory
     /**
      * Constructs a wrapping
      * {@link org.picocontainer.defaults.ComponentAdapterFactory}.
+     *
      * @param delegate The delegated ComponentAdapterFactory.
      */
     public ThreadLocalComponentAdapterFactory(ComponentAdapterFactory delegate) {
@@ -37,14 +39,13 @@ public class ThreadLocalComponentAdapterFactory
 
     /**
      * {@inheritDoc}
+     *
      * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
      */
-    public ComponentAdapter createComponentAdapter(
-            Object componentKey, Class componentImplementation, Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException,
             NotConcreteRegistrationException {
-        return new ThreadLocalComponentAdapter(super.createComponentAdapter(
-                componentKey, componentImplementation, parameters));
+        return new ThreadLocalComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
 }

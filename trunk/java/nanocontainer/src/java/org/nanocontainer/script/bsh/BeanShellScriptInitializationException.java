@@ -12,8 +12,6 @@ package org.nanocontainer.script.bsh;
 import org.picocontainer.PicoInitializationException;
 
 /**
- *
- *
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @version $Id$
  */

@@ -13,13 +13,13 @@ package org.nanocontainer.script.groovy;
  * @author Stephen Molitor
  */
 public class HasParams {
-    
+
     private String params;
-    
+
     public HasParams(String a, String b, String c) {
         params = a + b + c;
     }
-    
+
     public String getParams() {
         return params;
     }

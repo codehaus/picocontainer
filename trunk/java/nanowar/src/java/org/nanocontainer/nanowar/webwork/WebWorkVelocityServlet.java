@@ -16,6 +16,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.alternatives.EmptyPicoContainer;
 import webwork.action.ServletActionContext;
 import webwork.util.ServletValueStack;
 import webwork.view.velocity.WebWorkUtil;
@@ -36,6 +37,7 @@ public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyCo
 	static final String REQUEST = "req";
 	static final String RESPONSE = "res";
 	
+    static final EmptyPicoContainer  emptyContainer = new EmptyPicoContainer();
     protected Context createContext(javax.servlet.http.HttpServletRequest request,
                                    javax.servlet.http.HttpServletResponse response)
     {
@@ -45,7 +47,7 @@ public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyCo
 			);
 		ctx.put(REQUEST, request);
 		ctx.put(RESPONSE, response);
-		return ctx;		
+		return ctx;
 	}
 
    
@@ -72,7 +74,7 @@ public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyCo
 	   	PicoContainer container;
 	    ServletValueStack stack;
 	   	NanocontainerVelocityContext(PicoContainer container, ServletValueStack stack) {
-			this.container = container;
+			this.container = container != null ? container : emptyContainer;
 			this.stack = stack;
 		}
 	   

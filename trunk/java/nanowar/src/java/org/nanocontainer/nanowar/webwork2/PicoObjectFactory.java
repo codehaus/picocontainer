@@ -16,7 +16,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
-import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ObjectFactory;
 
 /**

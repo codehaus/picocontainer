@@ -11,6 +11,7 @@
 package org.nanocontainer.pool;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -42,7 +43,7 @@ public class PicoPoolComponentAdapter extends DecoratingComponentAdapter {
     /* (non-Javadoc)
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.MutablePicoContainer)
      */
-    public Object getComponentInstance()
+    public Object getComponentInstance(PicoContainer container)
             throws
             PicoInitializationException,
             PicoIntrospectionException,

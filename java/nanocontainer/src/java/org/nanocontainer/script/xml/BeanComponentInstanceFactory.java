@@ -11,6 +11,7 @@ package org.nanocontainer.script.xml;
 import java.util.Properties;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -30,14 +31,14 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     
     /**
      * {@inheritDoc}
-     * @see XMLComponentInstanceFactory#makeInstance(Element)
+     * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
      */
-    public Object makeInstance(Element element) throws ClassNotFoundException {
+    public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {
         String className = element.getNodeName();
         BeanPropertyComponentAdapter propertyComponentAdapter = 
             new BeanPropertyComponentAdapter(createComponentAdapter(className));
         propertyComponentAdapter.setProperties(createProperties(element.getChildNodes()));
-        return propertyComponentAdapter.getComponentInstance();
+        return propertyComponentAdapter.getComponentInstance(pico);
     }
 
     private ComponentAdapter createComponentAdapter(String className) throws ClassNotFoundException{

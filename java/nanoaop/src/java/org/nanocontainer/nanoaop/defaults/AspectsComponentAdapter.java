@@ -11,6 +11,7 @@ package org.nanocontainer.nanoaop.defaults;
 
 import org.nanocontainer.nanoaop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -29,10 +30,10 @@ public class AspectsComponentAdapter extends DecoratingComponentAdapter {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException,
+    public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException,
             AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Object component = super.getComponentInstance();
-        return aspectsApplicator.applyAspects(getComponentKey(), component, getContainer());
+        Object component = super.getComponentInstance(pico);
+        return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }
 
 }

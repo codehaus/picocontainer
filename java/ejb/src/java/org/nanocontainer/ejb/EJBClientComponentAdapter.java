@@ -14,6 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.AbstractComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
@@ -21,6 +22,7 @@ import javax.ejb.EJBHome;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -34,9 +36,8 @@ import java.lang.reflect.Method;
  *
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapter implements ComponentAdapter {
+public class EJBClientComponentAdapter extends AbstractComponentAdapter {
 
-    private PicoContainer m_picoContainer;
     private final Object m_home;
     private final Method m_create;
     private final String m_ejbName;
@@ -51,6 +52,7 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
      * @throws PicoIntrospectionException Thrown if lookup of home interface fails.
      */
     public EJBClientComponentAdapter(final String ejb, final Class homeInterface, final InitialContext context) {
+        super(homeInterface, homeInterface);
         try {
             if (!EJBHome.class.isAssignableFrom(homeInterface)) {
                 throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
@@ -75,9 +77,9 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
     /**
      * Instantiate the EJB.
      *
-     * @see org.picocontainer.ComponentAdapter#getComponentInstance()
+     * @see org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)
      */
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException {
         Object result = null;
         try {
             result = m_create.invoke(m_home, null);
@@ -94,9 +96,9 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
     /**
      * This implementation has nothing to verify.
      *
-     * @see org.picocontainer.ComponentAdapter#verify()
+     * @see org.picocontainer.ComponentAdapter#verify(PicoContainer)
      */
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
         // cannot do anything here
     }
 
@@ -117,27 +119,6 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
      */
     public Class getComponentImplementation() {
         return m_ejbClass;
-    }
-
-    /**
-     * @see org.picocontainer.ComponentAdapter#getContainer()
-     */
-    public PicoContainer getContainer() {
-        return m_picoContainer;
-    }
-
-    /**
-     * @see org.picocontainer.ComponentAdapter#setContainer(org.picocontainer.PicoContainer)
-     */
-    public void setContainer(final PicoContainer picoContainer) {
-        m_picoContainer = picoContainer;
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return getClass().getName() + "[" + getComponentKey() + "]";
     }
 }
 

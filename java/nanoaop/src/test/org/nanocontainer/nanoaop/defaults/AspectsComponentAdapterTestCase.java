@@ -26,8 +26,7 @@ public class AspectsComponentAdapterTestCase extends MockObjectTestCase {
     private PicoContainer container = new DefaultPicoContainer();
 
     public void testGetComponentInstance() {
-        mockComponentAdapterDelegate.expects(once()).method("getContainer").will(returnValue(container));
-        mockComponentAdapterDelegate.expects(once()).method("getComponentInstance").will(returnValue("component"));
+        mockComponentAdapterDelegate.expects(once()).method("getComponentInstance").with(same(container)).will(returnValue("component"));
         mockComponentAdapterDelegate.expects(once()).method("getComponentKey").will(returnValue("componentKey"));
 
         mockApplicator.expects(once()).method("applyAspects").with(same("componentKey"), same("component"),
@@ -35,7 +34,7 @@ public class AspectsComponentAdapterTestCase extends MockObjectTestCase {
 
         ComponentAdapter adapter = new AspectsComponentAdapter((AspectsApplicator) mockApplicator.proxy(),
                 (ComponentAdapter) mockComponentAdapterDelegate.proxy());
-        Object component = adapter.getComponentInstance();
+        Object component = adapter.getComponentInstance(container);
         assertEquals("wrappedComponent", component);
     }
 

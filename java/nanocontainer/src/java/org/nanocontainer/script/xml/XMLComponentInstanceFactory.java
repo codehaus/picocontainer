@@ -10,6 +10,7 @@
 
 package org.nanocontainer.script.xml;
 
+import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 
 /**
@@ -20,9 +21,10 @@ import org.w3c.dom.Element;
 public interface XMLComponentInstanceFactory {
     /**
      * Creates an instance of an Object from a DOM Element
+     * @param container
      * @param element the DOM Element
      * @return An Object instance 
      * @throws ClassNotFoundException
      */
-    Object makeInstance(Element element) throws ClassNotFoundException;
+    Object makeInstance(PicoContainer container, Element element) throws ClassNotFoundException;
 }

@@ -19,7 +19,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
     public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[] {ActionListener.class, MouseListener.class},Footle.class);
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
-        Object comp = ihca.getComponentInstance();
+        Object comp = ihca.getComponentInstance(null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
         assertTrue(comp instanceof MouseListener);
@@ -29,7 +29,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[] {String.class},Footle.class);
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
         try {
-            Object comp = ihca.getComponentInstance();
+            Object comp = ihca.getComponentInstance(null);
             fail("Oh no.");
         } catch (PicoIntrospectionException e) {
         }
@@ -39,7 +39,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww",Footle.class);
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
         try {
-            Object comp = ihca.getComponentInstance();
+            Object comp = ihca.getComponentInstance(null);
             fail("Oh no.");
         } catch (PicoIntrospectionException e) {
         }

@@ -49,22 +49,7 @@ public interface ComponentAdapter {
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
      */
-    Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException;
-
-    /**
-     * Retrieve the container in which the component is registered.
-     * 
-     * @return the container in which the component is registered.
-     */
-    PicoContainer getContainer();
-
-    /**
-     * Set the container in which this adapter is registered. This method will be called once by the container when the
-     * adapter is registered in that container. It should usually not be called directly.
-     * 
-     * @param picoContainer the container in which this adapter is registered.
-     */
-    void setContainer(PicoContainer picoContainer);
+    Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
@@ -72,7 +57,7 @@ public interface ComponentAdapter {
      *
      * @throws PicoVerificationException if one or more dependencies cannot be resolved.
      */
-    void verify() throws PicoVerificationException;
+    void verify(PicoContainer container) throws PicoVerificationException;
 
     void accept(PicoVisitor visitor);
 }

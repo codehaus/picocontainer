@@ -19,11 +19,8 @@ package org.picocontainer;
  * <p/>
  * <p>For more advanced and pluggable lifecycle support, see the functionality offered by the nanocontainer-proxytoys
  * subproject.</p>
- *
  * @version $Revision$
  * @see org.picocontainer.Disposable the Disposable interface if you need to <code>dispose()</code> semantics.
- * @see org.picocontainer.PicoContainer the main PicoContainer interface (and hence its subinterfaces and
- *      implementations like {@link org.picocontainer.defaults.DefaultPicoContainer}) implement this interface.
  * @since 1.0
  */
 public interface Startable {

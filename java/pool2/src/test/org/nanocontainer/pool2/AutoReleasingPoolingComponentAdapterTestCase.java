@@ -45,9 +45,9 @@ public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
     }
 
     public void testInstancesCanBeRecycled() {
-        Object borrowed0 = componentAdapter.getComponentInstance();
-        Object borrowed1 = componentAdapter.getComponentInstance();
-        Object borrowed2 = componentAdapter.getComponentInstance();
+        Object borrowed0 = componentAdapter.getComponentInstance(null);
+        Object borrowed1 = componentAdapter.getComponentInstance(null);
+        Object borrowed2 = componentAdapter.getComponentInstance(null);
 
         assertNotSame(borrowed0, borrowed1);
         assertNotSame(borrowed1, borrowed2);
@@ -55,12 +55,12 @@ public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
         borrowed1 = null;
         System.gc();
 
-        Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance();
+        Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance(null);
         assertEquals(1, borrowed.getId());
 
         ((PooledInstance) borrowed).returnInstanceToPool();
 
-        Object borrowedReloaded = componentAdapter.getComponentInstance();
+        Object borrowedReloaded = componentAdapter.getComponentInstance(null);
         assertEquals(borrowed, borrowedReloaded);
     }
 
@@ -76,7 +76,7 @@ public class AutoReleasingPoolingComponentAdapterTestCase extends TestCase {
     public void testInternalGCCall() {
         componentAdapter = new AutoReleasingPoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", InstanceCounter.class), 1);
         for (int i = 0; i < 5; i++) {
-            Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance();
+            Identifiable borrowed = (Identifiable) componentAdapter.getComponentInstance(null);
             assertNotNull(borrowed);
             assertEquals(0, borrowed.getId());
         }

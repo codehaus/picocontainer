@@ -11,6 +11,7 @@ package org.nanocontainer.concurrent;
 
 import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -49,16 +50,16 @@ public class ThreadLocalComponentAdapter
     }
 
     /**
-     * @see org.picocontainer.ComponentAdapter#getComponentInstance()
+     * @see org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)
      */
-    public Object getComponentInstance()
+    public Object getComponentInstance(final PicoContainer pico)
             throws PicoInitializationException, PicoIntrospectionException,
             AssignabilityRegistrationException, NotConcreteRegistrationException {
 
         final Object componentKey = getDelegate().getComponentKey();
         final String key = String.valueOf(System.identityHashCode(componentKey))
                 + "."
-                + String.valueOf(System.identityHashCode(getContainer()));
+                + String.valueOf(System.identityHashCode(pico));
         Object proxy = m_proxyMap.get(key);
         if (proxy == null) {
             final Class[] interfaces;
@@ -72,26 +73,21 @@ public class ThreadLocalComponentAdapter
                     "Can't proxy implementation for "
                             + getDelegate().getComponentImplementation().getName()
                             + ". It doesn't implement any interfaces."); }
-            final ThreadLocalInvocationHandler threadLocalInvocationHandler = new ThreadLocalInvocationHandler();
+            final InvocationHandler threadLocalInvocationHandler = new InvocationHandler() {
+                /**
+                 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
+                 *           java.lang.reflect.Method, java.lang.Object[])
+                 */
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    final Object delegatedInstance = ThreadLocalComponentAdapter.this.getDelegate()
+                            .getComponentInstance(pico);
+                    return method.invoke(delegatedInstance, args);
+                }
+            };
             proxy = Proxy.newProxyInstance(
                     getClass().getClassLoader(), interfaces, threadLocalInvocationHandler);
             m_proxyMap.put(key, proxy);
         }
         return proxy;
-    }
-
-    private class ThreadLocalInvocationHandler
-            implements InvocationHandler {
-
-        /**
-         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-         *           java.lang.reflect.Method, java.lang.Object[])
-         */
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            final Object delegatedInstance = ThreadLocalComponentAdapter.this.getDelegate()
-                    .getComponentInstance();
-            return method.invoke(delegatedInstance, args);
-        }
-
     }
 }

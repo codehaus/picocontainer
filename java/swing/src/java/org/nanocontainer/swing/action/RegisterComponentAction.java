@@ -35,7 +35,7 @@ public class RegisterComponentAction extends TreeSelectionAction {
             try {
                 Class componentImplementation = componentClassLoader.loadClass(className);
                 ComponentAdapter ca = selectedContainer.registerComponentImplementation("" + i++, componentImplementation);
-                containerTreeModel.fire(ca);
+                containerTreeModel.fire(selectedContainer, ca);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Component registration failed with " + e.getClass().getName() + ": " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
@@ -44,6 +44,6 @@ public class RegisterComponentAction extends TreeSelectionAction {
     }
 
     protected void setEnabled() {
-        setEnabled(selectedContainer != null);
+        setEnabled(selectedContainer != null && selectedAdapter == null);
     }
 }

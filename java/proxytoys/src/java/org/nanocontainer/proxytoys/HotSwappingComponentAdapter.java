@@ -15,6 +15,7 @@ import com.thoughtworks.proxy.toys.delegate.ObjectReference;
 import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 /**
@@ -39,17 +40,19 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
     private final ProxyFactory proxyFactory;
 
-    private class ImplementationHidingReference implements ObjectReference {
+    private static class ImplementationHidingReference implements ObjectReference {
         private final ComponentAdapter delegate;
         private Object value;
+        private final PicoContainer container;
 
-        public ImplementationHidingReference(ComponentAdapter delegate) {
+        public ImplementationHidingReference(ComponentAdapter delegate, PicoContainer container) {
             this.delegate = delegate;
+            this.container = container;
         }
 
         public Object get() {
             if (value == null) {
-                value = delegate.getComponentInstance();
+                value = delegate.getComponentInstance(container);
             }
             return value;
         }
@@ -68,14 +71,14 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
         this(delegate, new StandardProxyFactory());
     }
 
-    public Object getComponentInstance() {
+    public Object getComponentInstance(final PicoContainer container) {
         Class[] proxyTypes;
         if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class) getComponentKey())) {
             proxyTypes = new Class[]{(Class) getComponentKey()};
         } else {
             proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), getComponentImplementation().getInterfaces(), proxyFactory);
         }
-        ObjectReference reference = new ImplementationHidingReference(getDelegate());
+        ObjectReference reference = new ImplementationHidingReference(getDelegate(), container);
         return HotSwapping.object(proxyTypes, proxyFactory, reference, true);
     }
 }

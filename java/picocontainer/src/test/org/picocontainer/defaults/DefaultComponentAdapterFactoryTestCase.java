@@ -26,14 +26,14 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-        Object comp = componentAdapter.getComponentInstance();
+        Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
         assertTrue(comp instanceof SimpleTouchable);
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter("o", Object.class, null);
-        Object component = componentAdapter.getComponentInstance();
+        Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }
 }

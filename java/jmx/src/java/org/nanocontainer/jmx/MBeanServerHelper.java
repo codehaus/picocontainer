@@ -11,6 +11,7 @@
 package org.nanocontainer.jmx;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
 import javax.management.*;
 
@@ -30,10 +31,10 @@ public class MBeanServerHelper {
 		this.mBeanServer = mBeanServer;
 	}
 
-	public static void register(ComponentAdapter adapter, Object mbean) throws JMXRegistrationException {
+	public static void register(PicoContainer pico, ComponentAdapter adapter, Object mbean) throws JMXRegistrationException {
 		try {
 			ObjectName objectName = asObjectName(adapter.getComponentKey());
-			MBeanServer mBeanServer = getMBeanServer(adapter);
+			MBeanServer mBeanServer = getMBeanServer(pico);
 
 			if(mBeanServer == null) {
              	throw new JMXRegistrationException("An MBeanServer instance MUST be registered with the container");
@@ -46,8 +47,8 @@ public class MBeanServerHelper {
 		}
 	}
 
-	protected static MBeanServer getMBeanServer(ComponentAdapter adapter) {
-		return (MBeanServer)adapter.getContainer().getComponentInstance(MBeanServer.class);
+	protected static MBeanServer getMBeanServer(PicoContainer pico) {
+		return (MBeanServer)pico.getComponentInstance(MBeanServer.class);
 	}
 
 	/**

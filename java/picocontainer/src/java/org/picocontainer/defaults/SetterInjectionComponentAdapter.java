@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -61,9 +61,15 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     /**
-     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getGreediestSatisfiableConstructor(java.util.List)
+     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getGreediestSatisfiableConstructor(PicoContainer)
      */
-    protected Constructor getGreediestSatisfiableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        final Constructor constructor = getConstructor();
+        getMatchingParameterListForSetters(container);
+        return constructor;
+    }
+    
+    private Constructor getConstructor() throws PicoInvocationTargetInitializationException {
         final Constructor constructor;
         try {
             constructor = getComponentImplementation().getConstructor(null);
@@ -73,24 +79,25 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             throw new PicoInvocationTargetInitializationException(e);
         }
 
+        return constructor;
+    }
+    
+    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoInitializationException, UnsatisfiableDependenciesException {
         if (setters == null) {
             initializeSetterAndTypeLists();
         }
 
-        final List matchingTypeList = new ArrayList(Collections.nCopies(setters.size(), null));
+        final List matchingParameterList = new ArrayList(Collections.nCopies(setters.size(), null));
         final Set nonMatchingParameterPositions = new HashSet();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
             for (int j = 0; j < setterTypes.length; j++) {
-                if (matchingTypeList.get(j) == null) {
-                    final ComponentAdapter adapter = parameter.resolveAdapter(getContainer(), setterTypes[j]);
-                    if (adapter != null && !adapter.equals(this) && !getComponentKey().equals(adapter.getComponentKey())) {
-                        matchingTypeList.set(j, adapter);
-                        failedDependency = false;
-                        break;
-                    }
+                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, setterTypes[j])) {
+                    matchingParameterList.set(j, parameter);
+                    failedDependency = false;
+                    break;
                 }
             }
             if (failedDependency) {
@@ -99,38 +106,35 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         }
 
         final Set unsatisfiableDependencyTypes = new HashSet();
-        for (int i = 0; i < matchingTypeList.size(); i++) {
-            if (matchingTypeList.get(i) == null) {
+        for (int i = 0; i < matchingParameterList.size(); i++) {
+            if (matchingParameterList.get(i) == null) {
                 unsatisfiableDependencyTypes.add(setterTypes[i]);
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
-        }
-
-        if (nonMatchingParameterPositions.size() > 0) {
+        } else  if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoInitializationException("Following parameters do not match any of the setters for "
                     + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
-        adapterInstantiationOrderTrackingList.addAll(matchingTypeList);
-        return constructor;
+        return (Parameter[]) matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
     /**
-     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#instantiateComponent(java.util.List)
+     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getComponentInstance(PicoContainer)
      */
-    protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        final Constructor constructor = getConstructor();
+        final Parameter[] matchingParameters = getMatchingParameterListForSetters(container);
+        if (instantiating) {
+            throw new CyclicDependencyException(getComponentImplementation());
+        }
         try {
-            final Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
-            if (instantiating) {
-                throw new CyclicDependencyException(setterTypes);
-            }
             instantiating = true;
             final Object componentInstance = newInstance(constructor, null);
             for (int i = 0; i < setters.size(); i++) {
                 final Method setter = (Method) setters.get(i);
-                final ComponentAdapter adapter = (ComponentAdapter) adapterInstantiationOrderTrackingList.get(i);
-                setter.invoke(componentInstance, new Object[]{adapter.getComponentInstance()});
+                setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, this, setterTypes[i])});
             }
 
             return componentInstance;
@@ -145,6 +149,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             throw new PicoInvocationTargetInitializationException(e);
         } catch (IllegalAccessException e) {
             throw new PicoInvocationTargetInitializationException(e);
+        } catch (CyclicDependencyException e) {
+            e.appendDependency(getComponentImplementation());
+            throw e;
         } finally {
             instantiating = false;
         }

@@ -9,27 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * This ComponentAdapter will instantiate a new object for each call to
- * {@link org.picocontainer.ComponentAdapter#getComponentInstance()}. That means that
- * when used with a PicoContainer, getComponentInstance will return a new
- * object each time.
+ * {@link org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)}.
+ * That means that when used with a PicoContainer, getComponentInstance will 
+ * return a new object each time.
  *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  * @since 1.0
  */
@@ -37,6 +33,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     private transient boolean verifying;
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
+    /** Flag indicating instanciation of non-public classes. */ 
     protected final boolean allowNonPublicClasses;
 
     /**
@@ -63,30 +60,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             throw new NotConcreteRegistrationException(getComponentImplementation());
         }
     }
-	
-    /**
-     * Create a new component instance. The method will retrieve and 
-     * possibly instantiate any dependent component.
-     * 
-     * @return the new component instance.
-     * @throws PicoInitializationException {@inheritDoc}
-     * @throws PicoIntrospectionException {@inheritDoc}
-     * @throws AssignabilityRegistrationException {@inheritDoc}
-     * @throws NotConcreteRegistrationException {@inheritDoc}
-     * 
-     */
-    public Object getComponentInstance()
-            throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        List adapterInstantiationOrderTrackingList = new ArrayList();
-        Object instance = instantiateComponent(adapterInstantiationOrderTrackingList);
-
-        // Now, track the instantiation order
-        for (Iterator it = adapterInstantiationOrderTrackingList.iterator(); it.hasNext();) {
-            ComponentAdapter dependencyAdapter = (ComponentAdapter) it.next();
-            getContainer().addOrderedComponentAdapter(dependencyAdapter);
-        }
-        return instance;
-    }
 
     /**
      * Create default parameters for the given types.
@@ -97,14 +70,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-
-            // Oh No we don't. Its a long story, but that is an open door for hackers.
-
-            //if (PicoContainer.class.isAssignableFrom(parameters[i])) {
-            //    componentParameters[i] = new ConstantParameter(getContainer());
-            //} else {
-                componentParameters[i] = new ComponentParameter();
-            //}
+            componentParameters[i] = new ComponentParameter();
         }
         return componentParameters;
     }
@@ -112,30 +78,24 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /**
      * {@inheritDoc}
      */
-    public void verify() throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer container) throws UnsatisfiableDependenciesException {
+        final Constructor constructor = getGreediestSatisfiableConstructor(container);
+        final Class[] parameterTypes = constructor.getParameterTypes();
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+        if (verifying) {
+            throw new CyclicDependencyException(getComponentImplementation());
+        }
         try {
-            List adapterDependencies = new ArrayList();
-            getGreediestSatisfiableConstructor(adapterDependencies);
-            if (verifying) {
-                throw new CyclicDependencyException(getDependencyTypes(adapterDependencies));
-            }
             verifying = true;
-            for (int i = 0; i < adapterDependencies.size(); i++) {
-                ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
-                adapterDependency.verify();
+            for (int i = 0; i < currentParameters.length; i++) {
+                currentParameters[i].verify(container, this, parameterTypes[i]);
             }
+        } catch (CyclicDependencyException e) {
+            e.appendDependency(getComponentImplementation());
+            throw e;
         } finally {
             verifying = false;
         }
-    }
-
-    private Class[] getDependencyTypes(List adapterDependencies) {
-        Class[] result = new Class[adapterDependencies.size()];
-        for (int i = 0; i < adapterDependencies.size(); i++) {
-            ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
-            result[i] = adapterDependency.getComponentImplementation();
-        }
-        return result;
     }
 
     /**
@@ -156,24 +116,9 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     }
 
     /**
-     * Instantiate the object.
-     *
-     * @param adapterInstantiationOrderTrackingList
-     *         This list is filled with the dependent adapters of the instance.
-     * @return the new instance.
-     * @throws PicoInitializationException
-     * @throws PicoIntrospectionException
-     * @throws AssignabilityRegistrationException
-     * @throws NotConcreteRegistrationException
-     *
-     */
-    protected abstract Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
-
-    /**
      * Find and return the greediest satisfiable constructor.
      * 
-     * @param adapterInstantiationOrderTrackingList
-     *         This list is filled with the dependent adapters of the instance.
+     * @param container the PicoContainer to resolve dependencies.
      * @return the found constructor.
      * @throws PicoIntrospectionException
      * @throws UnsatisfiableDependenciesException
@@ -181,5 +126,5 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @throws AssignabilityRegistrationException
      * @throws NotConcreteRegistrationException
      */
-    protected abstract Constructor getGreediestSatisfiableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 }

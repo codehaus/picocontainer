@@ -14,7 +14,9 @@ import junit.framework.TestCase;
 import org.nanocontainer.type1.Type1ComponentAdapter;
 import org.nanocontainer.type1.Type1ComponentAdapterFactory;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
@@ -24,10 +26,11 @@ public class Type1ComponentAdapterFactoryTestCase extends TestCase {
     public void testEverything()
     {
         final Type1ComponentAdapterFactory f = new Type1ComponentAdapterFactory();
-        final ComponentAdapter adapter = f.createComponentAdapter(this, this.getClass(), new Parameter[0] );
+        final MutablePicoContainer pico = new DefaultPicoContainer(f);
+        final ComponentAdapter adapter = pico.registerComponentImplementation(this, this.getClass(), new Parameter[0] );
         assertTrue( adapter instanceof Type1ComponentAdapter );
         assertEquals( this.getClass(), adapter.getComponentImplementation() );
         assertEquals( this, adapter.getComponentKey() );
-        assertTrue( adapter.getComponentInstance() instanceof Test );
+        assertTrue( adapter.getComponentInstance(pico) instanceof Test );
     }
 }

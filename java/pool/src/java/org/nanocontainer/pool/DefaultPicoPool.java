@@ -222,8 +222,7 @@ public class DefaultPicoPool implements PicoPool {
     protected Object makeComponent() throws PicoPoolException {
         //Create new "uncached" component
         ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(implementation, implementation);
-        componentAdapter.setContainer(pico);
-        Object object = componentAdapter.getComponentInstance();
+        Object object = componentAdapter.getComponentInstance(pico);
         return object;
     }
 

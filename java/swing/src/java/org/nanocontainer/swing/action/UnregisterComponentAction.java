@@ -30,15 +30,15 @@ public class UnregisterComponentAction extends TreeSelectionAction {
         MutablePicoContainer parent = null;
         Object selectedKey = null;
         ComponentAdapter removed;
-        if (selectedContainer != null) {
+        if (selectedContainer != null && selectedAdapter == null) {
             parent = (MutablePicoContainer) selectedContainer.getParent();
             removed = parent.unregisterComponentByInstance(selectedContainer);
         } else {
-            parent = (MutablePicoContainer) selectedAdapter.getContainer();
+            parent = selectedContainer;
             selectedKey = selectedAdapter.getComponentKey();
             removed = parent.unregisterComponent(selectedKey);
         }
-        containerTreeModel.fire(removed);
+        containerTreeModel.fire(parent, removed);
     }
 
     protected void setEnabled() {

@@ -73,8 +73,6 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
             Thread.sleep(250);
         }
         
-        Thread.sleep(250);
-        
         for(int i = 0; i < racer.length; ++i) {
             synchronized (racer[i]) {
                 racer[i].notify();

@@ -63,7 +63,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         pico.registerComponentInstance("YO");
         pico.registerComponentImplementation(ArrayList.class);
 
-        A a = (A) aAdapter.getComponentInstance();
+        A a = (A) aAdapter.getComponentInstance(pico);
         assertNotNull(a.getB());
         assertNotNull(a.getString());
         assertNotNull(a.getList());
@@ -78,7 +78,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         pico.registerComponent(aAdapter);
 
         try {
-            aAdapter.getComponentInstance();
+            aAdapter.getComponentInstance(pico);
         } catch (UnsatisfiableDependenciesException e) {
             assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
@@ -99,7 +99,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         pico.registerComponent(bAdapter);
         pico.registerComponent(aAdapter);
 
-        A a = (A) aAdapter.getComponentInstance();
+        A a = (A) aAdapter.getComponentInstance(pico);
         assertNotNull(a.getB());
         assertEquals("YO", a.getString());
         assertSame(list, a.getList());
@@ -152,9 +152,9 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         pico.registerComponent(cNullAdapter);
         pico.registerComponentImplementation(ArrayList.class);
 
-        C c = (C) cAdapter.getComponentInstance();
+        C c = (C) cAdapter.getComponentInstance(pico);
         assertTrue(c.instantiatedAsBean());
-        C c0 = (C) cNullAdapter.getComponentInstance();
+        C c0 = (C) cNullAdapter.getComponentInstance(pico);
         assertTrue(c0.instantiatedAsBean());
     }
 
@@ -282,6 +282,7 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
+    // TODO PICO-188
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));

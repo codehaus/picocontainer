@@ -15,8 +15,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.io.Serializable;
-
 import java.lang.reflect.Field;
+
 /**
  * A ComponentParameter should be used to pass in a particular component
  * as argument to a different component's constructor. This is particularly
@@ -27,6 +27,8 @@ import java.lang.reflect.Field;
  *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
+ * @author Thomas Heller
  * @version $Revision$
  */
 public class ComponentParameter implements Parameter, Serializable {
@@ -48,33 +50,115 @@ public class ComponentParameter implements Parameter, Serializable {
     public ComponentParameter() {
     }
 
-    public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws PicoIntrospectionException {
-        ComponentAdapter result;
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+        // type check is done in isResolvable
+        Object result = null;
         if (componentKey != null) {
-            result = picoContainer.getComponentAdapter(componentKey);
-            if (result != null && !expectedType.isAssignableFrom(result.getComponentImplementation())) {
-				// check for primitive value
-				if(expectedType.isPrimitive()) {
-					try {
-						Field field = result.getComponentImplementation().getField("TYPE");
-						Class type = (Class) field.get(result.getComponentInstance());
-					} catch (NoSuchFieldException e) {
-						result = null;
-					} catch (IllegalArgumentException e) {
-						result = null;
-					} catch (IllegalAccessException e) {
-						result = null;
-					} catch (ClassCastException e) {
-						result = null;
-					}
-				} else {
-					result = null;
-				}
-            }
+            result =  container.getComponentInstance(componentKey);
         } else {
-            result = picoContainer.getComponentAdapterOfType(expectedType);
+            result = container.getComponentInstanceOfType(expectedType);
+            // TODO expectedType can be Map or Collection with generics
+            if (result == null) {
+                ComponentAdapter genericCA = getGenericCollectionComponentAdapter(container, expectedType);
+                if (genericCA != null) {
+                    result = genericCA.getComponentInstance(container);
+                }
+            }
         }
         return result;
     }
+
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+        return resolveAdapter(container, adapter, expectedType) != null;
+    }
+    
+    private ComponentAdapter resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+
+        final ComponentAdapter result = getTargetAdapter(container,  expectedType);
+        if (result == null) {
+            return null;
+        }
+
+        // can't depend on ourselves
+        if (adapter.getComponentKey().equals(result.getComponentKey())) {
+            return  null;
+        }
+
+        if (!expectedType.isAssignableFrom(result.getComponentImplementation())) {
+            // check for primitive value
+            if (expectedType.isPrimitive()) {
+                try {
+                    final Field field = result.getComponentImplementation().getField("TYPE");
+                    final Class type = (Class)field.get(result.getComponentInstance(null));
+                    if (expectedType.isAssignableFrom(type)) {
+                        return result;
+                    }
+                } catch (NoSuchFieldException e) {
+                } catch (IllegalArgumentException e) {
+                } catch (IllegalAccessException e) {
+                } catch (ClassCastException e) {
+                }
+            }
+            return null;
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer, org.picocontainer.ComponentAdapter, java.lang.Class)
+     */
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+        final ComponentAdapter result = resolveAdapter(container, adapter, expectedType);
+        if (result == null) {
+            throw new PicoIntrospectionException(expectedType.getClass().getName() + "not resolvable");
+        }
+        result.verify(container);
+    }
+    
+    private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType) {
+        if (componentKey != null) {
+            // key tells us where to look so we follow
+            return container.getComponentAdapter(componentKey);
+        } else {
+            ComponentAdapter result =  container.getComponentAdapterOfType(expectedType);
+            if (result == null) {
+                result = getGenericCollectionComponentAdapter(container, expectedType);
+            }
+            return result;
+        }
+    }
+    
+    private ComponentAdapter getGenericCollectionComponentAdapter(PicoContainer container, Class expectedType) {
+        Class componentType = expectedType.getComponentType();
+        if (container.getComponentAdaptersOfType(componentType).size() == 0) {
+            return null;
+        } else {
+            Object componentKey = new Object[]{this, componentType};
+            return new GenericCollectionComponentAdapter(componentKey, null, componentType, expectedType);
+        }
+    }
+
+//    private ComponentAdapter getGenericCollectionComponentAdapter(Class parameterType, Type genericType) {
+//        ComponentAdapter result = null;
+//
+//        boolean isMap = Map.class.isAssignableFrom(parameterType);
+//        boolean isCollection = Collection.class.isAssignableFrom(parameterType);
+//        if((isMap || isCollection) && genericType instanceof ParameterizedType) {
+//            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+//            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+//            Class keyType = null;
+//            Class valueType = null;
+//            if(isMap) {
+//                keyType = (Class) actualTypeArguments[0];
+//                valueType = (Class) actualTypeArguments[1];
+//            } else {
+//                valueType = (Class) actualTypeArguments[0];
+//            }
+//            Object componentKey = new Object[]{this, genericType};
+//            result = new GenericCollectionComponentAdapter(componentKey, keyType, valueType, parameterType);
+//        }
+//        return result;
+//    }
 
 }

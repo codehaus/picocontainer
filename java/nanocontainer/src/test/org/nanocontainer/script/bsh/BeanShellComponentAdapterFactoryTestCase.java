@@ -27,8 +27,10 @@ import java.util.ArrayList;
  */
 public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
 
+    private MutablePicoContainer pico;
+
     ComponentAdapter setupComponentAdapter(Class implementation) {
-        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("whatever", ArrayList.class);
 
         ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter("thekey", implementation, null);
@@ -40,7 +42,7 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
     public void testGetComponentInstance() {
         ComponentAdapter adapter = setupComponentAdapter(ScriptableDemoBean.class);
 
-        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance();
+        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico);
 
         assertEquals("Bsh demo script should have set the key", "thekey", bean.key);
 
@@ -51,7 +53,7 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter adapter = setupComponentAdapter(BadScriptableDemoBean.class);
 
         try {
-            adapter.getComponentInstance();
+            adapter.getComponentInstance(pico);
             fail("did not throw exception on missing 'instance' variable");
         } catch (BeanShellScriptInitializationException bssie) {
             // success

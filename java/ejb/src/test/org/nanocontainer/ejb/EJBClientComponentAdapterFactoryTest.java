@@ -72,8 +72,8 @@ public class EJBClientComponentAdapterFactoryTest
         final ComponentAdapter componentAdapter =
                 caf.createComponentAdapter("Hello", HelloHome.class, null);
         assertNotNull(componentAdapter);
-        final Object hello1 = componentAdapter.getComponentInstance();
-        final Object hello2 = componentAdapter.getComponentInstance();
+        final Object hello1 = componentAdapter.getComponentInstance(null);
+        final Object hello2 = componentAdapter.getComponentInstance(null);
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
         assertSame(hello1, hello2);
@@ -94,8 +94,8 @@ public class EJBClientComponentAdapterFactoryTest
         final ComponentAdapter componentAdapter =
                 caf.createComponentAdapter("Hello", HelloHome.class, null);
         assertNotNull(componentAdapter);
-        final Object hello1 = componentAdapter.getComponentInstance();
-        final Object hello2 = componentAdapter.getComponentInstance();
+        final Object hello1 = componentAdapter.getComponentInstance(null);
+        final Object hello2 = componentAdapter.getComponentInstance(null);
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
         assertSame(hello1, hello2);

@@ -180,20 +180,12 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                         return componentImplementation;
                     }
 
-                    public Object getComponentInstance()
+                    public Object getComponentInstance(PicoContainer container)
                             throws PicoInitializationException {
                         return touchable;
                     }
 
-                    public void verify() {
-                    }
-
-                    public PicoContainer getContainer() {
-                        return null;
-                    }
-
-                    public void setContainer(PicoContainer picoContainer) {
-
+                    public void verify(PicoContainer container) {
                     }
                     public void accept(PicoVisitor visitor) {
                     }

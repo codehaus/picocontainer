@@ -71,12 +71,6 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         ComponentAdapter ca = ipc.getComponentAdapter(Map.class);
         assertNotNull(ca);
-        assertTrue(ca instanceof ImmutableComponentAdapter);
-        PicoContainer container = ca.getContainer();
-        PicoContainer container2 = ca.getContainer();
-        assertTrue(container instanceof ImmutablePicoContainer);
-        assertTrue(container2 instanceof ImmutablePicoContainer);
-        assertSame(container, container2);
 
     }
 
@@ -86,7 +80,6 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         ComponentAdapter ca = ipc.getComponentAdapterOfType(Map.class);
         assertNotNull(ca);
-        assertTrue(ca instanceof ImmutableComponentAdapter);
     }
 
     public void testDelegationOfGetComponentAdapters() {
@@ -194,33 +187,6 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         } catch (UnsupportedOperationException e) {
             // expected
         }
-    }
-
-    public void testAddOrderedComponentAdapter() {
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponentImplementation(Map.class, HashMap.class);
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        try {
-            ipc.addOrderedComponentAdapter(null);
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
-
-    public void testComponentAdaptersGetContainer() {
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponentImplementation(Map.class, HashMap.class);
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        ComponentAdapter ca = ipc.getComponentAdapter(Map.class);
-        assertNotNull(ca);
-        assertTrue(ca instanceof ImmutableComponentAdapter);
-        PicoContainer container = ca.getContainer();
-        PicoContainer container2 = ca.getContainer();
-        assertTrue(container instanceof ImmutablePicoContainer);
-        assertTrue(container2 instanceof ImmutablePicoContainer);
-        assertSame(container, container2);
-
     }
 
     public void testEqualsAlwaysBarfsForDifferentContainers() {

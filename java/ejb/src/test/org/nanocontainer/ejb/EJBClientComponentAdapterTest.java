@@ -114,7 +114,7 @@ public class EJBClientComponentAdapterTest
      * Test for EJBClientComponentAdapter.getComponentInstance()
      */
     public final void testGetComponentInstance() {
-        final Hello hello = (Hello) m_componentAdapter.getComponentInstance();
+        final Hello hello = (Hello) m_componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
         assertEquals("Hello World!", hello.getHelloWorld());
     }
@@ -123,7 +123,7 @@ public class EJBClientComponentAdapterTest
      * Test for EJBClientComponentAdapter.verify()
      */
     public final void testVerify() {
-        m_componentAdapter.verify(); // Dummy test, done for coverage
+        m_componentAdapter.verify(null); // Dummy test, done for coverage
     }
 
     /**
@@ -138,23 +138,6 @@ public class EJBClientComponentAdapterTest
      */
     public final void testGetComponentImplementation() {
         assertSame(Hello.class, m_componentAdapter.getComponentImplementation());
-    }
-
-    /**
-     * Test for getting and setting the Container
-     */
-    public final void testGetAndSetContainer() {
-        final PicoContainer picoContainer = new DefaultPicoContainer();
-        m_componentAdapter.setContainer(picoContainer);
-        assertSame(picoContainer, m_componentAdapter.getContainer());
-    }
-
-    /**
-     * Test for EJBClientComponentAdapter.toString()
-     */
-    public final void testToString() {
-        final String stringRep = m_componentAdapter.toString();
-        assertEquals(EJBClientComponentAdapter.class.getName() + "[Hello]", stringRep);
     }
 }
 

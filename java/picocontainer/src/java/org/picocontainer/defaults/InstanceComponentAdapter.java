@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.PicoContainer;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
@@ -22,10 +24,10 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter {
         this.componentInstance = componentInstance;
     }
 
-    public Object getComponentInstance() {
+    public Object getComponentInstance(PicoContainer container) {
         return componentInstance;
     }
 
-    public void verify() {
+    public void verify(PicoContainer container) {
     }
 }

@@ -20,4 +20,8 @@ public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstruc
     protected MutablePicoContainer createPicoContainer() {
         return new DefaultPicoContainer();
     }
+    
+    // Eclipse need at least *one* fixture as direct class member ...
+    public void testEclipseDummy() {
+    }
 }

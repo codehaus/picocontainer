@@ -176,7 +176,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
-        setComponentAdaptersContainer(componentAdapter);
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
         return componentAdapter;
@@ -219,10 +218,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;
-    }
-
-    protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
-        componentAdapter.setContainer(this);
     }
 
     /**
@@ -282,7 +277,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                Object componentInstance = componentAdapter.getComponentInstance();
+                Object componentInstance = getInstance(componentAdapter);
                 adapterToInstanceMap.put(componentAdapter, componentInstance);
 
                 // This is to ensure all are added. (Indirect dependencies will be added
@@ -306,7 +301,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
         if (componentAdapter != null) {
-            return componentAdapter.getComponentInstance();
+            return getInstance(componentAdapter);
         } else {
             return null;
         }
@@ -314,8 +309,29 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public Object getComponentInstanceOfType(Class componentType) {
         final ComponentAdapter componentAdapter = getComponentAdapterOfType(componentType);
-        return componentAdapter == null ? null : componentAdapter.getComponentInstance();
+        return componentAdapter == null ? null : getInstance(componentAdapter);
     }
+
+    private Object getInstance(ComponentAdapter componentAdapter) {
+        // check wether this is our adapter
+        // we need to check this to ensure up-down dependencies cannot be followed
+        final boolean isLocal = componentAdapters.contains(componentAdapter);
+
+        if (isLocal) {
+            Object instance = componentAdapter.getComponentInstance(this);
+
+            addOrderedComponentAdapter(componentAdapter);
+
+            return instance;
+        } else if (parent != null) {
+            return parent.getComponentInstance(componentAdapter.getComponentKey());
+        }
+
+        // TODO: decide .. exception or null?
+        // exceptrion: mx: +1, joehni +1
+        return null;
+    }
+
 
     public PicoContainer getParent() {
         return parent;
@@ -325,7 +341,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         Collection componentAdapters = getComponentAdapters();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if (componentAdapter.getComponentInstance().equals(componentInstance)) {
+            if (getInstance(componentAdapter).equals(componentInstance)) {
                 return unregisterComponent(componentAdapter.getComponentKey());
             }
         }
@@ -337,7 +353,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             try {
-                componentAdapter.verify();
+                componentAdapter.verify(this);
             } catch (UnsatisfiableDependenciesException e) {
                 nestedVerificationExceptions.add(e);
             }

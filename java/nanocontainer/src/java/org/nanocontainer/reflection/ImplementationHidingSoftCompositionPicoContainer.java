@@ -152,7 +152,6 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
     }
 
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        componentAdapter.setContainer(this);
         return delegate.registerComponent(componentAdapter);
     }
 
@@ -233,10 +232,6 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
     private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
-        }
-
-        protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
-            componentAdapter.setContainer(ImplementationHidingSoftCompositionPicoContainer.this);
         }
         public Map getNamedContainers() {
             return super.getNamedContainers();

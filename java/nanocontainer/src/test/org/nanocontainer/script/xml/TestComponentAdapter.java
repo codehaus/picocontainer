@@ -10,6 +10,7 @@
 package org.nanocontainer.script.xml;
 
 
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AbstractComponentAdapter;
 
 /**
@@ -29,10 +30,10 @@ public class TestComponentAdapter extends AbstractComponentAdapter {
 	}
 	
 	
-	public void verify() {
+	public void verify(PicoContainer pico) {
 	}
 	
-	public Object getComponentInstance() {
+	public Object getComponentInstance(PicoContainer pico) {
 		return null;
 	}
 }

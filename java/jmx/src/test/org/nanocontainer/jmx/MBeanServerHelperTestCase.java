@@ -10,14 +10,14 @@
 
 package org.nanocontainer.jmx;
 
-import org.jmock.MockObjectTestCase;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
 import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 
 /**
  * @author Michael Ward
@@ -56,7 +56,7 @@ public class MBeanServerHelperTestCase extends MockObjectTestCase {
 		ComponentAdapter adapter = JMXTestFixture.createJMXComponentAdapter(objectName);
 		pico.registerComponent(adapter);
 		try {
-			MBeanServerHelper.register(adapter, null);
+			MBeanServerHelper.register(pico, adapter, null);
 			fail("JMXRegistrationException should have been thrown");
 		} catch (JMXRegistrationException ignore) {
 		}

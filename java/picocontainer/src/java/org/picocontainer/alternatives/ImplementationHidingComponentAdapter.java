@@ -10,6 +10,7 @@
 package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
@@ -33,6 +34,7 @@ import java.lang.reflect.Proxy;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @version $Revision$
+ * @since 1.1
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
 
@@ -40,7 +42,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         super(delegate);
     }
 
-    public Object getComponentInstance()
+    public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
         Class[] interfaces;
@@ -65,7 +67,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                             throws Throwable {
                         try {
                             ComponentAdapter delegate = getDelegate();
-                            Object componentInstance = delegate.getComponentInstance();
+                            Object componentInstance = delegate.getComponentInstance(container);
                             return method.invoke(componentInstance, args);
                         } catch (final InvocationTargetException ite) {
                             throw ite.getTargetException();

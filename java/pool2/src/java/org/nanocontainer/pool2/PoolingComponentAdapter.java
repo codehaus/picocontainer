@@ -10,6 +10,7 @@
 package org.nanocontainer.pool2;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 
@@ -60,14 +61,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         this(delegate, DEFAULT_SIZE);
     }
 
-    public synchronized Object getComponentInstance() throws PicoException {
+    public synchronized Object getComponentInstance(PicoContainer container) throws PicoException {
         Object componentInstance = null;
         if (getAvailable() > 0) {
             componentInstance = available.remove(0);
         } else {
             // none available. grow or wait.
             if (maxPoolSize < 0 || getTotalSize() < maxPoolSize) {
-                componentInstance = super.getComponentInstance();
+                componentInstance = super.getComponentInstance(container);
             } else {
                 // can't grow more. wait for one to become available.
                 try {

@@ -12,24 +12,37 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoInitializationException;
 
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class CyclicDependencyException extends PicoInitializationException {
-    private final Class[] dependencies;
+    private final List dependencies;
 
-    public CyclicDependencyException(Class[] dependencies) {
-        this.dependencies = dependencies;
+    /**
+     * @since 1.1
+     */
+    public CyclicDependencyException(Class type) {
+        this.dependencies = new LinkedList();
+        appendDependency(type);
+    }
+    
+    /**
+     * @since 1.1
+     */
+    public void appendDependency(Class type) {
+        dependencies.add(type);
     }
 
     public Class[] getDependencies() {
-        return dependencies;
+        return (Class[]) dependencies.toArray(new Class[dependencies.size()]);
     }
 
     public String getMessage() {
-        return "Cyclic dependency: " + Arrays.asList(dependencies).toString();
+        return "Cyclic dependency: " + dependencies.toString();
     }
 }

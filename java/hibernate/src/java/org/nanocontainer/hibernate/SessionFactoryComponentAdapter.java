@@ -34,10 +34,7 @@ import java.util.HashSet;
 public class SessionFactoryComponentAdapter implements ComponentAdapter {
 
     private final Object componentKey;
-    private PicoContainer container;
-
     private Parameter configurationParameter = null;
-    private ComponentAdapter hibernateConfigurationAdapter = null;
     private boolean verifying = false;
 
     /**
@@ -70,31 +67,30 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
     /**
      * obtain session factory instance if possible
      */
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-        verify();
+    public Object getComponentInstance(PicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException {
+        verify(picoContainer);
         try {
-            return ((Configuration) hibernateConfigurationAdapter.getComponentInstance()).buildSessionFactory();
+            return ((Configuration)configurationParameter.resolveInstance(picoContainer, this, Configuration.class)).buildSessionFactory();
         } catch (HibernateException he) {
             throw new PicoInitializationException(he);
         }
     }
 
-    public void verify() throws PicoVerificationException {
+    public void verify(PicoContainer picoContainer) throws PicoVerificationException {
+        if (verifying) {
+            throw new CyclicDependencyException(Configuration.class);
+        }
         try {
-            if (verifying) {
-                throw new CyclicDependencyException(new Class[]{Configuration.class});
-            }
             verifying = true;
             HashSet unsatisfiableDependencies = new HashSet();
             unsatisfiableDependencies.add(Configuration.class);
 
-            hibernateConfigurationAdapter = configurationParameter.resolveAdapter(getContainer(), Configuration.class);
-
-            if (hibernateConfigurationAdapter == null) {
+            if (!configurationParameter.isResolvable(picoContainer, this, Configuration.class)) {
                 throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencies);
             }
 
-
+        } catch (CyclicDependencyException e) {
+            e.appendDependency(getComponentImplementation());
         } finally {
             verifying = false;
         }
@@ -110,13 +106,5 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
 
     public Class getComponentImplementation() {
         return SessionFactory.class;
-    }
-
-    public void setContainer(PicoContainer container) {
-        this.container = container;
-    }
-
-    public PicoContainer getContainer() {
-        return container;
     }
 }

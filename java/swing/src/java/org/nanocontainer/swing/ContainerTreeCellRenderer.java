@@ -57,12 +57,12 @@ public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
             TreeModel model = tree.getModel();
             if (model.isLeaf(value)) {
                 label.setText(componentAdapter.getComponentImplementation().getName());
-                try {
-                    componentAdapter.verify();
+//                try {
+//                    componentAdapter.verify();
                     label.setForeground(Color.black);
-                } catch (UnsatisfiableDependenciesException e) {
-                    label.setForeground(Color.red);
-                }
+//                } catch (UnsatisfiableDependenciesException e) {
+//                    label.setForeground(Color.red);
+//                }
             } else {
                 label.setText(componentAdapter.getClass().getName());
             }

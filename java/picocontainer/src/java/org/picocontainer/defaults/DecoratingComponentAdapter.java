@@ -39,24 +39,16 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return delegate.getComponentInstance();
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return delegate.getComponentInstance(container);
     }
 
-    public void verify() {
-        delegate.verify();
-    }
-
-    public PicoContainer getContainer() {
-        return delegate.getContainer();
+    public void verify(PicoContainer container) {
+        delegate.verify(container);
     }
 
     public ComponentAdapter getDelegate() {
         return delegate;
-    }
-
-    public void setContainer(PicoContainer picoContainer) {
-        delegate.setContainer(picoContainer);
     }
 
     public void accept(PicoVisitor visitor) {

@@ -16,6 +16,9 @@ import org.microcontainer.McaDeployer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 
+import javax.management.MBeanInfo;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +26,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipException;
+import java.util.HashMap;
 
 /**
  * @author Paul Hammant
@@ -287,9 +291,19 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         c.dispose();
     }
 
-    public void TODO_testJMXPublication() throws DeploymentException {
+    public void testJMXPublication() throws Exception {
         kernel.deploy(new File("test.mca"));
-        // get "foobar" from JMX ensure a couple of map methods are exposed.
+
+		ObjectName objectName = new ObjectName("microcontainer:kernel=default");
+		MBeanServer mBeanServer = (MBeanServer)kernel.getComponent("test/*" + MBeanServer.class.getName());
+		HashMap map = (HashMap)kernel.getComponent("test/" + objectName.getCanonicalName());
+		MBeanInfo mBeanInfo = (MBeanInfo)kernel.getComponent("test/java.util.HashMapMBeanInfo");
+
+		assertNotNull(map);
+		assertNotNull(mBeanInfo);
+
+		Integer size = (Integer)mBeanServer.invoke(objectName, "size", null, null);
+		assertEquals(0, size.intValue());
     }
 }
 

@@ -105,6 +105,11 @@
                         <ant:include name="${dependency.artifact}"/>
                     </ant:zipfileset>
                 </j:if>
+				<j:if test="${dependency.artifactId.indexOf('mx4j') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
 
             </j:forEach>
         </ant:zip>

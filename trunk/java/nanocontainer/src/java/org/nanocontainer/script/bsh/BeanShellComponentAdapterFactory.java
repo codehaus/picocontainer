@@ -19,9 +19,9 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 /**
  * This factory creates component adapters that relies on Bsh.
  *
- * @see BeanShellComponentAdapter
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @version $Id$
+ * @see BeanShellComponentAdapter
  */
 public class BeanShellComponentAdapterFactory
         implements ComponentAdapterFactory {

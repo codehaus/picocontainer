@@ -16,7 +16,7 @@ public class MyAction {
     }
 
     public String doit() {
-        if(year > 2003) {
+        if (year > 2003) {
             return "success";
         } else {
             return "error";

@@ -13,10 +13,9 @@ package org.picocontainer.testmodel;
 import java.util.List;
 
 /**
- *
  * @author Steve.Freeman@m3p.co.uk
  * @version $Revision$
- * was UnaccessibleStartComponent
+ *          was UnaccessibleStartComponent
  */
 public class InaccessibleStartComponent extends Object {
     private List messages;

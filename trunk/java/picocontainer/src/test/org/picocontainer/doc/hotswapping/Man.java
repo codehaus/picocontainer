@@ -8,4 +8,5 @@ package org.picocontainer.doc.hotswapping;
 public interface Man {
     int getEndurance();
 }
+
 // END SNIPPET: class

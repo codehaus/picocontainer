@@ -31,8 +31,7 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("whatever", ArrayList.class);
 
-        ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter(
-                "thekey", implementation, null);
+        ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter("thekey", implementation, null);
 
         pico.registerComponent(adapter);
         return adapter;

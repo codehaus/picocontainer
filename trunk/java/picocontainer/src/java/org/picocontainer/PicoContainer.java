@@ -16,13 +16,12 @@ import java.util.List;
  * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only
  * has accessor methods (in addition to  the {@link #verify()} method). In order to register components in a
  * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
- * 
- * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
+ * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
  * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {
@@ -83,12 +82,11 @@ public interface PicoContainer extends Startable, Disposable {
     /**
      * Retrieve all the component adapters inside this container. The component adapters from the parent container are
      * not returned.
-     * 
-     * @see #getComponentAdaptersOfType(Class) a variant of this method which returns the component adapters inside this
-     * container that are associated with the specified type.
-     * 
+     *
      * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will
      *         not be modifiable.
+     * @see #getComponentAdaptersOfType(Class) a variant of this method which returns the component adapters inside this
+     *      container that are associated with the specified type.
      */
     Collection getComponentAdapters();
 
@@ -99,7 +97,7 @@ public interface PicoContainer extends Startable, Disposable {
      * @param componentType the type of the components.
      * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
      *         the specified type. Changes to this collection will not be reflected in the container itself.
-     */ 
+     */
     List getComponentAdaptersOfType(Class componentType);
 
     /**

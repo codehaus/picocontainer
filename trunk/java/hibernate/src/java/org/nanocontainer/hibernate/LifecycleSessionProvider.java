@@ -17,28 +17,28 @@ import org.picocontainer.Startable;
 
 /**
  * session provider with managed lifecycle. this class is in no way thread safe.
- * 
- * @author    Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version   $Revision$
+ *
+ * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
+ * @version $Revision$
  */
 public class LifecycleSessionProvider implements SessionProvider, Startable {
 
-    Session         session = null;
-    Transaction     transaction = null;
-    SessionFactory  factory;
+    Session session = null;
+    Transaction transaction = null;
+    SessionFactory factory;
 
-	/**
-	 * create from session factory
-	 */
-	public LifecycleSessionProvider(SessionFactory factory) {
-		this.factory = factory;
-	}
-	
+    /**
+     * create from session factory
+     */
+    public LifecycleSessionProvider(SessionFactory factory) {
+        this.factory = factory;
+    }
+
     /**
      * create from provider
      */
     public LifecycleSessionProvider(SessionFactoryProvider sfp) {
-         this.factory = sfp.getSessionFactory();
+        this.factory = sfp.getSessionFactory();
     }
 
 
@@ -46,86 +46,85 @@ public class LifecycleSessionProvider implements SessionProvider, Startable {
      * get session instance for this request. if no session was created, create
      * new one.
      *
-     * @return                        current or new hibernate session
-     * @exception HibernateException  Description of Exception
+     * @return current or new hibernate session
+     * @throws HibernateException Description of Exception
      */
     public Session getSession() throws HibernateException {
         if (session == null) {
             session = getFactory().openSession();
-			transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
         }
         return session;
     }
-	
-    /**
-	 * commit transaction currently underway, and start new one
-     * @exception HibernateException  if transaction can not be 
-	 *	commited for whatever reason
-	 */
-	public void commit() throws HibernateException {
-		if(session != null && transaction != null &&  !transaction.wasCommitted()
-			&& !transaction.wasRolledBack()) {
-				transaction.commit();
-				transaction = session.beginTransaction();
-		}
-	}
 
-	
+    /**
+     * commit transaction currently underway, and start new one
+     *
+     * @throws HibernateException if transaction can not be
+     *                            commited for whatever reason
+     */
+    public void commit() throws HibernateException {
+        if (session != null && transaction != null && !transaction.wasCommitted()
+                && !transaction.wasRolledBack()) {
+            transaction.commit();
+            transaction = session.beginTransaction();
+        }
+    }
+
+
     /**
      * hibernate exception recovery method. revert all changes made to session,
      * rollback active transaction if any clear session content. after calling
      * session provider is in the state before session was obtained
      *
-     * @exception HibernateException  Description of Exception
+     * @throws HibernateException Description of Exception
      */
     public void rollback() throws HibernateException {
 
         if (session != null && transaction != null && !transaction.wasCommitted() && !transaction.wasRolledBack()) {
             transaction.rollback();
-			transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
         }
     }
 
-
-  
 
     /**
      * dispose botched session in enviromentally safe and responsible way.
      */
     public void reset() {
-		try {
-			rollback();
-			if(session != null) {
-				session.clear();
-				session.close();
-			}
-  		} catch(HibernateException ex) {
-			// we do nothing here, because this shall be called if something went wrong.
-			// situation is FUBAR already.
-		} finally {
-			session = null;
-			transaction = null;
-		}
+        try {
+            rollback();
+            if (session != null) {
+                session.clear();
+                session.close();
+            }
+        } catch (HibernateException ex) {
+            // we do nothing here, because this shall be called if something went wrong.
+            // situation is FUBAR already.
+        } finally {
+            session = null;
+            transaction = null;
+        }
     }
 
 
     /**
      * give session back and close it
      *
-     * @param sess                    session to be closed
-     * @exception HibernateException  may be thrown by hibernate
+     * @param sess session to be closed
+     * @throws HibernateException may be thrown by hibernate
      */
     public void close() throws HibernateException {
-		if(session != null) {
-			if (transaction != null && !transaction.wasCommitted() &&
-            	!transaction.wasRolledBack()) {
-					transaction.commit();
-					transaction = null;
-			}
+        if (session != null) {
+            if (transaction != null && !transaction.wasCommitted() &&
+                    !transaction.wasRolledBack()) {
+                transaction.commit();
+                transaction = null;
+            }
 
-			session.close();
-			session = null;
-		}
+            session.close();
+            session = null;
+        }
     }
 
 
@@ -137,23 +136,23 @@ public class LifecycleSessionProvider implements SessionProvider, Startable {
 
 
     /**
-     * stop container - close session normally. for now we just swallow any exception 
-	 * which may happen here. we do not log from inside, and startable does not throw 
-	 * anything... good news is that it does not matter at this point. 
+     * stop container - close session normally. for now we just swallow any exception
+     * which may happen here. we do not log from inside, and startable does not throw
+     * anything... good news is that it does not matter at this point.
      */
     public void stop() {
-		try {
-			close();
-		} catch(HibernateException ex) {
-			reset();
-		}
+        try {
+            close();
+        } catch (HibernateException ex) {
+            reset();
+        }
     }
 
 
     /**
      * Gets the Factory attribute of the BaseSessionProvider object
      *
-     * @return   The Factory value
+     * @return The Factory value
      */
     SessionFactory getFactory() {
         return factory;

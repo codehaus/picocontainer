@@ -61,7 +61,9 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     // START SNIPPET: man
     public static interface Man {
         Woman getWoman();
+
         void kiss();
+
         boolean wasKissed();
     }
     // END SNIPPET: man
@@ -259,11 +261,8 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     }
 
     public void testShouldBeAbleToHandleMutualDependenciesWithoutInterfaceImplSeparation() {
-        MutablePicoContainer pico = new DefaultPicoContainer(
-                new CachingComponentAdapterFactory(
-                        new HotSwappingComponentAdapterFactory(
-                            new ConstructorInjectionComponentAdapterFactory(),
-                            new CglibProxyFactory())));
+        MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new HotSwappingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(),
+                new CglibProxyFactory())));
 
         pico.registerComponentImplementation(Yin.class);
         pico.registerComponentImplementation(Yang.class);

@@ -34,19 +34,23 @@ public class SetterInjectionComponentAdapterFactory implements ComponentAdapterF
     public SetterInjectionComponentAdapterFactory() {
         this(false);
     }
+
     /**
      * Create a {@link SetterInjectionComponentAdapter}.
-     * @param componentKey The component's key
+     *
+     * @param componentKey            The component's key
      * @param componentImplementation The class of the bean.
-     * @param parameters Any parameters for the setters. If null the adapter solves the
-     * dependencies for all setters internally. Otherwise the number parameters must match
-     * the number of the setter.
+     * @param parameters              Any parameters for the setters. If null the adapter solves the
+     *                                dependencies for all setters internally. Otherwise the number parameters must match
+     *                                the number of the setter.
      * @return Returns a new {@link SetterInjectionComponentAdapter}.
      * @throws PicoIntrospectionException if dependencies cannot be solved
-     * @throws AssignabilityRegistrationException if  the <code>componentKey</code> is a type
-     * that does not match the implementation
-     * @throws NotConcreteRegistrationException if the implementation is an interface or an
-     * abstract class.
+     * @throws AssignabilityRegistrationException
+     *                                    if  the <code>componentKey</code> is a type
+     *                                    that does not match the implementation
+     * @throws NotConcreteRegistrationException
+     *                                    if the implementation is an interface or an
+     *                                    abstract class.
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

@@ -26,11 +26,11 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
         final Mock childStartable = mock(Startable.class);
         childStartable.expects(once())
-                      .method("start")
-                      .withNoArguments();
+                .method("start")
+                .withNoArguments();
         childStartable.expects(once())
-                      .method("stop")
-                      .withNoArguments();
+                .method("stop")
+                .withNoArguments();
 
         ContainerComposer containerAssembler = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {

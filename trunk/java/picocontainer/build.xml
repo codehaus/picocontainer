@@ -33,12 +33,12 @@
                 <pathelement location="${basedir}/src/java">
                 </pathelement>
             </src>
-<!--            <classpath>-->
-<!--                <fileset dir="${libdir}">-->
-<!--                    <include name="*.jar">-->
-<!--                    </include>-->
-<!--                </fileset>-->
-<!--            </classpath>-->
+            <!--            <classpath>-->
+            <!--                <fileset dir="${libdir}">-->
+            <!--                    <include name="*.jar">-->
+            <!--                    </include>-->
+            <!--                </fileset>-->
+            <!--            </classpath>-->
         </javac>
     </target>
     <target name="jar" description="o Create the jar" depends="compile,test">
@@ -83,7 +83,7 @@
         <move todir="dist/docs">
             <fileset dir="target/pico"/>
         </move>
-        <move todir="dist/docs" failonerror="false" >
+        <move todir="dist/docs" failonerror="false">
             <fileset dir="target/PICO"/>
         </move>
     </target>
@@ -103,10 +103,10 @@
             <formatter usefile="false" type="plain">
             </formatter>
             <classpath>
-<!--                <fileset dir="${libdir}">-->
-<!--                    <include name="*.jar">-->
-<!--                    </include>-->
-<!--                </fileset>-->
+                <!--                <fileset dir="${libdir}">-->
+                <!--                    <include name="*.jar">-->
+                <!--                    </include>-->
+                <!--                </fileset>-->
                 <pathelement path="${testclassesdir}">
                 </pathelement>
                 <pathelement path="${classesdir}">
@@ -129,10 +129,10 @@
                 </pathelement>
             </src>
             <classpath>
-<!--                <fileset dir="${libdir}">-->
-<!--                    <include name="*.jar">-->
-<!--                    </include>-->
-<!--                </fileset>-->
+                <!--                <fileset dir="${libdir}">-->
+                <!--                    <include name="*.jar">-->
+                <!--                    </include>-->
+                <!--                </fileset>-->
                 <pathelement path="${classesdir}">
                 </pathelement>
             </classpath>
@@ -151,10 +151,10 @@
         </property>
         <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.picocontainer.*">
             <classpath>
-<!--                <fileset dir="${libdir}">-->
-<!--                    <include name="*.jar">-->
-<!--                    </include>-->
-<!--                </fileset>-->
+                <!--                <fileset dir="${libdir}">-->
+                <!--                    <include name="*.jar">-->
+                <!--                    </include>-->
+                <!--                </fileset>-->
                 <pathelement location="target/${final.name}.jar">
                 </pathelement>
             </classpath>

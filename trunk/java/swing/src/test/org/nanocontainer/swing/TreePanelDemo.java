@@ -28,18 +28,18 @@ import java.awt.event.WindowEvent;
  * @version $Revision$
  */
 public class TreePanelDemo {
-	public static void main(String[] args) {
-		// Creation of the dummy container
-		DefaultPicoContainer container1 = new DefaultPicoContainer();
-		DefaultPicoContainer container2 = new DefaultPicoContainer(container1);
+    public static void main(String[] args) {
+        // Creation of the dummy container
+        DefaultPicoContainer container1 = new DefaultPicoContainer();
+        DefaultPicoContainer container2 = new DefaultPicoContainer(container1);
         container1.registerComponentInstance(container2);
-		DefaultPicoContainer container3 = new DefaultPicoContainer(container2);
+        DefaultPicoContainer container3 = new DefaultPicoContainer(container2);
         container2.registerComponentInstance(container3);
 
-		container1.registerComponentImplementation(DefaultWebServerConfig.class);
-		container1.registerComponentImplementation(WebServerImpl.class);
-		container2.registerComponentImplementation(WebServerImpl.class);
-		container3.registerComponentImplementation(WebServerImpl.class);
+        container1.registerComponentImplementation(DefaultWebServerConfig.class);
+        container1.registerComponentImplementation(WebServerImpl.class);
+        container2.registerComponentImplementation(WebServerImpl.class);
+        container3.registerComponentImplementation(WebServerImpl.class);
 
         JToolBar toolBar = new JToolBar();
         ContainerTree tree = new ContainerTree(new ContainerModel(container1), IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
@@ -50,15 +50,15 @@ public class TreePanelDemo {
 
         ContainerTreePanel panel = new ContainerTreePanel(tree, toolBar);
 
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		frame.pack();
-		frame.show();
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				super.windowClosing(e);
-				System.exit(0);
-			}
-		});
-	}
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.pack();
+        frame.show();
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.exit(0);
+            }
+        });
+    }
 }

@@ -25,7 +25,7 @@
 package org.nanocontainer.pool;
 
 /**
- *  <p><code>PicoPool</code> is a simple interface for non-keyed pico
+ * <p><code>PicoPool</code> is a simple interface for non-keyed pico
  * component pools
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
@@ -34,24 +34,24 @@ package org.nanocontainer.pool;
 public interface PicoPool {
     /**
      * takes a component from the pool
+     *
      * @return the borrowed component
      */
     public abstract Object borrowComponent() throws PicoPoolException;
 
     /**
      * Makes a component in the pool avalible again once it has been borrowed
+     *
      * @param component the borrowed component
      */
     public abstract void returnComponent(Object component) throws PicoPoolException;
 
     /**
-     *
      * @return the number of components in the pool
      */
     public abstract int getSize();
 
     /**
-     *
      * @return the number of components in the pool
      */
     public abstract int getMaxSize();

@@ -14,7 +14,7 @@ import junit.framework.Assert;
 
 /**
  * @author steve.freeman@m3p.co.uk
- * was FlintstoneImpl
+ *         was FlintstoneImpl
  */
 public class DependsOnTwoComponents {
     public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred) {

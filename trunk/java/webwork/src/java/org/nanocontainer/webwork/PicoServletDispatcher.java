@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Extension to the standard WebWork DispatcherServlet that instantiates a new container in the request
  * scope for each request and disposes of it correctly at the end of the request.
- *
+ * <p/>
  * To use, replace the WebWork ServletDispatcher in web.xml with this.
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>

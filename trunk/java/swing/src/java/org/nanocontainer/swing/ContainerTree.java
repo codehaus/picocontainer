@@ -29,12 +29,12 @@ import java.util.Arrays;
  */
 public class ContainerTree extends JTree {
 
-	public ContainerTree(ContainerModel containerModel, Icon componentIcon) {
-		super(new ContainerTreeModel(containerModel));
-		this.setRootVisible(true);
-		this.setCellRenderer(new ContainerTreeCellRenderer(componentIcon));
+    public ContainerTree(ContainerModel containerModel, Icon componentIcon) {
+        super(new ContainerTreeModel(containerModel));
+        this.setRootVisible(true);
+        this.setCellRenderer(new ContainerTreeCellRenderer(componentIcon));
 
-        getModel().addTreeModelListener(new TreeModelListener(){
+        getModel().addTreeModelListener(new TreeModelListener() {
             public void treeNodesChanged(TreeModelEvent e) {
 
             }
@@ -47,7 +47,7 @@ public class ContainerTree extends JTree {
             }
 
             public void treeStructureChanged(final TreeModelEvent e) {
-                SwingUtilities.invokeLater(new Runnable(){
+                SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         final Object lastChild = e.getChildren()[e.getChildren().length - 1];
                         TreePath newPath = new TreePath(e.getTreePath().pathByAddingChild(lastChild));
@@ -62,5 +62,5 @@ public class ContainerTree extends JTree {
                 Object path = Arrays.asList(e.getPath().getPath());
             }
         });
-	}
+    }
 }

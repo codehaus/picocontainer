@@ -13,9 +13,9 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoRegistrationException;
 
 /**
- * A subclass of {@link PicoRegistrationException} that is thrown during component registration if the 
+ * A subclass of {@link PicoRegistrationException} that is thrown during component registration if the
  * component's key is a type and the implementation is not assignable to.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -27,8 +27,8 @@ public class AssignabilityRegistrationException extends PicoRegistrationExceptio
 
     /**
      * Construct an exception with the type and the unassignable class.
-     * 
-     * @param type the type used as component key
+     *
+     * @param type  the type used as component key
      * @param clazz the unassignable implementation class
      */
     public AssignabilityRegistrationException(Class type, Class clazz) {
@@ -37,7 +37,7 @@ public class AssignabilityRegistrationException extends PicoRegistrationExceptio
     }
 
     /**
-     * @return Returns a string explaining the exception araised from the two class types. 
+     * @return Returns a string explaining the exception araised from the two class types.
      */
     public String getMessage() {
         return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();

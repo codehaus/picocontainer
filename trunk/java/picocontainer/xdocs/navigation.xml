@@ -6,16 +6,16 @@
 
 <project name="picocontainer" repository="picocontainer" href="http://picocontainer.codehaus.org">
 
-  <title>PicoContainer</title>
+    <title>PicoContainer</title>
 
-  <body>
-    <links>
-      <item name="PicoContainer main site"           href=".."/>
-    </links>
+    <body>
+        <links>
+            <item name="PicoContainer main site" href=".."/>
+        </links>
 
-    <menu name="PicoContainer">
-      <item name="JavaDoc API"           href="/apidocs/index.html"/>
-    </menu>
-  </body>
+        <menu name="PicoContainer">
+            <item name="JavaDoc API" href="/apidocs/index.html"/>
+        </menu>
+    </body>
 
 </project>

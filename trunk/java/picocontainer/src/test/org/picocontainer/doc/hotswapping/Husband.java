@@ -16,4 +16,5 @@ public class Husband implements Man {
         return 10;
     }
 }
+
 // START SNIPPET: class

@@ -34,6 +34,7 @@ public class ComponentParameter implements Parameter, Serializable {
 
     /**
      * Expect a parameter matching a component of a specific key.
+     *
      * @param componentKey the key of the desired component
      */
     public ComponentParameter(Object componentKey) {
@@ -43,19 +44,20 @@ public class ComponentParameter implements Parameter, Serializable {
     /**
      * Expect any paramter of the appropriate type.
      */
-    public ComponentParameter() {}
+    public ComponentParameter() {
+    }
 
     public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws PicoIntrospectionException {
         ComponentAdapter result;
         if (componentKey != null) {
             result = picoContainer.getComponentAdapter(componentKey);
-            if(result != null && !expectedType.isAssignableFrom(result.getComponentImplementation())) {
+            if (result != null && !expectedType.isAssignableFrom(result.getComponentImplementation())) {
                 // found one, but it wasn't of the expected type
                 result = null;
             }
         } else {
             result = picoContainer.getComponentAdapterOfType(expectedType);
-		}
+        }
         return result;
     }
 

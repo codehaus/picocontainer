@@ -18,7 +18,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
- *  <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool
+ * <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool
  * and is picofiable (though does break the single ctor thing)
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>

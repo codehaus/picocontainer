@@ -15,8 +15,7 @@ import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
- *
- *  <p><code>PicoPoolConfiguration</code> provides all the possible parameters for
+ * <p><code>PicoPoolConfiguration</code> provides all the possible parameters for
  * Pico pool and will validate or provide defaults where necessary.
  * It's probably a good idea to use a configuration object for a pool
  * as in the long term there could be other parameters, such as PoolEvictionPolicy
@@ -32,13 +31,12 @@ public class PicoPoolConfiguration {
     private MutablePicoContainer poolParentContainer;
     private ComponentAdapterFactory componentAdapterFactory;
 
-    public PicoPoolConfiguration(
-            Class implementation,
-            int maxSize,
-            byte exhaustAction,
-            long maxWait,
-            ComponentAdapterFactory componentAdapterFactory,
-            MutablePicoContainer poolParent) {
+    public PicoPoolConfiguration(Class implementation,
+                                 int maxSize,
+                                 byte exhaustAction,
+                                 long maxWait,
+                                 ComponentAdapterFactory componentAdapterFactory,
+                                 MutablePicoContainer poolParent) {
         setImplementation(implementation);
         setComponentAdapterFactory(componentAdapterFactory);
         setMaxSize(maxSize);

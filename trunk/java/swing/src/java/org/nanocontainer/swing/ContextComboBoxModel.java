@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class ContextComboBoxModel extends AbstractListModel implements ComboBoxModel{
+public class ContextComboBoxModel extends AbstractListModel implements ComboBoxModel {
     private String[] values;
     private List filteredValues = new ArrayList();
     private String regexp = null;
@@ -40,7 +40,7 @@ public class ContextComboBoxModel extends AbstractListModel implements ComboBoxM
     public void setFilter(String pseudoRegex) {
         if (!"".equals(pseudoRegex)) {
             pseudoRegex = pseudoRegex.toLowerCase();
-            if(pseudoRegex.startsWith("*")) {
+            if (pseudoRegex.startsWith("*")) {
                 pseudoRegex = "." + pseudoRegex;
             }
             regexp = ".*" + pseudoRegex + ".*";
@@ -54,7 +54,7 @@ public class ContextComboBoxModel extends AbstractListModel implements ComboBoxM
         filteredValues.clear();
         if (regexp != null) {
             for (int i = 0; i < values.length; i++) {
-                if(Pattern.matches(regexp, values[i].toLowerCase())) {
+                if (Pattern.matches(regexp, values[i].toLowerCase())) {
                     filteredValues.add(values[i]);
                 }
             }

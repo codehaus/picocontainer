@@ -30,12 +30,11 @@ public class NanoNamingImpl extends UnicastRemoteObject implements NanoNaming {
         ClientInvoker clientInvocationHandler = new ClientInvoker(key, remoteInterceptor);
         ComponentAdapter componentAdapter = pico.getComponentAdapter(key);
         remoteInterceptor.bind(componentAdapter);
-        return proxyFactory.createProxy(
-                new Class[]{
-                    componentAdapter.getComponentImplementation(),
-                    Serializable.class,
-                    KeyHolder.class
-                },
+        return proxyFactory.createProxy(new Class[]{
+            componentAdapter.getComponentImplementation(),
+            Serializable.class,
+            KeyHolder.class
+        },
                 clientInvocationHandler);
     }
 

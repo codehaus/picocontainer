@@ -64,12 +64,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * throwing exceptions.
      */
     public static final PicoContainer EMPTY_IMMUTABLE_INSTANCE;
+
     static {
         final PicoContainer picoContainer = new DefaultPicoContainer();
-        EMPTY_IMMUTABLE_INSTANCE = (PicoContainer) Proxy.newProxyInstance(DefaultPicoContainer.class.getClassLoader(), new Class[]{PicoContainer.class}, new InvocationHandler(){
+        EMPTY_IMMUTABLE_INSTANCE = (PicoContainer) Proxy.newProxyInstance(DefaultPicoContainer.class.getClassLoader(), new Class[]{PicoContainer.class}, new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 String methodName = method.getName();
-                if(methodName.equals("start") || methodName.equals("stop") || methodName.equals("dispose")) {
+                if (methodName.equals("start") || methodName.equals("stop") || methodName.equals("dispose")) {
                     return null;
                 }
                 return method.invoke(picoContainer, args);
@@ -175,7 +176,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 found.add(componentAdapter);
             }
         }
-        return Collections.unmodifiableList( found );
+        return Collections.unmodifiableList(found);
     }
 
     /**

@@ -20,17 +20,17 @@ package org.picocontainer;
 public class PicoRegistrationException extends PicoException {
     /**
      * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
-     * that caused this one. 
-     */ 
+     * that caused this one.
+     */
     protected PicoRegistrationException() {
     }
 
     /**
      * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the
-     * exception that caused this one. 
-     * 
+     * exception that caused this one.
+     *
      * @param message the message detailing the exception.
-     */ 
+     */
     public PicoRegistrationException(final String message) {
         super(message);
     }
@@ -39,18 +39,18 @@ public class PicoRegistrationException extends PicoException {
      * Construct a new exception with the specified cause and no detail message.
      * 
      * @param cause the exception that caused this one.
-     */ 
+     */
     protected PicoRegistrationException(final Throwable cause) {
         super(cause);
     }
 
     /**
      * Construct a new exception with the specified cause and the specified detail message.
-     * 
-     * @param message the message detailing the exception. 
-     * @param cause the exception that caused this one.
-     */ 
+     *
+     * @param message the message detailing the exception.
+     * @param cause   the exception that caused this one.
+     */
     protected PicoRegistrationException(final String message, final Throwable cause) {
-        super(message,cause);
+        super(message, cause);
     }
 }

@@ -20,12 +20,13 @@ import java.util.Map;
 
 /**
  * This Component Adapter maintains a pool of component instances.
+ *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class PoolingComponentAdapter extends DecoratingComponentAdapter {
-    
+
     private static final int DEFAULT_SIZE = 5;
     private int maxPoolSize;
     private int waitMilliSeconds;
@@ -34,15 +35,16 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
 
     /**
      * Construct a PoolingComponentAdapter.
-     * @param delegate The delegate adapter that provides the pooled instances.
-     * @param maxPoolSize maximum pool size. A size of -1 results in an ever growing pool.
+     *
+     * @param delegate         The delegate adapter that provides the pooled instances.
+     * @param maxPoolSize      maximum pool size. A size of -1 results in an ever growing pool.
      * @param waitMilliSeconds number of milliseconds to wait when {@link #getComponentInstance() }
-     * is called. Three different values are possible here:
-     * <ul>
-     * <li>-1 : Wait when exhausted until a component is available.</li>
-     * <li>0 : Fail immediately when exhausted.</li>
-     * <li>n : Wait for max n milliseconds until a component is available. This will fail on timeout.</li>
-     * </ul>
+     *                         is called. Three different values are possible here:
+     *                         <ul>
+     *                         <li>-1 : Wait when exhausted until a component is available.</li>
+     *                         <li>0 : Fail immediately when exhausted.</li>
+     *                         <li>n : Wait for max n milliseconds until a component is available. This will fail on timeout.</li>
+     *                         </ul>
      */
     public PoolingComponentAdapter(ComponentAdapter delegate, int maxPoolSize, int waitMilliSeconds) {
         super(delegate);
@@ -69,10 +71,10 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
             } else {
                 // can't grow more. wait for one to become available.
                 try {
-                    if(waitMilliSeconds > 0) {
+                    if (waitMilliSeconds > 0) {
                         wait(waitMilliSeconds);
                     }
-                    if(waitMilliSeconds < 0) {
+                    if (waitMilliSeconds < 0) {
                         wait();
                     }
                     if (getAvailable() == 0) {
@@ -123,14 +125,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     public int getAvailable() {
         return available.size();
     }
-    
+
     /**
      * @return Returns the maximum pool size.
      */
     public int getMaxPoolSize() {
         return maxPoolSize;
     }
-    
+
     protected Object markInstanceAsBusyAndReturnIt(Object instance) {
         busy.put(instance, instance);
         return instance;

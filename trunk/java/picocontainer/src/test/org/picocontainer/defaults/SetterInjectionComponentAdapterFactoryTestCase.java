@@ -27,27 +27,35 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
 
     public static interface Bean {
     }
+
     public static class NamedBean implements Bean {
         private String name;
+
         public String getName() {
             return name;
         }
+
         public void setName(String name) {
             this.name = name;
         }
     }
+
     public static class NamedBeanWithPossibleDefault extends NamedBean {
         private boolean byDefault;
+
         public NamedBeanWithPossibleDefault() {
         }
+
         public NamedBeanWithPossibleDefault(String name) {
             setName(name);
             byDefault = true;
         }
+
         public boolean getByDefault() {
             return byDefault;
         }
     }
+
     public static class NoBean extends NamedBean {
         public NoBean(String name) {
             setName(name);
@@ -67,7 +75,7 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
         try {
             picoContainer.getComponentInstance(Bean.class);
             fail("Instantiation should have failed.");
-        } catch(PicoInitializationException e) {
+        } catch (PicoInitializationException e) {
         }
     }
 }

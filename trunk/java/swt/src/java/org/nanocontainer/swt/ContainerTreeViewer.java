@@ -26,26 +26,26 @@ import java.util.Collection;
  */
 public class ContainerTreeViewer extends TreeViewer {
 
-	public ContainerTreeViewer(Composite parent, int flags) {
-		super(parent, flags);
+    public ContainerTreeViewer(Composite parent, int flags) {
+        super(parent, flags);
 
-		setContentProvider(new ContainerTreeContentProvider(null));
-		setLabelProvider(new ContainerTreeLabelProvider());
-		setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
-		getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
-	}
+        setContentProvider(new ContainerTreeContentProvider(null));
+        setLabelProvider(new ContainerTreeLabelProvider());
+        setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
+        getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
+    }
 
-	/**
-	 * Helper method that allows a big hack.
-	 * <p>Must be used instead of setInput because if it is used,
-	 * the PicoContainer is not displayed. Maybe there is a
-	 * better way to achieve this.</p>
-	 *
-	 * @param container
-	 */
-	public void setContainer(PicoContainer container) {
-		Collection input = new ArrayList();
-		input.add(container);
-		setInput(input);
-	}
+    /**
+     * Helper method that allows a big hack.
+     * <p>Must be used instead of setInput because if it is used,
+     * the PicoContainer is not displayed. Maybe there is a
+     * better way to achieve this.</p>
+     *
+     * @param container
+     */
+    public void setContainer(PicoContainer container) {
+        Collection input = new ArrayList();
+        input.add(container);
+        setInput(input);
+    }
 }

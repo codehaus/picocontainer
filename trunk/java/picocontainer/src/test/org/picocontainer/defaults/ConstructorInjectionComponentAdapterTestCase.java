@@ -73,15 +73,15 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         } catch (UnsatisfiableDependenciesException e) {
         }
     }
-    
+
     public static class C1 {
-    	public C1(C2 c2) {
+        public C1(C2 c2) {
             fail("verification should not instantiate");
         }
     }
-    
+
     public static class C2 {
-    	public C2(C1 i1) {
+        public C2(C1 i1) {
             fail("verification should not instantiate");
         }
     }
@@ -98,9 +98,9 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             assertTrue(message.indexOf("C1") + message.indexOf("C2") > 0);
         }
     }
-    
+
     public static class D {
-    	public D(A a) {
+        public D(A a) {
         }
     }
 
@@ -108,8 +108,8 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.registerComponentImplementation(A.class);
         picoContainer.registerComponentImplementation(B.class);
-        picoContainer.registerComponentImplementation(D.class, D.class, 
-                new Parameter[] { new ComponentParameter(), new ComponentParameter() });
+        picoContainer.registerComponentImplementation(D.class, D.class,
+                new Parameter[]{new ComponentParameter(), new ComponentParameter()});
         try {
             picoContainer.verify();
             fail();
@@ -136,7 +136,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             picoContainer.getComponentInstance(RuntimeThrowing.class);
             fail();
         } catch (RuntimeException e) {
-            assertEquals("ha!",e.getMessage());
+            assertEquals("ha!", e.getMessage());
         }
     }
 

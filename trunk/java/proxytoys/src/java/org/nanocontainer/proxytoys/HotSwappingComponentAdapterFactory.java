@@ -24,10 +24,10 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 /**
  * Hides implementation.
  *
- * @see HotSwappingComponentAdapter
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
+ * @see HotSwappingComponentAdapter
  */
 public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
     private final ProxyFactory proxyFactory;

@@ -46,7 +46,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
 
         PicoContainer requestContainer = getRequestContainer();
         action = (Action) requestContainer.getComponentInstance(actionClass);
-        if(action== null) {
+        if (action == null) {
             // The action wasn't registered. Do it ad-hoc here.
             MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
             tempContainer.registerComponentImplementation(actionClass);

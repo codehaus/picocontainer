@@ -14,36 +14,35 @@ package org.picocontainer;
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
  * instance} or {@link #registerComponent(ComponentAdapter) a ComponentAdapter}.
  *
- * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
- * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
+ * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
  * @since 1.0
  */
 public interface MutablePicoContainer extends PicoContainer {
 
     /**
      * Register a component.
-     * 
+     *
      * @param componentKey            a key that identifies the component. Must be unique within the container. The type
      *                                of the key object has no semantic significance unless explicitly specified in the
      *                                documentation of the implementing container.
      * @param componentImplementation the component's implementation class. This must be a concrete class (ie, a
      *                                class that can be instantiated).
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *     value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *     {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration of the component fails.
      * @see #registerComponentImplementation(Object,Class,Parameter[]) a variant of this method that allows more control
-     *     over the parameters passed into the componentImplementation constructor when constructing an instance. 
+     *      over the parameters passed into the componentImplementation constructor when constructing an instance.
      */
     ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;
 
     /**
      * Register a component.
-     * 
+     *
      * @param componentKey            a key that identifies the component. Must be unique within the container. The type
      *                                of the key object has no semantic significance unless explicitly specified in the
      *                                documentation of the implementing container.
@@ -53,8 +52,8 @@ public interface MutablePicoContainer extends PicoContainer {
      *                                to the constructor when it is instantiated. Container implementations may ignore
      *                                one or more of these hints.
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *     value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *     {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration of the component fails.
      */
     ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;
@@ -62,11 +61,11 @@ public interface MutablePicoContainer extends PicoContainer {
     /**
      * Register a component using the componentImplementation as key. Calling this method is equivalent to calling
      * <code>registerComponentImplementation(componentImplementation, componentImplementation)</code>.
-     * 
+     *
      * @param componentImplementation the concrete component class.
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *     value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *     {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration fails.
      */
     ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
@@ -74,11 +73,11 @@ public interface MutablePicoContainer extends PicoContainer {
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
      * calling     * <code>registerComponentImplementation(componentImplementation, componentImplementation)</code>.
-     * 
-     * @param componentInstance 
+     *
+     * @param componentInstance
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *     value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *     {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration fails.
      */
     ComponentAdapter registerComponentInstance(Object componentInstance) throws PicoRegistrationException;
@@ -89,14 +88,14 @@ public interface MutablePicoContainer extends PicoContainer {
      * impossible.
      * <p/>
      * Beware that too much use of this method is an <a href="http://docs.codehaus.org/display/PICO/Instance+Registration">antipattern</a>.
-     * 
+     *
      * @param componentKey      a key that identifies the component. Must be unique within the conainer. The type of the
      *                          key object has no semantic significance unless explicitly specified in the implementing
      *                          container.
      * @param componentInstance an arbitrary object.
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *     value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *     {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration fails.
      */
     ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;

@@ -65,7 +65,7 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
         if (Array.class.isAssignableFrom(collectionType)) {
             return getArrayInstance(adaptersOfType);
         } else if (Map.class.isAssignableFrom(collectionType)) {
-                return getMapInstance(adaptersOfType);
+            return getMapInstance(adaptersOfType);
         } else {
             return getCollectionInstance(adaptersOfType);
         }

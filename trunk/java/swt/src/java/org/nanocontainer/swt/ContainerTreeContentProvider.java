@@ -23,35 +23,35 @@ import java.util.Collection;
  * @version $Revision$
  */
 public class ContainerTreeContentProvider extends ContainerModel implements ITreeContentProvider {
-	public ContainerTreeContentProvider(MutablePicoContainer pico) {
+    public ContainerTreeContentProvider(MutablePicoContainer pico) {
         super(pico);
-	}
+    }
 
-	public Object[] getChildren(Object parent) {
+    public Object[] getChildren(Object parent) {
         return getAllChildren(parent);
-	}
+    }
 
-	public Object[] getElements(Object root) {
-		Object[] result = null;
-		if (root instanceof Collection) {
-			result = ((Collection) root).toArray();
-		}
-		return result;
-	}
+    public Object[] getElements(Object root) {
+        Object[] result = null;
+        if (root instanceof Collection) {
+            result = ((Collection) root).toArray();
+        }
+        return result;
+    }
 
-	public Object getParent(Object child) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
+    public Object getParent(Object child) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
     public boolean hasChildren(Object node) {
         return getAllChildren(node).length > 0;
     }
 
     public void inputChanged(Viewer viewer, Object oldValue, Object newValue) {
-		// Do nothing
-	}
+        // Do nothing
+    }
 
-	public void dispose() {
-		// Do nothing
-	}
+    public void dispose() {
+        // Do nothing
+    }
 }

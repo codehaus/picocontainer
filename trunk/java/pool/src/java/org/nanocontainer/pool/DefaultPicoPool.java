@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- *  <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool
+ * <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool
  * and is picofiable
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
@@ -53,21 +53,21 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * ctor that uses default configuration
+     *
      * @param implementation
      */
     public DefaultPicoPool(Class implementation) {
-        this(
-                new PicoPoolConfiguration(
-                        implementation,
-                        DEFAULT_MAX_SIZE,
-                        DEFAULT_EXHAUSTED_ACTION,
-                        0,
-                        null,
-                        new DefaultPicoContainer()));
+        this(new PicoPoolConfiguration(implementation,
+                DEFAULT_MAX_SIZE,
+                DEFAULT_EXHAUSTED_ACTION,
+                0,
+                null,
+                new DefaultPicoContainer()));
     }
 
     /**
      * ctor that takes a PicoPoolConfiguration
+     *
      * @param config the config to use
      */
     public DefaultPicoPool(PicoPoolConfiguration config) {
@@ -75,11 +75,12 @@ public class DefaultPicoPool implements PicoPool {
         exhaustedAction = config.getExhaustedAction();
         maxSize = config.getMaxSize();
         maxWait = config.getMaxWait();
-        pico = new DefaultPicoContainer(config.getComponentAdapterFactory(),config.getPoolParentContainer());
+        pico = new DefaultPicoContainer(config.getComponentAdapterFactory(), config.getPoolParentContainer());
     }
 
     /**
      * Validates the implememtation
+     *
      * @param clazz the implementation to be used for this pool
      */
     private void setImplementation(Class clazz) {
@@ -95,9 +96,10 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * Adds a component to be managed in the pool
+     *
      * @param component the component
      * @throws PicoException if the Max pool sized is reached and the
-     * exhaustedAction is not GROW_WHEN_EXHAUSTED
+     *                       exhaustedAction is not GROW_WHEN_EXHAUSTED
      */
     protected synchronized void addComponent(Object component) throws PicoException {
         if ((activeMap.size() >= maxSize) && exhaustedAction != GROW_WHEN_EXHAUSTED) {
@@ -116,6 +118,7 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * Creates a key for a new component
+     *
      * @param component the component to create the key for
      * @return the new key
      */
@@ -131,6 +134,7 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * takes a component from the pool
+     *
      * @return the borrowed component
      */
     public synchronized Object borrowComponent() throws PicoPoolException {
@@ -171,10 +175,11 @@ public class DefaultPicoPool implements PicoPool {
      * Gets the key of the next avalible component. If a key is not available
      * and the createNew flag is set.  A new object is added to the pool
      * and it's key returned
+     *
      * @param createNew if true a new key will be created if there are no keys
-     * avaliable
+     *                  avaliable
      * @return an available key, or the key of the newly create componet if the
-     * createNew flag was set, or null.
+     *         createNew flag was set, or null.
      */
     protected synchronized Object getNextKey(boolean createNew) throws PicoPoolException {
         if (poolKeys.size() == 0 && createNew) {
@@ -188,6 +193,7 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * Makes a component in the pool avalible again once it has been borrowed
+     *
      * @param component the borrowed component
      */
     public synchronized void returnComponent(Object component) throws PicoException {
@@ -200,7 +206,6 @@ public class DefaultPicoPool implements PicoPool {
     }
 
     /**
-     *
      * @return the number of components in the pool
      */
     public int getSize() {
@@ -211,6 +216,7 @@ public class DefaultPicoPool implements PicoPool {
 
     /**
      * Creates a component for the pool
+     *
      * @return thenewly created component
      */
     protected Object makeComponent() throws PicoPoolException {
@@ -224,6 +230,7 @@ public class DefaultPicoPool implements PicoPool {
     /**
      * Called when a component is borrowed from the pool, but before
      * the caller receives the component
+     *
      * @param component the component being borrowed
      */
     protected void activateComponent(Object component) {
@@ -233,6 +240,7 @@ public class DefaultPicoPool implements PicoPool {
     /**
      * Called when a component is returned to the pool, before
      * the component actually enters the pool
+     *
      * @param component the component being returned
      */
     protected void passivateComponent(Object component) {

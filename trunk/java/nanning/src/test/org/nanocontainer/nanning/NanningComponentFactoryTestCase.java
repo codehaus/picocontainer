@@ -85,8 +85,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
             }
         }));
 
-        MutablePicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(
-                new NanningComponentAdapterFactory(aspectSystem, new DefaultComponentAdapterFactory()));
+        MutablePicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(new NanningComponentAdapterFactory(aspectSystem, new DefaultComponentAdapterFactory()));
         nanningEnabledPicoContainer.registerComponentImplementation(Wilma.class, WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponentImplementation(FredImpl.class);
 

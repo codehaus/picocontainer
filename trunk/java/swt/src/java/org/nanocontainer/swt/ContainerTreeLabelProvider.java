@@ -21,49 +21,49 @@ import org.picocontainer.PicoContainer;
  * @version $Revision$
  */
 public class ContainerTreeLabelProvider extends LabelProvider {
-	private final Image picocontainer = ImageDescriptor.createFromFile(getClass(), "/picocontainer.gif").createImage();
-	private final Image defaultComponentIcon = ImageDescriptor.createFromFile(getClass(), "/defaultcomponent.gif").createImage();
+    private final Image picocontainer = ImageDescriptor.createFromFile(getClass(), "/picocontainer.gif").createImage();
+    private final Image defaultComponentIcon = ImageDescriptor.createFromFile(getClass(), "/defaultcomponent.gif").createImage();
 
-	/**
-	 * Default constructor
-	 */
-	public ContainerTreeLabelProvider() {
-		super();
-	}
+    /**
+     * Default constructor
+     */
+    public ContainerTreeLabelProvider() {
+        super();
+    }
 
-	/**
-	 * Returns an image according to the value passed.
-	 *
-	 * @param value
-	 * @return
-	 */
-	public Image getImage(Object value) {
-		Image result = null;
+    /**
+     * Returns an image according to the value passed.
+     *
+     * @param value
+     * @return
+     */
+    public Image getImage(Object value) {
+        Image result = null;
 
-		if (value instanceof PicoContainer) {
-			result = picocontainer;
-		} else {
-			result = defaultComponentIcon;
-		}
+        if (value instanceof PicoContainer) {
+            result = picocontainer;
+        } else {
+            result = defaultComponentIcon;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * Returns a text according to the value passed.
-	 *
-	 * @param value
-	 * @return
-	 */
-	public String getText(Object value) {
-		String result = null;
+    /**
+     * Returns a text according to the value passed.
+     *
+     * @param value
+     * @return
+     */
+    public String getText(Object value) {
+        String result = null;
 
-		if (value instanceof PicoContainer) {
-			result = "PicoContainer";
-		} else {
-			result = value.toString();
-		}
+        if (value instanceof PicoContainer) {
+            result = "PicoContainer";
+        } else {
+            result = value.toString();
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

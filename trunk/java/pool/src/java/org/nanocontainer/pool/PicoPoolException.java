@@ -28,7 +28,7 @@ package org.nanocontainer.pool;
 import org.picocontainer.PicoException;
 
 /**
- *  <p><code>PicoPoolException</code> TODO (document class)
+ * <p><code>PicoPoolException</code> TODO (document class)
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $

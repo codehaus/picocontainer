@@ -30,7 +30,7 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
 
     public RemoteInterceptorImpl(Registry registry, PicoContainer pico, ByRefKey key, ProxyFactory proxyFactory) throws RemoteException {
         super();
-        if(registry == null) throw new NullPointerException("registry");
+        if (registry == null) throw new NullPointerException("registry");
         this.registry = registry;
         this.pico = pico;
         this.proxyFactory = proxyFactory;
@@ -47,7 +47,7 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
         Object resultOfInvocation = invocation.invoke(target);
 
         ComponentAdapter componentAdapter = getComponentAdapterByInstance(pico, resultOfInvocation);
-        if(componentAdapter != null && componentAdapter.getComponentKey() instanceof ByRefKey) {
+        if (componentAdapter != null && componentAdapter.getComponentKey() instanceof ByRefKey) {
             NanoNamingImpl naming = new NanoNamingImpl(registry, pico, proxyFactory);
             ByRefKey key = (ByRefKey) componentAdapter.getComponentKey();
             return naming.lookup(key);
@@ -57,7 +57,7 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
     }
 
     private Object[] unwrap(Object[] args) {
-        if(args == null) {
+        if (args == null) {
             return null;
         }
         for (int i = 0; i < args.length; i++) {
@@ -67,7 +67,7 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
     }
 
     private Object unwrap(Object arg) {
-        if(arg instanceof KeyHolder && proxyFactory.isProxyClass(arg.getClass())){
+        if (arg instanceof KeyHolder && proxyFactory.isProxyClass(arg.getClass())) {
             KeyHolder keyHolder = (KeyHolder) arg;
             ByRefKey key = keyHolder.getKey();
             arg = pico.getComponentInstance(key);
@@ -76,7 +76,7 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
     }
 
     public void bind(ComponentAdapter componentAdapter) throws RemoteException {
-        ByRefKey byRefKey = (ByRefKey)componentAdapter.getComponentKey();
+        ByRefKey byRefKey = (ByRefKey) componentAdapter.getComponentKey();
         Serializable key = byRefKey.getValue();
         registry.rebind(key.toString(), this);
     }

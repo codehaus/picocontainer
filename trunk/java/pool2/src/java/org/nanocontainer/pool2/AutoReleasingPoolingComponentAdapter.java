@@ -23,17 +23,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>This Component Adapter maintains a pool of component instances that are 
- * automatically released from the garbage collector. Only components implementing 
+ * <p>This Component Adapter maintains a pool of component instances that are
+ * automatically released from the garbage collector. Only components implementing
  * an interface can be pooled with this adapter and, since the components are
  * proxied, only the methods of the implemented interfaces are accessible.</p>
  * <p>Each returned instance implements automatically {@link PooledInstance}, that
- * can be used to return an instance manually to the pool.</p> 
+ * can be used to return an instance manually to the pool.</p>
+ *
  * @author J&ouml;rg Schaible
  */
 public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapter {
     private static Method getInstanceToAutorelease;
     private static Method returnInstanceToPool;
+
     static {
         try {
             getInstanceToAutorelease = Autoreleasable.class.getMethod("getInstanceToAutorelease", null);
@@ -42,20 +44,21 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
             throw new InternalError();
         }
     }
-    
+
     private transient Class[] interfaces;
 
     /**
      * Construct an AutoReleasingPoolingComponentAdapter.
-     * @param delegate The delegate adapter that provides the pooled instances.
-     * @param maxPoolSize maximum pool size. A size of -1 results in an ever growing pool. 
-     * Note that the garbage collector is called, if an instance is demanded and the pool is exhausted. 
+     *
+     * @param delegate         The delegate adapter that provides the pooled instances.
+     * @param maxPoolSize      maximum pool size. A size of -1 results in an ever growing pool.
+     *                         Note that the garbage collector is called, if an instance is demanded and the pool is exhausted.
      * @param waitMilliSeconds number of milliseconds to wait when {@link #getComponentInstance() }
-     * is called. Three different values are possible here:
-     * <ul>
-     * <li>0 : Fail immediately when exhausted.</li>
-     * <li>n : Wait for max n milliseconds until a component is available. This will fail on timeout.</li>
-     * </ul>
+     *                         is called. Three different values are possible here:
+     *                         <ul>
+     *                         <li>0 : Fail immediately when exhausted.</li>
+     *                         <li>n : Wait for max n milliseconds until a component is available. This will fail on timeout.</li>
+     *                         </ul>
      */
     public AutoReleasingPoolingComponentAdapter(ComponentAdapter delegate, int maxPoolSize, int waitMilliSeconds) {
         super(delegate, maxPoolSize, waitMilliSeconds);
@@ -71,11 +74,12 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
     public AutoReleasingPoolingComponentAdapter(ComponentAdapter delegate) {
         super(delegate);
     }
-    
+
     /**
      * {@inheritDoc}
      * If all instances of the pool are marked as busy and the pool cannot grow further,
      * the method calls the garbage collector.
+     *
      * @see org.nanocontainer.pool2.PoolingComponentAdapter#getAvailable()
      */
     public int getAvailable() {
@@ -84,9 +88,9 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
                 System.gc();
             }
             List freedInstances = new LinkedList();
-            for(Iterator iter = busy.keySet().iterator(); iter.hasNext(); ) {
+            for (Iterator iter = busy.keySet().iterator(); iter.hasNext();) {
                 Object key = iter.next();
-                WeakReference ref = (WeakReference)busy.get(key);
+                WeakReference ref = (WeakReference) busy.get(key);
                 if (ref.get() == null) {
                     freedInstances.add(key);
                 }
@@ -98,12 +102,12 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
         }
         return super.getAvailable();
     }
-    
+
     protected Object markInstanceAsBusyAndReturnIt(Object componentInstance) {
         if (interfaces == null) {
             List interfaceSet = new LinkedList();
             interfaceSet.add(Autoreleasable.class);
-            if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
+            if (getDelegate().getComponentKey() instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
                 interfaceSet.add(getDelegate().getComponentKey());
             } else {
                 interfaceSet.addAll(Arrays.asList(ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation())));
@@ -122,18 +126,19 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
 
     /**
      * {@inheritDoc}
+     *
      * @see org.nanocontainer.pool2.PoolingComponentAdapter#returnComponentInstance(java.lang.Object)
      */
     public synchronized void returnComponentInstance(Object componentInstance) {
         Object proxy = componentInstance; // Keep reference till end of function
         if (proxy instanceof Autoreleasable) {
-            componentInstance = ((Autoreleasable)proxy).getInstanceToAutorelease();
+            componentInstance = ((Autoreleasable) proxy).getInstanceToAutorelease();
         } else {
             throw new BadTypeException(Autoreleasable.class, proxy.getClass());
         }
         super.returnComponentInstance(componentInstance);
     }
-    
+
     private static interface Autoreleasable extends PooledInstance {
         public Object getInstanceToAutorelease();
     }
@@ -157,7 +162,7 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
             } else if (getInstanceToAutorelease.equals(method)) {
                 return delegatedInstance;
             } else if (returnInstanceToPool.equals(method)) {
-                WeakReference reference = (WeakReference)busy.get(delegatedInstance);
+                WeakReference reference = (WeakReference) busy.get(delegatedInstance);
                 AutoReleasingPoolingComponentAdapter.this.returnComponentInstance(reference.get());
                 return Void.TYPE;
             } else {

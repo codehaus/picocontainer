@@ -29,60 +29,60 @@ import java.util.Map;
 public class ComponentAdapterModel {
     private static final Map models = new HashMap();
 
-	private final PropertyDescriptor[] propertyDescriptors;
-	private final MethodDescriptor[] methodDescriptors;
+    private final PropertyDescriptor[] propertyDescriptors;
+    private final MethodDescriptor[] methodDescriptors;
 
     private Map propertyMap = new HashMap();
     private BeanProperty[] properties;
 
     private ComponentAdapterModel(ComponentAdapter componentAdapter) {
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(componentAdapter.getComponentImplementation());
-			propertyDescriptors = bi.getPropertyDescriptors();
-			methodDescriptors = bi.getMethodDescriptors();
-		} catch (IntrospectionException ie) {
-			throw new RuntimeException("Can't retrieve property descriptors");
-		}
-	}
+        try {
+            BeanInfo bi = Introspector.getBeanInfo(componentAdapter.getComponentImplementation());
+            propertyDescriptors = bi.getPropertyDescriptors();
+            methodDescriptors = bi.getMethodDescriptors();
+        } catch (IntrospectionException ie) {
+            throw new RuntimeException("Can't retrieve property descriptors");
+        }
+    }
 
-	public PropertyDescriptor[] getPropertyDescriptors() {
-		return propertyDescriptors;
-	}
+    public PropertyDescriptor[] getPropertyDescriptors() {
+        return propertyDescriptors;
+    }
 
-	public MethodDescriptor[] getMethodDescriptors() {
-		return methodDescriptors;
-	}
+    public MethodDescriptor[] getMethodDescriptors() {
+        return methodDescriptors;
+    }
 
-	public BeanProperty[] getProperties() {
-		if (properties == null) {
-			properties = new BeanProperty[propertyDescriptors.length];
-			for (int i = 0; i < properties.length; i++) {
-				properties[i] = new BeanProperty(propertyMap, getPropertyDescriptors()[i]);
-			}
-		}
-		return properties;
-	}
+    public BeanProperty[] getProperties() {
+        if (properties == null) {
+            properties = new BeanProperty[propertyDescriptors.length];
+            for (int i = 0; i < properties.length; i++) {
+                properties[i] = new BeanProperty(propertyMap, getPropertyDescriptors()[i]);
+            }
+        }
+        return properties;
+    }
 
-	public BeanProperty getProperty(int index) {
-		BeanProperty[] properties = getProperties();
-		return properties[index];
-	}
+    public BeanProperty getProperty(int index) {
+        BeanProperty[] properties = getProperties();
+        return properties[index];
+    }
 
-	public Object getPropertyValue(int index) {
-		Object[] properties = getProperties();
-		BeanProperty bp = (BeanProperty) properties[index];
-		return bp.getValue();
-	}
+    public Object getPropertyValue(int index) {
+        Object[] properties = getProperties();
+        BeanProperty bp = (BeanProperty) properties[index];
+        return bp.getValue();
+    }
 
-	public void setPropertyValue(int index, Object value) {
-		Object[] properties = getProperties();
-		BeanProperty bp = (BeanProperty) properties[index];
-		bp.setValue(value);
-	}
+    public void setPropertyValue(int index, Object value) {
+        Object[] properties = getProperties();
+        BeanProperty bp = (BeanProperty) properties[index];
+        bp.setValue(value);
+    }
 
     public static ComponentAdapterModel getInstance(ComponentAdapter componentAdapter) {
         ComponentAdapterModel model = (ComponentAdapterModel) models.get(componentAdapter);
-        if(model == null) {
+        if (model == null) {
             model = new ComponentAdapterModel(componentAdapter);
             models.put(componentAdapter, model);
         }

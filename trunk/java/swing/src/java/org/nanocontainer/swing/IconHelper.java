@@ -21,14 +21,14 @@ public class IconHelper {
         ImageIcon icon = (ImageIcon) images.get(path);
         if (icon == null) {
             URL url = IconHelper.class.getResource(path);
-            if(url == null) {
+            if (url == null) {
                 System.err.println("PicoContainer GUI: Couldn't load resource: " + path);
                 return null;
             }
             icon = new ImageIcon(url);
             images.put(path, icon);
         }
-        if(gray) {
+        if (gray) {
             icon = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
         }
         return icon;

@@ -161,7 +161,9 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
-    public void testIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+    // TODO test fails currently, since non accessible ctors are filtered out, because of PICO-201.
+    // Maybe we can activate it again with some kind of SecurityManager & Policy combination? 
+    public void XXXtestIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
             picoContainer.registerComponentImplementation(IllegalAccessExceptionThrowing.class);
@@ -169,6 +171,16 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             fail();
         } catch (PicoInitializationException e) {
             assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
+        }
+    }
+    public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        try {
+            picoContainer.registerComponentImplementation(IllegalAccessExceptionThrowing.class);
+            picoContainer.getComponentInstance(IllegalAccessExceptionThrowing.class);
+            fail();
+        } catch (PicoInitializationException e) {
+            assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
 
@@ -191,4 +203,21 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         assertNotNull(pico.getComponentInstance(NotYourBusiness.class));
     }
 
+    static public class Component201 {
+        public Component201(final String s) {
+        }
+        protected Component201(final Integer i, final Boolean b) {
+            fail("Wrong constructor taken.");
+        }
+    }
+    
+    // http://jira.codehaus.org/browse/PICO-201
+    public void testShouldNotConsiderNonPublicConstructors() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(Component201.class);
+        pico.registerComponentInstance(new Integer(2));
+        pico.registerComponentInstance(new Boolean(true));
+        pico.registerComponentInstance("Hello");
+        assertNotNull(pico.getComponentInstance(Component201.class));
+    }
 }

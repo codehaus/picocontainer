@@ -18,6 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -144,7 +145,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             for (int i = 0; i < constructors.length; i++) {
                 nonMatching.add(constructors[i]);
             }
-            throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString() + " for '" + getComponentImplementation() + "'");
+            throw new PicoInitializationException("Either do the specified parameters not match any of the following constructors: " + nonMatching.toString() + " or the constructs were not accessible for '" + getComponentImplementation() + "'");
         }
         return greediestConstructor;
     }
@@ -224,7 +225,8 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         // filter out all constructors that will definately not match 
         for (int i = 0; i < allConstructors.length; i++) {
             Constructor constructor = allConstructors[i];
-            if (parameters == null || constructor.getParameterTypes().length == parameters.length) {
+            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) 
+                    && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);
             }
         }

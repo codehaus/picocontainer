@@ -501,14 +501,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals(1, c.getComponentInstances().size());
     }
 
-    public void testImmutableIsCached() {
-        final MutablePicoContainer picoContainer = createPicoContainer(null);
-        ImmutablePicoContainer ipc = (ImmutablePicoContainer) picoContainer.getImmutable();
-        ImmutablePicoContainer ipc2 = (ImmutablePicoContainer) picoContainer.getImmutable();
-        assertSame(ipc,ipc2);
-    }
-
-
     public void testStartStopAndDisposeCascadedtoChildren() {
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);

@@ -84,7 +84,7 @@
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
         <unitTest>
             <includes>
-                <!--<include>**/*NanoGroovyBuilderTestCase.*</include>-->
+                <!--include>**/*NanoGroovyBuilderTestCase.*</include -->
                 <include>**/*Test.*</include>
                 <include>**/*TestCase.*</include>
             </includes>

@@ -128,12 +128,6 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     ComponentAdapter unregisterComponentByInstance(Object componentInstance);
 
-    /**
-     * Make/Get an Immutable wrapper for this container.
-     * @return an immutable wrapper for this container
-     */
-    PicoContainer getImmutable();
-
     MutablePicoContainer makeChildContainer();
     MutablePicoContainer makeChildContainer(String name);
     void addChildContainer(PicoContainer child);

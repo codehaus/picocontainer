@@ -25,8 +25,8 @@ public class NanoNanoTestCase extends TestCase {
             ClassNotFoundException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
-        nc.registerComponent("picocontainer.hierarchical.HierarchicalPicoContainer$Default");
-        nc.registerComponent("nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
+        nc.registerComponent("org.picocontainer.hierarchical.HierarchicalPicoContainer$Default");
+        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
 
         nc.instantiateComponents();
 

@@ -19,6 +19,11 @@
 #
 
 cd $HOME/cvs/pico
+
+# Using my own script because I was stupid enough to upload an old format key
+export CVS_RSH = $HOME/ssh1.sh
+#export CVS_RSH = ssh
+
 cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P
 
 # Clean old builds and make the target folder. Logs go here too.

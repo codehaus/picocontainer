@@ -223,12 +223,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     public void testSameInstanceCanBeUsedAsDifferentType() {
         MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(WashableTouchable.class);
-        pico.registerComponentImplementation(NeedsWashable.class);
-        pico.registerComponentImplementation(NeedsTouchable.class);
+        pico.registerComponentImplementation("wt", WashableTouchable.class);
+        pico.registerComponentImplementation("nw", NeedsWashable.class);
+        pico.registerComponentImplementation("nt", NeedsTouchable.class);
 
-        NeedsWashable nw = (NeedsWashable) pico.getComponentInstance(NeedsWashable.class);
-        NeedsTouchable nt = (NeedsTouchable) pico.getComponentInstance(NeedsTouchable.class);
+        NeedsWashable nw = (NeedsWashable) pico.getComponentInstance("nw");
+        NeedsTouchable nt = (NeedsTouchable) pico.getComponentInstance("nt");
         assertSame(nw.washable, nt.touchable);
     }
 

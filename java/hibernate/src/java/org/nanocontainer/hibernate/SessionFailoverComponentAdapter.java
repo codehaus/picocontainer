@@ -32,6 +32,10 @@ import java.lang.reflect.Proxy;
  * 
  * @author Konstantin Pribluda
  * @version $Revision$ 
+ * @deprecated this component adapter is inconvenient for scripted registration
+ * and can not be used with container recorder ( which is major performance drawback in web environment )
+ * delegating constructable implementation of net.sf.hibernate.Session is being developed right now, 
+ and will replace this adapter soon. 
  */
 public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter  {
 
@@ -54,10 +58,9 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
                         
                         public synchronized Session getSession() {
                             if(target == null) {
-                                System.err.println("retrieve new session");
                                 target = (Session)getDelegate().getComponentInstance(pico);
                             }
-                            return target;
+                          return target;
                         }
                         public Object invoke(Object proxy,
                             Method method,Object[] args) throws Throwable {
@@ -65,7 +68,6 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
                                 Object retval = method.invoke(getSession(),args);
                                 if(method.getName().equals("close")) {
                                     target = null;
-                                    System.err.println("invalidate session on explicit close");
                                 }
                                 return retval;
                             } catch(InvocationTargetException ite) {
@@ -73,7 +75,7 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
                                 if(ite.getCause() instanceof HibernateException && target != null)  {
                                     target.clear();
                                     target.close();
-                                    System.err.println("invalidate proxy on error");
+                                    target = null;
                                 }
                                 throw ite;
                             }

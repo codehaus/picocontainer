@@ -233,4 +233,32 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
         } catch (UnsatisfiableDependenciesException expected) {
         }
     }
+
+    public void testInstantiateWithChildContainerAndStartStopAndDisposeOrderIsCorrect() {
+
+        Xxx.reset();
+
+
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new NanoContainerBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(Xxx$A)\n" +
+                "    container() {\n" +
+                "         component(Xxx$B)\n" +
+                "    }\n" +
+                "    component(Xxx$C)\n" +
+                "}\n");
+
+        // A and C have no no dependancies. B Depends on A.
+
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
+
+        //pico.start();
+        pico.stop();
+        pico.dispose();
+
+        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
+    }
+
 }

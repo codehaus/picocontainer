@@ -45,28 +45,7 @@ class NanoContainerBuilderTestCase extends GroovyTestCase {
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
 
-    void testInstantiateWithChildContainer() {
 
-        Xxx.reset()
-
-        // A and C have no no dependancies. B Depends on A.
-
-        builder = new NanoContainerBuilder()
-        nano = builder.container {
-            component(Xxx$A)
-            container() {
-                component(Xxx$B)
-            }
-            component(Xxx$C)
-        }
-
-        startAndDispose(nano)
-
-        // TODO this method seems non-deterministic, returning either of the following
-        //
-        //assertEquals("Should match the expression", "<A!A<C<A!A!C", Xxx.componentRecorder)
-        //assertEquals("Should match the expression", "<A!A<A<C!C!A", Xxx.componentRecorder)
-    }
 
     void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() {
 

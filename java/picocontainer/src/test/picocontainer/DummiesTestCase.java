@@ -23,7 +23,7 @@ public class DummiesTestCase extends TestCase
     }
 
     public void testDummyStartableLifecycleManager() throws PicoStartException, PicoStopException {
-        DummyStartableLifecycleManagerImpl ds = new DummyStartableLifecycleManagerImpl();
+        DummyStartableLifecycleManager ds = new DummyStartableLifecycleManager();
         Object o = new Object();
         ds.startComponent(o);
         ds.stopComponent(o);

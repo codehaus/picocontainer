@@ -41,14 +41,14 @@ public class PicoContainerImpl implements PicoContainer {
 
     public static class Default extends PicoContainerImpl {
         public Default() {
-            super(new DummyContainer(), new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
+            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DummyComponentDecorator());
         }
 
     }
 
     public static class WithParentContainer extends PicoContainerImpl {
         public WithParentContainer(Container parentContainer) {
-            super(parentContainer, new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
+            super(parentContainer, new DummyStartableLifecycleManager(), new DummyComponentDecorator());
         }
     }
 

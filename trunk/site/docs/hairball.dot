@@ -1,0 +1,18 @@
+graph G {
+	"database layer" -- "model layer";
+	"database layer" -- "object relation layer";
+	"database layer" -- "other";
+	"database layer" -- "scheduler layer";	
+	"model layer" -- "other";
+	"model layer" -- "scheduler layer";
+	"model layer" -- "user interface layer";
+	"object relation layer" -- "other";
+	"object relation layer" -- "model layer";	
+	"object relation layer" -- "scheduler layer";
+	"object relation layer" -- "user interface layer";
+	"scheduler layer" -- "other";
+	"scheduler layer" -- "user interface layer";
+	"user interface layer" -- "database layer";
+	"user interface layer" -- "other";
+}
+

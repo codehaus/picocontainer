@@ -128,8 +128,10 @@ public class CollectionComponentParameter
                 result = getArrayInstance(container, expectedType, adapterMap);
             } else if (Map.class.isAssignableFrom(collectionType)) {
                 result = getMapInstance(container, expectedType, adapterMap);
-            } else {
+            } else if (Collection.class.isAssignableFrom(collectionType)) {
                 result = getCollectionInstance(container, expectedType, adapterMap);
+            } else {
+                throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
             }
         }
         return result;
@@ -149,7 +151,8 @@ public class CollectionComponentParameter
      */
     public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final Class collectionType = getCollectionType(expectedType);
-        return collectionType != null && (emptyCollection || resolveAdapters(container, adapter, expectedType).length > 0);
+        final Class valueType = getValueType(expectedType);
+        return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).size() > 0);
     }
 
     /**
@@ -166,8 +169,9 @@ public class CollectionComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final ComponentAdapter[] componentAdapters = resolveAdapters(container, adapter, expectedType);
-            if (componentAdapters.length == 0) {
+            final Class valueType = getValueType(expectedType);
+            final Collection componentAdapters = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
+            if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
                     throw new PicoIntrospectionException(expectedType.getName()
                             + " not resolvable, no components of type "
@@ -175,8 +179,9 @@ public class CollectionComponentParameter
                             + " available");
                 }
             } else {
-                for (int i = 0; i < componentAdapters.length; i++) {
-                    componentAdapters[i].verify(container);
+                for (final Iterator iter = componentAdapters.iterator(); iter.hasNext();) {
+                    final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+                    componentAdapter.verify(container);
                 }
             }
         } else {
@@ -204,13 +209,15 @@ public class CollectionComponentParameter
         return adapter != null; // use parameter, prevent compiler warning
     }
 
-    private ComponentAdapter[] resolveAdapters(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
-        final Class valueType = getValueType(expectedType);
-        final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType);
-        return (ComponentAdapter[]) adapterMap.values().toArray(new ComponentAdapter[adapterMap.size()]);
-    }
-
-    private Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
+    /**
+     * Collect the matching ComponentAdapter instances.
+     * @param container container to use for dependency resolution
+     * @param adapter {@link ComponentAdapter} to exclude
+     * @param keyType the compatible type of the key
+     * @param valueType the compatible type of the component
+     * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
+     */
+    protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
         final Map adapterMap = new HashMap();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
@@ -258,10 +265,9 @@ public class CollectionComponentParameter
     private Object[] getArrayInstance(final PicoContainer container, final Class expectedType, final Map adapterList) {
         final Object[] result = (Object[]) Array.newInstance(expectedType.getComponentType(), adapterList.size());
         int i = 0;
-        for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
-            final Map.Entry entry = (Map.Entry) iterator.next();
-            final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-            result[i] = componentAdapter.getComponentInstance(container);
+        for (final Iterator iterator = adapterList.values().iterator(); iterator.hasNext();) {
+            final ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            result[i] = container.getComponentInstance(componentAdapter.getComponentKey());
             i++;
         }
         return result;
@@ -287,10 +293,9 @@ public class CollectionComponentParameter
         }
         try {
             Collection result = (Collection) collectionType.newInstance();
-            for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
-                final Map.Entry entry = (Map.Entry) iterator.next();
-                final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-                result.add(componentAdapter.getComponentInstance(container));
+            for (final Iterator iterator = adapterList.values().iterator(); iterator.hasNext();) {
+                final ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+                result.add(container.getComponentInstance(componentAdapter.getComponentKey()));
             }
             return result;
         } catch (InstantiationException e) {
@@ -320,8 +325,9 @@ public class CollectionComponentParameter
             Map result = (Map) collectionType.newInstance();
             for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
                 final Map.Entry entry = (Map.Entry) iterator.next();
+                final Object key = entry.getKey();
                 final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-                result.put(componentAdapter.getComponentKey(), componentAdapter.getComponentInstance(container));
+                result.put(key, container.getComponentInstance(key));
             }
             return result;
         } catch (InstantiationException e) {

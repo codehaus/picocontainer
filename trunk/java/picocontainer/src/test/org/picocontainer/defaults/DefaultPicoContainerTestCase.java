@@ -15,6 +15,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
@@ -88,6 +90,20 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(ArrayList.class, pico.getComponentInstanceOfType(ArrayList.class).getClass());
     }
 
+    /*
+     When pico tries to resolve DecoratedTouchable it find as dependency itself and SimpleTouchable.
+     Problem is basically the same as above. Pico should not consider self as solution.
+     
+     JS
+     */
+    public void TODOtestUnambiguouSelfDependency() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        pico.registerComponentImplementation(SimpleTouchable.class);
+        pico.registerComponentImplementation(DecoratedTouchable.class);
+        Touchable t = (Touchable) pico.getComponentInstance(DecoratedTouchable.class);
+        assertNotNull(t);
+    }
+    
     public static class Thingie {
         public Thingie(List c) {
             assertNotNull(c);

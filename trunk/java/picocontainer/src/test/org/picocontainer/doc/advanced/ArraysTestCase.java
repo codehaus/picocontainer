@@ -117,8 +117,8 @@ public class ArraysTestCase
 
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
-        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-                new CollectionComponentParameter(), new CollectionComponentParameter()});
+        Parameter parameter = new CollectionComponentParameter();
+        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
         pico.registerComponentInstance(new Fish[]{});
         pico.registerComponentInstance(new Cod[]{});
 
@@ -146,8 +146,8 @@ public class ArraysTestCase
 
         //      START SNIPPET: emptyArray
 
-        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-                new ComponentParameter(true), new ComponentParameter(true)});
+        Parameter parameter = new CollectionComponentParameter(true);
+        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
 
         Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: emptyArray

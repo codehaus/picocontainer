@@ -161,28 +161,20 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * {@inheritDoc}
      * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
      */
-    public void verify(final PicoContainer container) throws PicoVerificationException {
-        try {
-            if (verifyingGuard == null) {
-                verifyingGuard = new Guard() {
-                    public Object run() {
-                        final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
-                        for (int i = 0; i < currentParameters.length; i++) {
-                            currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
-                        }
-                        return null;
+    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+        if (verifyingGuard == null) {
+            verifyingGuard = new Guard() {
+                public Object run() {
+                    final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
+                    for (int i = 0; i < currentParameters.length; i++) {
+                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
                     }
-                };
-            }
-            verifyingGuard.setArguments(container);
-            verifyingGuard.observe(getComponentImplementation());
-        } catch (PicoVerificationException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            final List list = new LinkedList();
-            list.add(ex);
-            throw new PicoVerificationException(list);
+                    return null;
+                }
+            };
         }
+        verifyingGuard.setArguments(container);
+        verifyingGuard.observe(getComponentImplementation());
     }
     
     private void initializeSetterAndTypeLists() {

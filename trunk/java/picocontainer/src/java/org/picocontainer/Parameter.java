@@ -27,7 +27,7 @@ package org.picocontainer;
  */
 public interface Parameter {
     /**
-     * Retrieve the component parameter that statisfies the expected type.
+     * Retrieve the object from the Parameter that statisfies the expected type.
      *
      * @param container the container from which dependencies are resolved.
      * @param adapter the ComponentAdapter that is asking for the instance
@@ -39,7 +39,7 @@ public interface Parameter {
     Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoInitializationException;
 
     /**
-     * Check wether the given Parameter can be statisfied by the container
+     * Check if the Parameter can statisfy the expected type using the container.
      *
      * @param container the container from which dependencies are resolved.
      * @param adapter     the container that should be searched
@@ -50,15 +50,15 @@ public interface Parameter {
     boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType);
 
     /**
-     * Verify that the given Parameter can be statisfied by the container
+     * Verify that the Parameter can statisfied the expected type using the container
      *
      * @param container the container from which dependencies are resolved.
      * @param adapter     the container that should be searched
      * @param expectedType the required type
-     * @throws PicoVerificationException if parameter and its dependencies cannot be resolved
+     * @throws PicoIntrospectionException if parameter and its dependencies cannot be resolved
      * @since 1.1
      */
-    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoVerificationException;
+    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException;
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that 

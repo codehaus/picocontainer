@@ -6,6 +6,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.CollectionComponentParameterTestCase.Bowl;
+import org.picocontainer.defaults.CollectionComponentParameterTestCase.Cod;
+import org.picocontainer.defaults.CollectionComponentParameterTestCase.Shark;
 
 import java.util.Collection;
 import java.util.Map;
@@ -99,5 +102,46 @@ public class MapsTestCase
         assertEquals(fishMap, codMap);
         assertSame(cod,fishMap.get("Nemo"));
         //      END SNIPPET: ensureKeyType
+    }
+    
+    public void testShouldCreateBowlWithFishesFromParent() {
+
+        // START SNIPPET: scope
+
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation("Tom", Cod.class);
+        parent.registerComponentImplementation("Harry", Cod.class);
+        MutablePicoContainer child = new DefaultPicoContainer(parent);
+        child.registerComponentImplementation("Dick", Cod.class);
+        child.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new ComponentParameter(Fish.class, false),
+            new ComponentParameter(Cod.class, false)
+        });
+        Bowl bowl = (Bowl) child.getComponentInstance(Bowl.class);
+        assertEquals(3, bowl.fishes.size());
+        assertEquals(3, bowl.cods.size());
+
+        // END SNIPPET: scope
+    }
+    
+    public void testShouldCreateBowlWith2CodsOnly() {
+
+        // START SNIPPET: scopeOverlay
+
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation("Tom", Cod.class);
+        parent.registerComponentImplementation("Dick", Cod.class);
+        parent.registerComponentImplementation("Harry", Cod.class);
+        MutablePicoContainer child = new DefaultPicoContainer(parent);
+        child.registerComponentImplementation("Dick", Shark.class);
+        child.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new ComponentParameter(Fish.class, false),
+            new ComponentParameter(Cod.class, false)
+        });
+        Bowl bowl = (Bowl) child.getComponentInstance(Bowl.class);
+        assertEquals(3, bowl.fishes.size());
+        assertEquals(2, bowl.cods.size());
+
+        // END SNIPPET: scopeOverlay
     }
 }

@@ -10,9 +10,8 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,13 +20,14 @@ import java.util.List;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class CyclicDependencyException extends PicoInitializationException {
+public class CyclicDependencyException extends PicoIntrospectionException {
     private final List stack;
 
     /**
      * @since 1.1
      */
     public CyclicDependencyException(Class element) {
+        super((Throwable)null);
         this.stack = new LinkedList();
         push(element);
     }

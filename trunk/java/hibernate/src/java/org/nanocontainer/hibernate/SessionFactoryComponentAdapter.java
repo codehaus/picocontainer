@@ -18,7 +18,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
@@ -75,7 +74,7 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
         }
     }
 
-    public void verify(final PicoContainer picoContainer) throws PicoVerificationException {
+    public void verify(final PicoContainer picoContainer) throws PicoIntrospectionException {
         HashSet unsatisfiableDependencies = new HashSet();
         unsatisfiableDependencies.add(Configuration.class);
 

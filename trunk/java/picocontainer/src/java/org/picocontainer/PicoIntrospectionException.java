@@ -18,7 +18,7 @@ package org.picocontainer;
  * @version $Revision: 1.3 $
  * @since 1.0
  */
-public class PicoIntrospectionException extends PicoInitializationException {
+public class PicoIntrospectionException extends PicoException {
 
     /**
      * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the

@@ -20,7 +20,9 @@ import java.util.Set;
 
 
 /**
- * Visitor to verify {@link PicoContainer}instances. The visitor walks down the logical container hierarchy.
+ * Visitor to verify {@link PicoContainer}instances. The visitor walks down the logical
+ * container hierarchy.
+ * 
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
@@ -39,10 +41,13 @@ public class VerifyingVisitor
     }
 
     /**
-     * {@inheritDoc}
+     * Traverse through all components of the {@link PicoContainer} hierarchy and verify the
+     * components.
+     * 
+     * @throws PicoVerificationException if some components could not be verified.
      * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
      */
-    public Object traverse(Object node) {
+    public Object traverse(Object node) throws PicoVerificationException {
         nestedVerificationExceptions.clear();
         verifiedComponentAdapters.clear();
         try {
@@ -59,6 +64,7 @@ public class VerifyingVisitor
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
     public void visitContainer(PicoContainer pico) {
@@ -68,6 +74,7 @@ public class VerifyingVisitor
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
@@ -75,8 +82,8 @@ public class VerifyingVisitor
         if (!verifiedComponentAdapters.contains(componentAdapter)) {
             try {
                 componentAdapter.verify(currentPico);
-            } catch (PicoVerificationException e) {
-                nestedVerificationExceptions.add(e.getNestedExceptions());
+            } catch (RuntimeException e) {
+                nestedVerificationExceptions.add(e);
             }
             componentAdapter.accept(componentAdapterCollector);
         }
@@ -84,6 +91,7 @@ public class VerifyingVisitor
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.PicoVisitor#visitParameter(org.picocontainer.Parameter)
      */
     public void visitParameter(Parameter parameter) {
@@ -96,8 +104,10 @@ public class VerifyingVisitor
         public Object traverse(Object node) {
             return null;
         }
+
         public void visitContainer(PicoContainer pico) {
         }
+
         ///CLOVER:ON
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {

@@ -9,7 +9,7 @@
 package org.nanocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.xml.dom.DomXMLReader;
+import com.thoughtworks.xstream.io.xml.DomReader;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 public class XStreamXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
     public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
         XStream xs = new XStream();
-        Object result = xs.fromXML(new DomXMLReader(elem));
+        Object result = xs.unmarshal(new DomReader(elem));
         return result;
     }
 }

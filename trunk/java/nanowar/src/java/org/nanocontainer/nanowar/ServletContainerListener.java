@@ -61,6 +61,7 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Philipp Meier
  * @author Paul Hammant
  * @author Mauro Talevi
+ * @author Konstantin Pribluda
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
     private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
@@ -161,11 +162,13 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
         session.setAttribute(KILLER_HELPER, new ContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
+                HttpSession session = bindingEvent.getSession();
+                containerRef = new SimpleReference();
+                containerRef.set(new SessionScopeObjectReference(session, SESSION_CONTAINER).get());
+                //System.err.println("**** bound container to:" + containerRef.get());
             }
 
             public void valueUnbound(HttpSessionBindingEvent event) {
-                HttpSession session = event.getSession();
-                ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
                 try {
                     killContainer(containerRef);
                 } catch (IllegalStateException e) {
@@ -200,5 +203,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     }
 
     private abstract class ContainerKillerHelper implements HttpSessionBindingListener, Serializable {
+        SimpleReference containerRef;
     }
 }

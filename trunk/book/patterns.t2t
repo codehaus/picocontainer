@@ -1,4 +1,4 @@
-Constructor Dependency Injection, with PicoContainer 
+Constructor Dependency Injection, with PicoContainer
 Design Patterns
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
@@ -14,7 +14,131 @@ This chapter deals with true patterns and pseudo patterns pertinent to IoC and C
 
 === Interface & Implementation separation ===
 
+Taken from ...
+http://cvs.apache.org/viewcvs.cgi/avalon/src/xdocs/framework/Attic/separation-of-interface-and-implementation.xml?hideattic=0
+.. (1.3) original donation by Paul to Apache - 6th April 2002
+
+The core concept of interface and implementation separation is built into
+Java itself in that it has interfaces and classes.  Many toolkits have
+been developed along the lines of an API / implementation separation.
+One such toolkit is the SAX API and the multiple XML parsers that implement
+it. Developers are quite happy using Apache's Xerces via the SAX API and
+understand that SAX represents the interface and Xerces an implementation.
+We notice that a lot of developers are happy to use interface/impl
+separated tools, but not to make them.  We will try to justify in this
+document why we think people making applications should define
+interface/impl boundaries early in the design cycle.
+
+==== Justification ====
+
+The main reason we do it is because:
+  it forces you to decouple different modules/components/objects
+  if specified correctly allows you to easily change the implementation of the interface/contract in the future
+  makes it possible for a user to read documentation about interface without having the implementation details clutter up their
+  perception
+  increases the possibility of reuse in a larger application
+
+If you are building objects with the aim of reuse then [2] is important but
+most people don't build for reuse (and most XP advocates say you should just
+plan to use not reuse) and thus [1] and [2] are more important. If you feel
+like documenting that and expanding this then feel free to.
+
+==== Example ====
+
+Let us hope this is not necessary:
+
+package helloworld;
+public interface HelloWorld {
+    void sayHello(String greeting);
+}
+
+package helloworld.impl.default;
+public class DefaultHelloWorld implements HelloWorld {
+    void sayHello(String greeting) {
+System.out.println("HelloWorld Greeting: " + greeting);
+    }
+}
+
+package helloworld.impl.remote;
+public class RemoteHelloWorld implements HelloWorld {
+    private RemoteMessager mRemoteMessager;
+    public RemoteHelloWorld(RemoteMessager rm) {
+RemoteMessager = rm;
+    }
+    void sayHello(String greeting) {
+rm.sendMessage("HelloWorld Greeting: " + greeting);
+    }
+}
+
+We are referring to this pattern at <strong>interface/impl separation</strong>.
+Wiley's Patterns in Java book refers to it simply as 'Interface', but we feel
+that the word interface is overloaded enough in English and computing.
+
+It might be true to say that this is 'API/implementation separation', but
+this too could be confusing as the aforementioned SAX is not quite a
+pure set of interfaces. It has a static factory that thunks in an
+implementation that all subsequent calls to the factory method will be
+forced to use. See Anto-patterns below.
+
+Better might be 'separation of implementation and the interface/contract' as
+that is quite correct, but a tad unwieldy.
+
+=== Implementation hiding ===
+
+Once a tool is split into interface and impl, it is possible for a container
+to hide the implementation.  Most containers already use dynamic proxys
+(Available in the JDK since 1.3), but we are talking about having the classes
+of the implementation hidden from classes using the interface.
+
+To do this, it is easiest to mount the impl classes in a separate classloader
+to the classloader that the interface-using classes are mounted in.  The
+interfaces being mounted in a classloader that is visible to both.
+
+This is not a new proposition.  Sun defined the servlet spec, and included
+rules about implementation hiding for hosted servlets.  Essentially,
+instantiated servlets are only allowed to 'see' classes from the JDK, their
+own WAR file and those of the Servlet API itself.  Tomcat correctly hides
+the implementation of the Servlet API from the hosted servlets.
+
+To actually achieve this separation, many containers require that the interface and impl are in separate jars.
+Or to put it another way, there is no point separating your interface and impl
+classes if you are going to distribute them in the same jar.
+
+==== Kernel, Client API, Hosted Components ====
+
+This is building the previous section, and in short is referred to as K/CAPI/HC.
+Basically the Kernel mounts hosted components and satisfies their need for a
+client API. However the kernel wants to hide its implementation from the hosted
+components.
+
+An EJB container is another good example of this.  EntityBean, SessionBean etc is
+the client API.  The hosted components are the beans, and the container has a
+kernel.  It builds a complex tree of classloaders to separate its implementation,
+the client API, the JDK's runtime jar (that always being in the system or
+primordial classloader), and the hosted components.
+
+The central message of this is that it you have interface/impl separated your
+tool, and are doing tricky things with more classloaders in the implementation,
+please make sure ytou do not assume that the parent classloader of any classloader
+is the system classoader.  If your reusable tool has been taken by another team
+and at some non root place in a classloader tree, then the tools will fail if
+you have made such assumptions.
+
+==== Where Interface/Impl Separation Still ====
+
+SAX, mentioned in multiple contexts in this chapter, is also an example of
+where the design can go wrong.  The Factory is static (that in itself is an
+anti-pattern to IoC).  Despite giving the appearance of having the ability
+to generate a parser based on the implementation's class name, only the first
+caller of that method will regsiter a parser for the whole environment to use.
+
+Given that the SAX API is now in the JDK, the environment we allude to above
+is the whole JVM.  This is a problem because in a very complex application
+with differing concurrent needs for implementation of parsers, not all can be
+met if the SAX API is used for making parsers.
+
 == Applicable Maxims For CDI ==
 
 === Seperation Of Concerns ===
+
 

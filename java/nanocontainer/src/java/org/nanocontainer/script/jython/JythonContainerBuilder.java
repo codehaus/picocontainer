@@ -2,7 +2,7 @@ package org.picoextras.script.jython;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.script.ScriptedAssemblingLifecycleContainerBuilder;
+import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
 import org.python.util.PythonInterpreter;
 import org.python.core.PySystemState;
 
@@ -17,7 +17,7 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class JythonContainerBuilder extends ScriptedAssemblingLifecycleContainerBuilder {
+public class JythonContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
     public JythonContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }

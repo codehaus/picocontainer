@@ -11,21 +11,21 @@ package org.picoextras.integrationkit;
 import org.picocontainer.MutablePicoContainer;
 
 /**
- * Interface for assembling a container.
+ * Interface for composing a container.
  * See <a href="http://wiki.opensymphony.com/space/PicoContainer+Integration">WebWork PicoContainer Integration</a>
  * for sample usage.
  * @author Joe Walnes <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public interface ContainerAssembler {
+public interface ContainerComposer {
 
     /**
-     * Assemble the container. This typically involves registering
-     * components.
+     * Compose the container. This typically involves assembly (registration)
+     * and configuration (setting primitive arguments) of components.
      *
-     * @param container container to assemble
-     * @param assemblyScope scope of the container. This variable can be used as a hint to determine
+     * @param container container to compose
+     * @param compositionScope scope of the container. This variable can be used as a hint to determine
      *      exactly what components should be registered.
      */
-    void assembleContainer(MutablePicoContainer container, Object assemblyScope);
+    void composeContainer(MutablePicoContainer container, Object compositionScope);
 
 }

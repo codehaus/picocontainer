@@ -10,9 +10,7 @@
 
 package picocontainer;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 
 /**
  * PicoContainer - guaranteed to resolve the needs of components

@@ -12,3 +12,5 @@
 #
 # comment lines begin with '#'
 cvsspam.conf
+damagecontrol/picocontainer-java.conf
+damagecontrol/picocontainer-ruby.conf

@@ -38,9 +38,6 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public Object getComponentInstance(Object componentKey) {
-        if (componentKey instanceof String && ((String) componentKey).indexOf('/') != -1) {
-            throw new PicoInitializationException("Full Qualified Traversal not supported by ImmutablePicoContainer");
-        }
         return delegate.getComponentInstance(componentKey);
     }
 

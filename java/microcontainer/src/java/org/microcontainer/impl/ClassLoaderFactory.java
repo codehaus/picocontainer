@@ -23,32 +23,36 @@ public class ClassLoaderFactory {
 	public static final String PROMOTED_PATH = "/MCA-INF/promoted/";
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
-	protected McaDeployer mcaDeployer = null; // todo fix this should be configurable
+	protected McaDeployer mcaDeployer = null;
 
 	public ClassLoaderFactory(McaDeployer mcaDeployer) {
 		this.mcaDeployer = mcaDeployer;
 	}
 
 	public ClassLoader build(String contextName) {
-        HiddenPromotedClassLoader hiddenPromotedClassLoader = new HiddenPromotedClassLoader(getURLs(contextName, PROMOTED_PATH), this.getClass().getClassLoader());
-		ClassLoader promotedClassLoader = new PromotedClassLoader(hiddenPromotedClassLoader, this.getClass().getClassLoader());
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		URL[] urls = getURLs(contextName, PROMOTED_PATH);
+
+        HiddenPromotedClassLoader hiddenPromotedClassLoader = new HiddenPromotedClassLoader(urls, classLoader);
+		ClassLoader promotedClassLoader = new PromotedClassLoader(hiddenPromotedClassLoader, classLoader);
+
 		return new StandardMicroClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
 	}
 
 	protected URL[] getStandardApiURLs(String context) {
 		URL[] componentURLs = getURLs(context, COMPONENT_PATH);
-		URL[] promotedURLs = getURLs(context, LIB_PATH);
-		int total = componentURLs.length + promotedURLs.length;
+		URL[] libURLs = getURLs(context, LIB_PATH);
+		int total = componentURLs.length + libURLs.length;
 		URL[] urls = new URL[total];
 
-		// build for promoted
-		for(int i = 0; i < promotedURLs.length; i++) {
-			urls[i] = promotedURLs[i];
+		// build for lib directory
+		for(int i = 0; i < libURLs.length; i++) {
+			urls[i] = libURLs[i];
 		}
 
-		// build for component
+		// build for components directory
 		for(int i = 0; i < componentURLs.length; i++) {
-			urls[i + promotedURLs.length] = componentURLs[i];
+			urls[i + libURLs.length] = componentURLs[i];
 		}
 
 		return urls;

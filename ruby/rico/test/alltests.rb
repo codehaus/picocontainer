@@ -1,3 +1,3 @@
-require 'rico/containertest'
-require 'rico/chainedcontainertest'
-require 'rico/xmlconfiguratortest'
+require 'rico/test/containertest'
+require 'rico/test/chainedcontainertest'
+require 'rico/test/xmlconfiguratortest'

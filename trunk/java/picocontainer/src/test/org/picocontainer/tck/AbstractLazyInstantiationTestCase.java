@@ -1,9 +1,9 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -41,8 +41,7 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
         try {
             pico.registerComponentInstance(null, new WilmaImpl());
             fail("should have thrown NullPointerException");
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             // worked
         }
     }

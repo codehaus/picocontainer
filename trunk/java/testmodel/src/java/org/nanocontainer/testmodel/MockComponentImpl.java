@@ -10,7 +10,6 @@
 
 package org.picoextras.testmodel;
 
-import org.picoextras.testmodel.MockComponent;
 import java.util.ArrayList;
 import java.util.Collection;
 

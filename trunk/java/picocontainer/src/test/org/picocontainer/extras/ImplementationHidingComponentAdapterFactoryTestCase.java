@@ -10,8 +10,13 @@
 
 package org.picocontainer.extras;
 
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
-import org.picocontainer.defaults.*;
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     private ImplementationHidingComponentAdapterFactory implementationHiddingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
@@ -21,6 +26,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         Woman getWoman();
 
         void kiss();
+
         boolean wasKissed();
     }
 

@@ -11,8 +11,8 @@
 package org.picoextras.script.xml;
 
 import junit.framework.TestCase;
-import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.script.PicoCompositionException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
 import org.w3c.dom.Element;
@@ -100,7 +100,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         Object barTestComp = childContainer.getComponentInstance("bar");
         assertNotNull("Container should have a 'bar' component", barTestComp);
 
-        assertEquals("foo classloader should be parent of bar",fooTestComp.getClass().getClassLoader(),
+        assertEquals("foo classloader should be parent of bar", fooTestComp.getClass().getClassLoader(),
                 barTestComp.getClass().getClassLoader().getParent());
 
     }
@@ -134,7 +134,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <pseudocomponent factory='org.picoextras.script.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
-                "      <config-or-whatever/>"+
+                "      <config-or-whatever/>" +
                 "    </pseudocomponent>" +
                 "</container>"));
 
@@ -145,6 +145,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertEquals("Hello", picoContainer.getComponentInstances().get(0).toString());
 
     }
+
     public static class TestFactory implements XmlPseudoComponentFactory {
         public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
             return "Hello";

@@ -1,20 +1,19 @@
 package org.picoextras.typ3msg;
 
 import junit.framework.TestCase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.picoextras.type3msg.MulticastingProxy;
 import org.picoextras.type3msg.MulticastingPicoException;
+import org.picoextras.type3msg.MulticastingProxy;
 import org.picoextras.type3msg.RoundRobinMulticastingProxy;
 import org.picoextras.type3msg.Type3MsgPicoContainer;
 import org.picoextras.type3msg.sample.Controller;
-import org.picoextras.type3msg.sample.WorkerLogger;
-import org.picoextras.type3msg.sample.WorkerDoer;
-import org.picoextras.type3msg.sample.Worker;
 import org.picoextras.type3msg.sample.Database;
 import org.picoextras.type3msg.sample.PretendDatabase;
+import org.picoextras.type3msg.sample.Worker;
+import org.picoextras.type3msg.sample.WorkerDoer;
+import org.picoextras.type3msg.sample.WorkerLogger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chris Stevenson, Stacy Curl
@@ -30,20 +29,17 @@ public class Type3MsgPicoContainerTest extends TestCase {
         testGirl3 = new TestGirl(3);
     }
 
-    public void testCannotAddAComponentWithWrongInterface()
-    {
+    public void testCannotAddAComponentWithWrongInterface() {
         MulticastingProxy multicastingProxy = new MulticastingProxy(Kissable.class);
         try {
             multicastingProxy.add("foo");
             fail("Should throw an Exception");
-        }
-        catch(MulticastingPicoException e) {
+        } catch (MulticastingPicoException e) {
             //expected
         }
     }
 
-    public void testMulticastingProxySendsKissToAllComponents()
-    {
+    public void testMulticastingProxySendsKissToAllComponents() {
         MulticastingProxy multicastingProxy = new MulticastingProxy(Kissable.class);
 
         multicastingProxy.add(testGirl1);
@@ -60,8 +56,7 @@ public class Type3MsgPicoContainerTest extends TestCase {
 
     }
 
-    public void testRoundRobinProxySendsKissToOneOfTheComponents()
-    {
+    public void testRoundRobinProxySendsKissToOneOfTheComponents() {
         RoundRobinMulticastingProxy multicastingProxy = new RoundRobinMulticastingProxy(Kissable.class);
 
         multicastingProxy.add(testGirl1);
@@ -81,8 +76,7 @@ public class Type3MsgPicoContainerTest extends TestCase {
         assertTrue(testGirl2.wasKissed());
     }
 
-    public void testPicoContainerWithKnowledgeOfCasting()
-    {
+    public void testPicoContainerWithKnowledgeOfCasting() {
         Type3MsgPicoContainer c = new Type3MsgPicoContainer();
 
         c.registerComponentImplementation(TestBoy.class);
@@ -98,8 +92,7 @@ public class Type3MsgPicoContainerTest extends TestCase {
 
     }
 
-    public void testWhyWouldYouUseMulticasting()
-    {
+    public void testWhyWouldYouUseMulticasting() {
         Type3MsgPicoContainer c = new Type3MsgPicoContainer();
 
         c.registerComponentImplementation(Controller.class);

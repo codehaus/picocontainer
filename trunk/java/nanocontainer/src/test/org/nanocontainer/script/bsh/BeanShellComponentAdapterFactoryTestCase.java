@@ -10,11 +10,9 @@
 package org.picoextras.script.bsh;
 
 import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.script.bsh.BeanShellComponentAdapterFactory;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ public class BeanShellComponentAdapterFactoryTestCase extends TestCase {
         pico.registerComponentImplementation("whatever", ArrayList.class);
 
         ComponentAdapter adapter = new BeanShellComponentAdapterFactory().createComponentAdapter(
-            "thekey", ScriptableDemoBean.class, null);
+                "thekey", ScriptableDemoBean.class, null);
 
         ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico);
 

@@ -20,6 +20,7 @@ public class NanoMBean extends AbstractDynamicMBean {
     public NanoMBean(Object component) {
         setResource(component);
     }
+
     /* Method of the second group that is overridden */
     protected String getMBeanDescription() {
         return "A simple DynamicMBean";

@@ -1,7 +1,12 @@
 package org.picocontainer.defaults;
 
-import java.util.*;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for finding interfaces of objects.

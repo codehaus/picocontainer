@@ -1,6 +1,5 @@
 package org.picoextras.type3msg.sample;
 
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

@@ -10,15 +10,15 @@
 
 package org.picoextras.jmx;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectInstance;
-import javax.management.ObjectName;
-import javax.management.MBeanServerFactory;
-
-import org.picoextras.testmodel.WilmaImpl;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.testmodel.WilmaImpl;
+
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
 
 public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
 
@@ -100,8 +100,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
         try {
             pico.registerComponentInstance("nano:name=one", new WilmaImpl());
             fail("Should have barfed with dupe registration");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // expected
 //            assertTrue("Wrong key", e.getKey() == "nano:name=one");
 //            assertTrue("Wrong component", e.findComponentInstance() instanceof WilmaImpl);

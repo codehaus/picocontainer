@@ -8,10 +8,10 @@
  *****************************************************************************/
 package org.picoextras.servlet;
 
+import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
-import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -73,17 +73,17 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     }
 
     private ContainerAssembler loadAssembler(ServletContext context) {
-            ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-            String className = context.getInitParameter("assembler");
-            ContainerAssembler result = null;
-            try {
-                result = (ContainerAssembler) Class.forName(className).newInstance();
-            } catch (Exception e) {
-                // Don't use exception chaining to be JDK 1.3 compatible
-                throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
-            }
-            assemblerRef.set(result);
-            return result;
+        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
+        String className = context.getInitParameter("assembler");
+        ContainerAssembler result = null;
+        try {
+            result = (ContainerAssembler) Class.forName(className).newInstance();
+        } catch (Exception e) {
+            // Don't use exception chaining to be JDK 1.3 compatible
+            throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
+        }
+        assemblerRef.set(result);
+        return result;
     }
 
     private ContainerAssembler getAssembler(ServletContext context) {

@@ -1,7 +1,7 @@
 package org.picocontainer.tck;
 
-import junit.framework.TestCase;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -199,8 +199,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertTrue(unsatisfiableDependencies.contains(E.class));
             assertTrue(unsatisfiableDependencies.contains(B.class));
 
-            assertTrue( e.getMessage().indexOf("class " + E.class.getName()) != -1);
-            assertTrue( e.getMessage().indexOf("class " + B.class.getName()) != -1);
+            assertTrue(e.getMessage().indexOf("class " + E.class.getName()) != -1);
+            assertTrue(e.getMessage().indexOf("class " + B.class.getName()) != -1);
         }
     }
 
@@ -322,16 +322,20 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             Assert.assertNotNull(c);
         }
     }
+
     public static class B {
     }
+
     public static class C {
     }
+
     public static class D {
         public D(E e, B b) {
             Assert.assertNotNull(e);
             Assert.assertNotNull(b);
         }
     }
+
     public static class E {
         public E(D d) {
             Assert.assertNotNull(d);

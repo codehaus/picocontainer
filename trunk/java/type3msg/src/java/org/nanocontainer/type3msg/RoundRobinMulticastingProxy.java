@@ -1,7 +1,6 @@
 package org.picoextras.type3msg;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 /**
  * Created by IntelliJ IDEA.

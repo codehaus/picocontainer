@@ -11,10 +11,16 @@
 package org.picocontainer.extras;
 
 import junit.framework.TestCase;
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
-import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;

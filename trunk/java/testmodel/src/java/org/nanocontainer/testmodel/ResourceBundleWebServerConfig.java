@@ -10,11 +10,11 @@
 
 package org.picoextras.testmodel;
 
-import java.util.ResourceBundle;
-import java.util.PropertyResourceBundle;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.File;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 public class ResourceBundleWebServerConfig implements WebServerConfig {
 

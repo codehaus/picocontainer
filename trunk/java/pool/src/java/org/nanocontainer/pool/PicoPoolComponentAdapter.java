@@ -25,20 +25,18 @@ import org.picocontainer.extras.DecoratingComponentAdapter;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class PicoPoolComponentAdapter extends DecoratingComponentAdapter
-{
+public class PicoPoolComponentAdapter extends DecoratingComponentAdapter {
     protected DefaultPicoPool pool;
+
     /**
      * @param delegate
      */
-    public PicoPoolComponentAdapter(ComponentAdapter delegate, DefaultPicoPool pool)
-    {
+    public PicoPoolComponentAdapter(ComponentAdapter delegate, DefaultPicoPool pool) {
         super(delegate);
         this.pool = pool;
     }
 
-    public void returnComponentInstance(Object component)
-    {
+    public void returnComponentInstance(Object component) {
         pool.returnComponent(component);
     }
 
@@ -46,12 +44,11 @@ public class PicoPoolComponentAdapter extends DecoratingComponentAdapter
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.MutablePicoContainer)
      */
     public Object getComponentInstance(MutablePicoContainer componentRegistry)
-        throws
+            throws
             PicoInitializationException,
             PicoIntrospectionException,
             AssignabilityRegistrationException,
-            NotConcreteRegistrationException
-    {
+            NotConcreteRegistrationException {
         return pool.borrowComponent();
     }
 

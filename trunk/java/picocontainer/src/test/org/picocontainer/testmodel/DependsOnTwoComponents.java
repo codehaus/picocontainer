@@ -11,7 +11,6 @@
 package org.picocontainer.testmodel;
 
 import junit.framework.Assert;
-import org.picocontainer.testmodel.DependsOnTouchable;
 
 /**
  * @author steve.freeman@m3p.co.uk

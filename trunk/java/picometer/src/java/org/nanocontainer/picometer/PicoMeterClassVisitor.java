@@ -1,8 +1,8 @@
 package org.picoextras.picometer;
 
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.CodeVisitor;
-import org.objectweb.asm.Attribute;
 
 /**
  * @author Aslak Helles&oslash;y

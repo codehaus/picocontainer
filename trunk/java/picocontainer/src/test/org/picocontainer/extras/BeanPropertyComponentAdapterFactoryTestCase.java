@@ -1,14 +1,15 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.defaults.*;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -50,7 +51,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
-    public void testDelegateIsAccessible()  {
+    public void testDelegateIsAccessible() {
         DecoratingComponentAdapter componentAdapter =
                 (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 

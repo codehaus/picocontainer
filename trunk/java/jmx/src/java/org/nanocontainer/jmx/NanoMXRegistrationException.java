@@ -20,18 +20,18 @@ import org.picocontainer.PicoRegistrationException;
  * @version $Revision$
  */
 public class NanoMXRegistrationException extends PicoRegistrationException {
-	public NanoMXRegistrationException() {
-		super();
-	}
+    public NanoMXRegistrationException() {
+        super();
+    }
 
-	public NanoMXRegistrationException(String message) {
-		super(message);
-	}
+    public NanoMXRegistrationException(String message) {
+        super(message);
+    }
 
 
-	public NanoMXRegistrationException(String message, Exception cause) {
-		super(message, cause);
-	}
+    public NanoMXRegistrationException(String message, Exception cause) {
+        super(message, cause);
+    }
 
     public NanoMXRegistrationException(Throwable cause) {
         super(cause);

@@ -10,9 +10,11 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
-import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.testmodel.Touchable;
 
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 

@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 10:15:14 PM
  * To change this template use Options | File Templates.
  */
-public class WorkerDoer implements Worker{
+public class WorkerDoer implements Worker {
     private List doneTasks;
 
     public WorkerDoer() {

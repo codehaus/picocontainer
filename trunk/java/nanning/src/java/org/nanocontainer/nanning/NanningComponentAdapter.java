@@ -13,13 +13,13 @@ package org.picoextras.nanning;
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.extras.DecoratingComponentAdapter;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.extras.DecoratingComponentAdapter;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

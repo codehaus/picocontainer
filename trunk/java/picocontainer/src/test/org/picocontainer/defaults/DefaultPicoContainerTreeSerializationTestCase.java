@@ -11,37 +11,35 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 
 /**
  * @author Thomas Heller
  * @author Paul Hammant
  */
-public class DefaultPicoContainerTreeSerializationTestCase  extends AbstractPicoContainerTestCase
-{
-   protected MutablePicoContainer createPicoContainer()
-   {
-      DefaultPicoContainer container = new DefaultPicoContainer();
-      DefaultPicoContainer child = new DefaultPicoContainer();
+public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
+    protected MutablePicoContainer createPicoContainer() {
+        DefaultPicoContainer container = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer();
 
-      child.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-      child.registerComponentImplementation(DependsOnTouchable.class);
-      container.addChild(child);
-      return container;
-   }
+        child.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
+        child.registerComponentImplementation(DependsOnTouchable.class);
+        container.addChild(child);
+        return container;
+    }
 
     public void testContainerIsDeserializableWithChildren() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {

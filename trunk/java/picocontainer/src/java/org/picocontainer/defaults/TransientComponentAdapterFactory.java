@@ -11,7 +11,6 @@
 package org.picocontainer.defaults;
 
 
-
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$

@@ -24,21 +24,19 @@ import org.picocontainer.testmodel.Touchable;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Id$
  */
-public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase
-{
+public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-         return new CachingComponentAdapterFactory(new ConstructorComponentAdapterFactory());
+        return new CachingComponentAdapterFactory(new ConstructorComponentAdapterFactory());
     }
 
-    public void testContainerReturnsSameInstaceEachCall()
-    {
+    public void testContainerReturnsSameInstaceEachCall() {
         picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        Touchable t1 = (Touchable)picoContainer.getComponentInstance(Touchable.class);
-        Touchable t2 = (Touchable)picoContainer.getComponentInstance(Touchable.class);
+        Touchable t1 = (Touchable) picoContainer.getComponentInstance(Touchable.class);
+        Touchable t2 = (Touchable) picoContainer.getComponentInstance(Touchable.class);
         assertSame(t1, t2);
     }
 }

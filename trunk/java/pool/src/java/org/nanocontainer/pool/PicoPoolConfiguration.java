@@ -1,8 +1,6 @@
 
-
 package org.picoextras.pool;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -18,8 +16,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class PicoPoolConfiguration
-{
+public class PicoPoolConfiguration {
     private byte exhaustedAction = DefaultPicoPool.DEFAULT_EXHAUSTED_ACTION;
     private int maxSize = DefaultPicoPool.DEFAULT_MAX_SIZE;
     private long maxWait = DefaultPicoPool.DEFAULT_MAX_WAIT;
@@ -28,13 +25,12 @@ public class PicoPoolConfiguration
     private ComponentAdapterFactory componentAdapterFactory;
 
     public PicoPoolConfiguration(
-        Class implementation,
-        int maxSize,
-        byte exhaustAction,
-        long maxWait,
-        ComponentAdapterFactory componentAdapterFactory,
-        MutablePicoContainer poolParent)
-    {
+            Class implementation,
+            int maxSize,
+            byte exhaustAction,
+            long maxWait,
+            ComponentAdapterFactory componentAdapterFactory,
+            MutablePicoContainer poolParent) {
         setImplementation(implementation);
         setComponentAdapterFactory(componentAdapterFactory);
         setMaxSize(maxSize);
@@ -46,34 +42,29 @@ public class PicoPoolConfiguration
     /**
      * @return
      */
-    public int getExhaustedAction()
-    {
+    public int getExhaustedAction() {
         return exhaustedAction;
     }
 
     /**
      * @return
      */
-    public int getMaxSize()
-    {
+    public int getMaxSize() {
         return maxSize;
     }
 
     /**
      * @return
      */
-    public long getMaxWait()
-    {
+    public long getMaxWait() {
         return maxWait;
     }
 
     /**
      * @param i
      */
-    public void setExhaustedAction(byte action)
-    {
-        if (action < 0 || action > 2)
-        {
+    public void setExhaustedAction(byte action) {
+        if (action < 0 || action > 2) {
             action = DefaultPicoPool.DEFAULT_EXHAUSTED_ACTION;
         }
 
@@ -84,18 +75,16 @@ public class PicoPoolConfiguration
     /**
      * @param i
      */
-    public void setMaxSize(int size)
-    {
+    public void setMaxSize(int size) {
         if (size <= 0)
-        size = DefaultPicoPool.DEFAULT_MAX_SIZE;
+            size = DefaultPicoPool.DEFAULT_MAX_SIZE;
         maxSize = size;
     }
 
     /**
      * @param l
      */
-    public void setMaxWait(long l)
-    {
+    public void setMaxWait(long l) {
         if (l < 0)
             l = 0;
         maxWait = l;
@@ -104,17 +93,15 @@ public class PicoPoolConfiguration
     /**
      * @return
      */
-    public MutablePicoContainer getPoolParentContainer()
-    {
+    public MutablePicoContainer getPoolParentContainer() {
         return poolParentContainer;
     }
 
     /**
      * @param container
      */
-    public void setPoolParentContainer(MutablePicoContainer container)
-    {
-        if(container==null) {
+    public void setPoolParentContainer(MutablePicoContainer container) {
+        if (container == null) {
             container = new DefaultPicoContainer();
         }
         poolParentContainer = container;
@@ -123,25 +110,22 @@ public class PicoPoolConfiguration
     /**
      * @return
      */
-    public Class getImplementation()
-    {
+    public Class getImplementation() {
         return implementation;
     }
 
     /**
      * @param class1
      */
-    public void setImplementation(Class class1)
-    {
+    public void setImplementation(Class class1) {
         implementation = class1;
     }
 
     /**
      * @return
      */
-    public ComponentAdapterFactory getComponentAdapterFactory()
-    {
-        if(componentAdapterFactory==null) {
+    public ComponentAdapterFactory getComponentAdapterFactory() {
+        if (componentAdapterFactory == null) {
             componentAdapterFactory = new DefaultComponentAdapterFactory();
         }
         return componentAdapterFactory;
@@ -150,8 +134,7 @@ public class PicoPoolConfiguration
     /**
      * @param adapter
      */
-    public void setComponentAdapterFactory(ComponentAdapterFactory factory)
-    {
+    public void setComponentAdapterFactory(ComponentAdapterFactory factory) {
         componentAdapterFactory = factory;
     }
 

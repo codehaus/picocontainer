@@ -9,24 +9,22 @@
  *****************************************************************************/
 package org.picoextras.script.bsh;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.InputStreamReader;
-import java.net.URL;
-
-import org.picocontainer.Parameter;
+import bsh.EvalError;
+import bsh.Interpreter;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
-import bsh.Interpreter;
-import bsh.EvalError;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation
@@ -89,16 +87,16 @@ public class BeanShellComponentAdapter implements ComponentAdapter {
 
                 String scriptPath = "/" + componentImplementation.getName().replace('.', '/') + ".bsh";
                 URL scriptURL = componentImplementation.getResource(scriptPath);
-                if(scriptURL == null) {
+                if (scriptURL == null) {
                     throw new BeanShellScriptInitializationException("Couldn't load script at path " + scriptPath);
                 }
                 Reader sourceReader = new InputStreamReader(scriptURL.openStream());
                 i.eval(sourceReader, i.getNameSpace(), scriptURL.toExternalForm());
 
                 instance = i.get("instance");
-                if(i == null) {
-					throw new BeanShellScriptInitializationException("The 'instance' variable was not instantiated");
-				}
+                if (i == null) {
+                    throw new BeanShellScriptInitializationException("The 'instance' variable was not instantiated");
+                }
             } catch (EvalError e) {
                 throw new BeanShellScriptInitializationException(e);
             } catch (IOException e) {

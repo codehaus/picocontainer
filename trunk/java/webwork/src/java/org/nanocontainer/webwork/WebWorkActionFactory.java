@@ -9,8 +9,14 @@
 package org.picoextras.webwork;
 
 import webwork.action.Action;
-import webwork.action.factory.*;
-import org.picoextras.webwork.PicoActionFactory;
+import webwork.action.factory.ActionFactory;
+import webwork.action.factory.AliasingActionFactoryProxy;
+import webwork.action.factory.ChainingActionFactoryProxy;
+import webwork.action.factory.CommandActionFactoryProxy;
+import webwork.action.factory.ContextActionFactoryProxy;
+import webwork.action.factory.ParametersActionFactoryProxy;
+import webwork.action.factory.PrefixActionFactoryProxy;
+import webwork.action.factory.PrepareActionFactoryProxy;
 
 /**
  * Custom webwork action lifecycle that ensures actions are treated as pico components.

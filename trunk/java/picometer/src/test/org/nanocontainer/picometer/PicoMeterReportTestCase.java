@@ -1,9 +1,6 @@
 package org.picoextras.picometer;
 
-import junit.framework.TestCase;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -2,7 +2,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -1,26 +1,26 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.extras.ComponentMulticasterFactory;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.Parameter;
+import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Paul Hammant
@@ -41,7 +41,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     // Keeps track of the instantiation order (dependency order)
     private final List instantiantionOrderedComponentAdapters = new ArrayList();
-    
+
     // Keeps track of the keys of the instantiation ordered components, to grant single registration
     private final Map instantiationOrderedComponentAdapterMap = new HashMap();
 
@@ -89,7 +89,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public ComponentAdapter unregisterComponent(Object componentKey) {
         ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.remove(componentKey);
-        if(result != null) {
+        if (result != null) {
             Object instance = result.getComponentInstance(this);
             componentKeyToAdapterMap.remove(componentKey);
             instantiantionOrderedComponentAdapters.remove(result);
@@ -208,17 +208,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void registerOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        if(!instantiationOrderedComponentAdapterMap.containsKey(componentAdapter.getComponentKey())) {
+        if (!instantiationOrderedComponentAdapterMap.containsKey(componentAdapter.getComponentKey())) {
             instantiationOrderedComponentAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);
         }
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        ComponentAdapter first = (ComponentAdapter)instantiationOrderedComponentAdapterMap.get(componentAdapter.getComponentKey());
-        if(first == null) {
+        ComponentAdapter first = (ComponentAdapter) instantiationOrderedComponentAdapterMap.get(componentAdapter.getComponentKey());
+        if (first == null) {
             throw new IllegalStateException("need to call registerOrderedComponentAdapter first");
         }
-        if(first.equals(componentAdapter)) {
+        if (first.equals(componentAdapter)) {
             instantiantionOrderedComponentAdapters.add(componentAdapter);
         }
     }

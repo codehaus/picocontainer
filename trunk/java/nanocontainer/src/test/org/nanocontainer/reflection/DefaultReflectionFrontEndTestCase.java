@@ -11,15 +11,19 @@
 package org.picoextras.reflection;
 
 import junit.framework.TestCase;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
 import org.picoextras.testmodel.WebServerImpl;
-import org.picocontainer.*;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Vector;
-import java.io.File;
 
 public class DefaultReflectionFrontEndTestCase extends TestCase {
 
@@ -56,11 +60,11 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         reflectionFrontEnd.registerComponentImplementation(
                 className,
                 className,
-                new String[] {
+                new String[]{
                     "java.lang.String",
                     "java.lang.Integer"
                 },
-                new String[] {
+                new String[]{
                     "hello",
                     "22"
                 }
@@ -93,13 +97,10 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         Collection keys = reflectionFrontEnd.getPicoContainer().getComponentKeys();
         assertEquals("There should be 1 key", 1, keys.size());
 
-        try
-        {
+        try {
             reflectionFrontEnd.getPicoContainer().getComponentInstance(Vector.class);
             //fail("should have barfed");
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             // ecpected
         }
     }
@@ -136,7 +137,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         assertEquals("TestComp2", barTestComp.getClass().getName());
 
         assertNotSame(fooTestComp, barTestComp);
-        assertEquals("foo classloader should be parent of bar",fooTestComp.getClass().getClassLoader(),
+        assertEquals("foo classloader should be parent of bar", fooTestComp.getClass().getClassLoader(),
                 barTestComp.getClass().getClassLoader().getParent());
         Collection childContainers = parentFrontEndPico.getChildContainers();
         assertTrue(childContainers.contains(childFrontEndPico));

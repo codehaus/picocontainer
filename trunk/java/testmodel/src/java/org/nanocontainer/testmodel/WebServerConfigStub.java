@@ -10,7 +10,6 @@
 
 package org.picoextras.testmodel;
 
-import org.picoextras.testmodel.WebServerConfig;
 
 public class WebServerConfigStub implements WebServerConfig {
 

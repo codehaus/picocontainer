@@ -16,6 +16,7 @@ public class TestPseudoComp {
     public int getFoo() {
         return foo;
     }
+
     public String getBar() {
         return bar;
     }

@@ -1,13 +1,13 @@
 package org.picocontainer.defaults;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.extras.ComponentMulticasterFactory;
 import org.picocontainer.extras.ComponentMulticasterPicoAdapter;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A default implementation of the {@link ComponentMulticasterPicoAdapter} interface.
@@ -16,10 +16,9 @@ import org.picocontainer.extras.ComponentMulticasterPicoAdapter;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Id$
  */
-public class DefaultComponentMulticasterPicoAdapter implements ComponentMulticasterPicoAdapter
-{
+public class DefaultComponentMulticasterPicoAdapter implements ComponentMulticasterPicoAdapter {
     private PicoContainer container;
-    
+
     private ComponentMulticasterFactory factory;
 
     /**
@@ -47,15 +46,15 @@ public class DefaultComponentMulticasterPicoAdapter implements ComponentMulticas
      * {@inheritDoc}
      */
     public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
-        throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
         List componentsToMulticast = container.getComponentInstances();
         if (!callUnmanagedComponents) {
-           for (Iterator iterator = container.getUnmanagedComponentInstances().iterator(); iterator.hasNext();) {
-               componentsToMulticast.remove(iterator.next());
-           }
+            for (Iterator iterator = container.getUnmanagedComponentInstances().iterator(); iterator.hasNext();) {
+                componentsToMulticast.remove(iterator.next());
+            }
         }
-        return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder);        
+        return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder);
     }
 
     /**

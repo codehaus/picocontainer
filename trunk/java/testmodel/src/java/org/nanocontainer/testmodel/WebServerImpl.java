@@ -11,8 +11,6 @@
 package org.picoextras.testmodel;
 
 import junit.framework.Assert;
-import org.picoextras.testmodel.WebServer;
-import org.picoextras.testmodel.WebServerConfig;
 
 public class WebServerImpl implements WebServer {
 

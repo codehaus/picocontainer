@@ -10,12 +10,12 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected ComponentAdapterFactory createComponentAdapterFactory() {

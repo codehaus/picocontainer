@@ -19,5 +19,6 @@ package org.picocontainer.defaults;
  */
 public interface ObjectReference {
     Object get();
+
     void set(Object item);
 }

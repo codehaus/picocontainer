@@ -1,15 +1,23 @@
 package org.picoextras.nanning;
 
 import junit.framework.TestCase;
-import org.codehaus.nanning.*;
+import org.codehaus.nanning.AspectInstance;
+import org.codehaus.nanning.Aspects;
+import org.codehaus.nanning.Invocation;
+import org.codehaus.nanning.MethodInterceptor;
+import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.P;
 import org.codehaus.nanning.config.Pointcut;
-import org.picocontainer.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * Contains both unit-tests for the NanninNanoContainer and acceptance-tests outlining an example

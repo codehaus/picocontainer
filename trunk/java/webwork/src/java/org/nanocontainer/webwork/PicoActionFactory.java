@@ -8,11 +8,11 @@
  *****************************************************************************/
 package org.picoextras.webwork;
 
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;

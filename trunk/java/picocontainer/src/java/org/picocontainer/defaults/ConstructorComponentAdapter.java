@@ -11,10 +11,10 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.MutablePicoContainer;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -48,8 +48,8 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
      * @param parameters
      */
     public ConstructorComponentAdapter(final Object componentKey,
-                                     final Class componentImplementation,
-                                     Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                       final Class componentImplementation,
+                                       Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
     }
 
@@ -60,7 +60,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
      * @param componentImplementation
      */
     public ConstructorComponentAdapter(Object componentKey,
-                                     Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                       Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
@@ -150,7 +150,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
     // TODO: remove? Only used from ParameterTestCase
     public static boolean isAssignableFrom(Class actual, Class requested) {
         if (actual == char.class || actual == Character.class) {
-            return requested == char.class|| requested == Character.class;
+            return requested == char.class || requested == Character.class;
         }
         if (actual == double.class || actual == Double.class) {
             return requested == double.class || requested == Double.class;

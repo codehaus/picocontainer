@@ -13,7 +13,6 @@ package org.picoextras.pool;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-
 import org.picoextras.testmodel.FredImpl;
 import org.picoextras.testmodel.WilmaImpl;
 
@@ -26,15 +25,13 @@ import java.util.NoSuchElementException;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class PicoPoolTestCase extends TestCase
-{
-    public void testCreatePoolWithPico()
-    {
+public class PicoPoolTestCase extends TestCase {
+    public void testCreatePoolWithPico() {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         PicoPoolConfiguration config = new PicoPoolConfiguration(
-        WilmaImpl.class, 3, DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
-        0, null, null);
+                WilmaImpl.class, 3, DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
+                0, null, null);
 
         pico.registerComponentInstance(config);
         pico.registerComponentImplementation("myPool", DefaultPicoPool.class);
@@ -58,41 +55,35 @@ public class PicoPoolTestCase extends TestCase
         assertTrue(((WilmaImpl) borrowed).helloCalled() ^ ((WilmaImpl) borrowed2).helloCalled());
     }
 
-    public void testFailOnExhaust()
-    {
+    public void testFailOnExhaust() {
         DefaultPicoPool pool = new DefaultPicoPool(WilmaImpl.class);
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.FAIL_WHEN_EXHAUSTED);
 
-        for(int i= 0; i < DefaultPicoPool.DEFAULT_MAX_SIZE; i++)
-        {
+        for (int i = 0; i < DefaultPicoPool.DEFAULT_MAX_SIZE; i++) {
             pool.borrowComponent();
             assertEquals(pool.getSize(), i + 1);
         }
 
-        try
-        {
+        try {
             pool.borrowComponent();
             fail("Should throw an Exception");
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (NoSuchElementException e) {
             //expected
         }
     }
 
-    public void testBlockExpiryOnExhaust()
-    {
+    public void testBlockExpiryOnExhaust() {
         long poolExpiry = 1000;
 
         DefaultPicoPool pool =
-            new DefaultPicoPool(
-                new PicoPoolConfiguration(
-                    WilmaImpl.class,
-                    2,
-                    DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
-                    poolExpiry,
-                    null,
-                    null));
+                new DefaultPicoPool(
+                        new PicoPoolConfiguration(
+                                WilmaImpl.class,
+                                2,
+                                DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
+                                poolExpiry,
+                                null,
+                                null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.BLOCK_WHEN_EXHAUSTED);
 
@@ -101,32 +92,28 @@ public class PicoPoolTestCase extends TestCase
         pool.borrowComponent();
         assertEquals(2, pool.getSize());
         long starttime = System.currentTimeMillis();
-        try
-        {
+        try {
             pool.borrowComponent();
             fail("Should throw an Exception");
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (NoSuchElementException e) {
             long totalTime = System.currentTimeMillis() - starttime;
             //Need to allow for alittle variance in system time
             assertTrue(totalTime < (poolExpiry + 50) && totalTime > (poolExpiry - 50));
         }
     }
 
-    public void testBlockOnExhaust()
-    {
+    public void testBlockOnExhaust() {
         long poolExpiry = 2000;
 
         DefaultPicoPool pool =
-            new DefaultPicoPool(
-                new PicoPoolConfiguration(
-                    WilmaImpl.class,
-                    2,
-                    DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
-                    poolExpiry,
-                    null,
-                    null));
+                new DefaultPicoPool(
+                        new PicoPoolConfiguration(
+                                WilmaImpl.class,
+                                2,
+                                DefaultPicoPool.BLOCK_WHEN_EXHAUSTED,
+                                poolExpiry,
+                                null,
+                                null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.BLOCK_WHEN_EXHAUSTED);
 
@@ -139,12 +126,9 @@ public class PicoPoolTestCase extends TestCase
         Borrower borrower = new Borrower(pool, borrowerWait);
         borrower.start();
         //Make sure the borrower borrows first
-        try
-        {
+        try {
             Thread.sleep(100);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
         }
 
         borrowed = pool.borrowComponent();
@@ -155,17 +139,16 @@ public class PicoPoolTestCase extends TestCase
         assertNotNull(borrowed);
     }
 
-    public void testGrowOnExhaust()
-    {
+    public void testGrowOnExhaust() {
         DefaultPicoPool pool =
-            new DefaultPicoPool(
-                new PicoPoolConfiguration(
-                    WilmaImpl.class,
-                    2,
-                    DefaultPicoPool.GROW_WHEN_EXHAUSTED,
-                    0,
-                    null,
-                    null));
+                new DefaultPicoPool(
+                        new PicoPoolConfiguration(
+                                WilmaImpl.class,
+                                2,
+                                DefaultPicoPool.GROW_WHEN_EXHAUSTED,
+                                0,
+                                null,
+                                null));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.GROW_WHEN_EXHAUSTED);
 
@@ -180,20 +163,19 @@ public class PicoPoolTestCase extends TestCase
         assertEquals(2, pool.getSize());
     }
 
-    public void testDependantPoolObject()
-    {
+    public void testDependantPoolObject() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(WilmaImpl.class);
 
         DefaultPicoPool pool =
-            new DefaultPicoPool(
-                new PicoPoolConfiguration(
-                    FredImpl.class,
-                    2,
-                    DefaultPicoPool.GROW_WHEN_EXHAUSTED,
-                    0,
-                    null,
-                    pico));
+                new DefaultPicoPool(
+                        new PicoPoolConfiguration(
+                                FredImpl.class,
+                                2,
+                                DefaultPicoPool.GROW_WHEN_EXHAUSTED,
+                                0,
+                                null,
+                                pico));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.GROW_WHEN_EXHAUSTED);
         assertEquals(0, pool.getSize());
@@ -204,20 +186,19 @@ public class PicoPoolTestCase extends TestCase
         assertNotNull(((FredImpl) borrowed).wilma());
     }
 
-    public void testPoolObjectVisibility()
-    {
+    public void testPoolObjectVisibility() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(WilmaImpl.class);
 
         DefaultPicoPool pool =
-            new DefaultPicoPool(
-                new PicoPoolConfiguration(
-                    FredImpl.class,
-                    2,
-                    DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
-                    0,
-                    null,
-                    pico));
+                new DefaultPicoPool(
+                        new PicoPoolConfiguration(
+                                FredImpl.class,
+                                2,
+                                DefaultPicoPool.FAIL_WHEN_EXHAUSTED,
+                                0,
+                                null,
+                                pico));
 
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.FAIL_WHEN_EXHAUSTED);
         assertEquals(0, pool.getSize());
@@ -235,8 +216,7 @@ public class PicoPoolTestCase extends TestCase
 
     }
 
-    public void testClearPool()
-    {
+    public void testClearPool() {
         DefaultPicoPool pool = new DefaultPicoPool(WilmaImpl.class);
         assertEquals(pool.getExhaustedAction(), DefaultPicoPool.FAIL_WHEN_EXHAUSTED);
 
@@ -251,29 +231,26 @@ public class PicoPoolTestCase extends TestCase
         assertEquals(1, pool.getSize());
     }
 
-    public void testPoolComponentAdapter()
-    {
+    public void testPoolComponentAdapter() {
         MutablePicoContainer pico = new DefaultPicoContainer(new PicoPoolComponentAdapterFactory());
 
         pico.registerComponentImplementation(WilmaImpl.class);
 
-        WilmaImpl component = (WilmaImpl)pico.getComponentInstance(WilmaImpl.class);
+        WilmaImpl component = (WilmaImpl) pico.getComponentInstance(WilmaImpl.class);
         component.hello();
 
-        WilmaImpl component2 = (WilmaImpl)pico.getComponentInstance(WilmaImpl.class);
+        WilmaImpl component2 = (WilmaImpl) pico.getComponentInstance(WilmaImpl.class);
         assertTrue(!component2.helloCalled());
 
         //TODO how do we return these components back to the pool in a clean
         //way?
     }
 
-    private class Borrower extends Thread
-    {
+    private class Borrower extends Thread {
         private DefaultPicoPool pool;
         private long time;
 
-        public Borrower(DefaultPicoPool pool, long time)
-        {
+        public Borrower(DefaultPicoPool pool, long time) {
             super("Borrower");
             if (pool == null)
                 throw new IllegalArgumentException("Pool cannot be null");
@@ -282,18 +259,15 @@ public class PicoPoolTestCase extends TestCase
                 time = 500;
             this.time = time;
         }
+
         /* (non-Javadoc)
          * @see java.lang.Runnable#run()
          */
-        public void run()
-        {
+        public void run() {
             Object object = pool.borrowComponent();
-            try
-            {
+            try {
                 sleep(time);
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 // ignore
             }
             pool.returnComponent(object);

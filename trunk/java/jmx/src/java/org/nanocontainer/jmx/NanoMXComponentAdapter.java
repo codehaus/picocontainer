@@ -9,15 +9,20 @@
  *****************************************************************************/
 package org.picoextras.jmx;
 
-import org.picocontainer.extras.DecoratingComponentAdapter;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.extras.DecoratingComponentAdapter;
 
-import javax.management.*;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 
 /**
  * @author James Strachan
@@ -42,19 +47,19 @@ public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
         if (componentInstance == null) {
             componentInstance = super.getComponentInstance(picoContainer);
 
-			ObjectName name = null;
+            ObjectName name = null;
             try {
                 name = asObjectName(getComponentKey());
                 Object mbean = asMBean(componentInstance);
                 mbeanServer.registerMBean(mbean, name);
             } catch (MalformedObjectNameException e) {
-				throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
             } catch (MBeanRegistrationException e) {
-				throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
             } catch (NotCompliantMBeanException e) {
-				throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
             } catch (InstanceAlreadyExistsException e) {
-				throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
+                throw new NanoMXInitializationException("Failed to register MBean '" + name + "' for component '" + getComponentKey() + "', due to " + e.getMessage(), e);
             }
             return componentInstance;
         }
@@ -84,7 +89,7 @@ public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
             String text = key.toString();
             // Fix, so it works under WebSphere ver. 5
             if (text.indexOf(':') == -1) {
-            	text = "nanomx:type=" + text;
+                text = "nanomx:type=" + text;
             }
             return new ObjectName(text);
         }

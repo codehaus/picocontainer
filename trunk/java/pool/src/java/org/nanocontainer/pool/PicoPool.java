@@ -22,18 +22,19 @@ package org.picoextras.pool;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public interface PicoPool
-{
+public interface PicoPool {
     /**
      * takes a component from the pool
      * @return the borrowed component
      */
     public abstract Object borrowComponent() throws PicoPoolException;
+
     /**
      * Makes a component in the pool avalible again once it has been borrowed
      * @param component the borrowed component
      */
     public abstract void returnComponent(Object component) throws PicoPoolException;
+
     /**
      *
      * @return the number of components in the pool

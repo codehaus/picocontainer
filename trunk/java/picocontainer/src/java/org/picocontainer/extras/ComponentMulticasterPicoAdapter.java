@@ -13,15 +13,14 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Id$
  */
-public interface ComponentMulticasterPicoAdapter
-{
+public interface ComponentMulticasterPicoAdapter {
     /**
      * Returns the PicoContainer.
      * 
      * @return the container.
      */
     PicoContainer getPicoContainer();
-    
+
     /**
      * Returns an object (in fact, a dynamic proxy) that implements the union
      * of all the interfaces of the currently registered components.

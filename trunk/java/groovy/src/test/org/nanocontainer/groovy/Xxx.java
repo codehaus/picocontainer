@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.picoextras.groovy;
 
-import org.picocontainer.lifecycle.Lifecycle;
 import junit.framework.Assert;
+import org.picocontainer.lifecycle.Lifecycle;
 
 /**
  * An abstract component and three dependancies used for testing.
@@ -32,14 +32,18 @@ public abstract class Xxx implements Lifecycle {
 
     private String code() {
         String name = getClass().getName();
-        return name.substring(name.indexOf('$')+1,name.length());
+        return name.substring(name.indexOf('$') + 1, name.length());
     }
 
-    public static class A extends Xxx {}
+    public static class A extends Xxx {
+    }
+
     public static class B extends Xxx {
         public B(A a) {
             Assert.assertNotNull(a);
         }
     }
-    public static class C extends Xxx {}
+
+    public static class C extends Xxx {
+    }
 }

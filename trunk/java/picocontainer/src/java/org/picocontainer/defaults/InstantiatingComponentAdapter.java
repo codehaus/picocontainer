@@ -1,15 +1,15 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
-import java.util.Arrays;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to

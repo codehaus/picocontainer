@@ -1,16 +1,16 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.InterfaceFinder;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * This component adapter makes it possible to hide the implementation

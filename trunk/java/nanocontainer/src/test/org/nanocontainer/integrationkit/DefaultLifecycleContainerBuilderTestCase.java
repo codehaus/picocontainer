@@ -1,13 +1,13 @@
 package org.picoextras.integrationkit;
 
 import junit.framework.TestCase;
-import org.jmock.Mock;
 import org.jmock.C;
+import org.jmock.Mock;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 /**
  * @author Aslak Helles&oslash;y

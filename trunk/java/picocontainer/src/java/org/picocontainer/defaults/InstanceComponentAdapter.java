@@ -9,7 +9,7 @@ import org.picocontainer.PicoContainer;
  */
 public class InstanceComponentAdapter extends AbstractComponentAdapter {
     private Object componentInstance;
-    
+
     private boolean registered;
 
     public InstanceComponentAdapter(Object componentKey, Object componentInstance) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -18,7 +18,7 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter {
     }
 
     public Object getComponentInstance(MutablePicoContainer picoContainer) {
-        if(!registered) {
+        if (!registered) {
             picoContainer.registerOrderedComponentAdapter(this);
             picoContainer.addOrderedComponentAdapter(this);
             registered = true;

@@ -12,8 +12,6 @@ import junit.framework.TestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.picoextras.script.xml.BeanXmlPseudoComponentFactory;
-import org.picoextras.script.xml.TestPseudoComp;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,19 +28,19 @@ public class BeanXmlPseudoComponentFactoryTestCase extends TestCase {
     public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
         BeanXmlPseudoComponentFactory xsf = new BeanXmlPseudoComponentFactory();
 
-                StringReader sr = new StringReader("" +
-                        "<org.picoextras.script.xml.TestPseudoComp>" +
-                          "<foo>10</foo>" +
-                          "<bar>hello</bar>" +
-                        "</org.picoextras.script.xml.TestPseudoComp>"
-                    );
+        StringReader sr = new StringReader("" +
+                "<org.picoextras.script.xml.TestPseudoComp>" +
+                "<foo>10</foo>" +
+                "<bar>hello</bar>" +
+                "</org.picoextras.script.xml.TestPseudoComp>"
+        );
         InputSource is = new InputSource(sr);
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = db.parse(is);
 
         Object o = xsf.makeInstance(doc.getDocumentElement());
         TestPseudoComp tsc = (TestPseudoComp) o;
-        assertEquals("hello",tsc.getBar());
-        assertEquals(10,tsc.getFoo());
+        assertEquals("hello", tsc.getBar());
+        assertEquals(10, tsc.getFoo());
     }
 }

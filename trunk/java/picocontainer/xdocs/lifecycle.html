@@ -4,63 +4,93 @@
 </head>
 <body>
 <h1>Lifecycle</h1>
-<h2>[ Revamp - lifecycle stuff was taken out of Pico recently - watch
-this space - Paul]<br>
-</h2>
-<h2>Initialization Component assembly and configuration.</h2>
-This happens lazily after registration. If you call start() (below) if
-will force the container to iterate thru the components and instantiate
-in order, resolving dependancies and configuration concerns as it
-goes.&nbsp; Some Pico containers maye choose a late strategy, others
-early.<br>
-<h2>StartableLifecycleManager</h2>
-This interface is implementable by a Pico container.&nbsp; It indicates
-that the container can handle lifecycling of components it contains.<br>
-<h2>Starting</h2>
-After Initialization a component may be started. In fact this happens
-after all of the components have been initialized.&nbsp; It is subject
-to the pluggable implementation, but it generally means that start()
-will be called if it is present on a component.&nbsp; It is entirely
-optional.&nbsp; It is likely to be used for the starting of threads or
-opening of socket listeners.&nbsp; Start() can be repeatedly called
-provided stop() has been called between start invocations.<br>
-<br>
-For PicoContainers that implement LifecycleContainer, if start() is
-called at the container level, it is percolated all the way thru to the
-components.<br>
-<h2>Stopping</h2>
-For PicoContainers that implement LifecycleContainer, if stop() is
-called at the containerlevel, it is percolated all the way thru to the
-components. In the reverse order of assembly, the components will be
-stopped.&nbsp; All the pluggability comments for Starting are true for
-stopping.<br>
-<h2>Disposal</h2>
-Again pluggable in implementation and enforced by LifecycleContainer,
-dispose() can be called on the container and percolated all the way
-thru to the contained components. Once called the container is
-effectively dead. Of course, different pico containers may choose to
-handle this differently.<br>
-<br>
----<br>
-<br>
-LifecycleContainer Interface<br>
-<br>
-&nbsp; public interface LifecycleContainer extends Container {<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void start() throws PicoStartException;<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void stop() throws PicoStopException;<br>
-<br>
-&nbsp; }<br>
-<br>
-This adds some life cycle management to Pico Containers. The
-instantiating class may call start() on the container which, subject to
-implementation does some conceptual start on the components that
-optionally recognize the applicable start design.&nbsp; This may of use
-when a thread is needed to be started (private to the component) for
-some daemonized life. It is a pluggable implementation (along Pico
-Component designs) of course.&nbsp; The default being a NullObject
-implementation.<br>
-<br>
+<h2>Simple lifecycle</h2>
+
+<p>[Explain that for the simplest possible thing you should consider
+not using a lifecycle]</p>
+
+<h2>Custom lifecycles</h2>
+
+<p>Custom lifecycle management is a common requirement for components.
+Probably because it is so crucial there are many competing implementations, and
+each has its own passionate group of advocates.</p>
+
+<p>Pico tries to avoid controversy by being completely agnostic about the
+lifecycle/lifecycles that it supports. Pico does have an implementation
+of a simple lifecycle (see picocontainer.lifecycle) but this is there
+only as a convenience.</p>
+
+<p>Instead of mandating a single restrictive lifecycle, Pico provides
+hooks that allow you to plug in almost any concievable lifecycle (or
+for that matter any other 'aggregated' behaviour).</p>
+
+<h2>The AggregateProxy</h2>
+
+<p>Say you have an interface:</p>
+
+<pre>
+    public interface Peelable {
+        void peel();
+    }</pre>
+
+<p>If you have a container that is full of objects that are Peelable:</p>
+
+<pre>
+    pico.registerComponent(Apple.class);
+    pico.registerComponent(Pear.class);
+    pico.registerComponent(Grape.class);
+    pico.registerComponent(Orange.class);
+    pico.registerComponent(Potato.class);</pre>
+
+<p>It would be useful to just tell the container to <pre>peel()</pre> them all
+for you:</p>
+
+<pre>
+    pico.peel();</pre>
+
+<p>What you would like to do here is treat the whole
+container like a Peelable, so that when you call peel() on the
+container it calls peel() on all the individual components for you.</p>
+
+<p>Pico <b>does</b> let you do this:</p>
+
+<pre>
+    Object proxy = pico.getAggregateComponentProxy();
+
+    Peelable peelable = (Peelable) proxy;
+    peelable.peel();</pre>
+
+<p>In fact Pico gives you even more than that, because the Object that
+getAggregateComponentProxy() returns <b>implements all the interfaces that your
+components implement</b>.</p>
+
+<p>What this means is that if one of your components (say Potato.class)
+implements a different interface (say Mashable) then you can call that
+interface in the same way:</p>
+
+<pre>
+    Mashable mashable = (Mashable) proxy;
+
+    mashable.mash();</pre>
+
+<p>Of course the mash() method is only applied to any components that
+implement the interface Mashable. So you can't accidentally mash() an
+Apple or an Orange.</p>
+
+<h2>Advantages of the AggregateProxy</h2>
+
+<p>Totally decoupled lifecycle methods are possible, because Pico will
+generate a proxy for <b>any</b> interface even if it is in a package
+that Pico knows nothing about.</p>
+
+<p>Competing / complementary lifecycle patterns can be implemented without
+comprimising Pico's simplicity. In fact Pico can support multiple
+lifecycle implementations at the same time.</p>
+
+<p>Interface methods can throw Exceptions that are checked and domain
+specific. Again, Pico doesn't need to know.</p>
+
+<p>Interfaces are strongly typed, not breakable as in reflection.</p>
+
 </body>
 </html>

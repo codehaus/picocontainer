@@ -119,7 +119,7 @@ namespace PicoContainer.Extras
 		
 		public virtual object GetComponentInstance(object componentKey)
 		{
-			return mutablePicoContainer.GetComponentInstance(componentKey);
+			return (ComponentAdapter)mutablePicoContainer.GetComponentInstance(componentKey);
 		}
 		
 		public virtual void  Stop()
@@ -142,32 +142,40 @@ namespace PicoContainer.Extras
 			return mutablePicoContainer.GetComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
 		}
 		
-		public virtual object UnRegisterComponent(object componentKey)
+		public virtual ComponentAdapter UnRegisterComponent(object componentKey)
 		{
 			return mutablePicoContainer.UnRegisterComponent(componentKey);
 		}
 		
-		public virtual object RegisterComponentInstance(object componentKey, object componentInstance)
+		public virtual ComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance)
 		{
 			return mutablePicoContainer.RegisterComponentInstance(componentKey, componentInstance);
 		}
 		
-		public virtual void  AddChild(MutablePicoContainer child)
+		public virtual bool AddChild(MutablePicoContainer child)
 		{
-			mutablePicoContainer.AddChild(child);
+			return mutablePicoContainer.AddChild(child);
 		}
-		
-		public virtual void  AddParent(MutablePicoContainer parent)
+
+    public virtual bool RemoveChild(MutablePicoContainer child) {
+      return mutablePicoContainer.RemoveChild(child);
+    }
+
+		public virtual bool AddParent(MutablePicoContainer parent)
 		{
-			mutablePicoContainer.AddParent(parent);
+			return mutablePicoContainer.AddParent(parent);
 		}
-		
-		public virtual object RegisterComponentImplementation(object componentKey, System.Type componentImplementation)
+
+    public virtual bool RemoveParent(MutablePicoContainer parent) {
+      return mutablePicoContainer.RemoveParent(parent);
+    }
+
+		public virtual ComponentAdapter RegisterComponentImplementation(object componentKey, System.Type componentImplementation)
 		{
 			return mutablePicoContainer.RegisterComponentImplementation(componentKey, componentImplementation);
 		}
 		
-		public virtual object RegisterComponentInstance(object componentInstance)
+		public virtual ComponentAdapter RegisterComponentInstance(object componentInstance)
 		{
 			return mutablePicoContainer.RegisterComponentInstance(componentInstance);
 		}
@@ -177,14 +185,19 @@ namespace PicoContainer.Extras
 			mutablePicoContainer.AddOrderedComponentAdapter(componentAdapter);
 		}
 		
-		public virtual object RegisterComponentImplementation(System.Type componentImplementation)
+		public virtual ComponentAdapter RegisterComponentImplementation(System.Type componentImplementation)
 		{
 			return mutablePicoContainer.RegisterComponentImplementation(componentImplementation);
 		}
 		
-		public virtual object RegisterComponentImplementation(object componentKey, System.Type componentImplementation, Parameter[] parameters)
+		public virtual ComponentAdapter RegisterComponentImplementation(object componentKey, System.Type componentImplementation, Parameter[] parameters)
 		{
 			return mutablePicoContainer.RegisterComponentImplementation(componentKey, componentImplementation);
 		}
+
+    public void RegisterComponent(ComponentAdapter componentAdapter) {
+      mutablePicoContainer.RegisterComponent(componentAdapter);
+    }
+
 	}
 }

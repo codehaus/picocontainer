@@ -11,22 +11,9 @@
     <name>PicoContainer Gems</name>
     <currentVersion>1.1-SNAPSHOT</currentVersion>
 
-    <organization>
-        <name>Codehaus</name>
-        <url>http://codehaus.org/</url>
-        <logo>http://codehaus.org/codehaus-small.gif</logo>
-    </organization>
     <inceptionYear>2004</inceptionYear>
     <package>org.picocontainer.gems</package>
     <issueTrackingUrl>http://jira.codehaus.org/browse/PICO</issueTrackingUrl>
-
-    <versions>
-        <version>
-            <id>1.1-SNAPSHOT</id>
-            <name>1.1-SNAPSHOT</name>
-            <tag>HEAD</tag>
-        </version>
-    </versions>
 
     <dependencies>
         <dependency>

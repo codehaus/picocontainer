@@ -1,1 +1,1 @@
-txt2tags -t html --toc cdi.t2t
+txt2tags -t html --toc --enum-title cdi.t2t

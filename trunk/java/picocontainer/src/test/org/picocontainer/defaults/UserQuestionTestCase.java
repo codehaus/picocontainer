@@ -9,11 +9,15 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
+ * This class can be used to test out various things asked on the mailing list.
+ * Or to answer questions.
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class FarquharTestCase extends TestCase {
+public class UserQuestionTestCase extends TestCase {
 
+    // From Scott Farquahsr
     public static class CheeseComponentAdapter extends AbstractComponentAdapter {
         private Map bla;
 
@@ -34,16 +38,19 @@ public class FarquharTestCase extends TestCase {
     public static interface Cheese {
         String getName();
     }
+
     public static class Gouda implements Cheese {
         public String getName() {
             return "Gouda";
         }
     }
+
     public static class Roquefort implements Cheese {
         public String getName() {
             return "Roquefort";
         }
     }
+
     public static class Omelette {
         private final Cheese cheese;
 
@@ -75,9 +82,7 @@ public class FarquharTestCase extends TestCase {
     }
 
     public void testOmeletteCanHaveDifferentCheeseUsingSwapping() {
-        MutablePicoContainer pico = new DefaultPicoContainer(
-                new ImplementationHidingComponentAdapterFactory(
-                        new DefaultComponentAdapterFactory(),false));
+        MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory(), false));
 
         pico.registerComponentImplementation(Omelette.class);
         pico.registerComponentImplementation(Cheese.class, Gouda.class);
@@ -94,16 +99,19 @@ public class FarquharTestCase extends TestCase {
     public static interface InterfaceX {
         String getIt();
     }
+
     public static class Enabled implements InterfaceX {
         public String getIt() {
             return "Enabled";
         }
     }
+
     public static class Disabled implements InterfaceX {
         public String getIt() {
             return "Disabled";
         }
     }
+
     public static class Something implements InterfaceX {
         private final Disabled disabled;
         private final Enabled enabled;
@@ -116,13 +124,14 @@ public class FarquharTestCase extends TestCase {
         }
 
         public String getIt() {
-            if(map.get("enabled") == null) {
+            if (map.get("enabled") == null) {
                 return disabled.getIt();
             } else {
                 return enabled.getIt();
             }
         }
     }
+
     public static class NeedsInterfaceX {
         private final InterfaceX interfaceX;
 
@@ -149,6 +158,32 @@ public class FarquharTestCase extends TestCase {
         assertEquals("Disabled", needsInterfaceX.getIt());
         map.put("enabled", "blah");
         assertEquals("Enabled", needsInterfaceX.getIt());
+    }
+
+    // From Jon Tal 23/03/2004
+    public static interface ABC {
+    }
+
+    public static interface DEF {
+    }
+
+    public static class ABCImpl implements ABC {
+        public ABCImpl(DEF def) {
+        }
+    }
+
+    public static class DEFImpl implements DEF {
+        public DEFImpl() {
+        }
+    }
+
+    public void testJohnTahlOne() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+
+        picoContainer.registerComponentImplementation("ABC",ABCImpl.class);
+        picoContainer.registerComponentImplementation("DEF",DEFImpl.class);
+
+        assertEquals(ABCImpl.class, picoContainer.getComponentInstance("ABC").getClass());
     }
 
 }

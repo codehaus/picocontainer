@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSessionListener;
 import java.io.StringReader;
 import java.io.Reader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.Enumeration;
 
 /**
@@ -41,8 +42,8 @@ import java.util.Enumeration;
  * @author Aslak Helles&oslash;y
  * @author Philipp Meier
  */
-public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
-    private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
+public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
+    private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public static final String KILLER_HELPER = "KILLER_HELPER";
 
@@ -105,7 +106,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference webappContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
         containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session);
 
-        session.setAttribute(KILLER_HELPER, new HttpSessionBindingListener() {
+        session.setAttribute(KILLER_HELPER, new ContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
             }
 
@@ -115,16 +116,16 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 try {
                     killContainer(containerRef);
                 } catch (IllegalStateException e) {
-                    /*
-                    Some servlet containers (Jetty) call contextDestroyed(ServletContextEvent event)
-                    and then afterwards call valueUnbound(HttpSessionBindingEvent event).
+                    //
+                    //Some servlet containers (Jetty) call contextDestroyed(ServletContextEvent event)
+                    //and then afterwards call valueUnbound(HttpSessionBindingEvent event).
 
-                    contextDestroyed will kill the top level (app level) pico container which will
-                    cascade stop() down to the session children.
+                    //contextDestroyed will kill the top level (app level) pico container which will
+                    //cascade stop() down to the session children.
 
-                    This means that when valueUnbound is called later, the session level container will
-                    already be stopped.
-                    */
+                    //This means that when valueUnbound is called later, the session level container will
+                    //already be stopped.
+                    //
                 }
             }
         });
@@ -144,4 +145,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             containerKiller.killContainer(containerRef);
         }
     }
+
+    private abstract class ContainerKillerHelper implements HttpSessionBindingListener, Serializable {}
 }

@@ -27,7 +27,7 @@ import java.util.zip.ZipException;
  * @version $Revision$
  */
 
-public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase of some sort I'd hope
+public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase of some sort I'd hope
     private Kernel kernel;
 
     protected void setUp() throws Exception {

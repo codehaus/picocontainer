@@ -11,6 +11,8 @@
 
 using System;
 using System.Collections;
+using System.Runtime.Serialization;
+
 namespace PicoContainer.Defaults
 {
   [Serializable]
@@ -24,6 +26,15 @@ namespace PicoContainer.Defaults
       this.forClass = forClass;
       this.constructors = constructors;
     }
+
+    public TooManySatisfiableConstructorsException(){ }
+
+    public TooManySatisfiableConstructorsException(Exception ex) : base (ex) {}
+    public TooManySatisfiableConstructorsException(string message) : base(message) { }
+
+    public TooManySatisfiableConstructorsException(string message, Exception ex) : base(message,ex) {}
+
+    protected TooManySatisfiableConstructorsException(SerializationInfo info, StreamingContext context) : base (info, context) {}
 
     public Type ForImplementationClass
     {

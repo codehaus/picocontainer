@@ -18,6 +18,6 @@ namespace PicoContainer.Tests.TestModel
 	/// </summary>
 	public interface Touchable
 	{
-      void wasTouched();
+      void touch();
   }
 }

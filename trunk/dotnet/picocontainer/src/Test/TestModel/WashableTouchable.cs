@@ -21,7 +21,7 @@ namespace PicoContainer.Tests.TestModel
     
     public WashableTouchable () {
     }
-    public void wasTouched() {
+    public void touch() {
 
     }
 

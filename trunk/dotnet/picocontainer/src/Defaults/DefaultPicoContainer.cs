@@ -8,260 +8,75 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
+
 using System;
 using System.Threading;
 using System.Collections;
 using PicoContainer;
-using PicoContainer.Extras;
 
 namespace PicoContainer.Defaults {
 
-  public class DefaultPicoContainer : MutablePicoContainer {
-    private  ArrayList parentsWeakReferences = new ArrayList();
-    
-    private int lockTimeOut = 0;
-    private ReaderWriterLock rwLock = new ReaderWriterLock();
+  public class DefaultPicoContainer : IMutablePicoContainer, IDisposable {
 
-    private  IList children = new ArrayList();
+    private readonly IDictionary componentKeyToAdapterMap = new Hashtable();
+    private readonly IComponentAdapterFactory componentAdapterFactory;
+    private IPicoContainer parent;
+    private readonly IList componentAdapters = new ArrayList();
+    private readonly IList orderedComponentAdapters = new ArrayList();
 
-    private  IList unmanagedComponents = new ArrayList();
+    private bool started = false;
+    private bool disposed = false;
 
-    private  IList instantiantionOrderedComponentAdapters = new ArrayList();
-
-    private  ComponentAdapterFactory componentAdapterFactory;
-
-    private  Hashtable componentKeyToAdapterMap = new Hashtable();
-
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+    public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory, IPicoContainer parent) {
       this.componentAdapterFactory = componentAdapterFactory;
+      this.parent = parent;
     }
 
-    public DefaultPicoContainer() : this(new DefaultComponentAdapterFactory()){
-    }
+    public DefaultPicoContainer(IPicoContainer parent) : this(new DefaultComponentAdapterFactory(), parent){ }
 
-    public  IList ComponentKeys {
+    public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory) : this(componentAdapterFactory, null) {  }
+
+    public DefaultPicoContainer() : this(new DefaultComponentAdapterFactory(), null){  }
+
+    public IList ComponentAdapters {
       get {
-        ArrayList result = new ArrayList();
-        MutablePicoContainer delegator = null;
-        LockCookie lc;
-        result.AddRange(componentKeyToAdapterMap.Keys);
-        rwLock.AcquireReaderLock(lockTimeOut);
-        try {
-          for (int x=0;x < parentsWeakReferences.Count;x++) {
-            delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
-            if (delegator == null) {
-              try {
-                lc = rwLock.UpgradeToWriterLock(lockTimeOut);
-                try {              
-                  parentsWeakReferences.RemoveAt(x);
-                  x--;
-                } finally {
-                  rwLock.DowngradeFromWriterLock(ref lc);
-                }
-              } catch (Exception) {
-                // ignore
-              }
-            } else {
-              foreach (object o in delegator.ComponentKeys) {
-                if (!result.Contains(o)) {
-                  result.Add(o);
-                }
-              }
-            }
-          }
-        
-        } finally {
-          rwLock.ReleaseReaderLock();
-        }
-        return result;
+        return ArrayList.ReadOnly(componentAdapters);
       }
     }
 
-    public bool HasComponentAdapter(object adapter) {
-      return this.GetComponentAdapters().Contains(adapter);
-    }
-
-    public ArrayList GetComponentAdapters() {
-      return new ArrayList(componentKeyToAdapterMap.Values);
-    }
-
-    public void RegisterComponent(ComponentAdapter componentAdapter) {
-      object componentKey = componentAdapter.ComponentKey;
-      if (componentKeyToAdapterMap.Contains(componentKey)) {
-        throw new DuplicateComponentKeyRegistrationException(componentKey);
-      }
-      componentKeyToAdapterMap.Add(componentKey, componentAdapter);
-    }
-
-    public ComponentAdapter UnRegisterComponent(object componentKey) {
-      ComponentAdapter ret = (ComponentAdapter)componentKeyToAdapterMap[componentKey];
-      componentKeyToAdapterMap.Remove(componentKey);
-      return ret;
-    }
-
-    public  ComponentAdapter FindComponentAdapter(object componentKey) {
-      ComponentAdapter result = FindComponentAdapterImpl(componentKey);
-      if (result != null) {
-        return result;
-      } else {
-        MutablePicoContainer delegator = null;
-        LockCookie lc;
-        rwLock.AcquireReaderLock(Timeout.Infinite);
-        try {
-          for (int x=0;x < parentsWeakReferences.Count;x++) {
-            delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
-            if (delegator == null) {
-              try {
-                lc = rwLock.UpgradeToWriterLock(lockTimeOut);
-                try {              
-                  parentsWeakReferences.RemoveAt(x);
-                  x--;
-                } finally {
-                  rwLock.DowngradeFromWriterLock(ref lc);
-                }
-              } catch (Exception) {
-                // ignore
-              }
-            } else {
-              ComponentAdapter componentAdapter = delegator.FindComponentAdapter(componentKey);
-              if (componentAdapter != null) {
-                return componentAdapter;
-              }
-
-            }
-          }
-        
-        } finally {
-          rwLock.ReleaseReaderLock();
-        }
-        return null;
-      }
-    }
-
-    private ComponentAdapter FindComponentAdapterImpl(object componentKey) {
-      ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap[componentKey];
-      Type componentKeyType = componentKey as Type;
-      if (result == null && componentKeyType != null) {
-        result = FindImplementingComponentAdapter(componentKeyType);
+    public IComponentAdapter GetComponentAdapter(object componentKey) {
+      IComponentAdapter adapter = (IComponentAdapter)componentKeyToAdapterMap[componentKey];
+      if (adapter == null && parent != null) {
+        adapter = parent.GetComponentAdapter(componentKey);
       }
 
-      return result;
+      return adapter;
     }
 
-    public ComponentAdapter RegisterComponentInstance(object component) {
-      return RegisterComponentInstance(component.GetType(), component);
-    }
+    public IComponentAdapter GetComponentAdapterOfType(Type componentType) {
 
-    public ComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance)  {
-      ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
-      RegisterComponent(componentAdapter);
-
-      AddOrderedComponentAdapter(componentAdapter);
-      unmanagedComponents.Add(componentInstance);
-
-      return componentAdapter;
-    }
-
-    public ComponentAdapter RegisterComponentImplementation(Type componentImplementation) {
-      return RegisterComponentImplementation(componentImplementation, componentImplementation);
-    }
-
-    public object GetComponentMulticaster(bool callInInstantiationOrder, bool callUnmanagedComponents) {
-      ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
-
-      IList componentsToMulticast = ComponentInstances;
-      if (!callUnmanagedComponents) {
-        foreach (object obj in unmanagedComponents) {
-          componentsToMulticast.Remove(obj);
-        }
-      }
-      return componentMulticasterFactory.CreateComponentMulticaster(
-        componentsToMulticast,
-        callInInstantiationOrder
-        );
-    }
-
-    public object GetComponentMulticaster()  {
-      return GetComponentMulticaster(true, false);
-    }
-
-    public ComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation) {
-      return RegisterComponentImplementation(componentKey, componentImplementation, null);
-    }
-
-    public ComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation, Parameter[] parameters)  {
-      ComponentAdapter componentAdapter = componentAdapterFactory.CreateComponentAdapter(componentKey, componentImplementation, parameters);
-      RegisterComponent(componentAdapter);
-      return componentAdapter;
-    }
-
-    public void AddOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-      instantiantionOrderedComponentAdapters.Add(componentAdapter);
-    }
-
-    public IList ComponentInstances  {
-      get {
-        foreach (object o in ComponentKeys) {
-          GetComponentInstance(o);
-        }
-        ArrayList result = new ArrayList();
-        foreach (ComponentAdapter componentAdapter in instantiantionOrderedComponentAdapters) {
-          result.Add(componentAdapter.GetComponentInstance(this));
-        }
-        return result;
-      }
-    }
-
-    public object GetComponentInstance(object componentKey)  {
-      ComponentAdapter componentAdapter = FindComponentAdapter(componentKey);
-      if (componentAdapter != null) {
-        return componentAdapter.GetComponentInstance(this);
-      } else {
-        return null;
-      }
-    }
-
-    public object FindComponentInstance(Type componentType)  {
-      ArrayList foundKeys = new ArrayList();
-      object result = null;
-      foreach (object key in ComponentKeys) {
-        object componentInstance = GetComponentInstance(key);
-                    
-        if (componentType.IsInstanceOfType(componentInstance)) {
-          result = componentInstance;
-          foundKeys.Add(key);
-        }
+      IComponentAdapter adapterByKey = GetComponentAdapter(componentType);
+      if (adapterByKey != null) {
+        return adapterByKey;
       }
 
-      if (foundKeys.Count == 0) {
-        return null;
-      } else if (foundKeys.Count > 1) {
-        throw new AmbiguousComponentResolutionException(componentType, foundKeys.ToArray());
-      }
-
-      return result;
-    }
-
-    public bool HasComponent(object componentKey) {
-      return ComponentKeys.Contains(componentKey);
-    }
-
-    public ComponentAdapter FindImplementingComponentAdapter(Type componentType)  {
-      ArrayList found = new ArrayList();
-      foreach (ComponentAdapter componentAdapter in GetComponentAdapters()) {
-        if (componentType.IsAssignableFrom(componentAdapter.ComponentImplementation)) {
-          found.Add(componentAdapter);
-        }
-      }
+      IList found = GetComponentAdaptersOfType(componentType);
 
       if (found.Count == 1) {
-        return ((ComponentAdapter) found[0]);
-      } else if (found.Count == 0) {
-        return null;
-      } else {
+        return (IComponentAdapter)found[0];
+      } 
+
+      if (found.Count == 0) {
+        if (parent != null) {
+          return parent.GetComponentAdapterOfType(componentType);
+        } else {
+          return null;
+        }
+      }
+      else {
         Type[] foundClasses = new Type[found.Count];
         for (int i = 0; i < foundClasses.Length; i++) {
-          ComponentAdapter componentAdapter = (ComponentAdapter) found[i];
+          IComponentAdapter componentAdapter = (IComponentAdapter) found[i];
           foundClasses[i] = componentAdapter.ComponentImplementation;
         }
 
@@ -269,139 +84,220 @@ namespace PicoContainer.Defaults {
       }
     }
 
-    public IList ChildContainers {
-      get {
-        return ArrayList.ReadOnly(children);
-      }
-    }
-
-    public IList ParentContainers {
-      get {
-        ArrayList rst = new ArrayList();
-        MutablePicoContainer delegator = null;
-        LockCookie lc;
-        rwLock.AcquireReaderLock(Timeout.Infinite);
-        for (int x=0;x < parentsWeakReferences.Count;x++) {
-          delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
-          if (delegator == null) {
-            lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
-            parentsWeakReferences.RemoveAt(x);
-            x--;
-            rwLock.DowngradeFromWriterLock(ref lc);
-          } else {
-            rst.Add(delegator);
-          }
+    public IList GetComponentAdaptersOfType(Type componentType) {
+      IList found = new ArrayList();
+      
+      foreach (IComponentAdapter componentAdapter in ComponentAdapters) {
+        if (componentType.IsAssignableFrom(componentAdapter.ComponentImplementation)) {
+          found.Add(componentAdapter);
         }
+      }
+      return found;
+    }
 
-        return ArrayList.ReadOnly(rst);
+    public void RegisterComponent(IComponentAdapter componentAdapter) {
+      object componentKey = componentAdapter.ComponentKey;
+      if (componentKeyToAdapterMap.Contains(componentKey)) {
+        throw new DuplicateComponentKeyRegistrationException(componentKey);
+      }
+      componentAdapter.Container = this;
+      componentAdapters.Add(componentAdapter);
+      componentKeyToAdapterMap.Add(componentKey, componentAdapter);
+    }
+
+    public IComponentAdapter UnregisterComponent(object componentKey) {
+      IComponentAdapter adapter = (IComponentAdapter)componentKeyToAdapterMap[componentKey];
+      if (adapter != null) {
+        componentKeyToAdapterMap.Remove(componentKey);
+        componentAdapters.Remove(adapter);
+        orderedComponentAdapters.Remove(adapter);
+      }
+
+      return adapter;
+    }
+
+    public IComponentAdapter RegisterComponentInstance(object component) {
+      return this.RegisterComponentInstance(component.GetType(),component);
+    }
+
+    public IComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance) {
+      if (componentInstance == this) {
+        throw new PicoRegistrationException("Can not register a container to itself. The container is already implicitly registered.");
+      }
+
+      IComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey,componentInstance);
+
+      RegisterComponent(componentAdapter);
+
+      return componentAdapter;
+    }
+
+   
+    public IComponentAdapter RegisterComponentImplementation(Type componentImplementation) {
+      return RegisterComponentImplementation(componentImplementation,componentImplementation);
+    }
+
+    public IComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation) {
+      return RegisterComponentImplementation(componentKey,componentImplementation, null);
+    }
+
+    public IComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation, IParameter[] parameters) {
+      IComponentAdapter componentAdapter = componentAdapterFactory.CreateComponentAdapter(componentKey,componentImplementation,parameters);
+
+      RegisterComponent(componentAdapter);
+
+      return componentAdapter;
+    }
+
+
+    public void AddOrderedComponentAdapter(IComponentAdapter componentAdapter) {
+      if (!orderedComponentAdapters.Contains(componentAdapter)) {
+        orderedComponentAdapters.Add(componentAdapter);
       }
     }
 
-    public bool AddChild(MutablePicoContainer child) {
-      bool added = false;
-      if (!children.Contains(child)) {
-        children.Add(child);
-        added = true;
+    public IList ComponentInstances {
+      get {
+        return GetComponentInstancesOfType(null);
       }
-      if (!child.ParentContainers.Contains(this)) {
-        child.AddParent(this);
-      }
-
-      return added;
     }
 
-    public bool RemoveChild(MutablePicoContainer child) {
-      bool removed = children.Contains(child);
-      if (removed) {
-        children.Remove(child);
+    public IList GetComponentInstancesOfType(Type componentType) {
+      IDictionary adapterToInstanceMap = new Hashtable ();
+      foreach (IComponentAdapter componentAdapter in componentAdapters) {
+        if (componentType == null || componentType.IsAssignableFrom(componentAdapter.ComponentImplementation)) {
+          object componentInstance = componentAdapter.ComponentInstance;
+          adapterToInstanceMap.Add(componentAdapter, componentInstance);
+
+          // This is to ensure all are added. (Indirect dependencies will be added
+          // from InstantiatingComponentAdapter).
+          AddOrderedComponentAdapter(componentAdapter);
+        }
       }
-      if (child.ParentContainers.Contains(this)) {
-        child.RemoveParent(this);
+      IList result = new ArrayList();
+      foreach (object componentAdapter in orderedComponentAdapters) {
+        object componentInstance = adapterToInstanceMap[componentAdapter];
+        if(componentInstance != null) {
+          // may be null in the case of the "implicit" adapter
+          // representing "this".
+          result.Add(componentInstance);
+        }
       }
-      return removed;
+      return ArrayList.ReadOnly(result);
     }
 
     
-    public bool AddParent(MutablePicoContainer parent) {
-      bool added = false;
-      bool found = false;
-      MutablePicoContainer delegator = null;
-      LockCookie lc ;
-      rwLock.AcquireReaderLock(Timeout.Infinite);
-      try {
-        for (int x=0;x < parentsWeakReferences.Count;x++) {
-          delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
-          if (delegator == null) {
-            try {
-              lc = rwLock.UpgradeToWriterLock(lockTimeOut);
-              try {              
-                parentsWeakReferences.RemoveAt(x);
-                x--;
-              } finally {
-                rwLock.DowngradeFromWriterLock(ref lc);
-              }
-            } catch (Exception) {
-              // ignore
-            }
-          } else {
-            if (delegator.Equals(parent)) {
-              found = true;
-            }
-          }
+    public object GetComponentInstance(object componentKey) {
+      IComponentAdapter componentAdapter = GetComponentAdapter(componentKey);
+      if (componentAdapter != null) {
+        return componentAdapter.ComponentInstance;
+      } 
+      else {
+        return null;
+      }
+    }
+
+    public object GetComponentInstanceOfType(Type componentType) {
+      IComponentAdapter componentAdapter = GetComponentAdapterOfType(componentType);
+      return componentAdapter == null ? null : componentAdapter.ComponentInstance;
+    }
+
+    public IComponentAdapter UnregisterComponentByInstance(object componentInstance) {
+      foreach (IComponentAdapter componentAdapter in ComponentAdapters) {
+        if(componentAdapter.ComponentInstance.Equals(componentInstance)) {
+          return UnregisterComponent(componentAdapter.ComponentKey);
         }
       }
-      finally {
-        rwLock.ReleaseReaderLock();
-      }
+      return null;
+    }
 
-      if (!found) {
-        rwLock.AcquireWriterLock(lockTimeOut);
+    public IPicoContainer Parent {
+      get {
+        return parent;
+      }
+      set {
+        parent = value;
+      }
+    }
+
+    public void Verify() {
+      IList nestedVerificationExceptions = new ArrayList();
+      foreach (IComponentAdapter componentAdapter in ComponentAdapters) {
         try {
-          parentsWeakReferences.Add(new WeakReference(parent));
-          added = true;
-        } finally {
-          rwLock.ReleaseWriterLock();
+          componentAdapter.Verify();
+        } 
+        catch (UnsatisfiableDependenciesException e) {
+          nestedVerificationExceptions.Add(e);
         }
       }
-      if (!parent.ChildContainers.Contains(this)) {
-        parent.AddChild(this);
-      }
 
-      return added;
+      if (nestedVerificationExceptions.Count > 0) {
+        throw new PicoVerificationException(nestedVerificationExceptions);
+      }
     }
 
-    public bool RemoveParent(MutablePicoContainer parent) {
 
-      bool removed = false;
-      MutablePicoContainer delegator = null;
-      LockCookie lc;
-      rwLock.AcquireReaderLock(Timeout.Infinite);
-      try {
-        for (int x=0;x < parentsWeakReferences.Count;x++) {
-          delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
-          if (delegator == null || delegator.Equals(parent)) {
-            try {
-              lc = rwLock.UpgradeToWriterLock(lockTimeOut);
-              try {              
-                parentsWeakReferences.RemoveAt(x);
-                x--;
-              } finally {
-                rwLock.DowngradeFromWriterLock(ref lc);
-              }
-            } catch (Exception) {
-              // ignore
-            }
-          } else {
-            if (delegator.Equals(parent)) {
-              removed = true;
-            }
-          }
+    public void Start() {
+      if(started) throw new ApplicationException("Already started");
+      if(disposed) throw new ApplicationException("Already disposed");
+      IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
+      foreach (IComponentAdapter componentAdapter in  adapters) {
+        if(typeof(IStartable).IsAssignableFrom(componentAdapter.ComponentImplementation)) {
+          IStartable startable = (IStartable) componentAdapter.ComponentInstance;
+          startable.Start();
         }
-      } finally {
-        rwLock.ReleaseWriterLock();
       }
-      return removed;
+      started = true;
     }
+
+
+    public void Stop() {
+      if(!started) throw new ApplicationException("Not started");
+      if(disposed) throw new ApplicationException("Already disposed");
+      IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
+      
+      for (int x=adapters.Count -1;x >=0;x--) {
+        IComponentAdapter componentAdapter = (IComponentAdapter)adapters[x];
+        if(typeof(IStartable).IsAssignableFrom(componentAdapter.ComponentImplementation)) {
+          IStartable startable = (IStartable) componentAdapter.ComponentInstance;
+          startable.Stop();
+        }
+      }
+      started = false;
+    }
+
+    public void Dispose() {
+      if(disposed) throw new SystemException("Already disposed");
+      IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
+      for (int x=adapters.Count -1;x >=0;x--) {
+        IComponentAdapter componentAdapter = (IComponentAdapter)adapters[x];
+        if(typeof(IDisposable).IsAssignableFrom(componentAdapter.ComponentImplementation)) {
+          IDisposable disposable= (IDisposable) componentAdapter.ComponentInstance;
+          disposable.Dispose();
+        }
+      }
+      disposed = true;
+
+    }
+
+
+    public static IList OrderComponentAdaptersWithContainerAdaptersLast(IList ComponentAdapters) { 
+      ArrayList result = new ArrayList(); 
+      ArrayList containers = new ArrayList();
+      foreach (IComponentAdapter adapter in ComponentAdapters) {
+        if (typeof(IPicoContainer).IsAssignableFrom(adapter.ComponentImplementation)) { 
+          containers.Add(adapter);
+        } else {
+          result.Add(adapter);
+        }
+        
+      }
+      result.AddRange(containers);
+      
+      return result; 
+    } 
+
   }
+
 
 }

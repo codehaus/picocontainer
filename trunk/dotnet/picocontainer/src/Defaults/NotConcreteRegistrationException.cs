@@ -10,6 +10,7 @@
  *****************************************************************************/
 
 using System;
+using System.Runtime.Serialization;
 
 namespace PicoContainer.Defaults
 {
@@ -22,6 +23,16 @@ namespace PicoContainer.Defaults
     {
       this.componentImplementation = componentImplementation;
     }
+
+    public NotConcreteRegistrationException(){ }
+
+    public NotConcreteRegistrationException(Exception ex) : base (ex) {}
+    public NotConcreteRegistrationException(string message) : base(message) { }
+
+    public NotConcreteRegistrationException(string message, Exception ex) : base(message,ex) {}
+
+
+    protected NotConcreteRegistrationException(SerializationInfo info, StreamingContext context) : base (info, context) {}
 
     public override String Message
     {

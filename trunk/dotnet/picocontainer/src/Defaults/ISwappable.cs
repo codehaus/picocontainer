@@ -12,10 +12,11 @@
 using System;
 
 namespace PicoContainer.Defaults {
-  [Serializable]
-  public class DefaultComponentAdapterFactory : IComponentAdapterFactory {
-    public IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
-      return new CachingComponentAdapter(new ConstructorComponentAdapter(componentKey, componentImplementation, parameters));
-    }
+  /// <summary>
+  /// Summary description for Swappable.
+  /// </summary>
+  public interface ISwappable {
+    object PicoHotSwap(object newSubject);
+
   }
 }

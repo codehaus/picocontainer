@@ -10,7 +10,8 @@
  *****************************************************************************/
 
 using System;
-
+using System.Runtime.Serialization;
+ 
 namespace PicoContainer.Defaults
 {
   [Serializable]
@@ -22,6 +23,15 @@ namespace PicoContainer.Defaults
     {
       this.key = key;
     }
+
+    public DuplicateComponentKeyRegistrationException(){ }
+
+    public DuplicateComponentKeyRegistrationException(Exception ex) : base (ex) {}
+    public DuplicateComponentKeyRegistrationException(string message) : base(message) { }
+
+    public DuplicateComponentKeyRegistrationException(string message, Exception ex) : base(message,ex) {}
+
+    protected DuplicateComponentKeyRegistrationException(SerializationInfo info, StreamingContext context) : base (info, context) {}
 
     public object DuplicateKey
     {

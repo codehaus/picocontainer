@@ -21,7 +21,7 @@ namespace PicoContainer.Tests.Tck
   /// </summary>
   public abstract class AbstractMultipleConstructorTestCase
   {
-    protected abstract MutablePicoContainer createPicoContainer();
+    protected abstract IMutablePicoContainer createPicoContainer();
 
     public class Multi 
     {
@@ -57,12 +57,17 @@ namespace PicoContainer.Tests.Tck
     public class Two {}
     public class Three {}
 
+    [Test]
+    public void testStringWorks() 
+    {
+      // Difference in java and .net
+    }
     
 
     [Test]
     public void testMultiWithOnlySmallSatisfiedDependencyWorks() 
     {
-      MutablePicoContainer pico = createPicoContainer();
+      IMutablePicoContainer pico = createPicoContainer();
       pico.RegisterComponentImplementation(typeof(Multi));
       pico.RegisterComponentImplementation(typeof(One));
       pico.RegisterComponentImplementation(typeof(Three));
@@ -74,7 +79,7 @@ namespace PicoContainer.Tests.Tck
     [Test]
     public void testMultiWithBothSatisfiedDependencyWorks() 
     {
-      MutablePicoContainer pico = createPicoContainer();
+      IMutablePicoContainer pico = createPicoContainer();
       pico.RegisterComponentImplementation(typeof(Multi));
       pico.RegisterComponentImplementation(typeof(One));
       pico.RegisterComponentImplementation(typeof(Two));
@@ -87,7 +92,7 @@ namespace PicoContainer.Tests.Tck
     [Test]
     public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() 
     {
-      MutablePicoContainer pico = createPicoContainer();
+      IMutablePicoContainer pico = createPicoContainer();
       pico.RegisterComponentImplementation(typeof(Multi));
       pico.RegisterComponentImplementation(typeof(One));
       pico.RegisterComponentImplementation(typeof(Two));

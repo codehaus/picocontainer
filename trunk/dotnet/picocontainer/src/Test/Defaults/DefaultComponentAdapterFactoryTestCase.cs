@@ -1,54 +1,39 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the license.txt file.                                                     *
- *                                                                           *
- * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
- * C# port by Maarten Grootendorst                                           *
- *****************************************************************************/
-
 using System;
-using System.Diagnostics;
-
 using NUnit.Framework;
+using PicoContainer;
 
 using PicoContainer.Defaults;
-using PicoContainer.Tests.Tck;
+
 using PicoContainer.Tests.TestModel;
 
-namespace PicoContainer.Tests.Defaults
-{
+namespace Test.Defaults {
+  /// <summary>
+  /// Summary description for DefaultComponentAdapterFactoryTestCase.
+  /// </summary>
+  /// 
   [TestFixture]
-  public class DefaultComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase
-  {
+  public class DefaultComponentAdapterFactoryTestCase {
 
-    protected override ComponentAdapterFactory CreateComponentAdapterFactory() 
-    {
+    protected IComponentAdapterFactory CreateComponentAdapterFactory() {
       return new DefaultComponentAdapterFactory();
     }
 
     [Test]
-    public void testInstantiateComponentWithNoDependencies() 
-    {
-       ComponentAdapter componentAdapter =
+    public void testInstantiateComponentWithNoDependencies() {
+      IComponentAdapter componentAdapter =
         CreateComponentAdapterFactory().CreateComponentAdapter(typeof(Touchable), typeof(SimpleTouchable), null);
 
-      Object comp = componentAdapter.GetComponentInstance(picoContainer);
+      Object comp = componentAdapter.ComponentInstance;
       Assert.IsNotNull(comp);
       Assert.IsTrue(comp is SimpleTouchable);
     }
 
     [Test]
-    public void testSingleUseComponentCanBeInstantiatedByDefaultComponentAdapter() 
-    {
-      ComponentAdapter componentAdapter = new DefaultComponentAdapter(null, typeof(object));
-      Object component = componentAdapter.GetComponentInstance(new DefaultPicoContainer());
+    public void testSingleUseComponentCanBeInstantiatedByDefaultIComponentAdapter() {
+      IComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter("o", typeof(object), null);
+      Object component = componentAdapter.ComponentInstance;
       Assert.IsNotNull(component);
     }
 
   }
-
-
 }

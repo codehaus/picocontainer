@@ -11,20 +11,21 @@
 
 using System;
 
-namespace PicoContainer.Defaults
-{
-  public class InstanceComponentAdapter : AbstractComponentAdapter 
-  {
+namespace PicoContainer.Defaults {
+  public class InstanceComponentAdapter : AbstractComponentAdapter {
     private object componentInstance;
 
-    public InstanceComponentAdapter(Object componentKey, Object componentInstance) : base(componentKey, componentInstance.GetType())
-    {
+
+    public InstanceComponentAdapter(object componentKey, object componentInstance) : base(componentKey, componentInstance.GetType()) {
       this.componentInstance = componentInstance;
     }
 
-    public override object GetComponentInstance(MutablePicoContainer picoContainer) 
-    {
-      return componentInstance;
+    public override object ComponentInstance {
+      get {
+        return componentInstance;
+      }
     }
+
+    public override void Verify() {}
   }
 }

@@ -260,4 +260,44 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
 
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", pico.getComponentInstance("recording").toString());
     }
+
+    public static class Yin {
+        private Yang yang;
+
+        public void setYin(Yang yang) {
+            this.yang = yang;
+        }
+
+        public Yang getYang() {
+            return yang;
+        }
+    }
+
+    public static class Yang {
+        private Yin yin;
+
+        public void setYang(Yin yin) {
+            this.yin = yin;
+        }
+
+        public Yin getYin() {
+            return yin;
+        }
+    }
+
+    // http://jira.codehaus.org/browse/PICO-188
+    public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
+        MutablePicoContainer pico = new DefaultPicoContainer(
+                new CachingComponentAdapterFactory(
+                            new SetterInjectionComponentAdapterFactory()));
+
+        pico.registerComponentImplementation(Yin.class);
+        pico.registerComponentImplementation(Yang.class);
+
+        Yin yin = (Yin) pico.getComponentInstance(Yin.class);
+        Yang yang = (Yang) pico.getComponentInstance(Yang.class);
+
+        assertEquals(yin, yang.getYin());
+        assertEquals(yang, yin.getYang());
+    }
 }

@@ -23,10 +23,10 @@ import java.io.StringReader;
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class BeanXMLPseudoComponentFactoryTestCase extends TestCase {
+public class XStreamComponentInstanceFactoryTestCase extends TestCase {
 
     public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
-        BeanXMLPseudoComponentFactory xsf = new BeanXMLPseudoComponentFactory();
+        XStreamComponentInstanceFactory xsf = new XStreamComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +
                 "<org.nanocontainer.script.xml.TestBean>" +

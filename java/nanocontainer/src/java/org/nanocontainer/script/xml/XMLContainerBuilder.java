@@ -49,13 +49,13 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private final Element rootElement;
 
-    private final static String DEFAULT_INSTANCE_FACTORY = BeanXMLPseudoComponentFactory.class.getName();
+    private final static String DEFAULT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
-    private final static String COMPONENT = "component";
-    private final static String COMPONENTADAPTERFACTORY = "componentadapterfactory";
-    private final static String PSEUDOCOMPONENT = "pseudocomponent";
+    private final static String COMPONENT_IMPLEMENTATION = "componentimplementation";
+    private final static String COMPONENT_INSTANCE = "componentinstance";
+    private final static String COMPONENT_ADAPTER_FACTORY = "componentadapterfactory";
     private final static String CLASS = "class";
     private final static String ELEMENT = "element";
     private final static String FACTORY = "factory";
@@ -82,7 +82,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
-            String cafName = rootElement.getAttribute(COMPONENTADAPTERFACTORY);
+            String cafName = rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);
             if (EMPTY.equals(cafName) || cafName == null) {
                 cafName = DefaultComponentAdapterFactory.class.getName();
             }
@@ -126,18 +126,18 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             short type = child.getNodeType();
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
-                if (name.equals(PSEUDOCOMPONENT)) {
-                    registerPseudoComponent(parentContainer, (Element) child);
+                if (COMPONENT_INSTANCE.equals(name)) {
+                    registerComponentInstance(parentContainer, (Element) child);
                     count++;
-                } else if (name.equals(COMPONENT)) {
+                } else if (COMPONENT_IMPLEMENTATION.equals(name)) {
                     registerComponentImplementation(parentContainer, (Element) child);
                     count++;
-                } else if (name.equals(CONTAINER)) {
+                } else if (CONTAINER.equals(name)) {
                     SoftCompositionPicoContainer newChild = new DefaultSoftCompositionPicoContainer(parentContainer.getComponentClassLoader(), parentContainer);
                     parentContainer.addChildContainer(newChild);
                     registerComponentsAndChildContainers(newChild, (Element) child);
                     count++;
-                } else if (name.equals(CLASSPATH)) {
+                } else if (CLASSPATH.equals(name)) {
                 } else {
                     throw new PicoCompositionException("Unsupported element:" + name);
                 }
@@ -155,7 +155,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             short type = child.getNodeType();
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
-                if (name.equals(ELEMENT)) {
+                if (ELEMENT.equals(name)) {
                     String fileName = ((Element) child).getAttribute(FILE);
                     String urlSpec = ((Element) child).getAttribute(URL);
                     URL url = null;
@@ -220,7 +220,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         return null;
     }
 
-    private void registerPseudoComponent(ReflectionContainerAdapter reflectionComponentAdapter, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
+    private void registerComponentInstance(ReflectionContainerAdapter reflectionComponentAdapter, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
         String factoryClass = componentElement.getAttribute(FACTORY);
         String key = componentElement.getAttribute(KEY);
         
@@ -229,8 +229,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
 
         ReflectionContainerAdapter tempContainerAdapter = new DefaultReflectionContainerAdapter();
-        tempContainerAdapter.registerComponentImplementation(XMLPseudoComponentFactory.class.getName(), factoryClass);
-        XMLPseudoComponentFactory factory = (XMLPseudoComponentFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);
+        tempContainerAdapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
+        XMLComponentInstanceFactory factory = (XMLComponentInstanceFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);
 
         NodeList nl = componentElement.getChildNodes();
         Element childElement = null;

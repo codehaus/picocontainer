@@ -19,18 +19,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Implementation of XMLPseudoComponentFactory that uses BeanPropertyComponentAdapter 
+ * Implementation of XMLComponentInstanceFactory that uses BeanPropertyComponentAdapter 
  * to create instances from DOM elements.
  * 
  * @author Paul Hammant
  * @author Marcos Tarruella
  * @author Mauro Talevi
  */
-public class BeanXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
+public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory {
     
     /**
      * {@inheritDoc}
-     * @see XMLPseudoComponentFactory#makeInstance(Element)
+     * @see XMLComponentInstanceFactory#makeInstance(Element)
      */
     public Object makeInstance(Element element) throws ClassNotFoundException {
         String className = element.getNodeName();

@@ -7,7 +7,7 @@ using PicoContainer.Tests.Tck;
 
 using PicoContainer.Tests.TestModel;
 
-namespace Test {
+namespace Test.Defaults  {
   /// <summary>
   /// Summary description for DefaultComponentRegistryTestCase.
   /// </summary>

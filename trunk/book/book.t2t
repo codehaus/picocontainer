@@ -6,12 +6,12 @@ by PicoContainer Committers and friends
 
 %%date(%c)
 
-%!include: .preface.t2t
-%!include: .antipatterns.t2t
-%!include: .patterns.t2t
-%!include: .simplepico.t2t
-%!include: .hierarchies.t2t
-%!include: .servlet.t2t
+%!include: ``preface.t2t``
+%!include: ``antipatterns.t2t``
+%!include: ``patterns.t2t``
+%!include: ``simplepico.t2t``
+%!include: ``hierarchies.t2t``
+%!include: ``servlet.t2t``
 
 **Blah**
 

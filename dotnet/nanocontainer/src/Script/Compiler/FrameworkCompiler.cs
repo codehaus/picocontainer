@@ -14,6 +14,42 @@ namespace NanoContainer.Script.Compiler
 			return Compile(cp, GetScriptAsString(reader), assemblies);
 		}
 
+		// overload to compile CodeDom trees
+		public static Assembly Compile(System.CodeDom.Compiler.CodeDomProvider cp, System.CodeDom.CodeCompileUnit scriptCode, IList assemblies ) 
+		{
+			ICodeCompiler ic = cp.CreateCompiler();
+			CompilerParameters cpar = GetCompilerParameters(assemblies);
+			CompilerResults cr = ic.CompileAssemblyFromDom(cpar, scriptCode);   
+
+			bool errors = false;
+
+			if (cr.Errors.Count > 0) 
+			{
+    
+				StringBuilder sb = new StringBuilder("Error compiling the composition script:\n");
+				foreach (CompilerError ce in cr.Errors) 
+				{
+					if (!ce.IsWarning) 
+					{
+						errors = true;
+						sb.Append("\nError number:\t")
+							.Append(ce.ErrorNumber)
+							.Append("\nMessage:\t ")
+							.Append(ce.ErrorText)
+							.Append("\nLine number:\t")
+							.Append(ce.Line);
+					}
+				}
+				if (errors) 
+				{
+					throw new PicoCompositionException(sb.ToString());
+				}
+			}
+
+			return cr.CompiledAssembly;
+		}
+
+
 		public static Assembly Compile(CodeDomProvider cp, string scriptCode, IList assemblies)
 		{
 			ICodeCompiler ic = cp.CreateCompiler();

@@ -128,8 +128,6 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     ComponentAdapter unregisterComponentByInstance(Object componentInstance);
 
-    // TODO: Document these similar methods. It's not obvious what the difference is.
-
     /**
      * Make a child container, using the same implementation of MutablePicoContainer as the parent.
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.
@@ -168,29 +166,5 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     void addChildContainer(String name, PicoContainer child);
 
-    // Shouldn't this take a PicoContainer? Or even if we keep only
-    // addChildContainer(String name, PicoContainer child), it could take name.
-    // (This is closer to a Map API which should be sufficient for most cases)
     void removeChildContainer(PicoContainer child);
-
-    /**
-     * Returns the LifecycleManager that can be used to manage this container's
-     * (and its components') lifecycle.
-     * @return a LifeCycleManager
-     * @since 1.1
-     */
-    LifecycleManager getLifecycleManager();
-
-    /**
-     * Accepts a visitor that should visit the child containers.
-     * @since 1.1
-     */
-    void accept(ContainerVisitor containerVisitor);
-
-    /**
-     * Accepts a visitor that should visit the component instances.
-     * @since 1.1
-     */
-    void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder);
-
 }

@@ -124,6 +124,9 @@ public interface PicoContainer extends Startable, Disposable {
      */
     List getComponentInstancesOfType(Class type) throws PicoException;
 
-
-
+    /**
+     * Accepts a visitor that should visitContainer the component instances.
+     * @since 1.1
+     */
+    void accept(PicoVisitor containerVisitor, Class componentType, boolean visitInInstantiationOrder);
 }

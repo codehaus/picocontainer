@@ -1,16 +1,13 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.defaults.CustomLifecycleManagerFactory;
 import org.picocontainer.MutablePicoContainer;
-
-import java.lang.reflect.Method;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class CustomLifecycleManagerTestCase extends TestCase {
+public class CustomLifecycleTestCase extends TestCase {
     public abstract static class RecordingLifecycle {
         private final StringBuffer recording;
 
@@ -65,13 +62,13 @@ public class CustomLifecycleManagerTestCase extends TestCase {
             assertNotNull(three);
         }
     }
-    public void testShouldAllowCustomLifecycle() throws Exception {
-        Method start = RecordingLifecycle.class.getMethod("demarrer", null);
-        Method stop = RecordingLifecycle.class.getMethod("arreter", null);
-        Method dispose = RecordingLifecycle.class.getMethod("ecraser", null);
 
-        CustomLifecycleManagerFactory lmf = new CustomLifecycleManagerFactory(start, stop, dispose);
-        MutablePicoContainer parent = new DefaultPicoContainer(lmf);
+    public void testShouldAllowCustomLifecycle() throws NoSuchMethodException {
+        LifecycleVisitor starter = new LifecycleVisitor(RecordingLifecycle.class.getMethod("demarrer", null), true);
+        LifecycleVisitor stopper = new LifecycleVisitor(RecordingLifecycle.class.getMethod("arreter", null), false);
+        LifecycleVisitor disposer = new LifecycleVisitor(RecordingLifecycle.class.getMethod("ecraser", null), false);
+
+        MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
         parent.registerComponentImplementation("recording", StringBuffer.class);
         child.registerComponentImplementation(Four.class);
@@ -79,9 +76,9 @@ public class CustomLifecycleManagerTestCase extends TestCase {
         parent.registerComponentImplementation(One.class);
         child.registerComponentImplementation(Three.class);
 
-        parent.getLifecycleManager().start();
-        parent.getLifecycleManager().stop();
-        parent.getLifecycleManager().dispose();
+        starter.visitContainer(parent);
+        stopper.visitContainer(parent);
+        disposer.visitContainer(parent);
 
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording").toString());
     }

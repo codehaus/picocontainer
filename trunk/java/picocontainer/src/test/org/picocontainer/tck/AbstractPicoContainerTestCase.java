@@ -10,7 +10,9 @@
 package org.picocontainer.tck;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -21,8 +23,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
-import org.picocontainer.ContainerVisitor;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
@@ -57,7 +57,7 @@ import java.util.Set;
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
  */
-public abstract class AbstractPicoContainerTestCase extends TestCase {
+public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
@@ -516,7 +516,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testStartStopAndDisposeCascadedtoAutomaticChild() {
+    public void testShouldCascadeStartStopAndDisposeToChild() {
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(sb);
@@ -537,21 +537,13 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
-    public void testChildContainerVisitor() {
+    public void testAcceptShouldIterateOverChildContainers() {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
-        ContainerVisitorStub containerVisitor = new ContainerVisitorStub();
-        parent.accept(containerVisitor);
-        assertNotNull(containerVisitor.visitedContainer);
-        assertEquals(child, containerVisitor.visitedContainer);
-
-    }
-
-    public static class ContainerVisitorStub implements ContainerVisitor {
-        public PicoContainer visitedContainer;
-        public void visit(PicoContainer pico) {
-            visitedContainer = pico;
-        }
+        Mock visitorMock = new Mock(PicoVisitor.class);
+        visitorMock.expects(once()).method("visitContainer").with(same(child));
+        parent.accept((PicoVisitor) visitorMock.proxy(), null, true);
+        visitorMock.verify();
     }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {

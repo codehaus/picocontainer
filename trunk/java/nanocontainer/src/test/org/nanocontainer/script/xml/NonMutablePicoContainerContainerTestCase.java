@@ -17,8 +17,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoException;
-import org.picocontainer.ContainerVisitor;
-import org.picocontainer.ComponentVisitor;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.SAXException;
 
@@ -76,10 +75,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public void accept(ContainerVisitor containerVisitor) {
-        }
-
-        public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
+        public void accept(PicoVisitor containerVisitor, Class componentType, boolean visitInInstantiationOrder) {
         }
 
         public List getComponentAdaptersOfType(Class componentType) {

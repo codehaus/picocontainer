@@ -14,10 +14,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoException;
-import org.picocontainer.ContainerVisitor;
-import org.picocontainer.ComponentVisitor;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -194,16 +192,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.removeChildContainer(child);
     }
 
-    public LifecycleManager getLifecycleManager() {
-        return delegate.getLifecycleManager();
-    }
-
-    public void accept(ContainerVisitor containerVisitor) {
-        delegate.accept(containerVisitor);
-    }
-
-    public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
-        delegate.accept(componentVisitor, componentType, visitInInstantiationOrder);
+    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(visitor, componentType, visitInInstantiationOrder);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {

@@ -73,6 +73,14 @@ public class InstanceComponentAdapterTestCase
     
     /**
      * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+        return new InstanceComponentAdapter("Key", new Integer(4711));
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {

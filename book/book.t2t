@@ -1,10 +1,11 @@
 Constructor Dependency Injection
 with PicoContainer
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
 
 %!include: copyright.t2t
 %!include: notices.t2t
 %!include: preface.t2t
+%!include: components.t2t
 %!include: antipatterns.t2t
 %!include: patterns.t2t
 %!include: dependency-injection.t2t

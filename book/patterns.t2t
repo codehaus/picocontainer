@@ -1,6 +1,6 @@
 Constructor Dependency Injection, with PicoContainer
 Design Patterns
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
 
 = Design Patterns =
 
@@ -47,28 +47,15 @@ like documenting that and expanding this then feel free to.
 
 Let us hope this is not necessary:
 
-package helloworld;
-public interface HelloWorld {
-    void sayHello(String greeting);
-}
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/HelloWorld.java|lineNumbers=true}
 
-package helloworld.impl.default;
-public class DefaultHelloWorld implements HelloWorld {
-    void sayHello(String greeting) {
-System.out.println("HelloWorld Greeting: " + greeting);
-    }
-}
+TODO Aslak - these do not work ?
 
-package helloworld.impl.remote;
-public class RemoteHelloWorld implements HelloWorld {
-    private RemoteMessager mRemoteMessager;
-    public RemoteHelloWorld(RemoteMessager rm) {
-RemoteMessager = rm;
-    }
-    void sayHello(String greeting) {
-rm.sendMessage("HelloWorld Greeting: " + greeting);
-    }
-}
+{--snippet:id=class3|url=
+@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/defaults/DefaultHelloWorld.java|lineNumbers=true}
+
+{--snippet:id=class|url=
+@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/remote/RemoteHelloWorld.java|lineNumbers=true}
 
 We are referring to this pattern at <strong>interface/impl separation</strong>.
 Wiley's Patterns in Java book refers to it simply as 'Interface', but we feel
@@ -139,6 +126,7 @@ met if the SAX API is used for making parsers.
 
 == Applicable Maxims For CDI ==
 
-=== Seperation Of Concerns ===
+=== Separation Of Concerns ===
+
 
 

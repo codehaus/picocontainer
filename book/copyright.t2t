@@ -1,6 +1,6 @@
-Constructor Dependency Injection, with PicoContainer 
+Constructor Dependency Injection, with PicoContainer
 Copyright
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
 
 = Copyright and participating in the book =
 
@@ -43,9 +43,11 @@ is our intention to donate 10% of the profits to Codehaus, the Open Source porta
 == Right To publish ==
 
 No other group, organisation, company or individual other than the CDI-Book-Owners may publish the book. Publication may be bound or
-unbound. Printed or electronic. The CDI-Book-Owners may make available a copy of the book at http://www.picocontainer.org/book.html, and
+unbound. Printed or electronic. The CDI-Book-Owners may make available a copy of the book at http://www.picocontainer.org/book.html,
+and
 individuals may view it there. No individual may distribute that in any form other than the committers collectively. Individuals may
 link to it, but not copy it, transform it, or publish it.
+
 
 
 

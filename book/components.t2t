@@ -1,0 +1,28 @@
+Constructor Dependency Injection, with PicoContainer
+Components versus Objects
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
+
+= Components versus Objects =
+
+We should all know by now that an Object is an instance of a class. TODO - more OO blurb.  A component, though also an object,
+carries connotations of being larger than a simple object. It also implies longer life perhaps and a possiblity of being
+interchanged with other compatible implementations.
+
+In reality there is a sliding scale for classes.  Something like String (a immutable, inextendable class) is clearly on the object
+side of that scale. Something like WebServer is clearly on the component end of that scale. Perhaps all classes hinting at server
+capability are on the component end of that scale.
+
+```
+  object                                                          component
+  <----------------------------------------------------------------------->
+     x               x                   x                          x
+  String           Person            PeopleManager               WebServer
+      x                                                 x
+    ArrayList                                   PersistenceStore
+
+```
+
+
+
+
+

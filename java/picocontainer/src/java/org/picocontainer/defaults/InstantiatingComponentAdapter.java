@@ -30,7 +30,7 @@ import java.lang.reflect.Modifier;
  * @since 1.0
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
-    private transient boolean verifying;
+    private transient ObjectReference verifyingGuard;
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
     /** Flag indicating instanciation of non-public classes. */ 
@@ -78,24 +78,21 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /**
      * {@inheritDoc}
      */
-    public void verify(PicoContainer container) throws UnsatisfiableDependenciesException {
+    public void verify(final PicoContainer container) throws UnsatisfiableDependenciesException {
         final Constructor constructor = getGreediestSatisfiableConstructor(container);
         final Class[] parameterTypes = constructor.getParameterTypes();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-        if (verifying) {
-            throw new CyclicDependencyException(getComponentImplementation());
+        if (verifyingGuard == null) {
+            verifyingGuard = new CyclicDependency.ThreadLocalGuard();
         }
-        try {
-            verifying = true;
-            for (int i = 0; i < currentParameters.length; i++) {
-                currentParameters[i].verify(container, this, parameterTypes[i]);
+        CyclicDependency.observe(verifyingGuard, getComponentImplementation(), new CyclicDependency() {
+            public Object run() {
+                for (int i = 0; i < currentParameters.length; i++) {
+                    currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
+                }
+                return null;
             }
-        } catch (CyclicDependencyException e) {
-            e.appendDependency(getComponentImplementation());
-            throw e;
-        } finally {
-            verifying = false;
-        }
+        });
     }
 
     /**

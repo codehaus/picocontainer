@@ -27,9 +27,10 @@ import org.picocontainer.PicoContainer;
  */
 public class SynchronizedComponentAdapterTestCase extends TestCase {
     private Runner[] runner = new Runner[3];
+    private int blockerCounter = 0;
 
     class Runner implements Runnable {
-        public CyclicDependencyException exception;
+        public RuntimeException exception;
         public Blocker blocker;
         private PicoContainer pico;
 
@@ -40,16 +41,17 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         public void run() {
             try {
                 blocker = (Blocker) pico.getComponentInstance("key");
-            } catch (CyclicDependencyException e) {
+            } catch (RuntimeException e) {
                 exception = e;
             }
         }
     }
 
-    public static class Blocker {
+    public class Blocker {
         public Blocker() throws InterruptedException {
             final Thread thread = Thread.currentThread();
             synchronized (thread) {
+                SynchronizedComponentAdapterTestCase.this.blockerCounter++;
                 thread.wait();
             }
         }
@@ -57,7 +59,9 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
 
     private void initTest(ComponentAdapter componentAdapter) throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentInstance(this);
         pico.registerComponent(componentAdapter);
+        blockerCounter = 0;
 
         for(int i = 0; i < runner.length; ++i) {
             runner[i] = new Runner(pico);
@@ -89,6 +93,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         SynchronizedComponentAdapter synchronizedComponentAdapter = new SynchronizedComponentAdapter(componentAdapter);
         initTest(synchronizedComponentAdapter);
 
+        assertEquals(1, blockerCounter);
         for(int i = 0; i < runner.length; ++i) {
             assertNull(runner[i].exception);
         }
@@ -105,8 +110,9 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         initTest(componentAdapter);
 
         assertNull(runner[0].exception);
+        assertEquals(3, blockerCounter);
         for(int i = 1; i < runner.length; ++i) {
-            assertNotNull(runner[i].exception);
+            assertNull(runner[i].exception);
         }
     }
 

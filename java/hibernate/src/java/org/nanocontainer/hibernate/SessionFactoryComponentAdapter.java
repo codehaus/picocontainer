@@ -12,15 +12,17 @@ package org.nanocontainer.hibernate;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.cfg.Configuration;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.CyclicDependency;
+import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.util.HashSet;
@@ -35,7 +37,7 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
 
     private final Object componentKey;
     private Parameter configurationParameter = null;
-    private boolean verifying = false;
+    private transient ObjectReference verifyingGuard;
 
     /**
      * construct adapter with net.sf.hibernate.SessionFactory.class as key
@@ -76,24 +78,22 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
         }
     }
 
-    public void verify(PicoContainer picoContainer) throws PicoVerificationException {
-        if (verifying) {
-            throw new CyclicDependencyException(Configuration.class);
+    public void verify(final PicoContainer picoContainer) throws PicoVerificationException {
+        if (verifyingGuard == null) {
+            // TODO: Konstantin, use another appropriate guard or create a SessionGuard
+            verifyingGuard = new CyclicDependency.SimpleGuard();
         }
-        try {
-            verifying = true;
-            HashSet unsatisfiableDependencies = new HashSet();
-            unsatisfiableDependencies.add(Configuration.class);
+        CyclicDependency.observe(verifyingGuard, getComponentImplementation(), new CyclicDependency() {
+            public Object run() {
+                HashSet unsatisfiableDependencies = new HashSet();
+                unsatisfiableDependencies.add(Configuration.class);
 
-            if (!configurationParameter.isResolvable(picoContainer, this, Configuration.class)) {
-                throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencies);
+                if (!configurationParameter.isResolvable(picoContainer, SessionFactoryComponentAdapter.this, Configuration.class)) {
+                    throw new UnsatisfiableDependenciesException(SessionFactoryComponentAdapter.this, unsatisfiableDependencies);
+                }
+                return null;
             }
-
-        } catch (CyclicDependencyException e) {
-            e.appendDependency(getComponentImplementation());
-        } finally {
-            verifying = false;
-        }
+        });
     }
 
     public void accept(PicoVisitor visitor) {

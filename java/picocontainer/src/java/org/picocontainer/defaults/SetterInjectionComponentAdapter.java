@@ -38,7 +38,7 @@ import java.util.Set;
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private transient boolean instantiating;
+    private transient ObjectReference instantiationGuard;
     private transient List setters;
     private transient List setterNames;
     private transient Class[] setterTypes;
@@ -123,38 +123,35 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     /**
      * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getComponentInstance(PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         final Parameter[] matchingParameters = getMatchingParameterListForSetters(container);
-        if (instantiating) {
-            throw new CyclicDependencyException(getComponentImplementation());
+        if (instantiationGuard == null) {
+            instantiationGuard = new CyclicDependency.ThreadLocalGuard();
         }
-        try {
-            instantiating = true;
-            final Object componentInstance = newInstance(constructor, null);
-            for (int i = 0; i < setters.size(); i++) {
-                final Method setter = (Method) setters.get(i);
-                setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, this, setterTypes[i])});
+        return CyclicDependency.observe(instantiationGuard, getComponentImplementation(), new CyclicDependency() {
+            public Object run() {
+                try {
+                    final Object componentInstance = newInstance(constructor, null);
+                    for (int i = 0; i < setters.size(); i++) {
+                        final Method setter = (Method) setters.get(i);
+                        setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, SetterInjectionComponentAdapter.this, setterTypes[i])});
+                    }
+                    return componentInstance;
+                } catch (InvocationTargetException e) {
+                    if (e.getTargetException() instanceof RuntimeException) {
+                        throw (RuntimeException) e.getTargetException();
+                    } else if (e.getTargetException() instanceof Error) {
+                        throw (Error) e.getTargetException();
+                    }
+                    throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                } catch (InstantiationException e) {
+                    throw new PicoInvocationTargetInitializationException(e);
+                } catch (IllegalAccessException e) {
+                    throw new PicoInvocationTargetInitializationException(e);
+                }
             }
-
-            return componentInstance;
-        } catch (InvocationTargetException e) {
-            if (e.getTargetException() instanceof RuntimeException) {
-                throw (RuntimeException) e.getTargetException();
-            } else if (e.getTargetException() instanceof Error) {
-                throw (Error) e.getTargetException();
-            }
-            throw new PicoInvocationTargetInitializationException(e.getTargetException());
-        } catch (InstantiationException e) {
-            throw new PicoInvocationTargetInitializationException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoInvocationTargetInitializationException(e);
-        } catch (CyclicDependencyException e) {
-            e.appendDependency(getComponentImplementation());
-            throw e;
-        } finally {
-            instantiating = false;
-        }
+        });
     }
 
     private void initializeSetterAndTypeLists() {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -19,11 +19,13 @@ public interface ComponentFactory {
      * Create a component. Used by the internals of applicable PicoContainers
      * to instantiate a component.
      * @param compType The component type to instantiate
-     * @param constructor The constructor to use to create the component.
+     * @param dependencies The constructor to use to create the component.
      * @param args The arguments to pass in to the constructor
      * @return The component
      * @throws PicoInvocationTargetInitailizationException If a problem creating the component.
      */
-    Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException;
+    Object createComponent(Class compType, Class compImplementation, Class[] dependencies, Object[] args) throws PicoInvocationTargetInitailizationException;
+
+    Class[] getDependencies(Class comp);
 
 }

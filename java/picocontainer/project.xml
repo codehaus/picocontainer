@@ -18,8 +18,8 @@
   <shortDescription>Small footprint IoC container</shortDescription>
   <description>
     PicoContainer is a small, simple container for arbitrary components. It is embeddable and
-    extentensible.  PicoContainer is designed for server and client 
-    side, for small and enterprise applications. There are 
+    extentensible.  PicoContainer is designed for server and client
+    side, for small and enterprise applications. There are
     already quite a few diverse containers that deliver the PicoContainer design.
     Components can be created for it without importing or extending any
     interfaces or classes outside of the java.* package.  Components also have no
@@ -75,7 +75,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Aslak Hellesøy</name>
+      <name>Aslak Helles?y</name>
       <id>rinkrank</id>
       <email>rinkrank@codehaus.org</email>
       <organization></organization>
@@ -83,36 +83,43 @@
         <role>Java Developer</role>
       </roles>
     </developer>
-    <developer> 
-      <name>Jon Tirsen</name> 
-      <id>tirsen</id> 
-      <email>tirsen@codehaus.org</email> 
-      <organization></organization> 
-      <roles> 
-        <role>Java Developer</role> 
-      </roles> 
-    </developer> 
-    <developer> 
-      <name>Joe Walnes</name> 
-      <id>joe</id> 
-      <email>joe@codehaus.org</email> 
-      <organization></organization> 
-      <roles> 
-        <role>Java Developer</role> 
-      </roles> 
-    </developer>     
-    <developer> 
-      <name>Chris Stevenson</name> 
-      <id>skizz</id> 
-      <email>skizz@codehaus.org</email> 
-      <organization></organization> 
-      <roles> 
-        <role>Java Developer</role> 
-      </roles> 
-    </developer>     
+    <developer>
+      <name>Jon Tirsen</name>
+      <id>tirsen</id>
+      <email>tirsen@codehaus.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Joe Walnes</name>
+      <id>joe</id>
+      <email>joe@codehaus.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Chris Stevenson</name>
+      <id>skizz</id>
+      <email>skizz@codehaus.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
-  <dependencies/>
+  <dependencies>
+      <dependency>
+        <groupId>mockobjects</groupId>
+        <artifactId>mockobjects-core</artifactId>
+        <version>0.09</version>
+        <url>http://mockobjects.org/</url>
+      </dependency>
+  </dependencies>
 
   <build>
     <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
@@ -133,22 +140,22 @@
     </resources>
   </build>
 
-  <reports> 
-    <report>maven-license-plugin</report> 
-    <report>maven-faq-plugin</report> 
-    <report>maven-checkstyle-plugin</report> 
-    <report>maven-pmd-plugin</report> 
-    <report>maven-simian-plugin</report> 
-    <report>maven-jdepend-plugin</report> 
+  <reports>
+    <report>maven-license-plugin</report>
+    <report>maven-faq-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-pmd-plugin</report>
+    <report>maven-simian-plugin</report>
+    <report>maven-jdepend-plugin</report>
     <report>maven-changelog-plugin</report>
     <report>maven-changes-plugin</report>
     <report>maven-statcvs-plugin</report>
-    <report>maven-file-activity-plugin</report> 
-    <report>maven-developer-activity-plugin</report> 
-    <report>maven-jxr-plugin</report> 
-    <report>maven-javadoc-plugin</report> 
-    <report>maven-junit-report-plugin</report> 
-    <report>maven-clover-plugin</report> 
-  </reports> 
+    <report>maven-file-activity-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-clover-plugin</report>
+  </reports>
 
 </project>

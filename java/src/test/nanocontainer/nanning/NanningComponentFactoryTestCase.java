@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -50,14 +50,13 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInvocationTargetInitailizationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
-        Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class.getConstructors()[0], null);
+        Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class, null, null);
         assertTrue(Aspects.isAspectObject(component));
     }
 
     public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInvocationTargetInitailizationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
-        Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class.getConstructors()[0],
-                null);
+        Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class, null, null);
         assertFalse(Aspects.isAspectObject(component));
     }
 

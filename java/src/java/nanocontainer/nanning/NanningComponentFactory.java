@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,14 +11,11 @@
 package nanocontainer.nanning;
 
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MixinInstance;
 import com.tirsen.nanning.config.AspectSystem;
-import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.defaults.DefaultComponentFactory;
 
 public class NanningComponentFactory extends DefaultComponentFactory {
     private final AspectSystem aspectSystem;
@@ -27,9 +24,9 @@ public class NanningComponentFactory extends DefaultComponentFactory {
         this.aspectSystem = aspectSystem;
     }
 
-    public Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
+    public Object createComponent(Class compType, Class compImplementation, Class[] dependencies, Object[] args) throws PicoInvocationTargetInitailizationException {
 
-        Object component = super.createComponent(compType, constructor, args);
+        Object component = super.createComponent(compType, compImplementation, dependencies, args);
 
         // Nanning will only aspectify stuff when its type is an interface
         if (compType.isInterface()) {

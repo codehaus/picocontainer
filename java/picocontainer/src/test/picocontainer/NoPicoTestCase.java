@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -18,7 +18,7 @@ import picocontainer.testmodel.WilmaImpl;
 public class NoPicoTestCase extends TestCase {
 
     /**
-     * A demonstration of using components WITHOUT Pico (or Nano)
+     * Aa demonstration of using components WITHOUT Pico (or Nano)
      * This was one of the design goals.
      *
      * This is manual lacing of components.

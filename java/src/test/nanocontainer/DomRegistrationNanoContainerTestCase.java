@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -101,6 +101,13 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     private File getFileForXMLComponentRegistration() {
         File compilationRoot = FileUtils.getRoot(getClass());
         // ../../src/DomTest.xml
-        return new File(compilationRoot.getParentFile().getParentFile(), "src/test/DomTest.xml");
+        File file = new File(compilationRoot.getParentFile().getParentFile(), "src/test/DomTest.xml");
+        if (!file.exists()) {
+            file = new File("src/test/DomTest.xml");
+        }
+        if (!file.exists()) {
+            file = new File("../nano/src/test/DomTest.xml");
+        }
+        return file;
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,11 +11,9 @@
 package nanocontainer;
 
 import nanocontainer.reflection.StringToObjectConverter;
-import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
+import picocontainer.*;
 import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,28 +10,13 @@
 
 package picocontainer.defaults;
 
-import picocontainer.PicoContainer;
 import picocontainer.ComponentFactory;
-import picocontainer.PicoRegistrationException;
+import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
-import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.PicoRegistrationException;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -51,8 +36,8 @@ public class DefaultPicoContainer implements PicoContainer {
     // Keeps track of unmanaged components - components instantiated outside this container
     protected List unmanagedComponents = new ArrayList();
 
-    private Map parametersForComponent = new HashMap();
     private boolean initialized;
+    private Map componentToSpec = new HashMap();
 
     public static class Default extends DefaultPicoContainer {
         public Default() {
@@ -213,7 +198,9 @@ public class DefaultPicoContainer implements PicoContainer {
         checkConstructor(componentImplementation);
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
-        registeredComponents.add(new ComponentSpecification(componentType, componentImplementation));
+        ComponentSpecification compSpec = new ComponentSpecification(componentFactory, componentType, componentImplementation);
+        componentToSpec.put(componentImplementation, compSpec);
+        registeredComponents.add(compSpec);
     }
 
     private void checkConstructor(Class componentImplementation) throws WrongNumberOfConstructorsRegistrationException {
@@ -262,29 +249,17 @@ public class DefaultPicoContainer implements PicoContainer {
     }
 
     public void addParameterToComponent(Class componentType, Class parameter, Object arg) {
-        if (!parametersForComponent.containsKey(componentType)) {
-            parametersForComponent.put(componentType, new ArrayList());
-        }
-        List args = (List) parametersForComponent.get(componentType);
-        args.add(new ParameterSpec(arg));
+        ComponentSpecification componentSpec = ((ComponentSpecification) componentToSpec.get(componentType));
+        componentSpec.addConstantParameterBasedOnType(componentType, parameter, arg);
     }
 
     public void registerComponent(Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         registerComponent(componentImplementation, componentImplementation);
     }
 
-    private class ParameterSpec {
-        private Object arg;
-
-        ParameterSpec(Object parameter) {
-            this.arg = parameter;
-        }
-    }
-
     public void instantiateComponents() throws PicoInstantiationException {
         if (initialized == false) {
             initializeComponents();
-            checkUnsatisfiedDependencies();
             initialized = true;
         } else {
             throw new IllegalStateException("PicoContainer Started Already");
@@ -292,123 +267,116 @@ public class DefaultPicoContainer implements PicoContainer {
     }
 
     // This is Lazy and NOT public :-)
-    private void initializeComponents() throws AmbiguousComponentResolutionException, PicoInvocationTargetInitailizationException {
-        boolean progress = true;
-        while (progress == true) {
-            progress = false;
-
+    private void initializeComponents() throws PicoInstantiationException {
             for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
                 ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
-                Class componentImplementation = componentSpec.getComponentImplementation();
-                Class componentType = componentSpec.getComponentType();
+                createComponent(componentSpec);
+            }
+    }
 
-                if (componentTypeToInstanceMap.get(componentType) == null) {
-                    boolean reused = reuseImplementationIfAppropriate(componentType, componentImplementation);
-                    if (reused) {
-                        progress = true;
-                    } else {
-                        // hook'em up
-                        progress = hookEmUp(componentImplementation, componentType, progress);
-                    }
+    private Object createComponent(ComponentSpecification componentSpec) throws PicoInstantiationException {
+        if (!componentTypeToInstanceMap.containsKey(componentSpec.getComponentType())) {
+
+            Object component = null;
+
+            // reuse implementation if appropriate
+            Set compEntries = componentTypeToInstanceMap.entrySet();
+            for (Iterator iterator = compEntries.iterator();
+                 iterator.hasNext();) {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Object exisitingComp = entry.getValue();
+                if (exisitingComp.getClass() == componentSpec.getComponentImplementation()) {
+                    component = exisitingComp;
                 }
             }
-        }
-    }
 
-    protected boolean hookEmUp(Class componentImplementation, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetInitailizationException {
-            Constructor[] constructors = componentImplementation.getConstructors();
-            Constructor constructor = constructors[0];
-            Class[] parameters = constructor.getParameterTypes();
-
-            List paramSpecs = (List) parametersForComponent.get(componentImplementation);
-            paramSpecs = paramSpecs == null ? Collections.EMPTY_LIST : new LinkedList(paramSpecs); // clone because we are going to modify it
-
-            // For each param, look up the instantiated componentImplementation.
-            Object[] args = new Object[parameters.length];
-            for (int i = 0; i < parameters.length; i++) {
-                Class param = parameters[i];
-                args[i] = getComponentForParam(param); // lookup a service for this param
-                if (args[i] == null && !paramSpecs.isEmpty()) { // failing that, check if any params are available from addParameterToComponent()
-                    args[i] = ((ParameterSpec) paramSpecs.remove(0)).arg;
-                }
-            }
-            if (hasAnyNullArguments(args) == false) {
-                Object componentInstance = null;
-                componentInstance = makeComponentInstance(componentType, constructor, args);
-                // Put the instantiated comp back in the map
-                componentTypeToInstanceMap.put(componentType, componentInstance);
-                orderedComponents.add(componentInstance);
-                progress = true;
+            // create it if it was not reused
+            if (component == null) {
+                component = componentSpec.instantiateComponent(this);
+                orderedComponents.add(component);
             }
 
-        return progress;
-    }
+            componentTypeToInstanceMap.put(componentSpec.getComponentType(), component);
 
-    protected boolean reuseImplementationIfAppropriate(Class componentType, Class componentImplementation) {
-        Set compEntries = componentTypeToInstanceMap.entrySet();
-        for (Iterator iterator = compEntries.iterator();
-             iterator.hasNext();) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            Object exisitingCompClass = entry.getValue();
-            if (exisitingCompClass.getClass() == componentImplementation) {
-                componentTypeToInstanceMap.put(componentType, exisitingCompClass);
-                return true;
-            }
+            return component;
+        } else {
+            return componentTypeToInstanceMap.get(componentSpec.getComponentType());
         }
-        return false;
-    }
-
-    private void checkUnsatisfiedDependencies() throws UnsatisfiedDependencyInstantiationException {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
-            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
-            Class componentType = componentSpecification.getComponentType();
-            if (componentTypeToInstanceMap.get(componentType) == null) {
-                throw new UnsatisfiedDependencyInstantiationException(componentType);
-            }
-        }
-    }
-
-    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
-        return componentFactory.createComponent(type, constructor, args);
-    }
-
-    protected Object getComponentForParam(Class parameter) throws AmbiguousComponentResolutionException {
-        Object result = null;
-
-        // We're keeping track of all candidate parameters, so we can bomb with a detailed error message
-        // if there is ambiguity
-        List candidateClasses = new ArrayList();
-
-        for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            Class clazz = (Class) entry.getKey();
-            if (parameter.isAssignableFrom(clazz)) {
-                candidateClasses.add(clazz);
-                result = entry.getValue();
-            }
-        }
-
-        // We should only have one here.
-        if (candidateClasses.size() > 1) {
-            Class[] ambiguities = (Class[]) candidateClasses.toArray(new Class[candidateClasses.size()]);
-            throw new AmbiguousComponentResolutionException(ambiguities);
-        }
-
-        return result;
-    }
-
-    private boolean hasAnyNullArguments(Object[] args) {
-        for (int i = 0; i < args.length; i++) {
-            Object arg = args[i];
-            if (arg == null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Object getComponent(Class componentType) {
         return componentTypeToInstanceMap.get(componentType);
+    }
+
+    public Object createComponent(Class componentType) throws PicoInstantiationException {
+        Object comp = getComponent(componentType);
+
+        if (comp != null) {
+            return comp;
+        }
+
+        comp = findSatisfyingComponent(componentType);
+
+        if (comp != null) {
+            return comp;
+        }
+
+        // try to find components that satisfy the interface (implements the component service asked for)
+        ComponentSpecification componentSpec = findComponentSpecification(componentType);
+        if (componentSpec == null) {
+            return null;
+        }
+
+        componentType = componentSpec.getComponentType();
+
+        // if the component does not exist yet, instantiate it lazily
+        createComponent(componentSpec);
+
+        comp = componentTypeToInstanceMap.get(componentType);
+
+        return comp;
+    }
+
+    private Object findSatisfyingComponent(Class componentType) throws AmbiguousComponentResolutionException {
+        List found = new ArrayList();
+
+        for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if (isOfComponentType((Class) entry.getKey(), componentType)) {
+                found.add((Class) entry.getKey());
+            }
+        }
+
+        if (found.size() > 1) {
+            Class[] ambiguousClasses = (Class[]) found.toArray(new Class[found.size()]);
+            throw new AmbiguousComponentResolutionException(ambiguousClasses);
+        }
+
+        return found.isEmpty() ? null : componentTypeToInstanceMap.get(found.get(0));
+    }
+
+    ComponentSpecification findComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
+        List found = new ArrayList();
+        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
+            if (isOfComponentType(componentSpecification.getComponentType(), componentType)) {
+                found.add(componentSpecification);
+            }
+        }
+
+        if (found.size() > 1) {
+            Class[] ambiguousClass = new Class[found.size()];
+            for (int i = 0; i < ambiguousClass.length; i++) {
+                ambiguousClass[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
+            }
+            throw new AmbiguousComponentResolutionException(ambiguousClass);
+        }
+
+        return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
+    }
+
+    private boolean isOfComponentType(Class suspected, Class requested) {
+        return requested.isAssignableFrom(suspected);
     }
 
     public Class[] getComponentTypes() {

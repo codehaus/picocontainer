@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -9,6 +9,8 @@
  *****************************************************************************/
 
 package picocontainer;
+
+import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 
 /**
  * PicoContainer - guaranteed to resolve the needs of components

@@ -43,14 +43,14 @@ public class StandaloneTestCase extends TestCase {
 
     public void testCommandLineWithNoArgs() throws Exception {
         try {
-            Standalone.getCommandLine(new String[]{});
+            Standalone.getCommandLine(new String[]{}, Standalone.createOptions());
         } catch (ParseException e) {
             assertEquals("Exception message", "No arguments specified", e.getMessage());
         }
     }
 
     public void testCommandLineWithHelp() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-h"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-h"}, Standalone.createOptions());
         assertTrue(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
         assertNull(cl.getOptionValue('c'));
@@ -59,7 +59,7 @@ public class StandaloneTestCase extends TestCase {
     }
 
     public void testCommandLineWithVersion() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-v"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-v"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertTrue(cl.hasOption('v'));
         assertNull(cl.getOptionValue('c'));
@@ -68,7 +68,7 @@ public class StandaloneTestCase extends TestCase {
     }
 
     public void testCommandLineWithCompostion() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
         assertEquals("path", cl.getOptionValue('c'));
@@ -77,7 +77,7 @@ public class StandaloneTestCase extends TestCase {
     }
 
     public void testCommandLineWithCompositionAndQuiet() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
         assertEquals("path", cl.getOptionValue('c'));
@@ -86,7 +86,7 @@ public class StandaloneTestCase extends TestCase {
     }
 
     public void testCommandLineWithCompositionAndQuietAndNowait() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q", "-n"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q", "-n"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
         assertEquals("path", cl.getOptionValue('c'));

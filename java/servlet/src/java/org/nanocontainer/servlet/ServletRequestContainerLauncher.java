@@ -26,27 +26,19 @@ public class ServletRequestContainerLauncher {
     private HttpServletRequest request;
 
     public ServletRequestContainerLauncher(ServletContext context, HttpServletRequest request) {
-
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, KeyConstants.BUILDER);
-
         containerRef = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
         containerBuilder = (ContainerBuilder) builderRef.get();
         this.request = request;
-
     }
 
     public void startContainer() throws ServletException {
-
         HttpSession session = request.getSession(true);
-
         ObjectReference parentContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
-
         if (containerBuilder == null) {
             throw new ServletException("org.nanocontainer.servlet.ServletContainerListener not deployed");
         }
-
         containerBuilder.buildContainer(containerRef, parentContainerRef, request);
-
     }
 
     public void killContainer() {

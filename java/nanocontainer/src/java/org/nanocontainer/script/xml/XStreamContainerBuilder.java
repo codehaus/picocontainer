@@ -138,7 +138,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
                         if (dependencyClass == null || "".equals(dependencyClass)) {
                             throw new PicoCompositionException("either key or class must be present for dependecy");
                         } else {
-                            parameters.add(new ComponentParameter(classLoader.loadClass(dependencyClass)));
+                            parameters.add(new ComponentParameter());
                         }
                     } else {
                         parameters.add(new ComponentParameter(dependencyKey));

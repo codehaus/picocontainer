@@ -54,11 +54,9 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context);
-        } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoCompositionException(e);
-        } catch (InstantiationException e) {
+        } catch (Exception e) {
+            // Not all servlet containers print the nested exception. Do it here.
+            e.printStackTrace();
             throw new PicoCompositionException(e);
         }
     }
@@ -104,7 +102,20 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             public void valueUnbound(HttpSessionBindingEvent event) {
                 HttpSession session = event.getSession();
                 ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
-                killContainer(containerRef);
+                try {
+                    killContainer(containerRef);
+                } catch (IllegalStateException e) {
+                    /*
+                    Some servlet containers (Jetty) call contextDestroyed(ServletContextEvent event)
+                    and then afterwards call valueUnbound(HttpSessionBindingEvent event).
+
+                    contextDestroyed will kill the top level (app level) pico container which will
+                    cascade stop() down to the session children.
+
+                    This means that when valueUnbound is called later, the session level container will
+                    already be stopped.
+                    */
+                }
             }
         });
 

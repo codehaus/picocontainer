@@ -14,7 +14,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.Disposable;
 import org.picocontainer.lifecycle.Lifecycle;
 import org.picocontainer.lifecycle.Startable;
-import org.picocontainer.lifecycle.Stoppable;
 
 import java.io.Serializable;
 
@@ -75,7 +74,7 @@ class LifecycleAdapter implements Lifecycle, Serializable {
             throw new IllegalStateException("Already stopped (or maybe never started).");
         }
         try {
-            ((Stoppable) componentMulticasterAdapter.getComponentMulticaster(picoContainer, false)).stop();
+            ((Startable) componentMulticasterAdapter.getComponentMulticaster(picoContainer, false)).stop();
         } catch (ClassCastException ignore) {
         }
         started = false;

@@ -20,7 +20,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultPicoContainer()\n" +
-                "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfig)\n");
+                "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfigXX)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()));
 

@@ -13,7 +13,6 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.lifecycle.Disposable;
 import org.picocontainer.lifecycle.Startable;
-import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Lifecycle;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -29,7 +28,7 @@ import java.util.Collections;
  */
 public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
-    public static class One implements Startable, Stoppable, Disposable {
+    public static class One implements Startable, Disposable {
 
         List instantiating = new ArrayList();
         List starting = new ArrayList();
@@ -86,7 +85,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     }
 
-    public static class Two implements Startable, Stoppable, Disposable {
+    public static class Two implements Startable, Disposable {
         One one;
 
         public Two(One one) {
@@ -107,7 +106,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
     }
 
-    public static class Three implements Startable, Stoppable, Disposable {
+    public static class Three implements Startable, Disposable {
         One one;
 
         public Three(One one, Two two) {
@@ -129,7 +128,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
     }
 
-    public static class Four implements Startable, Stoppable, Disposable {
+    public static class Four implements Startable, Disposable {
         One one;
 
         public Four(Two two, Three three, One one) {
@@ -196,7 +195,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     }
 
-    private void startStopDisposeLifecycleComps(Startable start, Stoppable stop, Disposable disp, One one) throws Exception {
+    private void startStopDisposeLifecycleComps(Startable start, Startable stop, Disposable disp, One one) throws Exception {
         start.start();
 
         // post instantiation startup
@@ -308,7 +307,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
     }
 
-    public static class FooRunnable implements Runnable, Startable, Stoppable {
+    public static class FooRunnable implements Runnable, Startable {
         private int runCount;
         private Thread thread = new Thread();
         private boolean interrupted;

@@ -13,4 +13,5 @@ package org.picocontainer.lifecycle;
 
 public interface Startable {
     void start();
+    void stop();
 }

@@ -1,4 +1,6 @@
-<project default="binary:install"
+<project 
+    default="binary:install"
+    xmlns:deploy="deploy"
     xmlns:j="jelly:core">
 
     <goal name="binary:install" prereqs="jar:install"/>
@@ -18,7 +20,7 @@
         </jar>
     </goal>
 
-    <postGoal name="jar:install">
+    <goal name="pico:tck-install">
         <attainGoal name="pico:tck-jar" />
         <property name="jardir__" value="${maven.repo.local}/${pom.artifactDirectory}/jars"/>
         <mkdir dir="${jardir__}"/>
@@ -27,6 +29,22 @@
             todir="${jardir__}"
             overwrite="true"
         />
+    </goal>
+
+    <goal name="pico:tck-deploy">
+        <attainGoal name="pico:tck-jar" />
+        <deploy:artifact
+            artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            type="jars"
+        />
+    </goal>
+
+    <postGoal name="jar:install">
+        <attainGoal name="pico:tck-install" />
+    </postGoal>
+
+    <postGoal name="jar:deploy">
+        <attainGoal name="pico:tck-deploy" />
     </postGoal>
 
 </project>

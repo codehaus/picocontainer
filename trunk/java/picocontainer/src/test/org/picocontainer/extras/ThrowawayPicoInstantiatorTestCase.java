@@ -22,7 +22,6 @@ public class ThrowawayPicoInstantiatorTestCase extends TestCase {
 
         ThrowawayPicoInstantiator tpc = new ThrowawayPicoInstantiator(dpc, Bar.class);
         Object instance = tpc.getInstance();
-        System.out.println("--> " + instance + " " + instance.getClass());
         assertNotNull(instance);
         assertTrue(instance instanceof Bar);
     }

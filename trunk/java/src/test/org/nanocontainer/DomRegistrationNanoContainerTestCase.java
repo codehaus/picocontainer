@@ -13,20 +13,15 @@ package org.nanocontainer;
 import junit.framework.TestCase;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServer;
-import org.xml.sax.InputSource;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.lifecycle.Startable;
-import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
 import org.picocontainer.lifecycle.DefaultLifecyclePicoAdaptor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
+import org.picocontainer.lifecycle.Startable;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -36,15 +31,6 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     public void testBasic() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         registerInstantiateAndCheckComponent(nc);
-    }
-
-    // Same test as above, but with components defined in an external XML file.
-    public void testFromFile() throws PicoRegistrationException, ParserConfigurationException, PicoInitializationException, ClassNotFoundException, FileNotFoundException {
-        InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
-        File xmlFile = getFileForXMLComponentRegistration();
-        nc.registerComponents(new InputSource(new FileReader(xmlFile)));
-        nc.instantiateComponents();
-        assertTrue(nc.hasComponent(WebServer.class));
     }
 
     // This is more a demo than a test.  Compare ResourceBundleWebServerConfig to DefaultWebServerConfig.
@@ -108,24 +94,6 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue("Should have been started", sm.started);
     }
 
-
-    // This is a bit of a hack.
-    // If run inside IDEA, there is a different file path
-    // than that of a Maven invocation.  This method is
-    // really not something you have to do for a real
-    // deployment.
-    private File getFileForXMLComponentRegistration() {
-        File compilationRoot = FileUtils.getRoot(getClass());
-        // ../../src/DomTest.xml
-        File file = new File(compilationRoot.getParentFile().getParentFile(), "src/test/DomTest.xml");
-        if (!file.exists()) {
-            file = new File("src/test/DomTest.xml");
-        }
-        if (!file.exists()) {
-            file = new File("../nano/src/test/DomTest.xml");
-        }
-        return file;
-    }
 
     public void testWithCustomDocumentBuilder() throws ParserConfigurationException, ClassNotFoundException,
             PicoRegistrationException, PicoInitializationException

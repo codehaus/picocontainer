@@ -151,7 +151,9 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory' key='foo'>" +
-                "    <config-or-whatever/>" +
+                "    <config-or-whatever>" +
+                "      <see-XStreamXMLPseudoComponentFactoryTestCase-for-one/>" +
+                "    </config-or-whatever>" +
                 "  </pseudocomponent>" +
                 "</container>");
 

@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
 
-    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, String assemblyName) {
+    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope) {
 
         MutablePicoContainer container = new DefaultPicoContainer();
         DefaultLifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(container);
@@ -33,16 +33,11 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
             container.addParent(parent);
         }
 
-        try {
-            assembler.assembleContainer(container, assemblyName);
-            lifecycle.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e); // TODO: What should I throw?
-        }
+        assembler.assembleContainer(container, assemblyScope);
+        lifecycle.start();
 
         // hold on to it
         containerRef.set(lifecycle);
-
     }
 
     public void killContainer(ObjectReference containerRef) {
@@ -56,8 +51,6 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
             for (Iterator iterator = parentsToRemove.iterator(); iterator.hasNext();) {
                 picoContainer.removeParent((MutablePicoContainer) iterator.next());
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot shutdown container", e); // todo: what should i throw?
         } finally {
             containerRef.set(null);
         }

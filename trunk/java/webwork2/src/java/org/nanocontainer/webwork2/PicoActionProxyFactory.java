@@ -14,8 +14,6 @@ import com.opensymphony.xwork.DefaultActionProxyFactory;
 
 import java.util.Map;
 
-import org.picoextras.webwork2.PicoActionInvocation;
-
 /**
  * @author Chris Sturm
  */

@@ -20,9 +20,9 @@ public interface ContainerBuilder {
      * @param containerRef        Where to store the new container.
      * @param parentContainerRef  Parent container (may be null)
      * @param assembler           Strategy for assembling components in container.
-     * @param assemblyName        Argument to be passed to ContainerAssembler.
+     * @param assemblyScope       Argument to be passed to ContainerAssembler.
      */
-    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, String assemblyName);
+    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope);
 
     /**
      * Locate a container at the given reference so it can stopped,

@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer</artifactId>
+            <artifactId>nanocontainer-proxytoys</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

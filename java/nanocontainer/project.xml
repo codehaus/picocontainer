@@ -137,11 +137,6 @@
         </dependency>
 
         <dependency>
-            <id>proxytoys</id>
-            <version>0.1</version>
-        </dependency>
-
-        <dependency>
             <id>jmock</id>
             <version>1.0.1</version>
         </dependency>

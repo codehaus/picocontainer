@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.concurrent;
+package org.nanocontainer.proxytoys;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

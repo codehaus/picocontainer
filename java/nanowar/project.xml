@@ -29,6 +29,12 @@
             <artifactId>nanocontainer</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
+ 
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-proxytoys</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
         
         <dependency>
             <id>groovy</id>

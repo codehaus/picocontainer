@@ -13,7 +13,7 @@ import java.util.Hashtable;
 
 import javax.naming.InitialContext;
 
-import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
+import org.nanocontainer.proxytoys.ThreadLocalComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;

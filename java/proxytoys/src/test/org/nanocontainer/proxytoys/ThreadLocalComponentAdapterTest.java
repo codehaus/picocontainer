@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.concurrent;
+package org.nanocontainer.proxytoys;
 
 import java.util.ArrayList;
 import java.util.Collections;

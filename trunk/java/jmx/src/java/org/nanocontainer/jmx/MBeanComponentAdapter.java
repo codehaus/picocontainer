@@ -28,6 +28,8 @@ import java.text.MessageFormat;
  * @see NanoMBean
  * @author Michael Ward
  * @version $Revision$
+ *
+ * @deprecated use JMXVisitor
  */
 public class MBeanComponentAdapter extends DecoratingComponentAdapter {
 	public static final String MBEAN_INFO_ERROR = "The Key \"{0}\" was not registered with the container (Key can either be a Class or String)";

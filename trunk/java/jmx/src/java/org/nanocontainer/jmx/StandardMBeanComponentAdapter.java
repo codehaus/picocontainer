@@ -10,17 +10,11 @@
 
 package org.nanocontainer.jmx;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import javax.management.StandardMBean;
 import javax.management.NotCompliantMBeanException;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.text.MessageFormat;
 
 /**
  * This component adapter is needed to ensure that a StandardMBean is registered with the MBeanServer
@@ -29,64 +23,17 @@ import java.text.MessageFormat;
  * @version $Revision$
  */
 public class StandardMBeanComponentAdapter extends InstanceComponentAdapter {
-	public static final String BUILD_STANDARDMBEAN_ERROR = "{0} must be an instance of {1}, or {2} should define the interface to force.";
-
-	private static StandardMBean buildStandardMBean(final Object implementation, Class management) throws NotCompliantMBeanException {
-		if(management.isAssignableFrom(implementation.getClass())) {
-			return new StandardMBean(implementation, management);
-		}
-		else if(management.isInterface()) {
-			// wrap in a proxy to act as the interface passed in
-			Class[] interfaces = new Class[] {management};
-
-			Object proxy = Proxy.newProxyInstance(implementation.getClass().getClassLoader(),
-					interfaces,
-					new StandardMBeanInvocationHandler(implementation) );
-
-			return new StandardMBean(proxy, management);
-		}
-
-		String error = MessageFormat
-				.format(BUILD_STANDARDMBEAN_ERROR, new Object[] {implementation.getClass(), management, management});
-
-		throw new NotCompliantMBeanException(error);
-	}
 
 	/**
 	 *
-	 * @param componentKey
 	 * @param implementation the actual instance of the management interface
 	 * @param management represents the interface to expose via JMX
 	 */
-	public StandardMBeanComponentAdapter(Object componentKey, Object implementation, Class management) throws AssignabilityRegistrationException, NotConcreteRegistrationException, NotCompliantMBeanException {
-		super(componentKey, buildStandardMBean(implementation, management));
+	public StandardMBeanComponentAdapter(Object implementation, Class management) throws AssignabilityRegistrationException, NotConcreteRegistrationException, NotCompliantMBeanException {
+		super(management, StandardMBeanFactory.buildStandardMBean(implementation, management));
 	}
 
-	/**
-	 * Registers the StandardMBean to the MBeanServer
-	 * @return
-	 */
-	public Object getComponentInstance(PicoContainer pico) {
-		Object componentInstance = super.getComponentInstance(pico);
-		MBeanServerHelper.register(pico, this, componentInstance);
-		return componentInstance;
-	}
-
-	/**
-	 * This allows the ability to force the implementation of an interface on a StandardMBean. Very powerful!
-	 */
-	static class StandardMBeanInvocationHandler implements InvocationHandler {
-		private Object implementation;
-
-		private StandardMBeanInvocationHandler(Object implementation) {
-			this.implementation = implementation;
-		}
-
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return implementation
-					.getClass()
-					.getMethod(method.getName(), method.getParameterTypes())
-					.invoke(implementation, args);
-		}
-	}
+	protected void checkTypeCompatibility() throws AssignabilityRegistrationException {
+		// override and skip check standardMBean utilizes a proxy so check may not be valid
+    }
 }

@@ -97,7 +97,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
             fail("Should have barfed with dupe registration");
         } catch (DuplicateComponentKeyRegistrationException e) {
             // expected
-            assertTrue("Wrong key", e.getDuplicateKey() == "one");
+            assertTrue("Wrong key", e.getDuplicateKey() == Touchable.class);
         }
     }
 

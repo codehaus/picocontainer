@@ -1,19 +1,13 @@
 package org.nanocontainer.nanning;
 
 import junit.framework.TestCase;
-import org.codehaus.nanning.AspectInstance;
-import org.codehaus.nanning.Aspects;
-import org.codehaus.nanning.Invocation;
-import org.codehaus.nanning.MethodInterceptor;
+import org.codehaus.nanning.*;
 import org.codehaus.nanning.config.Aspect;
-import org.codehaus.nanning.config.AspectSystem;
 import org.codehaus.nanning.config.P;
 import org.codehaus.nanning.config.Pointcut;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Contains both unit-tests for the NanninNanoContainer and acceptance-tests outlining an example of how to use it.
@@ -22,7 +16,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class NanningNanoContainerTestCase extends TestCase {
 
-    private NanningNanoContainer mainContainer;
+    private NanningNanoContainer container;
 
     /**
      * RecordingAware2 very simplified interface to a TransactionManager.
@@ -105,36 +99,35 @@ public class NanningNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        AspectSystem as = new AspectSystem();
-        mainContainer = new NanningNanoContainer.Default(as);
+        container = new NanningNanoContainer.Default();
     }
 
     public void testServiceIsInstantiated() throws PicoRegistrationException, PicoInitializationException {
-        mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        mainContainer.instantiateComponents();
+        container.registerComponent(TransactionManager.class, LoggingTransactionManager.class);
+        container.instantiateComponents();
 
-        assertTrue(mainContainer.hasComponent(TransactionManager.class));
-        assertNotNull(mainContainer.getComponent(TransactionManager.class));
+        assertTrue(container.hasComponent(TransactionManager.class));
+        assertNotNull(container.getComponent(TransactionManager.class));
     }
 
     public void testAspectDependingOnServiceIsInstantiated() throws PicoRegistrationException, PicoInitializationException {
-        mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        mainContainer.instantiateComponents();
+        container.registerComponent(TransactionManager.class, LoggingTransactionManager.class);
+        container.registerComponent(TransactionAspect.class, TransactionAspect.class);
+        container.instantiateComponents();
 
-        TransactionAspect transactionAspect = (TransactionAspect) mainContainer.getComponent(TransactionAspect.class);
+        TransactionAspect transactionAspect = (TransactionAspect) container.getComponent(TransactionAspect.class);
         assertNotNull(transactionAspect);
         assertNotNull(transactionAspect.transactionManager);
     }
 
     public void testAspectifiedComponentIsInstantiatedWithProperAspects()
             throws PicoRegistrationException, PicoInitializationException {
-        mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        mainContainer.registerComponent(Component.class, SucceedingComponent.class);
-        mainContainer.instantiateComponents();
+        container.registerComponent(TransactionManager.class, LoggingTransactionManager.class);
+        container.registerComponent(TransactionAspect.class, TransactionAspect.class);
+        container.registerComponent(Component.class, SucceedingComponent.class);
+        container.instantiateComponents();
 
-        Component component = (Component) mainContainer.getComponent(Component.class);
+        Component component = (Component) container.getComponent(Component.class);
         assertNotNull(component);
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(1, Aspects.getAspectInstance(component).getAllInterceptors().size());
@@ -144,34 +137,40 @@ public class NanningNanoContainerTestCase extends TestCase {
      * The 'acceptance-test' for the example.
      */
     public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
-        mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        mainContainer.registerComponent(Component.class, SucceedingComponent.class);
-        mainContainer.instantiateComponents();
+        container.registerComponent(TransactionManager.class, LoggingTransactionManager.class);
+        container.registerComponent(TransactionAspect.class, TransactionAspect.class);
+        container.registerComponent(Component.class, SucceedingComponent.class);
+        container.instantiateComponents();
 
-        Component component = (Component) mainContainer.getComponent(Component.class);
+        Component component = (Component) container.getComponent(Component.class);
         assertNotNull(component);
         component.doSomethingRequiringATransaction();
 
-        LoggingTransactionManager transactionManager = (LoggingTransactionManager) mainContainer.getComponent(TransactionManager.class);
+        LoggingTransactionManager transactionManager = getTransactionManagerTarget();
         assertEquals("instantiateComponents commit ", transactionManager.transactionLog.toString());
     }
 
     public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
-        mainContainer.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
-        mainContainer.registerServiceOrAspect(TransactionAspect.class);
-        mainContainer.registerComponent(Component.class, FailingComponent.class);
-        mainContainer.instantiateComponents();
+        container.registerComponent(TransactionManager.class, LoggingTransactionManager.class);
+        container.registerComponent(TransactionAspect.class);
+        container.registerComponent(Component.class, FailingComponent.class);
+        container.instantiateComponents();
 
-        Component component = (Component) mainContainer.getComponent(Component.class);
+        Component component = (Component) container.getComponent(Component.class);
         try {
             component.doSomethingRequiringATransaction();
             fail();
         } catch (Exception shouldHappen) {
         }
 
-        LoggingTransactionManager transactionManager = (LoggingTransactionManager) mainContainer.getComponent(TransactionManager.class);
+        LoggingTransactionManager transactionManager = getTransactionManagerTarget();
         assertEquals("instantiateComponents rollback ", transactionManager.transactionLog.toString());
+    }
+
+    private LoggingTransactionManager getTransactionManagerTarget() {
+        AspectInstance aspectInstance = Aspects.getAspectInstance(container.getComponent(TransactionManager.class));
+        Mixin mixin = aspectInstance.getMixinForInterface(TransactionManager.class);
+        return (LoggingTransactionManager) mixin.getTarget();
     }
 
 }

@@ -14,6 +14,7 @@ import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * @author Paul Hammant
@@ -22,6 +23,9 @@ import java.io.File;
 public class DefaultKernel implements Kernel, Startable, Disposable {
 
     public void deploy(File marFile) {
+    }
+
+    public void deploy(URL remoteMarFile) {
     }
 
     public void deferredDeploy(File file) {

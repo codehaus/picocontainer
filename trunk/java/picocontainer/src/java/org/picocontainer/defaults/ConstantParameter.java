@@ -60,7 +60,7 @@ public class ConstantParameter implements Parameter, Serializable {
      */
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         try {
-            if ((expectedType.isPrimitive() && !checkPrimitive(expectedType)) || !expectedType.isInstance(value)) {
+            if (!(expectedType.isPrimitive() && checkPrimitive(expectedType)) && !expectedType.isInstance(value)) {
                 throw new PicoIntrospectionException(value.toString() + " does not match the type " + expectedType.getClass().getName()) {};
             }
         } catch (NoSuchFieldException e) {

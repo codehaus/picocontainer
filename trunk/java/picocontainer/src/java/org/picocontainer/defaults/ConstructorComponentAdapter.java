@@ -105,11 +105,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         }
         if (greediestConstructor == null && !nonMatching.isEmpty()) {
-            throw new PicoInitializationException() {
-                public String getMessage() {
-                    return "The specified parameters do not match any of the following constructors: " + nonMatching.toString();
-                }
-            };
+            throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString());
         }
         return greediestConstructor;
     }

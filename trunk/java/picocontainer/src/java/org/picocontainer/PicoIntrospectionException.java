@@ -18,7 +18,7 @@ public class PicoIntrospectionException extends PicoRegistrationException {
     public PicoIntrospectionException() {
     }
 
-    protected PicoIntrospectionException(String message) {
+    public PicoIntrospectionException(String message) {
         super(message);
     }
 

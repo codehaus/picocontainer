@@ -73,10 +73,12 @@ module Rico
     end
 
     def []=(key, val)
-      if(val.is_a? Class)
+      if(val.is_a? Array)
+        register_component_implementation(key, val[0], val[1..-1])
+      elsif(val.is_a? Class)
         register_component_implementation(key, val)
       else
-        register_component_implementation(key, val[0], val[1..-1])
+        register_component_instance(key, val)
       end
     end
 

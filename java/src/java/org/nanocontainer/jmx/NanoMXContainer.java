@@ -10,23 +10,12 @@
 
 package org.nanocontainer.jmx;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.internals.ComponentFactory;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.defaults.*;
+import org.picocontainer.internals.ComponentAdapterFactory;
 
+import javax.management.*;
 import java.io.Serializable;
 
 /**
@@ -42,14 +31,14 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
 
     private MBeanServer mbeanServer;
 
-    public NanoMXContainer(MBeanServer mbeanServer, ComponentFactory componentFactory) {
-        super(new NanoMXComponentFactory(mbeanServer, componentFactory), new DefaultComponentRegistry());
+    public NanoMXContainer(MBeanServer mbeanServer, ComponentAdapterFactory componentAdapterFactory) {
+        super(new NanoMXComponentAdapterFactory(mbeanServer, componentAdapterFactory), new DefaultComponentRegistry());
         this.mbeanServer = mbeanServer;
     }
 
     public static class Default extends NanoMXContainer {
         public Default(MBeanServer mbeanServer) {
-            super(mbeanServer, new DefaultComponentFactory());
+            super(mbeanServer, new DefaultComponentAdapterFactory());
         }
     }
 

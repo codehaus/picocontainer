@@ -14,17 +14,15 @@ import junit.framework.TestCase;
 import org.codehaus.nanning.Aspects;
 import org.codehaus.nanning.Invocation;
 import org.codehaus.nanning.MethodInterceptor;
-import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.config.AspectSystem;
 import org.codehaus.nanning.config.InterceptorAspect;
-import org.codehaus.nanning.config.Aspect;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.internals.ComponentSpecification;
-import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapter;
 
 /**
  * @author Jon Tirsen
@@ -51,17 +49,19 @@ public class NanningComponentFactoryTestCase extends TestCase {
     private StringBuffer log = new StringBuffer();
 
     public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException {
-        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
-        Object component = componentFactory.createComponent(new ComponentSpecification(componentFactory, Wilma.class, WilmaImpl.class), null);
+        NanningComponentAdapter componentFactory =
+                new NanningComponentAdapter(new AspectSystem(), new DefaultComponentAdapter(Wilma.class, WilmaImpl.class));
+        Object component = componentFactory.instantiateComponent(null);
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
     }
 
     public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException {
-        NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
-        Object component = componentFactory.createComponent(
-                new ComponentSpecification(componentFactory, FredImpl.class, FredImpl.class),
-                new Object[] { new WilmaImpl() });
+        NanningComponentAdapter componentFactory = new NanningComponentAdapter(new AspectSystem(),
+                new DefaultComponentAdapter(FredImpl.class, FredImpl.class));
+        DefaultComponentRegistry registry = new DefaultComponentRegistry();
+        registry.putComponent(Wilma.class, new WilmaImpl());
+        Object component = componentFactory.instantiateComponent(registry);
         assertFalse(Aspects.isAspectObject(component));
     }
 
@@ -80,9 +80,9 @@ public class NanningComponentFactoryTestCase extends TestCase {
             }
         }));
 
-        NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem, new DefaultComponentFactory());
         RegistrationPicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(
-                componentFactory, new DefaultComponentRegistry());
+                new NanningComponentAdapterFactory(aspectSystem, new DefaultComponentAdapterFactory()),
+                new DefaultComponentRegistry());
         nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponentByClass(FredImpl.class);
 

@@ -10,19 +10,14 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.internals.ComponentRegistry;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.*;
 
 public class HierarchicalComponentRegistry implements ComponentRegistry, Serializable {
 
@@ -52,7 +47,7 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         }
     }
 
-    public void registerComponent(ComponentSpecification compSpec) {
+    public void registerComponent(ComponentAdapter compSpec) {
         childRegistry.registerComponent(compSpec);
     }
     
@@ -125,13 +120,13 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
                 | parentRegistry.hasComponentInstance(componentKey);
     }
 
-    public ComponentSpecification getComponentSpec(Object componentKey) {
+    public ComponentAdapter getComponentAdapter(Object componentKey) {
         // First look in child
-        ComponentSpecification result = childRegistry.getComponentSpec(componentKey);
+        ComponentAdapter result = childRegistry.getComponentAdapter(componentKey);
 
         // Then look in parent if we had nothing
         if (result == null) {
-            result = parentRegistry.getComponentSpec(componentKey);
+            result = parentRegistry.getComponentAdapter(componentKey);
         }
         return result;
 
@@ -150,28 +145,28 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
 
     }
 
-    public ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
+    public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
 
         // First look in child
-        ComponentSpecification result = childRegistry.findImplementingComponentSpecification(componentType);
+        ComponentAdapter result = childRegistry.findImplementingComponentAdapter(componentType);
 
         // Then look in parent if we had nothing
         if (result == null) {
-            result = parentRegistry.findImplementingComponentSpecification(componentType);
+            result = parentRegistry.findImplementingComponentAdapter(componentType);
         }
         return result;
     }
 
-    public Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
-        if (!contains(componentSpecification.getComponentKey())) {
-            Object component = componentSpecification.instantiateComponent(this);
+    public Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException {
+        if (!contains(componentAdapter.getComponentKey())) {
+            Object component = componentAdapter.instantiateComponent(this);
             addOrderedComponent(component);
 
-            putComponent(componentSpecification.getComponentKey(), component);
+            putComponent(componentAdapter.getComponentKey(), component);
 
             return component;
         } else {
-            return getComponentInstance(componentSpecification.getComponentKey());
+            return getComponentInstance(componentAdapter.getComponentKey());
         }
     }
 

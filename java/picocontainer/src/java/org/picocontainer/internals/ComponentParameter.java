@@ -1,11 +1,7 @@
 package org.picocontainer.internals;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-import org.picocontainer.internals.Parameter;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
 
@@ -24,11 +20,13 @@ public class ComponentParameter implements Parameter, Serializable {
         this.componentKey = componentKey;
     }
 
-    public Object resolve(ComponentRegistry componentRegistry, ComponentSpecification compSpec, Class requestedType)
+    public Object resolve(ComponentRegistry componentRegistry, ComponentAdapter compSpec, Class requestedType)
             throws PicoInitializationException {
 
+        // TODO jon, shame on you, this is messy, tidy it up! -- jon
+
         Object componentInstance;
-        ComponentSpecification componentSpecification = null;
+        ComponentAdapter componentSpecification = null;
 
         if (componentKey != null) {
 
@@ -37,7 +35,7 @@ public class ComponentParameter implements Parameter, Serializable {
 
             if (componentInstance == null) {
                 // try to find the component based on the key
-                componentSpecification = componentRegistry.getComponentSpec(componentKey);
+                componentSpecification = componentRegistry.getComponentAdapter(componentKey);
             }
 
         } else {
@@ -53,7 +51,7 @@ public class ComponentParameter implements Parameter, Serializable {
 
                 if (componentInstance == null) {
                     // try to find components that satisfy the interface (implements the component service asked for)
-                    componentSpecification = componentRegistry.findImplementingComponentSpecification(requestedType);
+                    componentSpecification = componentRegistry.findImplementingComponentAdapter(requestedType);
                 }
             }
 

@@ -13,29 +13,28 @@ package org.nanocontainer.nanning;
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.internals.ComponentRegistry;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
- * @version $Revision: 1.7 $
+ * @version $Revision$
  */
-public class NanningComponentFactory implements ComponentFactory {
+public class NanningComponentAdapter extends DecoratingComponentAdapter {
 
     private final AspectSystem aspectSystem;
-    private final ComponentFactory decoratedComponentFactory;
 
-    public NanningComponentFactory(AspectSystem aspectSystem, ComponentFactory decoratedComponentFactory) {
+    public NanningComponentAdapter(AspectSystem aspectSystem, ComponentAdapter decoratedComponentAdapter) {
+        super(decoratedComponentAdapter);
         this.aspectSystem = aspectSystem;
-        this.decoratedComponentFactory = decoratedComponentFactory;
     }
 
-    public Object createComponent(ComponentSpecification componentSpec, Object[] dependencyInstances) throws PicoInitializationException {
-        Object component = decoratedComponentFactory.createComponent(componentSpec, dependencyInstances);
-
+    public Object instantiateComponent(ComponentRegistry componentRegistry)
+            throws PicoInitializationException {
+        Object component = super.instantiateComponent(componentRegistry);
         // TODO Nanning will at the moment only aspectify stuff when it has one and only one interface
         if (component.getClass().getInterfaces().length == 1) {
             Class intf = component.getClass().getInterfaces()[0];
@@ -48,10 +47,7 @@ public class NanningComponentFactory implements ComponentFactory {
             aspectSystem.initialize(aspectInstance);
             component = aspectInstance.getProxy();
         }
-        return component;
-    }
 
-    public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {
-        return decoratedComponentFactory.getDependencies(componentImplementation);
+        return component;
     }
 }

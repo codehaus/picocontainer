@@ -9,10 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.internals.ComponentRegistry;
 
 import java.io.Serializable;
 import java.util.*;
@@ -43,14 +42,14 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         componentToSpec = new HashMap();
     }
 
-    public void registerComponent(ComponentSpecification compSpec) {
+    public void registerComponent(ComponentAdapter compSpec) {
         componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
         registeredComponentSpecifications.add(compSpec);
     }
 
     public void unregisterComponent(Object componentKey) {
         for (Iterator iterator = registeredComponentSpecifications.iterator(); iterator.hasNext();) {
-            ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
+            ComponentAdapter currentCompSpec = (ComponentAdapter) iterator.next();
 
             if (currentCompSpec.getComponentKey().equals(componentKey)) {
                 registeredComponentSpecifications.remove(currentCompSpec);
@@ -96,8 +95,8 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.containsKey(componentKey);
     }
 
-    public ComponentSpecification getComponentSpec(Object componentKey) {
-        return (ComponentSpecification) componentToSpec.get(componentKey);
+    public ComponentAdapter getComponentAdapter(Object componentKey) {
+        return (ComponentAdapter) componentToSpec.get(componentKey);
     }
 
     public Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
@@ -119,10 +118,10 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return found.isEmpty() ? null : getComponentInstance(found.get(0));
     }
 
-    public ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
+    public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
         for (Iterator iterator = getComponentSpecifications().iterator(); iterator.hasNext();) {
-            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
+            ComponentAdapter componentSpecification = (ComponentAdapter) iterator.next();
 
             if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
                 found.add(componentSpecification);
@@ -132,25 +131,25 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         if (found.size() > 1) {
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
-                foundClasses[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
+                foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
             }
             throw new AmbiguousComponentResolutionException(componentType, foundClasses);
         }
 
-        return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
+        return found.isEmpty() ? null : ((ComponentAdapter) found.get(0));
     }
 
 
-    public Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
-        if (!contains(componentSpecification.getComponentKey())) {
-            Object component = componentSpecification.instantiateComponent(this);
+    public Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException {
+        if (!contains(componentAdapter.getComponentKey())) {
+            Object component = componentAdapter.instantiateComponent(this);
             addOrderedComponent(component);
 
-            putComponent(componentSpecification.getComponentKey(), component);
+            putComponent(componentAdapter.getComponentKey(), component);
 
             return component;
         } else {
-            return getComponentInstance(componentSpecification.getComponentKey());
+            return getComponentInstance(componentAdapter.getComponentKey());
         }
     }
 

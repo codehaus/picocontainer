@@ -9,37 +9,37 @@
  *****************************************************************************/
 package org.nanocontainer.jmx;
 
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.internals.ComponentRegistry;
+
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-
-import org.picocontainer.internals.ComponentFactory;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentSpecification;
 
 /**
  * @author James Strachan
  * @author Mauro Talevi
- * @version $Revision: 1.1 $
+ * @version $Revision$
  */
-public class NanoMXComponentFactory implements ComponentFactory {
+public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
 
     private MBeanServer mbeanServer;
-    private ComponentFactory delegate;
 
     /**
      * @param mbeanServer
      */
-    public NanoMXComponentFactory(MBeanServer mbeanServer, ComponentFactory delegate) {
+    public NanoMXComponentAdapter(MBeanServer mbeanServer, ComponentAdapter delegate) {
+        super(delegate);
         this.mbeanServer = mbeanServer;
-        this.delegate = delegate;
     }
 
-    public Object createComponent(ComponentSpecification specification, Object[] args) throws PicoInitializationException, PicoIntrospectionException {
-        Object component = delegate.createComponent(specification, args);
+    public Object instantiateComponent(ComponentRegistry componentRegistry)
+            throws PicoInitializationException {
+        Object component = super.instantiateComponent(componentRegistry);
 
         try {
-            ObjectName name = NanoMXContainer.asObjectName(specification.getComponentKey());
+            ObjectName name = NanoMXContainer.asObjectName(getComponentKey());
             Object mbean = NanoMXContainer.asMBean(component);
             mbeanServer.registerMBean(mbean, name);
         }
@@ -49,9 +49,4 @@ public class NanoMXComponentFactory implements ComponentFactory {
         return component;
 
     }
-
-    public Class[] getDependencies(Class args) throws PicoIntrospectionException {
-        return delegate.getDependencies(args);
-    }
-
 }

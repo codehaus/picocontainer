@@ -10,48 +10,40 @@
 
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentFactory;
+import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.defaults.DefaultComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import junit.framework.TestCase;
-
 public class DefaultComponentRegistryTestCase extends TestCase {
 	private ComponentRegistry componentRegistry;
-	private ComponentFactory componentFactory;
 
 	protected void setUp() throws Exception {
 		componentRegistry = new DefaultComponentRegistry();
-		componentFactory = new DefaultComponentFactory();
 	}
 	
 	public void testRegisterComponent() throws PicoIntrospectionException {
-		ComponentSpecification componentSpecification =
-			createComponentSpecification();
+		ComponentAdapter componentSpecification = createComponentAdapter();
 		
 		componentRegistry.registerComponent(componentSpecification);
 		
-		assertTrue(componentRegistry.getComponentSpecifications().contains(
-			componentSpecification));
+		assertTrue(componentRegistry.getComponentSpecifications().contains(componentSpecification));
 	}
 	
 	public void testUnregisterComponent() throws PicoIntrospectionException {
-		ComponentSpecification componentSpecification =
-			createComponentSpecification();
+		ComponentAdapter componentSpecification = createComponentAdapter();
 			
 		componentRegistry.registerComponent(componentSpecification);
 		
 		componentRegistry.unregisterComponent(Touchable.class);
 		
-		assertFalse(componentRegistry.getComponentSpecifications().contains(
-			componentSpecification));
+		assertFalse(componentRegistry.getComponentSpecifications().contains(componentSpecification));
 	}
 
-	private ComponentSpecification createComponentSpecification() throws PicoIntrospectionException {
-		return new ComponentSpecification(componentFactory, Touchable.class,
-			SimpleTouchable.class);
+	private ComponentAdapter createComponentAdapter() throws PicoIntrospectionException {
+		return new DefaultComponentAdapter(Touchable.class, SimpleTouchable.class);
 	}
 }

@@ -123,7 +123,7 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class));
         assertEquals("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class).getClass(), SimpleTouchable.class);
-        assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponentSpecification(Touchable.class));
+        assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponentAdapter(Touchable.class));
 
     }
 

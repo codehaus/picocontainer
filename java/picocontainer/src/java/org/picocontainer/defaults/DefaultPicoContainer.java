@@ -10,15 +10,12 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.internals.ComponentFactory;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.extras.CompositeProxyFactory;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.internals.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
@@ -29,15 +26,13 @@ import java.util.Collection;
 
 
 /**
- * Abstract baseclass for various PicoContainer implementations.
- *
  * @author Aslak Hellesoy
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements RegistrationPicoContainer, Serializable {
 
     private final ComponentRegistry componentRegistry;
-    private final ComponentFactory componentFactory;
+    private final ComponentAdapterFactory componentAdapterFactory;
 
     // Keeps track of unmanaged components - components instantiated outside this internals
     protected List unmanagedComponents = new ArrayList();
@@ -47,30 +42,30 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
 
     public static class Default extends DefaultPicoContainer {
         public Default() {
-            super(new DefaultComponentFactory(), new DefaultComponentRegistry());
+            super(new DefaultComponentAdapterFactory(), new DefaultComponentRegistry());
         }
     }
 
-    public static class WithComponentFactory extends DefaultPicoContainer {
-        public WithComponentFactory(ComponentFactory componentFactory) {
-            super(componentFactory, new DefaultComponentRegistry());
+    public static class WithComponentAdapterFactory extends DefaultPicoContainer {
+        public WithComponentAdapterFactory(ComponentAdapterFactory componentAdapterFactory) {
+            super(componentAdapterFactory, new DefaultComponentRegistry());
         }
     }
 
     public static class WithComponentRegistry extends DefaultPicoContainer {
         public WithComponentRegistry(ComponentRegistry componentRegistry) {
-            super(new DefaultComponentFactory(), componentRegistry);
+            super(new DefaultComponentAdapterFactory(), componentRegistry);
         }
     }
 
-    public DefaultPicoContainer(ComponentFactory componentFactory, ComponentRegistry componentRegistry) {
-        if (componentFactory == null) {
-            throw new NullPointerException("componentFactory cannot be null");
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, ComponentRegistry componentRegistry) {
+        if (componentAdapterFactory == null) {
+            throw new NullPointerException("componentAdapterFactory cannot be null");
         }
         if (componentRegistry == null) {
             throw new NullPointerException("childRegistry cannot be null");
         }
-        this.componentFactory = componentFactory;
+        this.componentAdapterFactory = componentAdapterFactory;
         this.componentRegistry = componentRegistry;
     }
 
@@ -99,24 +94,31 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         checkTypeCompatibility(componentKey, componentImplementation);
         checkKeyDuplication(componentKey);
 
-        registerComponent(new ComponentSpecification(componentFactory, componentKey, componentImplementation));
+        registerComponent(createDefaultComponentAdapter(componentKey, componentImplementation, null));
     }
 
-    public void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException {
+    private ComponentAdapter createDefaultComponentAdapter(Object componentKey,
+                                                           Class componentImplementation,
+                                                           Parameter[] parameters)
+            throws PicoIntrospectionException {
+        return componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
+    }
+
+    public void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException, PicoIntrospectionException {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentKey, componentImplementation);
         checkKeyDuplication(componentImplementation);
 
-        registerComponent(new ComponentSpecification(componentFactory, componentKey, componentImplementation, parameters));
+        registerComponent(createDefaultComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
-    private void registerComponent(ComponentSpecification compSpec) {
+    private void registerComponent(ComponentAdapter compSpec) {
         componentRegistry.registerComponent(compSpec);
     }
 
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
         for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
-            Object key = ((ComponentSpecification) iterator.next()).getComponentKey();
+            Object key = ((ComponentAdapter) iterator.next()).getComponentKey();
             if (key == componentKey) {
                 throw new DuplicateComponentKeyRegistrationException(key);
             }
@@ -147,19 +149,18 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public void registerComponent(Object componentKey, Object component) throws PicoRegistrationException, PicoIntrospectionException {
         checkTypeCompatibility(componentKey, component.getClass());
         checkKeyDuplication(componentKey);
-        registerComponent(new ComponentSpecification(defaultComponentFactory(), componentKey, component.getClass(), null));
+        // TODO this is a hack, for registered instances we specify empty parameter list to suppress
+        // TODO default parameter initialization, we should really have a special ComponentAdapter implementation
+        // TODO for such occasions, --jon
+        registerComponent(createDefaultComponentAdapter(componentKey, component.getClass(), new Parameter[0]));
         componentRegistry.putComponent(componentKey, component);
 
         componentRegistry.addOrderedComponent(component);
         unmanagedComponents.add(component);
     }
 
-    private ComponentFactory defaultComponentFactory() {
-        return componentFactory;
-    }
-
     public void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException {
-        ComponentSpecification componentSpec = componentRegistry.getComponentSpec(componentKey);
+        ComponentAdapter componentSpec = componentRegistry.getComponentAdapter(componentKey);
         componentSpec.addConstantParameterBasedOnType(parameter, arg);
     }
 
@@ -180,14 +181,14 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
             initializeComponents();
             initialized = true;
         } else {
-            throw new IllegalStateException("PicoContainer Started Already");
+            throw new IllegalStateException("PicoContainer already started");
         }
     }
 
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInitializationException {
         for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
-            componentRegistry.createComponent((ComponentSpecification) iterator.next());
+            componentRegistry.createComponent((ComponentAdapter) iterator.next());
         }
     }
 

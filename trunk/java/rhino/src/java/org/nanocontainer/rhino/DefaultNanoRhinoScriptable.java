@@ -59,6 +59,12 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
         rhino.reflectionFrontEnd.registerComponentWithClassKey((String) args[0], (String) args[1]);
     }
 
+    public static void jsFunction_addComponentInstance(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
+        DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
+        MutablePicoContainer picoContainer = rhino.reflectionFrontEnd.getPicoContainer();
+        picoContainer.registerComponentInstance(((NativeJavaObject) args[0]).unwrap());
+    }
+
     public static void jsFunction_addContainer(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
         DefaultNanoRhinoScriptable parent = (DefaultNanoRhinoScriptable) thisObj;
         DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];

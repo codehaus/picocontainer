@@ -11,7 +11,6 @@
 package org.picocontainer;
 
 public abstract class PicoRegistrationException extends PicoException {
-    ///CLOVER:OFF
     protected PicoRegistrationException() {
     }
 
@@ -26,5 +25,4 @@ public abstract class PicoRegistrationException extends PicoException {
     protected PicoRegistrationException(String message, Exception cause) {
         super(message, cause);
     }
-    ///CLOVER:ON
 }

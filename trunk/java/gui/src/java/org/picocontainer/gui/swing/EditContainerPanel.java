@@ -1,10 +1,11 @@
 package org.picocontainer.gui.swing;
 
-import org.picocontainer.gui.model.ComponentRegistryTreeNode;
-import org.picocontainer.gui.model.ComponentTreeNode;
-import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.gui.model.*;
 import org.picocontainer.PicoException;
-import org.nanocontainer.MethodInvoker;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.defaults.AbstractPicoContainer;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
@@ -14,12 +15,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class EditContainerPanel extends JPanel {
+
     private class RegisterComponentAction extends AbstractAction {
         public RegisterComponentAction() {
             super("Register Component");
@@ -127,15 +130,8 @@ public class EditContainerPanel extends JPanel {
     public void registerComponent() {
         if (isRegistrySelected()) {
             try {
-                Class componentImplementation = getClass().getClassLoader().loadClass(componentField.getText());
-                ComponentTreeNode componentTreeNode = new ComponentTreeNode(componentImplementation);
-                DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-
-                int index = getSelectedNode().getChildCount();
-
-                getSelectedNode().insert(componentTreeNode, index);
-                int[] newIndexs = new int[] { index };
-                treeModel.nodesWereInserted(getSelectedNode(), newIndexs);
+                PicoTreeModel treeModel = (PicoTreeModel) tree.getModel();
+                treeModel.insertComponentIntoRegistry(componentField.getText(), (ComponentRegistryTreeNode) getSelectedNode());
 
             } catch (Exception e) {
                 Throwable t = e.getCause() != null ?  e.getCause() : e;
@@ -181,16 +177,23 @@ public class EditContainerPanel extends JPanel {
     // TODO: execute only one of the components should be possible too.
     public void executeSelected() {
         TreeNode selectedNode = getSelectedNode();
-        ComponentRegistryTreeNode containerNode = (ComponentRegistryTreeNode) selectedNode;
         try {
-            ComponentRegistry componentRegistry = containerNode.createHierarchicalComponentRegistry();
+            if(selectedNode instanceof ComponentTreeNode) {
+                ComponentTreeNode node = (ComponentTreeNode) selectedNode;
+                ComponentAdapter componentAdapter = (ComponentAdapter) node.getUserObject();
 
-            new MethodInvoker().invokeMethod("execute", componentRegistry);
-        } catch (PicoException e) {
+                ComponentRegistryTreeNode parent = (ComponentRegistryTreeNode) node.getParent();
+                AbstractPicoContainer reg = parent.createHierarchicalComponentRegistry();
+                Object component = componentAdapter.getComponentInstance(reg);
+            } else {
+                ComponentRegistryTreeNode containerNode = (ComponentRegistryTreeNode) selectedNode;
+                AbstractPicoContainer componentRegistry = containerNode.createHierarchicalComponentRegistry();
+                Collection components = componentRegistry.getComponentInstances();
+            }
+        } catch (PicoInitializationException e) {
             Throwable t = e.getCause() != null ?  e.getCause() : e;
             JOptionPane.showMessageDialog(EditContainerPanel.this, t.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public boolean isRegistrySelected() {

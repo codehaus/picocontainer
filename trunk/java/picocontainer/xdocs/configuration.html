@@ -16,7 +16,7 @@ Clearly the two strings are not components.&nbsp; What we need is a way
 of passing in those parameters at runtime. Possibily interleaved with
 real components.<br>
 <br>
-<pre>&nbsp;&nbsp;&nbsp; PicoContainer pico = new HierarchicalPicoContainer.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; MutablePicoContainer pico = new DefaultPicoContainer();</pre>
 <pre>&nbsp;&nbsp;&nbsp; pico.registerComponent(Foo.class);</pre>
 <pre>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, String.class, "foo");</pre>
 <pre>&nbsp;&nbsp;&nbsp; pico.addParameterToComponent(Foo.class, Integer.class, new Integer(33);</pre>

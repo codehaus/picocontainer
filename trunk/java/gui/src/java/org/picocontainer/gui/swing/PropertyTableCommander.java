@@ -2,13 +2,12 @@ package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.ComponentTreeNode;
 import org.picocontainer.gui.model.BeanPropertyTableModel;
+import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
+import org.picocontainer.extras.InvokingComponentAdapterFactory;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.IntrospectionException;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -29,21 +28,22 @@ public class PropertyTableCommander implements TreeSelectionListener {
         tree.addTreeSelectionListener(this);
     }
 
-    public void valueChanged(TreeSelectionEvent e) {
-        Object selected = e.getPath().getLastPathComponent();
+    public void valueChanged(TreeSelectionEvent evt) {
+        Object selected = evt.getPath().getLastPathComponent();
         if(selected instanceof ComponentTreeNode) {
             ComponentTreeNode componentTreeNode = (ComponentTreeNode) selected;
-            Class componentImplementation = (Class) componentTreeNode.getUserObject();
+            Object nodeValue = componentTreeNode.getUserObject();
             try {
-                BeanInfo beanInfo = Introspector.getBeanInfo(componentImplementation);
-                BeanPropertyTableModel model = (BeanPropertyTableModel) models.get(componentTreeNode);
+                BeanPropertyTableModel model = (BeanPropertyTableModel) models.get(nodeValue);
                 if(model==null){
-                    model = new BeanPropertyTableModel(beanInfo);
-                    models.put(componentTreeNode,model);
+                    InvokingComponentAdapterFactory.Adapter ia = (InvokingComponentAdapterFactory.Adapter) nodeValue;
+                    BeanPropertyComponentAdapterFactory.Adapter ba = (BeanPropertyComponentAdapterFactory.Adapter) ia.getDelegate();
+                    model = new BeanPropertyTableModel(ba);
+                    models.put(nodeValue,model);
                 }
                 table.setModel(model);
-            } catch (IntrospectionException e1) {
-                JOptionPane.showMessageDialog(tree, e1.getStackTrace(), e1.getMessage(), JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(tree, e.getStackTrace(), e.getMessage(), JOptionPane.ERROR_MESSAGE);
             }
         } else {
             table.setModel(BeanPropertyTableModel.EMPTY_MODEL);

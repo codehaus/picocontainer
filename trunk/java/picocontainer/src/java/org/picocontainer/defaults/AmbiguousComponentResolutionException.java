@@ -13,6 +13,11 @@ import org.picocontainer.PicoIntrospectionException;
 
 import java.util.Arrays;
 
+/**
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
+ * @author Jon Tirs&eacute;n
+ */
 public class AmbiguousComponentResolutionException extends PicoIntrospectionException {
     private Class ambiguousClass;
     private final Object[] ambiguousComponentKeys;

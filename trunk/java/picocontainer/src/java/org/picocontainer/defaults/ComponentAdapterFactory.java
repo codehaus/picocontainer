@@ -5,7 +5,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapter;
 
 /**
- * @author Jon Tirsen
+ * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
 public interface ComponentAdapterFactory {

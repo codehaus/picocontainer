@@ -20,6 +20,10 @@ import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Disposable;
 
+/**
+ * @author Paul Hammant
+ * @version $Revision$
+ */
 public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
 
     private Startable startableAggregatedComponent;

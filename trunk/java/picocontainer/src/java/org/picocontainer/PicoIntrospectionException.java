@@ -6,7 +6,6 @@ package org.picocontainer;
  * @version $Revision: 1.3 $
  */
 public abstract class PicoIntrospectionException extends PicoRegistrationException {
-    ///CLOVER:OFF
     protected PicoIntrospectionException() {
     }
 
@@ -17,5 +16,4 @@ public abstract class PicoIntrospectionException extends PicoRegistrationExcepti
     protected PicoIntrospectionException(String message, Exception cause) {
         super(message, cause);
     }
-    ///CLOVER:ON
 }

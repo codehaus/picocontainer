@@ -12,6 +12,11 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoRegistrationException;
 
+/**
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
+ * @author Jon Tirs&eacute;n
+ */
 public class AssignabilityRegistrationException extends PicoRegistrationException {
     private final Class type;
     private final Class clazz;

@@ -16,7 +16,7 @@ import org.picocontainer.Parameter;
 import java.util.List;
 
 /**
- * @author Jon Tirsen (tirsen@codehaus.org)
+ * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

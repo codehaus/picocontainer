@@ -7,7 +7,7 @@ import org.picocontainer.PicoIntrospectionException;
 import java.io.Serializable;
 
 /**
- * @author Jon Tirsen (tirsen@codehaus.org)
+ * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

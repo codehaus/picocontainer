@@ -12,6 +12,11 @@ package org.picocontainer;
 
 import org.picocontainer.defaults.ComponentAdapter;
 
+/**
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
+ * @author Jon Tirs&eacute;n
+ */
 public interface MutablePicoContainer extends PicoContainer {
 
     void registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;

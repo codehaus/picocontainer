@@ -11,6 +11,8 @@ package org.picocontainer.defaults;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.MutablePicoContainer;
@@ -19,6 +21,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentAdapter;
 
 public class ImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
@@ -64,7 +67,7 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
         try {
             super.testSerializedContainerCanRetrieveImplementation();
             fail("The ImplementationHidingPicoContainer should not be able to retrieve the component impl");
-        } catch(ClassCastException cce) {
+        } catch (ClassCastException cce) {
             // expected.
         }
     }
@@ -79,4 +82,24 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
             // expected
         }
     }
+
+    public void testExceptionThrowingFromHiddenComponent() {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
+        pc.registerComponentImplementation(ActionListener.class, Burp.class);
+        try {
+            ActionListener ac = (ActionListener) pc.getComponentInstance(ActionListener.class);
+            ac.actionPerformed(null);
+            fail("Oh no.");
+        } catch (RuntimeException e) {
+            assertEquals("woohoo", e.getMessage());
+        }
+    }
+
+    public static class Burp implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            throw new RuntimeException("woohoo");
+        }
+    }
+
 }

@@ -27,12 +27,13 @@ import java.util.Map;
  */
 public class NanoWebServletTestCase extends TestCase {
     private NanoWebServlet nanoServlet;
+    private MutablePicoContainer requestContainer;
+
     private Mock requestMock;
     private Mock responseMock;
     private Mock servletContextMock;
     private Mock servletConfigMock;
     private Mock containerBuilderMock;
-    private MutablePicoContainer requestContainer;
     private Mock requestDispatcherMock;
 
     protected void setUp() throws Exception {
@@ -82,6 +83,7 @@ public class NanoWebServletTestCase extends TestCase {
         MyAction action = (MyAction) requestContainer.getComponentInstance("/test.nano");
         assertEquals(2004, action.getYear());
         assertEquals(Arrays.asList(new String[]{"renault", "fiat"}), action.getCars());
+        assertEquals("success", action.execute());
 
         verifyMocks();
     }
@@ -96,7 +98,7 @@ public class NanoWebServletTestCase extends TestCase {
         // path, action and view
         requestMock.expectAndReturn("getServletPath", "/test.groovy");
         requestMock.expect("setAttribute", C.args(C.eq("action"), C.isA(Object.class)));
-        requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_error.vm")), requestDispatcherMock.proxy());
+        requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_success.vm")), requestDispatcherMock.proxy());
 
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 

@@ -10,11 +10,13 @@ public class MyGroovyAction {
     property cars
     property country
 
-    public String execute() {
-        if(year > 2003) {
-            return "success"
-        } else {
-            return "error"
+    public execute() {
+        // success if there is a renault among the cars
+        for( car in cars ) {
+            if( car == "renault" ) {
+                return "success"
+            }
         }
+        return "error"
     }
 }

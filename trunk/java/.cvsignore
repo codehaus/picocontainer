@@ -1,5 +1,5 @@
-target
 distributions.*
+target
 junit*
 *.iws
 *.log

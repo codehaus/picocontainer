@@ -14,7 +14,7 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-final-SNAPSHOT</version>
+            <version>1.0</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

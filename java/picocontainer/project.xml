@@ -10,7 +10,7 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>1.0-final-SNAPSHOT</currentVersion>
+    <currentVersion>1.0</currentVersion>
 
     <organization>
         <name>Codehaus</name>
@@ -77,6 +77,11 @@
         <version>
             <id>1.0-RC-1</id>
             <name>1.0-RC-1</name>
+            <tag>HEAD</tag>
+        </version>
+        <version>
+            <id>1.0</id>
+            <name>1.0</name>
             <tag>HEAD</tag>
         </version>
     </versions>

@@ -49,8 +49,8 @@ import java.util.List;
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
 
-    private final static String DEFAULT_INSTANCE_FACTORY = XStreamComponentInstanceFactory.class.getName();
-    private static final String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
+    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
+    private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = XStreamComponentInstanceFactory.class.getName();
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
@@ -59,6 +59,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private final static String COMPONENT_INSTANCE = "component-instance";
     private final static String COMPONENT_ADAPTER = "component-adapter";
     private final static String COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
+    private final static String COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
     private final static String CLASS = "class";
     private final static String FACTORY = "factory";
     private final static String FILE = "file";
@@ -69,6 +70,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private static final String EMPTY = "";
 
     private final Element rootElement;
+    /** The XMLComponentInstanceFactory globally defined for the container. 
+     *  It may be overridden at node level. 
+     */
+	private XMLComponentInstanceFactory componentInstanceFactory;
 
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
@@ -86,6 +91,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
+        	// create XMLComponentInstanceFactory for the container
+            componentInstanceFactory = createComponentInstanceFactory(rootElement.getAttribute(COMPONENT_INSTANCE_FACTORY));
+            // create child Container with defined ComponentAdapterFactory
             String cafName = rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);
             if (EMPTY.equals(cafName) || cafName == null) {
                 cafName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
@@ -115,7 +123,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private void registerComponentsAndChildContainers(NanoContainer parentContainer, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
-// register classpath first, regardless of order in the document.
+        // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
                 Element childElement = (Element) children.item(i);
@@ -136,7 +144,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     registerComponentsAndChildContainers(childNanoContainer, childElement);
                     count++;
                 } else if (CLASSPATH.equals(name)) {
-// already registered
+                	// already registered
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
                     registerComponentImplementation(parentContainer, childElement);
@@ -267,7 +275,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private XMLComponentInstanceFactory createComponentInstanceFactory(String factoryClass) throws ClassNotFoundException {
         if (factoryClass == null || factoryClass.equals(EMPTY)) {
-            factoryClass = DEFAULT_INSTANCE_FACTORY;
+        	// no factory has been specified for the node
+        	// return globally defined factory for the container - if there is one
+        	if ( componentInstanceFactory != null ){
+        		return componentInstanceFactory;
+        	}
+            factoryClass = DEFAULT_COMPONENT_INSTANCE_FACTORY;
         }
 
         NanoContainer adapter = new DefaultNanoContainer();

@@ -61,21 +61,11 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
         }
     }
 
-    public boolean hasComponent(Class compType) {
+    public Object getComponent(Class componentType) {
         for (int i = 0; i < containers.length; i++) {
             PicoContainer container = containers[i];
-            if (container.hasComponent(compType)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Object getComponent(Class compType) {
-        for (int i = 0; i < containers.length; i++) {
-            PicoContainer container = containers[i];
-            if (container.hasComponent(compType)) {
-                return container.getComponent(compType);
+            if (container.hasComponent(componentType)) {
+                return container.getComponent(componentType);
             }
         }
         return null;

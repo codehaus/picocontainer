@@ -10,8 +10,11 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+
+import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.Startable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,5 +157,104 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         assertTrue(c.instantiatedAsBean());
         C c0 = (C) cNullAdapter.getComponentInstance();
         assertTrue(c0.instantiatedAsBean());
+    }
+
+    // TODO: Factor out test classes and unit tests (currently copied from DefaultPicoContainerLifecycleTestCase) 
+    public abstract static class RecordingLifecycle implements Startable, Disposable {
+        private StringBuffer recording;
+
+        protected RecordingLifecycle() {
+        }
+        
+        public void setRecording(StringBuffer recording) {
+            this.recording = recording;
+        }
+
+        public void start() {
+            recording.append("<" + code());
+        }
+
+        public void stop() {
+            recording.append(code() + ">");
+        }
+
+        public void dispose() {
+            recording.append("!" + code());
+        }
+
+        private String code() {
+            String name = getClass().getName();
+            return name.substring(name.indexOf('$') + 1);
+        }
+    }
+
+    public static class One extends RecordingLifecycle {
+        public One() {
+        }
+    }
+
+    public static class Two extends RecordingLifecycle {
+        public Two() {
+        }
+        public void setOne(One one) {
+        }
+    }
+
+    public static class Three extends RecordingLifecycle {
+        public Three() {
+        }
+        public void setOne(One one) {
+        }
+        public void setTwo(Two two) {
+        }
+    }
+
+    public static class Four extends RecordingLifecycle {
+        public Four() {
+        }
+        public void setOne(One one) {
+        }
+        public void setTwo(Two two) {
+        }
+        public void setThree(Three three) {
+        }
+    }
+
+    // TODO
+    public void XXXtestOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer(
+                new CachingComponentAdapterFactory(
+                        new SetterInjectionComponentAdapterFactory(
+                                new ConstructorInjectionComponentAdapterFactory())));
+        pico.registerComponentImplementation("recording", StringBuffer.class);
+        pico.registerComponentImplementation(Four.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Three.class);
+        final List componentInstances = pico.getComponentInstances();
+
+        // instantiation - would be difficult to do these in the wrong order!!
+        assertEquals("Incorrect Order of Instantiation", One.class, componentInstances.get(1).getClass());
+        assertEquals("Incorrect Order of Instantiation", Two.class, componentInstances.get(2).getClass());
+        assertEquals("Incorrect Order of Instantiation", Three.class, componentInstances.get(3).getClass());
+        assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
+    }
+
+    // TODO
+    public void XXXtestOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation("recording", StringBuffer.class);
+        pico.registerComponentImplementation(Four.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Three.class);
+
+        pico.start();
+        pico.stop();
+        pico.dispose();
+
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", pico.getComponentInstance("recording").toString());
     }
 }

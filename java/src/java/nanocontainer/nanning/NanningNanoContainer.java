@@ -1,13 +1,13 @@
 package nanocontainer.nanning;
 
-import picocontainer.hierarchical.HierarchicalPicoContainer;
-import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.ComponentFactory;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.PicoInstantiationException;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoRegistrationException;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -42,7 +42,7 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
         serviceAndAspectContainer.registerComponent(compomentImplementation);
     }
 
-    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInitializationException {
         serviceAndAspectContainer.instantiateComponents();
         Object[] components = serviceAndAspectContainer.getComponents();
         for (int i = 0; i < components.length; i++) {

@@ -11,13 +11,19 @@
 
 package nanocontainer;
 
+import nanocontainer.reflection.StringToObjectConverter;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
+import picocontainer.PicoContainer;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoRegistrationException;
+import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,19 +31,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
-
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.defaults.NullContainer;
-import picocontainer.defaults.PicoInvocationTargetInitializationException;
-import nanocontainer.reflection.StringToObjectConverter;
+import java.util.Map;
 
 public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl
         implements InputSourceRegistrationNanoContainer {
@@ -108,7 +106,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInitializationException {
         super.instantiateComponents();
         final Object[] components = getComponents();
         for (int i = 0; i < components.length; i++) {

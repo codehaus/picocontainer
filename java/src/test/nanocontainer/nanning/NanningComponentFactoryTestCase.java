@@ -20,6 +20,7 @@ import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
@@ -47,13 +48,13 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     private StringBuffer log = new StringBuffer();
 
-    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInstantiationException, PicoIntrospectionException {
+    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInitializationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
         Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class, null, null);
         assertTrue(Aspects.isAspectObject(component));
     }
 
-    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInstantiationException, PicoIntrospectionException {
+    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInitializationException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
         Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class, null, null);
         assertFalse(Aspects.isAspectObject(component));
@@ -63,7 +64,8 @@ public class NanningComponentFactoryTestCase extends TestCase {
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
-    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testSimpleLogOfMethodCall()
+            throws PicoRegistrationException, PicoInitializationException {
 
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {

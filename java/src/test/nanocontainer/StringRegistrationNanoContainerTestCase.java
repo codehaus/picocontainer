@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInitializationException;
 import nanocontainer.testmodel.WebServerImpl;
 import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import nanocontainer.testmodel.DefaultWebServerConfig;
@@ -26,14 +27,14 @@ import java.net.URLClassLoader;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
+    public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
         nc.instantiateComponents();
     }
 
-    public void testProvision() throws PicoRegistrationException, PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
+    public void testProvision() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
@@ -53,7 +54,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInitializationException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
@@ -68,7 +69,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         assertEquals("hello22", thing.getValue());
     }
 
-    public void testGetComponentTypes() throws ClassNotFoundException, PicoIntrospectionException, PicoRegistrationException, PicoInstantiationException {
+    public void testGetComponentTypes() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
 
@@ -82,7 +83,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         assertTrue("There should be a One type", types.contains(DefaultWebServerConfig.class));
     }
 
-    public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoIntrospectionException, PicoRegistrationException, PicoInstantiationException {
+    public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.WithClassLoader(new URLClassLoader(new URL[0]));
 

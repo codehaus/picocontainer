@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.DefaultPicoContainer;
 
@@ -112,14 +113,14 @@ public class NanningNanoContainerTestCase extends TestCase {
         container = new NanningNanoContainer(new DefaultComponentFactory(), new DefaultPicoContainer.Default(), new AspectSystem());
     }
 
-    public void testStartService() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testStartService() throws PicoRegistrationException, PicoInitializationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.instantiateComponents();
 
         assertNotNull(container.getComponent(TransactionManager.class));
     }
 
-    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInitializationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.instantiateComponents();
@@ -129,7 +130,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertNotNull(transactionAspect.transactionManager);
     }
 
-    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInitializationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);

@@ -14,7 +14,7 @@ import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MixinInstance;
 import com.tirsen.nanning.config.AspectSystem;
 import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 
 /**
@@ -32,7 +32,7 @@ class NanningComponentFactory implements ComponentFactory {
         this.decoratedComponentFactory = decoratedComponentFactory;
     }
 
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] dependencyInstances) throws PicoInstantiationException, PicoIntrospectionException {
+    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] dependencyInstances) throws PicoInitializationException {
         Object component = decoratedComponentFactory.createComponent(componentType, componentImplementation, dependencies, dependencyInstances);
 
         // Nanning will only aspectify stuff when its type is an interface

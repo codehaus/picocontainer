@@ -157,8 +157,6 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertEquals(4321,wsc.getPort());
     }
 
-
-
     public void testInstantiateWithBogusXmlFrontEnd() throws SAXException, ParserConfigurationException, IOException, PicoConfigurationException {
 
         try {

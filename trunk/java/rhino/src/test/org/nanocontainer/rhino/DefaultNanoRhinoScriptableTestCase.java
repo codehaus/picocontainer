@@ -1,11 +1,11 @@
 package org.nanocontainer.rhino;
 
 import junit.framework.TestCase;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.testmodel.WebServerConfig;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.testmodel.WebServerConfig;
+import org.picoextras.testmodel.WebServer;
+import org.picoextras.testmodel.WebServerImpl;
 
 import java.io.File;
 import java.io.IOException;

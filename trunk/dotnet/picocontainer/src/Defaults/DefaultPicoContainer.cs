@@ -9,6 +9,7 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 using System;
+using System.Threading;
 using System.Collections;
 using PicoContainer;
 using PicoContainer.Extras;
@@ -16,7 +17,10 @@ using PicoContainer.Extras;
 namespace PicoContainer.Defaults {
 
   public class DefaultPicoContainer : MutablePicoContainer {
-    private  ArrayList parents = new ArrayList();
+    private  ArrayList parentsWeakReferences = new ArrayList();
+    
+    private ReaderWriterLock rwLock = new ReaderWriterLock();
+
     private  ArrayList children = new ArrayList();
 
     private  ArrayList unmanagedComponents = new ArrayList();
@@ -38,12 +42,22 @@ namespace PicoContainer.Defaults {
       get {
         ArrayList result = new ArrayList();
         result.AddRange(componentKeyToAdapterMap.Keys);
-        foreach (MutablePicoContainer delegator in parents) {
-          foreach (object o in delegator.ComponentKeys) {
-            if (!result.Contains(o)) {
-              result.Add(o);
+        rwLock.AcquireReaderLock(Timeout.Infinite);
+        for (int x=0;x < parentsWeakReferences.Count;x++) {
+          MutablePicoContainer delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
+          if (delegator == null) {
+            LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+            parentsWeakReferences.RemoveAt(x);
+            x--;
+            rwLock.DowngradeFromWriterLock(ref lc);
+          } else {
+            foreach (object o in delegator.ComponentKeys) {
+              if (!result.Contains(o)) {
+                result.Add(o);
+              }
             }
           }
+        
         }
         return result;
       }
@@ -65,10 +79,10 @@ namespace PicoContainer.Defaults {
       componentKeyToAdapterMap.Add(componentKey, componentAdapter);
     }
 
-    public object UnRegisterComponent(object componentKey) {
+    public ComponentAdapter UnRegisterComponent(object componentKey) {
       object ret = componentKeyToAdapterMap[componentKey];
       componentKeyToAdapterMap.Remove(componentKey);
-      return ret;
+      return (ComponentAdapter)ret;
     }
 
     public  ComponentAdapter FindComponentAdapter(object componentKey) {
@@ -76,11 +90,21 @@ namespace PicoContainer.Defaults {
       if (result != null) {
         return result;
       } else {
-        foreach (MutablePicoContainer delegator in parents) {
-          ComponentAdapter componentAdapter = delegator.FindComponentAdapter(componentKey);
-          if (componentAdapter != null) {
-            return componentAdapter;
+        rwLock.AcquireReaderLock(Timeout.Infinite);
+        for (int x=0;x < parentsWeakReferences.Count;x++) {
+          MutablePicoContainer delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
+          if (delegator == null) {
+            LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+            parentsWeakReferences.RemoveAt(x);
+            x--;
+            rwLock.DowngradeFromWriterLock(ref lc);
+          } else {
+            ComponentAdapter componentAdapter = delegator.FindComponentAdapter(componentKey);
+            if (componentAdapter != null) {
+              return componentAdapter;
+            }
           }
+        
         }
         return null;
       }
@@ -95,20 +119,20 @@ namespace PicoContainer.Defaults {
       return result;
     }
 
-    public object RegisterComponentInstance(object component) {
+    public ComponentAdapter RegisterComponentInstance(object component) {
       return RegisterComponentInstance(component.GetType(), component);
     }
 
-    public object RegisterComponentInstance(object componentKey, object componentInstance)  {
+    public ComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance)  {
       ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
       RegisterComponent(componentAdapter);
 
       AddOrderedComponentAdapter(componentAdapter);
       unmanagedComponents.Add(componentInstance);
-      return componentKey;
+      return (ComponentAdapter)componentAdapter;
     }
 
-    public object RegisterComponentImplementation(Type componentImplementation) {
+    public ComponentAdapter RegisterComponentImplementation(Type componentImplementation) {
       return RegisterComponentImplementation(componentImplementation, componentImplementation);
     }
 
@@ -131,14 +155,14 @@ namespace PicoContainer.Defaults {
       return GetComponentMulticaster(true, false);
     }
 
-    public object RegisterComponentImplementation(object componentKey, Type componentImplementation) {
+    public ComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation) {
       return RegisterComponentImplementation(componentKey, componentImplementation, null);
     }
 
-    public object RegisterComponentImplementation(object componentKey, Type componentImplementation, Parameter[] parameters)  {
+    public ComponentAdapter RegisterComponentImplementation(object componentKey, Type componentImplementation, Parameter[] parameters)  {
       ComponentAdapter componentAdapter = componentAdapterFactory.CreateComponentAdapter(componentKey, componentImplementation, parameters);
       RegisterComponent(componentAdapter);
-      return componentKey;
+      return (ComponentAdapter)componentAdapter;
     }
 
     public void AddOrderedComponentAdapter(ComponentAdapter componentAdapter) {
@@ -223,29 +247,103 @@ namespace PicoContainer.Defaults {
 
     public ArrayList ParentContainers {
       get {
-        return ArrayList.ReadOnly(parents);
+        ArrayList rst = new ArrayList();
+        rwLock.AcquireReaderLock(Timeout.Infinite);
+        for (int x=0;x < parentsWeakReferences.Count;x++) {
+          MutablePicoContainer delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
+          if (delegator == null) {
+            LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+            parentsWeakReferences.RemoveAt(x);
+            x--;
+            rwLock.DowngradeFromWriterLock(ref lc);
+          } else {
+            rst.Add(delegator);
+          }
+        }
+
+        return ArrayList.ReadOnly(rst);
       }
     }
 
-    public void AddChild(MutablePicoContainer child) {
+    public bool AddChild(MutablePicoContainer child) {
+      bool added = false;
       if (!children.Contains(child)) {
         children.Add(child);
+        added = true;
       }
       if (!child.ParentContainers.Contains(this)) {
         child.AddParent(this);
       }
+
+      return added;
     }
 
-    public void AddParent(MutablePicoContainer parent) {
-      if (!parents.Contains(parent)) {
-        parents.Add(parent);
+    public bool RemoveChild(MutablePicoContainer child) {
+      bool removed = children.Contains(child);
+      if (removed) {
+        children.Remove(child);
+      }
+      if (child.ParentContainers.Contains(this)) {
+        child.RemoveParent(this);
+      }
+      return removed;
+    }
+
+    
+    public bool AddParent(MutablePicoContainer parent) {
+      bool added = false;
+
+      bool found = false;
+
+      rwLock.AcquireReaderLock(Timeout.Infinite);
+      for (int x=0;x < parentsWeakReferences.Count;x++) {
+        MutablePicoContainer delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
+        if (delegator == null) {
+          LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+          parentsWeakReferences.RemoveAt(x);
+          x--;
+          rwLock.DowngradeFromWriterLock(ref lc);
+        } else {
+          if (delegator.Equals(parent)) {
+            found = true;
+          }
+        }
+      }
+
+      if (!found) {
+        parentsWeakReferences.Add(new WeakReference(parent));
+        added = true;
       }
       if (!parent.ChildContainers.Contains(this)) {
         parent.AddChild(this);
       }
+
+      return added;
     }
 
-    
+    public bool RemoveParent(MutablePicoContainer parent) {
+
+      bool removed = false;
+      rwLock.AcquireReaderLock(Timeout.Infinite);
+      for (int x=0;x < parentsWeakReferences.Count;x++) {
+        MutablePicoContainer delegator = (MutablePicoContainer)((WeakReference)parentsWeakReferences[x]).Target;
+        if (delegator == null) {
+          LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+          parentsWeakReferences.RemoveAt(x);
+          x--;
+          rwLock.DowngradeFromWriterLock(ref lc);
+        } else {
+          if (delegator.Equals(parent)) {
+            removed = true;
+            LockCookie lc = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+            parentsWeakReferences.RemoveAt(x);
+            rwLock.DowngradeFromWriterLock(ref lc);
+            x--;
+          }
+        }
+      }    
+      return removed;
+    }
   }
 
 }

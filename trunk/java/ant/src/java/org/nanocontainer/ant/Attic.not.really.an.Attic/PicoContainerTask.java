@@ -57,6 +57,8 @@ public class PicoContainerTask extends Task {
         registerComponentsSpecifiedInAnt();
         try {
             getPicoContainer().getComponentInstances();
+        } catch (PicoInvocationTargetInitializationException e) {
+            throw new BuildException(e.getCause());
         } catch (Exception e) {
             throw new BuildException(e);
         }

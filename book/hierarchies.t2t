@@ -1,6 +1,6 @@
 Constructor Dependency Injection - Container Hierarchies
-By the PicoContainer Committers and friends, (c) the PicoContainer committers
-%%date(%c)
+with PicoContainer
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
 = Hierarchies =
 

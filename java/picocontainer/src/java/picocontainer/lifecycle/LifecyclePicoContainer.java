@@ -12,10 +12,9 @@ package picocontainer.lifecycle;
 
 import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.defaults.NullContainer;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 public class LifecyclePicoContainer extends HierarchicalPicoContainer implements Lifecycle {
@@ -36,7 +35,7 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
         }
     }
 
-    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInitializationException {
         super.instantiateComponents();
         try {
             startableAggregatedComponent = (Startable) getCompositeComponent(true, false);

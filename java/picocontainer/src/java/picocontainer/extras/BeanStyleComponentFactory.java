@@ -1,13 +1,13 @@
 package picocontainer.extras;
 
 import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Component factory that works with Java Bean style components. That is, components that
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @version $Revision$
  */
 public class BeanStyleComponentFactory implements ComponentFactory {
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInstantiationException, PicoIntrospectionException {
+    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException {
         // We'll assume there is an empty constructor
         Object result = null;
         try {

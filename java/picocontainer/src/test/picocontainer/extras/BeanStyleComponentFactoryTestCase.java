@@ -1,11 +1,9 @@
 package picocontainer.extras;
 
 import junit.framework.TestCase;
-
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.defaults.DefaultPicoContainer;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.AssignabilityRegistrationException;
+import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.defaults.DuplicateComponentTypeRegistrationException;
 import picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -33,7 +31,7 @@ public class BeanStyleComponentFactoryTestCase extends TestCase {
     public static class ManImpl implements Man {
     }
 
-    public void testCreateComponent() throws NoSuchMethodException, PicoInstantiationException, PicoIntrospectionException {
+    public void testCreateComponent() throws NoSuchMethodException, PicoInitializationException {
         BeanStyleComponentFactory cf = new BeanStyleComponentFactory();
 
         Man man = new ManImpl();
@@ -41,7 +39,8 @@ public class BeanStyleComponentFactoryTestCase extends TestCase {
         assertSame(man, dog.getOwner());
     }
 
-    public void testWithContainer() throws AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testWithContainer() throws AssignabilityRegistrationException,
+            DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer(new BeanStyleComponentFactory());
 
         pico.registerComponent(Dog.class, DogImpl.class);

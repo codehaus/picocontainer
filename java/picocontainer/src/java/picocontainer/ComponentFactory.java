@@ -21,7 +21,7 @@ public interface ComponentFactory {
      * @return The component
      * @throws picocontainer.defaults.PicoInvocationTargetInitializationException If a problem creating the component.
      */
-    Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInstantiationException, PicoIntrospectionException;
+    Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Return the types the componentImplementation component depends on.

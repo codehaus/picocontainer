@@ -1,12 +1,12 @@
 package picocontainer.extras;
 
 import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 public class ImplementationHidingComponentFactory implements ComponentFactory {
     private final ComponentFactory componentFactory;
@@ -15,7 +15,7 @@ public class ImplementationHidingComponentFactory implements ComponentFactory {
         this.componentFactory = componentFactory;
     }
 
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInstantiationException, PicoIntrospectionException {
+    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException {
         Object componentInstance = componentFactory.createComponent(componentType, componentImplementation, dependencies, instanceDependencies);
         return Proxy.newProxyInstance(componentImplementation.getClass().getClassLoader(), new Class[]{componentType}, new ImplementationHidingProxy(componentInstance));
     }

@@ -3,7 +3,7 @@ package org.picoextras.script.rhino;
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.AbstractScriptedAssemblingLifecycleContainerBuilderTestCase;
+import org.picoextras.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
@@ -14,7 +14,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Proxy;
 
-public class JavascriptContainerBuilderTestCase extends AbstractScriptedAssemblingLifecycleContainerBuilderTestCase {
+public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
 
     public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoAssemblyException, JavaScriptException {
 

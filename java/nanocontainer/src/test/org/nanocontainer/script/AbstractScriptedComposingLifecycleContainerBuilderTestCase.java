@@ -9,11 +9,11 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
-public abstract class AbstractScriptedAssemblingLifecycleContainerBuilderTestCase extends TestCase {
+public abstract class AbstractScriptedComposingLifecycleContainerBuilderTestCase extends TestCase {
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
-    protected PicoContainer buildContainer(ScriptedAssemblingLifecycleContainerBuilder builder) {
+    protected PicoContainer buildContainer(ScriptedComposingLifecycleContainerBuilder builder) {
         builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE");
         return (PicoContainer) containerRef.get();
     }

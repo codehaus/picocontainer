@@ -13,7 +13,7 @@ package org.picoextras.script.xml;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.AbstractScriptedAssemblingLifecycleContainerBuilderTestCase;
+import org.picoextras.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
@@ -33,7 +33,7 @@ import java.io.StringReader;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class XMLContainerBuilderTestCase extends AbstractScriptedAssemblingLifecycleContainerBuilderTestCase {
+public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("<container>" +
@@ -137,7 +137,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedAssemblingLifec
 
     }
 
-    public static class TestFactory implements zXMLPseudoComponentFactory {
+    public static class TestFactory implements XMLPseudoComponentFactory {
         public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
             return "Hello";
         }

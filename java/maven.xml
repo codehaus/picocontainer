@@ -26,7 +26,6 @@
         <property name="excludes" value="pool/*,groovypico/*,${swt},${idea}"/>
         <echo>Excluded from build: ${excludes}</echo>
 
-
         <maven:reactor
             basedir="${basedir}"
             includes="*/project.xml"

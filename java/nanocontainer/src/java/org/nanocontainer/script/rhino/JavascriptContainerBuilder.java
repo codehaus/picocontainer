@@ -17,7 +17,14 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
     }
 
     protected MutablePicoContainer createContainer() {
-        Context cx = Context.enter();
+        Context cx = new Context() {
+            public GeneratedClassLoader createClassLoader(ClassLoader parent) {
+                return new DefiningClassLoader(classLoader) {
+                };
+            }
+        };
+        cx = Context.enter(cx);
+
         try {
             Scriptable scope = new ImporterTopLevel(cx);
             ImporterTopLevel.importPackage(cx,
@@ -27,7 +34,7 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
                         new NativeJavaPackage("org.picoextras.reflection", classLoader),
                         // File, URL and URLClassLoader will be frequently used by scripts.
                         new NativeJavaPackage("java.net", classLoader),
-                        new NativeJavaPackage("java.io", classLoader)
+                        new NativeJavaPackage("java.io", classLoader),
                     },
                     null);
             Script scriptObject = cx.compileReader(scope, script, "javascript", 1, null);

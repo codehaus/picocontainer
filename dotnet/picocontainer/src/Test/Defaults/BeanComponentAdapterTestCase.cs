@@ -12,7 +12,7 @@ namespace Test.Defaults {
   /// Summary description for BeanIComponentAdapterTestCase.
   /// </summary>
   [TestFixture]
-  public class BeanIComponentAdapterTestCase {
+  public class BeanComponentAdapterTestCase {
     public class A {
       private B b;
       private string theString;
@@ -53,8 +53,8 @@ namespace Test.Defaults {
 
     [Test]
     public void testDependenciesAreResolved() {
-      BeanComponentAdapter aAdapter = new BeanComponentAdapter("a", typeof(A), null);
-      BeanComponentAdapter bAdapter = new BeanComponentAdapter("b", typeof(B), null);
+      BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", typeof(A), null));
+      BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", typeof(B), null));
 
       IMutablePicoContainer pico = new DefaultPicoContainer();
       pico.RegisterComponent(bAdapter);
@@ -70,8 +70,8 @@ namespace Test.Defaults {
 
     [Test]
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-      BeanComponentAdapter aAdapter = new BeanComponentAdapter("a", typeof(A), null);
-      BeanComponentAdapter bAdapter = new BeanComponentAdapter("b", typeof(B), null);
+      BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", typeof(A), null));
+      BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", typeof(B), null));
 
       IMutablePicoContainer pico = new DefaultPicoContainer();
       pico.RegisterComponent(bAdapter);

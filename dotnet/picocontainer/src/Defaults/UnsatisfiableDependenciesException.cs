@@ -20,10 +20,10 @@ using System.Runtime.Serialization;
   [Serializable]
    public class UnsatisfiableDependenciesException : PicoIntrospectionException {
 
-    private InstantiatingComponentAdapter instantiatingComponentAdapter;
+    private IComponentAdapter instantiatingComponentAdapter;
     private IList failedDependencies;
 
-    public UnsatisfiableDependenciesException(InstantiatingComponentAdapter instantiatingComponentAdapter, IList failedDependencies) 
+    public UnsatisfiableDependenciesException(IComponentAdapter instantiatingComponentAdapter, IList failedDependencies) 
     {
         
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
@@ -49,7 +49,7 @@ using System.Runtime.Serialization;
       }
     }
 
-    public InstantiatingComponentAdapter UnsatisfiableComponentAdapter 
+    public IComponentAdapter UnsatisfiableComponentAdapter 
     {
       get {
         return instantiatingComponentAdapter;

@@ -7,28 +7,40 @@
 
   <body>
     <release version="1.0-beta-1-SNAPSHOT" date="In CVS">
-      <action dev="paul" type="fix">
-        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-20">PICO-20</a>
-        - Merge default lifecycle interfaces into one.
+
+      <action dev="rinkrank" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-29">PICO-29</a>
+        - Rename AggregatedContainersContainer to CompositePicoContainer.
       </action>
-      <action dev="paul" type="fix">
-        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-28">PICO-28</a>
-        - Merge PicoInstantiationException and PicoIntrospectionException.
+
+      <action dev="rinkrank" type="update">
+        Renamed AggregateProxyFactory to CompositeProxyFactory.
       </action>
-      <action dev="paul" type="update">
-        Changed signatures on PicoContainer from registerComponent to more verbose
-        method names.
-      </action>
+
       <action dev="paul" type="fix">
         Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-31">PICO-31</a>
         - Make getAggregateComponentProxy() an interface method on PicoContainer.
       </action>
-      <action dev="rinkrank" type="update">
-        Renamed AggregateProxyFactory to CompositeProxyFactory.
+
+      <action dev="paul" type="update">
+        Changed signatures on PicoContainer from registerComponent to more verbose
+        method names.
       </action>
+
+      <action dev="paul" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-28">PICO-28</a>
+        - Merge PicoInstantiationException and PicoIntrospectionException.
+      </action>
+
+      <action dev="paul" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-20">PICO-20</a>
+        - Merge default lifecycle interfaces into one.
+      </action>
+
     </release>
 
     <release version="1.0-alpha-2" date="2003-07-10">
+
       <action dev="tirsen" type="update">
         Factored out logic for creation of aggregating proxy for a
         container's components. This opens up for alternative
@@ -70,12 +82,15 @@
         used as inspiration for implementation of other containers that
         handle lifecycle transparently with extra methods on the container.
       </action>
+
     </release>
 
     <release version="1.0-alpha-1" date="2003-06-29">
+
       <action dev="rinkrank" type="add">
         First release.
       </action>
+
     </release>
 
   </body>

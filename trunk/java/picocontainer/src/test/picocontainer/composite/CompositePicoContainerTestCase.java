@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.aggregated;
+package picocontainer.composite;
 
 import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
@@ -20,7 +20,7 @@ import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.WilmaImpl;
 
-public class AggregatedContainersContainerTestCase extends TestCase {
+public class CompositePicoContainerTestCase extends TestCase {
     private ClassRegistrationPicoContainer pico;
     private AggregatedContainersContainer.Filter filter;
 
@@ -57,7 +57,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void testNullArrayContainer() {
         try {
-            new AggregatedContainersContainer(null);
+            new CompositePicoContainer(null);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine
@@ -135,7 +135,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
         };
 
-        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[]{a, b});
+        CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[]{a, b});
 
         assertTrue(acc.hasComponent(String.class));
         assertTrue(acc.hasComponent(Integer.class));
@@ -147,7 +147,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void testEmpty() {
 
-        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[0]);
+        CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[0]);
         assertTrue(acc.hasComponent(String.class) == false);
         assertTrue(acc.getComponent(String.class) == null);
         assertTrue(acc.getComponents().length == 0);

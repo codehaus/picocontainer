@@ -12,13 +12,13 @@ package org.picocontainer.extras;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.internals.ComponentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplementationHidingComponentFactoryTestCase extends TestCase {
+public class ImplementationHidingComponentAdapterFactoryTestCase extends TestCase {
 
     private static boolean addCalled = false;
 
@@ -33,9 +33,12 @@ public class ImplementationHidingComponentFactoryTestCase extends TestCase {
         }
     }
 
-    public void testBasic() throws NoSuchMethodException, PicoInitializationException {
-        ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory(new DefaultComponentFactory());
-        Object o = cf.createComponent(new ComponentSpecification(cf, List.class, OneConstructorArrayList.class), null);
+    public void testCreatedComponentAdapterCreatesInstancesWhereImplementationIsHidden()
+            throws NoSuchMethodException, PicoInitializationException {
+        ImplementationHidingComponentAdapterFactory cf =
+                new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
+        ComponentAdapter componentAdapter = cf.createComponentAdapter(List.class, OneConstructorArrayList.class, null);
+        Object o = componentAdapter.instantiateComponent(null);
         assertTrue(o instanceof List);
         assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");

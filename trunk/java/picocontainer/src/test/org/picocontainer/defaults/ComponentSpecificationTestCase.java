@@ -11,7 +11,8 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.defaults.DefaultComponentAdapter;
+import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -19,14 +20,13 @@ import junit.framework.TestCase;
 
 public class ComponentSpecificationTestCase extends TestCase {
 	public void testEquals() throws PicoIntrospectionException {
-		ComponentSpecification componentSpecification =
-			createComponentSpecification();
+		ComponentAdapter componentAdapter =
+			createComponentAdapter();
 		
-		assertEquals(componentSpecification, componentSpecification);
+		assertEquals(componentAdapter, componentAdapter);
 	}
 	
-	private ComponentSpecification createComponentSpecification() throws PicoIntrospectionException {
-		return new ComponentSpecification(new DefaultComponentFactory(), Touchable.class,
-			SimpleTouchable.class);
+	private ComponentAdapter createComponentAdapter() throws PicoIntrospectionException {
+		return new DefaultComponentAdapter(Touchable.class, SimpleTouchable.class);
 	}
 }

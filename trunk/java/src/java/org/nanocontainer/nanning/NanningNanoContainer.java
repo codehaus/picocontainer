@@ -12,19 +12,20 @@ package org.nanocontainer.nanning;
 
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.*;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.extras.HierarchicalComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.internals.Parameter;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -43,11 +44,12 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
                                 ComponentRegistry componentRegistry,
                                 AspectSystem aspectSystem) {
         hierarchicalComponentRegistry =
-            new HierarchicalComponentRegistry.WithChildRegistry(parentRegistry,
-                    componentRegistry);
+                new HierarchicalComponentRegistry.WithChildRegistry(parentRegistry,
+                        componentRegistry);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.mainContainer =
-                new DefaultPicoContainer(new NanningComponentFactory(aspectSystem, new DefaultComponentFactory()),
+                new DefaultPicoContainer(new NanningComponentAdapterFactory(aspectSystem,
+                        new DefaultComponentAdapterFactory()),
                         hierarchicalComponentRegistry);
         this.aspectSystem = aspectSystem;
     }
@@ -55,9 +57,9 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
     public static class WithParentComponentRegistry extends NanningNanoContainer {
         public WithParentComponentRegistry(AspectSystem aspectSystem, ComponentRegistry parentRegistry) {
             super(new DefaultPicoContainer.WithComponentRegistry(parentRegistry),
-                  parentRegistry,
-                  new DefaultComponentRegistry(),
-                  aspectSystem);
+                    parentRegistry,
+                    new DefaultComponentRegistry(),
+                    aspectSystem);
         }
     }
 
@@ -144,7 +146,7 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
     }
 
     public void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoRegistrationException {
+            throws PicoRegistrationException, PicoIntrospectionException {
         mainContainer.registerComponent(componentKey, componentImplementation, parameters);
     }
 

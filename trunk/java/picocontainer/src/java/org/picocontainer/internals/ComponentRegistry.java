@@ -18,7 +18,7 @@ import java.util.List;
 
 public interface ComponentRegistry {
 
-    void registerComponent(ComponentSpecification compSpec);
+    void registerComponent(ComponentAdapter compSpec);
 
     Collection getComponentSpecifications();
 
@@ -38,13 +38,13 @@ public interface ComponentRegistry {
 
     boolean hasComponentInstance(Object componentKey);
 
-    ComponentSpecification getComponentSpec(Object componentKey);
+    ComponentAdapter getComponentAdapter(Object componentKey);
 
     Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException;
 
-    ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException;
+    ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException;
 
-    Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException;
+    Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException;
 
 	void unregisterComponent(Object componentKey);
 }

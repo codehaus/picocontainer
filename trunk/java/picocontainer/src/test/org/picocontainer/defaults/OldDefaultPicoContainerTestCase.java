@@ -11,15 +11,12 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.internals.ComponentFactory;
-import org.picocontainer.internals.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.internals.ComponentSpecification;
-import org.picocontainer.internals.ComponentParameter;
+import org.picocontainer.internals.*;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -485,15 +482,15 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         DefaultComponentRegistry dcr = new DefaultComponentRegistry();
         DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
-        assertNull(dcr.findImplementingComponentSpecification(Touchable.class));
+        assertNull(dcr.findImplementingComponentAdapter(Touchable.class));
         pico.registerComponentByClass(SimpleTouchable.class);
-        assertNotNull(dcr.findImplementingComponentSpecification(SimpleTouchable.class));
-        assertNotNull(dcr.findImplementingComponentSpecification(Touchable.class));
+        assertNotNull(dcr.findImplementingComponentAdapter(SimpleTouchable.class));
+        assertNotNull(dcr.findImplementingComponentAdapter(Touchable.class));
     }
 
-    //TODO - move to ComponentSpecification testcase
+    //TODO - move to DefaultComponentAdapter testcase
     public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInitializationException {
-        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), SimpleTouchable.class, SimpleTouchable.class, new Parameter[0]);
+        ComponentAdapter componentSpec = new DefaultComponentAdapter(SimpleTouchable.class, SimpleTouchable.class, new Parameter[0]);
         Object comp = componentSpec.instantiateComponent(null);
         assertNotNull(comp);
         assertTrue(comp instanceof SimpleTouchable);
@@ -746,19 +743,23 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testWithComponentFactory() throws PicoRegistrationException, PicoInitializationException {
-        final SimpleTouchable Touchable = new SimpleTouchable();
-        DefaultPicoContainer pc = new DefaultPicoContainer.WithComponentFactory(new ComponentFactory() {
-            public Object createComponent(ComponentSpecification componentSpec, Object[] args) {
-                return Touchable;
-            }
-
-            public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {
-                return new Class[0];
+        final SimpleTouchable touchable = new SimpleTouchable();
+        DefaultPicoContainer pc = new DefaultPicoContainer.WithComponentAdapterFactory(new ComponentAdapterFactory() {
+            public ComponentAdapter createComponentAdapter(Object componentKey,
+                                                           Class componentImplementation,
+                                                           Parameter[] parameters)
+                    throws PicoIntrospectionException {
+                return new DefaultComponentAdapter(componentKey, componentImplementation) {
+                    public Object instantiateComponent(ComponentRegistry componentRegistry)
+                            throws PicoInitializationException {
+                        return touchable;
+                    }
+                };
             }
         });
         pc.registerComponentByClass(SimpleTouchable.class);
         pc.instantiateComponents();
-        assertEquals(pc.getComponent(SimpleTouchable.class), Touchable);
+        assertEquals(pc.getComponent(SimpleTouchable.class), touchable);
     }
 
     public static class Barney {

@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.defaults.DefaultComponentAdapter;
 import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.extras.NullContainer;
 
@@ -35,12 +35,12 @@ public class DummiesTestCase extends TestCase {
         assertNull(dc.getComponentMulticaster(false, true));
     }
 
-    public void testDefaultComponentFactory() throws PicoInstantiationException,
+    public void testDefaultComponentFactory() throws PicoInitializationException,
             NoSuchMethodException,
             InvocationTargetException,
             IllegalAccessException, PicoIntrospectionException {
-        DefaultComponentFactory dcd = new DefaultComponentFactory();
-        Object decorated = dcd.createComponent(new ComponentSpecification(dcd, Object.class, Object.class), null);
+        DefaultComponentAdapter dcd = new DefaultComponentAdapter(Object.class, Object.class);
+        Object decorated = dcd.instantiateComponent(new DefaultComponentRegistry());
         assertNotNull(decorated);
     }
 

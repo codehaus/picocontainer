@@ -66,7 +66,7 @@ public interface RegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException If a registration problem
      */
     void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoRegistrationException;
+            throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Add a parameter to a component. Used for configuring them.

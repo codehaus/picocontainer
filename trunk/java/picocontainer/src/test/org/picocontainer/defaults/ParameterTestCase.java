@@ -4,10 +4,7 @@ import junit.framework.TestCase;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.internals.ConstantParameter;
-import org.picocontainer.internals.ComponentParameter;
-import org.picocontainer.internals.ComponentSpecification;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.internals.*;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
@@ -20,10 +17,10 @@ import org.picocontainer.PicoInstantiationException;
  */
 public class ParameterTestCase extends TestCase {
     public void testComponentSpecificationHandlesPrimtiveTypes() {
-        assertTrue(ComponentSpecification.isAssignableFrom(Integer.class, Integer.TYPE));
-        assertTrue(ComponentSpecification.isAssignableFrom(Integer.TYPE, Integer.class));
-        assertTrue(ComponentSpecification.isAssignableFrom(String.class, String.class));
-        assertFalse(ComponentSpecification.isAssignableFrom(Integer.class, String.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
+        assertTrue(DefaultComponentAdapter.isAssignableFrom(String.class, String.class));
+        assertFalse(DefaultComponentAdapter.isAssignableFrom(Integer.class, String.class));
     }
 
     static class TestClass {
@@ -32,8 +29,8 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testComponentSpecificationCreatesDefaultParameters() throws PicoIntrospectionException {
-        ComponentSpecification componentSpec =
-                new ComponentSpecification(new DefaultComponentFactory(), null, TestClass.class);
+        DefaultComponentAdapter componentSpec =
+                new DefaultComponentAdapter(null, TestClass.class);
         assertEquals(3, componentSpec.getParameters().length);
     }
 

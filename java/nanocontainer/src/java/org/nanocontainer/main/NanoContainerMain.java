@@ -96,7 +96,6 @@ public class NanoContainerMain {
     AH
     */
     private static void buildAndStartContainer(String compositionFileName) throws Exception, InstantiationException {
-        final String extension = compositionFileName.substring(compositionFileName.indexOf("."));
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 

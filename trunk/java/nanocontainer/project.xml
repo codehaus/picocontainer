@@ -6,9 +6,10 @@
 ]>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
-    <extend>${basedir}/../project.xml</extend>
+    <extend>${basedir}/../project.xml</extend>    
     <id>nanocontainer</id>
     <name>nanocontainer</name>
+    <currentVersion>1.0-beta-2</currentVersion>    
     <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <developers>
@@ -35,14 +36,14 @@
     <dependencies>
         <dependency>
             <id>picocontainer</id>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1-beta-1</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
 
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1-beta-1</version>
         </dependency>
 
         <dependency>

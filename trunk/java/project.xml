@@ -50,7 +50,7 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1-beta-1</version>
             <url>http://www.picocontainer.org/</url>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -62,7 +62,7 @@
         <dependency>
             <id>junit</id>
             <version>3.8.1</version>
-            <url></url>
+            <url>http://junit.org</url>
         </dependency>
 
     </dependencies>

@@ -17,7 +17,12 @@ public class AmbiguousComponentResolutionException extends PicoStartException {
     }
 
     public String getMessage() {
-        return "Ambiguous Classes: " + ambiguousClasses;
+        String msg = "Ambiguous Classes:";
+        for (int i = 0; i < ambiguousClasses.length; i++) {
+            Class ambiguousClass = ambiguousClasses[i];
+            msg = msg + " " + ambiguousClass.getName();
+        }
+        return msg;
     }
 
     public Class[] getAmbiguousClasses() {

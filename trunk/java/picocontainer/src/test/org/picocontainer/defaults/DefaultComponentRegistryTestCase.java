@@ -30,7 +30,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 		
 		componentRegistry.registerComponent(componentSpecification);
 		
-		assertTrue(componentRegistry.getComponentSpecifications().contains(componentSpecification));
+		assertTrue(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
 	
 	public void testUnregisterComponent() throws PicoIntrospectionException {
@@ -40,7 +40,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 		
 		componentRegistry.unregisterComponent(Touchable.class);
 		
-		assertFalse(componentRegistry.getComponentSpecifications().contains(componentSpecification));
+		assertFalse(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
 
 	private ComponentAdapter createComponentAdapter() throws PicoIntrospectionException {

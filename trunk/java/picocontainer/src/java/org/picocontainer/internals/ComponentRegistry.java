@@ -20,7 +20,7 @@ public interface ComponentRegistry {
 
     void registerComponent(ComponentAdapter compSpec);
 
-    Collection getComponentSpecifications();
+    List getComponentAdapters();
 
     List getOrderedComponents();
 
@@ -32,7 +32,7 @@ public interface ComponentRegistry {
 
     Object getComponentInstance(Object componentKey);
 
-    Collection getComponentInstanceKeys();
+    Collection getComponentKeys();
 
     Collection getComponentInstances();
 

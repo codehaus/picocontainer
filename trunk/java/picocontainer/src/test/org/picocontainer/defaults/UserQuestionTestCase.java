@@ -96,6 +96,31 @@ public class UserQuestionTestCase extends TestCase {
         assertEquals("Roquefort", flexibleOmelette.getCheese().getName());
     }
 
+    // From Alex Shneyderman 23/03/2004
+    public void testMultipleOmelettesCanHaveDifferentCheeseUsingSingleSwapping() {
+        MutablePicoContainer pico = new DefaultPicoContainer(
+                new CachingComponentAdapterFactory(
+                        new ImplementationHidingComponentAdapterFactory(
+                                new ConstructorInjectionComponentAdapterFactory(), false)));
+
+        pico.registerComponentImplementation("Omelette1", Omelette.class);
+        pico.registerComponentImplementation("Omelette2", Omelette.class);
+        pico.registerComponentImplementation(Cheese.class, Gouda.class);
+
+        Omelette flexibleOmelette1 = (Omelette) pico.getComponentInstance("Omelette1");
+        Omelette flexibleOmelette2 = (Omelette) pico.getComponentInstance("Omelette2");
+        assertNotSame(flexibleOmelette1, flexibleOmelette2);
+        assertSame(flexibleOmelette1.getCheese(), flexibleOmelette2.getCheese());
+
+        // Let's swap the cheese for all omelettes :)
+        Cheese cheese = (Cheese) pico.getComponentInstance(Cheese.class);
+        Swappable swappableCheese = (Swappable) cheese;
+        swappableCheese.hotswap(new Roquefort());
+        
+        assertEquals("Roquefort", flexibleOmelette1.getCheese().getName());
+        assertEquals("Roquefort", flexibleOmelette2.getCheese().getName());
+    }
+
     public static interface InterfaceX {
         String getIt();
     }
@@ -160,7 +185,7 @@ public class UserQuestionTestCase extends TestCase {
         assertEquals("Enabled", needsInterfaceX.getIt());
     }
 
-    // From Jon Tal 23/03/2004
+    // From John Tal 23/03/2004
     public static interface ABC {
     }
 
@@ -177,7 +202,7 @@ public class UserQuestionTestCase extends TestCase {
         }
     }
 
-    public void testJohnTahlOne() {
+    public void testJohnTalOne() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
 
         picoContainer.registerComponentImplementation("ABC",ABCImpl.class);

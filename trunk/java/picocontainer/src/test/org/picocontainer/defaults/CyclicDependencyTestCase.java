@@ -102,4 +102,14 @@ public class CyclicDependencyTestCase
             assertNull(runner[i].exception);
         }
     }
+    
+    public void testCyclicDependencyException() {
+        final CyclicDependencyException cdEx = new CyclicDependencyException(getClass());
+        cdEx.push(String.class);
+        final Class[] classes = cdEx.getDependencies();
+        assertEquals(2, classes.length);
+        assertSame(getClass(), classes[0]);
+        assertSame(String.class, classes[1]);
+        assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
+    }
 }

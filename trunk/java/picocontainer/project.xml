@@ -30,6 +30,15 @@
         interfaces or classes outside of the java.* package.  Components also have no
         meta-info specification. I.e. no XML. Most importantly of all, components for PicoContainer
         can be used without PicoContainer for good old-fashioned hard-coded deployments.
+        
+        Some of PicoContainer's greatest assets are its non-intruvesiness, simplicity light weight and extendability.
+        Not mentioning that PicoContainer fits perefectly well with code developed along the lines of TDD and mock objects.
+        
+        And what's in it for you?
+        Code that is more modular (loosely coupled), easy to test, easier to configure, and easier to maintain.
+        
+        PicoContainer is more than an IoC container. It's a tribute to simple, but controlled power.
+       
     </description>
     <url>http://www.picocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>

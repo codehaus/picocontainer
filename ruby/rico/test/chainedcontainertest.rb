@@ -54,15 +54,43 @@ class ChainedContainerTest < Test::Unit::TestCase
     assert_equal true, child.component(:child_washable).washed, "child component"
   end
   
-  def test_multiple_levels_of_container
+  def test_get_component_across_multiple_levels_of_container
     inner = Container.new
     inner.register_component :inner_washable, Washable
+    
     middle = ChainedContainer.new inner
     middle.register_component :middle_washable, Washable
+    
     outer = ChainedContainer.new middle
     outer.register_component :outer_washable, Washable
-    assert_not_nil outer.component(:inner_washable), "chained component should be found"
-    outer.multicast :washed=, true
     
+    assert_not_nil outer.component(:inner_washable), "inner component should be found"
+    assert_not_nil outer.component(:middle_washable), "middle component should be found"
+    assert_not_nil outer.component(:middle_washable), "outer component should be found"
+  end
+  
+  def test_multicast_across_multiple_levels_of_container
+    inner = Container.new
+    inner.register_component :inner_washable, Washable
+    
+    middle = ChainedContainer.new inner
+    middle.register_component :middle_washable, Washable
+    
+    outer = ChainedContainer.new middle
+    outer.register_component :outer_washable, Washable
+    
+    assert_equal nil, outer.component(:inner_washable).washed
+    outer.multicast :washed=, true
+    assert_equal true, outer.component(:inner_washable).washed
+  end
+  
+  def test_chained_container_with_no_parent_is_consistent
+    rico = ChainedContainer.new
+    rico.register_component :object, Object
+    assert_equal 1, rico.component_count
+    assert_instance_of Object, rico.component(:object)
+    assert_raises NonexistentComponentError do
+      rico.component :nonexistent
+    end
   end
 end

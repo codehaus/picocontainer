@@ -1,5 +1,6 @@
 require 'rico/exceptions'
 require 'rico/componentspecification'
+require 'rico/multicaster'
 
 module Rico
   class Container
@@ -32,10 +33,14 @@ module Rico
       return component_specification(key).component(self)
     end
     
-    def multicast(method, *args)
+    def multicast(meth, *args)
       @specs.each_key do |key|
-        component(key).send(method, *args) if component(key).respond_to? method
+        component(key).send(meth, *args) if component(key).respond_to? meth
       end
+    end
+    
+    def multicaster
+      return Multicaster.new(self)
     end
     
     protected

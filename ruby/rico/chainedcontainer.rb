@@ -2,7 +2,7 @@ require 'rico/container'
 
 module Rico
   class ChainedContainer < Container
-    def initialize parent
+    def initialize parent = Container.new
       super()
       @parent = parent
     end

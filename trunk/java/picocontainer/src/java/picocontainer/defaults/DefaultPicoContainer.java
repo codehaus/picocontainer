@@ -284,22 +284,22 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         *
         * getComponents() and getComponentKeys() are tightly related.
         * They have a "contract" between each other. More specifically:
-		*
-		* 1) They should always return equally sized arrays.
-		* 2) For each key returned by getComponentKeys() the call to getComponent(key)
-		*    should never return null.
-		*
-		* If Java had supported DBC, we would have expressed this contract on the PicoContainer
-		* interface itself, forcing that contract to be respected through the whole hierarchy.
-		* Since this isn't possible in Java, we as programmers use other means (comments and final
-		* being some of them) to "enforce" the contract to be respected.
-		*
-		* Overriding getComponents() and not getComponentType() has the potential danger in that
-		* it might violate the contract. Making one of the methods final (that would naturally be
-		* getComponents()) and finalising the contract in that final method prevents the contract
-		* from being violated. Ever.
-		*
-		* Using final on methods is a way to avoid contracts being broken.
+        *
+        * 1) They should always return equally sized arrays.
+        * 2) For each key returned by getComponentKeys() the call to getComponent(key)
+        *    should never return null.
+        *
+        * If Java had supported DBC, we would have expressed this contract on the PicoContainer
+        * interface itself, forcing that contract to be respected through the whole hierarchy.
+        * Since this isn't possible in Java, we as programmers use other means (comments and final
+        * being some of them) to "enforce" the contract to be respected.
+        *
+        * Overriding getComponents() and not getComponentType() has the potential danger in that
+        * it might violate the contract. Making one of the methods final (that would naturally be
+        * getComponents()) and finalising the contract in that final method prevents the contract
+        * from being violated. Ever.
+        *
+        * Using final on methods is a way to avoid contracts being broken.
         *
         * Ideally, this method should be final, so we can avoid the contract being accidentally
         * broken.

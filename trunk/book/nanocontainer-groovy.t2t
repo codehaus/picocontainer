@@ -4,4 +4,5 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. D
 
 = NanoContainer & Groovy=
 
-Blah
+NanoContainer comes with built-in support for Groovy. Here is how you would assemble an application with Groovy markup:
+

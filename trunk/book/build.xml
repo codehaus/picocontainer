@@ -7,6 +7,10 @@
     <property name="java.module.url" value="file:../java"/>
     <property name="format" value="html"/>
     
+    <target name="clean">
+        <delete file="target"/>
+    </target>
+
     <target name="slurp">
         <taskdef classname="snippet.ant.SlurpTask" name="slurp">
             <classpath>
@@ -43,7 +47,7 @@
         </exec>
     </target>
     
-    <target name="deploy" depends="txt2tags">
+    <target name="deploy" depends="clean,txt2tags">
         <copy file="target/cdi-book.html" todir="/home/projects/picocontainer/public_html"/>
     </target>
 </project>

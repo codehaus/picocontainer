@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 
 /**
  * Dispatcher servlet for NanoWeb.
@@ -81,11 +82,12 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             String parameterKey = (String) iterator.next();
             Object value = parameterMap.get(parameterKey);
             if (value instanceof String[]) {
-                value = ((String[]) value)[0];
+                value = Arrays.asList((String[]) value);
             }
             try {
                 Ognl.setValue(parameterKey, action, value);
             } catch (OgnlException e) {
+                e.printStackTrace();
                 throw new ServletException(e);
             }
         }

@@ -7,6 +7,7 @@ import org.mortbay.jetty.Server;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -30,7 +31,7 @@ public class IntegrationTestCase extends XMLTestCase {
             listener.setPort(PORT);
             server.addListener(listener);
 
-            String webappDir = "target/nanocontainer-sample-nanoweb";
+            String webappDir = new File("target/nanocontainer-sample-nanoweb").getAbsolutePath();
             server.addWebApplication("/nanocontainer-sample-nanoweb/*", webappDir);
 
             server.start();

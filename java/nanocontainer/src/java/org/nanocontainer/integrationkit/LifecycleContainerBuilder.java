@@ -20,13 +20,14 @@ import org.picocontainer.defaults.ObjectReference;
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-        MutablePicoContainer parentContainer = parentContainerRef == null ? null : (MutablePicoContainer) parentContainerRef.get();
+        PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
 
         // register the child in the parent so that lifecycle can be propagated down the hierarchy
-        if(parentContainer != null) {
-            parentContainer.unregisterComponentByInstance(container);
-            parentContainer.registerComponentInstance(containerRef, container);
+        if(parentContainer != null && parentContainer instanceof MutablePicoContainer) {
+            MutablePicoContainer mutableContainer = (MutablePicoContainer) parentContainer;
+            mutableContainer.unregisterComponentByInstance(container);
+            mutableContainer.registerComponentInstance(containerRef, container);
         }
 
         composeContainer(container, assemblyScope);

@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+import java.util.List;
+
 /**
  * This is the core interface for registration of components.
  *
@@ -151,4 +153,6 @@ public interface MutablePicoContainer extends PicoContainer {
      * @return true if the parent was actually removed.
      */
     boolean removeParent(MutablePicoContainer parent);
+
+    List getComponentAdapters();
 }

@@ -52,4 +52,8 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         }
     }
 
+
+    public String toString() {
+        return getClass().getName() + "[" + getComponentKey() + "]";
+    }
 }

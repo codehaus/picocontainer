@@ -1,5 +1,7 @@
 package org.picocontainer;
 
+import org.picocontainer.lifecycle.Lifecycle;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public interface PicoContainer {
+public interface PicoContainer extends Lifecycle {
     /**
      * Gets a component instance.
      *
@@ -54,7 +56,7 @@ public interface PicoContainer {
      * Get all the component keys.
      * @return all the component keys.
      */
-    Collection getComponentKeys();
+    List getComponentKeys();
 
     /**
      * Get the child containers of this container. Any given container instance should not use

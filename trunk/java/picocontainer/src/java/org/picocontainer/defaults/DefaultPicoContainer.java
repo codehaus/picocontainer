@@ -46,7 +46,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     private final ComponentAdapterFactory componentAdapterFactory;
 
-    private final Map componentKeyToAdapterMap = new HashMap();
+    private final Map componentKeyToAdapterIndex = new HashMap();
+    private final List componentAdapters = new ArrayList();
 
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
         this.componentAdapterFactory = componentAdapterFactory;
@@ -56,9 +57,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         this(new DefaultComponentAdapterFactory());
     }
 
-    public final Collection getComponentKeys() {
-        Set result = new HashSet();
-        result.addAll(componentKeyToAdapterMap.keySet());
+    public final List getComponentKeys() {
+        List result = new ArrayList();
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter adapter = (ComponentAdapter) iterator.next();
+            result.add(adapter.getComponentKey());
+        }
         synchronized (parentWeakReferences) {
             for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
                 WeakReference wr = (WeakReference) iterator.next();
@@ -73,29 +77,41 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    // TODO shouldn't have to be a public method.
     public List getComponentAdapters() {
-        return new ArrayList(componentKeyToAdapterMap.values());
+        return Collections.unmodifiableList(componentAdapters);
     }
 
     public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
         Object componentKey = componentAdapter.getComponentKey();
-        if (componentKeyToAdapterMap.keySet().contains(componentKey)) {
+        if (getComponentAdapter(componentKey) != null) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
-        componentKeyToAdapterMap.put(componentKey, componentAdapter);
+        componentAdapters.add(componentAdapter);
+        componentKeyToAdapterIndex.put(componentKey, componentAdapter);
     }
 
     public ComponentAdapter unregisterComponent(Object componentKey) {
-        ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.remove(componentKey);
-        if (result != null) {
-            Object instance = result.getComponentInstance(this);
-            componentKeyToAdapterMap.remove(componentKey);
-            instantiantionOrderedComponentAdapters.remove(result);
-            instantiationOrderedComponentAdapterMap.remove(componentKey);
-            unmanagedComponents.remove(instance);
+        ComponentAdapter adapter = getComponentAdapter(componentKey);
+        if (adapter != null) {
+            unregisterComponentAdapter(adapter);
         }
-        return result;
+        return adapter;
+    }
+
+    private void unregisterComponentAdapter(ComponentAdapter adapter) {
+        // TODO instantiates component even if we're just unregistering it
+        Object instance = adapter.getComponentInstance(this);
+        componentAdapters.remove(adapter);
+        componentKeyToAdapterIndex.remove(adapter.getComponentKey());
+
+        instantiantionOrderedComponentAdapters.remove(adapter);
+        instantiationOrderedComponentAdapterMap.remove(adapter.getComponentKey());
+
+        unmanagedComponents.remove(instance);
+    }
+
+    private ComponentAdapter getComponentAdapter(Object componentKey) {
+        return (ComponentAdapter) componentKeyToAdapterIndex.get(componentKey);
     }
 
     public final ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
@@ -122,7 +138,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     private ComponentAdapter findComponentAdapterImpl(Object componentKey) throws AmbiguousComponentResolutionException {
-        ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.get(componentKey);
+        ComponentAdapter result = getComponentAdapter(componentKey);
+        // TODO this is ugly!!!
         if (result == null && componentKey instanceof Class) {
             // see if we find a matching one if the key is a class
             Class classKey = (Class) componentKey;
@@ -202,9 +219,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             o.hashCode();
         }
         List result = new ArrayList();
-        List instantiantionOrderedComponentAdaptersCopy = new ArrayList(instantiantionOrderedComponentAdapters);
-        for (Iterator componentAdapters = instantiantionOrderedComponentAdaptersCopy.iterator(); componentAdapters.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) componentAdapters.next();
+        for (Iterator iterator = instantiantionOrderedComponentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             result.add(componentAdapter.getComponentInstance(this));
         }
         return result;

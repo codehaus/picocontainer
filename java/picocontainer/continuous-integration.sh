@@ -18,7 +18,7 @@
 # Finally, to get the full picture, see maven.xml
 #
 
-cd /usr/local/builds/picocontainer
+cd /usr/local/builds/pico
 
 cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P
 

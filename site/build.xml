@@ -24,6 +24,12 @@
           <include name="*.html"/>
        </fileset>
     </sitemesh>
+
+    <sitemesh dest="build" base="docs" decorator="docs/decorators/rico-decorator.html">
+       <fileset dir="docs">
+          <include name="rico/*.html"/>
+       </fileset>
+    </sitemesh>
     
     <copy todir="build">
        <fileset dir="docs">

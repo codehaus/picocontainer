@@ -15,13 +15,12 @@
   <inceptionYear>2003</inceptionYear>
   <package>org.picoextras</package>
   <logo>/images/picoextras-logo.png</logo>
-  <description>PicoContainer Extras</description>
   <shortDescription>PicoContainer Extras</shortDescription>
   <description>
     The PicoExtras project is a collection of PicoContainer extensions.
   </description>
 
-  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10231</issueTrackingUrl>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
 
   <siteAddress>codehaus.org</siteAddress>
   <siteDirectory>/www/picoextras.codehaus.org</siteDirectory>

@@ -17,7 +17,7 @@
     <logo>http://images.werken.com/codehaus-plain.gif</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <package>picocontainer</package>
+  <package>org.picocontainer</package>
   <logo>/images/picocontainer.jpg</logo>
   <description>Small footprint IoC container</description>
   <shortDescription>Small footprint IoC container</shortDescription>

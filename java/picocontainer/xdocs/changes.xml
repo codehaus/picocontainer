@@ -78,7 +78,7 @@
 
       <action dev="paul" type="add">
         Added optional lifecycle interfaces and LifecyclePicoContainer 
-        in picocontainer.lifecycle. This package is optional, and can be
+        in org.picocontainer.lifecycle. This package is optional, and can be
         used as inspiration for implementation of other containers that
         handle lifecycle transparently with extra methods on the container.
       </action>

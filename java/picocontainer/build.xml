@@ -127,7 +127,7 @@
     </property>
     <property name="title" value="PicoContainer 1.0-SNAPSHOT API">
     </property>
-    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="picocontainer.*">
+    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.picocontainer.*">
       <classpath>
         <fileset dir="${libdir}">
           <include name="*.jar">

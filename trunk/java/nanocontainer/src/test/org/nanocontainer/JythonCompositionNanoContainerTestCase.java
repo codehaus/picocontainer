@@ -10,7 +10,7 @@ package org.nanocontainer;
 
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
-import org.nanocontainer.testmodel.WebServerConfig;
+import org.picoextras.testmodel.WebServerConfig;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
@@ -101,7 +101,7 @@ public class JythonCompositionNanoContainerTestCase extends TestCase {
                 "wsc.setHost('foobar.com')\n" +
                 "wsc.setPort(4321)\n" +
                 "rootContainer.getPicoContainer().registerComponentInstance(wsc)\n" +
-                "rootContainer.registerComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "')\n"
+                "rootContainer.registerComponentWithClassKey('org.picoextras.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "')\n"
         ), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());

@@ -10,9 +10,9 @@ package org.nanocontainer;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
-import org.nanocontainer.testmodel.WebServerConfig;
-import org.nanocontainer.testmodel.WebServerImpl;
+import org.picoextras.testmodel.DefaultWebServerConfig;
+import org.picoextras.testmodel.WebServerConfig;
+import org.picoextras.testmodel.WebServerImpl;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -100,7 +100,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container componentadaptor='" + OverriddenComponentAdapterFactory.class.getName() + "'>" +
-                        "    <component typekey='org.nanocontainer.testmodel.WebServerConfig' impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                        "    <component typekey='org.picoextras.testmodel.WebServerConfig' impl='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                         "</container>"), new MockMonitor());
 
         Object wsc = nano.getRootContainer().getComponentInstance(WebServerConfig.class);
@@ -122,14 +122,14 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.nanocontainer.xml.XStreamXmlPseudoComponentFactory'>" +
-                        "       <org.nanocontainer.testmodel.WebServerConfigStub>" +
+                        "    <pseudocomponent factory='org.picoextras.xml.XStreamXmlPseudoComponentFactory'>" +
+                        "       <org.picoextras.testmodel.WebServerConfigStub>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +
-                        "       </org.nanocontainer.testmodel.WebServerConfigStub>" +
+                        "       </org.picoextras.testmodel.WebServerConfigStub>" +
                         "    </pseudocomponent>" +
-                        "    <component typekey='org.nanocontainer.testmodel.WebServer' " +
-                        "               impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "    <component typekey='org.picoextras.testmodel.WebServer' " +
+                        "               impl='org.picoextras.testmodel.WebServerImpl'/>" +
                         "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
@@ -143,14 +143,14 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = null;
             nano = new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.nanocontainer.xml.BeanXmlPseudoComponentFactory'>" +
-                        "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "    <pseudocomponent factory='org.picoextras.xml.BeanXmlPseudoComponentFactory'>" +
+                        "       <org.picoextras.testmodel.WebServerConfigBean>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +
-                        "       </org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "       </org.picoextras.testmodel.WebServerConfigBean>" +
                         "    </pseudocomponent>" +
-                        "    <component typekey='org.nanocontainer.testmodel.WebServer' " +
-                        "               impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "    <component typekey='org.picoextras.testmodel.WebServer' " +
+                        "               impl='org.picoextras.testmodel.WebServerImpl'/>" +
                         "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());

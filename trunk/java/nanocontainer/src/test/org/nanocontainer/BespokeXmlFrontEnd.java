@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.nanocontainer.xml.DefaultXmlFrontEnd;
-import org.nanocontainer.xml.XmlFrontEnd;
+import org.picoextras.xml.DefaultXmlFrontEnd;
+import org.picoextras.xml.XmlFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;

@@ -12,7 +12,7 @@ package org.nanocontainer;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.rhino.DefaultNanoRhinoScriptable;
+import org.picoextras.rhino.DefaultNanoRhinoScriptable;
 
 
 public class BespokeNanoRhinoScriptable extends DefaultNanoRhinoScriptable {

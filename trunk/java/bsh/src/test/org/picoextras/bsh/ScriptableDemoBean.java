@@ -5,21 +5,26 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
+ * Original code by Leo Simons                                               *
  *****************************************************************************/
+package org.picoextras.bsh;
 
-package org.nanocontainer;
+/**
+ *
+ *
+ * @author <a href="mail at leosimons dot com">Leo Simons</a>
+ * @author Aslak Hellesoy
+ * @version $Id$
+ */
+public class ScriptableDemoBean {
+    public Object key;
+    public Object whatever;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.picoextras.rhino.DefaultNanoRhinoScriptable;
-
-
-public class BogusNanoRhinoScriptable extends ScriptableObject {
-    public String getClassName() {
-        return "NanoRhinoScriptable";
+    public void rememberMyKey(Object key) {
+        this.key = key;
     }
 
-    // all pub static javascript methods missing.
+    public void setWhatever(Object whatever) {
+        this.whatever = whatever;
+    }
 }

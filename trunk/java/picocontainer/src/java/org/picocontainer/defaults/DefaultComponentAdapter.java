@@ -199,6 +199,9 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         if (actual == Long.TYPE || actual == Long.class) {
             return requested == Long.TYPE || requested == Long.class;
         }
+        if (actual == Short.TYPE || actual == Short.class) {
+            return requested == Short.TYPE || requested == Short.class;
+        }
         if (actual == Byte.TYPE || actual == Byte.class) {
             return requested == Byte.TYPE || requested == Byte.class;
         }

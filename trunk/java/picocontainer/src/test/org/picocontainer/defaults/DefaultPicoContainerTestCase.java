@@ -11,11 +11,27 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+
+import java.util.Map;
 
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer() {
         return new DefaultPicoContainer();
     }
+
+    // to go to parent testcase ?
+    public void testBasicInstantiationAndContainment() throws PicoException, PicoRegistrationException {
+        DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependency();
+
+        assertTrue("Component should be instance of Touchable",
+                pico.findComponentInstance(Touchable.class) instanceof Touchable);
+    }
+
 }

@@ -17,31 +17,31 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentRegistryTestCase extends TestCase {
-	private DefaultPicoContainer componentRegistry;
+	private DefaultPicoContainer picoContainer;
 
 	protected void setUp() throws Exception {
-		componentRegistry = new DefaultPicoContainer();
+		picoContainer = new DefaultPicoContainer();
 	}
 
 	public void testRegisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
 
-		componentRegistry.registerComponent(componentSpecification);
+		picoContainer.registerComponent(componentSpecification);
 
-		assertTrue(componentRegistry.getComponentAdapters().contains(componentSpecification));
+		assertTrue(picoContainer.getComponentAdapters().contains(componentSpecification));
 	}
 
 	public void testUnregisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
 
-		componentRegistry.registerComponent(componentSpecification);
+		picoContainer.registerComponent(componentSpecification);
 
-		componentRegistry.unregisterComponent(Touchable.class);
+		picoContainer.unregisterComponent(Touchable.class);
 
-		assertFalse(componentRegistry.getComponentAdapters().contains(componentSpecification));
+		assertFalse(picoContainer.getComponentAdapters().contains(componentSpecification));
 	}
 
 	private ComponentAdapter createComponentAdapter() throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-		return new DefaultComponentAdapter(Touchable.class, SimpleTouchable.class);
+		return new ConstructorComponentAdapter(Touchable.class, SimpleTouchable.class);
 	}
 }

@@ -12,36 +12,24 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoInitializationException;
 
-import java.lang.reflect.Constructor;
+import java.util.Arrays;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class CyclicDependencyException extends PicoInitializationException {
-    private final Constructor constructor;
+    private final Class[] dependencies;
 
-    public CyclicDependencyException(Constructor constructor) {
-        this.constructor = constructor;
+    public CyclicDependencyException(Class[] dependencies) {
+        this.dependencies = dependencies;
     }
 
-    public Constructor getConstructor() {
-        return constructor;
+    public Class[] getDependencies() {
+        return dependencies;
     }
 
     public String getMessage() {
-        return "Cyclic dependency: " + constructor.getName() + "(" + getCtorParams(constructor) + ")";
-    }
-
-    private String getCtorParams(Constructor constructor) {
-        String retval = "";
-        Class[] parameterTypes = constructor.getParameterTypes();
-        for (int i = 0; i < parameterTypes.length; i++) {
-            retval = retval + parameterTypes[i].getName();
-            if (i+1 < parameterTypes.length) {
-                retval += ",";
-            }
-        }
-        return retval;
+        return "Cyclic dependency: " + Arrays.asList(dependencies).toString();
     }
 }

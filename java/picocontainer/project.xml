@@ -125,15 +125,6 @@
             </roles>
         </developer>
         <developer>
-            <name>Joe Walnes</name>
-            <id>joe</id>
-            <email>joe@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
             <name>Chris Stevenson</name>
             <id>skizz</id>
             <email>skizz@codehaus.org</email>
@@ -142,18 +133,26 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
-        <developer>
-            <name>Dan North</name>
-            <id>tastapod</id>
-            <email>tastapod@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
     </developers>
 
+  <dependencies>
+
+    <!-- test time only -->
+    <dependency>
+      <groupId>mockobjects</groupId>
+      <artifactId>mockobjects-core</artifactId>
+      <version>0.09</version>
+    </dependency>
+
+  </dependencies>
+
     <contributors>
+        <contributor>
+            <name>Joe Walnes</name>
+        </contributor>
+        <contributor>
+            <name>Mike Hogan</name>
+        </contributor>
         <contributor>
             <name>Steve Freeman</name>
         </contributor>
@@ -165,6 +164,9 @@
         </contributor>
         <contributor>
             <name>Zohar Melamed</name>
+        </contributor>
+        <contributor>
+            <name>Dan North</name>
         </contributor>
     </contributors>
 

@@ -10,51 +10,45 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
+import java.io.Serializable;
+
 /**
- * @author Jon Tirs&eacute;n
- * @version $Revision$
+ * This ComponentAdapter caches the instance.
  */
-public class DefaultComponentAdapter extends TransientComponentAdapter {
+public class CachingComponentAdapter implements ComponentAdapter, Serializable {
 
     private Object componentInstance;
+    private ComponentAdapter delegate;
 
-    /**
-     * Explicitly specifies parameters, if null uses default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
-     * @param parameters              
-     */
-    public DefaultComponentAdapter(final Object componentKey,
-                                   final Class componentImplementation,
-                                   Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters);
+    public CachingComponentAdapter(ComponentAdapter delegate) {
+        this.delegate = delegate;
     }
 
-    /**
-     * Use default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
-     */
-    public DefaultComponentAdapter(Object componentKey,
-                                   Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, null);
+    public Object getComponentKey() {
+        return delegate.getComponentKey();
     }
 
+    public Class getComponentImplementation() {
+        return delegate.getComponentImplementation();
+    }
 
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
-            componentInstance = super.getComponentInstance(picoContainer);
+            componentInstance = delegate.getComponentInstance(picoContainer);
             picoContainer.addOrderedComponentAdapter(this);
         }
         return componentInstance;
+    }
+
+    public void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
+        delegate.verify(picoContainer);
     }
 
 }

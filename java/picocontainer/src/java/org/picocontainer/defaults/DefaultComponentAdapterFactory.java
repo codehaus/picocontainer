@@ -10,21 +10,22 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.ComponentAdapter;
 
 import java.io.Serializable;
 
 /**
+ * Creates instances of {@link ConstructorComponentAdapter} decorated by
+ * {@link CachingComponentAdapter}.
+ *
  * @author Jon Tirs&eacute;n
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class DefaultComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
-    public ComponentAdapter createComponentAdapter(Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter[] parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new DefaultComponentAdapter(componentKey, componentImplementation, parameters);
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return new CachingComponentAdapter(new ConstructorComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

@@ -10,21 +10,12 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.ComponentAdapter;
 
-import java.io.Serializable;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
+ * @deprecated Use {@link ConstructorComponentAdapterFactory}.
  */
-public class TransientComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
-    public ComponentAdapter createComponentAdapter(Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter[] parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new TransientComponentAdapter(componentKey, componentImplementation, parameters);
-    }
+public class TransientComponentAdapterFactory extends ConstructorComponentAdapterFactory {
 }

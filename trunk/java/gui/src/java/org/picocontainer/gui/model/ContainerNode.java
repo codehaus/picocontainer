@@ -2,10 +2,10 @@ package org.picocontainer.gui.model;
 
 import org.picocontainer.*;
 import org.picocontainer.extras.DelegatingPicoContainer;
+import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.defaults.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -18,22 +18,20 @@ import javax.swing.tree.TreeNode;
  * @version $Revision$
  */
 public class ContainerNode extends DefaultMutableTreeNode {
-    // These never instantiate components.
-    private DefaultPicoContainer tempPico = new DefaultPicoContainer();
-
     public ContainerNode() {
         super("DUMMY");
     }
 
-
     public MutablePicoContainer createPicoContainer() throws PicoInitializationException {
+        BeanPropertyComponentAdapterFactory propertyFactory = new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
+
         MutablePicoContainer result;
         if(getParent() != null) {
             ContainerNode parent = (ContainerNode) getParent();
             MutablePicoContainer parentContainer = parent.createPicoContainer();
-            result = new DelegatingPicoContainer(parentContainer);
+            result = new DelegatingPicoContainer(propertyFactory, parentContainer);
         } else {
-            result = new DefaultPicoContainer();
+            result = new DefaultPicoContainer(propertyFactory);
         }
 
         int childCount = getChildCount();
@@ -41,7 +39,13 @@ public class ContainerNode extends DefaultMutableTreeNode {
             TreeNode child = getChildAt(i);
             if(child instanceof ComponentNode) {
                 ComponentNode componentNode = (ComponentNode) child;
-                Class componentImplementation = (Class) componentNode.getUserObject();
+                BeanPropertyModel beanPropertyModel = (BeanPropertyModel) componentNode.getUserObject();
+
+                Class componentImplementation = beanPropertyModel.getBeanClass();
+
+                propertyFactory.setProperties(componentImplementation, beanPropertyModel.getPropertyMap());
+
+
                 result.registerComponentImplementation(componentImplementation);
             }
         }

@@ -45,4 +45,15 @@ public class ContainerNodeTestCase extends TestCase {
         PicoContainer container = childContainerNode.createPicoContainer();
         assertNotNull(container.getComponentInstance(NeedsFoo.class));
     }
+
+    public void testPropertiesAreSetOnComponents() {
+        ContainerNode containerNode = new ContainerNode();
+        ComponentNode fooNode = new ComponentNode(Foo.class);
+        containerNode.add(fooNode);
+
+        PicoContainer container = containerNode.createPicoContainer();
+        Foo foo = (Foo) container.getComponentInstance(Foo.class);
+        assertEquals("hello", foo.getBar());
+    }
+
 }

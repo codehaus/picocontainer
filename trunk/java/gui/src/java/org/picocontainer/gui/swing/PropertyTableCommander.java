@@ -2,6 +2,7 @@ package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.ComponentNode;
 import org.picocontainer.gui.model.BeanPropertyTableModel;
+import org.picocontainer.gui.model.BeanPropertyModel;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
@@ -35,7 +36,8 @@ public class PropertyTableCommander implements TreeSelectionListener {
                 BeanPropertyTableModel model = (BeanPropertyTableModel) models.get(nodeValue);
                 if(model==null){
                     Class componentImplementation = (Class) nodeValue;
-                    model = new BeanPropertyTableModel(componentImplementation);
+                    BeanPropertyModel beanPropertyModel = new BeanPropertyModel(componentImplementation);
+                    model = new BeanPropertyTableModel(beanPropertyModel);
                     models.put(nodeValue,model);
                 }
                 table.setModel(model);

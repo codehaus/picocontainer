@@ -26,7 +26,13 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         // register the child in the parent so that lifecycle can be propagated down the hierarchy
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableContainer = (MutablePicoContainer) parentContainer;
-            mutableContainer.registerComponentInstance(containerRef, container);
+			
+			// this synchronization is necessary, because several servlet request may 
+			// occur at the same time for given session, and this produce race condition
+			// especially in framed environments
+			synchronized(mutableContainer) {
+				mutableContainer.registerComponentInstance(containerRef, container);
+			}
         }
 
         if(container instanceof MutablePicoContainer) {
@@ -45,7 +51,10 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
             pico.dispose();
             PicoContainer parent = pico.getParent();
             if (parent != null && parent instanceof MutablePicoContainer) {
-                ((MutablePicoContainer) parent).unregisterComponentByInstance(pico);
+				// see comment in buildContainer
+				synchronized(parent) {
+					((MutablePicoContainer) parent).unregisterComponentByInstance(pico);
+				}
             }
         } finally {
             containerRef.set(null);

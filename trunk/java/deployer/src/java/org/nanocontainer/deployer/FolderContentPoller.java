@@ -34,6 +34,7 @@ public class FolderContentPoller implements Startable {
         }
     };
     private Thread thread;
+    private boolean started = false;
 
 
     public FolderContentPoller(FolderContentHandler folderChangeNotifier) {
@@ -42,12 +43,16 @@ public class FolderContentPoller implements Startable {
     }
 
     public void start() {
+        if(started) throw new IllegalStateException("Already started");
         thread = new Thread(poller);
         thread.start();
+        started = true;
     }
 
     public void stop() {
+        if(!started) throw new IllegalStateException("Already stopped");
         thread.interrupt();
+        started = true;
     }
 
 }

@@ -10,7 +10,7 @@ import org.picocontainer.Startable;
  */
 public class DeployingFolderListener implements FolderListener, Startable {
     private final Deployer deployer;
-    private DifferenceAnalysingFolderContentHandler handler;
+    private final DifferenceAnalysingFolderContentHandler handler;
 
     public DeployingFolderListener(Deployer deployer, DifferenceAnalysingFolderContentHandler handler) {
         this.deployer = deployer;
@@ -36,6 +36,6 @@ public class DeployingFolderListener implements FolderListener, Startable {
     }
 
     public void stop() {
-
+        handler.removeFolderListener(this);
     }
 }

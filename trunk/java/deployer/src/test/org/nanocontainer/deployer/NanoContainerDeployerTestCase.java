@@ -68,7 +68,7 @@ public class NanoContainerDeployerTestCase extends TestCase {
         manager.addProvider("zip", new ZipFileProvider());
         manager.init();
         File src = new File("src");
-        FileObject applicationFolder = manager.resolveFile("zip:/" + src.getAbsolutePath() + "/deploytest.zip");
+        FileObject applicationFolder = manager.resolveFile("zip:/" + src.getAbsolutePath() + "/deploytest.jar");
         return applicationFolder;
     }
 }

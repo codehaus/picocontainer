@@ -234,20 +234,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
-        if (componentInstance instanceof MutablePicoContainer) {
-            MutablePicoContainer pc = (MutablePicoContainer) componentInstance;
-            Object contrivedKey = new Object();
-            String contrivedComp = "";
-            pc.registerComponentInstance(contrivedKey, contrivedComp);
-            try {
-                if (this.getComponentInstance(contrivedKey) != null) {
-                    throw new PicoRegistrationException("Cannot register a container to itself. The container is already implicitly registered.");
-                }
-            } finally {
-                pc.unregisterComponent(contrivedKey);
-            }
-
-        }
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;

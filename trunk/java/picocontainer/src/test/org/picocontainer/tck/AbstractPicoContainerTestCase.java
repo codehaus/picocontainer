@@ -401,7 +401,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     // An adapter has no longer a hosting container.
-    
+
 //    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
 //        final InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter("", new Object());
 //        final MutablePicoContainer picoContainer = createPicoContainer(null);
@@ -425,15 +425,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 //        ContainerDependency dep = (ContainerDependency) pico.getComponentInstance(ContainerDependency.class);
 //        assertSame(pico, dep.pico);
 //    }
-
-    public void testSelfRegistryThrowsIllegalArgument() {
-        final MutablePicoContainer pico = createPicoContainer(null);
-        try {
-            pico.registerComponentInstance(pico);
-            fail("Should not be able to register a container to itself");
-        } catch (PicoRegistrationException e) {
-        }
-    }
 
     public void testShouldReturnNullWhenUnregistereingUnmanagedComponent() {
         final MutablePicoContainer pico = createPicoContainer(null);
@@ -548,7 +539,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         //TODO - The LifecycleManager reference in child containers is not used. Thus is is almost pointless
         // The reason is becuase DefaultPicoContainer's accept() method visits child containerson its own.
         // This may be file for visiting components in a tree for general cases, but for lifecycle, we
-        // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion. 
+        // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
 
         //assertEquals(2, lifecycleManager.started.size());
         assertEquals(1, lifecycleManager.started.size());

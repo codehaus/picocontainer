@@ -22,6 +22,7 @@ import org.picocontainer.lifecycle.Disposable;
 
 /**
  * @author Paul Hammant
+ * @author Ward Cunningham
  * @version $Revision$
  */
 public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
@@ -47,6 +48,10 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
 
     public boolean isDisposed() {
         return disposed;
+    }
+
+    public PicoContainer getPicoContainer() {
+        return picoContainer;
     }
 
     private void initializeIfNotInitialized() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

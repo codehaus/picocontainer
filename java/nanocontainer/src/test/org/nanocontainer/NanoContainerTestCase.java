@@ -1,7 +1,10 @@
 package org.nanocontainer;
 
 import junit.framework.TestCase;
+import junit.framework.Assert;
 import org.picocontainer.lifecycle.Lifecycle;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.picocontainer.PicoContainer;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,28 +14,53 @@ import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
+ * @author Ward Cunningham
  * @version $Revision$
  */
 public class NanoContainerTestCase extends TestCase {
-    private static final Vector forOldTimesSake = new Vector();
+    private static String componentRecorder = "";
+    private static String monitorRecorder = "";
 
     public abstract static class X implements Lifecycle {
         public void start() {
-            forOldTimesSake.addElement("start:" + getClass().getName());
+            componentRecorder += "<" + code();
         }
 
         public void stop() {
-            forOldTimesSake.addElement("stop:" + getClass().getName());
+            componentRecorder += code() + ">";
         }
 
         public void dispose() {
-            forOldTimesSake.addElement("dispose:" + getClass().getName());
+            componentRecorder += "!" + code();
+        }
+
+        private String code() {
+            String name = getClass().getName();
+            return name.substring(name.length()-1);
+        }
+    }
+
+    public static class MockMonitor implements NanoContainerMonitor {
+
+        private String code(Object inst) {
+            String name = inst.getClass().getName();
+            return name.substring(name.length()-1);
+        }
+
+        public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
+            monitorRecorder += ("+" + code(lpa.getPicoContainer().getComponentInstances().get(0)) + "_" + eventName) ;
+        }
+
+        public void componentsInstantiated(PicoContainer picoContainer) {
+            monitorRecorder += "*" +code(picoContainer.getComponentInstances().get(0));
         }
     }
 
     public static class A extends X {}
     public static class B extends X {
         public B(A a) {
+            Assert.assertNotNull(a);
         }
     }
     public static class C extends X {}
@@ -45,18 +73,11 @@ public class NanoContainerTestCase extends TestCase {
                 "          <component classname='org.nanocontainer.NanoContainerTestCase$C'/>" +
                 "      </container>" +
                 "      <component classname='org.nanocontainer.NanoContainerTestCase$B'/>" +
-                "</container>"));
+                "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertEquals("start:org.nanocontainer.NanoContainerTestCase$A", forOldTimesSake.elementAt(0));
-        assertEquals("start:org.nanocontainer.NanoContainerTestCase$B", forOldTimesSake.elementAt(1));
-        assertEquals("start:org.nanocontainer.NanoContainerTestCase$C", forOldTimesSake.elementAt(2));
-        assertEquals("stop:org.nanocontainer.NanoContainerTestCase$C", forOldTimesSake.elementAt(3));
-        assertEquals("stop:org.nanocontainer.NanoContainerTestCase$B", forOldTimesSake.elementAt(4));
-        assertEquals("stop:org.nanocontainer.NanoContainerTestCase$A", forOldTimesSake.elementAt(5));
-        assertEquals("dispose:org.nanocontainer.NanoContainerTestCase$C", forOldTimesSake.elementAt(6));
-        assertEquals("dispose:org.nanocontainer.NanoContainerTestCase$B", forOldTimesSake.elementAt(7));
-        assertEquals("dispose:org.nanocontainer.NanoContainerTestCase$A", forOldTimesSake.elementAt(8));
+        assertEquals("<A<B<CC>B>A>!C!B!A", componentRecorder);
+        assertEquals("*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", monitorRecorder);
     }
 }

@@ -10,6 +10,13 @@
 
 package org.picocontainer.lifecycle;
 
+import org.picocontainer.PicoContainer;
+
+/**
+ * @author Aslak
+ * @author Paul Hammant
+ * @author Ward Cunningham
+ */
 public interface LifecyclePicoAdapter extends Lifecycle {
 
     boolean isStarted();
@@ -17,5 +24,7 @@ public interface LifecyclePicoAdapter extends Lifecycle {
     boolean isStopped();
 
     boolean isDisposed();
+
+    PicoContainer getPicoContainer();
 
 }

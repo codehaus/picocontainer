@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -758,13 +760,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("test.of.serialization"));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
 
         oos.writeObject(pico);
 
         pico = null;
 
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.of.serialization"));
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
 
         PicoContainer deserializedPico = (PicoContainer) ois.readObject();
 

@@ -7,7 +7,7 @@
       <item name="Wiki"                  href="http://wiki.codehaus.org/picocontainer/PicoContainer"/>
       <item name="Download"              href="/download.html"/>
       <item name="Issue Tracker"         href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120"/>
-      <item name="Roadmap"               href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120%26report=roadmap"/>
+      <item name="Roadmap"               href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120&amp;report=roadmap"/>
       <item name="NanoContainer"         href="http://www.nanocontainer.org/"/>
     </links>
 

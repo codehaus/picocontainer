@@ -1,4 +1,4 @@
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import org.picocontainer.*;
 import org.picocontainer.defaults.AbstractComponentAdapter;

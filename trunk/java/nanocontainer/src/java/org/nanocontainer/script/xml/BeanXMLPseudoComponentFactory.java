@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import org.picoextras.reflection.DefaultReflectionContainerAdapter;
-import org.picoextras.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

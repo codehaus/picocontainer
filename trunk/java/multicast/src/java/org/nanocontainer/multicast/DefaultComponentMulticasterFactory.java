@@ -8,13 +8,13 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy                    *
  *****************************************************************************/
 
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
-import org.picoextras.multicast.ComponentMulticasterFactory;
+import org.nanocontainer.multicast.ComponentMulticasterFactory;
 import org.picocontainer.defaults.InterfaceFinder;
-import org.picoextras.multicast.Invoker;
-import org.picoextras.multicast.InvocationInterceptor;
-import org.picoextras.multicast.ComponentMulticasterFactory;
+import org.nanocontainer.multicast.Invoker;
+import org.nanocontainer.multicast.InvocationInterceptor;
+import org.nanocontainer.multicast.ComponentMulticasterFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;

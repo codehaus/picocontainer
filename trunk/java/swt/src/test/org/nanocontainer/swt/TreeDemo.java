@@ -1,4 +1,4 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.testmodel.DefaultWebServerConfig;
-import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 
 /**
  * @author Laurent Etiemble

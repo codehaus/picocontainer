@@ -1,9 +1,9 @@
-package org.picoextras.ant;
+package org.nanocontainer.ant;
 
 import junit.framework.Assert;
 
 /**
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

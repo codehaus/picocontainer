@@ -6,9 +6,9 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork;
+package org.nanocontainer.webwork;
 
-import org.picoextras.servlet.ServletRequestContainerLauncher;
+import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import webwork.dispatcher.ServletDispatcher;
 
 import javax.servlet.ServletException;
@@ -37,7 +37,7 @@ public class PicoServletDispatcher extends ServletDispatcher {
             try {
                 containerLauncher.killContainer();
             } catch (Exception e) {
-                throw new ServletException(e);                
+                throw new ServletException(e);
             }
         }
     }

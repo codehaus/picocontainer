@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picoextras.pool;
+package org.nanocontainer.pool;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -286,7 +286,7 @@ public class DefaultPicoPool implements PicoPool {
     }
 
     /* (non-Javadoc)
-     * @see org.picoextras.pool.PicoPool#clearPool()
+     * @see org.nanocontainer.pool.PicoPool#clearPool()
      */
     public void clearPool() {
         Iterator iter = pico.getComponentAdapters().iterator();

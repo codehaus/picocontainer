@@ -1,4 +1,4 @@
-package org.picoextras.type3msg;
+package org.nanocontainer.type3msg;
 
 import org.picocontainer.PicoException;
 

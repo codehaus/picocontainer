@@ -8,7 +8,7 @@
  * Original code by Mike Hogan                                               *
  *****************************************************************************/
 
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 import java.util.ArrayList;
 import java.util.Collection;

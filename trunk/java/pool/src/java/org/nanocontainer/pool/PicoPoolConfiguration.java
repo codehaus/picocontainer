@@ -1,5 +1,5 @@
 
-package org.picoextras.pool;
+package org.nanocontainer.pool;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;

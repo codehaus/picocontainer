@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 public class InvalidConversionException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package org.picoextras.picometer;
+package org.nanocontainer.picometer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.PicoMeterCodeVisitor;

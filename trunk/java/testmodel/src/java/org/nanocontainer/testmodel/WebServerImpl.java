@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 import junit.framework.Assert;
 

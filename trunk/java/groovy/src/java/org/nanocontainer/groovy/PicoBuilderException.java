@@ -8,12 +8,12 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.picoextras.groovy;
+package org.nanocontainer.groovy;
 
 /**
  * Exception thrown due to invalid GroovyMarkup when creating pico containers
  * and components
- * 
+ *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @version $Revision$
  */

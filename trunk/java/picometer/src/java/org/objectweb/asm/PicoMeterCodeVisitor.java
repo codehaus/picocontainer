@@ -1,8 +1,8 @@
 // The class is in this package inly to ba able to access package private members from Label.
 package org.objectweb.asm;
 
-import org.picoextras.picometer.Instantiation;
-import org.picoextras.picometer.PicoMeterClass;
+import org.nanocontainer.picometer.Instantiation;
+import org.nanocontainer.picometer.PicoMeterClass;
 
 import java.io.IOException;
 import java.util.Collection;

@@ -1,11 +1,11 @@
-package org.picoextras.piccolo;
+package org.nanocontainer.piccolo;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolox.util.PFixedWidthStroke;
 import org.picocontainer.PicoContainer;
-import org.picoextras.swing.IconHelper;
+import org.nanocontainer.swing.IconHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;

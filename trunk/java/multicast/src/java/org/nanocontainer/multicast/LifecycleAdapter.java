@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;

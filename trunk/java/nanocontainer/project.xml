@@ -83,6 +83,12 @@
 
         <dependency>
             <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-reflection</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
@@ -143,12 +149,6 @@
         <dependency>
             <id>bsh</id>
             <version>1.2b7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

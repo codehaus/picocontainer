@@ -8,7 +8,7 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.picoextras.groovy;
+package org.nanocontainer.groovy;
 
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * Builds trees of Pico containers and Pico components using GroovyMarkup
- * 
+ *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @version $Revision$
  */

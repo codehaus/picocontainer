@@ -1,4 +1,4 @@
-package org.picoextras.piccolo;
+package org.nanocontainer.piccolo;
 
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
@@ -6,10 +6,10 @@ import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.guimodel.ComponentAdapterModel;
-import org.picoextras.guimodel.BeanProperty;
-import org.picoextras.swing.BeanPropertyEditDialog;
-import org.picoextras.swing.ComponentAdapterTableModel;
+import org.nanocontainer.guimodel.ComponentAdapterModel;
+import org.nanocontainer.guimodel.BeanProperty;
+import org.nanocontainer.swing.BeanPropertyEditDialog;
+import org.nanocontainer.swing.ComponentAdapterTableModel;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -20,7 +20,7 @@ import java.awt.event.MouseEvent;
 /**
  * An horizontal split-panel that displays a PicoContainer tree (top) and a
  * table with selected node properties (bottom).
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -31,7 +31,7 @@ public class ContainerViewPanel extends JSplitPane {
 
 	/**
 	 * Build a new instance of a panel
-	 * 
+	 *
 	 * @param container
 	 */
 	public ContainerViewPanel(PicoContainer container) {

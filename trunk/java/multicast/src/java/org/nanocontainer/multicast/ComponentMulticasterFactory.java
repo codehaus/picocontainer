@@ -8,10 +8,10 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Chris Stevenson*
  *****************************************************************************/
 
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
-import org.picoextras.multicast.Invoker;
-import org.picoextras.multicast.InvocationInterceptor;
+import org.nanocontainer.multicast.Invoker;
+import org.nanocontainer.multicast.InvocationInterceptor;
 
 import java.util.List;
 

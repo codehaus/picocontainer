@@ -1,4 +1,4 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import org.picocontainer.MutablePicoContainer;
 
@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * Simple tree that takes a PicoContainer as root object.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

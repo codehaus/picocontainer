@@ -1,4 +1,4 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -20,7 +20,7 @@ import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
  * Custom cell-renderer that makes tree nice.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

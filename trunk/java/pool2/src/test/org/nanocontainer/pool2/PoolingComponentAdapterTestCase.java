@@ -1,4 +1,4 @@
-package org.picoextras.pool2;
+package org.nanocontainer.pool2;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;

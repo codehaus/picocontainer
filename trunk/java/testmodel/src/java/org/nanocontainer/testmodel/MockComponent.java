@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 public interface MockComponent {
     int getPort();

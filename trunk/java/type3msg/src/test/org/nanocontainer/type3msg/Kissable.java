@@ -1,4 +1,4 @@
-package org.picoextras.typ3msg;
+package org.nanocontainer.type3msg;
 
 public interface Kissable {
     void kiss();

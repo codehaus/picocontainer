@@ -13,7 +13,7 @@
  *
  */
 
-package org.picoextras.pool;
+package org.nanocontainer.pool;
 
 /**
  *  <p><code>PicoPool</code> is a simple interface for non-keyed pico

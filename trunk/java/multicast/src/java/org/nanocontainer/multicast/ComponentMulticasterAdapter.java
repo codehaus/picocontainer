@@ -1,7 +1,7 @@
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import org.picocontainer.PicoContainer;
-import org.picoextras.multicast.InvocationInterceptor;
+import org.nanocontainer.multicast.InvocationInterceptor;
 
 /**
  * Adds component multicasting capabilities to a pico adapter.

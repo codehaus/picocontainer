@@ -1,4 +1,4 @@
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 import junit.framework.TestCase;
 

@@ -1,13 +1,13 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.picoextras.guimodel.BeanProperty;
+import org.nanocontainer.guimodel.BeanProperty;
 
 /**
  * Provides texts and images for BeanProperty objects.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

@@ -4,11 +4,11 @@
  * Date: 30-Jan-2004
  * Time: 01:51:26
  */
-package org.picoextras.swing.action;
+package org.nanocontainer.swing.action;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.swing.ContainerTree;
+import org.nanocontainer.swing.ContainerTree;
 
 import java.awt.event.ActionEvent;
 

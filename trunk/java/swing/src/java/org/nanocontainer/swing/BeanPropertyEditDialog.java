@@ -1,6 +1,6 @@
-package org.picoextras.swing;
+package org.nanocontainer.swing;
 
-import org.picoextras.guimodel.BeanProperty;
+import org.nanocontainer.guimodel.BeanProperty;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.beans.PropertyEditor;
  * <li>The BeanProperty must have a PropertyEditor</li>
  * <li>CustomEditor are not supported</li>
  * </ul></p>
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -27,7 +27,7 @@ public class BeanPropertyEditDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Build a dialog around a BeanProperty
-	 * 
+	 *
 	 * @param property
 	 * @throws HeadlessException
 	 */
@@ -94,7 +94,7 @@ public class BeanPropertyEditDialog extends JDialog implements ActionListener {
 
 	/**
 	 * If the OK button is pressed, the property is set.
-	 * 
+	 *
 	 * @param e
 	 */
 	public void actionPerformed(ActionEvent e) {

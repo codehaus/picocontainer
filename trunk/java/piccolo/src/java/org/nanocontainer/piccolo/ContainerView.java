@@ -1,10 +1,10 @@
-package org.picoextras.piccolo;
+package org.nanocontainer.piccolo;
 
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 
 import org.picocontainer.PicoContainer;
-import org.picoextras.piccolo.Constants;
+import org.nanocontainer.piccolo.Constants;
 
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;

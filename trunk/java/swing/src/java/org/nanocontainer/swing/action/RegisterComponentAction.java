@@ -2,10 +2,10 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.swing.action;
+package org.nanocontainer.swing.action;
 
 import org.picocontainer.ComponentAdapter;
-import org.picoextras.swing.ContainerTree;
+import org.nanocontainer.swing.ContainerTree;
 
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;

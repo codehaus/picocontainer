@@ -1,4 +1,4 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 /**
  * Simple TreeViewer that takes a PicoContainer as root object to display it.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */
@@ -31,7 +31,7 @@ public class ContainerTreeViewer extends TreeViewer {
 	 * <p>Must be used instead of setInput because if it is used,
 	 * the PicoContainer is not displayed. Maybe there is a
 	 * better way to achieve this.</p>
-	 * 
+	 *
 	 * @param container
 	 */
 	public void setContainer(PicoContainer container) {

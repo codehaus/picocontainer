@@ -1,6 +1,6 @@
-package org.picoextras.idea.action;
+package org.nanocontainer.idea.action;
 
-import org.picoextras.swing.action.AddContainerAction;
+import org.nanocontainer.swing.action.AddContainerAction;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -12,9 +12,9 @@ package org.nanocontainer.script.xml;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.integrationkit.PicoAssemblyException;
-import org.picoextras.testmodel.DefaultWebServerConfig;
-import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
-import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,14 +36,14 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLi
                 "    	<int>239</int>" +
                 "    </instance>" +
                 "    <instance>" +
-                "    	<org.picoextras.testmodel.DefaultWebServerConfig>" +
+                "    	<org.nanocontainer.testmodel.DefaultWebServerConfig>" +
 				" 			<port>555</port>" +
-                "    	</org.picoextras.testmodel.DefaultWebServerConfig>" +
+                "    	</org.nanocontainer.testmodel.DefaultWebServerConfig>" +
                 "    </instance>" +
-				"	 <implementation class='org.picoextras.testmodel.WebServerImpl'>" +
-				"		<dependency class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+				"	 <implementation class='org.nanocontainer.testmodel.WebServerImpl'>" +
+				"		<dependency class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
 				"	 </implementation>" +
-				"	 <implementation key='konstantin needs beer' class='org.picoextras.testmodel.ThingThatTakesParamsInConstructor'>" +
+				"	 <implementation key='konstantin needs beer' class='org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor'>" +
 				"		<constant>" +
 				"			<string>it's really late</string>" +
 				"		</constant>" +

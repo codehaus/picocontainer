@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by James Strachan                                           *
  *****************************************************************************/
-package org.picoextras.jmx;
+package org.nanocontainer.jmx;
 
 import mx4j.AbstractDynamicMBean;
 

@@ -1,15 +1,15 @@
-package org.picoextras.swt;
+package org.nanocontainer.swt;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.picocontainer.MutablePicoContainer;
-import org.picoextras.guimodel.ContainerModel;
+import org.nanocontainer.guimodel.ContainerModel;
 
 import java.util.Collection;
 
 /**
  * Provides the data to be put inside a tree.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

@@ -1,4 +1,4 @@
-package org.picoextras.pool2;
+package org.nanocontainer.pool2;
 
 import org.picocontainer.*;
 import org.picocontainer.defaults.DecoratingComponentAdapter;

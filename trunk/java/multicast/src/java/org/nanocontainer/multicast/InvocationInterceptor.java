@@ -4,7 +4,7 @@
  * Date: 26-Jan-2004
  * Time: 21:14:38
  */
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import java.lang.reflect.Method;
 

@@ -6,7 +6,6 @@
     <name>nanocontainer-webwork2</name>
     <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
 
-
     <dependencies>
 
         <dependency>

@@ -8,8 +8,8 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.reflection;
-// TODO: move to org.picoextras.script.reflection ?
+package org.nanocontainer.reflection;
+// TODO: move to org.nanocontainer.script.reflection ?
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -22,7 +22,7 @@ import java.net.URL;
  * This class adapts a {@link MutablePicoContainer} through a similar API that
  * is based only on Strings. (It uses reflection to look up classes before registering them
  * with the adapted container). This adapter API is used primarily by the various scripting
- * based {@link org.nanocontainer.integrationkit.ContainerComposer}s in the org.picoextras.script
+ * based {@link org.nanocontainer.integrationkit.ContainerComposer}s in the org.nanocontainer.script
  * package.
  */
 public interface ReflectionContainerAdapter {

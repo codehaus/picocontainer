@@ -1,4 +1,4 @@
-package org.picoextras.picometer;
+package org.nanocontainer.picometer;
 
 import java.io.IOException;
 

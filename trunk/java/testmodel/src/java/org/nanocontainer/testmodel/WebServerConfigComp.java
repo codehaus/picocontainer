@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 
 public class WebServerConfigComp implements WebServerConfig {

@@ -8,7 +8,7 @@
  * Original code by Jon Tirsen                                               *
  *****************************************************************************/
 
-package org.picoextras.nanning;
+package org.nanocontainer.nanning;
 
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;

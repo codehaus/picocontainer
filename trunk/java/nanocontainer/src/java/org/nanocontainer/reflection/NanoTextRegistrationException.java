@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.reflection;
+package org.nanocontainer.reflection;
 
 import org.picocontainer.PicoRegistrationException;
 

@@ -28,7 +28,7 @@ public class JythonContainerBuilder extends ScriptedComposingLifecycleContainerB
     protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
-        interpreter.exec("from org.picoextras.reflection import *");
+        interpreter.exec("from org.nanocontainer.reflection import *");
         interpreter.exec("from java.net import *");
         interpreter.set("parent", parentContainer);
         interpreter.execfile(new InputStream() {

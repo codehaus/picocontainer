@@ -2,7 +2,7 @@
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import junit.framework.TestCase;
 import org.jmock.C;

@@ -6,10 +6,10 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.webwork2;
+package org.nanocontainer.webwork2;
 
 import com.opensymphony.webwork.dispatcher.ServletDispatcher;
-import org.picoextras.servlet.ServletRequestContainerLauncher;
+import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package org.picoextras.guimodel;
+package org.nanocontainer.guimodel;
 
 import org.picocontainer.ComponentAdapter;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Model around a ComponentAdapter that allows to store additional
  * properties to set on the instance when it is created.
- * 
+ *
  * @author Laurent Etiemble
  * @version $Revision$
  */

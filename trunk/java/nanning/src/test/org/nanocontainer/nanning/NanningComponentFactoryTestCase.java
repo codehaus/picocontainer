@@ -8,7 +8,7 @@
  * Original code by Jon Tirs?n                                               *
  *****************************************************************************/
 
-package org.picoextras.nanning;
+package org.nanocontainer.nanning;
 
 import junit.framework.TestCase;
 import org.codehaus.nanning.Aspects;

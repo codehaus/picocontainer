@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picoextras.testmodel;
+package org.nanocontainer.testmodel;
 
 public class WilmaImpl implements Wilma {
 

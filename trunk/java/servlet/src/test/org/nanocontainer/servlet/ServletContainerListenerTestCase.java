@@ -1,4 +1,4 @@
-package org.picoextras.servlet;
+package org.nanocontainer.servlet;
 
 import junit.framework.TestCase;
 import org.jmock.C;

@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.servlet;
+package org.nanocontainer.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
@@ -42,7 +42,7 @@ public class ServletRequestContainerLauncher {
         ObjectReference parentContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
 
         if (containerBuilder == null) {
-            throw new ServletException("org.picoextras.servlet.ServletContainerListener not deployed");
+            throw new ServletException("org.nanocontainer.servlet.ServletContainerListener not deployed");
         }
 
         containerBuilder.buildContainer(containerRef, parentContainerRef, request);

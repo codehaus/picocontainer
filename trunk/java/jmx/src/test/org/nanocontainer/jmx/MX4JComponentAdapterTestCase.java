@@ -8,14 +8,14 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.picoextras.jmx;
+package org.nanocontainer.jmx;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.testmodel.Wilma;
-import org.picoextras.testmodel.WilmaImpl;
+import org.nanocontainer.testmodel.Wilma;
+import org.nanocontainer.testmodel.WilmaImpl;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;

@@ -1,11 +1,11 @@
-package org.picoextras.multicast;
+package org.nanocontainer.multicast;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.multicast.Invoker;
-import org.picoextras.multicast.MulticastInvoker;
-import org.picoextras.multicast.NullInvocationInterceptor;
+import org.nanocontainer.multicast.Invoker;
+import org.nanocontainer.multicast.MulticastInvoker;
+import org.nanocontainer.multicast.NullInvocationInterceptor;
 
 /**
  * @author Chris Stevenson

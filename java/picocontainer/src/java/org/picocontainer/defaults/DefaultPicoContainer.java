@@ -48,10 +48,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
-        if(componentKeyToAdapterMap.keySet().contains(componentAdapter.getComponentKey())) {
-            throw new DuplicateComponentKeyRegistrationException(componentAdapter.getComponentKey());
+        Object componentKey = componentAdapter.getComponentKey();
+        if(componentKeyToAdapterMap.keySet().contains(componentKey)) {
+            throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
-        componentKeyToAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);
+        componentKeyToAdapterMap.put(componentKey, componentAdapter);
     }
 
     public void unregisterComponent(Object componentKey) {

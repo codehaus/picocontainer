@@ -11,7 +11,7 @@
 	<j:set var="webapp" value="${maven.build.dir}/${pom.artifactId}"/>
 	<j:set var="maven.war.src" value="${webapp}"/>
     <define:taglib uri="sample">	    
-        <define:tag name="buildWar">
+        <define:tag name="installWar">
 	        <j:set var="framework" value="${framework}"/>
 	        <delete dir="${webapp}"/>
 	        <copy todir="${webapp}">
@@ -21,25 +21,30 @@
 	   		<ant:copy file="${maven.build.dir}/${pom.artifactId}.war" 
 	   				tofile="${maven.build.dir}/${pom.artifactId}-${framework}.war"/>	
         </define:tag>
+        <define:tag name="deployWar">
+	        <j:set var="framework" value="${framework}"/>
+	        <deploy:artifact
+    	        artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
+        	    type="war"
+           	 	assureDirectoryCommand="mkdir -p"
+            	siteCommand="cd @deployDirectory@; chmod g+w ${pom.artifactId}-${framework}.war"
+            />
+        </define:tag>
     </define:taglib>
 
-    <goal name="binary:install" prereqs="war:install"/>
-    <goal name="binary:deploy" prereqs="war:install">
-        <deploy:artifact
-            artifact="${maven.build.dir}/${pom.artifactId}.war"
-            type="war"
-            assureDirectoryCommand="mkdir -p"
-            siteCommand="cd @deployDirectory@; chmod g+w ${pom.artifactId}.war"
-            />
+    <goal name="binary:install">
+        <sample:installWar framework="nanoweb"/>
+        <sample:installWar framework="struts"/>
+        <sample:installWar framework="webwork"/>
+    </goal>
+    
+    <goal name="binary:deploy" prereqs="binary:install">
+        <sample:deployWar framework="nanoweb"/>
+        <sample:deployWar framework="struts"/>
+        <sample:deployWar framework="webwork"/>
     </goal>
 
-    <goal name="build">     
-        <sample:buildWar framework="nanoweb"/>
-        <sample:buildWar framework="struts"/>
-        <sample:buildWar framework="webwork"/>
-    </goal>
-
-    <goal name="deploy:tomcat" prereqs="build">
+    <goal name="deploy:tomcat" prereqs="binary:install">
 		<ant:property environment="env"/>
    		<ant:copy todir="${env.TOMCAT_HOME}/webapps">
    			<ant:fileset dir="${maven.build.dir}">

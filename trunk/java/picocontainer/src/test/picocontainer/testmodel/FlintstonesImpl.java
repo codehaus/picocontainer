@@ -16,7 +16,5 @@ public class FlintstonesImpl {
     public FlintstonesImpl(Wilma wilma, FredImpl fred) {
         Assert.assertNotNull("Wilma cannot be passed in as null", wilma);
         Assert.assertNotNull("FredImpl cannot be passed in as null", fred);
-
-        System.out.println("New FlintstonesImpl");
 	}
 }

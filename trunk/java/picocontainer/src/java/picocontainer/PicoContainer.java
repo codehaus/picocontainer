@@ -10,10 +10,14 @@
 
 package picocontainer;
 
+import java.lang.reflect.InvocationHandler;
+
 public interface PicoContainer extends Container {
 
     /**
-     * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}.
+     * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}
+     * with the same argument.
+     *
      * @param componentClass The class of the component to instantiate
      * @throws PicoRegistrationException If a registration problem
      */
@@ -35,6 +39,7 @@ public interface PicoContainer extends Container {
      * Regiters a component that is instantiated and configured outside
      * the container. Useful in cases where pico doesn't have sufficient
      * knowledge to instantiate a component.
+     *
      * @param componentType Component type
      * @param component preinstantiated component
      * @throws PicoRegistrationException If a registration problem
@@ -45,13 +50,14 @@ public interface PicoContainer extends Container {
     void registerComponent(Object component)
             throws PicoRegistrationException;
 
+    /**
+     * Instantiates all registered components.
+     *
+     * @throws PicoStartException if one or more components couldn't be instantiated.
+     */
     void start() throws PicoStartException;
 
     void stop() throws PicoStopException;
 
-
-
-
+    Object getProxy(InvocationHandler invocationHandler);
 }
-
-

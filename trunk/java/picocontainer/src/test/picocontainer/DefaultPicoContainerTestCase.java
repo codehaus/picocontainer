@@ -12,17 +12,15 @@ package picocontainer;
 
 import junit.framework.TestCase;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
 import java.io.Serializable;
+import java.lang.reflect.UndeclaredThrowableException;
 
 import picocontainer.testmodel.FlintstonesImpl;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
+import picocontainer.reflect.SequentialInvocationHandler;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -188,6 +186,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
             public Object getComponent(Class compType) {
                 return wilma;
             }
+
+            public Object[] getComponents() {
+                // Won't be called here
+                return null;
+            }
         });
 
         pico.registerComponent(FredImpl.class);
@@ -292,5 +295,59 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
+    public void testRegisterAbstractShouldFail() {
+        PicoContainer pico = new PicoContainerImpl.Default();
 
+        try {
+            pico.registerComponent( Runnable.class );
+            fail("Shouldn't be allowed to register abstract classes or interfaces.");
+        } catch (PicoRegistrationException e) {
+            // ok
+        }
+    }
+
+    public static interface Foo {
+        void setBar(String s);
+    }
+    public static class FooImpl implements Foo {
+        private String bar;
+        public void setBar(String bar) {
+            this.bar = bar;
+        }
+        public String getBar() {
+            return bar;
+        }
+    }
+
+    public void testGetProxy() throws PicoRegistrationException, PicoStartException {
+        PicoContainer pico = new PicoContainerImpl.Default();
+
+        Collection list = new ArrayList();
+        pico.registerComponent( list );
+
+        pico.registerComponent( Foo.class, FooImpl.class );
+        pico.start();
+
+        SequentialInvocationHandler ih = new SequentialInvocationHandler(pico);
+
+        Object proxy = pico.getProxy(ih);
+
+        Collection proxyCollection = (Collection) proxy;
+        Foo proxyFoo  = (Foo) proxy;
+
+        proxyCollection.add("Foo");
+        try {
+            proxyFoo.setBar("Zap");
+        } catch (UndeclaredThrowableException e) {
+            e.printStackTrace();
+            e.getUndeclaredThrowable().printStackTrace();
+            throw e;
+        }
+
+        // Assert that the proxy subjects have changed.
+        assertTrue( "The collection should have a Foo", list.contains("Foo") );
+
+        FooImpl foo = (FooImpl) pico.getComponent(Foo.class);
+        assertEquals( "Zap", foo.getBar() );
+    }
 }

@@ -16,4 +16,5 @@ public interface Container {
 
     Object getComponent(Class compType);
 
+    Object[] getComponents();
 }

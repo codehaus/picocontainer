@@ -29,8 +29,6 @@ public class PicoRegistrationException extends PicoException {
         super(message);
     }
 
-    ///CLOVER:OFF
-    // Not used from the core, but from the outside.
     /**
      * Construct a new exception with the specified cause and no detail message.
      *
@@ -49,5 +47,4 @@ public class PicoRegistrationException extends PicoException {
     protected PicoRegistrationException(String message, Throwable cause) {
         super(message, cause);
     }
-    ///CLOVER:ON
 }

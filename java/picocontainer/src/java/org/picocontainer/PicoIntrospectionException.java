@@ -30,8 +30,6 @@ public class PicoIntrospectionException extends PicoInitializationException {
         super(message);
     }
 
-    ///CLOVER:OFF
-    // Not used from the core, but from the outside.
     /**
      * Construct a new exception with the specified cause and no detail message.
      *
@@ -50,5 +48,4 @@ public class PicoIntrospectionException extends PicoInitializationException {
     public PicoIntrospectionException(final String message, final Throwable cause) {
         super(message,cause);
     }
-    ///CLOVER:ON
 }

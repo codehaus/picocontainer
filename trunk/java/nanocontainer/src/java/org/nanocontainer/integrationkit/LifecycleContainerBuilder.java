@@ -35,7 +35,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
                 if (addChildToParent) {
                     mutableParentContainer.addChildContainer(container);
                 }
-//                mutableParentContainer.registerComponentInstance(containerRef, container);
             }
         }
 

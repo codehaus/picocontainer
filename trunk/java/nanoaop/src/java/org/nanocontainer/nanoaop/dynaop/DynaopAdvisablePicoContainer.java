@@ -11,6 +11,8 @@ package org.nanocontainer.nanoaop.dynaop;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
 import org.nanocontainer.nanoaop.AdvisablePicoContainer;
 import org.nanocontainer.nanoaop.ClassPointcut;
@@ -19,6 +21,8 @@ import org.nanocontainer.nanoaop.Interceptor;
 import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutFactory;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.PicoException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import dynaop.Aspects;
@@ -84,5 +88,4 @@ public class DynaopAdvisablePicoContainer extends DelegatingContainer implements
         }
         return aspects;
     }
-
 }

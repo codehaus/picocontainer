@@ -13,13 +13,14 @@ package org.picocontainer.defaults;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
@@ -60,28 +61,34 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
     public static class Two extends RecordingLifecycle {
         public Two(StringBuffer sb, One one) {
             super(sb);
+            assertNotNull(one);
         }
     }
 
     public static class Three extends RecordingLifecycle {
         public Three(StringBuffer sb, One one, Two two) {
             super(sb);
+            assertNotNull(one);
+            assertNotNull(two);
         }
     }
 
     public static class Four extends RecordingLifecycle {
         public Four(StringBuffer sb, Two two, Three three, One one) {
             super(sb);
+            assertNotNull(one);
+            assertNotNull(two);
+            assertNotNull(three);
         }
     }
 
     public static class FiveTriesToBeMalicious extends RecordingLifecycle {
         public FiveTriesToBeMalicious(StringBuffer sb, PicoContainer pc) {
             super(sb);
+            assertNotNull(pc);
             sb.append("Whao! Should not get instantiated!!");
         }
     }
-
 
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
@@ -102,25 +109,28 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation("recording", StringBuffer.class);
-        pico.registerComponentImplementation(Four.class);
-        pico.registerComponentImplementation(Two.class);
-        pico.registerComponentImplementation(One.class);
-        pico.registerComponentImplementation(Three.class);
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        MutablePicoContainer child = parent.makeChildContainer();
 
-        pico.start();
-        pico.stop();
-        pico.dispose();
+        parent.registerComponentImplementation("recording", StringBuffer.class);
+        child.registerComponentImplementation(Four.class);
+        parent.registerComponentImplementation(Two.class);
+        parent.registerComponentImplementation(One.class);
+        child.registerComponentImplementation(Three.class);
 
-        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", pico.getComponentInstance("recording").toString());
+        LifecycleManager lm = parent.getLifecycleManager();
+        lm.start();
+        lm.stop();
+        lm.dispose();
+
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording").toString());
     }
 
     public void testStartStartShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.start();
+        pico.getLifecycleManager().start();
         try {
-            pico.start();
+            pico.getLifecycleManager().start();
             fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
@@ -129,10 +139,10 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testStartStopStopShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.start();
-        pico.stop();
+        pico.getLifecycleManager().start();
+        pico.getLifecycleManager().stop();
         try {
-            pico.stop();
+            pico.getLifecycleManager().stop();
             fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
@@ -141,11 +151,11 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testStartStopDisposeDisposeShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.start();
-        pico.stop();
-        pico.dispose();
+        pico.getLifecycleManager().start();
+        pico.getLifecycleManager().stop();
+        pico.getLifecycleManager().dispose();
         try {
-            pico.dispose();
+            pico.getLifecycleManager().dispose();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
@@ -194,15 +204,15 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         pico.registerComponentImplementation(FooRunnable.class);
 
         pico.getComponentInstances();
-        pico.start();
+        pico.getLifecycleManager().start();
         Thread.sleep(100);
-        pico.stop();
+        pico.getLifecycleManager().stop();
 
         FooRunnable foo = (FooRunnable) pico.getComponentInstance(FooRunnable.class);
         assertEquals(1, foo.runCount());
-        pico.start();
+        pico.getLifecycleManager().start();
         Thread.sleep(100);
-        pico.stop();
+        pico.getLifecycleManager().stop();
         assertEquals(2, foo.runCount());
     }
 

@@ -10,6 +10,7 @@
 
 package org.nanocontainer.reflection;
 
+import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -17,7 +18,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.script.groovy.PicoBuilderException;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.security.AccessController;
-import java.security.PermissionCollection;
-import java.security.CodeSource;
 
 /**
  * @author Paul Hammant
@@ -36,7 +33,7 @@ import java.security.CodeSource;
 
 public class DefaultReflectionContainerAdapter implements ReflectionContainerAdapter {
     private static final Map primitiveNameToBoxedName = new HashMap();
-    private boolean clLocked;
+    private boolean componentClassLoaderLocked;
     private ClassLoader componentClassLoader;
 
     static {
@@ -48,6 +45,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         primitiveNameToBoxedName.put("double", Double.class.getName());
         primitiveNameToBoxedName.put("boolean", Boolean.class.getName());
     }
+
     private static String getClassName(String primitiveOrClass) {
         String fromMap = (String) primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
@@ -65,9 +63,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     }
 
     public DefaultReflectionContainerAdapter(ClassLoader classLoader) {
-        this(classLoader,
-                new DefaultPicoContainer());
-
+        this(classLoader, new DefaultPicoContainer());
     }
 
     public DefaultReflectionContainerAdapter(MutablePicoContainer picoContainer) {
@@ -96,12 +92,12 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         Class componentImplementation = loadClass(componentImplementationClassName);
         return picoContainer.registerComponentImplementation(key, componentImplementation);
     }
-    
+
 
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
         Class componentImplementation = loadClass(componentImplementationClassName);
         return picoContainer.registerComponentImplementation(key, componentImplementation, parameters);
-    }    
+    }
 
     public ComponentAdapter registerComponentImplementation(Object key,
                                                             String componentImplementationClassName,
@@ -140,18 +136,16 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
      * @param url
      */
     public void addClassLoaderURL(URL url) {
-        if (clLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this ContainerAdapter is locked");
+        if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this ContainerAdapter is locked");
         urls.add(url);
     }
 
     public ClassLoader getComponentClassLoader() {
-        URL[] urlz = (URL[]) urls.toArray(new URL[urls.size()]);
-        clLocked = true;
-
         if (componentClassLoader == null) {
+            URL[] urlz = (URL[]) urls.toArray(new URL[urls.size()]);
+            componentClassLoaderLocked = true;
             componentClassLoader = new DRCAClassLoader(urlz, parentClassLoader);
         }
-
         return componentClassLoader;
     }
 
@@ -160,14 +154,12 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     }
 
     public static class DRCAClassLoader extends URLClassLoader {
-        URL[] urls;
         public DRCAClassLoader(URL[] urls, ClassLoader parent) {
             super(urls, parent);
-            this.urls = urls;
         }
-        
+
         public String toString() {
-            return "FCL(parent:" + (getParent() != null ? ""+System.identityHashCode(getParent()) : "x") + " - URLS("+prtURLs()+")";
+            return "FCL(parent:" + (getParent() != null ? "" + System.identityHashCode(getParent()) : "x") + " - URLS(" + getPrettyURLs() + ")";
         }
 
         public Class loadClass(String name) throws ClassNotFoundException {
@@ -178,13 +170,14 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
             return super.findClass(name);
         }
 
-        private String prtURLs() {
-            String foo = "";
+        private String getPrettyURLs() {
+            String result = "";
+            URL[] urls = getURLs();
             for (int i = 0; i < urls.length; i++) {
                 URL url = urls[i];
-                foo = foo + url.toString() + ",";
+                result = result + url.toString() + "\n";
             }
-            return foo;
+            return result;
         }
     }
 
@@ -194,7 +187,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
             Object componentInstance = picoContainer.getComponentInstanceOfType(compType);
             return componentInstance;
         } catch (ClassNotFoundException e) {
-            throw new PicoBuilderException("Can't resolve class as type '" +componentType +"'");
+            throw new PicoBuilderException("Can't resolve class as type '" + componentType + "'");
         }
     }
 

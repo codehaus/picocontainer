@@ -9,18 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoVerificationException;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.alternatives.ImmutableComponentAdapter;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoException;
+import org.picocontainer.ContainerVisitor;
+import org.picocontainer.ComponentVisitor;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ArrayList;
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Paul Hammant
@@ -98,6 +100,18 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
         throw new UnsupportedOperationException("This container is immutable, addOrderedComponentAdapter() is not allowed");
+    }
+
+    public List getComponentInstancesOfType(Class type) throws PicoException {
+        return delegate.getComponentInstancesOfType(type);
+    }
+
+    public void accept(ContainerVisitor containerVisitor) {
+        delegate.accept(containerVisitor);
+    }
+
+    public void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(componentVisitor, componentType, visitInInstantiationOrder);
     }
 
     public void start() {

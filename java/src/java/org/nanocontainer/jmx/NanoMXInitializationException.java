@@ -19,26 +19,18 @@ import org.picocontainer.PicoInitializationException;
  * @version $Revision: 1.1 $
  */
 public class NanoMXInitializationException extends PicoInitializationException {
+    public NanoMXInitializationException() {
+    }
 
-    private Throwable cause;
-    
+    public NanoMXInitializationException(String message) {
+        super(message);
+    }
+
     public NanoMXInitializationException(Throwable cause) {
-        this.cause = cause;
+        super(cause);
     }
 
-    /**
-     * @return the underlying exception
-     */
-    public Throwable getCause() {
-        return cause;
+    public NanoMXInitializationException(String message, Throwable cause) {
+        super(message, cause);
     }
-    
-    public String getLocalizedMessage() {
-        return cause.getLocalizedMessage();
-    }
-
-    public String getMessage() {
-        return cause.getMessage();
-    }
-
 }

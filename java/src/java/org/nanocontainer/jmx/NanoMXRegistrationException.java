@@ -19,26 +19,7 @@ import org.picocontainer.PicoRegistrationException;
  * @version $Revision: 1.1 $
  */
 public class NanoMXRegistrationException extends PicoRegistrationException {
-
-    private Throwable cause;
-    
     public NanoMXRegistrationException(Throwable cause) {
-        this.cause = cause;
+        super(cause);
     }
-
-    /**
-     * @return the underlying exception
-     */
-    public Throwable getCause() {
-        return cause;
-    }
-    
-    public String getLocalizedMessage() {
-        return cause.getLocalizedMessage();
-    }
-
-    public String getMessage() {
-        return cause.getMessage();
-    }
-
 }

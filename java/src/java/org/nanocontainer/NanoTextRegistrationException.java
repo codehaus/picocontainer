@@ -13,14 +13,9 @@ package org.nanocontainer;
 import org.picocontainer.PicoRegistrationException;
 
 public class NanoTextRegistrationException extends PicoRegistrationException {
-    private final String message;
 
     public NanoTextRegistrationException(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+        super(message);
     }
 
 }

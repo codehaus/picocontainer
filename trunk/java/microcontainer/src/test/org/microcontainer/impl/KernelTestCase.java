@@ -11,6 +11,7 @@ package org.microcontainer.impl;
 
 import junit.framework.TestCase;
 import org.microcontainer.Kernel;
+import org.microcontainer.DeploymentException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         kernel = new DefaultKernel();
     }
 
-    public void testDeploymentOfMarFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testDeploymentOfMarFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
@@ -42,7 +43,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeploymentOfMarFileFromURL() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, MalformedURLException {
+    public void testDeploymentOfMarFileFromURL() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, MalformedURLException, DeploymentException {
         kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
@@ -50,7 +51,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeferredDeplymentOfMarFile() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testDeferredDeploymentOfMarFile() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         kernel.deferredDeploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNull(o);
@@ -61,7 +62,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() {
+    public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() throws DeploymentException{
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
@@ -74,7 +75,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // testDeployedMarsComponentsAreInDiffClassloaderToKernel()
     }
 
-    public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
         // these should be one removed from each other.
@@ -87,7 +88,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // to the client...that'll make it difficult to change...
     }
 
-    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() {
+    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() throws DeploymentException{
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         kernel.deploy(new File("test2.mar"));
@@ -98,7 +99,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertNotSame(o.getClass().getClassLoader(), o2.getClass().getClassLoader());
     }
 
-    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
@@ -119,22 +120,21 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // might be quite hard
     }
 
-    public void testMarWithUnsupportedNanoContainerScriptCannotBeDeployed() {
+    public void testMarWithUnsupportedNanoContainerScriptCannotBeDeployed() throws DeploymentException{
         kernel.deploy(new File("bogus.mar"));
         // .bogus language not supported
     }
 
-    public void testMarMissingJavaCannotBeDeployed() {
+    public void testMarMissingJavaCannotBeDeployed() throws DeploymentException{
         kernel.deploy(new File("incomplete.mar"));
         // .bogus language not supported
     }
 
-    public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile()
-    {
+    public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile() throws DeploymentException {
         kernel.deploy(new File("missing.mar"));
     }
 
-    public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException {
+    public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException, DeploymentException {
         kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
     }
 
@@ -142,7 +142,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // gracefully handle misconfiguration...
     }
 
-    public void testMarFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testMarFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("isRunning", new Class[0]);
@@ -152,7 +152,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // of course, any references to any comp will be usable prior to GC, even if the container has stopped.
     }
 
-    public void testKernelImplIsInvisibleFromMarsSandbox() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void testKernelImplIsInvisibleFromMarsSandbox() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
 
         // might not work as IDE is going to fight to keep these at VM classpath level
 
@@ -188,7 +188,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // XPath does that, no?
     }
 
-    public void testMultipleKernelsPeaceFullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public void testMultipleKernelsPeaceFullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException
     {
         // was an issue with phoenix at times...ie these guys don't claim server sockets...
         Kernel kernel2 = new DefaultKernel();

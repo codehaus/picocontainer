@@ -1,5 +1,9 @@
 distributions.*
 target
+test
+test.mar
+temp
+work
 junit*
 *.log
 *.iws

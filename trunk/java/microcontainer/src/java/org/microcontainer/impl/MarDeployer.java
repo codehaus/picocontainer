@@ -12,6 +12,8 @@ package org.microcontainer.impl;
 
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 import java.util.Enumeration;
@@ -23,28 +25,55 @@ import java.io.*;
  */
 public class MarDeployer {
 	protected File workingDir = null;
+	protected File tempDir = null;
 
 	public MarDeployer() {
-		workingDir = new File("work"); // todo this should be configurable! Pico-tize?
+		// todo this should be configurable! Pico-tize?
+		workingDir = new File("work");
 		workingDir.mkdir();
+		tempDir = new File("temp");
+		tempDir.mkdir();
 	}
 
 	public File getWorkingDir() {
 		return workingDir;
 	}
 
-	public void deploy(String context, URL mar) throws IOException {
+	public void deploy(String context, URL marURL) throws IOException {
+		URLConnection connection = marURL.openConnection();
 		File sandboxDir = new File(workingDir, context);
 		sandboxDir.mkdir();
 
+		if(connection instanceof JarURLConnection) {
+			handleLocalMAR(sandboxDir, (JarURLConnection)connection);
+		}
+		else if(connection instanceof HttpURLConnection) {
+			handleRemoteMAR(sandboxDir, (HttpURLConnection)connection);
+		}
+		else {
+			throw new IOException("Unsupported URLConnection type [" + connection.getClass() + "]");
+		}
+	}
+
+	protected void handleRemoteMAR(File sandboxDir, HttpURLConnection connection) throws IOException {
+		// copy the remote MAR file to the temp dir
+		String marFileName = sandboxDir.getName() + ".mar";
+		expand(connection.getInputStream(), tempDir, marFileName);
+		connection.disconnect();
+		URL jarURL = new URL("jar:file:" + tempDir.getCanonicalPath() + "\\" + marFileName + "!/");
+
+		// handle as local
+		handleLocalMAR(sandboxDir, (JarURLConnection)jarURL.openConnection());
+	}
+
+	protected void handleLocalMAR(File dir, JarURLConnection connection) throws IOException {
 		// Expand the MAR into working directory
-		JarURLConnection juc = (JarURLConnection) mar.openConnection();
-		juc.setUseCaches(false);
+		connection.setUseCaches(false);
 		JarFile jarFile = null;
 		InputStream input = null;
 
 		try {
-			jarFile = juc.getJarFile();
+			jarFile = connection.getJarFile();
 			Enumeration jarEntries = jarFile.entries();
 
 			while (jarEntries.hasMoreElements()) {
@@ -53,20 +82,20 @@ public class MarDeployer {
 
 				int last = name.lastIndexOf('/');
 				if (last >= 0) {
-					new File(sandboxDir, name.substring(0, last))
+					new File(dir, name.substring(0, last))
 							.mkdirs();
 				}
 				if (name.endsWith("/")) {
 					continue;
 				}
 				input = jarFile.getInputStream(jarEntry);
-				expand(input, sandboxDir, name);
+				expand(input, dir, name);
 				input.close();
 				input = null;
 			}
 		} catch (IOException e) {
 			// problem, cleanup directory
-			deleteDir(sandboxDir);
+			deleteDir(dir);
 			throw e;
 		} finally {
 			if (input != null) {
@@ -82,17 +111,18 @@ public class MarDeployer {
 
 	protected void deleteDir(File dir) {
 		String files[] = dir.list();
-        if (files == null) {
-            files = new String[0];
-        }
-        for (int i = 0; i < files.length; i++) {
-            File file = new File(dir, files[i]);
-            if (file.isDirectory()) {
-                deleteDir(file);
-            } else {
-                file.delete();
-            }
-        }
+
+        if (files != null) {
+			// delete all content dir (recursively)
+			for (int i = 0; i < files.length; i++) {
+				File file = new File(dir, files[i]);
+				if (file.isDirectory()) {
+					deleteDir(file);
+				} else {
+					file.delete();
+				}
+			}
+		}
         dir.delete();
 	}
 
@@ -104,11 +134,11 @@ public class MarDeployer {
 			bos = new BufferedOutputStream(new FileOutputStream(file));
 			byte buffer[] = new byte[2048];
 			while (true) {
-				int n = input.read(buffer);
-				if (n <= 0) {
+				int count = input.read(buffer);
+				if (count <= 0) {
 					break;
 				}
-				bos.write(buffer, 0, n);
+				bos.write(buffer, 0, count);
 			}
 		} finally {
 			bos.close();

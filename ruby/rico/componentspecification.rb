@@ -1,3 +1,19 @@
+# Make Class YAMLable
+# http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/95432
+class Class
+  def to_yaml( opts = {} )
+    YAML::quick_emit( nil, opts ) { |out|
+      out << "!ruby/class "
+      self.name.to_yaml( :Emitter => out )
+    }
+  end
+end
+
+YAML.add_ruby_type(/^class/) do |type, val|
+  subtype, subclass = YAML.read_type_class(type, Class)
+  val.split(/::/).inject(Object) { |p, n| p.const_get(n)}
+end
+
 module Rico
 =begin
   Specification for an individual component. Also responsible for generating
@@ -31,7 +47,7 @@ module Rico
     end
     
     def component_instance(container, key)
-    	return @component_instance ||= create_component_instance(container, [key])
+      return @component_instance ||= create_component_instance(container, [key])
     end
     
     private

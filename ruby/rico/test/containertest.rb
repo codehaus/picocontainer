@@ -255,4 +255,15 @@ class ContainerTest < Test::Unit::TestCase
     assert_instance_of Needed, component.needed
     assert_equal "constant", component.constant
   end
+
+  def test_should_be_yamlable
+    rico = Container.new
+    rico.register_component_implementation :touchable, SimpleTouchable
+    touchable = rico.component_instance(:touchable)
+    touchable.touch
+    
+    rico = YAML::load(YAML::dump(rico))
+    touchable = rico.component_instance(:touchable)
+    assert(touchable.was_touched)    
+  end
 end

@@ -72,6 +72,9 @@ public interface MutablePicoContainer extends PicoContainer {
      * kind of object, but where letting the container manage and instantiate it
      * is impossible.
      *
+     * Beware that too much use of this method is an
+     * <a href="http://docs.codehaus.org/display/PICO/Instance+Registration">antipattern</a>.
+     *
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
      * The type of the key object has no semantic significance unless explicitly specified
      * in the implementing container.

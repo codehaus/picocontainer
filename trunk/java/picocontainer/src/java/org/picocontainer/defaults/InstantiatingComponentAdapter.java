@@ -31,6 +31,12 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
         ComponentAdapter[] dependencyAdapters = getMostSatisifableDependencyAdapters(getContainer());
         Object instance = instantiateComponent(dependencyAdapters, getContainer());
+
+        // Now, track the instantiation order
+        for (int i = 0; i < dependencyAdapters.length; i++) {
+            ComponentAdapter dependencyAdapter = dependencyAdapters[i];
+            getContainer().addOrderedComponentAdapter(dependencyAdapter);
+        }
         return instance;
     }
 

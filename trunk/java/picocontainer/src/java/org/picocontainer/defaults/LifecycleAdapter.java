@@ -63,7 +63,7 @@ class LifecycleAdapter implements Lifecycle, Serializable {
             throw new IllegalStateException("Already started.");
         }
         try {
-            final Startable startable = ((Startable) componentMulticasterAdapter.getComponentMulticaster(picoContainer));
+            final Startable startable = ((Startable) componentMulticasterAdapter.getComponentMulticaster(picoContainer, true));
             startable.start();
         } catch (ClassCastException ignore) {
         }
@@ -76,7 +76,7 @@ class LifecycleAdapter implements Lifecycle, Serializable {
             throw new IllegalStateException("Already stopped (or maybe never started).");
         }
         try {
-            ((Stoppable) componentMulticasterAdapter.getComponentMulticaster(picoContainer)).stop();
+            ((Stoppable) componentMulticasterAdapter.getComponentMulticaster(picoContainer, false)).stop();
         } catch (ClassCastException ignore) {
         }
         started = false;
@@ -85,7 +85,7 @@ class LifecycleAdapter implements Lifecycle, Serializable {
     public void dispose() {
         checkDisposed();
         try {
-            ((Disposable) componentMulticasterAdapter.getComponentMulticaster(picoContainer)).dispose();
+            ((Disposable) componentMulticasterAdapter.getComponentMulticaster(picoContainer, false)).dispose();
         } catch (ClassCastException ignore) {
         }
         disposed = true;

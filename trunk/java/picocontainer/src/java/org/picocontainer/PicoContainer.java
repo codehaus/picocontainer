@@ -103,4 +103,10 @@ public interface PicoContainer extends Lifecycle {
      * @return Collection of {@link ComponentAdapter}.
      */
     Collection getComponentAdapters();
+
+    /**
+     * Callback method from the implementation to keep track of the instantiation
+     * order. This method is not intended to be called explicitly by clients of the API!
+     */
+    void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 }

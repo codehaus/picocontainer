@@ -9,17 +9,196 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
-import org.picocontainer.Disposable;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.Startable;
+import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.PersonBean;
+import org.picocontainer.testmodel.PurseBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetterInjectionComponentAdapterTestCase extends TestCase {
+public class SetterInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
 
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
+     */
+    protected Class getComponentAdapterType() {
+        return SetterInjectionComponentAdapter.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#createDefaultComponentAdapterFactory()
+     */
+    protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
+        return new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory());
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestVerifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ConstantParameter("Pico Container") });
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestVerifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[] { new ComponentParameter() });
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVisitable()
+     */
+    protected ComponentAdapter prepareTestVisitable() {
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ConstantParameter("Pico Container") });
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestSerializable(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestSerializable(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestShouldBeAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestShouldBeAbleToTakeParameters(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        picoContainer.registerComponentImplementation(PersonBean.class);
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, MoneyPurse.class, new Parameter[] { 
+                new ComponentParameter(),
+                new ConstantParameter(new Double(100.0))
+        }));
+    }
+    
+    public static class MoneyPurse extends PurseBean {
+        double money;
+        public double getMoney() {
+            return money;
+        }
+        public void setMoney(double money) {
+            this.money = money;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithUnsatisfiedDependency(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingVerificationWithUnsatisfiedDependency(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        picoContainer.registerComponentImplementation(PersonBean.class);
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, MoneyPurse.class, new Parameter[] { new ComponentParameter() }));
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestComponentAdapterCreatesNewInstances(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestComponentAdapterCreatesNewInstances(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(PersonBean.class, PersonBean.class, new Parameter[] { new ComponentParameter() });
+    }
+
+    public static class Ghost extends PersonBean {
+        public Ghost() {
+            throw new VerifyError("test");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestErrorIsRethrown(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestErrorIsRethrown(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(Ghost.class, Ghost.class, new Parameter[] { new ComponentParameter() });
+    }
+
+    public static class DeadBody extends PersonBean {
+        public DeadBody() throws Exception {
+            throw new RuntimeException("test");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestRuntimeExceptionIsRethrown(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestRuntimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(DeadBody.class, DeadBody.class, new Parameter[] { new ComponentParameter() });
+    }
+
+    public static class HidingPersion extends PersonBean {
+        public HidingPersion() throws Exception {
+            throw new Exception("test");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
+            MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        return new SetterInjectionComponentAdapter(HidingPersion.class, HidingPersion.class, new Parameter[] { new ComponentParameter() });
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestDependenciesAreResolved(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestDependenciesAreResolved(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        picoContainer.registerComponentImplementation(PersonBean.class);
+        return new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() });
+    }
+
+    public static class WealthyPerson extends PersonBean {
+        PurseBean purse;
+        public PurseBean getPurse() {
+            return purse;
+        }
+        public void setPurse(PurseBean purse) {
+            this.purse = purse;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        picoContainer.registerComponentImplementation(PersonBean.class, WealthyPerson.class);
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() }));
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingInstantiationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentInstance("Pico Container");
+        picoContainer.registerComponentImplementation(PersonBean.class, WealthyPerson.class);
+        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(PurseBean.class, PurseBean.class, new Parameter[] { new ComponentParameter() }));
+    }
+    
     public static class A {
         private B b;
         private String string;
@@ -53,22 +232,6 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
     public static class B {
     }
 
-    public void testDependenciesAreResolved() {
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, null);
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
-
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(bAdapter);
-        pico.registerComponent(aAdapter);
-        pico.registerComponentInstance("YO");
-        pico.registerComponentImplementation(ArrayList.class);
-
-        A a = (A) aAdapter.getComponentInstance(pico);
-        assertNotNull(a.getB());
-        assertNotNull(a.getString());
-        assertNotNull(a.getList());
-    }
-
     public void testAllUnsatisfiableDependenciesAreSignalled() {
         SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, null);
         SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
@@ -83,26 +246,6 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
             assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
         }
-    }
-
-    public void testShouldBeAbleToTakeParameters() {
-        ArrayList list = new ArrayList();
-        Parameter[] aParameters = new Parameter[]{
-            new ComponentParameter(),
-            new ConstantParameter("YO"),
-            new ConstantParameter(list)
-        };
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, aParameters);
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
-
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(bAdapter);
-        pico.registerComponent(aAdapter);
-
-        A a = (A) aAdapter.getComponentInstance(pico);
-        assertNotNull(a.getB());
-        assertEquals("YO", a.getString());
-        assertSame(list, a.getList());
     }
 
     public static class C {
@@ -156,106 +299,6 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         assertTrue(c.instantiatedAsBean());
         C c0 = (C) cNullAdapter.getComponentInstance(pico);
         assertTrue(c0.instantiatedAsBean());
-    }
-
-    // TODO: Factor out test classes and unit tests (currently copied from DefaultPicoContainerLifecycleTestCase) 
-    public abstract static class RecordingLifecycle implements Startable, Disposable {
-        private StringBuffer recording;
-
-        protected RecordingLifecycle() {
-        }
-
-        public void setRecording(StringBuffer recording) {
-            this.recording = recording;
-        }
-
-        public void start() {
-            recording.append("<" + code());
-        }
-
-        public void stop() {
-            recording.append(code() + ">");
-        }
-
-        public void dispose() {
-            recording.append("!" + code());
-        }
-
-        private String code() {
-            String name = getClass().getName();
-            return name.substring(name.indexOf('$') + 1);
-        }
-    }
-
-    public static class One extends RecordingLifecycle {
-        public One() {
-        }
-    }
-
-    public static class Two extends RecordingLifecycle {
-        public Two() {
-        }
-
-        public void setOne(One one) {
-        }
-    }
-
-    public static class Three extends RecordingLifecycle {
-        public Three() {
-        }
-
-        public void setOne(One one) {
-        }
-
-        public void setTwo(Two two) {
-        }
-    }
-
-    public static class Four extends RecordingLifecycle {
-        public Four() {
-        }
-
-        public void setOne(One one) {
-        }
-
-        public void setTwo(Two two) {
-        }
-
-        public void setThree(Three three) {
-        }
-    }
-
-    public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
-        pico.registerComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
-        pico.registerComponentImplementation(Four.class);
-        pico.registerComponentImplementation(Two.class);
-        pico.registerComponentImplementation(One.class);
-        pico.registerComponentImplementation(Three.class);
-        final List componentInstances = pico.getComponentInstances();
-
-        // instantiation - would be difficult to do these in the wrong order!!
-        assertEquals("Incorrect Order of Instantiation", One.class, componentInstances.get(1).getClass());
-        assertEquals("Incorrect Order of Instantiation", Two.class, componentInstances.get(2).getClass());
-        assertEquals("Incorrect Order of Instantiation", Three.class, componentInstances.get(3).getClass());
-        assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
-    }
-
-    public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory()));
-        pico.registerComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
-        pico.registerComponentImplementation(Four.class);
-        pico.registerComponentImplementation(Two.class);
-        pico.registerComponentImplementation(One.class);
-        pico.registerComponentImplementation(Three.class);
-
-        pico.start();
-        pico.stop();
-        pico.dispose();
-
-        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", pico.getComponentInstance("recording").toString());
     }
 
     public static class Yin {

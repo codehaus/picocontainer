@@ -43,7 +43,7 @@ public class InstanceComponentAdapterTestCase
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
      */
     protected int getComponentAdapterNature() {
-        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
+        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING | PARAMETRIZABLE);
     }
     
     /**
@@ -73,10 +73,18 @@ public class InstanceComponentAdapterTestCase
     
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareSerializable(org.picocontainer.MutablePicoContainer)
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestSerializable(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepareSerializable(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepareTestSerializable(MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("Key", new Integer(4711));
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestShouldBeAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestShouldBeAbleToTakeParameters(MutablePicoContainer picoContainer) {
+        return null;
     }
     
     /**

@@ -17,7 +17,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -51,14 +50,15 @@ public abstract class AbstractComponentAdapterTestCase
         extends TestCase {
 
     public static int SERIALIZABLE = 1;
-    public static int VERIFYING = 2;
-    public static int INSTANTIATING = 4;
-    public static int RESOLVING = 8;
+    public static int PARAMETRIZABLE = 2;
+    public static int VERIFYING = 4;
+    public static int INSTANTIATING = 8;
+    public static int RESOLVING = 16;
     
     protected abstract Class getComponentAdapterType();
     
     protected int getComponentAdapterNature() {
-        return SERIALIZABLE | VERIFYING | INSTANTIATING | RESOLVING;
+        return SERIALIZABLE | PARAMETRIZABLE | VERIFYING | INSTANTIATING | RESOLVING;
     }
     
     protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
@@ -123,12 +123,12 @@ public abstract class AbstractComponentAdapterTestCase
     // Serializable
     // ============================================
     
-    protected abstract ComponentAdapter prepareSerializable(MutablePicoContainer picoContainer);
+    protected abstract ComponentAdapter prepareTestSerializable(MutablePicoContainer picoContainer);
     
     final public void testSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
-            final ComponentAdapter componentAdapter = prepareSerializable(picoContainer);
+            final ComponentAdapter componentAdapter = prepareTestSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
             final XStream xstream = new XStream(new DomDriver());
@@ -141,6 +141,22 @@ public abstract class AbstractComponentAdapterTestCase
     }
     
     protected void customTestSerializable(ComponentAdapter serializedComponentAdapter) {
+    }
+    
+    // ============================================
+    // Parametrizable
+    // ============================================
+    
+    protected abstract ComponentAdapter prepareTestShouldBeAbleToTakeParameters(MutablePicoContainer picoContainer);
+    
+    final public void testShouldBeAbleToTakeParameters() {
+        if ((getComponentAdapterNature() & PARAMETRIZABLE) > 0) {
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final ComponentAdapter componentAdapter = prepareTestShouldBeAbleToTakeParameters(picoContainer);
+            assertSame(getComponentAdapterType(), componentAdapter.getClass());
+            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            assertNotNull(instance);
+        }
     }
 
     // ============================================

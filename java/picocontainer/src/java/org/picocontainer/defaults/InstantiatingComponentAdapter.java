@@ -33,7 +33,8 @@ import java.util.List;
  * @since 1.0
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
-    private transient ObjectReference verifyingGuard;
+    /** The cycle guard for the verification. */ 
+    protected transient ObjectReference verifyingGuard;
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
     /** Flag indicating instanciation of non-public classes. */ 

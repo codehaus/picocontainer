@@ -10,15 +10,10 @@
 
 package picocontainer.hierarchical;
 
-import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
 import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.PicoStopException;
-import picocontainer.PicoDisposalException;
 
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
@@ -26,9 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.InvocationHandler;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Set;
-import java.util.HashSet;
 
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
 
@@ -62,7 +54,7 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
 
     /**
      * Returns a proxy that impements the specified set of interfaces.
-     * {@see as(Class)})
+     * @see #as(Class)
      */
     public Object as(Class[] interfaces) {
         return Proxy.newProxyInstance(
@@ -77,9 +69,9 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
      * that were instantiated by this container. It is assumed that
      * compoenents passed in already instantiated are managed externally.
      *
-     * Lifecycle methods can be called in wither {@see INSTANTIATION_ORDER},
+     * Lifecycle methods can be called in wither {@link INSTANTIATION_ORDER},
      * that is the order in which the container created them, or
-     * {@see REVERSE_INSTANTIATION_ORDER}.
+     * {@link REVERSE_INSTANTIATION_ORDER}.
      */
     public Object asLifecycle(Class theInterface, int direction) {
         return Proxy.newProxyInstance(

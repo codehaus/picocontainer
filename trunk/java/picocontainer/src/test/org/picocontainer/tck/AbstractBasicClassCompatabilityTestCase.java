@@ -5,6 +5,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 
@@ -18,11 +19,24 @@ import java.util.HashMap;
 
 public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
-    abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
-            PicoRegistrationException, PicoIntrospectionException;
+    protected abstract RegistrationPicoContainer createClassRegistrationPicoContainer();
 
-    abstract public PicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
-            PicoRegistrationException, PicoIntrospectionException;
+    protected final RegistrationPicoContainer createPicoContainerWithTouchableAndDependancy() throws
+            PicoRegistrationException, PicoIntrospectionException {
+        RegistrationPicoContainer pico = createClassRegistrationPicoContainer();
+
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        return pico;
+    }
+
+    protected final RegistrationPicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
+            PicoRegistrationException, PicoIntrospectionException {
+        RegistrationPicoContainer pico = createClassRegistrationPicoContainer();
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        return pico;
+
+    }
 
     public void testNotNull() throws PicoRegistrationException, PicoIntrospectionException {
         assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependancy());
@@ -91,10 +105,12 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         }
     }
 
-    protected abstract void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
+    protected final void addAnotherSimpleTouchable(RegistrationPicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
+    }
 
     public void testDuplicateRegistration() throws Exception {
-        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        RegistrationPicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         try {
             addAnotherSimpleTouchable(picoContainer);
             //picoContainer.instantiateComponents();
@@ -105,10 +121,12 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         }
     }
 
-    protected abstract void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
+    protected final void addAHashMapByInstance(RegistrationPicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        picoContainer.registerComponent(Map.class, new HashMap());
+    }
 
     public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
-        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        RegistrationPicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         addAHashMapByInstance(picoContainer);
         picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());

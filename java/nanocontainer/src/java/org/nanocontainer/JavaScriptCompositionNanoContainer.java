@@ -8,10 +8,11 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.script.rhino.DefaultNanoRhinoScriptable;
-import org.picoextras.script.rhino.NanoRhinoManager;
+import org.picoextras.script.rhino.PicoScriptable;
+import org.picoextras.script.rhino.PicoManager;
 import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.mozilla.javascript.JavaScriptException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -32,7 +33,7 @@ public class JavaScriptCompositionNanoContainer extends NanoContainer {
 
     public JavaScriptCompositionNanoContainer(Reader script, NanoContainerMonitor monitor)
             throws PicoCompositionException{
-        this(script, monitor, DefaultNanoRhinoScriptable.class);
+        this(script, monitor, PicoScriptable.class);
     }
 
     public JavaScriptCompositionNanoContainer(Reader script)
@@ -42,8 +43,10 @@ public class JavaScriptCompositionNanoContainer extends NanoContainer {
 
     protected PicoContainer createPicoContainer() throws PicoCompositionException {
         try {
-            return new NanoRhinoManager().execute(nanoRhinoScriptableClass, script);
+            return new PicoManager().execute(nanoRhinoScriptableClass, script);
         } catch (IOException e) {
+            throw new PicoCompositionException(e);
+        } catch (JavaScriptException e) {
             throw new PicoCompositionException(e);
         }
     }

@@ -17,7 +17,7 @@ import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
-import org.picocontainer.extras.DefaultLifecyclePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -65,13 +65,13 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
         try {
             new XmlCompositionNanoContainer(new StringReader("" +
-                        "<container>" +
-                        "      <container>" +
-                        "          <component class='org.nanocontainer.Xxx$A'/>" +
-                        "      </container>" +
-                        "      <component class='org.nanocontainer.Xxx$B'/>" +
-                        "      <component class='org.nanocontainer.Xxx$C'/>" +
-                        "</container>"), new MockMonitor());
+                    "<container>" +
+                    "      <container>" +
+                    "          <component class='org.nanocontainer.Xxx$A'/>" +
+                    "      </container>" +
+                    "      <component class='org.nanocontainer.Xxx$B'/>" +
+                    "      <component class='org.nanocontainer.Xxx$C'/>" +
+                    "</container>"), new MockMonitor());
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch (NoSatisfiableConstructorsException e) {
             //expected
@@ -90,7 +90,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertTrue("Bespoke Front End (a test class) should have been used",BespokeXmlFrontEnd.used);
+        assertTrue("Bespoke Front End (a test class) should have been used", BespokeXmlFrontEnd.used);
     }
 
     public void testInstantiateWithBespokeComponentAdaptor() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoCompositionException {
@@ -98,10 +98,10 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
         OverriddenComponentAdapterFactory.used = false;
 
         NanoContainer nano = null;
-            nano = new XmlCompositionNanoContainer(new StringReader("" +
-                        "<container componentadaptor='" + OverriddenComponentAdapterFactory.class.getName() + "'>" +
-                        "    <component typekey='org.picoextras.testmodel.WebServerConfig' class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
-                        "</container>"), new MockMonitor());
+        nano = new XmlCompositionNanoContainer(new StringReader("" +
+                "<container componentadaptor='" + OverriddenComponentAdapterFactory.class.getName() + "'>" +
+                "    <component typekey='org.picoextras.testmodel.WebServerConfig' class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+                "</container>"), new MockMonitor());
 
         Object wsc = nano.getRootContainer().getComponentInstance(WebServerConfig.class);
 
@@ -112,6 +112,7 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
     public static class OverriddenComponentAdapterFactory extends DefaultComponentAdapterFactory {
         public static boolean used = false;
+
         public OverriddenComponentAdapterFactory() {
             used = true;
         }
@@ -120,43 +121,43 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
     public void testInstantiateWithXStreamComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoCompositionException {
 
         NanoContainer nano = null;
-            nano = new XmlCompositionNanoContainer(new StringReader("" +
-                        "<container>" +
-                        "    <pseudocomponent factory='org.picoextras.script.xml.XStreamXmlPseudoComponentFactory'>" +
-                        "       <org.picoextras.testmodel.WebServerConfigStub>" +
-                        "         <host>foobar.com</host> " +
-                        "         <port>4321</port> " +
-                        "       </org.picoextras.testmodel.WebServerConfigStub>" +
-                        "    </pseudocomponent>" +
-                        "    <component typekey='org.picoextras.testmodel.WebServer' " +
-                        "               class='org.picoextras.testmodel.WebServerImpl'/>" +
-                        "</container>"), new MockMonitor());
+        nano = new XmlCompositionNanoContainer(new StringReader("" +
+                "<container>" +
+                "    <pseudocomponent factory='org.picoextras.script.xml.XStreamXmlPseudoComponentFactory'>" +
+                "       <org.picoextras.testmodel.WebServerConfigStub>" +
+                "         <host>foobar.com</host> " +
+                "         <port>4321</port> " +
+                "       </org.picoextras.testmodel.WebServerConfigStub>" +
+                "    </pseudocomponent>" +
+                "    <component typekey='org.picoextras.testmodel.WebServer' " +
+                "               class='org.picoextras.testmodel.WebServerImpl'/>" +
+                "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
         WebServerConfig wsc = (WebServerConfig) nano.getRootContainer().getComponentInstance(WebServerConfig.class);
-        assertEquals("foobar.com",wsc.getHost());
-        assertEquals(4321,wsc.getPort());
+        assertEquals("foobar.com", wsc.getHost());
+        assertEquals(4321, wsc.getPort());
     }
 
     public void testInstantiateWithBeanComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoCompositionException {
 
         NanoContainer nano = null;
-            nano = new XmlCompositionNanoContainer(new StringReader("" +
-                        "<container>" +
-                        "    <pseudocomponent factory='org.picoextras.script.xml.BeanXmlPseudoComponentFactory'>" +
-                        "       <org.picoextras.testmodel.WebServerConfigBean>" +
-                        "         <host>foobar.com</host> " +
-                        "         <port>4321</port> " +
-                        "       </org.picoextras.testmodel.WebServerConfigBean>" +
-                        "    </pseudocomponent>" +
-                        "    <component typekey='org.picoextras.testmodel.WebServer' " +
-                        "               class='org.picoextras.testmodel.WebServerImpl'/>" +
-                        "</container>"), new MockMonitor());
+        nano = new XmlCompositionNanoContainer(new StringReader("" +
+                "<container>" +
+                "    <pseudocomponent factory='org.picoextras.script.xml.BeanXmlPseudoComponentFactory'>" +
+                "       <org.picoextras.testmodel.WebServerConfigBean>" +
+                "         <host>foobar.com</host> " +
+                "         <port>4321</port> " +
+                "       </org.picoextras.testmodel.WebServerConfigBean>" +
+                "    </pseudocomponent>" +
+                "    <component typekey='org.picoextras.testmodel.WebServer' " +
+                "               class='org.picoextras.testmodel.WebServerImpl'/>" +
+                "</container>"), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
         WebServerConfig wsc = (WebServerConfig) nano.getRootContainer().getComponentInstance(WebServerConfig.class);
-        assertEquals("foobar.com",wsc.getHost());
-        assertEquals(4321,wsc.getPort());
+        assertEquals("foobar.com", wsc.getHost());
+        assertEquals(4321, wsc.getPort());
     }
 
     public void testInstantiateWithBogusXmlFrontEnd() throws SAXException, ParserConfigurationException, IOException, PicoCompositionException {
@@ -174,16 +175,16 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
     public void testInstantiateWithBespokeContainer() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoCompositionException {
 
-        OverriddenDefaultLifecyclePicoContainer.used = false;
+        OverriddenPicoContainer.used = false;
 
         NanoContainer nano = new XmlCompositionNanoContainer(new StringReader("" +
-                "<container container='"+OverriddenDefaultLifecyclePicoContainer.class.getName()+"'>" +
+                "<container container='" + OverriddenPicoContainer.class.getName() + "'>" +
                 "      <component class='org.nanocontainer.Xxx$A'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertTrue("Bespoke Container (a test class) should have been used",OverriddenDefaultLifecyclePicoContainer.used);
+        assertTrue("Bespoke Container (a test class) should have been used", OverriddenPicoContainer.used);
         assertEquals("Should match the expression", "*A+A_started+A_stopped+A_disposed", MockMonitor.monitorRecorder);
 
     }
@@ -201,11 +202,11 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
     }
 
-    public static class OverriddenDefaultLifecyclePicoContainer extends DefaultLifecyclePicoContainer {
+    public static class OverriddenPicoContainer extends DefaultPicoContainer {
 
         public static boolean used;
 
-        public OverriddenDefaultLifecyclePicoContainer() {
+        public OverriddenPicoContainer() {
             used = true;
         }
     }
@@ -222,13 +223,13 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
         try {
             new XmlCompositionNanoContainer(new StringReader("" +
-                        "<container>" +
-                        "    <component stringkey='one' class='java.util.ArrayList'/>" +
-                        "    <component stringkey='two' class='java.util.Vector'/>" +
-                        "    <component class='"+CollectionNeedingComponent.class.getName()+"'>" +
-                        "      <hint stringkey='one'/>" +
-                        "    </component>" +
-                        "</container>"), new MockMonitor());
+                    "<container>" +
+                    "    <component stringkey='one' class='java.util.ArrayList'/>" +
+                    "    <component stringkey='two' class='java.util.Vector'/>" +
+                    "    <component class='" + CollectionNeedingComponent.class.getName() + "'>" +
+                    "      <hint stringkey='one'/>" +
+                    "    </component>" +
+                    "</container>"), new MockMonitor());
         } catch (AmbiguousComponentResolutionException e) {
             //TODO - This should work not barf.
         }

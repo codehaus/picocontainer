@@ -24,6 +24,8 @@ import java.io.Serializable;
 /**
  * @author Michael Ward
  * @version $Revision$
+ *
+ * @deprecated use JMXVisitor
  */
 public class MBeanComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
 

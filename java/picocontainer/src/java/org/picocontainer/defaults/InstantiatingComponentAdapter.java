@@ -34,11 +34,18 @@ import java.util.List;
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
     /** The cycle guard for the verification. */ 
-    protected transient ObjectReference verifyingGuard;
+    protected transient Guard verifyingGuard;
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
     /** Flag indicating instanciation of non-public classes. */ 
     protected boolean allowNonPublicClasses;
+    
+    protected static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
+        protected PicoContainer container;
+        protected void setArguments(PicoContainer container) {
+            this.container = container;
+        }
+    }
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 
@@ -84,20 +91,21 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      */
     public void verify(final PicoContainer container) throws PicoVerificationException {
         try {
-            final Constructor constructor = getGreediestSatisfiableConstructor(container);
-            final Class[] parameterTypes = constructor.getParameterTypes();
-            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
             if (verifyingGuard == null) {
-                verifyingGuard = new CyclicDependency.ThreadLocalGuard();
-            }
-            CyclicDependency.observe(verifyingGuard, getComponentImplementation(), new CyclicDependency() {
-                public Object run() {
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
+                verifyingGuard = new Guard() {
+                    public Object run() {
+                        final Constructor constructor = getGreediestSatisfiableConstructor(container);
+                        final Class[] parameterTypes = constructor.getParameterTypes();
+                        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                        for (int i = 0; i < currentParameters.length; i++) {
+                            currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
+                        }
+                        return null;
                     }
-                    return null;
-                }
-            });
+                };
+            }
+            verifyingGuard.setArguments(container);
+            verifyingGuard.observe(getComponentImplementation());
         } catch (PicoVerificationException ex) {
             throw ex;
         } catch (Exception ex) {

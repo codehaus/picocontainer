@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version $Revision$
  */
 
-public class KernelTestCase extends TestCase {
+public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase of some sort I'd hope
     private Kernel kernel;
 
     protected void setUp() throws Exception {
@@ -49,12 +49,17 @@ public class KernelTestCase extends TestCase {
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeployedMarsComponentsAreInDiffClassloaderToKernel() {
+    public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
         assertNotNull(o);
         // these should be two removed from each other.
         assertEquals(kernel.getClass().getClassLoader(), o.getClass().getClassLoader().getParent().getParent());
+
+        // LSD: what kind of number is that, "two"?
+        // You're testing that the kernel is two classloaders
+        // above the component, which is not
+        // testDeployedMarsComponentsAreInDiffClassloaderToKernel()
     }
 
     public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -66,20 +71,22 @@ public class KernelTestCase extends TestCase {
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
         // these should be two removed from each other.
         assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent());
-
+        // LSD: those numbers again...you want to expose the classloader architecture
+        // to the client...that'll make it difficult to change...
     }
 
-    public void testTwoDeployedMarsComponentAPIsAreInDiffClassloader() {
+    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
         kernel.deploy(new File("test2.mar"));
         Object o2 = kernel.getComponent("test2/org.megacontainer.test2.Test2Comp");
         assertNotNull(o);
         assertNotNull(o2);
+        // LSD: this, I like...
         assertNotSame(o.getClass().getClassLoader(), o2.getClass().getClassLoader());
     }
 
-    public void testTwoDeployedMarsComponentImplementationsAreInDifferntClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
@@ -110,6 +117,10 @@ public class KernelTestCase extends TestCase {
         // .bogus language not supported
     }
 
+    public void testMarWithGroovyScriptErrorResultsInException() {
+        // gracefully handle misconfiguration...
+    }
+
     public void testMarFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
@@ -128,6 +139,46 @@ public class KernelTestCase extends TestCase {
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
         Method m = o.getClass().getMethod("testKernelImplIsInvisibleFromMarsSandbox", new Class[0]);
         m.invoke(o, new Object[0]); // asserts using Junit that certain classes do not exist in classpath
+    }
+
+    public void testExportedComponentsCanInteract()
+    {
+        // thomas' use case goes here
+    }
+
+    public void testHiddenStuffIsActuallyHidden()
+    {
+        // the comps are there, what's the test supposed to be?
+    }
+
+    public void testExportComponentsUsingAltRMI()
+    {
+        // what mechanism? Support one by default?
+    }
+
+    public void testBasicTreeNavigationUsingBasicXPath()
+    {
+        // not just opaque string handling pleez
+    }
+
+    public void testBasicTreeNavigationUsingComplexXPath()
+    {
+        // what about getting an array of components satisfying constraints?
+        // XPath does that, no?
+    }
+
+    public void testMultipleKernelsPeaceFullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        // was an issue with phoenix at times...ie these guys don't claim server sockets...
+        Kernel kernel2 = new DefaultKernel();
+
+        testDeploymentOfMarFile();
+
+        kernel2.deploy(new File("test.mar"));
+        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        assertNotNull(o);
+        Method m = o.getClass().getMethod("testMe", new Class[0]);
+        assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
 }

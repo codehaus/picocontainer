@@ -518,6 +518,23 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     }
 
+    public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = createPicoContainer(parent);
+        parent.addChildContainer(child);
+        child.registerComponentImplementation(LifeCycleMonitoring.class);
+        parent.removeChildContainer(child);
+        parent.start();
+        assertTrue(sb.toString().indexOf("-started") == -1);
+        parent.stop();
+        assertTrue(sb.toString().indexOf("-stopped") == -1);
+        parent.dispose();
+        assertTrue(sb.toString().indexOf("-disposed") == -1);
+
+    }
+
     public void testShouldCascadeStartStopAndDisposeToChild() {
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);

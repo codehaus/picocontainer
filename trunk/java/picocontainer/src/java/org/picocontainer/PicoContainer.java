@@ -113,6 +113,8 @@ public interface PicoContainer extends Startable, Disposable {
     /**
      * Callback method from the implementation to keep track of the instantiation order. <b>This method is not intended
      * to be called explicitly by clients of the API!</b>
+     * 
+     * @param componentAdapter the freshly added {@link ComponentAdapter}
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 }

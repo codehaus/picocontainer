@@ -3,11 +3,50 @@
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy" prereqs="jar:deploy"/>
 
+  <goal name="setclasspath">
+    <path id="test.classpath">
+      <pathelement path="${maven.build.dest}"/>
+      <pathelement path="target/classes"/>
+      <pathelement path="target/test-classes"/>
+      <path refid="maven.dependency.classpath"/>
+    </path>
+    <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="test.classpath"/> 
+  </goal>
+
+
     <postGoal name="test:compile">
+        <attainGoal name="setclasspath"/>    
         <copy todir="${basedir}/target/test-classes">
-            <fileset dir="${basedir}/src/test"/>
+            <fileset dir="${basedir}/src/test">
+                <include name="**/*.groovy"/>
+            </fileset>
         </copy>
+        <!-- trying to get this working
+        <echo>hello 1</echo>
+        <groovyc destdir="${basedir}/target/test-classes" 
+                 srcdir="${basedir}/target/test-classes" listfiles="true">
+          <classpath refid="maven.dependency.classpath"/>
+        </groovyc>
+        <echo>hello 2</echo>
+        -->
     </postGoal>
+    
+    
+  <goal name="groovy:compile" prereqs="java:compile, setclasspath"
+    description="Compiles the Groovy code">
+
+    <!-- lets create the test cases from the wiki documentation -->
+    <mkdir dir="${basedir}/target/test-classes/wiki"/>
+    <wiki2testcase srcdir="${basedir}/xdocs" destdir="${basedir}/target/test-classes/wiki"/>
+    
+    <copy todir="${basedir}/target/classes">
+      <fileset dir="${basedir}/src/main">
+        <include name="**/*.groovy"/>
+        <exclude name="CVS/*"/>
+      </fileset>
+    </copy>
+  </goal>    
+    
     
   <goal name="setclasspath">
   <path id="test.classpath">

@@ -12,8 +12,8 @@ import org.nanocontainer.testmodel.WebServerImpl
 
 class ExampleTest extends GroovyTestCase {
     
-    void testInstantiateBasicCopmonent() {
-        builder = new PicoBuilder()
+    void testInstantiateBasicComponent() {
+        builder = new NanoGroovyBuilder()
         pico = builder.container {
             component(Xxx$A)
         }
@@ -27,7 +27,7 @@ class ExampleTest extends GroovyTestCase {
 
         // A and C have no no dependancies. B Depends on A.
         
-        builder = new PicoBuilder()
+        builder = new NanoGroovyBuilder()
         pico = builder.container {
             component(Xxx$A)
             container() {
@@ -49,7 +49,7 @@ class ExampleTest extends GroovyTestCase {
         // A and C have no no dependancies. B Depends on A.
 
         try {
-            builder = new PicoBuilder()
+            builder = new NanoGroovyBuilder()
             pico = builder.container {
                 component(Xxx$B)
                 container() {
@@ -68,7 +68,7 @@ class ExampleTest extends GroovyTestCase {
 
     void testInstantiateWithBespokeComponentAdaptor() {
 
-        builder = new PicoBuilder()
+        builder = new NanoGroovyBuilder()
         pico = builder.container(adapterFactory:new HotSwappingComponentAdapterFactory()) {
             component(key:WebServerConfig, class:DefaultWebServerConfig)
             component(key:WebServer, class:WebServerImpl)
@@ -89,7 +89,7 @@ class ExampleTest extends GroovyTestCase {
 
     void testInstantiateWithInlineConfiguration() {
 
-        builder = new PicoBuilder()
+        builder = new NanoGroovyBuilder()
         pico = builder.container {
             bean(beanClass:WebServerConfigBean, host:'foobar.com', port:4321)
             component(key:WebServer, class:WebServerImpl)
@@ -108,11 +108,11 @@ class ExampleTest extends GroovyTestCase {
 
         File testCompJar = new File(System.getProperty("testcomp.jar"));
 
-        builder = new PicoBuilder()
+        builder = new NanoGroovyBuilder()
         pico = builder.softContainer {
             classpathElement(testCompJar.getCanonicalPath())
             component("TestComp")
-            container() {
+            softContainer() {
                 component("TestComp2")
             }
         }

@@ -23,6 +23,7 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
 import java.io.Reader;
+import java.io.IOException;
 
 /**
  * {@inheritDoc}
@@ -84,8 +85,8 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             } else {
                 throw new PicoCompositionException(e);
             }
-        } catch (Exception e) {
-            throw new PicoCompositionException(e);
+        } catch (IOException e) {
+            throw new PicoCompositionException("IOException encountered, message -'" + e.getMessage() + "'", e);
         } finally {
             Context.exit();
         }

@@ -13,6 +13,7 @@ package org.nanocontainer.reflection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 public class StringToObjectConverter {
 

@@ -27,6 +27,23 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
 
+    void testInstantiateBasicComponentInDeeperTree() {
+
+        Xxx.reset()
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            container() {
+                component(Xxx$A)
+            }
+        }
+
+        startAndStop(pico)
+
+        assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
+    }
+
+
 // This should work! There seems to be some residual artifacts between this test and the one above.
 // comment out all tests bar these top two. run the tests. then come back, and comment out the top
 // test and run the suite again. all works then weird, when it was this one that failed in the
@@ -114,16 +131,17 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertTrue(wsc.getPort() == 4321)
     }
 
-//keep    void testSoftInstantiateWithChildContainer() {
+//      TODO - this one fails because the classpathelement 'path' attribute is inaccessible
+//             to the env that needs it.
+//      void testSoftInstantiateWithChildContainerWithDynamicClassPath() {
 //
 //        File testCompJar = new File(System.getProperty("testcomp.jar"));
 //        compJarPath = testCompJar.getCanonicalPath()
-//
 //        builder = new NanoGroovyBuilder()
 //        pico = builder.container {
-//            classpathelement(compJarPath)
+//            classpathelement(path:compJarPath)
 //            component("TestComp")
-//            softContainer() {
+//            container() {
 //                component("TestComp2")
 //            }
 //        }

@@ -13,7 +13,7 @@ package picocontainer.aggregated;
 import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.WilmaImpl;
@@ -88,7 +88,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
                 return new Class[] {String.class};
             }
 
-            public void instantiateComponents() throws PicoInitializationException {
+            public void instantiateComponents() throws PicoInstantiationException {
             }
         };
 
@@ -109,7 +109,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
                 return new Class[] {Integer.class};
             }
 
-            public void instantiateComponents() throws PicoInitializationException {
+            public void instantiateComponents() throws PicoInstantiationException {
             }
         };
 

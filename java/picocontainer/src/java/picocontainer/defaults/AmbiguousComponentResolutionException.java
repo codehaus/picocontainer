@@ -9,9 +9,9 @@
  *****************************************************************************/
 package picocontainer.defaults;
 
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 
-public class AmbiguousComponentResolutionException extends PicoInitializationException {
+public class AmbiguousComponentResolutionException extends PicoInstantiationException {
     private final Class[] ambiguousClasses;
 
     public AmbiguousComponentResolutionException(Class[] ambiguousClass) {

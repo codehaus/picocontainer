@@ -13,7 +13,7 @@ package picocontainer.defaults;
 import picocontainer.PicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoInvocationTargetInitailizationException;
 
 import java.util.Set;
@@ -281,7 +281,7 @@ public class DefaultPicoContainer implements PicoContainer {
         }
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInstantiationException {
         if (initialized == false) {
             initializeComponents();
             checkUnsatisfiedDependencies();
@@ -358,12 +358,12 @@ public class DefaultPicoContainer implements PicoContainer {
         return false;
     }
 
-    private void checkUnsatisfiedDependencies() throws UnsatisfiedDependencyStartupException {
+    private void checkUnsatisfiedDependencies() throws UnsatisfiedDependencyInstantiationException {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
             Class componentType = componentSpecification.getComponentType();
             if (componentTypeToInstanceMap.get(componentType) == null) {
-                throw new UnsatisfiedDependencyStartupException(componentType);
+                throw new UnsatisfiedDependencyInstantiationException(componentType);
             }
         }
     }

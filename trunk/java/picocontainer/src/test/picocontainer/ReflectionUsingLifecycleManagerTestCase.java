@@ -82,4 +82,36 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             e.printStackTrace();
         }
     }
+
+    public void testNonPublicStartInvocation() throws PicoStartException {
+
+        ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
+
+        final ArrayList messages = new ArrayList();
+
+        lm.startComponent(new Object() {
+            protected void start() {
+                messages.add("started");
+            }
+        });
+        assertEquals(0, messages.size());
+
+    }
+
+    public void testNonPublicStopInvocation() throws PicoStartException {
+
+        ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
+
+        final ArrayList messages = new ArrayList();
+
+        lm.startComponent(new Object() {
+            protected void stop() {
+                messages.add("stopped");
+            }
+        });
+        assertEquals(0, messages.size());
+
+    }
+
+
 }

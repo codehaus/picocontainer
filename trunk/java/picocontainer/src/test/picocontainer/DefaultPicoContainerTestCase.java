@@ -14,6 +14,8 @@ import junit.framework.TestCase;
 
 import java.util.*;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import picocontainer.testmodel.FlintstonesImpl;
 import picocontainer.testmodel.FredImpl;
@@ -347,6 +349,18 @@ public class DefaultPicoContainerTestCase extends TestCase {
         public D() {
             System.out.println("D instantiated");
         }
+    }
+
+    public void testWithComponentFactory() throws PicoRegistrationException, PicoStartException {
+        final WilmaImpl wilma = new WilmaImpl();
+        PicoContainer pc = new PicoContainerImpl.WithComponentFactory(new ComponentFactory(){
+            public Object createComponent(Class compType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+                return wilma;
+            }
+        });
+        pc.registerComponent(WilmaImpl.class);
+        pc.start();
+        assertEquals(pc.getComponent(WilmaImpl.class), wilma);
     }
 
     // TODO uncomment this and make it pass

@@ -27,8 +27,6 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
             }
         } catch (NoSuchMethodException e) {
             // fine.
-        } catch (SecurityException e) {
-            throw new SecurityStartException(e);
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("Will never happen!");
         } catch (InvocationTargetException e) {
@@ -40,13 +38,15 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
     public void stopComponent(Object component) throws PicoStopException {
         try {
             Method method = component.getClass().getMethod("stop", NOPARMS);
-            method.invoke(component, NOARGS);
+            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+               method.invoke(component, NOARGS);
+            }
         } catch (NoSuchMethodException e) {
             // fine.
         } catch (SecurityException e) {
             // could be running in applet space or other
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            throw new IllegalStateException("Will never happen!");
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStopException(e.getCause());
         }

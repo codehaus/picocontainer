@@ -5,12 +5,10 @@ import org.apache.tools.ant.BuildException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.nanocontainer.reflection.StringToObjectConverter;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.ListIterator;

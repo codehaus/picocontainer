@@ -47,12 +47,12 @@ public class PicoContainerTask extends Task {
             new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
     // for subclasses
-    protected ContainerComposer extraContainerAssembler = null;
+    protected ContainerComposer extraContainerComposer = null;
 
-    private ContainerComposer containerAssembler = new ContainerComposer() {
+    private ContainerComposer containerComposer = new ContainerComposer() {
         public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
-            if(extraContainerAssembler != null) {
-                extraContainerAssembler.composeContainer(picoContainer, assemblyScope);
+            if(extraContainerComposer != null) {
+                extraContainerComposer.composeContainer(picoContainer, assemblyScope);
             }
 
             // register components specified in Ant
@@ -82,7 +82,7 @@ public class PicoContainerTask extends Task {
     }
 
     public void execute() {
-		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerAssembler) {
+		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
 			protected MutablePicoContainer createContainer() {
 				return new DefaultPicoContainer(propertyFactory);
 			}

@@ -61,7 +61,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {

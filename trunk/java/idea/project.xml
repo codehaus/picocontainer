@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <extend>${basedir}/../project.xml</extend>
+    <extend>${basedir}/../project.xml</extend>
     <groupId>nanocontainer</groupId>
-  <id>nanocontainer-idea</id>
-  <name>nanocontainer-idea</name>
-  <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+    <id>nanocontainer-idea</id>
+    <name>nanocontainer-idea</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
 
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-beta-5-SNAPSHOT</version>
+        </dependency>
 
-  <dependencies>
-    <dependency>
+        <dependency>
             <groupId>nanocontainer</groupId>
-      <artifactId>nanocontainer-swing</artifactId>
-      <version>1.0-beta-1-SNAPSHOT</version>
-    </dependency>
+            <artifactId>nanocontainer-swing</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <id>openapi</id>
             <version></version>
             <url>http://www.intellij.net/</url>
         </dependency>
-  </dependencies>
+    </dependencies>
 
 </project>

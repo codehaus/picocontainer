@@ -193,7 +193,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
         return null;
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {

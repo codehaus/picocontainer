@@ -41,7 +41,7 @@ public class TreePanelDemo {
 
         JToolBar toolBar = new JToolBar();
         ContainerTree tree = new ContainerTree(container1, IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON, false));
-        toolBar.add(new RegisterComponentAction("blah", tree));
+        toolBar.add(new RegisterComponentAction("blah", tree, TreePanelDemo.class.getClassLoader()));
         final AddContainerAction addContainerAction = new AddContainerAction("blah", tree);
         toolBar.add(addContainerAction);
         toolBar.add(new UnregisterComponentAction("blah", tree));

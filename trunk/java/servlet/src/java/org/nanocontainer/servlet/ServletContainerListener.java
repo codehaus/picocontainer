@@ -69,8 +69,9 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             String initParameter = (String) initParameters.nextElement();
             if(initParameter.startsWith("nanocontainer")) {
                 String extension = initParameter.substring(initParameter.lastIndexOf('.'));
+                String builderClassName = NanoContainer.getBuilderClassName(extension);
                 String script = context.getInitParameter(initParameter);
-                NanoContainer nanoContainer = new NanoContainer(new StringReader(script), extension, Thread.currentThread().getContextClassLoader());
+                NanoContainer nanoContainer = new NanoContainer(new StringReader(script), builderClassName, Thread.currentThread().getContextClassLoader());
                 return nanoContainer.getContainerBuilder();
             }
             if(initParameter.equals(ContainerComposer.class.getName())) {

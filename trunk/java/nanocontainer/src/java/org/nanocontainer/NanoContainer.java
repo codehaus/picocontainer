@@ -12,11 +12,7 @@ package org.nanocontainer;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.NullPicoContainer;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,49 +21,53 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The main class for configuration of PicoContainer with various scripting languages.
+ * When using the constructors taking a file, the extensions must be one of the following:
+ * <ul>
+ * <li>.groovy</li>
+ * <li>.bsh</li>
+ * <li>.js</li>
+ * <li>.py</li>
+ * <li>.xml</li>
+ * </ul>
+ * -And the content of the file likewise. See <a href="http://docs.codehaus.org/display/NANO/NanoContainer">NanoContainer documentation</a>
+ * for details.
+ */
 public class NanoContainer {
 
+    public static final String GROOVY = ".groovy";
+    public static final String BEANSHELL = ".bsh";
     public static final String JAVASCRIPT = ".js";
     public static final String JYTHON = ".py";
-    public static final String GROOVY = ".groovy";
     public static final String XML = ".xml";
-    public static final String BEANSHELL = ".bsh";
 
-    private static final Map extensionToComposers = new HashMap();
+    private static final Map extensionToBuilders = new HashMap();
 
     static {
-        extensionToComposers.put(JAVASCRIPT, "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
-        extensionToComposers.put(XML, "org.nanocontainer.script.xml.XMLContainerBuilder");
-        extensionToComposers.put(JYTHON, "org.nanocontainer.script.jython.JythonContainerBuilder");
-        extensionToComposers.put(GROOVY, "org.nanocontainer.script.groovy.GroovyContainerBuilder");
-        extensionToComposers.put(BEANSHELL, "org.nanocontainer.script.bsh.BeanShellContainerBuilder");
+        extensionToBuilders.put(GROOVY, "org.nanocontainer.script.groovy.GroovyContainerBuilder");
+        extensionToBuilders.put(BEANSHELL, "org.nanocontainer.script.bsh.BeanShellContainerBuilder");
+        extensionToBuilders.put(JAVASCRIPT, "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
+        extensionToBuilders.put(XML, "org.nanocontainer.script.xml.XMLContainerBuilder");
+        extensionToBuilders.put(JYTHON, "org.nanocontainer.script.jython.JythonContainerBuilder");
     }
 
     private ScriptedContainerBuilder containerBuilder;
 
-    public NanoContainer(File compositionFile, PicoContainer parent, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), parent, classLoader);
-    }
-
-    public NanoContainer(File compositionFile, PicoContainer parent) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), parent, NanoContainer.class.getClassLoader());
+    public NanoContainer(File compositionFile, ClassLoader classLoader) throws IOException, ClassNotFoundException {
+        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), classLoader);
     }
 
     public NanoContainer(File compositionFile) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), new NullPicoContainer(), NanoContainer.class.getClassLoader());
+        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), NanoContainer.class.getClassLoader());
     }
 
-    public NanoContainer(Reader composition, String extension, ClassLoader classLoader) throws ClassNotFoundException {
-        this(composition, extension, null, classLoader);
+    public NanoContainer(Reader composition, String builderClass) throws ClassNotFoundException {
+        this(composition, builderClass, NanoContainer.class.getClassLoader());
     }
 
-    public NanoContainer(Reader composition, String extension) throws ClassNotFoundException {
-        this(composition, extension, null, NanoContainer.class.getClassLoader());
-    }
+    public NanoContainer(Reader composition, String builderClass, ClassLoader classLoader) throws ClassNotFoundException {
 
-    public NanoContainer(Reader composition, String extension, PicoContainer parent, ClassLoader classLoader) throws ClassNotFoundException {
-
-        String containerAssemblerClassName = (String) extensionToComposers.get(extension);
         DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
         {
             // disposable.
@@ -76,23 +76,30 @@ public class NanoContainer {
             dpc.registerComponentInstance(classLoader);
             defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
         }
-        ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
+        ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(builderClass);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance();
-        final ObjectReference parentRef = new SimpleReference();
-        parentRef.set(parent);
     }
 
-    private static File fileExists(File compositionFile) {
-        if (compositionFile.exists()) {
-            return compositionFile;
+    private static File fileExists(File file) {
+        if (file.exists()) {
+            return file;
         } else {
             //todo a proper exception.
-            throw new RuntimeException("File " + compositionFile.getName() + " does not exist.");
+            throw new RuntimeException("File " + file.getName() + " does not exist.");
         }
     }
 
-    private static String getLanguage(File compositionFile) throws IOException {
-        return compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().lastIndexOf("."));
+    private static String getBuilderClassName(File compositionFile) throws IOException {
+        String language = getExtension(compositionFile);
+        return getBuilderClassName(language);
+    }
+
+    public static String getBuilderClassName(String extension) {
+        return (String) extensionToBuilders.get(extension);
+    }
+
+    private static String getExtension(File file) throws IOException {
+        return file.getCanonicalPath().substring(file.getCanonicalPath().lastIndexOf("."));
     }
 
     public ScriptedContainerBuilder getContainerBuilder() {

@@ -42,6 +42,9 @@ import org.nanocontainer.swing.action.UnregisterComponentAction;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URLClassLoader;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -58,6 +61,7 @@ public class PicoPlugin implements ProjectComponent {
 
     private Project project;
     private ContainerTree tree = new ContainerTree(new DefaultPicoContainer(), IconHelper.getIcon("/nodes/class.png", false));
+    private ClassLoader componentClassLoader;
 
     public PicoPlugin(Project project) {
         this.project = project;
@@ -72,8 +76,13 @@ public class PicoPlugin implements ProjectComponent {
                 ToolWindowAnchor.RIGHT);
         toolWindow.setIcon(IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false));
 
+        createClassLoader();
+    }
+
+    private void createClassLoader() {
         ModuleManager moduleManager = ModuleManager.getInstance(project);
         final Module[] modules = moduleManager.getModules();
+        List urls = new ArrayList();
         for (int i = 0; i < modules.length; i++) {
             Module module = modules[i];
             final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
@@ -83,9 +92,15 @@ public class PicoPlugin implements ProjectComponent {
             for (int j = 0; j < files.length; j++) {
                 VirtualFile file = files[j];
                 String url = file.getUrl();
-                System.out.println("url = " + url);
+                try {
+                    urls.add(new URL(url));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        URL[] urlArray = (URL[]) urls.toArray(new URL[urls.size()]);
+        componentClassLoader = new URLClassLoader(urlArray, getClass().getClassLoader());
     }
 
     private ActionToolbar createToolBar() {
@@ -96,7 +111,7 @@ public class PicoPlugin implements ProjectComponent {
         actions.add(registerAction(actionManager, new StartContainer(new StartContainerAction("/actions/execute.png", tree)), START_CONTAINER_ACTION_ID));
         actions.add(registerAction(actionManager, new StopContainer(new StopContainerAction("/actions/suspend.png", tree)), STOP_CONTAINER_ACTION_ID));
         actions.add(Separator.getInstance());
-        actions.add(registerAction(actionManager, new RegisterComponent(new RegisterComponentAction("/nodes/entryPoints.png", tree)), REGISTER_COMPONENT_ACTION_ID));
+        actions.add(registerAction(actionManager, new RegisterComponent(new RegisterComponentAction("/nodes/entryPoints.png", tree, componentClassLoader)), REGISTER_COMPONENT_ACTION_ID));
         actions.add(registerAction(actionManager, new AddContainer(new AddContainerAction(IconHelper.PICO_CONTAINER_ICON, tree)), ADD_CONTAINER_ACTION_ID));
         actions.add(registerAction(actionManager, new UnregisterComponent(new UnregisterComponentAction("/actions/exclude.png", tree)), UNREGISTER_COMPONENT_ACTION_ID));
         addToolBarActions(toolGroup, actions);

@@ -39,6 +39,7 @@ public class DifferenceAnalysingFolderContentHandlerTestCase extends TestCase {
         FileObject initialFolderOne = (FileObject) initialFolderOneMock.proxy();
         Mock initialFolderTwoMock = new Mock(FileObject.class);
         initialFolderTwoMock.expectAndReturn("getType", FileType.FOLDER);
+        initialFolderTwoMock.expectAndReturn("getType", FileType.FOLDER);
         FileObject initialFolderTwo = (FileObject) initialFolderTwoMock.proxy();
         FileObject[] initialFolders = new FileObject[] {initialFolderOne, initialFolderTwo};
 

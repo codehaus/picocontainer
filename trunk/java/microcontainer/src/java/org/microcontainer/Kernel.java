@@ -21,9 +21,9 @@ public interface Kernel {
 
     void deferredDeploy(File file);
 
-    Object getComponent(String relativeComponentPath);
+    Object getComponent(String relativeComponentPath); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 
-    void start(String startableNode);
+    void start(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 
-    void stop(String startableNode);
+    void stop(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 }

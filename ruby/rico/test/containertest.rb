@@ -10,7 +10,6 @@ class ContainerTest < Test::Unit::TestCase
   # Registering components in the container
 
   def test_new_container_is_empty
-    fail "DamageControl is my pal"
     rico = Container.new
     assert_equal true, rico.is_empty?
   end

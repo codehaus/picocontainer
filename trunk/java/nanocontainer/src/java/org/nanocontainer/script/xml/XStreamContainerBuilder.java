@@ -18,6 +18,7 @@ import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentParameter;
@@ -49,6 +50,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
 
     private final static String IMPLEMENTATION = "implementation";
     private final static String INSTANCE = "instance";
+    private final static String ADAPTER = "adapter";
+	private final static String OBJECT = "object";
     private final static String CLASS = "class";
     private final static String KEY = "key";
     private final static String CONSTANT = "constant";
@@ -80,6 +83,14 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
      * nodes here
      */
     public void populateContainer(MutablePicoContainer container) {
+		populateContainer(container,rootElement);
+    }
+
+	/**
+	 * just a convenience method, so we can work recursively with subcontainers
+	 * for whatever puproses we see cool. 
+	 */
+	void populateContainer(MutablePicoContainer container, Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -98,13 +109,38 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder {
                     }
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
-                } else {
+                } else if(ADAPTER.equals(name)) {
+					insertAdapter(container,(Element)child);
+				}else {
                     throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
-    }
-
+		
+	}
+	/**
+	 * process adapter node
+	 */
+	 protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
+        String key = rootElement.getAttribute(KEY);
+        String klass = rootElement.getAttribute(CLASS);
+		try {
+			DefaultPicoContainer nested = new DefaultPicoContainer();
+			populateContainer(nested,rootElement);
+			
+			if(key != null) {
+				container.registerComponent((ComponentAdapter)nested.getComponentInstance(key));
+			} else if(klass != null) {
+				Class clazz = classLoader.loadClass(klass);
+				container.registerComponent((ComponentAdapter)nested.getComponentInstanceOfType(clazz));
+			} else {
+				container.registerComponent((ComponentAdapter)nested.getComponentInstanceOfType(ComponentAdapter.class));
+			}
+		} catch(ClassNotFoundException ex) {
+			throw new PicoCompositionException(ex);
+		}
+		
+	 }
     /**
      * process implementation node
      */

@@ -24,7 +24,8 @@ import java.io.StringReader;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+	public void testContainerBuilding()  {
+
         Reader script = new StringReader( "" +
                 "<container>" +
                 "    <instance key='foo'>" +
@@ -63,6 +64,32 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 		assertEquals("it's really late239",((ThingThatTakesParamsInConstructor)pico.getComponentInstance("konstantin needs beer")).getValue());
 	}
 
-
+	public void testComponentAdapterInjection() throws Throwable {
+		Reader script = new StringReader(
+			"<container>" + 
+				"<adapter key='testAdapter'>" +
+					"<instance key='firstString'>" +
+						"<string>bla bla</string>"   + 
+					"</instance>" + 
+					"<instance key='secondString' >" + 
+						"<string>glarch</string>" + 
+					"</instance>" + 
+					"<instance key='justInt'>" + 
+						"<int>777</int>" + 
+					"</instance>" + 
+					"<implementation key='testAdapter' class='org.nanocontainer.script.xml.TestComponentAdapter'>" +
+						"<dependency key='firstString'/>" + 
+						"<dependency key='justInt'/>" + 
+						"<dependency key='secondString'/>" +
+					"</implementation>" + 
+				"</adapter>"  +
+			"</container>" 
+		);
+		
+        //PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+		
+		//TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
+		//assertNotNull(tca);
+	}
 }
 

@@ -10,13 +10,24 @@
 
 package org.nanocontainer.script.xml;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -26,15 +37,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -49,7 +51,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private final Element rootElement;
 
-    private final static String DEFAULT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
+    private final static String DEFAULT_INSTANCE_FACTORY = XStreamComponentInstanceFactory.class.getName();
     private static final String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
 
     private final static String CONTAINER = "container";
@@ -91,7 +93,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
             DefaultSoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
                     parentContainer);
-            registerComponentsAndChildContainers(result, rootElement);
+			registerComponentsAndChildContainers(result, rootElement);
             return result;
         } catch (ClassNotFoundException e) {
             throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
@@ -99,15 +101,15 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
             throw new PicoCompositionException(e);
-        } catch (IOException e) {
-            throw new PicoCompositionException(e);
-        } catch (SAXException e) {
-            throw new PicoCompositionException(e);
-        }
+		} catch (IOException e) {
+			throw new PicoCompositionException(e);
+		} catch (SAXException e) {
+			throw new PicoCompositionException(e);
+		}		
     }
 
 
-    private void registerComponentsAndChildContainers(SoftCompositionPicoContainer parentContainer, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
+	private void registerComponentsAndChildContainers(SoftCompositionPicoContainer parentContainer, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.

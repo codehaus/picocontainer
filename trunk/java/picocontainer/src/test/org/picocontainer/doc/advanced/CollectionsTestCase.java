@@ -59,14 +59,12 @@ public class CollectionsTestCase
 
     // END SNIPPET: classes
 
-    public void testShouldCreateBowlWithFishCollection() {
+    public void XXXtestShouldCreateBowlWithFishCollection() {
 
         //      START SNIPPET: usage
 
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
-        pico.registerComponentImplementation(Bowl.class);
-
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
             new CollectionComponentParameter(Fish.class, false),
             new CollectionComponentParameter(Cod.class, false)

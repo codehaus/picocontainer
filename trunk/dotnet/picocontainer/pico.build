@@ -22,7 +22,19 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<exec program="lib\nunit-console.exe" commandline="${build.dir}\PicoContainer.dll"/>
+
+		<csc target="library" output="${build.dir}\PicoContainerTests.dll" debug="true">
+			<sources basedir="src">
+				<includes name="Test\**\*.cs"/>				
+			</sources>
+			<references>
+				<includes name="build\PicoContainer.dll"/>			
+				<includes name="lib\*.dll"/>
+			</references>
+			<arg value="/nowarn:1591"/> <!-- don't warn about uncommented public methods -->
+		</csc>
+
+		<exec program="lib\nunit-console.exe" commandline="${build.dir}\PicoContainerTests.dll"/>
 	</target>
 	
 	<target name="all" depends="clean, compile, test"/>

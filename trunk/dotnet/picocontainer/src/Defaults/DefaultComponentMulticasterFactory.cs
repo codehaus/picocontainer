@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections;
-
 using System.Reflection;
 
 using PicoContainer.Extras;
@@ -22,17 +21,14 @@ namespace PicoContainer.Defaults
     private static MethodInfo hashCode;
 
     static DefaultComponentMulticasterFactory (){
-      try {          
-        equals = typeof(object).GetMethod("Equals", new Type[]{typeof(object)});
-        hashCode = typeof(object).GetMethod("GetHashCode", null);
-      } catch (Exception ) {
-      }
+      equals = typeof(object).GetMethod("Equals", new Type[]{typeof(object)});
+      hashCode = typeof(object).GetMethod("GetHashCode", new Type[]{});
     }
 
     private InterfaceFinder interfaceFinder = new InterfaceFinder();
 
     
-    public object CreateComponentMulticaster(ArrayList objectsToAggregateCallFor, bool callInReverseOrder) {
+    public object CreateComponentMulticaster(IList objectsToAggregateCallFor, bool callInReverseOrder) {
       Type[] interfaces = interfaceFinder.GetInterfaces(objectsToAggregateCallFor);
       ArrayList copy = new ArrayList(objectsToAggregateCallFor);
 
@@ -50,7 +46,6 @@ namespace PicoContainer.Defaults
 
     public static Type CompileType(string code, ArrayList assemblies) {
       
-
       Microsoft.CSharp.CSharpCodeProvider cp = new Microsoft.CSharp.CSharpCodeProvider();   
       System.CodeDom.Compiler.ICodeCompiler ic = cp.CreateCompiler();   
       System.CodeDom.Compiler.CompilerParameters cpar = new System.CodeDom.Compiler.CompilerParameters();   

@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -34,7 +34,7 @@ namespace PicoContainer.Tests.Defaults
     public override void testBasicInstantiationAndContainment()  {
     DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependency();
 
-    Assert.True(pico.FindComponentInstance(typeof(Touchable)) is Touchable,"Component should be instance of Touchable");
+    Assert.IsTrue(pico.FindComponentInstance(typeof(Touchable)) is Touchable,"Component should be instance of Touchable");
                                          }
 
   }

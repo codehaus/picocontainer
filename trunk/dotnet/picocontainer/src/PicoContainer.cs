@@ -47,7 +47,7 @@ namespace PicoContainer
     /// Gets all the registered component instances in the container.</summary>
     /// <remarks>The components are returned in their order of instantiation, which
     /// depends on the dependency order between components.</remarks>
-    ArrayList ComponentInstances {
+    IList ComponentInstances {
       get;
     }
 
@@ -57,33 +57,11 @@ namespace PicoContainer
     /// <returns>true if there is a component for this key.</returns>
     bool HasComponent(object componentKey);
 
-    /// <summary>
-    /// Returns an object (in fact, a dynamic proxy) that implements the union
-    /// of all the interfaces of the currently Registered components.
-    /// </summary>
-    /// <remarks>Casting this object to any of those interfaces and then calling a method
-    /// on it will result in that call being multicast to all the components implementing
-    /// that given interface.<p/>
-    /// This is a simple yet extremely powerful way to handle lifecycle of components.
-    /// Component writers can invent their own lifecycle interfaces, and then use the multicaster
-    /// to invoke the method in one go.</remarks>
-    /// <param name="callInInstantiationOrder">whether or not to call the method in the order of instantiation,
-    /// which depends on the components' inter-dependencies.</param>
-    /// <param name="callUnmanagedComponents">whether or not to multicast to components that are not managed
-    /// by this container.</param>
-    /// <returns>a multicaster object.</returns>
-    object GetComponentMulticaster(bool callInInstantiationOrder, bool callUnmanagedComponents);
-
-    /// <summary>
-    /// Shorthand for GetComponentMulticaster(true, true) which is the most common usage scenario.
-    /// </summary>
-    /// <returns>a multicaster object.</returns>
-    object GetComponentMulticaster();
 
     /// <summary>
     /// Get all the component keys.
     /// </summary>
-    ICollection ComponentKeys {
+    IList ComponentKeys {
       get;
     }
 
@@ -93,7 +71,7 @@ namespace PicoContainer
     /// the child containers to resolve components, but rahter their parents. This method
     /// is available merely to be able to traverse trees of containers, and is not used by the
     /// container itself.</remarks>
-    ArrayList ChildContainers {
+    IList ChildContainers {
       get;
     }
 
@@ -111,7 +89,7 @@ namespace PicoContainer
     /// there will be 0..1 parents. However, it is possible to have several parents.
     /// A container will look in its parents if a component can be found in self.
     /// </remarks>
-    ArrayList ParentContainers{
+    IList ParentContainers{
       get;
     }
 

@@ -3,7 +3,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicoContainer", "src\PicoCo
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\Test\Test.csproj", "{5CFACC92-D926-4EC3-8F9D-064EB2812BC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\Test\Test.csproj", "{A8BAFB24-253F-4F42-A5B9-D568AFC4FCE4}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -17,10 +17,10 @@ Global
 		{FCAC6035-3224-432B-AD7E-A68AFC35019C}.Debug.Build.0 = Debug|.NET
 		{FCAC6035-3224-432B-AD7E-A68AFC35019C}.Release.ActiveCfg = Release|.NET
 		{FCAC6035-3224-432B-AD7E-A68AFC35019C}.Release.Build.0 = Release|.NET
-		{5CFACC92-D926-4EC3-8F9D-064EB2812BC6}.Debug.ActiveCfg = Debug|.NET
-		{5CFACC92-D926-4EC3-8F9D-064EB2812BC6}.Debug.Build.0 = Debug|.NET
-		{5CFACC92-D926-4EC3-8F9D-064EB2812BC6}.Release.ActiveCfg = Release|.NET
-		{5CFACC92-D926-4EC3-8F9D-064EB2812BC6}.Release.Build.0 = Release|.NET
+		{A8BAFB24-253F-4F42-A5B9-D568AFC4FCE4}.Debug.ActiveCfg = Debug|.NET
+		{A8BAFB24-253F-4F42-A5B9-D568AFC4FCE4}.Debug.Build.0 = Debug|.NET
+		{A8BAFB24-253F-4F42-A5B9-D568AFC4FCE4}.Release.ActiveCfg = Release|.NET
+		{A8BAFB24-253F-4F42-A5B9-D568AFC4FCE4}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -38,7 +38,7 @@ namespace PicoContainer.Tests.Defaults
 
       componentRegistry.RegisterComponent(componentSpecification);
 
-      Assert.True(componentRegistry.HasComponentAdapter(componentSpecification));
+      Assert.IsTrue(componentRegistry.HasComponentAdapter(componentSpecification));
     }
 
     [Test]
@@ -50,10 +50,9 @@ namespace PicoContainer.Tests.Defaults
 
       componentRegistry.UnRegisterComponent(typeof(Touchable));
 
-      Assert.False(componentRegistry.HasComponentAdapter(componentSpecification));
+      Assert.IsFalse(componentRegistry.HasComponentAdapter(componentSpecification));
     }
 
-    [Test]
     private ComponentAdapter createComponentAdapter() 
     {
       return new DefaultComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));

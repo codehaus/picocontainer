@@ -37,8 +37,12 @@ namespace PicoContainer.Defaults
         String msg = "Ambiguous class ";
         msg += ambiguousClass;
         msg+=", ";
-        msg +="resolves to multiple keys ";
-        msg += GetAmbiguousComponentKeys();
+        msg +="resolves to multiple keys [";
+        foreach (object key in GetAmbiguousComponentKeys()) {
+          msg += key;
+          msg += " ";
+        }
+        msg +="resolves to multiple keys ]";
         return msg;
       }
     }

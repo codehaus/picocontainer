@@ -10,6 +10,7 @@
  *****************************************************************************/
 
 using System;
+
 using System.Collections;
 using PicoContainer;
 using PicoContainer.Defaults;
@@ -21,16 +22,16 @@ namespace PicoContainer.Extras
 	
 	public class DefaultLifecyclePicoContainer : LifecyclePicoAdapter, MutablePicoContainer
 	{
-    private MutablePicoContainer mutablePicoContainer;
+    private DefaultPicoContainer mutablePicoContainer;
 		
     private LifecyclePicoAdapter lifecyclePicoAdapter;
 		
-    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, MutablePicoContainer mutablePicoContainer) {
+    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, DefaultPicoContainer mutablePicoContainer) {
       this.lifecyclePicoAdapter = lifecyclePicoAdapter;
       this.mutablePicoContainer = mutablePicoContainer;
     }
 		
-    public DefaultLifecyclePicoContainer(MutablePicoContainer mutablePicoContainer) {
+    public DefaultLifecyclePicoContainer(DefaultPicoContainer mutablePicoContainer) {
       this.mutablePicoContainer = mutablePicoContainer;
       lifecyclePicoAdapter = new DefaultLifecyclePicoAdapter(mutablePicoContainer);
     }
@@ -57,7 +58,7 @@ namespace PicoContainer.Extras
 			
 		}
 		
-		virtual public ArrayList ChildContainers
+		virtual public IList ChildContainers
 		{
       get {
             return mutablePicoContainer.ChildContainers;
@@ -73,7 +74,7 @@ namespace PicoContainer.Extras
 			
 		}
 		
-		virtual public ICollection ComponentKeys
+		virtual public IList ComponentKeys
 		{
       get {
         return mutablePicoContainer.ComponentKeys;
@@ -88,14 +89,14 @@ namespace PicoContainer.Extras
 			
 		}
 
-    virtual public ArrayList ComponentInstances
+    virtual public IList ComponentInstances
 		{
       get {
         return mutablePicoContainer.ComponentInstances;
       }
 		}
 
-		virtual public ArrayList ParentContainers
+		virtual public IList ParentContainers
 		{ 
       get {
         return mutablePicoContainer.ParentContainers;
@@ -129,18 +130,19 @@ namespace PicoContainer.Extras
 		
 		public virtual object GetComponentMulticaster()
 		{
-        return mutablePicoContainer.GetComponentMulticaster();
+        return this.GetComponentMulticaster(true,false);
 		}
 		
-		public virtual bool HasComponent(object componentKey)
+    public virtual object GetComponentMulticaster(bool callInInstantiationOrder, bool callUnmanagedComponents)
+    {
+    	return mutablePicoContainer.GetComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
+    }
+
+    public virtual bool HasComponent(object componentKey)
 		{
 			return mutablePicoContainer.HasComponent(componentKey);
 		}
 		
-		public virtual object GetComponentMulticaster(bool callInInstantiationOrder, bool callUnmanagedComponents)
-		{
-			return mutablePicoContainer.GetComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
-		}
 		
 		public virtual ComponentAdapter UnRegisterComponent(object componentKey)
 		{

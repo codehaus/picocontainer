@@ -10,7 +10,7 @@
  *****************************************************************************/
 
 using System;
-using csUnit;
+using NUnit.Framework;
 
 namespace PicoContainer.Tests.TestModel
 {
@@ -22,7 +22,7 @@ namespace PicoContainer.Tests.TestModel
     public Touchable touchable;
 
     public DependsOnTouchable(Touchable touchable) {
-      Assert.NotNull(touchable,"Touchable cannot be passed in as null");
+      Assert.IsNotNull(touchable,"Touchable cannot be passed in as null");
       touchable.wasTouched();
       this.touchable = touchable;
     }

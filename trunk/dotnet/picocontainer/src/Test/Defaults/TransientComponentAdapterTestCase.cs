@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -29,7 +29,7 @@ namespace PicoContainer.Tests.Defaults
 			TransientComponentAdapter componentAdapter = new TransientComponentAdapter(null, typeof(object));
 			object o1 = componentAdapter.GetComponentInstance(null);
 			object o2 = componentAdapter.GetComponentInstance(null);
-			Assert.NotEquals(o1, o2);
+			Assert.IsTrue(o1 != o2);
 		}
 		
 		public class Service
@@ -53,8 +53,8 @@ namespace PicoContainer.Tests.Defaults
 			picoContainer.RegisterComponent(new TransientComponentAdapter(typeof(TransientComponent), typeof(TransientComponent)));
 			TransientComponent c1 = (TransientComponent) picoContainer.GetComponentInstance(typeof(TransientComponent));
 			TransientComponent c2 = (TransientComponent) picoContainer.GetComponentInstance(typeof(TransientComponent));
-			Assert.NotEquals(c1, c2);
-			Assert.Equals(c1.service, c2.service);
+			Assert.IsTrue(c1 != c2);
+			Assert.AreEqual(c1.service, c2.service);
 		}
 	}
 }

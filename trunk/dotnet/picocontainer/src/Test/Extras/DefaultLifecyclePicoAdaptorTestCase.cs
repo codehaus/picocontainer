@@ -12,7 +12,7 @@
 using System;
 using System.Threading;
 using System.Collections;
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Extras;
 using PicoContainer.Lifecycle;
@@ -159,22 +159,23 @@ namespace PicoContainer.Tests.Extras
         pico.RegisterComponentImplementation(typeof(One));
         pico.RegisterComponentImplementation(typeof(Three));
 
-        Assert.Equals(4, pico.ComponentInstances.Count);
+        Assert.AreEqual(4, pico.ComponentInstances.Count);
 
+      
         Startable Startup = (Startable) pico.GetComponentMulticaster(true, false);
         Stoppable shutdown = (Stoppable) pico.GetComponentMulticaster(false, false);
         IDisposable disposal = (IDisposable) pico.GetComponentMulticaster(false, false);
 
-        Assert.True(pico.HasComponent(typeof(One)),"There should have been a 'One' in the internals");
+        Assert.IsTrue(pico.HasComponent(typeof(One)),"There should have been a 'One' in the internals");
 
         One one = (One) pico.GetComponentInstance(typeof(One));
 
         // instantiation - would be difficult to do these in the wrong order!!
-        Assert.Equals( 4, one.getInstantiating().Count,"Should be four elems");
-        Assert.Equals( "One", one.getInstantiating()[0],"Incorrect Order of Instantiation");
-        Assert.Equals("Two", one.getInstantiating()[1],"Incorrect Order of Instantiation");
-        Assert.Equals("Three", one.getInstantiating()[2],"Incorrect Order of Instantiation");
-        Assert.Equals("Four", one.getInstantiating()[3],"Incorrect Order of Instantiation");
+        Assert.AreEqual( 4, one.getInstantiating().Count,"Should be four elems");
+        Assert.AreEqual( "One", one.getInstantiating()[0],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Two", one.getInstantiating()[1],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Three", one.getInstantiating()[2],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Four", one.getInstantiating()[3],"Incorrect Order of Instantiation");
 
         StartStopDisposeLifecycleComps(Startup, shutdown, disposal, one);
 
@@ -196,11 +197,11 @@ namespace PicoContainer.Tests.Extras
         One one = (One) pico.GetComponentInstance(typeof(One));
 
         // instantiation - would be difficult to do these in the wrong order!!
-        Assert.Equals(4, one.getInstantiating().Count,"Should be four elems");
-        Assert.Equals("One", one.getInstantiating()[0],"Incorrect Order of Instantiation");
-        Assert.Equals("Two", one.getInstantiating()[1],"Incorrect Order of Instantiation");
-        Assert.Equals("Three", one.getInstantiating()[2],"Incorrect Order of Instantiation");
-        Assert.Equals("Four", one.getInstantiating()[3],"Incorrect Order of Instantiation");
+        Assert.AreEqual(4, one.getInstantiating().Count,"Should be four elems");
+        Assert.AreEqual("One", one.getInstantiating()[0],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Two", one.getInstantiating()[1],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Three", one.getInstantiating()[2],"Incorrect Order of Instantiation");
+        Assert.AreEqual("Four", one.getInstantiating()[3],"Incorrect Order of Instantiation");
 
         StartStopDisposeLifecycleComps(lifecycle, lifecycle, lifecycle, one);
 
@@ -210,29 +211,29 @@ namespace PicoContainer.Tests.Extras
         Start.Start();
 
         // post instantiation Startup
-        Assert.Equals(4, one.getStarting().Count,"Should be four elems");
-        Assert.Equals( "One", one.getStarting()[0],"Incorrect Order of Starting");
-        Assert.Equals("Two", one.getStarting()[1],"Incorrect Order of Starting");
-        Assert.Equals("Three", one.getStarting()[2],"Incorrect Order of Starting");
-        Assert.Equals("Four", one.getStarting()[3],"Incorrect Order of Starting");
+        Assert.AreEqual(4, one.getStarting().Count,"Should be four elems");
+        Assert.AreEqual( "One", one.getStarting()[0],"Incorrect Order of Starting");
+        Assert.AreEqual("Two", one.getStarting()[1],"Incorrect Order of Starting");
+        Assert.AreEqual("Three", one.getStarting()[2],"Incorrect Order of Starting");
+        Assert.AreEqual("Four", one.getStarting()[3],"Incorrect Order of Starting");
 
         Stop.Stop();
 
         // post instantiation shutdown - REVERSE order.
-        Assert.Equals(4, one.getStopping().Count,"Should be four elems");
-        Assert.Equals("Four", one.getStopping()[0],"Incorrect Order of Stopping");
-        Assert.Equals("Three", one.getStopping()[1],"Incorrect Order of Stopping");
-        Assert.Equals("Two", one.getStopping()[2],"Incorrect Order of Stopping");
-        Assert.Equals("One", one.getStopping()[3],"Incorrect Order of Stopping");
+        Assert.AreEqual(4, one.getStopping().Count,"Should be four elems");
+        Assert.AreEqual("Four", one.getStopping()[0],"Incorrect Order of Stopping");
+        Assert.AreEqual("Three", one.getStopping()[1],"Incorrect Order of Stopping");
+        Assert.AreEqual("Two", one.getStopping()[2],"Incorrect Order of Stopping");
+        Assert.AreEqual("One", one.getStopping()[3],"Incorrect Order of Stopping");
 
         disp.Dispose();
 
         // post instantiation shutdown - REVERSE order.
-        Assert.Equals(4, one.getDisposing().Count,"Should be four elems");
-        Assert.Equals("Four", one.getDisposing()[0],"Incorrect Order of Stopping");
-        Assert.Equals("Three", one.getDisposing()[1],"Incorrect Order of Stopping");
-        Assert.Equals("Two", one.getDisposing()[2],"Incorrect Order of Stopping");
-        Assert.Equals("One", one.getDisposing()[3],"Incorrect Order of Stopping");
+        Assert.AreEqual(4, one.getDisposing().Count,"Should be four elems");
+        Assert.AreEqual("Four", one.getDisposing()[0],"Incorrect Order of Stopping");
+        Assert.AreEqual("Three", one.getDisposing()[1],"Incorrect Order of Stopping");
+        Assert.AreEqual("Two", one.getDisposing()[2],"Incorrect Order of Stopping");
+        Assert.AreEqual("One", one.getDisposing()[3],"Incorrect Order of Stopping");
     }
 
 
@@ -247,15 +248,15 @@ namespace PicoContainer.Tests.Extras
 
         object o = pico.ComponentInstances;
 
-        Assert.True(lifecycle.Stopped);
+        Assert.IsTrue(lifecycle.Stopped);
         lifecycle.Start();
-        Assert.True(lifecycle.Started);
+        Assert.IsTrue(lifecycle.Started);
         try {
             lifecycle.Start();
             Assert.Fail("Should have barfed");
         } catch (Exception ) {
             // expected;
-            Assert.True(lifecycle.Started);
+            Assert.IsTrue(lifecycle.Started);
         }
     }
 
@@ -268,17 +269,17 @@ namespace PicoContainer.Tests.Extras
         pico.RegisterComponentImplementation(typeof(SimpleTouchable));
 
         object o = pico.ComponentInstances;
-        Assert.True(lifecycle.Stopped);
+        Assert.IsTrue(lifecycle.Stopped);
         lifecycle.Start();
-        Assert.True(lifecycle.Started);
+        Assert.IsTrue(lifecycle.Started);
         lifecycle.Stop();
-        Assert.True(lifecycle.Stopped);
+        Assert.IsTrue(lifecycle.Stopped);
         try {
             lifecycle.Stop();
             Assert.Fail("Should have barfed");
         } catch (Exception) {
             // expected;
-            Assert.True(lifecycle.Stopped);
+            Assert.IsTrue(lifecycle.Stopped);
         }
     }
 
@@ -293,15 +294,15 @@ namespace PicoContainer.Tests.Extras
         object o = pico.ComponentInstances;
         lifecycle.Start();
         lifecycle.Stop();
-        Assert.False(lifecycle.Disposed);
+        Assert.IsFalse(lifecycle.Disposed);
         lifecycle.Dispose();
-        Assert.True(lifecycle.Disposed);
+        Assert.IsTrue(lifecycle.Disposed);
         try {
             lifecycle.Dispose();
             Assert.Fail("Should have barfed");
         } catch (Exception ) {
             // expected;
-            Assert.True(lifecycle.Disposed);
+            Assert.IsTrue(lifecycle.Disposed);
         }
     }
 
@@ -374,19 +375,19 @@ namespace PicoContainer.Tests.Extras
 
 object o = pico.ComponentInstances;
         lifecycle.Start();
-        Assert.True(lifecycle.Started);
+        Assert.IsTrue(lifecycle.Started);
         Thread.Sleep(100);
         lifecycle.Stop();
-        Assert.True(lifecycle.Stopped);
+        Assert.IsTrue(lifecycle.Stopped);
 
         FooRunnable foo = (FooRunnable) pico.GetComponentInstance(typeof(FooRunnable));
-        Assert.Equals(1, foo.runCount());
+        Assert.AreEqual(1, foo.runCount());
         lifecycle.Start();
-        Assert.True(lifecycle.Started);
+        Assert.IsTrue(lifecycle.Started);
         Thread.Sleep(100);
         lifecycle.Stop();
-        Assert.True(lifecycle.Stopped);
-        Assert.Equals(2, foo.runCount());
+        Assert.IsTrue(lifecycle.Stopped);
+        Assert.AreEqual(2, foo.runCount());
 
     }
 
@@ -402,9 +403,9 @@ object o = pico.ComponentInstances;
 
 object o = pico.ComponentInstances;
 
-        Assert.True(lifecycle.Stopped);
+        Assert.IsTrue(lifecycle.Stopped);
         lifecycle.Start();
-        Assert.True(lifecycle.Started);
+        Assert.IsTrue(lifecycle.Started);
 
     }
 

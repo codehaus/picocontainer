@@ -12,7 +12,7 @@
 using System;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
-using csUnit;
+using NUnit.Framework;
 
 namespace PicoContainer.Tests.Tck
 {
@@ -40,7 +40,7 @@ namespace PicoContainer.Tests.Tck
 
       picoContainer.RegisterComponent(componentAdapter);
 
-      Assert.True(picoContainer.HasComponentAdapter(componentAdapter));
+      Assert.IsTrue(picoContainer.HasComponentAdapter(componentAdapter));
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace PicoContainer.Tests.Tck
       picoContainer.RegisterComponent(componentAdapter);
       picoContainer.UnRegisterComponent(typeof(Touchable));
 
-      Assert.False(picoContainer.HasComponentAdapter(componentAdapter));
+      Assert.IsFalse(picoContainer.HasComponentAdapter(componentAdapter));
     }
   }
 

@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -37,7 +37,7 @@ namespace PicoContainer.Tests.Defaults
       picoContainer.RegisterComponentImplementation(typeof(Touchable), typeof(SimpleTouchable));
       picoContainer.UnRegisterComponent(typeof(Touchable));
 			
-      Assert.True(picoContainer.ComponentInstances.Count ==0);
+      Assert.IsTrue(picoContainer.ComponentInstances.Count ==0);
     }
 		
     public virtual void  testCanInstantiateReplacedComponent()
@@ -47,14 +47,14 @@ namespace PicoContainer.Tests.Defaults
 			
       picoContainer.RegisterComponentImplementation(typeof(Touchable), typeof(AlternativeTouchable));
 			
-      Assert.Equals(1, picoContainer.ComponentInstances.Count,"Container should container 1 component");
+      Assert.AreEqual(1, picoContainer.ComponentInstances.Count,"Container should container 1 component");
     }
 		
     public virtual void  testUnRegisterAfterInstantiateComponents()
     {
       picoContainer.RegisterComponentImplementation(typeof(Touchable), typeof(SimpleTouchable));
       picoContainer.UnRegisterComponent(typeof(Touchable));
-      Assert.Null(picoContainer.GetComponentInstance(typeof(Touchable)));
+      Assert.IsNull(picoContainer.GetComponentInstance(typeof(Touchable)));
     }
 		
     public virtual void  testReplacedInstantiatedComponentHasCorrectClass()
@@ -65,7 +65,7 @@ namespace PicoContainer.Tests.Defaults
       picoContainer.RegisterComponentImplementation(typeof(Touchable), typeof(AlternativeTouchable));
       object component = picoContainer.ComponentInstances[0];
 			
-      Assert.Equals(typeof(AlternativeTouchable), component.GetType());
+      Assert.AreEqual(typeof(AlternativeTouchable), component.GetType());
     }
   }
 }

@@ -10,30 +10,30 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
+using System.Reflection;
 
-using NUnit.Framework;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests.Defaults
+namespace PicoContainer.Utils
 {
-  [TestFixture]
-  public class ComponentAdapterTest
-  {
+	public class TypeUtils
+	{
+
+    public static Type[] GetParameterTypes(ParameterInfo[] pis) {
+      Type[] types =new Type[pis.Length];
+      int x = 0;
+      foreach (System.Reflection.ParameterInfo pi in pis) {
+        types[x++] = pi.ParameterType;
+      }
     
-    public void testEquals()  
-    {
-      ComponentAdapter componentAdapter =
-        createComponentAdapter();
-
-      Assert.AreEqual(componentAdapter, componentAdapter);
+      return types;
     }
 
-    private ComponentAdapter createComponentAdapter() 
-    {
-      return new DefaultComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
+    public static Type[] GetParameterTypes(ConstructorInfo ci) {
+      return GetParameterTypes(ci.GetParameters());
     }
+
+    public static Type[] GetParameterTypes(MethodInfo ci) {
+      return GetParameterTypes(ci.GetParameters());
+    }
+
   }
 }

@@ -17,7 +17,7 @@ namespace PicoContainer.Extras
 	public interface ComponentMulticasterFactory
 	{
     Object CreateComponentMulticaster(
-      ArrayList objectsToAggregateCallFor,
+      IList objectsToAggregateCallFor,
       bool callInReverseOrder
       );
   }

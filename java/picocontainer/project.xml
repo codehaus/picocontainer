@@ -16,6 +16,16 @@
   <logo>/images/picocontainer.jpg</logo>
   <description>Small footprint IoC container</description>
   <shortDescription>Small footprint IoC container</shortDescription>
+  <description>
+    PicoContainer is a small, simple container for arbitary components. It is embedable and
+    extentendable.  PicoContainer is designed for server and client 
+    side, for small and enterprise applications. It is designed to be extendable. There are 
+    already quite a few diverse containers that deliver the PicoContainer design.
+    Components can be created for it without importing or extending any
+    interfaces or classes outside of the java.* package.  Components also have no
+    meta-info specification.I.e. no XML. Most importantly of all, components for PicoContainer
+    can be used without PicoContainer for good old-fashioned hard-coded deployments.
+  </description>
   <url>http://www.picocontainer.org/</url>
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
   <siteAddress>codehaus.org</siteAddress>

@@ -12,19 +12,16 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -34,6 +31,7 @@ import java.util.Map;
  *
  * @author Paul Hammant
  * @version $Revision$
+ * @since 1.1
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
@@ -46,7 +44,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
         delegate = new InnerMutablePicoContainer(caf, parent);
-
     }
 
     /**
@@ -66,7 +63,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-
         if (componentKey instanceof Class) {
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
@@ -210,8 +206,5 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         public Map getNamedContainers() {
             return super.getNamedContainers();
         }
-
     }
-
-
 }

@@ -22,8 +22,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
- * @see "The <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package."
- * @since 1.0
+ * @see <a href='package-summary.html#package_description'>The package description</a> has a basic overview of how to use the picocontainer package.
  */
 public interface PicoContainer extends Startable, Disposable {
 
@@ -36,8 +35,6 @@ public interface PicoContainer extends Startable, Disposable {
      *         key.
      */
     Object getComponentInstance(Object componentKey);
-
-//    Object getComponentInstanceFromPath(Object componentKey);
 
     /**
      * Find a component instance matching the specified type.

@@ -6,13 +6,16 @@
 <body>
 <h2>Overview</h2>
 Inversion of Control (IoC) is a design pattern that addresses a
-component's <a href="#dependencies"><span style="font-weight: bold;">dependencies</span></a>,
+component's <a href="#dependencies"><span style="font-weight: bold;">dependency
+resolution</span></a>,
 <span style="font-weight: bold;"><a href="#configuration">configuration</a>
 </span>and <a href="#lifecycle"><span style="font-weight: bold;">lifecycle</span></a>.
 Note to confuse things slightly, IoC is also relevant to simple
 classes, not just components, but we will refer to components
-throughout this text.&nbsp; <br>
-<br>
+throughout this text. The most significant aspect to IoC is dependency
+resolution and most of the discussion surrounding IoC dwells solely on
+that.<br>
+<h3>Types of IoC</h3>
 There are many <a href="types-of-ioc.html">types
 of IoC</a>, but we'll concentrate on the type of IoC that PicoContainer
 introduced to the community.&nbsp; Formerly known as type-3, now known
@@ -74,7 +77,7 @@ different assembly.<br>
 <br>
 Here are some other smells along the same line :<br>
 <pre style="margin-left: 40px;">public class AppleImpl implements Apple {<br>  private static Orange orange = OrangeFactory.getOrange();<br>&nbsp; public Apple() {<br>&nbsp; }<br>&nbsp; // other methods<br>}</pre>
-<h3><a name="configuration"></a>Component Configuration</h3>
+<h2><a name="configuration"></a>Component Configuration</h2>
 Sometimes we see configuration like so ...<br>
 <pre style="margin-left: 40px;">public class BigFatComponent {<br>&nbsp;&nbsp;String config01;<br>&nbsp;&nbsp;String config02;<br>&nbsp;&nbsp;public BigFatComponent() {<br>&nbsp;&nbsp;&nbsp;&nbsp;ResourceFactory resources = new ResourceFactory(new File("mycomp.properties"));<br>&nbsp;&nbsp;&nbsp;&nbsp;config01 = resources.get("config01");<br>&nbsp;&nbsp;&nbsp;&nbsp;config02 = resources.get("config02");<br>&nbsp;&nbsp;}<br>&nbsp; // other methods<br>}</pre>
 In the IoC world, it might be better to see the following for simple
@@ -118,7 +121,11 @@ that logging is a common exception to the IoC rule. Apache has two
 static logging frameworks that are in common use: Commons-Logging and
 Log4J. Neither of these is designed along IoC lines.&nbsp; Their
 typical use is static accessed whenever it is felt appropriate in an
-application.<br>
+application.&nbsp; Whilst static logging is common, the PicoContainer
+team do not recommend that developers of reusable components include a
+logging choice.&nbsp; We suggest instead that a Monitor component
+interface is created and default adaptors are provided to a number of
+the logging frameworks are provided.<br>
 <br>
 <small>Authors: Paul Hammant</small><br>
 </body>

@@ -5,6 +5,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
+public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
         PicoRegistrationException, PicoIntrospectionException;
@@ -83,6 +84,20 @@ public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
             fail("should have barfed");
         } catch (IllegalStateException e) {
             // expected
+        }
+    }
+
+    protected abstract void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
+
+   public void testDuplicateRegistration() throws Exception {
+       PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        try {
+            addAnotherSimpleTouchable(picoContainer);
+            //picoContainer.instantiateComponents();
+            fail("Should have barfed with dupe registration");
+        } catch (DuplicateComponentKeyRegistrationException e) {
+            // expected
+            assertTrue("Wrong key", e.getDuplicateKey() == "one");
         }
     }
 

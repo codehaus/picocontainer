@@ -9,13 +9,13 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ComponentRegistry;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.tck.AbstractBasicCompatabilityTestCase;
+import org.picocontainer.tck.AbstractBasicClassCompatabilityTestCase;
 import org.picocontainer.tck.Touchable;
 import org.picocontainer.tck.SimpleTouchable;
 import org.picocontainer.tck.DependsOnTouchable;
 
 
-public class DefaultPicoContainerWithComponentFactory extends AbstractBasicCompatabilityTestCase {
+public class DefaultPicoContainerWithComponentFactory extends AbstractBasicClassCompatabilityTestCase {
 
     private ComponentFactory componentFactory = new DefaultComponentFactory();
 
@@ -34,6 +34,10 @@ public class DefaultPicoContainerWithComponentFactory extends AbstractBasicCompa
         return defaultPico;
     }
 
+    protected void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        ((DefaultPicoContainer) picoContainer).registerComponentByClass(SimpleTouchable.class);
+    }
+    
     // testXXX methods are in superclass.
 
 }

@@ -1,19 +1,15 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.tck.AbstractBasicCompatabilityTestCase;
-import org.picocontainer.tck.Touchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.tck.AbstractBasicClassCompatabilityTestCase;
 import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.tck.Touchable;
 
 
-public class DefaultPicoContainerTestCase extends AbstractBasicCompatabilityTestCase {
+public class DefaultPicoContainerTestCase extends AbstractBasicClassCompatabilityTestCase {
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
         AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
@@ -28,6 +24,14 @@ public class DefaultPicoContainerTestCase extends AbstractBasicCompatabilityTest
         DefaultPicoContainer defaultPico = new DefaultPicoContainer.Default();
         defaultPico.registerComponentByClass(DependsOnTouchable.class);
         return defaultPico;
+    }
+
+    protected void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        ((DefaultPicoContainer) picoContainer).registerComponent(Touchable.class, SimpleTouchable.class);
+    }
+
+    public void testDuplicateRegistration() throws Exception {
+        super.testDuplicateRegistration();    //To change body of overriden methods use Options | File Templates.
     }
 
     // testXXX methods are in superclass.

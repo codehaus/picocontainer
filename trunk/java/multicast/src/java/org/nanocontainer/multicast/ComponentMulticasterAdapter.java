@@ -23,6 +23,7 @@ import java.util.List;
  * @author Chris Stevenson
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
+ * @deprecated should be merged with MulticasterFactory
  */
 public class ComponentMulticasterAdapter implements Serializable {
     private final MulticasterFactory factory;

@@ -21,12 +21,12 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Arrays;
 
 /**
  * Instantiates components using Constructor Injection.
@@ -44,13 +44,13 @@ import java.util.Arrays;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private transient boolean instantiating;
-    private transient boolean verifying;
+    private boolean instantiating;
+    private boolean verifying;
     private transient List sortedMatchingConstructors;
 
     /**
-     * Explicitly specifies parameters, if null uses default parameters.
-     * {@inheritDoc}
+     * Explicitly specifies parameters. If parameters are null, default parameters
+     * will be used.
      */
     public ConstructorInjectionComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
@@ -62,7 +62,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
 
     /**
      * Use default parameters.
-     * {@inheritDoc}
      */
     public ConstructorInjectionComponentAdapter(Object componentKey,
                                        Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -96,13 +95,20 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+//            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
                 if (adapter == null) {
-                    failedDependency = true;
-                    unsatisfiableDependencyTypes.add(parameterTypes[j]);
+//                    ComponentAdapter genericCollectionComponentAdapter = getGenericCollectionComponentAdapter(parameterTypes[j], genericParameterTypes[j]);
+//                    if (genericCollectionComponentAdapter != null) {
+//                        genericCollectionComponentAdapter.setContainer(getContainer());
+//                        adapterDependencies.add(genericCollectionComponentAdapter);
+//                    } else {
+                        failedDependency = true;
+                        unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+//                    }
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
@@ -152,6 +158,28 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         }
         return greediestConstructor;
     }
+
+//    private ComponentAdapter getGenericCollectionComponentAdapter(Class parameterType, Type genericType) {
+//        ComponentAdapter result = null;
+//
+//        boolean isMap = Map.class.isAssignableFrom(parameterType);
+//        boolean isCollection = Collection.class.isAssignableFrom(parameterType);
+//        if((isMap || isCollection) && genericType instanceof ParameterizedType) {
+//            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+//            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+//            Class keyType = null;
+//            Class valueType = null;
+//            if(isMap) {
+//                keyType = (Class) actualTypeArguments[0];
+//                valueType = (Class) actualTypeArguments[1];
+//            } else {
+//                valueType = (Class) actualTypeArguments[0];
+//            }
+//            Object componentKey = new Object[]{this, genericType};
+//            result = new GenericCollectionComponentAdapter(componentKey, keyType, valueType, parameterType);
+//        }
+//        return result;
+//    }
 
     protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {

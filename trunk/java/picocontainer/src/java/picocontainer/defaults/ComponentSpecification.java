@@ -18,7 +18,7 @@ import picocontainer.Parameter;
 import java.util.Arrays;
 
 public class ComponentSpecification {
-    private ComponentFactory componentFactory;
+    private final ComponentFactory componentFactory;
     private final Object componentKey;
     private final Class comp;
     private Parameter[] parameters;

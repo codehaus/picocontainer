@@ -61,6 +61,31 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     }
 
     public Object[] getComponents() {
+       /* <ASLAK>
+        * TODO: make final again
+        *
+        * The reason why we're not simply doing
+        *
+        * return componentKeyToInstanceMap.values().toArray();
+        *
+        * is that we want a simple way to override the behaviour
+        * of getComponents() and getComponentKeys(). These methods
+        * are conceptually related, and one should therefore depend
+        * on the other. (Like the below implementation).
+        *
+        * (Overriding one and not another will probably break the container)
+        *
+        * Ideally, this method should be final, so we can avoid unexpected
+        * behaviour. Making this method non-final is bad (IMHO) because
+        * if someone overrides only this method, and forget to override
+        * getComponentKeys() *will* result in strange behaviour.
+        *
+        * Paul removed the final specifier in order to open up for some of James'
+        * stuff, but as I'm trying to explain, I think this is very dangerous.
+        *
+        * </ASLAK>
+        */
+
         Object[] componentKeys = getComponentKeys();
         Object[] components = new Object[componentKeys.length];
         for (int i = 0; i < componentKeys.length; i++) {
@@ -73,25 +98,25 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     /**
      * @deprecated Use {@link #getCompositeComponent} instead
      */
-    public Object getAggregateComponentProxy() {
+    public final Object getAggregateComponentProxy() {
         return getCompositeComponent();
     }
 
     /**
      * @deprecated Use getCompositeComponent instead
      */
-    public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+    public final Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
     }
 
     // see PicoContainer interface for Javadocs
-    public Object getCompositeComponent()
+    public final Object getCompositeComponent()
     {
         return getCompositeComponent(true, false);
     }
 
     // see PicoContainer interface for Javadocs
-    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
+    public final Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
     {
         List aggregateComponents = new ArrayList(orderedComponents);
         if(!callUnmanagedComponents) {
@@ -110,7 +135,6 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentKey, componentImplementation);
         checkKeyDuplication(componentImplementation);
-
 
         registerComponent(new ComponentSpecification(componentFactory, componentKey, componentImplementation));
     }
@@ -200,27 +224,8 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
         if (!componentKeyToInstanceMap.containsKey(componentSpecification.getComponentKey())) {
 
-//            Object component = null;
-
-            // reuse implementation if appropriate
-//            Set compEntries = componentKeyToInstanceMap.entrySet();
-//            for (Iterator iterator = compEntries.iterator();
-//                 iterator.hasNext();) {
-//                Map.Entry entry = (Map.Entry) iterator.next();
-//                Object exisitingComp = entry.getValue();
-//                if (exisitingComp.getClass() == componentSpecification.getComponentImplementation()) {
-//                    component = exisitingComp;
-//                    // We can exit now.
-//                    break;
-//                }
-//            }
-
             Object component = componentSpecification.instantiateComponent(this);
             orderedComponents.add(component);
-
-            // create it if it was not reused
-//            if (component == null) {
-//            }
 
             componentKeyToInstanceMap.put(componentSpecification.getComponentKey(), component);
 

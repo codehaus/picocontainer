@@ -6,35 +6,18 @@
   <name>picocontainer-servlet</name>
 
   <dependencies>
-<!--    <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-testmodel</artifactId>
-      <version>${pom.currentVersion}</version> 
-    </dependency> -->
 
     <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-reflection</artifactId>
-      <version>${pom.currentVersion}</version>
+      <id>servletapi</id>
+      <version>2.3</version>
     </dependency>
 
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picocontainer-xml</artifactId>
+      <artifactId>picocontainer-integrationkit</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
-
-      <dependency>
-          <id>servletapi</id>
-          <version>2.3</version>
-      </dependency>
-
-      <dependency>
-          <groupId>mockobjects</groupId>
-          <artifactId>mockobjects-core</artifactId>
-          <version>0.09</version>
-      </dependency>
-
-     </dependencies>
+    
+  </dependencies>
 
 </project>

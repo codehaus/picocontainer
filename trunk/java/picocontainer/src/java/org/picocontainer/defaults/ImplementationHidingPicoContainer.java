@@ -167,6 +167,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         pc.dispose();
     }
 
+    public PicoContainer getImmutable() {
+        return pc.getImmutable();
+    }
+
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);

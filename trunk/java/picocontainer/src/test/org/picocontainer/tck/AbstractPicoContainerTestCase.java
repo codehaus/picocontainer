@@ -31,6 +31,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.ImmutablePicoContainer;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -498,6 +499,13 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals(1, a.getComponentInstances().size());
         assertEquals(1, b.getComponentInstances().size());
         assertEquals(1, c.getComponentInstances().size());
+    }
+
+    public void testImmutableIsCached() {
+        final MutablePicoContainer picoContainer = createPicoContainer(null);
+        ImmutablePicoContainer ipc = (ImmutablePicoContainer) picoContainer.getImmutable();
+        ImmutablePicoContainer ipc2 = (ImmutablePicoContainer) picoContainer.getImmutable();
+        assertSame(ipc,ipc2);
     }
 
 }

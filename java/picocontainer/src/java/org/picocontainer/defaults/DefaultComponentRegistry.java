@@ -11,6 +11,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
@@ -46,6 +47,17 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
         registeredComponents.add(compSpec);
     }
+    
+	public void unregisterComponent(Class componentKey) {
+		for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+			ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
+			
+			if (currentCompSpec.getComponentKey().equals(componentKey)) {
+				registeredComponents.remove(currentCompSpec);
+				break;
+			}
+		}
+	}
 
     public Collection getComponentSpecifications() {
         return registeredComponents;
@@ -71,23 +83,21 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Collection getComponentInstanceKeys() {
-        List result = Arrays.asList( componentKeyToInstanceMap.keySet().toArray() );
-        return Collections.unmodifiableList(result);
+    public Set getComponentInstanceKeys() {
+        Set types = componentKeyToInstanceMap.keySet();
+        return Collections.unmodifiableSet(types);
     }
 
-    public Collection getComponentInstances() {
+    public Set getComponentInstances() {
 //        ArrayList list = new ArrayList();
 //        Set types = componentKeyToInstanceMap.entrySet();
 //        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
 //            Map.Entry e = (Map.Entry) iterator.next();
 //            list.add(e.getValue());
 //        }
-//        Set result = new HashSet();
-//        result.addAll(componentKeyToInstanceMap.values());
-//        return Collections.unmodifiableSet(result);
-        List result = Arrays.asList( componentKeyToInstanceMap.values().toArray() );
-        return Collections.unmodifiableList(result);
+        Set result = new HashSet();
+        result.addAll(componentKeyToInstanceMap.values());
+        return Collections.unmodifiableSet(result);
     }
 
     public boolean hasComponentInstance(Object componentKey) {

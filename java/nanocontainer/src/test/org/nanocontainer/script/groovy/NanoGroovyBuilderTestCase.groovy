@@ -1,6 +1,7 @@
 package org.nanocontainer.script.groovy
 
 import org.picocontainer.defaults.UnsatisfiableDependenciesException
+import org.picocontainer.defaults.SynchronizedComponentAdapterFactory
 
 import org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory
 import org.nanocontainer.script.groovy.NanoGroovyBuilder
@@ -93,25 +94,22 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         }
     }
 
+//    TODO NANO-90
+//    TODO - The CAF is not being passed into the ctor of teh SoftPico.
+//    See NanoGroovyBuilder.java
 //    void testInstantiateWithBespokeComponentAdaptor() {
-//
+
+//        sb = new StringBuffer();
+
 //        builder = new NanoGroovyBuilder()
-//        pico = builder.container(adapterFactory:new HotSwappingComponentAdapterFactory()) {
+//        pico = builder.container(adapterFactory:new TestComponentAdapterFactory(sb)) {
 //            component(key:WebServerConfig, class:DefaultWebServerConfig)
 //            component(key:WebServer, class:WebServerImpl)
 //        }
 
 //        startAndStop(pico)
-//
-//        Object ws = pico.getComponentInstance(WebServer)
-//
-//        assert ws instanceof WebServer
-//        assertFalse(ws instanceof WebServerImpl)
-//
-//        ws = pico.getComponentInstances().get(1)
-//
-//        assert ws instanceof WebServer
-//        assertFalse(ws instanceof WebServerImpl)
+
+//        assertTrue(sb.toString().indexOf("called") != -1)
 //    }
 
     void testInstantiateWithInlineConfiguration() {
@@ -131,6 +129,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertTrue(wsc.getPort() == 4321)
     }
 
+//      TODO NANO-89
 //      TODO - this one fails because the classpathelement 'path' attribute is inaccessible
 //             to the env that needs it.
 //      void testSoftInstantiateWithChildContainerWithDynamicClassPath() {

@@ -57,7 +57,7 @@
 
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-5</version>
+            <version>20040624.203614</version>
         </dependency>
 
         <dependency>

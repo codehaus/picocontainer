@@ -69,23 +69,13 @@ namespace PicoContainer {
     /// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>
     IComponentAdapter RegisterComponentInstance(object componentKey, object componentInstance);
 
-
-    /**
-     * Registers a component via a ComponentAdapter. Use this if you need fine grained control over what ComponentAdapter
-     * to use for a specific component.
-     *
-     * @param componentAdapter the adapter
-     * @throws PicoRegistrationException if registration fails.
-     * @return the same adapter that was passed as an argument.
-     */
-
     /// <summary>
     /// Registers a component via an <see cref="PicoContainer.IComponentAdapter"/>. Use this if you need fine grained control over what ComponentAdapter
     /// to use for a specific component.</summary>
     /// <param name="componentAdapter">the adapter to register</param>
-    /// <returns>the associated ComponentAdapter.</returns>
+    /// <returns>the passed in ComponentAdapter.</returns>
     /// <exception cref="PicoContainer.PicoRegistrationException">if the registration fails</exception>    
-    void RegisterComponent(IComponentAdapter componentAdapter);
+    IComponentAdapter  RegisterComponent(IComponentAdapter componentAdapter);
 
     /// <summary>
     /// Unregisters a component.</summary>

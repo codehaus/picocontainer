@@ -50,7 +50,7 @@ public class ParameterTestCase extends TestCase {
     public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
         RegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         WilmaImpl wilma = new WilmaImpl();
-        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[]{
+        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[] {
             new ConstantParameter(wilma)
         });
         pico.instantiateComponents();

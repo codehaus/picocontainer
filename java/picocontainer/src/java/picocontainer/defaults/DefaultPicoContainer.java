@@ -312,7 +312,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     public Object[] getComponentKeys() {
         // Get my own
         Set types = componentKeyToInstanceMap.keySet();
-        return (Class[]) types.toArray(new Class[types.size()]);
+        return types.toArray();
     }
 
     public final boolean hasComponent(Object componentKey) {

@@ -22,9 +22,9 @@ public interface Kernel {
 
     void deploy(URL remoteMarFile) throws DeploymentException; // aka lightweight java web start (context determined from marFile name)
 
-	void deploy(String context, URL marFile) throws DeploymentException; // deploy the marFile to the named context
+	void deploy(String context, URL marFile) throws DeploymentException; // handleDeployForMarFile the marFile to the named context
 
-    void deferredDeploy(File file);
+    void deferredDeploy(File file) throws DeploymentException ;
 
     Object getComponent(String relativeComponentPath); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 
@@ -32,4 +32,6 @@ public interface Kernel {
 
     void stop(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 }
+
+
 

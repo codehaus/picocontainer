@@ -76,7 +76,7 @@
         </dependency>
         <dependency>
             <id>nanocontainer</id>
-            <version>1.0-beta-1-SNAPSHOT</version>
+			<version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <id>junit</id>
@@ -119,3 +119,5 @@
 
 
 </project>
+
+

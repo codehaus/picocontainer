@@ -39,7 +39,7 @@ public class MarDeployerTestCase extends TestCase {
 	public void testDeploy() throws Exception {
 		File marFile = new File("test.mar");
 		URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
-		deployer.deploy("unittest", url); // deploy the MAR to unittest context
+		deployer.deploy("unittest", url); // handleDeployForMarFile the MAR to unittest context
 
 		validateMarDeployedToWorkingDir();
 	}
@@ -49,7 +49,7 @@ public class MarDeployerTestCase extends TestCase {
 	 * working directory as normal
 	 */
 	public void testDeployFromHttp() throws Exception {
-		// normally this directory would be created by deploy()... but we are bypassing for testing
+		// normally this directory would be created by handleDeployForMarFile()... but we are bypassing for testing
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
@@ -98,3 +98,4 @@ public class MarDeployerTestCase extends TestCase {
 		}
 	}
 }
+

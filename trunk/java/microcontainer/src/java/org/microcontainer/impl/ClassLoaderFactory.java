@@ -23,7 +23,11 @@ public class ClassLoaderFactory {
 	public static final String COMPONENT_PATH = "/MAR-INF/components/";
 	public static final String LIB_PATH = "/MAR-INF/lib/";
 	public static final String HIDDEN_PATH = "/MAR-INF/hidden/";
-	protected File repository = new File("work"); // todo fix this should be configurable
+	protected MarDeployer marDeployer = null; // todo fix this should be configurable
+
+	public ClassLoaderFactory() {
+		marDeployer = new MarDeployer();
+	}
 
 	public ClassLoader build(String contextName) {
 		ClassLoader promotedClassLoader = new URLClassLoader(getURLs(contextName, PROMOTED_PATH), this.getClass().getClassLoader());
@@ -51,7 +55,7 @@ public class ClassLoaderFactory {
 	}
 
 	protected URL[] getURLs(String context, String path) {
-		File dir = new File(repository, context + path);
+		File dir = new File(marDeployer.getWorkingDir(), context + path);
 		File[] files = dir.listFiles();
 
 		if(files == null) {
@@ -72,3 +76,5 @@ public class ClassLoaderFactory {
 		return urls;
 	}
 }
+
+

@@ -15,14 +15,8 @@ import org.microcontainer.*;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -37,62 +31,59 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	protected ClassLoaderFactory classLoaderFactory = null;
 	protected HashMap contextMap = null;
 	protected MarDeployer marDeployer = null;
+	protected GroovyDeploymentScriptHandler groovyDeploymentScriptHandler = null;
 
 	public DefaultKernel() {
 		classLoaderFactory = new ClassLoaderFactory();
 		contextMap = new HashMap();
 		marDeployer = new MarDeployer();
+		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler();
 	}
 
-	public void deploy(String context, URL marFile) throws DeploymentException {
+	protected void doDeploy(String context, URL marFile, boolean start) throws DeploymentException {
 		try {
 			// deploy to work folder
 			marDeployer.deploy(context, marFile);
 
-			// build class loader
-			ClassLoader classLoader = classLoaderFactory.build(context);
+			PicoContainer container = groovyDeploymentScriptHandler.handle(context, marFile);
+			contextMap.put(context, container);
 
-			// building container from script
-			FileReader reader = new FileReader(marDeployer
-					.getWorkingDir()
-					.getCanonicalPath()
-					.concat("/" + context + "/composition.groovy"));
+			// start container now, or defer until later
+			if(start) {
+				container.start();
+			}
+		} catch (IOException e) {
+			throw new DeploymentException(e);
+		}
+	}
 
-			GroovyContainerBuilder gcb = new GroovyContainerBuilder(reader,	classLoader);
-			MutablePicoContainer parent = new DefaultPicoContainer();
-			parent.registerComponentInstance("hiddenClassLoader", classLoader);
+	public void deploy(String context, URL marFile) throws DeploymentException {
+		doDeploy(context, marFile, true);
+	}
 
-			ObjectReference containerRef = new SimpleReference();
-    		ObjectReference parentContainerRef = new SimpleReference();
-			parentContainerRef.set(parent);
-			gcb.buildContainer(containerRef, parentContainerRef, context);
-
-			// map the child container to the context
-        	contextMap.put(context, containerRef.get());
-
+	private void handleDeployForMarFile(File marFile, boolean start) throws DeploymentException {
+		try {
+			String context = marFile.getName().split(".mar")[0];
+			URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
+			this.doDeploy(context, url, start);
 		} catch (IOException e) {
 			throw new DeploymentException(e);
 		}
 	}
 
 	public void deploy(File marFile) throws DeploymentException {
-		try {
-			String context = marFile.getName().split(".mar")[0];
-			URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
-			this.deploy(context, url);
-		} catch (IOException e) {
-			throw new DeploymentException(e);
-		}
+		handleDeployForMarFile(marFile, true);
 	}
 
 	public void deploy(URL remoteMarFile) throws DeploymentException {
 		String[] file = remoteMarFile.getFile().split("/|\\\\");
 		String context = file[file.length - 1].split("\\.mar")[0];
 
-		deploy(context, remoteMarFile);
+		doDeploy(context, remoteMarFile, true);
 	}
 
-	public void deferredDeploy(File file) {
+	public void deferredDeploy(File marFile) throws DeploymentException {
+		handleDeployForMarFile(marFile, false);
 	}
 
 	public Object getComponent(String relativeComponentPath) {
@@ -102,6 +93,8 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	}
 
 	public void start(String startableNode) {
+		PicoContainer container = (PicoContainer)contextMap.get(startableNode);
+		container.start();
 	}
 
 	public void stop(String startableNode) {
@@ -121,3 +114,5 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	public void dispose() {
 	}
 }
+
+

@@ -1,16 +1,21 @@
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.script.groovy.NanoGroovyBuilder
+import org.picocontainer.PicoContainer
+import org.microcontainer.DeploymentScript
 
-// must be named "pico" (required by GroovyContainerBuilder)
-pico = new org.picocontainer.defaults.ImplementationHidingPicoContainer()
+class ContainerScript implements DeploymentScript {
 
-// assume all /promoted jars are in the current classloader tree to *this*
+	public PicoContainer build() {
+		child = null
+		builder = new NanoGroovyBuilder()
 
-hiddenClassLoader = parent.getComponentInstance("hiddenClassLoader")
-reflectionContainerAdapter = new DefaultReflectionContainerAdapter(hiddenClassLoader, pico);
-reflectionContainerAdapter.registerComponentImplementation("org.microcontainer.test.TestComp", "org.microcontainer.test.hopefullyhidden.TestCompImpl");
-reflectionContainerAdapter.registerComponentImplementation("org.microcontainer.testapi.TestPromotable", "org.microcontainer.test.hopefullyhidden.TestPromotableImpl");
+		builder.container {
+			child = container() {
+				component(key:"org.microcontainer.test.TestComp", class:org.microcontainer.test.hopefullyhidden.TestCompImpl)
+				component(key:"org.microcontainer.testapi.TestPromotable", class:org.microcontainer.test.hopefullyhidden.TestPromotableImpl)
+    		}
+		}
 
-// note the reflectionContainerAdapter gets GC'd after this, as does the GroovyContainerBuilder building this
-// TODO .... move to *true* Groovy builder style
+		return child
+	}
+}
 
-// start()ing will happen after this script is executed of course

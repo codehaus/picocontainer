@@ -11,7 +11,7 @@ package org.nanocontainer.script.xml;
 
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.ThingThatTakesParamsInConstructor;
 import org.picoextras.testmodel.WebServerImpl;
@@ -25,8 +25,8 @@ import java.io.StringReader;
  * test case for container creation off xml via xstream
  */
 public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
-	
-	
+
+
 	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("<container>" +
                 "    <instance key='foo'>" +
@@ -37,20 +37,20 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLi
                 "    </instance>" +
                 "    <instance>" +
                 "    	<org.picoextras.testmodel.DefaultWebServerConfig>" +
-				" 			<port>555</port>" + 
+				" 			<port>555</port>" +
                 "    	</org.picoextras.testmodel.DefaultWebServerConfig>" +
                 "    </instance>" +
-				"	 <implementation class='org.picoextras.testmodel.WebServerImpl'>" + 
-				"		<dependency class='org.picoextras.testmodel.DefaultWebServerConfig'/>" + 
-				"	 </implementation>" + 
-				"	 <implementation key='konstantin needs beer' class='org.picoextras.testmodel.ThingThatTakesParamsInConstructor'>" + 
-				"		<constant>" + 
-				"			<string>it's really late</string>" + 
-				"		</constant>" + 
-				"		<constant>" + 
-				"			<int>239</int>" + 
-				"		</constant>" + 
-				"	 </implementation>" + 
+				"	 <implementation class='org.picoextras.testmodel.WebServerImpl'>" +
+				"		<dependency class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+				"	 </implementation>" +
+				"	 <implementation key='konstantin needs beer' class='org.picoextras.testmodel.ThingThatTakesParamsInConstructor'>" +
+				"		<constant>" +
+				"			<string>it's really late</string>" +
+				"		</constant>" +
+				"		<constant>" +
+				"			<int>239</int>" +
+				"		</constant>" +
+				"	 </implementation>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
@@ -58,13 +58,13 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLi
         assertEquals("foo bar",pico.getComponentInstance("foo"));
         assertEquals(new Integer(239),pico.getComponentInstance("bar"));
         assertEquals(555,((DefaultWebServerConfig)pico.getComponentInstance(DefaultWebServerConfig.class)).getPort());
-		
+
 		assertNotNull(pico.getComponentInstanceOfType(WebServerImpl.class));
 		assertNotNull(pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
 		assertSame(pico.getComponentInstance("konstantin needs beer"),pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
 		assertEquals("it's really late239",((ThingThatTakesParamsInConstructor)pico.getComponentInstance("konstantin needs beer")).getValue());
 	}
-	
-	
+
+
 }
 

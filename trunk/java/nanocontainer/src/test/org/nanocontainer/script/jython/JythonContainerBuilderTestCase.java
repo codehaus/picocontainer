@@ -3,7 +3,7 @@ package org.nanocontainer.script.jython;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.WebServer;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 

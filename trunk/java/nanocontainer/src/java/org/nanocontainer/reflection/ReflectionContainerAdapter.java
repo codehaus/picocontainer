@@ -22,7 +22,7 @@ import java.net.URL;
  * This class adapts a {@link MutablePicoContainer} through a similar API that
  * is based only on Strings. (It uses reflection to look up classes before registering them
  * with the adapted container). This adapter API is used primarily by the various scripting
- * based {@link org.picoextras.integrationkit.ContainerComposer}s in the org.picoextras.script
+ * based {@link org.nanocontainer.integrationkit.ContainerComposer}s in the org.picoextras.script
  * package.
  */
 public interface ReflectionContainerAdapter {
@@ -43,8 +43,8 @@ public interface ReflectionContainerAdapter {
     /**
      * Sets what classloader to use. This will reset all previously set URLs.
      * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
-     * 
-     * @param classLoader 
+     *
+     * @param classLoader
      * @see #addClassLoaderURL
      */
     void setClassLoader(ClassLoader classLoader);
@@ -52,8 +52,8 @@ public interface ReflectionContainerAdapter {
     /**
      * Adds a new URL.
      * This overrides the ClassLoader that may have been set by setClassLoader(..)
-     * 
-     * @param url 
+     *
+     * @param url
      */
     void addClassLoaderURL(URL url);
 

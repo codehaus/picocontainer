@@ -9,7 +9,7 @@
 package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

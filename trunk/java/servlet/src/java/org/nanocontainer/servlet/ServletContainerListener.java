@@ -10,9 +10,9 @@ package org.picoextras.servlet;
 
 import org.nanocontainer.script.jython.JythonContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.ContainerComposer;
-import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerComposer;
+import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

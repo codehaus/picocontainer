@@ -61,11 +61,11 @@ namespace PicoContainer.Defaults {
     }
 
 
-    // TODO: 
     private class DelegatingInvocationHandler : RealProxy, IRemotingTypeInfo, ISwappable{ 
       private ImplementationHidingComponentAdapter adapter;
       private object delegatedInstance;
       private ArrayList interfaces;
+      private MethodInfo hotSwapMethod = null;
       public DelegatingInvocationHandler(ImplementationHidingComponentAdapter adapter, Type[] interfaces) : base(typeof(ISwappable)) {
         this.adapter = adapter;
         this.interfaces = new ArrayList(interfaces);
@@ -78,13 +78,21 @@ namespace PicoContainer.Defaults {
         IMethodCallMessage call = (IMethodCallMessage)msg;
         IConstructionCallMessage ctor = call as IConstructionCallMessage;
         IMethodMessage m = msg as IMethodMessage;
+        bool isHostSwapCall = call.MethodName == "HotSwap";
         if (delegatedInstance == null) {
           delegatedInstance = adapter.DelegatedComponentInstance;
+          if (isHostSwapCall)
+          {
+            hotSwapMethod = delegatedInstance.GetType().GetMethod("HotSwap",new Type[] {m.Args[0].GetType()});
+          }
         }
-
-        String t = typeof(ISwappable).FullName;
-        if (m.TypeName.IndexOf(typeof(ISwappable).FullName) != -1) {
-          return new ReturnMessage(m.MethodBase.Invoke(this,BindingFlags.Public,null,m.Args,null),new object[]{},0,call.LogicalCallContext,call);
+        if (isHostSwapCall) {
+          if ( hotSwapMethod == null) {
+            return new ReturnMessage(m.MethodBase.Invoke(this,BindingFlags.Public,null,m.Args,null),new object[]{},0,call.LogicalCallContext,call);
+          } else
+          {
+            return new ReturnMessage(hotSwapMethod.Invoke(delegatedInstance,BindingFlags.Public,null,m.Args,null),new object[]{},0,call.LogicalCallContext,call);
+          }
         } else {
           return new ReturnMessage(m.MethodBase.Invoke(delegatedInstance,BindingFlags.Public,null,m.Args,null),new object[]{},0,call.LogicalCallContext,call);
         }

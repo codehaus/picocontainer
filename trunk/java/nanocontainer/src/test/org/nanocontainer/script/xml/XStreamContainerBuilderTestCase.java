@@ -9,18 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import java.io.Reader;
+import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 

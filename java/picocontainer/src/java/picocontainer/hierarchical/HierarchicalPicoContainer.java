@@ -26,7 +26,6 @@ TODO (Aslak):
 
 package picocontainer.hierarchical;
 
-
 import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.ComponentFactory;

@@ -85,13 +85,7 @@
       <groupId>picocontainer</groupId>
       <artifactId>picoextras-reflection</artifactId>
       <version>${pom.currentVersion}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>picocontainer</groupId>
-      <artifactId>picoextras-script</artifactId>
-      <version>${pom.currentVersion}</version>
-    </dependency>    
+    </dependency>  
         
     <dependency>
       <groupId>picocontainer</groupId>
@@ -153,7 +147,7 @@
         </dependency>
         
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>picocontainer</groupId>
             <artifactId>picoextras-testmodel</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>

@@ -18,17 +18,17 @@ import java.io.IOException;
  */
 public abstract class AbstractDeploymentScriptHandler implements DeploymentScriptHandler {
 
+	protected Configuration configuration;
 	protected ClassLoaderFactory classLoaderFactory;
-	protected File workingDir;
 	protected String compositionFileName;
 
-	public AbstractDeploymentScriptHandler(ClassLoaderFactory classLoaderFactory, File workingDir) {
+	public AbstractDeploymentScriptHandler(Configuration configuration, ClassLoaderFactory classLoaderFactory) {
+	    this.configuration = configuration;
 		this.classLoaderFactory = classLoaderFactory;
-		this.workingDir = workingDir;
 	}
 
 	public File getPath(String contextName) {
-		return new File(workingDir, contextName);
+		return new File(configuration.getWorkDir(), contextName);
 	}
 
 	public FileReader getScript(File path) throws IOException  {

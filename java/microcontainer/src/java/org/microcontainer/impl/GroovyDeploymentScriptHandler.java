@@ -8,7 +8,6 @@ import org.nanocontainer.script.groovy.NanoContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 
 import java.io.FileReader;
-import java.io.File;
 import java.io.Reader;
 
 import groovy.lang.Binding;
@@ -19,8 +18,8 @@ import groovy.lang.Binding;
  */
 public class GroovyDeploymentScriptHandler extends AbstractDeploymentScriptHandler {
 
-	public GroovyDeploymentScriptHandler(ClassLoaderFactory classLoaderFactory, File workingDir) {
-		super(classLoaderFactory, workingDir);
+	public GroovyDeploymentScriptHandler(Configuration configuration, ClassLoaderFactory classLoaderFactory) {
+		super(configuration, classLoaderFactory);
 		compositionFileName = "composition.groovy";
 	}
 

@@ -10,12 +10,11 @@ expecting a paradigm shift, </big><br>
 <big style="font-style: italic;">and all I got was a lousy constructor!</big></div>
 <h2>Introduction</h2>
 PicoContainer is very simple container for very simple
-components.&nbsp; It honors the Inversion of control pattern (IoC) in a
-way that we calling it type 3 IoC.&nbsp; See below for types.
+components.&nbsp; It honors the Constructor Dependency Injector form of
+the Inversion of control pattern (IoC).&nbsp;
 Components are typically going to live inside the same JVM. The idea is
-that this might scale from embedded containers for simple beans to
-enterprise and distributed applications.<br>
-<br>
+that this scales from embedded containers for simple beans to
+enterprise and distributed applicagtions.<br>
 <h3>Simple Example</h3>
 In skeletal form, here is the simplest
 possible PicoContainer compatible component:<br>
@@ -31,7 +30,7 @@ container:<br>
 <pre>&nbsp;&nbsp; new Shop(new StockManager());<br></pre>
 This is particularly good for unit testing. In-container testing being
 one of the most avoided forms of unit testing.&nbsp; This is where
-other container design s and specifications fail.<br>
+other container designs and specifications fail.<br>
 <h3>Use with a container</h3>
 With a PicoContainer:<br>
 <pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();<br>&nbsp;&nbsp; pc.registerComponent(StockManager.class)<br>&nbsp;&nbsp; pc.registerComponent(Shop.class)<br>&nbsp;&nbsp; pc.start();</pre>
@@ -43,7 +42,7 @@ imaginative deployments for them.<br>
 PicoContainer supports the following set of compelling features:<br>
 <ul>
   <li>Dependent components are laced together through constructor
-parameters (IoC type 3)</li>
+parameters</li>
   <li>Dependent components can also (optionally) be passed as JavaBean
 properties</li>
   <li><a href="configuration.html">Configuration</a> of components
@@ -80,12 +79,14 @@ application server. <br>
 </h2>
 <h3>.NET</h3>
 Pico.NET is the port of PicoContainer to .NET. It follows the Java
-design closely. Currently a work in progress.<br>
+design closely. Currently a work in progress by Maarten Grootendorst.
 <h3>Ruby</h3>
-Rico is the port of PicoContainer to Ruby. Ruby is a dynamically typed
+Rico is the port of PicoContainer to Ruby by Dan North. Ruby is a
+dynamically typed
 lanuage, so the Pico design does not map exactly.<br>
 <h3>PHP</h3>
-A port to PHP 5 is currently in the progress of being written.<br>
+A port to PHP 5 is currently in the progress of being written by
+Sebastian Bergmann.<br>
 <br>
 <small>Authors: Paul Hammant, Jon Tirs&eacute;n</small><br>
 <br>

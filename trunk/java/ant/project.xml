@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>piccontainer-ant</id>
-  <name>piccontainer-ant</name>
+  <id>picocontainer-ant</id>
+  <name>picocontainer-ant</name>
 
   <dependencies>
     <dependency>

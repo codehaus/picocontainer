@@ -6,6 +6,7 @@ import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.groovy.Xxx.A;
 import org.nanocontainer.script.groovy.Xxx.B;
+import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.InstanceComponentAdapter;
@@ -260,5 +261,46 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
 
         assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
     }
+
+	public void testBuildContainerWithParentAttribute() {
+		DefaultNanoPicoContainer parent = new DefaultNanoPicoContainer();
+		parent.registerComponentInstance("hello", "world");
+
+		Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "nano = new NanoContainerBuilder().container(parent:parent) {\n" +
+                "    component(Xxx$A)\n" +
+                "}\n");
+
+		PicoContainer pico = buildContainer(
+				new GroovyContainerBuilder(script, getClass().getClassLoader()),
+				parent,
+				"SOME_SCOPE");
+
+		// Should be able to get instance that was registered in the parent container
+        assertEquals("world", pico.getComponentInstance("hello"));
+	}
+
+	public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
+		Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "nano = new NanoContainerBuilder().container() {\n" +
+                "    component(Xxx$A)\n" +
+                "    container(parent:parent) {\n" +
+                "         component(Xxx$B)\n" +
+                "    }\n" +
+                "}\n");
+
+		try {
+			buildContainer(
+					new GroovyContainerBuilder(script, getClass().getClassLoader()),
+					new DefaultNanoPicoContainer(),
+					"SOME_SCOPE");
+
+			fail("NanoContainerMarkupException should have been thrown.");
+		} catch (NanoContainerMarkupException ignore) {
+			// ignore
+		}
+	}
 
 }

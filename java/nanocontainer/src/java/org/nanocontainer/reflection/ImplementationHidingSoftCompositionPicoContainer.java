@@ -226,10 +226,7 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
     }
 
     public boolean equals(Object obj) {
-        if (obj.equals(delegate)) {
-            return true;
-        }
-        return super.equals(obj);
+        return delegate.equals(obj);
     }
 
     private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {

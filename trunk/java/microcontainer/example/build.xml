@@ -1,0 +1,32 @@
+<project name="microcontainer-example" default="build-mca">
+	<property environment="env"/>
+    <property name="java.src" value="src/java"/>
+    <property name="target.dir" value="target"/>
+    <property name="classes.dir" value="${target.dir}/classes"/>
+    <property name="lib.dir" value="lib/"/>
+
+	<path id="compile.class.path">
+    	<pathelement location="lib/picocontainer-1.1.jar"/>
+    </path>
+
+    <target name="compile">
+		<mkdir dir="${target.dir}/classes" /> 
+		<javac srcdir="${java.src}"
+			destdir="${classes.dir}"
+			debug="on"
+			nowarn="on"
+			classpathref="compile.class.path"/>
+    </target>
+
+	<target name="build-mca" depends="compile" >
+
+		<jar destfile="${target.dir}/example.jar"
+       		basedir="${classes.dir}"
+			excludes="**/*EchoClient.class" />
+		<zip destfile="../example.mca">
+			<fileset dir="src/groovy" includes="*.groovy"/>
+			<zipfileset dir="${target.dir}" includes="example.jar" prefix="MCA-INF/components"/>
+		</zip>
+	</target>
+
+</project>

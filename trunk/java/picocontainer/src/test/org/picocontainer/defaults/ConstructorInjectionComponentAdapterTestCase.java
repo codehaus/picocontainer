@@ -14,6 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 
+import java.awt.*;
+
 public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
         ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", Object.class);
@@ -114,6 +116,59 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         } catch (PicoInitializationException e) {
             String message = e.getMessage();
             assertTrue(message.indexOf(D.class.getName() + "(" + A.class.getName() + ")") > 0);
+        }
+    }
+
+    public void testErrorThrownInCtorIsRethrown() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(Erroneous.class);
+        try {
+            picoContainer.getComponentInstance(Erroneous.class);
+            fail();
+        } catch (AWTError e) {
+        }
+    }
+
+    public void testRuntimeExceptionThrownInCtorIsRethrown() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(RuntimeThrowing.class);
+        try {
+            picoContainer.getComponentInstance(RuntimeThrowing.class);
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals("ha!",e.getMessage());
+        }
+    }
+
+    public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(NormalExceptionThrowing.class);
+        try {
+            picoContainer.getComponentInstance(NormalExceptionThrowing.class);
+            fail();
+        } catch (PicoInvocationTargetInitializationException e) {
+            assertEquals("ha!", e.getCause().getMessage());
+        }
+    }
+
+    public void testInstantiationExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        try {
+            picoContainer.registerComponentImplementation(InstantiationExceptionThrowing.class);
+            picoContainer.getComponentInstance(InstantiationExceptionThrowing.class);
+            fail();
+        } catch (NotConcreteRegistrationException e) {
+        }
+    }
+
+    public void testIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        try {
+            picoContainer.registerComponentImplementation(IllegalAccessExceptionThrowing.class);
+            picoContainer.getComponentInstance(IllegalAccessExceptionThrowing.class);
+            fail();
+        } catch (PicoInitializationException e) {
+            assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
 

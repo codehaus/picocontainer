@@ -152,9 +152,15 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             for (int i = 0; i < constructors.length; i++) {
                 if (!sortedMatchingConstructors.contains(constructors[i])) {
                     nonMatching.add(constructors[i]);
+                } else {
+                    // TODO - will it ever get here?, is the if() bogus?
                 }
             }
-            throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString());
+            if (nonMatching.size() > 0) {
+                throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString() + " for '" + getComponentImplementation() + "'");
+            } else {
+                throw new PicoInitializationException("There are no public constructors for '" + getComponentImplementation() + "'");
+            }
         }
         return greediestConstructor;
     }
@@ -197,11 +203,13 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             } else if (e.getTargetException() instanceof Error) {
                 throw (Error) e.getTargetException();
             }
-            throw new PicoInvocationTargetInitializationException(e.getTargetException());
+            throw new PicoInvocationTargetInitializationException(e.getTargetException()); // <here>
         } catch (InstantiationException e) {
-            throw new PicoInvocationTargetInitializationException(e);
+            // Handled by prior invocation of checkConcrete() is superclass. Caught and rethrown in line marked <here> above.
+            throw new RuntimeException("Should never get here");
         } catch (IllegalAccessException e) {
-            throw new PicoInvocationTargetInitializationException(e);
+            // Handled by prior invocation of checkConcrete() is superclass. Caught and rethrown in line marked <here> above.
+            throw new RuntimeException("Should never get here");
         } finally {
             instantiating = false;
         }

@@ -12,7 +12,6 @@ package picocontainer;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 
 public class ReflectionUsingLifecycleManager implements StartableLifecycleManager {
 
@@ -25,7 +24,6 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStartException(e.getCause());
         }
-        System.out.println("Start Gikk bra");
     }
 
     public void stopComponent(Object component) throws PicoStopException {
@@ -34,14 +32,11 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStopException(e.getCause());
         }
-        System.out.println("Stopp Gikk bra");
     }
 
     protected void invokeMethodByName(Object component, String methodName) throws InvocationTargetException {
         try {
-            System.out.println("Getting Method: " + component.getClass().getName() + "." + methodName + "()");
             Method method = component.getClass().getMethod(methodName, NOPARMS);
-            System.out.println("Invoking Method: " + Modifier.toString(method.getModifiers()) + " " + method );
             method.invoke(component, NOARGS);
         } catch (NoSuchMethodException e) {
             // fine.

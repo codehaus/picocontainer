@@ -130,12 +130,42 @@ public interface MutablePicoContainer extends PicoContainer {
 
     // TODO: Document these similar methods. It's not obvious what the difference is.
 
+    /**
+     * Make a child container, using the same implementation of MutablePicoContainer as the parent.
+     * It will have a reference to this as parent.  This will list the resulting MPC as a child.
+     * As far as this is concerned, the new child will be named something like "containerN" where N is 1 .. N
+     * depending on how many have been registered before. Lifecycle events will be cascaded from parent to child
+     * as a consequence of this.
+     * @return the new child container.
+     */
     MutablePicoContainer makeChildContainer();
+
+    /**
+     * Make a child container, using the same implementation of MutablePicoContainer as the parent.
+     * It will have a reference to this as parent.  This will list the resulting MPC as a child. Lifecycle events
+     * will be cascaded from parent to child as a consequence of this.
+     * @param name The name of the child container
+     * @return the new child container.
+     */
     MutablePicoContainer makeChildContainer(String name);
+
+    /**
+     * Add a child container. This action will list the the 'child' as exactly that in the parents scope.
+     * It will not change the child's view of a parent.  That is determined by the constructor arguments of the child
+     * itself. The child being added is assigned a name that is something like "containerN" where N is 1 .. N
+     * depending on how many have been registered before. Lifecycle events will be cascaded from parent to child
+     * as a consequence of calling this method.
+     * @param child The child container
+     */
     void addChildContainer(PicoContainer child);
 
-    // Can we keep this one only and get rid of the three ones above?
-    // We need a more unambiguous API for child containers(Aslak)
+    /**
+     * Add a named child container. This action will list the the 'child' as exactly that in the parents scope.
+     * It will not change the child's view of a parent.  That is determined by the constructor arguments of the child
+     * itself. Lifecycle events will be cascaded from parent to child as a consequence of calling this method.
+     * @param name The name of the child container.
+     * @param child The child container
+     */
     void addChildContainer(String name, PicoContainer child);
 
     // Shouldn't this take a PicoContainer? Or even if we keep only

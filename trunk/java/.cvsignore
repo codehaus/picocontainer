@@ -4,3 +4,5 @@ junit*
 *.iws
 *.log
 *.idea
+.classpath
+.project

@@ -8,6 +8,14 @@
 
 
   <dependencies>
+  
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-beta-5-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>  
+  
+  
   </dependencies>
 
 </project>

@@ -26,6 +26,12 @@
     
     <dependency>
       <groupId>${pom.groupId}</groupId>
+      <artifactId>picocontainer-rhino</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>    
+    
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
       <artifactId>picocontainer-xstream</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>    
@@ -49,6 +55,11 @@
       <id>xstream</id>
       <version>0.1</version>
     </dependency> 
+    
+    <dependency>
+      <id>rhino</id>
+      <version>1.5R4.1</version>
+    </dependency>     
 
   </dependencies>
 

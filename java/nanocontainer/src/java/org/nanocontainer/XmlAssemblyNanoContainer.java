@@ -75,7 +75,7 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
             } else {
                 xmlFrontEnd = new DefaultXmlFrontEnd();
             }
-            final PicoContainer rootContainer = xmlFrontEnd.createPicoContainer(rootElement);
+            rootContainer = xmlFrontEnd.createPicoContainer(rootElement);
             instantiateComponentsBreadthFirst(rootContainer);
             startComponentsBreadthFirst();
         } catch (SAXException e) {

@@ -1,2 +1,8 @@
 <!ENTITY ver-picocontainer "1.0-RC-1-SNAPSHOT">
+<!ENTITY ver-nanocontainer "1.0-beta-1-SNAPSHOT">
+<!ENTITY ver-nanocontainer-picometer "&ver-nanocontainer;">
+<!ENTITY ver-nanocontainer-pool "&ver-nanocontainer;">
+<!ENTITY ver-nanocontainer-pool2 "&ver-nanocontainer;">
+<!ENTITY ver-nanocontainer-testmodel "&ver-nanocontainer;">
+<!ENTITY ver-nanocontainer-type3msg "&ver-nanocontainer;">
 

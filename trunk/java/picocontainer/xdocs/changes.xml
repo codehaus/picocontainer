@@ -26,7 +26,7 @@
 
             <action dev="rinkrank" type="update">
                 CompositePicoContainer and HierarchicalComponentRegistry
-                were replaced by DecoratingPicoContainer.
+                were replaced by DelegatingPicoContainer.
             </action>
 
             <action dev="rinkrank" type="remove">

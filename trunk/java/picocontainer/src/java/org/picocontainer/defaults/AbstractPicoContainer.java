@@ -86,16 +86,7 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         orderedComponents.add(componentInstance);
     }
 
-    public Object getComponentInstance(Object componentKey) throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
-        if(componentAdapter != null) {
-            return componentAdapter.getComponentInstance(this);
-        } else {
-            return null;
-        }
-    }
-
-    public Collection getComponentInstances() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Collection getComponentInstances() throws PicoException {
         ArrayList componentInstances = new ArrayList(getComponentKeys().size());
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
             Object componentInstance = getComponentInstance(iterator.next());
@@ -104,7 +95,16 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         return Collections.unmodifiableCollection(componentInstances);
     }
 
-    public Object findComponentInstance(Class componentType) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(Object componentKey) throws PicoException {
+        ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
+        if(componentAdapter != null) {
+            return componentAdapter.getComponentInstance(this);
+        } else {
+            return null;
+        }
+    }
+
+    public Object findComponentInstance(Class componentType) throws PicoException {
         List foundKeys = new ArrayList();
         Object result = null;
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
@@ -129,7 +129,7 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         return getComponentKeys().contains(componentKey);
     }
 
-    public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
+    public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws PicoException {
         List found = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
@@ -139,17 +139,27 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
             }
         }
 
-        if (found.size() == 0) {
+        if (found.size() == 1) {
+            return ((ComponentAdapter) found.get(0));
+        } else if (found.size() == 0) {
             return null;
-        } else if (found.size() > 1) {
+        } else {
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
-                foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
+                ComponentAdapter componentAdapter = (ComponentAdapter) found.get(i);
+                foundClasses[i] = componentAdapter.getComponentImplementation();
             }
+
+//            ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
+//            Object result = componentMulticasterFactory.createComponentMulticaster(
+//                    getClass().getClassLoader(),
+//                    found,
+//                    false
+//            );
+//            return (ComponentAdapter) result;
+
             throw new AmbiguousComponentResolutionException(componentType, foundClasses);
         }
-
-        return found.isEmpty() ? null : ((ComponentAdapter) found.get(0));
     }
 
 }

@@ -5,16 +5,14 @@ import org.picocontainer.*;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.defaults.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This test tests (at least it should) test all the method in MutablePicoContainer
@@ -124,6 +122,44 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         pico.registerComponentInstance(Map.class, new HashMap());
         assertEquals("Wrong number of comps in the internals", 3, pico.getComponentInstances().size());
         assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, pico.getComponentInstance(Map.class).getClass());
+    }
+
+    public void testAmbiguousResolution() throws PicoRegistrationException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation("ping", String.class);
+        pico.registerComponentInstance("pong", "pang");
+        try {
+            Object huh = pico.getComponentInstance(String.class);
+        } catch (AmbiguousComponentResolutionException e) {
+            assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
+        }
+    }
+
+    public void testNoResolution() throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        assertNull(pico.getComponentInstance(String.class));
+    }
+
+    public static class ListAdder {
+        public ListAdder(Collection list) {
+            list.add("something");
+        }
+    }
+
+    public void TODOtestMulticasterResolution() throws PicoRegistrationException, PicoInitializationException {
+        MutablePicoContainer pico = createPicoContainer();
+
+        pico.registerComponentImplementation(ListAdder.class);
+        pico.registerComponentImplementation("a", ArrayList.class);
+        pico.registerComponentImplementation("l", LinkedList.class);
+
+        ListAdder adder = (ListAdder) pico.getComponentInstance(ListAdder.class);
+
+        List a = (List) pico.getComponentInstance("a");
+        assertTrue(a.contains("something"));
+
+        List l = (List) pico.getComponentInstance("l");
+        assertTrue(l.contains("something"));
     }
 
 }

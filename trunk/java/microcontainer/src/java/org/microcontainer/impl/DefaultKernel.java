@@ -104,6 +104,8 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	}
 
 	public void stop(String startableNode) {
+		PicoContainer container = (PicoContainer)contextMap.get(startableNode);
+		container.stop();
 	}
 
 	// Start all containers.

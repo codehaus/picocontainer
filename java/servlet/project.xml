@@ -14,7 +14,7 @@
             <version>1.0-beta-5-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>    
-    
+
         <dependency>
             <id>servletapi</id>
             <version>2.3</version>
@@ -26,19 +26,13 @@
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-integrationkit</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-reflection</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>

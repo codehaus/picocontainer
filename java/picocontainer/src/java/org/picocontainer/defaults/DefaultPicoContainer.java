@@ -76,6 +76,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     private ComponentAdapter findComponentAdapterImpl(Object componentKey) throws AmbiguousComponentResolutionException {
         ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.get(componentKey);
+//        if(result == null && componentKey instanceof Class) {
+//            // see if we find a matching one if the key is a class
+//            Class classKey = (Class) componentKey;
+//            result = findImplementingComponentAdapter(classKey);
+//        }
         if(result == null && componentKey instanceof Class) {
             // see if we find a matching one if the key is a class
             Class classKey = (Class) componentKey;

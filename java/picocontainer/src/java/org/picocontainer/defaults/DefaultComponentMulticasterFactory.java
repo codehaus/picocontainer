@@ -50,12 +50,14 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
         }
     }
 
+    private final InterfaceFinder interfaceFinder = new InterfaceFinder();
+
     public Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder
             ) {
-        Class[] interfaces = getInterfaces(objectsToAggregateCallFor);
+        Class[] interfaces = interfaceFinder.getInterfaces(objectsToAggregateCallFor);
         List copy = new ArrayList(objectsToAggregateCallFor);
 
         if (!callInReverseOrder) {
@@ -139,28 +141,4 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
             return result;
         }
     }
-
-    /**
-     * Get all the interfaces implemented by an array of objects.
-     * @return an array of interfaces.
-     */
-    private final Class[] getInterfaces(List objects) {
-        Set interfaces = new HashSet();
-        for (Iterator iterator = objects.iterator(); iterator.hasNext();) {
-            Object o = iterator.next();
-            Class clazz = o.getClass();
-            // Strangely enough Class.getInterfaces() does not include the interfaces
-            // implemented by superclasses. So we must loop up the hierarchy.
-            while (clazz != null) {
-                Class[] implemeted = clazz.getInterfaces();
-                List implementedList = Arrays.asList(implemeted);
-                interfaces.addAll(implementedList);
-                clazz = clazz.getSuperclass();
-            }
-        }
-
-        Class[] result = (Class[]) interfaces.toArray(new Class[interfaces.size()]);
-        return result;
-    }
-
 }

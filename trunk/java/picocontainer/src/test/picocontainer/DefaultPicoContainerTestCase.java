@@ -142,7 +142,6 @@ public class DefaultPicoContainerTestCase extends TestCase {
             List ambiguous = Arrays.asList(e.getAmbiguousClasses());
             assertTrue(ambiguous.contains(DerivedWilma.class));
             assertTrue(ambiguous.contains(WilmaImpl.class));
-            System.out.println("-->" + e.getMessage());
             assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
             assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) >0);
         }
@@ -172,16 +171,16 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testComponnentRegistrationMismatch() throws PicoStartException, PicoRegistrationException {
+    public void testComponentRegistrationMismatch() throws PicoStartException, PicoRegistrationException {
         PicoContainer pico = new PicoContainerImpl.Default();
 
+
         try {
-            pico.registerComponent(Collection.class, WilmaImpl.class);
+            pico.registerComponent(List.class, WilmaImpl.class);
         } catch (AssignabilityRegistrationException e) {
-            System.out.println("-->" + e.getMessage());
             // not worded in message
-            assertTrue(e.getMessage().indexOf(Collection.class.getName()) < 0);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);            //expected
+            assertTrue(e.getMessage().indexOf(List.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
         }
 
     }

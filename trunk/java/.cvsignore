@@ -1,5 +1,5 @@
-junit*
 target
+junit*
 *.log
 *.iws
 *.ipr

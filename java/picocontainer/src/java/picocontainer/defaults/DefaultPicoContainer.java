@@ -192,8 +192,8 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
     }
 
-    private Object createComponent(ComponentSpecification componentSpec) throws PicoInstantiationException, PicoIntrospectionException {
-        if (!componentTypeToInstanceMap.containsKey(componentSpec.getComponentType())) {
+    private Object createComponent(ComponentSpecification componentSpecification) throws PicoInstantiationException, PicoIntrospectionException {
+        if (!componentTypeToInstanceMap.containsKey(componentSpecification.getComponentType())) {
 
             Object component = null;
 
@@ -203,22 +203,24 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
                  iterator.hasNext();) {
                 Map.Entry entry = (Map.Entry) iterator.next();
                 Object exisitingComp = entry.getValue();
-                if (exisitingComp.getClass() == componentSpec.getComponentImplementation()) {
+                if (exisitingComp.getClass() == componentSpecification.getComponentImplementation()) {
                     component = exisitingComp;
+                    // We can exit now.
+                    break;
                 }
             }
 
             // create it if it was not reused
             if (component == null) {
-                component = componentSpec.instantiateComponent(this);
+                component = componentSpecification.instantiateComponent(this);
                 orderedComponents.add(component);
             }
 
-            componentTypeToInstanceMap.put(componentSpec.getComponentType(), component);
+            componentTypeToInstanceMap.put(componentSpecification.getComponentType(), component);
 
             return component;
         } else {
-            return componentTypeToInstanceMap.get(componentSpec.getComponentType());
+            return componentTypeToInstanceMap.get(componentSpecification.getComponentType());
         }
     }
 
@@ -226,33 +228,31 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         return componentTypeToInstanceMap.get(componentType);
     }
 
-    public Object createComponent(Class componentType) throws PicoInstantiationException, PicoIntrospectionException {
-        Object comp = getComponent(componentType);
+    Object createComponent(Class componentType) throws PicoInstantiationException, PicoIntrospectionException {
+        Object componentInstance = getComponent(componentType);
 
-        if (comp != null) {
-            return comp;
+        if (componentInstance != null) {
+            return componentInstance;
         }
 
-        comp = findSatisfyingComponent(componentType);
+        componentInstance = findSatisfyingComponent(componentType);
 
-        if (comp != null) {
-            return comp;
+        if (componentInstance != null) {
+            return componentInstance;
         }
 
         // try to find components that satisfy the interface (implements the component service asked for)
-        ComponentSpecification componentSpec = findComponentSpecification(componentType);
-        if (componentSpec == null) {
+        ComponentSpecification componentSpecification = findComponentSpecification(componentType);
+        if (componentSpecification == null) {
             return null;
         }
 
-        componentType = componentSpec.getComponentType();
+        componentType = componentSpecification.getComponentType();
 
         // if the component does not exist yet, instantiate it lazily
-        createComponent(componentSpec);
+        componentInstance = createComponent(componentSpecification);
 
-        comp = getComponent(componentType);
-
-        return comp;
+        return componentInstance;
     }
 
     private Object findSatisfyingComponent(Class componentType) throws AmbiguousComponentResolutionException {
@@ -260,8 +260,9 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
         for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (isOfComponentType((Class) entry.getKey(), componentType)) {
-                found.add(entry.getKey());
+            Class candidateType = (Class) entry.getKey();
+            if(componentType.isAssignableFrom(candidateType)) {
+                found.add(candidateType);
             }
         }
 
@@ -277,7 +278,8 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         List found = new ArrayList();
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
-            if (isOfComponentType(componentSpecification.getComponentType(), componentType)) {
+
+            if (componentType.isAssignableFrom(componentSpecification.getComponentType())) {
                 found.add(componentSpecification);
             }
         }
@@ -291,10 +293,6 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
 
         return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
-    }
-
-    private boolean isOfComponentType(Class suspected, Class requested) {
-        return requested.isAssignableFrom(suspected);
     }
 
     public Class[] getComponentTypes() {

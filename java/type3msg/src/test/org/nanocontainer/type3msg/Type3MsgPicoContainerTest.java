@@ -24,9 +24,9 @@ public class Type3MsgPicoContainerTest extends TestCase {
     private TestGirl testGirl3;
 
     protected void setUp() throws Exception {
-        testGirl1 = new TestGirl(1);
-        testGirl2 = new TestGirl(2);
-        testGirl3 = new TestGirl(3);
+        testGirl1 = new TestGirl();
+        testGirl2 = new TestGirl();
+        testGirl3 = new TestGirl();
     }
 
     public void testCannotAddAComponentWithWrongInterface() {

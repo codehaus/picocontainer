@@ -18,6 +18,7 @@ import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MixinInstance;
 import com.tirsen.nanning.config.AspectSystem;
 import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.PicoInvocationTargetStartException;
 
 public class NanningComponentFactory extends DefaultComponentFactory {
     private final AspectSystem aspectSystem;
@@ -26,8 +27,8 @@ public class NanningComponentFactory extends DefaultComponentFactory {
         this.aspectSystem = aspectSystem;
     }
 
-    public Object createComponent(Class compType, Constructor constructor, Object[] args)
-            throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    public Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
+
         Object component = super.createComponent(compType, constructor, args);
 
         // Nanning will only aspectify stuff when its type is an interface

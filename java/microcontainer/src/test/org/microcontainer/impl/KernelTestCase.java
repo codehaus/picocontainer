@@ -78,8 +78,10 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
     public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
-        // these should be one removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), o.getClass().getClassLoader().getParent());
+		Class interfaceClass =  o.getClass().getInterfaces()[0];
+
+		// the interface class loader should be one removed from the kernel's class loader
+        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
         // these should be two removed from each other.
@@ -146,9 +148,9 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("isRunning", new Class[0]);
-        assertFalse(((Boolean) m.invoke(o, new Object[0])).booleanValue());
-        kernel.stop("test");
         assertTrue(((Boolean) m.invoke(o, new Object[0])).booleanValue());
+        kernel.stop("test");
+        assertFalse(((Boolean) m.invoke(o, new Object[0])).booleanValue());
         // of course, any references to any comp will be usable prior to GC, even if the container has stopped.
     }
 
@@ -202,8 +204,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testKernelCanRunInPicoContainer()
-    {
+    public void testKernelCanRunInPicoContainer() {
         // lets keep true to COP principles, shall we?
         DefaultPicoContainer c = new DefaultPicoContainer();
         c.registerComponentImplementation(DefaultKernel.class);

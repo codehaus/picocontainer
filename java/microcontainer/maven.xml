@@ -30,7 +30,7 @@
 		<delete file="target/classes/components.jar"/>
   		<jar destfile="target/classes/components.jar"
 			  basedir="src/testcomp/target/classes"
-			  includes="org/microcontainer/test/TestComp.class"/>
+			  includes="org/microcontainer/test/TestComp.class,org/microcontainer/test/impl/TestPromotableImpl.class"/>
   	</goal>
 
 	<goal name="test-hidden.jar">

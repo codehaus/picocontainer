@@ -79,7 +79,7 @@ class Boy
 {    
     public function kiss($girl)
     {
-        echo 'I was kissed by a '.get_class($girl);        
+        return 'I was kissed by a '.get_class($girl);        
     }
 }
 
@@ -110,7 +110,7 @@ class Girl
     
     public function kissSomeone()
     {
-        $this->_boy->kiss($this);
+        return $this->_boy->kiss($this);
     }
 }
 
@@ -140,6 +140,38 @@ class C2
 {
     public function __construct(C1 $c1)
     {
+    }
+}
+
+class EmptyBean 
+{	
+}
+
+class PersonBean 
+{
+    private $name;
+    public function setName($name) 
+    {
+        $this->name = $name;
+    }
+    public function getName() 
+    {
+        return $this->name;
+    }
+}
+
+class PurseBean 
+{	
+    private $owner;
+    
+    public function getOwner() 
+    {
+        return $this->owner;
+    }
+    
+    public function setOwner(PersonBean $owner) 
+    {
+        $this->owner = $owner;
     }
 }
 

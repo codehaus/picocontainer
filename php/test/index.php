@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ALL);
+
 /*
  * You nead to install SimpleTest to run tests
  * @link http://www.lastcraft.com/simple_test.php
@@ -16,6 +18,9 @@ $test->addTestFile('ComponentKeyTests.php');
 $test->addTestFile('ComponentAdapterTests.php');
 $test->addTestFile('DefaultPicoContainerTests.php');
 $test->addTestFile('ExceptionsTests.php');
+$test->addTestFile('SetterInjectionComponentAdapterTestCase.php');
+$test->addTestFile('LazyIncludingCATests.php');
+$test->addTestFile('SitePointTests.php');
 
 if (TextReporter::inCli()) {
         exit ($test->run(new TextReporter()) ? 0 : 1);

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; 
+ * it only has accessor methods. In order to register components in a PicoContainer, use a {@link MutablePicoContainer}.
+ *
+ * @author Java version authors
+ * @author Pawel Kozlowski <pawel.kozlowski@gmail.com>
+ * @version $Revision$
+ */
 interface PicoContainer
 {    
     public function getComponentInstance($componentKey);                
@@ -9,14 +17,42 @@ interface PicoContainer
     public function getComponentAdapterOfType($componentType);
 }
 
+/**
+ * This is the core interface used for registration of components with a container. It is possible to register 
+ * an implementation class, an instance or a ComponentAdapter.
+ *
+ * @author Java version authors
+ * @author Pawel Kozlowski
+ * @version $Revision$
+ */
 interface MutablePicoContainer extends PicoContainer 
 {
     public function registerComponent(ComponentAdapter $componentAdapter);
     public function registerComponentImplementation($componentKey, $componentImplementation = '', $componentParams = array());
+    public function registerComponentImplementationWithIncFileName($includeFileName, $componentKey, $componentImplementation = '', $componentParams = array());   
     public function registerComponentInstance($componentInstance, $componentKey = null);
     public function unregisterComponent($componentKey);
-}     
+}
 
+
+/**
+ * <p/>
+ * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
+ * </p>
+ * <p/>
+ * Using Class name as keys to the registerComponentImplementation method makes
+ * a subtle semantic difference:
+ * </p>
+ * <p/>
+ * If there are more than one registered components of the same type and one of them are
+ * registered with a Class name key of the corresponding type, this component
+ * will take precedence over other components during type resolution.
+ * </p>
+ * 
+ * @author Java version authors
+ * @author Pawel Kozlowski
+ * @version $Revision$
+ */
 class DefaultPicoContainer implements MutablePicoContainer
 {
     private $_componentAdapters = array();
@@ -62,24 +98,32 @@ class DefaultPicoContainer implements MutablePicoContainer
             
     public function getComponentAdapter($componentKey)
     {
-        return $this->_componentAdapters[$componentKey];
+    	if (array_key_exists($componentKey,$this->_componentAdapters))
+    	{
+        	return $this->_componentAdapters[$componentKey];
+    	}
+    	else
+    	{
+    		return null;
+    	}
     }
     
     
     public function getComponentAdaptersOfType($componentType) 
     {
-        $result = array();        
-        $ctReflectionClass = new ReflectionClass($componentType);                                
+        $result = array();
+        
+        $ctReflectionClass = new ReflectionClass($componentType);                                        
                 
         foreach($this->_componentAdapters as $cadapter)
         {
-            if ($ctReflectionClass->isInterface())
-            {            
-                $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());        
-                if ($catReflectionClass->implementsInterface($ctReflectionClass->getName()))
-                {
-                    $result[] = $cadapter;
-                }                
+            if ($ctReflectionClass->isInterface()&&class_exists($cadapter->getComponentImplementation()))
+            {              
+	        	$catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());        
+	            if ($catReflectionClass->implementsInterface($ctReflectionClass->getName()))
+	            {
+	            	$result[] = $cadapter;
+	            }                                
             }
             else
             {                                    
@@ -88,12 +132,15 @@ class DefaultPicoContainer implements MutablePicoContainer
                     $result[] = $cadapter;         
                 }
                 else
-                {                
-                    $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());
-                    if($catReflectionClass->isSubclassOf($ctReflectionClass))
-                    {
-                        $result[] = $cadapter;    
-                    } 
+                {   
+                	if (class_exists($cadapter->getComponentImplementation()))
+                	{             
+	                    $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());
+	                    if($catReflectionClass->isSubclassOf($ctReflectionClass))
+	                    {
+	                        $result[] = $cadapter;    
+	                    }
+                	} 
                 }
             }
         }
@@ -131,7 +178,7 @@ class DefaultPicoContainer implements MutablePicoContainer
     
     public function registerComponent(ComponentAdapter $componentAdapter)
     {                        
-        if (is_null($this->_componentAdapters[$componentAdapter->getComponentKey()]))
+        if (!array_key_exists($componentAdapter->getComponentKey(),$this->_componentAdapters))
         {                       
             $this->_componentAdapters[$componentAdapter->getComponentKey()] = $componentAdapter;
         }
@@ -145,6 +192,19 @@ class DefaultPicoContainer implements MutablePicoContainer
     {                
         $ca = $this->_componentAdapterFactory->createComponentAdapter($componentKey, $componentImplementation, $componentParams);
         $this->registerComponent($ca);        
+    }
+    
+    public function registerComponentImplementationWithIncFileName($includeFileName, $componentKey, $componentImplementation = '', $componentParams = array())
+    {
+    	if ($includeFileName!='')
+    	{
+    		$ca = $this->_componentAdapterFactory->createComponentAdapter($componentKey, $componentImplementation, $componentParams);
+        	$this->registerComponent(new LazyIncludingComponentAdapter($ca,$includeFileName));
+    	}
+    	else
+    	{
+    		throw new IncludeFileNameNotDefinedRegistrationException();
+    	}
     }
     
     public function registerComponentInstance($componentInstance, $componentKey = null)

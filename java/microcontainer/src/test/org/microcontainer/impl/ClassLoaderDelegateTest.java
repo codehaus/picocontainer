@@ -14,10 +14,13 @@ public class ClassLoaderDelegateTest extends TestCase {
 	protected void setUp() throws Exception {
 		delegate = new ClassLoaderDelegate(this.getClass().getClassLoader());
 
+		// build mock class loaders
 		mockClassLoaderOne = new MockClassLoaderOne();
 		mockClassLoaderTwo = new MockClassLoaderTwo();
-		delegate.addClassLoader("one", mockClassLoaderOne);
-		delegate.addClassLoader("two", mockClassLoaderTwo);
+
+		// register to delegate
+		delegate.addClassLoader(mockClassLoaderOne);
+		delegate.addClassLoader(mockClassLoaderTwo);
 	}
 
 	public void testLoadClassUsesParentClassLoader() throws Exception {

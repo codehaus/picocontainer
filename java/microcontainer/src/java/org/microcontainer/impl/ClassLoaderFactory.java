@@ -35,7 +35,7 @@ public class ClassLoaderFactory {
 	public ClassLoader build(String contextName) {
 		URL[] urls = getURLs(contextName, PROMOTED_PATH);
 		ClassLoader hidden = new URLClassLoader(urls, this.getClass().getClassLoader());
-        classLoaderDelegate.addClassLoader(contextName, hidden);
+        classLoaderDelegate.addClassLoader(hidden);
 
 		return new StandardMicroClassLoader(getStandardApiURLs(contextName), classLoaderDelegate);
 	}

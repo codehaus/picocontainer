@@ -27,10 +27,9 @@ public class ClassLoaderDelegate extends ClassLoader {
 
 	/**
 	 * Add a class loader to the list of delegates
-	 * @param context
 	 * @param classLoader
 	 */
-	public void addClassLoader(String context, ClassLoader classLoader) {
+	public void addClassLoader(ClassLoader classLoader) {
 		synchronized(delegates) {
 			delegates.add(new ClassLoaderWrapper(classLoader));
 		}

@@ -19,18 +19,18 @@ import java.util.Map;
 
 public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase {
 
-    abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
+    abstract public PicoContainer createPicoContainerWithTouchableAndDependency() throws
             PicoRegistrationException, PicoIntrospectionException;
 
     abstract public PicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
             PicoRegistrationException, PicoIntrospectionException;
 
     public void testNotNull() throws PicoRegistrationException, PicoIntrospectionException {
-        assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependancy());
+        assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependency());
     }
 
     public void testBasicInstantiationAndContainment() throws PicoInitializationException, PicoRegistrationException {
-        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
         picoContainer.instantiateComponents();
         assertTrue("Container should have Touchable component",
                 picoContainer.hasComponent("touchable"));
@@ -46,7 +46,7 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
     protected abstract void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
 
     public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
-        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
         addAHashMapByInstance(picoContainer);
         picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the internals", 3, picoContainer.getComponents().size());

@@ -46,8 +46,7 @@ public class ImplementationHidingPicoContainer extends AbstractDelegatingMutable
 
 
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        super(new DefaultPicoContainer(caf, parent, new DefaultLifecycleManager()));
-        this.caf = caf;
+        this(caf, parent, new DefaultLifecycleManager());
     }
 
     /**

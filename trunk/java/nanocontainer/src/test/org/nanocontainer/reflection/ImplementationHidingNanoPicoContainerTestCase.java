@@ -9,7 +9,7 @@ import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestC
  * @version $Revision$
  */
 
-public class ImplementationHidingSoftCompositionPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
+public class ImplementationHidingNanoPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
         return new ImplementationHidingNanoPicoContainer();

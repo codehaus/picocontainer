@@ -12,6 +12,7 @@ package org.nanocontainer.script.jython;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
@@ -56,12 +57,12 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n" +
-                "pico.registerComponentInstance('child', DefaultPicoContainer(pico))\n" +
-                "child = pico.getComponentInstance('child')\n" +
-                "child.registerComponentImplementation(WebServerImpl)\n");
+                "child = pico.makeChildContainer()\n" +
+                "child.registerComponentImplementation(WebServerImpl)\n" +
+                "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance(WebServerImpl))");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null);
-        PicoContainer child = (PicoContainer) pico.getComponentInstance("child");
-        assertNotNull(child.getComponentInstanceOfType(WebServer.class));
+        WebServerImpl wsi = (WebServerImpl) pico.getComponentInstance("wayOfPassingSomethingToTestEnv");
+        assertNotNull(wsi);
     }
 
     public void testContainerCanBeBuiltWithParent() {

@@ -1,8 +1,8 @@
 package org.microcontainer.impl;
 
 import junit.framework.TestCase;
-
 import java.io.File;
+import org.microcontainer.ClassLoaderFactory;
 
 /**
  * @author Mike Ward
@@ -12,7 +12,7 @@ public class ClassLoaderFactoryTestCase extends TestCase {
 	private ClassLoader classLoader;
 
 	protected void setUp() throws Exception {
-		ClassLoaderFactory clf = new ClassLoaderFactory(new DefaultMcaDeployer());
+		ClassLoaderFactory clf = new DefaultClassLoaderFactory(new DefaultMcaDeployer());
         new File("test").mkdir();
 		classLoader = clf.build("test");
 	}

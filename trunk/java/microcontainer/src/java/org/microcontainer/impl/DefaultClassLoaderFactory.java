@@ -11,6 +11,7 @@
 package org.microcontainer.impl;
 
 import org.microcontainer.McaDeployer;
+import org.microcontainer.ClassLoaderFactory;
 
 import java.io.File;
 import java.net.URL;
@@ -18,16 +19,17 @@ import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 
 /**
- * @author Mike Ward
+ * @author Michael Ward
+ * @version $Revision$
  */
-public class ClassLoaderFactory {
+public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 	public static final String PROMOTED_PATH = "/MCA-INF/promoted/";
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
 	protected McaDeployer mcaDeployer = null;
 	private DelegatingClassLoader delegatingClassLoader; // promoted classloaders
 
-	public ClassLoaderFactory(McaDeployer mcaDeployer) {
+	public DefaultClassLoaderFactory(McaDeployer mcaDeployer) {
 		this.mcaDeployer = mcaDeployer;
 		this.delegatingClassLoader = new DelegatingClassLoader(this.getClass().getClassLoader());
 	}

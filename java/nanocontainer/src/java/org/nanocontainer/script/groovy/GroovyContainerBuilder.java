@@ -11,6 +11,7 @@ package org.nanocontainer.script.groovy;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
+import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -54,8 +55,10 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         // both returning something or defining the variable is ok.
         Object result = groovyScript.run();
-        Object picoVariable = binding.getVariable("pico");
-        if (picoVariable == null) {
+        Object picoVariable;
+        try {
+            picoVariable = binding.getVariable("pico");
+        } catch (MissingPropertyException e) {
             picoVariable = result;
         }
         if (picoVariable instanceof PicoContainer) {

@@ -14,7 +14,7 @@ import picocontainer.PicoContainer;
 import picocontainer.Container;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
-import picocontainer.PicoContainerImpl;
+import picocontainer.HierarchicalPicoContainer;
 import picocontainer.PicoStopException;
 import picocontainer.NullContainer;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
     }
 
     protected PicoContainer makePicoContainer(Container parentContainer) {
-        return new PicoContainerImpl.WithParentContainer(parentContainer);
+        return new HierarchicalPicoContainer.WithParentContainer(parentContainer);
     }
 
     public static class Default extends StringRegistrationNanoContainerImpl {
@@ -94,6 +94,10 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public Object[] getComponents() {
         return picoContainer.getComponents();
+    }
+
+    public Class[] getComponentTypes() {
+        return picoContainer.getComponentTypes();
     }
 
     public void addComponentClassLoader(ClassLoader classLoader) {

@@ -8,6 +8,7 @@ public class MyGroovyAction {
 
     property year
     property cars
+    property country
 
     public String execute() {
         if(year > 2003) {

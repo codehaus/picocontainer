@@ -10,13 +10,13 @@
 
 package picocontainer.hierarchical;
 
-import picocontainer.StartableLifecycleManager;
+import picocontainer.LifecycleManager;
 import picocontainer.PicoStartException;
 import picocontainer.PicoStopException;
 import picocontainer.PicoDisposalException;
 
 public class NullStartableLifecycleManager
-        implements StartableLifecycleManager {
+        implements LifecycleManager {
     public void startComponent(Object component) throws PicoStartException {
     }
 

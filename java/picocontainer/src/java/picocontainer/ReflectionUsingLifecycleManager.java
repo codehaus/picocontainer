@@ -15,7 +15,7 @@ import picocontainer.hierarchical.PicoInvocationTargetStartException;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-public class ReflectionUsingLifecycleManager implements StartableLifecycleManager {
+public class ReflectionUsingLifecycleManager implements LifecycleManager {
 
     private static final Class[] NOPARMS = new Class[0];
     private static final Object[] NOARGS = new Object[0];

@@ -13,7 +13,7 @@ package picocontainer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class OverriddenStartableLifecycleManager implements StartableLifecycleManager {
+public class OverriddenStartableLifecycleManager implements LifecycleManager {
 
     private List started = new ArrayList();
     private List stopped = new ArrayList();

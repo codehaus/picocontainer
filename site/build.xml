@@ -2,9 +2,15 @@
 
 <project name="PicoSite" default="make-site" basedir=".">  
 
-  <target name="make-site">
-    <get dest="lib/servlet.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.3.jar"/>
+  <target name="-init">
+    <available file="lib/servlet.jar" property="how.often.does.servlet.jar.change"/>
+  </target>
 
+  <target name="get-jars" depends="-init" unless="how.often.does.servlet.jar.change">
+    <get dest="lib/servlet.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.3.jar"/>
+  </target>
+
+  <target name="make-site" depends="get-jars">
     <taskdef name="sitemesh"
       classname="com.opensymphony.module.sitemesh.staticmesh.ant.StaticMeshTask">
       <classpath>

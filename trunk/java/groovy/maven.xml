@@ -1,4 +1,4 @@
-<project default="default" xmlns:j="jelly:core" xmlns:u="jelly:util" >
+<project xmlns:j="jelly:core" xmlns:u="jelly:util">
 
   <postGoal name="test:compile">
     <attainGoal name="setclasspath"/>

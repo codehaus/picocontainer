@@ -59,46 +59,57 @@ public class PicoBuilder extends BuilderSupport {
     }
 
     protected Object createNode(Object name, Map attributes) {
+        Object parent = getCurrent();
         if (name.equals("container")) {
-            return createContainer(attributes);
-        } else {
-            Object parent = getCurrent();
+            MutablePicoContainer answer = createContainer(attributes);
+            if (parent instanceof MutablePicoContainer) {
+                MutablePicoContainer pico = (MutablePicoContainer) parent;
+                pico.addChild(answer);
+            }
+            return answer;
+        }
+        else {
             if (parent instanceof MutablePicoContainer) {
                 MutablePicoContainer pico = (MutablePicoContainer) parent;
 
                 //System.out.println("Creating node: " + name + " with " + attributes);
-                
+
                 if (name.equals("component")) {
                     Class type = (Class) attributes.remove("componentClass");
                     if (type != null) {
                         Object key = attributes.remove("key");
                         if (key != null) {
                             pico.registerComponentImplementation(key, type);
-                        } else {
+                        }
+                        else {
                             pico.registerComponentImplementation(type);
                         }
                         return name;
-                    } else {
+                    }
+                    else {
                         throw new PicoBuilderException("Must specify a componentClass attribute for a component");
                     }
-                } else if (name.equals("bean")) {
+                }
+                else if (name.equals("bean")) {
                     // lets create a bean
                     Object answer = createBean(attributes);
                     pico.registerComponentInstance(answer);
                     return answer;
                 }
-            } else {
+            }
+            else {
                 throw new PicoBuilderException("method: " + name + " must be a child of a container element");
             }
         }
         throw new PicoBuilderException("uknown method: " + name);
     }
 
-    protected Object createContainer(Map attributes) {
+    protected MutablePicoContainer createContainer(Map attributes) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         if (adapterFactory != null) {
             return new DefaultPicoContainer(adapterFactory);
-        } else {
+        }
+        else {
             return new DefaultPicoContainer();
         }
     }
@@ -118,7 +129,8 @@ public class PicoBuilder extends BuilderSupport {
                 InvokerHelper.setProperty(bean, name, value);
             }
             return bean;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new PicoBuilderException("Failed to create bean of type: " + type + ". Reason: " + e, e);
         }
     }

@@ -133,7 +133,9 @@ public interface MutablePicoContainer extends PicoContainer {
     PicoContainer getImmutable();
 
     MutablePicoContainer makeChildContainer();
+    MutablePicoContainer makeChildContainer(String name);
     void addChildContainer(MutablePicoContainer child);
+    void addChildContainer(String name, MutablePicoContainer child);
     void removeChildContainer(MutablePicoContainer child);
 
 }

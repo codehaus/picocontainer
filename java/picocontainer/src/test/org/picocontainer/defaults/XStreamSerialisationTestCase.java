@@ -5,6 +5,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import junit.framework.TestCase;
 
 /**
@@ -15,7 +16,7 @@ public class XStreamSerialisationTestCase extends TestCase {
 
     public void testShouldBeAbleToSerialiseEmptyPico() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        XStream xStream = new XStream();
+        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 
@@ -27,7 +28,7 @@ public class XStreamSerialisationTestCase extends TestCase {
         pico.registerComponentImplementation(SimpleTouchable.class);
         pico.registerComponentImplementation(DependsOnTouchable.class);
 
-        XStream xStream = new XStream();
+        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 
@@ -40,7 +41,7 @@ public class XStreamSerialisationTestCase extends TestCase {
         pico.registerComponentImplementation(DependsOnTouchable.class);
         pico.getComponentInstances();
 
-        XStream xStream = new XStream();
+        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 

@@ -26,7 +26,7 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param componentImplementation the concrete component class.
      * @throws PicoRegistrationException if registration fails.
      */
-    void registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;
+    Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;
 
     /**
      * Registers a component.
@@ -36,24 +36,27 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param parameters an array of parameters that gives the container hints about what arguments
      *    to pass to the constructor when it is instantiated.
      * @throws PicoRegistrationException if registration fails.
+     * @return the key used for registration.
      */
-    void registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;
+    Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;
 
     /**
      * Registers a component using the componentImplementation as key.
      *
      * @param componentImplementation the concrete component class.
      * @throws PicoRegistrationException if registration fails.
+     * @return the key used for registration.
      */
-    void registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
+    Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
 
     /**
      * Registers an arbitrary object, using itself as a key.
      *
      * @param componentInstance
      * @throws PicoRegistrationException
+     * @return the key used for registration.
      */
-    void registerComponentInstance(Object componentInstance) throws PicoRegistrationException;
+    Object registerComponentInstance(Object componentInstance) throws PicoRegistrationException;
 
     /**
      * Registers an arbitrary object as a compoent in the container. This is
@@ -64,15 +67,17 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
      * @param componentInstance an arbitrary object.
      * @throws PicoRegistrationException if registration fails.
+     * @return the key used for registration.
      */
-    void registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;
+    Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;
 
     /**
      * Unregisters a component.
      *
      * @param componentKey key of the component to unregister.
+     * @return the unregistered component.
      */
-    void unregisterComponent(Object componentKey);
+    Object unregisterComponent(Object componentKey);
 
     /**
      * Adds a component instance to the container. Do not call this method

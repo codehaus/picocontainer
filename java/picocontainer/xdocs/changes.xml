@@ -22,6 +22,18 @@
                 (CyclicDependencyException with a detailed message will be thrown instead)
             </action>
 
+            <action dev="rinkrank" type="add">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-49">PICO-49</a>
+                - Change registerComponentInstance to be more flexible.
+            </action>
+
+            <action dev="tirsen" type="add">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-55">PICO-55</a>
+                - Use PicoContainer as a factory of transient (unmanaged) objects.
+            </action>
+
         </release>
 
         <release version="1.0-beta-2" date="2003-09-10">

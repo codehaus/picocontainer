@@ -55,8 +55,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         componentKeyToAdapterMap.put(componentKey, componentAdapter);
     }
 
-    public void unregisterComponent(Object componentKey) {
-        componentKeyToAdapterMap.remove(componentKey);
+    public Object unregisterComponent(Object componentKey) {
+        return componentKeyToAdapterMap.remove(componentKey);
     }
 
     public final ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
@@ -90,20 +90,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    public void registerComponentInstance(Object component) throws PicoRegistrationException {
-        registerComponentInstance(component.getClass(), component);
+    public Object registerComponentInstance(Object component) throws PicoRegistrationException {
+        return registerComponentInstance(component.getClass(), component);
     }
 
-    public void registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+    public Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
 
         addOrderedComponentAdapter(componentAdapter);
         unmanagedComponents.add(componentInstance);
+        return componentKey;
     }
 
-    public void registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
-        registerComponentImplementation(componentImplementation, componentImplementation);
+    public Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
+        return registerComponentImplementation(componentImplementation, componentImplementation);
     }
 
     public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -131,13 +132,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return getComponentMulticaster(true, false);
     }
 
-    public void registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        registerComponentImplementation(componentKey, componentImplementation, null);
+    public Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
+        return registerComponentImplementation(componentKey, componentImplementation, null);
     }
 
-    public void registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+    public Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
         registerComponent(componentAdapter);
+        return componentKey;
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {

@@ -2,6 +2,7 @@ Constructor Dependency Injection
 By the PicoContainer Committers and friends, (c) the PicoContainer committers
 Edition of %%date(%c)
 
+%!include: copyright.t2t
 %!include: notices.t2t
 %!include: preface.t2t
 %!include: antipatterns.t2t

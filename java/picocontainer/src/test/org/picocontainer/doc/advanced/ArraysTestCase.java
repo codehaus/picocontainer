@@ -1,10 +1,11 @@
-package org.picocontainer.defaults;
+package org.picocontainer.doc.advanced;
 
 import junit.framework.TestCase;
+
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y

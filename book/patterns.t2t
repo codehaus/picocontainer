@@ -124,13 +124,13 @@ is the system classoader.  If your reusable tool has been taken by another team
 and at some non root place in a classloader tree, then the tools will fail if
 you have made such assumptions.
 
-==== Where Interface/Impl Separation Still ====
+==== Interface/Implementation Separation ====
 
 SAX, mentioned in multiple contexts in this chapter, is also an example of
 where the design can go wrong.  The Factory is static (that in itself is an
 anti-pattern to IoC).  Despite giving the appearance of having the ability
 to generate a parser based on the implementation's class name, only the first
-caller of that method will regsiter a parser for the whole environment to use.
+caller of that method will register a parser for the whole environment to use.
 
 Given that the SAX API is now in the JDK, the environment we allude to above
 is the whole JVM.  This is a problem because in a very complex application

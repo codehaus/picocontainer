@@ -1,6 +1,7 @@
 package org.nanocontainer.reflection.recorder;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -53,10 +54,16 @@ public class ContainerRecorder implements Serializable {
      * Replay recorded invocations on target container
      * @param target container where the invocations should be replayed.
      */
-    public void replay(MutablePicoContainer target) throws java.lang.IllegalAccessException, InvocationTargetException {
+    public void replay(MutablePicoContainer target) {
         for (Iterator iter = invocations.iterator(); iter.hasNext();) {
             Invocation invocation = (Invocation) iter.next();
-            invocation.method.invoke(target, invocation.args);
+            try {
+                invocation.method.invoke(target, invocation.args);
+            } catch (IllegalAccessException e) {
+                throw new PicoException(e){};
+            } catch (InvocationTargetException e) {
+                throw new PicoException(e){};
+            }
         }
     }
 

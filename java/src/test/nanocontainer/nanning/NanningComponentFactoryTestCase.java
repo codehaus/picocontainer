@@ -72,25 +72,23 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
         nanningEnabledPicoContainer.start();
 
-        assertEquals(1, log.size());
-
         // fred says hello to wilma, even the interceptor knows
+        assertEquals(1, log.size());
         assertEquals("hello", log.get(0));
 
-//        WilmaImpl wilma = (WilmaImpl) nanningEnabledPicoContainer.getComponent(WilmaImpl.class);
-//
-//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents().length);
-//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[0]);
-//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[1]);
-//
-//
-//        assertNotNull(wilma);
-//
-//        wilma.hello();
-//
-//        assertEquals(2, log.size());
-//
-//        assertEquals("hello", log.get(1));
+        Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponent(WilmaImpl.class);
+
+        System.out.println("-->" + nanningEnabledPicoContainer.getComponents().length);
+        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[0]);
+        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[1]);
+
+        assertNotNull(wilma);
+
+        wilma.hello();
+
+        // another entry in the log
+        assertEquals(2, log.size());
+        assertEquals("hello", log.get(1));
 
     }
 

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.nanocontainer.testmodel.WebServerConfig;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class DefaultNanoRhinoScriptableTestCase extends TestCase {
 
-    public void testInstantiateBasicRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBasicRhinoScriptable() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         Reader script = new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
@@ -31,7 +31,7 @@ public class DefaultNanoRhinoScriptableTestCase extends TestCase {
                 rootContainer.getComponentInstances().get(0).getClass());
     }
 
-    public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         Reader script = new StringReader("" +
                 "var caf = new Packages.org.picocontainer.extras.ImplementationHidingComponentAdapterFactory();\n" +
@@ -61,7 +61,7 @@ public class DefaultNanoRhinoScriptableTestCase extends TestCase {
         assertEquals("ClassLoader should be the same for both components",ws.getClass().getClassLoader(),wsc.getClass().getClassLoader());
     }
 
-    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoConfigurationException {
+    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.

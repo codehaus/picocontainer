@@ -12,7 +12,7 @@ import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 import org.mozilla.javascript.EcmaError;
 import org.nanocontainer.testmodel.WebServerConfig;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @author Ward Cunningham
  * @version $Revision$
  */
-public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
+public class JavaScriptCompositionNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         MockMonitor.monitorRecorder = "";
@@ -33,9 +33,9 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         Xxx.componentRecorder = "";
     }
 
-    public void testInstantiateBasicRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBasicRhinoScriptable() throws IOException, ClassNotFoundException, PicoCompositionException {
 
-        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+        NanoContainer nano = new JavaScriptCompositionNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
@@ -48,9 +48,9 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         assertEquals("Should match the expression", "<AA>!A", Xxx.componentRecorder);
     }
 
-    public void testInstantiateBespokeRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBespokeRhinoScriptable() throws IOException, ClassNotFoundException, PicoCompositionException {
 
-        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+        NanoContainer nano = new JavaScriptCompositionNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
@@ -63,10 +63,10 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         assertEquals("Should match the expression", "<AA>!A", Xxx.componentRecorder);
     }
 
-    public void testInstantiateBogusRhinoScriptable() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBogusRhinoScriptable() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         try {
-            new JavaScriptAssemblyNanoContainer(new StringReader("" +
+            new JavaScriptCompositionNanoContainer(new StringReader("" +
                     "var parentContainer = new NanoRhinoScriptable();\n" +
                     "with (parentContainer) {\n" +
                     "  addComponent('org.nanocontainer.Xxx$A');\n" +
@@ -80,11 +80,11 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     }
 
 
-    public void testInstantiateWithChildContainer() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithChildContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         // A and C have no no dependancies. B Depends on A.
 
-        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+        NanoContainer nano = new JavaScriptCompositionNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
@@ -118,12 +118,12 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         // A and C have no no dependancies. B Depends on A.
 
         try {
-            new JavaScriptAssemblyNanoContainer(new StringReader("" +
+            new JavaScriptCompositionNanoContainer(new StringReader("" +
                     "var parentContainer = new NanoRhinoScriptable();\n" +
                     "with (parentContainer) {\n" +
                     "  addComponent('org.nanocontainer.Xxx$B');\n" +
@@ -141,16 +141,16 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testInstantiateWithInlineConfiguration() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithInlineConfiguration() throws IOException, ClassNotFoundException, PicoCompositionException {
 
-        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+        NanoContainer nano = new JavaScriptCompositionNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  var pc = new Packages.org.nanocontainer.testmodel.WebServerConfigBean();\n" +
                 "  pc.setHost('foobar.com');\n" +
                 "  pc.setPort(4321);\n" +
                 "  addComponentInstance(pc);\n" +
-                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
+                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
         ), new MockMonitor());

@@ -9,12 +9,12 @@
 
 package org.nanocontainer.xml;
 
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * @author Jeppe Cramon
  */
-public class XmlFrontEndException extends PicoConfigurationException {
+public class XmlFrontEndException extends PicoCompositionException {
 
 	public XmlFrontEndException() {
 	}

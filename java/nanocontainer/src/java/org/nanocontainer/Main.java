@@ -9,7 +9,7 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLOption;
@@ -25,7 +25,7 @@ public class Main {
     private static final int HELP_OPT = 'h';
     private static final int VERSION_OPT = 'v';
     private static final int MONITOR_OPT = 'm';
-    private static final int ASSEMBLY_OPT = 'a';
+    private static final int COMPOSITION_OPT = 'c';
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
@@ -41,14 +41,14 @@ public class Main {
                                 CLOptionDescriptor.ARGUMENT_REQUIRED,
                                 MONITOR_OPT,
                                 "specify the monitor implemenatation" ),
-        new CLOptionDescriptor( "assembly",
+        new CLOptionDescriptor( "composition",
                                 CLOptionDescriptor.ARGUMENT_REQUIRED,
-                                ASSEMBLY_OPT,
+                                COMPOSITION_OPT,
                                 "specify the assembly file" )
 
     };
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, PicoConfigurationException, ParserConfigurationException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, PicoCompositionException, ParserConfigurationException {
         if (args.length == 0) {
             System.err.println("NanoContainer: Needs a configuation file as a parameter");
             System.exit(10);
@@ -69,7 +69,7 @@ public class Main {
         final int size = options.size();
 
         String monitor = "";
-        String nanoContainerConfig = "";
+        String composition = "";
 
         for( int i = 0; i < size; i++ )
         {
@@ -95,8 +95,8 @@ public class Main {
                     monitor = option.getArgument();
                     break;
 
-                case ASSEMBLY_OPT:
-                    nanoContainerConfig = option.getArgument();
+                case COMPOSITION_OPT:
+                    composition = option.getArgument();
                     break;
 
             }
@@ -114,12 +114,12 @@ public class Main {
             }
         }
 
-        if (nanoContainerConfig.toLowerCase().endsWith(".js")) {
-            NanoContainer nano = new JavaScriptAssemblyNanoContainer(new FileReader(nanoContainerConfig), nanoContainerMonitor);
-            JavaScriptAssemblyNanoContainer.addShutdownHook(nano);
-        } else if (nanoContainerConfig.toLowerCase().endsWith(".xml")) {
-            NanoContainer nano = new XmlAssemblyNanoContainer(new FileReader(nanoContainerConfig), nanoContainerMonitor);
-            XmlAssemblyNanoContainer.addShutdownHook(nano);
+        if (composition.toLowerCase().endsWith(".js")) {
+            NanoContainer nano = new JavaScriptCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
+            JavaScriptCompositionNanoContainer.addShutdownHook(nano);
+        } else if (composition.toLowerCase().endsWith(".xml")) {
+            NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
+            XmlCompositionNanoContainer.addShutdownHook(nano);
         } else {
             System.err.println("NanoContainer: Unknown configuration file suffix, .js or .xml expected");
             System.exit(10);

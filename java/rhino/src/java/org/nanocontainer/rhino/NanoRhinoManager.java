@@ -4,14 +4,14 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.ScriptableObject;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 import java.io.Reader;
 import java.io.IOException;
 
 public class NanoRhinoManager {
-    public PicoContainer execute(Class scriptableClass, Reader script) throws PicoConfigurationException, IOException {
+    public PicoContainer execute(Class scriptableClass, Reader script) throws PicoCompositionException, IOException {
         Context cx = Context.enter();
         Scriptable scriptable;
         try {
@@ -29,7 +29,7 @@ public class NanoRhinoManager {
 
         } catch (final JavaScriptException e) {
             e.printStackTrace();
-            throw new PicoConfigurationException() {
+            throw new PicoCompositionException() {
                 public String getMessage() {
                     return "JavaScriptException : " + e.getMessage();
                 }
@@ -40,11 +40,11 @@ public class NanoRhinoManager {
 
     }
 
-    private void defineClass(Scriptable scriptable, Class rhinoClass) throws PicoConfigurationException {
+    private void defineClass(Scriptable scriptable, Class rhinoClass) throws PicoCompositionException {
         try {
             ScriptableObject.defineClass(scriptable, rhinoClass);
         } catch (final Exception e) {
-            throw new PicoConfigurationException() {
+            throw new PicoCompositionException() {
                 public String getMessage() {
                     return "JavaScriptException : " + e.getMessage();
                 }

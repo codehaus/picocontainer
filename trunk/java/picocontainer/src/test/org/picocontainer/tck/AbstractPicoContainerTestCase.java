@@ -240,5 +240,27 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     }
 
+    public static class JMSService {
+        public final String serverid;
+        public final String path;
+
+        public JMSService(String serverid, String path) {
+            this.serverid = serverid;
+            this.path = path;
+        }
+    }
+    // http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
+    public void testPico52() {
+        MutablePicoContainer pico = createPicoContainer();
+
+        pico.registerComponentImplementation("foo", JMSService.class, new Parameter[] {
+            new ConstantParameter("0"),
+            new ConstantParameter("something"),
+        });
+        JMSService jms = (JMSService) pico.getComponentInstance("foo");
+        assertEquals("0", jms.serverid);
+        assertEquals("something", jms.path);
+    }
+
 }
 

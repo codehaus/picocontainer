@@ -16,24 +16,25 @@ package org.nanocontainer.script.groovy;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-
 /**
  * {@inheritDoc}
- * The groovyScript has to return an instance of {@link PicoContainer}.
+ * The groovyScript has to return an instance of {@link SoftCompositionPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
  *
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class GroovyContainerBuilder extends ScriptedContainerBuilder {
@@ -43,7 +44,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         if(groovyScript == null) {
             createGroovyScript();
         }
@@ -58,7 +59,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         if(pico == null) {
             pico = result;
         }
-        return (PicoContainer) pico;
+        return (SoftCompositionPicoContainer) pico;
     }
 
     private void createGroovyScript() {

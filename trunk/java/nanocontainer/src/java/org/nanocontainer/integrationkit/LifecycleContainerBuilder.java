@@ -8,6 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
@@ -16,6 +17,7 @@ import org.picocontainer.defaults.ObjectReference;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
@@ -38,8 +40,8 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
             }
         }
 
-        if (container instanceof MutablePicoContainer) {
-            composeContainer((MutablePicoContainer) container, assemblyScope);
+        if (container instanceof SoftCompositionPicoContainer) {
+            composeContainer((SoftCompositionPicoContainer) container, assemblyScope);
         }
         autoStart(container);
 
@@ -68,7 +70,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
+    protected abstract void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope);
 
-    protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
+    protected abstract SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
 }

@@ -7,13 +7,13 @@
  * and shall use it only in accordance with the terms of the license agreements you 
  * entered into with lastminute.com
  */
-package org.nanocontainer.script.xml;
+package org.nanocontainer.integrationkit;
 
-import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 
 /**
  * @author Mauro Talevi
  */
 public interface ContainerPopulator {
-	public void populateContainer(MutablePicoContainer container);
+	public void populateContainer(SoftCompositionPicoContainer container);
 }

@@ -1,7 +1,12 @@
-package org.nanocontainer.reflection.recorder;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoException;
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
+package org.nanocontainer.reflection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,46 +19,44 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.integrationkit.ContainerRecorder;
+import org.picocontainer.PicoException;
 
 /**
- * Records method calls on a {@link MutablePicoContainer}.
- * This allows to replay all invocations on a different container instance.
- *
  * This class is serializable. The original container will not be serialized
  * (for performance reasons), but the invocations will, so they can be replayed at the
  * other end of the wire.
  * 
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  */
-public class ContainerRecorder implements Serializable {
+public class DefaultContainerRecorder implements Serializable, ContainerRecorder {
 
     private final List invocations = new ArrayList();
-    private transient MutablePicoContainer container;
+    private transient SoftCompositionPicoContainer container;
 
     private final InvocationHandler invocationRecorder = new InvocationRecorder();
 
-    public ContainerRecorder(MutablePicoContainer container) {
+    public DefaultContainerRecorder(SoftCompositionPicoContainer container) {
         this.container = container;
     }
 
     /**
-     * Creates a new proxy that will forward all method invocations to the container passed to
-     * the constructor. All method invocations are recorded so that they can be replayed on a
-     * different container.
-     * @see #replay
-     * @return a recording container proxy
+     * {@inheritDoc}
+     * @see ContainerRecorder#getContainerProxy()
      */
-    public MutablePicoContainer getContainerProxy() {
-        return (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(),
-                new Class[]{MutablePicoContainer.class}, invocationRecorder);
+    public SoftCompositionPicoContainer getContainerProxy() {
+        return (SoftCompositionPicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class[]{SoftCompositionPicoContainer.class}, invocationRecorder);
     }
 
     /**
-     * Replay recorded invocations on target container
-     * @param target container where the invocations should be replayed.
+     * {@inheritDoc}
+     * @see ContainerRecorder#replay(SoftCompositionPicoContainer)
      */
-    public void replay(MutablePicoContainer target) {
+    public void replay(SoftCompositionPicoContainer target) {
         for (Iterator iter = invocations.iterator(); iter.hasNext();) {
             Invocation invocation = (Invocation) iter.next();
             try {

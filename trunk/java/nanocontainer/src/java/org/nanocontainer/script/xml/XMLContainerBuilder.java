@@ -19,6 +19,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
@@ -46,7 +47,7 @@ import org.xml.sax.SAXException;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class XMLContainerBuilder extends ScriptedContainerBuilder {
+public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator{
 
     private final static String DEFAULT_INSTANCE_FACTORY = XStreamComponentInstanceFactory.class.getName();
     private static final String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
@@ -82,7 +83,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);
             if (EMPTY.equals(cafName) || cafName == null) {
@@ -92,7 +93,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
             DefaultSoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
                     parentContainer);
-			registerComponentsAndChildContainers(result, rootElement);
+            populateContainer(result);
             return result;
         } catch (ClassNotFoundException e) {
             throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
@@ -100,13 +101,24 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
             throw new PicoCompositionException(e);
-		} catch (IOException e) {
-			throw new PicoCompositionException(e);
-		} catch (SAXException e) {
-			throw new PicoCompositionException(e);
 		}		
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see ContainerPopulator#populateContainer(SoftCompositionPicoContainer)
+     */
+    public void populateContainer(SoftCompositionPicoContainer container) {
+        try {
+            registerComponentsAndChildContainers( container, rootElement );
+        } catch ( ClassNotFoundException e ) {
+            throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
+        } catch ( IOException e ) {
+			throw new PicoCompositionException(e);
+        } catch ( SAXException e ) {
+			throw new PicoCompositionException(e);
+        }
+    }
 
 	private void registerComponentsAndChildContainers(SoftCompositionPicoContainer parentContainer, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 

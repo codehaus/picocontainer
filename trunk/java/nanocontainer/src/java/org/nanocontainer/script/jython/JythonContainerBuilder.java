@@ -9,24 +9,25 @@
  *****************************************************************************/
 package org.nanocontainer.script.jython;
 
-import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.python.util.PythonInterpreter;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.PicoContainer;
+import org.python.util.PythonInterpreter;
 
 /**
  * {@inheritDoc}
- * The script has to assign a "pico" variable with an instance of {@link PicoContainer}.
+ * The script has to assign a "pico" variable with an instance of 
+ * {@link SoftCompositionPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
  * @author Paul Hammant
  * @author Mike Royle
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class JythonContainerBuilder extends ScriptedContainerBuilder {
@@ -34,9 +35,10 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
+        interpreter.exec("from org.nanocontainer import *");
         interpreter.exec("from org.nanocontainer.reflection import *");
         interpreter.exec("from java.net import *");
         interpreter.set("parent", parentContainer);
@@ -47,6 +49,6 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
                 return i;
             }
         }, "nanocontainer.py");
-        return (PicoContainer) interpreter.get("pico", MutablePicoContainer.class);
+        return (SoftCompositionPicoContainer) interpreter.get("pico", SoftCompositionPicoContainer.class);
     }
 }

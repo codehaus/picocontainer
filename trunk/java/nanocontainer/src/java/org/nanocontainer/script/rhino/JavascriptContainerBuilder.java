@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.script.rhino;
 
+import java.io.IOException;
+import java.io.Reader;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.DefiningClassLoader;
 import org.mozilla.javascript.GeneratedClassLoader;
@@ -18,28 +20,28 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
-import java.io.Reader;
-import java.io.IOException;
-
 /**
  * {@inheritDoc}
- * The script has to assign a "pico" variable with an instance of {@link PicoContainer}.
+ * The script has to assign a "pico" variable with an instance of 
+ * {@link SoftCompositionPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  */
 public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }
 
-    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
                 return new DefiningClassLoader(classLoader) {
@@ -55,6 +57,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             ImporterTopLevel.importPackage(cx,
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.defaults", classLoader),
+                        new NativeJavaPackage("org.nanocontainer", classLoader),
                         new NativeJavaPackage("org.nanocontainer.reflection", classLoader),
                         // File, URL and URLClassLoader will be frequently used by scripts.
                         new NativeJavaPackage("java.net", classLoader),
@@ -69,13 +72,13 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                 throw new PicoCompositionException("The script must define a variable named 'pico'");
             }
             if (!(pico instanceof NativeJavaObject)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
+                throw new PicoCompositionException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
-            if (!(javaObject instanceof PicoContainer)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
+            if (!(javaObject instanceof SoftCompositionPicoContainer)) {
+                throw new PicoCompositionException("The 'pico' variable must be of type " + SoftCompositionPicoContainer.class.getName());
             }
-            return (PicoContainer) javaObject;
+            return (SoftCompositionPicoContainer) javaObject;
         } catch (PicoCompositionException e) {
             throw e;
         } catch (JavaScriptException e) {

@@ -9,34 +9,32 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.ServletContainerListener;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
-
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.util.Vector;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.script.groovy.GroovyContainerBuilder;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
-    private String groovyScript = "" +
-            "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
-            "pico.registerComponentImplementation(java.lang.String)\n" +
-            "return pico\n" +
-            "";
+
+    private String groovyScript = 
+            "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
+            "pico = builder.container(parent:parent) { \n" +
+            "  component(StringBuffer)\n" +
+            "}";
 
     public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialisedWithInlinedScript() {
         ServletContainerListener listener = new ServletContainerListener();
@@ -102,7 +100,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         httpSessionMock.expects(once())
                 .method("setAttribute")
                 .with(eq(ServletContainerListener.KILLER_HELPER), isA(HttpSessionBindingListener.class));
-        DefaultPicoContainer appScopeContainer = new DefaultPicoContainer();
+        SoftCompositionPicoContainer appScopeContainer = new DefaultSoftCompositionPicoContainer();
         servletContextMock.expects(once())
                 .method("getAttribute")
                 .with(eq(APPLICATION_CONTAINER))

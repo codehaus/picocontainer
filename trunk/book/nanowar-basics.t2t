@@ -2,7 +2,7 @@ Constructor Dependency Injection, with PicoContainer
 NanoContainer
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
 
-= NanoWar Basics =
+= NanoWar =
 
 Many component models in the servlet world share a common limitation: They must have an empty constructor. This applies to standard servlets, but also non-standard component models such as WebWork, WebWork2 and Struts.
 
@@ -16,19 +16,113 @@ NanoWar is a component that allows servlets and actions to benefit from dependen
 
 (This is true for actions, not servlets - until we provide hooks into e.g. Jetty or Tomcat, but the containers on the app/session/request scope serve a similar purpose - although not as nice.)
 
+== NanoWar Servlet integration ==
+
+NanoWar is designed to be an embeddable component, easily configurable in web application's
+configuration files. 
+
+The integration is achieved via a servlet listener (org.nanocontainer.nanowar.ServletContainerListener) 
+which implements the servlet listeners (javax.servlet.ServletContextListener and javax.servlet.http.HttpSessionListener).
+
+The listener allows the webapp to instantiate, assemble, store and dispose the 
+appropriate PicoContainers when the application or session are created or disposed.
+
+One of the features of PicoContainer is the ability to have a tree hierarchy of containers,
+and this feature is central to NanoWar's scoped container support.
+When a session container is created, the application container is set as its parent.
+This enables a very efficient use of components in a web application:  only the 
+truly session-scoped components are instantiate every time a new session created. 
+All other components that need to be instantiated once per application will be 
+application-scoped.  This is the recommended way to replace the use of static
+singletons.
+
+== NanoWar configuration ==
+
+NanoWar is configured in the web applications standard files,
+web.xml (for Tomcat) and the MVC frameworks configuration files
+(struts-config.xml for Struts, webwork.properties for WebWork, etc).
+
+=== Listener configuration ===
+
+To enable NanoWar in your webapp, you need to configure a Listener and a Componser
+in the web.xml
+
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/listener.xml|lineNumbers=false}
+
+=== Scoped Composer configuration ===
+
+The ServletContainerListener uses a ScopedContainerComposer to compose
+the containers for the differents scopes: application/session/request.
+
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer.xml|lineNumbers=false}
+
+The ScopedContainerComposer is configurable via any NanoContainer file which 
+instantiates a ScopedContainerConfigurator.  Eg in XML the configuration would look like:
+
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer-config.xml|lineNumbers=false}
+
+The configurator allows to define the ContainerBuilder used by
+the composer and the NanoContainer scripts holding the components.
+For each scope, a comma-separated list of resource paths 
+(loaded from the classpath) is allowed.  The ability to define
+multiple resources per scope is very useful when one wants to 
+separate concerns and configuration in a big web application.
+
+The configuration of the composer is optional.  By default, XML is assumed
+with the default resource paths being nanowar-application.xml, nanowar-session.xml, nanowar-request.xml.
+
+It is worthy to note that ScopedContainerComposer is a generic composer that
+will work equally well when any NanoContainer script.
+
+=== Single NanoContainer configuration ===
+
+The ServletContainerListener is also configurable via a single NanoContainer script,
+provided the script language supports flow control syntax to distinguish among the 
+different assembly scopes.  For example, in groovy it would be 
+
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/nanocontainer.xml|lineNumbers=false}
+
+The context-param name must be 'nanocontainer.<language>' where language 
+is any of the supported NanoContainer script languages.  
+
+== NanoWar and MVC web frameworks == 
+
+NanoWar's embeddable design allows the developer to easily integrate it with
+the most popular MVC web frameworks, without forcing the choice of any framework. 
+Most importantly, everything is configurable via the standard configuration files
+of the different frameworks.
+ 
+=== NanoWar and Struts ===
+
+NanoWar's Struts support is configured in struts-config.xml in an extremely simple
+and elegant manner.  All is required is to configure a different controller.
+ 
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/struts-config.xml|lineNumbers=false}
+
+Using the PicoRequestProcessor as the Struts controller allows the Struts
+Actions to be created using CDI.  PicoRequestProcessor will look up the 
+PicoContainer defined in the servlet web context - looking in succession
+in the request, session and application scopes.  
+PicoRequestProcessor extends Struts RequestProcessor to 
+to instantiate the actions with all its dependencies injected from
+the PicoContainer found.  If no container is found for the dependencies
+a PicoInitialisationException will be thrown.  This is a sign that the 
+NanoWar container configuration has not be properly setup.
+
+If tiles are used, exactly the same arguments apply except that 
+a different controller needs to be defined.
+
+{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/tiles-struts-config.xml|lineNumbers=false}
+
 TODO:
 - Nanowar Servlet basics
   - current servlet limitations and drawbacks
     - testing
     - configuration
 - configuration/code
-  - web.xml
-  - composition script options. mechanism, not script details (which will be in the main nanocontainer chapter)
   - pure servlets
   - webwork
   - xwork/ww2
-  - struts
-  - nanowar
 
 
 

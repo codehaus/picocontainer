@@ -21,54 +21,6 @@
         </echo>
     </goal>
 
-    <!-- C O N T I N U O U S   I N T E G R A T I O N -->
-
-    <!--
-     ! Maven doesn't tell us whether compile was ok.
-     ! We'll work around it by creating a file and delete
-     ! it when compile is done. If compile fails, the file
-     ! is still there, and the continuous-integration.sh
-     ! script will send a mail to the list.
-    -->
-    <preGoal name="java:compile">
-        <touch file="${maven.build.dir}/compiling"/>
-    </preGoal>
-
-    <postGoal name="java:compile">
-        <delete file="${maven.build.dir}/compiling"/>
-    </postGoal>
-
-    <preGoal name="test:compile">
-        <touch file="${maven.build.dir}/compiling"/>
-    </preGoal>
-
-    <postGoal name="test:compile">
-        <delete file="${maven.build.dir}/compiling"/>
-    </postGoal>
-
-    <!--
-     ! Maven doesn't tell us whether tests were ok either.
-     ! If the testfailure file is there, and continuous-integration.sh
-     ! script will send a mail to the list.
-    -->
-    <preGoal name="test:test">
-        <delete file="${maven.build.dir}/testfailure"/>
-    </preGoal>
-
-    <!--
-     ! Note that if the tests fail, this postGoal will *not*
-     ! be run unless the maven.test.failure.ignore is set to
-     ! true. It is not recommended that developers have this
-     ! set to true, so this should only be set to true in the
-     ! ~/build.properties file on the machine running continuous
-     ! builds.
-    -->
-    <postGoal name="test:test">
-        <j:if test="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.failure')}">
-            <touch file="${maven.build.dir}/testfailure"/>
-        </j:if>
-    </postGoal>
-
     <postGoal name="dist:prepare-bin-filesystem">
         <attainGoal name="pico:tck-jar" />
         <copy file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
@@ -76,9 +28,6 @@
     </postGoal>
 
     <goal name="pico:tck-jar">
-        <echo>${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}</echo>
-        <echo>${pom.getPluginContext('maven-dist-plugin').getVariable('maven.dist.bin.assembly.dir')}</echo>
-        <echo>${maven.dist.bin.assembly.dir}</echo>
         <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">
             <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}" />
         </jar>

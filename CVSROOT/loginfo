@@ -41,4 +41,4 @@ ALL /usr/local/despots/cvs/collect_diffs.rb --to scm@picocontainer.codehaus.org 
 # Disabled by DamageControl on July 22, 2004
 #java /home/services/dcontrol/ruby/bin/ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://builds.codehaus.org:4712/private/xmlrpc/ picocontainer
 # Disabled by joehni, Eclipse CVS support fails with the produced error
-#java sh /home/services/dcontrol/damagecontrol/bin/requestbuild --url http://builds.codehaus.org:4712/damagecontrol/private/xmlrpc --projectname picocontainer
+java sh /home/services/dcontrol/damagecontrol/bin/requestbuild --url http://builds.codehaus.org:4712/damagecontrol/private/xmlrpc --projectname picocontainer

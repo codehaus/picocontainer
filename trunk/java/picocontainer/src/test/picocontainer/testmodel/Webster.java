@@ -13,7 +13,7 @@ package picocontainer.testmodel;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Aslak Hellesoy
  * @version $Revision: 0 $
  */

@@ -13,9 +13,11 @@ package nanocontainer.servlet.lifecycle;
 
 import nanocontainer.servlet.holder.ApplicationScopeObjectHolder;
 import nanocontainer.servlet.ObjectHolder;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
+
 import picocontainer.PicoContainer;
 
 public class ApplicationLifecycleListener extends BaseLifecycleListener implements ServletContextListener {

@@ -82,11 +82,11 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
 
             public Object[] getComponents() {
-                return new Object[] {acomp};
+                return new Object[]{acomp};
             }
 
             public Class[] getComponentTypes() {
-                return new Class[] {String.class};
+                return new Class[]{String.class};
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
@@ -103,18 +103,18 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             }
 
             public Object[] getComponents() {
-                return new Object[] {bcomp};
+                return new Object[]{bcomp};
             }
 
             public Class[] getComponentTypes() {
-                return new Class[] {Integer.class};
+                return new Class[]{Integer.class};
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
             }
         };
 
-        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[] {a, b});
+        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[]{a, b});
 
         assertTrue(acc.hasComponent(String.class));
         assertTrue(acc.hasComponent(Integer.class));

@@ -37,8 +37,8 @@ public class PicoPicoTestCase extends TestCase {
 
         pc2.instantiateComponents();
 
-        assertTrue( "There should have been a Fred in the container", pc2.hasComponent( FredImpl.class ) );
-        assertTrue( "There should have been a Wilma in the container", pc2.hasComponent( WilmaImpl.class ) );
+        assertTrue("There should have been a Fred in the container", pc2.hasComponent(FredImpl.class));
+        assertTrue("There should have been a Wilma in the container", pc2.hasComponent(WilmaImpl.class));
 
     }
 

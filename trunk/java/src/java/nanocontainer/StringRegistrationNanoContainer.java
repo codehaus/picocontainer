@@ -72,5 +72,4 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
     void addComponentClassLoader(ClassLoader classLoader);
 
 
-
 }

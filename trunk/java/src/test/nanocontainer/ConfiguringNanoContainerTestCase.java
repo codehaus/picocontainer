@@ -47,7 +47,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
 
     public void testCanConfigureWithSingleString()
             throws ParserConfigurationException, PicoRegistrationException,
-                   PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
+            PicoInstantiationException, ClassNotFoundException, PicoIntrospectionException {
         final String xml =
                 "<components>" +
                 "      <component class=\"nanocontainer.MockComponentImpl\">" +

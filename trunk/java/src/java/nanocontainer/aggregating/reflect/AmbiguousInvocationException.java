@@ -23,7 +23,7 @@ public class AmbiguousInvocationException extends Exception {
     private final Method method;
 
     public AmbiguousInvocationException(Object firstComponent, Object secondComponent, Method method) {
-        this.firstComponent = firstComponent ;
+        this.firstComponent = firstComponent;
         this.secondComponent = secondComponent;
         this.method = method;
     }

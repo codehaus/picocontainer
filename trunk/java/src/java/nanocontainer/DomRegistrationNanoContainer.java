@@ -26,7 +26,7 @@ import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
-        implements InputSourceRegistrationNanoContainer{
+        implements InputSourceRegistrationNanoContainer {
 
     private final DocumentBuilder documentBuilder;
 
@@ -37,7 +37,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     public static class Default extends DomRegistrationNanoContainer {
         public Default() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader() );
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
@@ -69,7 +69,7 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
                 Node type = attributes.getNamedItem("type");
                 Node clazz = attributes.getNamedItem("class");
                 if (type != null) {
-                    registerComponent(type.getNodeValue(),clazz.getNodeValue());
+                    registerComponent(type.getNodeValue(), clazz.getNodeValue());
                 } else {
                     registerComponent(clazz.getNodeValue());
                 }

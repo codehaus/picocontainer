@@ -38,7 +38,7 @@ public class BeanStyleComponentFactory implements ComponentFactory {
 
         // Now set the dependencies by calling appropriate methods taking the dependencies as arguments.
         Method[] setters = getSetters(componentImplementation);
-        if( setters.length != instanceDependencies.length) {
+        if (setters.length != instanceDependencies.length) {
             throw new IllegalStateException("Unmatching number of dependencies: " + setters.length + " vs " + instanceDependencies.length);
         }
 //        List arguments = new ArrayList(Arrays.asList(instanceDependencies));
@@ -48,7 +48,7 @@ public class BeanStyleComponentFactory implements ComponentFactory {
             // We can assume order is correct.
             Object argument = instanceDependencies[i];
             try {
-                setter.invoke(result,new Object[]{argument});
+                setter.invoke(result, new Object[]{argument});
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("#5 Can we have a concerted effort to try to force these excptions?");
             } catch (IllegalArgumentException e) {
@@ -107,7 +107,7 @@ public class BeanStyleComponentFactory implements ComponentFactory {
             // We're only interested if there is only one parameter and the method name is bean-style.
             boolean hasOneParameter = parameterTypes.length == 1;
             boolean isBeanStyle = method.getName().length() >= 4 && method.getName().startsWith("set") && Character.isUpperCase(method.getName().charAt(3));
-            if(hasOneParameter && isBeanStyle) {
+            if (hasOneParameter && isBeanStyle) {
                 setters.add(method);
             }
         }

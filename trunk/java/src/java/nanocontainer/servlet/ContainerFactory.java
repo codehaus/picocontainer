@@ -14,8 +14,11 @@ import picocontainer.PicoContainer;
 
 public interface ContainerFactory {
     PicoContainer buildContainer(String configName);
+
     PicoContainer buildContainerWithParent(PicoContainer parentContainer, String configName);
+
     ObjectInstantiator buildInstantiator(PicoContainer parentContainer);
+
     void destroyContainer(PicoContainer container);
 }
 

@@ -20,5 +20,6 @@ package nanocontainer.testmodel;
 public interface WebServerConfig {
 
     String getHost();
+
     int getPort();
 }

@@ -145,7 +145,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
 
 //    public static interface StartStopDisposable extends Startable, Stoppable, Disposable {
-  //  }
+    //  }
 
 
 
@@ -203,7 +203,6 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Stopping", "One", one.getDisposing().get(3));
 
     }
-
 
 
     public void testStartStopStartStopAndDispose() throws Exception {
@@ -368,7 +367,6 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         pico.start();
 
     }
-
 
 
 }

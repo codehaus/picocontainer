@@ -13,7 +13,7 @@ package picocontainer.testmodel;
 import junit.framework.Assert;
 
 public class FredImpl {
-    public FredImpl( Wilma wilma ) {
+    public FredImpl(Wilma wilma) {
         Assert.assertNotNull("Wilma cannot be passed in as null", wilma);
         wilma.hello();
     }

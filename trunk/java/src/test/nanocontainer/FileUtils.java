@@ -18,31 +18,29 @@ public class FileUtils {
      *
      * @return the root directory or jar file where the class is located.
      */
-    public static File getRoot(Class clazz)
-    {
+    public static File getRoot(Class clazz) {
         File dir;
-        URL classURL = clazz.getResource( "/" + clazz.getName().replace( '.', '/' ) + ".class" );
+        URL classURL = clazz.getResource("/" + clazz.getName().replace('.', '/') + ".class");
         String classFile = classURL.getFile();
 
-        if( classFile.indexOf('!') != -1 ) {
+        if (classFile.indexOf('!') != -1) {
             // Sometimes (at least on windows) we get file:F:\bla. Convert to file:/F:/bla
-            if( classFile.charAt(5) != '/' ) {
+            if (classFile.charAt(5) != '/') {
                 classFile = "file:/" + classFile.substring(5);
             }
-            classFile = classFile.replace( '\\','/' );
+            classFile = classFile.replace('\\', '/');
             String uriSpec = classFile.substring(0, classFile.indexOf('!'));
             try {
-                dir = new File( new URI( uriSpec ) );
+                dir = new File(new URI(uriSpec));
             } catch (URISyntaxException e) {
                 System.err.println("Couldn't create URI for " + uriSpec);
                 throw new IllegalStateException(e.getMessage());
             }
         } else {
-            dir = new File( classFile ).getParentFile();
-            StringTokenizer st = new StringTokenizer( clazz.getName(), "." );
+            dir = new File(classFile).getParentFile();
+            StringTokenizer st = new StringTokenizer(clazz.getName(), ".");
 
-            for( int i = 0; i < st.countTokens() - 1; i++ )
-            {
+            for (int i = 0; i < st.countTokens() - 1; i++) {
                 dir = dir.getParentFile();
             }
         }

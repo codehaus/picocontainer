@@ -25,9 +25,9 @@ public class DummiesTestCase extends TestCase {
     }
 
     public void testDefaultComponentFactory() throws PicoInstantiationException,
-                                                     NoSuchMethodException,
-                                                     InvocationTargetException,
-                                                     IllegalAccessException, WrongNumberOfConstructorsException {
+            NoSuchMethodException,
+            InvocationTargetException,
+            IllegalAccessException, WrongNumberOfConstructorsException {
         DefaultComponentFactory dcd = new DefaultComponentFactory();
         Object decorated = dcd.createComponent(Object.class, Object.class, null, null);
         assertNotNull(decorated);

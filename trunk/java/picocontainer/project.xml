@@ -70,10 +70,8 @@
       </roles> 
     </developer> 
   </developers>
-  <!-- jar files the project is dependent on -->
 
   <dependencies/>
-  <!-- build information for the project -->
 
   <build>
     <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>

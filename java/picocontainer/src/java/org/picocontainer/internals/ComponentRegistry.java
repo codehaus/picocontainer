@@ -50,5 +50,5 @@ public interface ComponentRegistry {
 
     Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException;
 
-	void unregisterComponent(Class componentKey);
+	void unregisterComponent(Object componentKey);
 }

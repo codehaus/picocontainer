@@ -56,7 +56,7 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         childRegistry.registerComponent(compSpec);
     }
     
-	public void unregisterComponent(Class componentKey) {
+	public void unregisterComponent(Object componentKey) {
 		childRegistry.unregisterComponent(componentKey);
 	}
 

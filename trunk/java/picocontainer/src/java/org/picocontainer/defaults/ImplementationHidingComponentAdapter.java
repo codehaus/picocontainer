@@ -25,7 +25,9 @@ import java.lang.reflect.Proxy;
  * something else), the proxy will implement all the interfaces of the underlying subject.
  * In any case, the proxy will also implement
  * {@link Swappable}, making it possible to swap out the underlying
- * subject at runtime. * @author Aslak Helles&oslash;y
+ * subject at runtime.
+ * 
+ * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @version $Revision$
  */
@@ -41,7 +43,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
 
         Class[] interfaces;
         if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
-            // If the compo
             interfaces = new Class[] {(Class) getDelegate().getComponentKey()};
         } else {
             interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());

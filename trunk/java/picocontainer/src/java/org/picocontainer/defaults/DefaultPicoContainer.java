@@ -30,9 +30,24 @@ import java.util.Map;
 import java.util.Comparator;
 
 /**
+ * <p>
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
  * Constructing a container c with a parent p container will cause c to look up components
  * in p if they cannot be found inside c itself.
+ * </p>
+ * <p>
+ * Using {@link Class} objects as keys to the various registerXXX() methods makes
+ * a subtle semantic difference:
+ * </p>
+ * <p>
+ * If there are more than one registered components of the same type and one of them are
+ * registered with a {@link java.lang.Class} key of the corresponding type, this component
+ * will take precedence over other components during type resolution.
+ * </p>
+ * <p>
+ * Another place where keys that are classes make a subtle difference is in
+ * {@link ImplementationHidingComponentAdapter}.
+ * </p>
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -69,38 +84,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         this(new DefaultComponentAdapterFactory(), null);
     }
 
-    private Map createComponentAdapterMap(PicoContainer container) {
-        Collection componentAdapters = container.getComponentAdapters();
-        Map result = new HashMap(componentAdapters.size());
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            result.put(componentAdapter.getComponentKey(), componentAdapter);
-        }
-        return result;
-    }
-
-    /**
-     * @return a Map of {@link ComponentAdapter}. The keys are the keys of the adapters, the values the
-     *         adapters (including parent container adapters).
-     */
-    private Map getComponentAdapterMapFromEntireHierarchyWithChildrenMaskingParents() {
-        Map result;
-        if (parent != null) {
-            result = createComponentAdapterMap(parent);
-        } else {
-            result = new HashMap();
-        }
-        // Add ourself at last. This will override parent entries.
-        result.putAll(componentKeyToAdapterCache);
-        return result;
-    }
-
     public Collection getComponentAdapters() {
         return Collections.unmodifiableList(componentAdapters);
     }
 
     public final ComponentAdapter getComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
-        return (ComponentAdapter) getComponentAdapterMapFromEntireHierarchyWithChildrenMaskingParents().get(componentKey);
+        ComponentAdapter adapter = (ComponentAdapter)componentKeyToAdapterCache.get(componentKey);
+        if(adapter == null && parent != null) {
+            adapter = parent.getComponentAdapter(componentKey);
+        }
+        return adapter;
     }
 
     public ComponentAdapter getComponentAdapterOfType(Class componentType) {

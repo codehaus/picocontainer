@@ -12,7 +12,7 @@ package org.picocontainer;
 
 /**
  * Basic lifecycle interface for Pico components. For more advanced and pluggable lifecycle
- * support, see picextras-multicast.
+ * support, see the functionality offered by the nanocontainer-multicast subproject.
  */
 public interface Startable {
     void start();

@@ -415,4 +415,29 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     }
 
+    public void testComponentsAreInstantiatedBreadthFirst() {
+//        <container>
+//              <component class='A'/>
+//              <container>
+//                  <component class='B'/>
+//              </container>
+//              <component class='C'/>
+//        </container>
+
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation("recording", StringBuffer.class);
+        parent.registerComponentImplementation(A.class);
+        parent.registerComponentImplementation(DefaultPicoContainer.class);
+        parent.registerComponentImplementation(C.class);
+        MutablePicoContainer child = (MutablePicoContainer) parent.getComponentInstance(DefaultPicoContainer.class);
+        assertNotSame(parent, child);
+        assertSame(parent, child.getParent());
+        child.registerComponentImplementation(B.class);
+
+        parent.start();
+        parent.stop();
+        parent.dispose();
+
+        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", parent.getComponentInstance("recording").toString());
+    }
 }

@@ -26,6 +26,8 @@ public interface MutablePicoContainer extends PicoContainer {
      * Registers a component.
      *
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
+     * The type of the key object has no semantic significance unless explicitly specified
+     * in the implementing container.
      * @param componentImplementation the concrete component class.
      * @throws PicoRegistrationException if registration fails.
      * @return the associated ComponentAdapter.
@@ -36,6 +38,8 @@ public interface MutablePicoContainer extends PicoContainer {
      * Registers a component.
      *
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
+     * The type of the key object has no semantic significance unless explicitly specified
+     * in the implementing container.
      * @param componentImplementation the concrete component class.
      * @param parameters an array of parameters that gives the container hints about what arguments
      *    to pass to the constructor when it is instantiated.
@@ -54,7 +58,7 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
 
     /**
-     * Registers an arbitrary object, using itself as a key.
+     * Registers an arbitrary object, using its class as a key.
      *
      * @param componentInstance
      * @throws PicoRegistrationException if registration fails.
@@ -69,6 +73,8 @@ public interface MutablePicoContainer extends PicoContainer {
      * is impossible.
      *
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
+     * The type of the key object has no semantic significance unless explicitly specified
+     * in the implementing container.
      * @param componentInstance an arbitrary object.
      * @throws PicoRegistrationException if registration fails.
      * @return the associated ComponentAdapter.

@@ -11,8 +11,10 @@
 
 package org.nanocontainer.servlet;
 
+import org.picocontainer.PicoInitializationException;
+
 public interface ObjectInstantiator {
 
-    Object newInstance(Class cls);
+    Object newInstance(Class cls) throws PicoInitializationException;
 
 }

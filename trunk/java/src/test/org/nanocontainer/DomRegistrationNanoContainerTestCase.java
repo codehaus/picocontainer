@@ -41,7 +41,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component class=\"org.nanocontainer.testmodel.ResourceBundleWebServerConfig\"/>" +
                 "      <component type=\"org.nanocontainer.testmodel.WebServer\" class=\"org.nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
@@ -54,7 +54,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "            <param type=\"java.lang.Integer\">99</param>" +
                 "      </component>" +
                 "</components>")));
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
         ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
         assertEquals("a string99", thing.getValue());
     }
@@ -66,7 +66,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component class=\"org.nanocontainer.testmodel.DigesterWebServerConfig\"/>" +
                 "      <component type=\"org.nanocontainer.testmodel.WebServer\" class=\"org.nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
@@ -86,7 +86,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "<components>" +
                 "      <component class=\"org.nanocontainer.DomRegistrationNanoContainerTestCase$Startme\"/>" +
                 "</components>")));
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
         assertTrue(nc.hasComponent(Startme.class));
         LifecyclePicoAdaptor lifecycleAdaptor = new DefaultLifecyclePicoAdaptor(nc);
         lifecycleAdaptor.start();
@@ -163,7 +163,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     }
 
 
-    private void registerInstantiateAndCheckComponent(InputSourceRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException
+    private void registerInstantiateAndCheckComponent(InputSourceRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException
     {
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +
@@ -171,7 +171,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component type=\"org.nanocontainer.testmodel.WebServer\" " +
                 "                class=\"org.nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.instantiateComponents();
+        //nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 

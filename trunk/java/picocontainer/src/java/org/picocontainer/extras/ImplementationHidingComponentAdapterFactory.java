@@ -17,6 +17,7 @@ import org.picocontainer.internals.*;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
@@ -39,6 +40,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
                 throws PicoInitializationException {
             Object component = super.instantiateComponent(componentRegistry);
             // TODO: search for all interfaces for component-implementation instead
+            // There is code for this in DefaultCompositeProxyFactory. Reuse that. (Static? Util class?)
             Class[] interfaces = new Class[] { (Class) getComponentKey() };
             return Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
                     interfaces, new ImplementationHidingProxy(component));

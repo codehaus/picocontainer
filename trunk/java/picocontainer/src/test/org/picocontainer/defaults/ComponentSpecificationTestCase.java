@@ -22,10 +22,10 @@ public class ComponentSpecificationTestCase extends TestCase {
 	public void testEquals() throws PicoIntrospectionException {
 		ComponentAdapter componentAdapter =
 			createComponentAdapter();
-		
+
 		assertEquals(componentAdapter, componentAdapter);
 	}
-	
+
 	private ComponentAdapter createComponentAdapter() throws PicoIntrospectionException {
 		return new DefaultComponentAdapter(Touchable.class, SimpleTouchable.class);
 	}

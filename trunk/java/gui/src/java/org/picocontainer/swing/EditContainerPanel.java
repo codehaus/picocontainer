@@ -3,9 +3,6 @@ package org.picocontainer.swing;
 import org.picocontainer.gui.tree.ComponentRegistryTreeNode;
 import org.picocontainer.gui.tree.ComponentTreeNode;
 import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.nanocontainer.MethodInvoker;
 
@@ -152,7 +149,6 @@ public class EditContainerPanel extends JPanel {
     public void addRegistry() {
         if (isRegistrySelected()) {
             try {
-                ComponentRegistry componentRegistry = new DefaultComponentRegistry();
                 ComponentRegistryTreeNode componentRegistryTreeNode = new ComponentRegistryTreeNode();
                 DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
 
@@ -188,9 +184,7 @@ public class EditContainerPanel extends JPanel {
         ComponentRegistryTreeNode containerNode = (ComponentRegistryTreeNode) selectedNode;
         try {
             ComponentRegistry componentRegistry = containerNode.createHierarchicalComponentRegistry();
-            PicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
-//            pico.instantiateComponents();
-            Object[] components = pico.getComponents().toArray();
+
             new MethodInvoker().invokeMethod("execute", componentRegistry);
         } catch (PicoException e) {
             Throwable t = e.getCause() != null ?  e.getCause() : e;

@@ -12,6 +12,7 @@ package org.picocontainer.extras;
 
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.util.ArrayList;
@@ -67,9 +68,14 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         }
     }
 
-    public Object getComponent(Object componentKey) {
-        Object answer = componentRegistry.getComponentInstance(componentKey);
-        if (answer == null) {
+    public Object getComponent(Object componentKey) throws PicoInitializationException {
+        Object result = null;
+        try {
+            result = componentRegistry.getComponentInstance(componentKey);
+        } catch (PicoInitializationException e) {
+            // ignore
+        }
+        if (result == null) {
             for (Iterator iter = containers.iterator(); iter.hasNext();) {
                 PicoContainer container = (PicoContainer) iter.next();
                 if (container.hasComponent(componentKey)) {
@@ -77,7 +83,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
                 }
             }
         }
-        return answer;
+        return result;
     }
 
     public Collection getComponentKeys() {
@@ -108,7 +114,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         }
     }
 
-    public Collection getComponents() {
+    public Collection getComponents() throws PicoInitializationException {
         Set componentTypes = new HashSet();
         componentTypes.addAll(componentRegistry.getComponentKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {

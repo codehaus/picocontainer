@@ -12,33 +12,18 @@ package org.picocontainer.testmodel;
 
 import junit.framework.Assert;
 
-import java.io.Externalizable;
-import java.io.ObjectInput;
-import java.io.IOException;
-import java.io.ObjectOutput;
+import java.io.*;
 
 /**
  * @author steve.freeman@m3p.co.uk
  */
-public class DependsOnTouchable implements Externalizable {
+public class DependsOnTouchable implements Serializable {
     public Touchable touchable;
-
-    // to satify Externalizable
-    public DependsOnTouchable() {
-    }
 
     public DependsOnTouchable(Touchable touchable) {
         Assert.assertNotNull("Touchable cannot be passed in as null", touchable);
         touchable.wasTouched();
         this.touchable = touchable;
-    }
-
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // whatever
-    }
-
-    public void writeExternal(ObjectOutput out) throws IOException {
-        // whatever
     }
 
     public Object getTouchable() {

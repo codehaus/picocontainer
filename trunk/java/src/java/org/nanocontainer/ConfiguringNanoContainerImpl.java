@@ -106,23 +106,23 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
-        super.instantiateComponents();
-        final Collection components = getComponents();
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
-            Object configuree = (Object) iterator.next();
-            final Collection configurationItems = (Collection) implConfigurationMap.get(configuree.getClass().getName());
-            if (configurationItems != null) {
-                try {
-                    installConfiguration(configurationItems, configuree);
-                } catch (InvocationTargetException e) {
-                    throw new PicoInvocationTargetInitializationException(e);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    public void instantiateComponents() throws PicoInitializationException {
+//        super.instantiateComponents();
+//        final Collection components = getComponents();
+//        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+//            Object configuree = (Object) iterator.next();
+//            final Collection configurationItems = (Collection) implConfigurationMap.get(configuree.getClass().getName());
+//            if (configurationItems != null) {
+//                try {
+//                    installConfiguration(configurationItems, configuree);
+//                } catch (InvocationTargetException e) {
+//                    throw new PicoInvocationTargetInitializationException(e);
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * If there is an addXXX() method, call it with the configuration item.

@@ -40,7 +40,7 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
 
         HttpSession session = httpRequest.getSession(true);
 
-        ServletContext context = session.getServletContext();
+        ServletContext context = null; //session.getServletContext();
 
         // grab the parent internals
 
@@ -110,3 +110,4 @@ public class RequestLifecycleFilter extends BaseLifecycleListener implements Fil
     }
 
 }
+

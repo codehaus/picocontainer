@@ -10,20 +10,22 @@
 
 package org.picocontainer.internals;
 
-import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.defaults.InstanceComponentAdapter;
+
+import java.util.List;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @version $Revision$
  */
 public class ConstantParameter implements Parameter {
-    private Object arg;
+    private final Object value;
 
-    public ConstantParameter(Object parameter) {
-        this.arg = parameter;
+    public ConstantParameter(Object value) {
+        this.value = value;
     }
 
-    public Object resolve(ComponentRegistry componentRegistry, ComponentAdapter compSpec, Class targetType) throws PicoInstantiationException {
-        return arg;
+    public ComponentAdapter resolveAdapter(ComponentRegistry componentRegistries) {
+        return new InstanceComponentAdapter(value, value);
     }
 }

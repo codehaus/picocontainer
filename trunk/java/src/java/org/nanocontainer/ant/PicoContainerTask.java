@@ -13,6 +13,7 @@ import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.internals.ComponentAdapterFactory;
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.internals.Parameter;
+import org.nanocontainer.MethodInvoker;
 
 import java.util.*;
 
@@ -60,7 +61,7 @@ public class PicoContainerTask extends Task {
                         throws PicoInitializationException {
                     Object comp = super.instantiateComponent(componentRegistry);
                     Component component = findComponent(comp);
-                    if(component != null) {
+                    if (component != null) {
                         component.setPropertiesOn(comp, getProject());
                     }
 
@@ -84,12 +85,12 @@ public class PicoContainerTask extends Task {
             ComponentAdapterFactory delegate;
             try {
                 delegate = (ComponentAdapterFactory) delegateComponentAdapterFactoryClass.newInstance();
+                log("using ComponentAdapterFactory " + delegate);
+                componentAdapterFactory = new SetPropertiesComponentAdapterFactory(delegate);
             } catch (Exception e) {
                 throw new BuildException(
                         "Could not instantiate ComponentAdapterFactory " + delegateComponentAdapterFactoryClass, e);
             }
-            log("using ComponentAdapterFactory " + delegate);
-            componentAdapterFactory = new SetPropertiesComponentAdapterFactory(delegate);
         }
         return componentAdapterFactory;
     }
@@ -122,12 +123,7 @@ public class PicoContainerTask extends Task {
 
     protected void doExecute() {
         try {
-            getPicoContainer().instantiateComponents();
-        } catch (PicoInitializationException e) {
-            throw new BuildException(e);
-        }
-
-        try {
+            getPicoContainer().getComponents();
             configureComponents();
         } catch (Exception e) {
             throw new BuildException(e);

@@ -11,6 +11,7 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
@@ -41,7 +42,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
         return disposed;
     }
 
-    private void initializeIfNotInitialized() {
+    private void initializeIfNotInitialized() throws PicoInitializationException {
         if (startableAggregatedComponent == null) {
             try {
                 startableAggregatedComponent = (Startable) picoContainer.getComponentMulticaster(true, false);

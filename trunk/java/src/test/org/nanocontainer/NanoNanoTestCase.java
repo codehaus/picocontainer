@@ -28,7 +28,7 @@ public class NanoNanoTestCase extends TestCase {
         nc.registerComponent("org.picocontainer.defaults.DefaultComponentRegistry");
         nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithComponentRegistry");
 
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
 
         assertTrue("Should have a StringRegistrationNanoContainerImpl",
             nc.hasComponent(StringRegistrationNanoContainerImpl.WithComponentRegistry.class));
@@ -43,7 +43,7 @@ public class NanoNanoTestCase extends TestCase {
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
     }
 
     public void testDomRegistrationNanoContainerImpl()
@@ -57,7 +57,7 @@ public class NanoNanoTestCase extends TestCase {
                 "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithComponentRegistry\"/>" +
                 "</conponents>")));
 
-        nc.instantiateComponents();
+//        nc.instantiateComponents();
 
         assertTrue("Should have a DomRegistrationNanoContainer.WithContainerArray", nc.hasComponent(DomRegistrationNanoContainer.WithComponentRegistry.class));
 
@@ -73,7 +73,7 @@ public class NanoNanoTestCase extends TestCase {
                 "      <component type=\"org.nanocontainer.testmodel.WebServer\" class=\"org.nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</conponents>")));
 
-        nc2.instantiateComponents();
+//        nc2.instantiateComponents();
     }
 
 }

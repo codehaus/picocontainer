@@ -10,7 +10,7 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,7 +33,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         return pico;
     }
 
-    protected final RegistrationPicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
+    protected final RegistrationPicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
             PicoRegistrationException, PicoIntrospectionException {
         RegistrationPicoContainer pico = createClassRegistrationPicoContainer();
         pico.registerComponentByClass(DependsOnTouchable.class);
@@ -47,7 +47,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     public void testBasicInstantiationAndContainment() throws PicoInitializationException, PicoRegistrationException {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
         assertTrue("Container should have Touchable component",
                 picoContainer.hasComponent(Touchable.class));
         assertTrue("Container should have DependsOnTouchable component",
@@ -63,7 +63,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
             IOException, ClassNotFoundException {
 
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -77,6 +77,8 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
         picoContainer = (PicoContainer) ois.readObject();
 
+        DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) picoContainer.getComponent(DependsOnTouchable.class);
+        assertNotNull(dependsOnTouchable);
         SimpleTouchable touchable = (SimpleTouchable) picoContainer.getComponent(Touchable.class);
 
         assertTrue("hello should have been called in Touchable", touchable.wasTouched);
@@ -84,28 +86,22 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     public void testTooFewComponents() throws PicoInitializationException, PicoRegistrationException {
 
-        PicoContainer picoContainer = createPicoContainerWithTouchablesDependancyOnly();
+        PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
 
         try {
-            picoContainer.instantiateComponents();
+            picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
-        } catch (UnsatisfiedDependencyInstantiationException e) {
+        } catch (NoSatisfiableConstructorsException e) {
             // expected
-            assertTrue(e.getClassThatNeedsDeps() == DependsOnTouchable.class);
-            assertTrue(e.getMessage().indexOf(DependsOnTouchable.class.getName()) > 0);
-
         }
     }
 
     public void testDoubleInstantiation() throws PicoRegistrationException, PicoInitializationException {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
-        picoContainer.instantiateComponents();
-        try {
-            picoContainer.instantiateComponents();
-            fail("should have barfed");
-        } catch (IllegalStateException e) {
-            // expected
-        }
+        assertSame(
+                picoContainer.getComponent(DependsOnTouchable.class),
+                picoContainer.getComponent(DependsOnTouchable.class)
+        );
     }
 
     protected final void addAnotherSimpleTouchable(RegistrationPicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
@@ -131,7 +127,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
     public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
         RegistrationPicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
         addAHashMapByInstance(picoContainer);
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the internals", 3, picoContainer.getComponents().size());
         assertEquals("Key - Map, Impl - HashMap should be in internals", HashMap.class, picoContainer.getComponent(Map.class).getClass());
         //TODO - some way to test hashmap was passed in as an instance ?

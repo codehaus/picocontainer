@@ -10,13 +10,14 @@
 
 package org.picocontainer.internals;
 
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+
+import java.util.List;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @version $Revision$
  */
 public interface Parameter {
-    Object resolve(ComponentRegistry componentRegistry, ComponentAdapter compSpec, Class targetType)
-            throws PicoInitializationException;
+    ComponentAdapter resolveAdapter(ComponentRegistry componentRegistry) throws AmbiguousComponentResolutionException;
 }

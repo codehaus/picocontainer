@@ -24,7 +24,7 @@ public class PicoPicoTestCase extends TestCase {
 
         DefaultPicoContainer pc = new DefaultPicoContainer.Default();
         pc.registerComponentByClass(DefaultPicoContainer.Default.class);
-        pc.instantiateComponents();
+//        pc.instantiateComponents();
 
         tryDefaultPicoContainer((DefaultPicoContainer) pc.getComponent(DefaultPicoContainer.Default.class));
 
@@ -35,7 +35,7 @@ public class PicoPicoTestCase extends TestCase {
         pc2.registerComponentByClass(DependsOnTouchable.class);
         pc2.registerComponentByClass(SimpleTouchable.class);
 
-        pc2.instantiateComponents();
+//        pc2.instantiateComponents();
 
         assertTrue("There should have been a Fred in the internals", pc2.hasComponent(DependsOnTouchable.class));
         assertTrue("There should have been a Touchable in the internals", pc2.hasComponent(SimpleTouchable.class));

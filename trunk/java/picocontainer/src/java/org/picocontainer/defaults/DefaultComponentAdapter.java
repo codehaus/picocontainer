@@ -13,11 +13,9 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.internals.*;
-import org.picocontainer.defaults.CannotDecideWhatConstructorToUseException;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -26,6 +24,7 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
     private final Object componentKey;
     private final Class componentImplementation;
     private Parameter[] parameters;
+    private Object componentInstance;
 
     /**
      * Explicitly specifies parameters, if null uses default parameters.
@@ -33,18 +32,13 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      * @param componentKey
      * @param componentImplementation
      * @param parameters
-     * @throws org.picocontainer.PicoIntrospectionException
      */
     public DefaultComponentAdapter(final Object componentKey,
                                    final Class componentImplementation,
-                                   Parameter[] parameters) throws PicoIntrospectionException {
+                                   Parameter[] parameters) {
         this.componentKey = componentKey;
         this.componentImplementation = componentImplementation;
         this.parameters = parameters;
-
-        if (this.parameters == null) {
-            this.parameters = getDefaultParameters();
-        }
     }
 
     /**
@@ -52,24 +46,22 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      *
      * @param componentKey
      * @param componentImplementation
-     * @throws org.picocontainer.PicoIntrospectionException
      */
     public DefaultComponentAdapter(Object componentKey,
-                                   Class componentImplementation)
-            throws PicoIntrospectionException {
+                                   Class componentImplementation) {
         this(componentKey, componentImplementation, null);
     }
 
-    protected Parameter[] getDefaultParameters() throws PicoIntrospectionException {
-        Parameter[] parameters = new Parameter[getDependencies().length];
+    protected Parameter[] createDefaultParameters(Class[] parameters) {
+        ComponentParameter[] componentParameters = new ComponentParameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            parameters[i] = createDefaultParameter();
+            componentParameters[i] = new ComponentParameter(parameters[i]);
         }
-        return parameters;
+        return componentParameters;
     }
 
-    public Class[] getDependencies() throws PicoIntrospectionException {
-        Constructor constructor = getConstructor();
+    public Class[] getDependencies(ComponentRegistry componentRegistry) throws PicoIntrospectionException, AmbiguousComponentResolutionException {
+        Constructor constructor = getConstructor(componentRegistry);
         return constructor.getParameterTypes();
     }
 
@@ -78,27 +70,61 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
      * @return
      * @throws org.picocontainer.defaults.CannotDecideWhatConstructorToUseException
      */
-    private Constructor getConstructor() throws CannotDecideWhatConstructorToUseException {
-        Constructor[] constructors = componentImplementation.getConstructors();
-        Constructor picoConstructor = null;
-        for (int i = 0; i < constructors.length; i++) {
-            Constructor constructor = constructors[i];
-            if (constructor.getParameterTypes().length != 0 || constructors.length == 1) {
-                if (picoConstructor != null) {
-                    throw new CannotDecideWhatConstructorToUseException(componentImplementation);
-                }
-                picoConstructor = constructor;
+    private Constructor getConstructor(ComponentRegistry componentRegistry) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException {
+
+        List allConstructors = Arrays.asList(componentImplementation.getConstructors());
+        List satisfiableConstructors = getSatisfiableConstructors(allConstructors, componentRegistry);
+
+        // now we'll just take the biggest one
+        Constructor biggestConstructor = null;
+        Set conflicts = new HashSet();
+        for (int i = 0; i < satisfiableConstructors.size(); i++) {
+            Constructor currentConstructor = (Constructor) satisfiableConstructors.get(i);
+            if(biggestConstructor == null) {
+                biggestConstructor = currentConstructor;
+            } else if(biggestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
+                conflicts.clear();
+                biggestConstructor = currentConstructor;
+            } else if (biggestConstructor.getParameterTypes().length == currentConstructor.getParameterTypes().length) {
+                conflicts.add(biggestConstructor);
+                conflicts.add(currentConstructor);
             }
         }
-        if (picoConstructor == null) {
-            throw new CannotDecideWhatConstructorToUseException(componentImplementation);
+        if(!conflicts.isEmpty()) {
+            throw new CannotDecideWhatConstructorToUseException(componentImplementation, conflicts);
         }
-        // Get the pico enabled constructor
-        return picoConstructor;
+        if (biggestConstructor == null) {
+            throw new NoSatisfiableConstructorsException(componentImplementation);
+        }
+        return biggestConstructor;
     }
 
-    public Parameter createDefaultParameter() {
-        return new ComponentParameter();
+    private List getSatisfiableConstructors(List constructors, ComponentRegistry componentRegistry) throws AmbiguousComponentResolutionException {
+        List result = new ArrayList();
+        for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
+            Constructor constructor = (Constructor) iterator.next();
+            Class[] parameterTypes = constructor.getParameterTypes();
+            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+
+            boolean failedDependency = false;
+            for (int i = 0; i < currentParameters.length; i++) {
+                ComponentAdapter adapter = currentParameters[i].resolveAdapter(componentRegistry);
+                if (adapter == null) {
+                    failedDependency = true;
+                    break;
+                } else {
+                    // we can't depend on ourself
+                    if(getComponentKey().equals(adapter.getComponentKey())) {
+                        failedDependency = true;
+                        break;
+                    }
+                }
+            }
+            if (!failedDependency) {
+                result.add(constructor);
+            }
+        }
+        return result;
     }
 
     public Object getComponentKey() {
@@ -111,21 +137,32 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
 
     public Object instantiateComponent(ComponentRegistry componentRegistry)
             throws PicoInitializationException {
-        Class[] dependencyTypes = getDependencies();
-        Object[] dependencies = new Object[dependencyTypes.length];
-        if (dependencyTypes.length != parameters.length) {
-            throw new RuntimeException("Incorrect number of parameters specified for " + getComponentImplementation().getName() + " component with key " + getComponentKey().toString() );
+        if (componentInstance == null) {
+            Class[] dependencyTypes = getDependencies(componentRegistry);
+            ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
+
+            Parameter[] componentParameters = getParameters(componentRegistry);
+            for (int i = 0; i < adapterDependencies.length; i++) {
+                adapterDependencies[i] = componentParameters[i].resolveAdapter(componentRegistry);
+            }
+            componentInstance = createComponent(adapterDependencies, componentRegistry);
+
+            componentRegistry.addOrderedComponentInstance(componentInstance);
+
         }
-        for (int i = 0; i < dependencies.length; i++) {
-            dependencies[i] = parameters[i].resolve(componentRegistry, this, dependencyTypes[i]);
-        }
-        return createComponent(this, dependencies);
+        return componentInstance;
     }
 
-    public Object createComponent(ComponentAdapter componentAdapter, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, CannotDecideWhatConstructorToUseException {
+    private Object createComponent(ComponentAdapter[] adapterDependencies, ComponentRegistry componentRegistry) throws PicoInitializationException, CannotDecideWhatConstructorToUseException {
         try {
-            Constructor constructor = getConstructor();
-            return constructor.newInstance(instanceDependencies);
+            Constructor constructor = getConstructor(componentRegistry);
+            Object[] parameters = new Object[adapterDependencies.length];
+            for (int i = 0; i < adapterDependencies.length; i++) {
+                ComponentAdapter adapterDependency = adapterDependencies[i];
+                parameters[i] = adapterDependency.instantiateComponent(componentRegistry);
+            }
+
+            return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetInitializationException(e.getCause());
         } catch (InstantiationException e) {
@@ -145,32 +182,22 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
         return actual.isAssignableFrom(requested);
     }
 
-    public void addConstantParameterBasedOnType(Class parameter, Object arg) throws PicoIntrospectionException {
-        // TODO this is an ugly hack and the feature should simply be removed
-        Class[] dependencies = getDependencies();
-        for (int i = 0; i < dependencies.length; i++) {
-
-            if (isAssignableFrom(dependencies[i], parameter) && !(parameters[i] instanceof ConstantParameter)) {
-                parameters[i] = new ConstantParameter(arg);
-                return;
+    private Parameter[] getParameters(ComponentRegistry componentRegistry) {
+        if (parameters == null) {
+            try {
+                return createDefaultParameters(getDependencies(componentRegistry));
+            } catch (PicoIntrospectionException e) {
+                throw new IllegalStateException("Unable to create default parameters:" + e.getMessage());
             }
+        } else {
+            return parameters;
         }
-
-        throw new RuntimeException("No such parameter " + parameter + " in " + Arrays.asList(dependencies));
     }
 
-    public Parameter[] getParameters() {
-        return parameters;
+    public boolean equals(Object object) {
+       ComponentAdapter other = (ComponentAdapter) object;
+
+       return getComponentKey().equals(other.getComponentKey()) &&
+                getComponentImplementation().equals(other.getComponentImplementation());
     }
-
-	public boolean equals(Object object) {
-		if (object == null || !getClass().equals(object.getClass())) {
-			return false;
-		}
-		DefaultComponentAdapter other = (DefaultComponentAdapter) object;
-
-		return getComponentKey().equals(other.getComponentKey()) &&
-			getComponentImplementation().equals(other.getComponentImplementation()) &&
-			Arrays.asList(getParameters()).equals(Arrays.asList(other.getParameters()));
-	}
 }

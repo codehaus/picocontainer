@@ -11,7 +11,6 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.internals.*;
 
 /**
@@ -27,10 +26,6 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
         this.delegate = delegate;
     }
 
-    public Parameter createDefaultParameter() {
-        return delegate.createDefaultParameter();
-    }
-
     public Object getComponentKey() {
         return delegate.getComponentKey();
     }
@@ -39,13 +34,8 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
         return delegate.getComponentImplementation();
     }
 
-    public Object instantiateComponent(ComponentRegistry componentRegistry)
-            throws PicoInitializationException {
+    public Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException {
         return delegate.instantiateComponent(componentRegistry);
-    }
-
-    public void addConstantParameterBasedOnType(Class parameter, Object arg) throws PicoIntrospectionException {
-        delegate.addConstantParameterBasedOnType(parameter, arg);
     }
 
     public boolean equals(Object o) {

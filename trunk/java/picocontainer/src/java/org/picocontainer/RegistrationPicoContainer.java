@@ -11,9 +11,6 @@
 package org.picocontainer;
 
 import org.picocontainer.internals.Parameter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 
 public interface RegistrationPicoContainer extends PicoContainer {
 
@@ -71,21 +68,5 @@ public interface RegistrationPicoContainer extends PicoContainer {
     void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoRegistrationException, PicoIntrospectionException;
 
-    /**
-     * Add a parameter to a component. Used for configuring them.
-     * Very liekly to change before release.
-     * @param componentKey The component type
-     * @param parameter The parameter it pertains to
-     * @param arg The argukemt to pass in.
-     */
-    void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException;
-
     void unregisterComponent(Object componentKey);
-
-    /**
-     * Add a component using the default key, the component class itself. This will make it easier for depending
-     * components to find the correct component.
-     * @param component The component type
-     */
-    void registerComponent(Class component) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException, PicoIntrospectionException;
 }

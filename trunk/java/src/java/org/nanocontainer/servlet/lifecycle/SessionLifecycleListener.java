@@ -28,7 +28,7 @@ public class SessionLifecycleListener extends BaseLifecycleListener implements H
 
     public void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession();
-        ServletContext context = session.getServletContext();
+        ServletContext context = null; //session.getServletContext();
 
         // grab the parent internals
         ObjectHolder parentHolder = new ApplicationScopeObjectHolder(context, CONTAINER_KEY);
@@ -48,10 +48,11 @@ public class SessionLifecycleListener extends BaseLifecycleListener implements H
 
     public void sessionDestroyed(HttpSessionEvent event) {
         HttpSession session = event.getSession();
-        ServletContext context = session.getServletContext();
+        ServletContext context = null; //session.getServletContext();
 
         // shutdown internals
         destroyContainer(context, new SessionScopeObjectHolder(session, CONTAINER_KEY));
     }
 
 }
+

@@ -13,7 +13,6 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.*;
 
 /**
  * @author Paul Hammant
@@ -21,19 +20,25 @@ import org.picocontainer.defaults.*;
  * @version $Revision$
  */
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+    private final boolean strict;
 
     public ImplementationHidingComponentAdapterFactory() {
-        this(new DefaultComponentAdapterFactory());
+        this(new DefaultComponentAdapterFactory(), true);
     }
 
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
+        this(delegate, true);
+    }
+
+    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate, boolean strict) {
         super(delegate);
+        this.strict = strict;
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ImplementationHidingComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
+        return new ImplementationHidingComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters), strict);
     }
 }

@@ -5,10 +5,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import java.util.ArrayList;
 import java.io.StringReader;
-
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -23,7 +21,7 @@ public class GroovyScriptGeneratorTestCase extends TestCase {
         GroovyScriptGenerator groovyScriptGenerator = new GroovyScriptGenerator();
         String script = groovyScriptGenerator.generateScript(pico);
 
-        System.out.println(script);
+//        System.out.println(script);
 
         GroovyContainerBuilder groovyContainerBuilder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
         PicoContainer newPico = groovyContainerBuilder.createContainerFromScript(null, null);

@@ -20,6 +20,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -230,6 +231,17 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         return reflectionAdapter.getComponentClassLoader();
     }
 
+    public boolean equals(Object obj) {
+        if (obj == delegate) {
+            return true;
+        }
+        return super.equals(obj);
+    }
+
+    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(visitor, componentType, visitInInstantiationOrder);
+    }
+
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
@@ -238,10 +250,13 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         public Map getNamedContainers() {
             return namedChildContainers;
         }
+
+        public boolean equals(Object obj) {
+            if (obj == DefaultSoftCompositionPicoContainer.this) {
+                return true;
+            }
+            return super.equals(obj);
+        }
     }
 
-    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
-        visitor.visitContainer(this);
-        delegate.accept(visitor, componentType, visitInInstantiationOrder);
-    }
 }

@@ -21,5 +21,9 @@ public class ImplementationHidingSoftCompositionPicoContainerTestCase extends Ab
         return new ImplementationHidingSoftCompositionPicoContainer(this.getClass().getClassLoader(), parent);
     }
 
+    public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {
+        super.testAcceptShouldIterateOverChildContainersAndAppropriateComponents();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     // test methods inherited. This container is part compliant.
 }

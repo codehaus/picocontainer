@@ -11,7 +11,7 @@ import org.nanocontainer.testmodel.WebServerConfigBean
 import org.nanocontainer.testmodel.WebServerImpl
 import java.io.File
 
-class ExampleTest extends GroovyTestCase {
+class NanoGroovyBuilderTestCase extends GroovyTestCase {
 
     void testInstantiateBasicComponent() {
         builder = new NanoGroovyBuilder()

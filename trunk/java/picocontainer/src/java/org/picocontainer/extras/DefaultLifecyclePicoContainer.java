@@ -91,12 +91,16 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return mutablePicoContainer.getParentContainers();
     }
 
-    public Object unregisterComponent(Object componentKey) {
+    public ComponentAdapter unregisterComponent(Object componentKey) {
         return mutablePicoContainer.unregisterComponent(componentKey);
     }
 
-    public Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentInstance(componentKey, componentInstance);
+    }
+
+    public void registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
+        mutablePicoContainer.registerComponent(componentAdapter);
     }
 
     public boolean addChild(MutablePicoContainer child) {
@@ -115,11 +119,11 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return mutablePicoContainer.removeParent(parent);
     }
 
-    public Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentImplementation(componentKey, componentImplementation);
     }
 
-    public Object registerComponentInstance(Object componentInstance) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object componentInstance) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentInstance(componentInstance);
     }
 
@@ -127,16 +131,15 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         mutablePicoContainer.addOrderedComponentAdapter(componentAdapter);
     }
 
-    public Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentImplementation(componentImplementation);
     }
 
-    public Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentImplementation(componentKey, componentImplementation);
     }
 
     public void verify() {
         mutablePicoContainer.verify();
-
     }
 }

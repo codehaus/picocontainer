@@ -27,10 +27,22 @@
                 - Removing child containers is impossible.
             </action>
 
+            <action dev="tastapod" type="add">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-60">PICO-60</a>
+                - registerComponent(ComponentAdapter) is now on MutablePicoContainer.
+            </action>
+
             <action dev="tastapod" type="fix">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-61">PICO-61</a>
                 - Lazy assignment in TransientComponentAdapter is too lazy.
+            </action>
+
+            <action dev="tastapod" type="update">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-63">PICO-63</a>
+                - Return ComponentAdapter from registerXXX().
             </action>
 
             <action dev="paul" type="fix">

@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
+
 /**
  * This is the core interface for registration of components.
  *
@@ -25,8 +27,9 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
      * @param componentImplementation the concrete component class.
      * @throws PicoRegistrationException if registration fails.
+     * @return the associated ComponentAdapter.
      */
-    Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;
+    ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException;
 
     /**
      * Registers a component.
@@ -36,27 +39,27 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param parameters an array of parameters that gives the container hints about what arguments
      *    to pass to the constructor when it is instantiated.
      * @throws PicoRegistrationException if registration fails.
-     * @return the key used for registration.
+     * @return the associated ComponentAdapter.
      */
-    Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;
+    ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException;
 
     /**
      * Registers a component using the componentImplementation as key.
      *
      * @param componentImplementation the concrete component class.
      * @throws PicoRegistrationException if registration fails.
-     * @return the key used for registration.
+     * @return the associated ComponentAdapter.
      */
-    Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
+    ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException;
 
     /**
      * Registers an arbitrary object, using itself as a key.
      *
      * @param componentInstance
-     * @throws PicoRegistrationException
-     * @return the key used for registration.
+     * @throws PicoRegistrationException if registration fails.
+     * @return the associated ComponentAdapter.
      */
-    Object registerComponentInstance(Object componentInstance) throws PicoRegistrationException;
+    ComponentAdapter registerComponentInstance(Object componentInstance) throws PicoRegistrationException;
 
     /**
      * Registers an arbitrary object as a compoent in the container. This is
@@ -67,17 +70,25 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param componentKey a key that identifies the compoent. Must be unique within the conainer.
      * @param componentInstance an arbitrary object.
      * @throws PicoRegistrationException if registration fails.
-     * @return the key used for registration.
+     * @return the associated ComponentAdapter.
      */
-    Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;
+    ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;
+
+    /**
+     * Registers a ComponentAdapter.
+     *
+     * @param componentAdapter the adapter
+     * @throws PicoRegistrationException if registration fails.
+     */
+    void registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException;
 
     /**
      * Unregisters a component.
      *
      * @param componentKey key of the component to unregister.
-     * @return the unregistered component.
+     * @return the associated ComponentAdapter.
      */
-    Object unregisterComponent(Object componentKey);
+    ComponentAdapter unregisterComponent(Object componentKey);
 
     /**
      * Adds a component instance to the container. Do not call this method

@@ -87,7 +87,7 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
     }
 
     public Collection getComponentInstances() throws PicoException {
-        ArrayList componentInstances = new ArrayList(getComponentKeys().size());
+        Collection componentInstances = new ArrayList(getComponentKeys().size());
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
             Object componentInstance = getComponentInstance(iterator.next());
             componentInstances.add(componentInstance);

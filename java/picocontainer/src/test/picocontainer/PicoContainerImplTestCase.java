@@ -76,7 +76,7 @@ public class PicoContainerImplTestCase extends TestCase {
         } catch (UnsatisfiedDependencyStartupException e) {
             // expected
             assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
-            assertTrue(e.getMessage().indexOf(FredImpl.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(FredImpl.class.getName()) > 0);
 
         }
     }
@@ -91,7 +91,7 @@ public class PicoContainerImplTestCase extends TestCase {
         } catch (DuplicateComponentClassRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == Webster.class);
-            assertTrue(e.getMessage().indexOf(Webster.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(Webster.class.getName()) > 0);
         }
     }
 
@@ -105,7 +105,7 @@ public class PicoContainerImplTestCase extends TestCase {
         } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
         }
     }
 
@@ -119,7 +119,7 @@ public class PicoContainerImplTestCase extends TestCase {
         } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
         }
     }
 
@@ -148,8 +148,8 @@ public class PicoContainerImplTestCase extends TestCase {
             List ambiguous = Arrays.asList(e.getAmbiguousClasses());
             assertTrue(ambiguous.contains(DerivedWilma.class));
             assertTrue(ambiguous.contains(WilmaImpl.class));
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
-            assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) > 0);
         }
     }
 
@@ -315,7 +315,7 @@ public class PicoContainerImplTestCase extends TestCase {
             pico.registerComponent(Vector.class);
             fail("Should fail because there are more than one constructors");
         } catch (WrongNumberOfConstructorsRegistrationException e) {
-            assertTrue(e.getMessage().indexOf("4") >0);            //expected
+            assertTrue(e.getMessage().indexOf("4") > 0);            //expected
             // expected;
         }
 
@@ -328,7 +328,7 @@ public class PicoContainerImplTestCase extends TestCase {
             pico.registerComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
         } catch (NotConcreteRegistrationException e) {
-            assertEquals(Runnable.class,e.getComponentClass());
+            assertEquals(Runnable.class, e.getComponentClass());
             assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
     }
@@ -357,7 +357,7 @@ public class PicoContainerImplTestCase extends TestCase {
 
     public void testWithComponentFactory() throws PicoRegistrationException, PicoStartException {
         final WilmaImpl wilma = new WilmaImpl();
-        PicoContainer pc = new PicoContainerImpl.WithComponentFactory(new ComponentFactory(){
+        PicoContainer pc = new PicoContainerImpl.WithComponentFactory(new ComponentFactory() {
             public Object createComponent(Class compType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
                 return wilma;
             }
@@ -365,6 +365,28 @@ public class PicoContainerImplTestCase extends TestCase {
         pc.registerComponent(WilmaImpl.class);
         pc.start();
         assertEquals(pc.getComponent(WilmaImpl.class), wilma);
+    }
+
+    static class Barney {
+        public Barney() {
+            throw new RuntimeException("Whoa!");
+        }
+    }
+
+    public void testInvocationTargetException() throws PicoRegistrationException, PicoStartException {
+        PicoContainer pico = new PicoContainerImpl.Default();
+        pico.registerComponent(Barney.class);
+        try {
+            pico.start();
+        } catch (PicoInvocationTargetStartException e) {
+            assertEquals("Whoa!", e.getCause().getMessage());
+            assertTrue(e.getMessage().indexOf("Whoa!") > 0);
+        }
+    }
+
+    public static class BamBam {
+        public BamBam() {
+        }
     }
 
     // TODO uncomment this and make it pass

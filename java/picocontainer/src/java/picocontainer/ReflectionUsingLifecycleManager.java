@@ -21,34 +21,32 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
 
     public void startComponent(Object component) throws PicoStartException {
         try {
-            Method method = component.getClass().getMethod("start", NOPARMS);
-            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
-               method.invoke(component, NOARGS);
-            }
-        } catch (NoSuchMethodException e) {
-            // fine.
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Will never happen!");
+            invokeMethodByName(component, "start");
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStartException(e.getCause());
         }
-
     }
 
     public void stopComponent(Object component) throws PicoStopException {
         try {
-            Method method = component.getClass().getMethod("stop", NOPARMS);
-            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
-               method.invoke(component, NOARGS);
-            }
-        } catch (NoSuchMethodException e) {
-            // fine.
-        } catch (SecurityException e) {
-            // could be running in applet space or other
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Will never happen!");
+            invokeMethodByName(component, "stop");
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStopException(e.getCause());
         }
     }
+
+    protected void invokeMethodByName(Object component, String methodName) throws InvocationTargetException {
+        try {
+            Method method = component.getClass().getMethod(methodName, NOPARMS);
+            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+                method.invoke(component, NOARGS);
+            }
+        } catch (NoSuchMethodException e) {
+            // fine.
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("Will never happen!");
+        }
+    }
+
+
 }

@@ -41,7 +41,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
                 return new DefiningClassLoader(classLoader) {

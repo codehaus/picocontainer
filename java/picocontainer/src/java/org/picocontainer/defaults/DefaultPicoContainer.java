@@ -84,6 +84,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+        if(componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
         this.componentAdapterFactory = componentAdapterFactory;
         this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
     }

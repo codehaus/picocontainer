@@ -10,18 +10,14 @@
 
 package org.nanocontainer.reflection;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.MutablePicoContainer;
 import org.nanocontainer.SoftCompositionPicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collections;
 
 /**
  * A base class for SoftCompositionPicoContainers. As well as the functionality indicated by the interface it

@@ -35,7 +35,7 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
         interpreter.exec("from org.nanocontainer import *");

@@ -25,7 +25,7 @@ public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder 
         composer.composeContainer(container, assemblyScope);
     }
 
-    protected SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         return new DefaultSoftCompositionPicoContainer(parentContainer);
     }
 }

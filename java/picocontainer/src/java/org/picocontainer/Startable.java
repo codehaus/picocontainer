@@ -21,6 +21,8 @@ package org.picocontainer;
  * subproject.</p>
  * @version $Revision$
  * @see org.picocontainer.Disposable the Disposable interface if you need to <code>dispose()</code> semantics.
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @since 1.0
  */
 public interface Startable {
@@ -30,7 +32,7 @@ public interface Startable {
     void start();
 
     /**
-     * Stop this component. Called near the end the lifecycle. It can be called again after a further start. Implement
+     * Stop this component. Called near the end of the lifecycle. It can be called again after a further start. Implement
      * {@link Disposable} if you need a single call at the definite end of the lifecycle.
      */
     void stop();

@@ -103,7 +103,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 } else {
                     scriptReader = new StringReader(script);
                 }
-                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader(), parentContainer);
+                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
                 return nanoContainer.getContainerBuilder();
             }
             if (initParameter.equals(ContainerComposer.class.getName())) {

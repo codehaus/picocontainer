@@ -9,13 +9,14 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import java.io.Reader;
-import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -82,7 +83,6 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 		);
 		
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
-		
 		TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
 		assertNotNull(tca);
 	}

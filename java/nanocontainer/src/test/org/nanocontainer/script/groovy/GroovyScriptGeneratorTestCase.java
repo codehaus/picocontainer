@@ -1,11 +1,12 @@
 package org.nanocontainer.script.groovy;
 
+import junit.framework.TestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import java.io.StringReader;
 import java.util.ArrayList;
-import junit.framework.TestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -20,10 +21,8 @@ public class GroovyScriptGeneratorTestCase extends TestCase {
         GroovyScriptGenerator groovyScriptGenerator = new GroovyScriptGenerator();
         String script = groovyScriptGenerator.generateScript(pico);
 
-//        System.out.println(script);
-
         GroovyContainerBuilder groovyContainerBuilder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
-        SoftCompositionPicoContainer newPico = groovyContainerBuilder.createContainerFromScript(null, null);
+        PicoContainer newPico = groovyContainerBuilder.createContainerFromScript(null, null);
 
         assertNotNull(newPico.getComponentInstanceOfType(ArrayList.class));
         assertEquals("World", newPico.getComponentInstance("Hello"));

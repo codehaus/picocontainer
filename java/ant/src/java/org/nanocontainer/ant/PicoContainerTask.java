@@ -86,7 +86,7 @@ public class PicoContainerTask extends Task {
             BeanPropertyComponentAdapterFactory propertyFactory =
                     new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
-            protected SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+            protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultSoftCompositionPicoContainer(propertyFactory);
             }
         };

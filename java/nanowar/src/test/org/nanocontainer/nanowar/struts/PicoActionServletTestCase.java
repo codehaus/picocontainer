@@ -8,10 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
-import org.nanocontainer.nanowar.struts.PicoActionServlet;
-import org.nanocontainer.nanowar.struts.AbstractTestCase;
-import org.nanocontainer.nanowar.struts.MyAction;
-
 import java.io.IOException;
 
 /**

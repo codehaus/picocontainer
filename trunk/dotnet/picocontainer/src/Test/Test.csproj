@@ -105,6 +105,31 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Alternatives\AbstractImplementationHidingPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\CachingPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingCachingPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingWithDefaultPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\CachingComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

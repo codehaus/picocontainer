@@ -13,8 +13,6 @@ using System;
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for Washable.
-	/// </summary>
 	public interface IWashable
 	{
 		void Wash();

@@ -1,3 +1,4 @@
+using System;
 /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
@@ -11,6 +12,7 @@
 
 namespace PicoContainer.Tests.TestModel
 {
+	[Serializable]
 	public class SimpleTouchable : ITouchable
 	{
 		private bool wasTouched;

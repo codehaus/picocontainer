@@ -13,12 +13,16 @@ using System;
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for WashableTouchable.
-	/// </summary>
+	[Serializable]
 	public class WashableTouchable : ITouchable, IWashable
 	{
 		public WashableTouchable()
 		{
+		}
+
+		public bool WasTouched
+		{
+			get { return true; }
 		}
 
 		public void Touch()

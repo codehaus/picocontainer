@@ -72,11 +72,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("SAXException : " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("IOException : " + e.getMessage(), e);
         } catch (ParserConfigurationException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("PArserConfigurationException :" + e.getMessage(), e);
         }
     }
 

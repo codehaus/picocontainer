@@ -131,7 +131,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
      * @param url
      */
     public void addClassLoaderURL(URL url) {
-        if (clLocked) throw new IllegalStateException("Foo!!!!");
+        if (clLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this ContainerAdapter is locked");
         urls.add(url);
     }
 

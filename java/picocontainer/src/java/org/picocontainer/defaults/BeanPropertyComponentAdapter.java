@@ -24,6 +24,11 @@ import java.io.File;
  * the same as {@link BeanComponentAdapter}, which is a true Setter Injection adapter.
  * <p>
  * This adapter is mostly handy for setting various primitive properties via setters.
+ * <p>
+ * <em>
+ * Note that this class doesn't cache instances. If you want caching,
+ * use a {@link CachingComponentAdapter} around this one.
+ * </em>
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

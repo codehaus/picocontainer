@@ -10,9 +10,9 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
-
-import java.io.Serializable;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * This ComponentAdapter caches the instance.

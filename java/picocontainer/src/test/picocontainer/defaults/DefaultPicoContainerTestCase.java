@@ -479,10 +479,10 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        assertNull(pico.findComponentSpecification(Wilma.class));
+        assertNull(pico.findImplementingComponentSpecification(Wilma.class));
         pico.registerComponent(WilmaImpl.class);
-        assertNotNull(pico.findComponentSpecification(WilmaImpl.class));
-        assertNotNull(pico.findComponentSpecification(Wilma.class));
+        assertNotNull(pico.findImplementingComponentSpecification(WilmaImpl.class));
+        assertNotNull(pico.findImplementingComponentSpecification(Wilma.class));
     }
 
     public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException, PicoIntrospectionException {

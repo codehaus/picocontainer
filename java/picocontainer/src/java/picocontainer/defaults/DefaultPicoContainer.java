@@ -121,8 +121,11 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
 
-        ComponentSpecification compSpec = new ComponentSpecification(componentFactory, componentType, componentImplementation, parameters);
-        componentToSpec.put(componentImplementation, compSpec);
+        registerComponent(new ComponentSpecification(componentFactory, componentType, componentImplementation, parameters));
+    }
+
+    private void registerComponent(ComponentSpecification compSpec) {
+        componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
         registeredComponents.add(compSpec);
     }
 
@@ -153,17 +156,22 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
     }
 
-    public void registerComponent(Object component) throws PicoRegistrationException {
+    public void registerComponent(Object component) throws PicoRegistrationException, PicoIntrospectionException {
         registerComponent(component.getClass(), component);
     }
 
-    public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
+    public void registerComponent(Class componentType, Object component) throws PicoRegistrationException, PicoIntrospectionException {
         checkTypeCompatibility(componentType, component.getClass());
         checkTypeDuplication(componentType);
         //checkImplementationDuplication(component.getClass());
+        registerComponent(new ComponentSpecification(defaultComponentFactory(), componentType, component.getClass(), null));
         componentTypeToInstanceMap.put(componentType, component);
         orderedComponents.add(component);
         unmanagedComponents.add(component);
+    }
+
+    private ComponentFactory defaultComponentFactory() {
+        return componentFactory;
     }
 
     public void addParameterToComponent(Class componentType, Class parameter, Object arg) throws PicoIntrospectionException {
@@ -192,7 +200,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
     }
 
-    private Object createComponent(ComponentSpecification componentSpecification) throws PicoInstantiationException, PicoIntrospectionException {
+    Object createComponent(ComponentSpecification componentSpecification) throws PicoInstantiationException, PicoIntrospectionException {
         if (!componentTypeToInstanceMap.containsKey(componentSpecification.getComponentType())) {
 
             Object component = null;
@@ -235,14 +243,14 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
             return componentInstance;
         }
 
-        componentInstance = findSatisfyingComponent(componentType);
+        componentInstance = findImplementingComponent(componentType);
 
         if (componentInstance != null) {
             return componentInstance;
         }
 
         // try to find components that satisfy the interface (implements the component service asked for)
-        ComponentSpecification componentSpecification = findComponentSpecification(componentType);
+        ComponentSpecification componentSpecification = findImplementingComponentSpecification(componentType);
         if (componentSpecification == null) {
             return null;
         }
@@ -255,7 +263,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         return componentInstance;
     }
 
-    private Object findSatisfyingComponent(Class componentType) throws AmbiguousComponentResolutionException {
+    Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
 
         for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
@@ -268,13 +276,17 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
         if (found.size() > 1) {
             Class[] ambiguousClasses = (Class[]) found.toArray(new Class[found.size()]);
-            throw new AmbiguousComponentResolutionException(ambiguousClasses);
+            throw new AmbiguousComponentResolutionException(componentType, ambiguousClasses);
         }
 
         return found.isEmpty() ? null : componentTypeToInstanceMap.get(found.get(0));
     }
 
-    ComponentSpecification findComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
+    Object getComponent(ComponentSpecification componentSpec) {
+        return componentSpec == null ? null : getComponent(componentSpec.getComponentType());
+    }
+
+    ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
@@ -285,11 +297,11 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
 
         if (found.size() > 1) {
-            Class[] ambiguousClass = new Class[found.size()];
-            for (int i = 0; i < ambiguousClass.length; i++) {
-                ambiguousClass[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
+            Class[] foundClasses = new Class[found.size()];
+            for (int i = 0; i < foundClasses.length; i++) {
+                foundClasses[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
             }
-            throw new AmbiguousComponentResolutionException(ambiguousClass);
+            throw new AmbiguousComponentResolutionException(componentType, foundClasses);
         }
 
         return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));

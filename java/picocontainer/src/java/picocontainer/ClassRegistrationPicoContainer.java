@@ -45,7 +45,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException If a registration problem
      */
     void registerComponent(Class componentType, Object component)
-            throws PicoRegistrationException;
+            throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Registers an instantiated component.  This might be because you are
@@ -55,7 +55,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException
      */
     void registerComponent(Object component)
-            throws PicoRegistrationException;
+            throws PicoRegistrationException, PicoIntrospectionException;
 
     // TODO: move Parameter to this package. We shouldn't depend on subpackages.
     void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters)

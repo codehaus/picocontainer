@@ -36,7 +36,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private PicoContainer parent;
     private final List componentAdapters = new ArrayList();
 
-    // Keeps track of instantiation order. Will be cleared regularly.
+    // Keeps track of instantiation order.
     private final List orderedComponentAdapters = new ArrayList();
     private boolean started = false;
     private boolean disposed = false;
@@ -156,6 +156,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+        if(componentInstance == this)
+            throw new PicoRegistrationException() {
+                public String getMessage() {
+                    return "Cannot register a container to itself. The container is already implicitly registered.";
+                }
+            };
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;
@@ -242,6 +248,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         this.parent = parent;
     }
 
+    public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
+        Collection componentAdapters = getComponentAdapters();
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            if(componentAdapter.getComponentInstance().equals(componentInstance)) {
+                return unregisterComponent(componentAdapter.getComponentKey());
+            }
+        }
+        return null;
+    }
+
     public void verify() throws PicoVerificationException {
         List nestedVerificationExceptions = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
@@ -264,7 +281,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         Collection components = getComponentInstances();
         for (Iterator iterator = components.iterator(); iterator.hasNext();) {
             Object o =  iterator.next();
-            if(o instanceof Startable) {
+            if(o!= this && o instanceof Startable) {
                 ((Startable)o).start();
             }
         }

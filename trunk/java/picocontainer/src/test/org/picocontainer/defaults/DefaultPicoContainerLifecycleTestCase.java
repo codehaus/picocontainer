@@ -15,6 +15,7 @@ import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.PicoRegistrationException;
 
 import java.util.ArrayList;
 import java.util.Collections;

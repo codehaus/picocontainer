@@ -15,6 +15,7 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ConstructorComponentAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -361,6 +362,30 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         final MutablePicoContainer picoContainer = createPicoContainer();
         picoContainer.registerComponent(componentAdapter);
         assertSame(picoContainer, componentAdapter.getContainer());
+    }
+
+    public static class ContainerDependency {
+        private PicoContainer pico;
+
+        public ContainerDependency(PicoContainer container) {
+            this.pico = container;
+        }
+    }
+
+    public void testImplicitPicoContainerInjection(){
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(ContainerDependency.class);
+        ContainerDependency dep = (ContainerDependency)pico.getComponentInstance(ContainerDependency.class);
+        assertSame(pico, dep.pico);
+    }
+
+    public void testSelfRegistryThrowsIllegalArgument(){
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        try {
+            pico.registerComponentInstance(pico);
+            fail("Should not be able to register a container to itself");
+        } catch (PicoRegistrationException e) {
+        }
     }
 
 }

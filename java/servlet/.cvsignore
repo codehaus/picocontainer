@@ -1,3 +1,4 @@
+cachedir
 target
 junit*
 *.log

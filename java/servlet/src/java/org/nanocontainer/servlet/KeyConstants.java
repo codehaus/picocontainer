@@ -12,8 +12,8 @@ package org.nanocontainer.servlet;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public interface KeyConstants {
-    String APPLICATION_CONTAINER = "picocontainer.application";
-    String SESSION_CONTAINER = "picocontainer.session";
-    String REQUEST_CONTAINER = "picocontainer.request";
-    String BUILDER = "picocontainer.builder";
+    String APPLICATION_CONTAINER = "nanocontainer.application";
+    String SESSION_CONTAINER = "nanocontainer.session";
+    String REQUEST_CONTAINER = "nanocontainer.request";
+    String BUILDER = "nanocontainer.builder";
 }

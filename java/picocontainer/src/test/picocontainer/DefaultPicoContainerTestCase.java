@@ -70,6 +70,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         } catch (UnsatisfiedDependencyStartupException e) {
             // expected
             assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
+            assertTrue(e.getMessage().indexOf(FredImpl.class.getName()) >0);
 
         }
     }
@@ -84,6 +85,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         } catch (DuplicateComponentClassRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == Webster.class);
+            assertTrue(e.getMessage().indexOf(Webster.class.getName()) >0);
         }
     }
 
@@ -97,6 +99,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
         }
     }
 
@@ -110,6 +113,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         } catch (DuplicateComponentTypeRegistrationException e) {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
         }
     }
 
@@ -138,6 +142,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
             List ambiguous = Arrays.asList(e.getAmbiguousClasses());
             assertTrue(ambiguous.contains(DerivedWilma.class));
             assertTrue(ambiguous.contains(WilmaImpl.class));
+            System.out.println("-->" + e.getMessage());
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) >0);
         }
     }
 
@@ -171,7 +178,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
         try {
             pico.registerComponent(Collection.class, WilmaImpl.class);
         } catch (AssignabilityRegistrationException e) {
-            //expected
+            assertTrue(e.getMessage().indexOf(Collection.class.getName()) >0);
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);            //expected
         }
 
     }
@@ -300,6 +308,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
             pico.registerComponent(Vector.class);
             fail("Should fail because there are more than one constructors");
         } catch (WrongNumberOfConstructorsRegistrationException e) {
+            assertTrue(e.getMessage().indexOf("4") >0);            //expected
             // expected;
         }
 

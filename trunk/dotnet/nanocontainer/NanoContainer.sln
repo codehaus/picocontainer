@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoContainer", "src\NanoContainer.csproj", "{301C42AD-A032-4430-B497-7B9A8E24E475}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\Test\Test.csproj", "{295C8C1A-D555-4E1B-BF5C-E906A9B8938C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{301C42AD-A032-4430-B497-7B9A8E24E475}.Debug.ActiveCfg = Debug|.NET
+		{301C42AD-A032-4430-B497-7B9A8E24E475}.Debug.Build.0 = Debug|.NET
+		{301C42AD-A032-4430-B497-7B9A8E24E475}.Release.ActiveCfg = Release|.NET
+		{301C42AD-A032-4430-B497-7B9A8E24E475}.Release.Build.0 = Release|.NET
+		{295C8C1A-D555-4E1B-BF5C-E906A9B8938C}.Debug.ActiveCfg = Debug|.NET
+		{295C8C1A-D555-4E1B-BF5C-E906A9B8938C}.Debug.Build.0 = Debug|.NET
+		{295C8C1A-D555-4E1B-BF5C-E906A9B8938C}.Release.ActiveCfg = Release|.NET
+		{295C8C1A-D555-4E1B-BF5C-E906A9B8938C}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

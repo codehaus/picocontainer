@@ -19,10 +19,10 @@ import java.util.HashMap;
 public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
-        PicoRegistrationException, PicoIntrospectionException;
+            PicoRegistrationException, PicoIntrospectionException;
 
     abstract public PicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
-        PicoRegistrationException, PicoIntrospectionException;
+            PicoRegistrationException, PicoIntrospectionException;
 
     public void testNotNull() throws PicoRegistrationException, PicoIntrospectionException {
         assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependancy());
@@ -32,18 +32,18 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         picoContainer.instantiateComponents();
         assertTrue("Container should have Touchable component",
-            picoContainer.hasComponent(Touchable.class));
+                picoContainer.hasComponent(Touchable.class));
         assertTrue("Container should have DependsOnTouchable component",
-            picoContainer.hasComponent(DependsOnTouchable.class));
+                picoContainer.hasComponent(DependsOnTouchable.class));
         assertTrue("Component should be instance of Touchable",
-            picoContainer.getComponent(Touchable.class) instanceof Touchable);
+                picoContainer.getComponent(Touchable.class) instanceof Touchable);
         assertTrue("Component should be instance of DependsOnTouchable",
-            picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
+                picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
         assertTrue("should not have non existent component", !picoContainer.hasComponent(Map.class));
     }
 
     public void testSerializabilityOfContainer() throws PicoRegistrationException, PicoInitializationException,
-        IOException, ClassNotFoundException {
+            IOException, ClassNotFoundException {
 
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         picoContainer.instantiateComponents();
@@ -112,7 +112,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         addAHashMapByInstance(picoContainer);
         picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());
-        assertEquals("Key - Map, Impl - HashMap should be in container",HashMap.class, picoContainer.getComponent(Map.class).getClass());
+        assertEquals("Key - Map, Impl - HashMap should be in container", HashMap.class, picoContainer.getComponent(Map.class).getClass());
         //TODO - some way to test hashmap was passed in as an instance ?
         // should unmanaged side of DefaultPicoContainer be more exposed thru interface?
     }

@@ -175,7 +175,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     }
 
 
-
     public void testStartStopStartStopAndDispose() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
@@ -201,8 +200,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     }
 
-    private void startStopDisposeLifecycleComps(Startable start, Stoppable stop, Disposable disp, One one) throws Exception
-    {
+    private void startStopDisposeLifecycleComps(Startable start, Stoppable stop, Disposable disp, One one) throws Exception {
         start.start();
 
         // post instantiation startup

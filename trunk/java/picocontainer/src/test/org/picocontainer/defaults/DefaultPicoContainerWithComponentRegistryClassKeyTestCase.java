@@ -18,7 +18,7 @@ public class DefaultPicoContainerWithComponentRegistryClassKeyTestCase extends A
     private ComponentRegistry componentRegistry = new DefaultComponentRegistry();
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
-        AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+            AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
 
         DefaultPicoContainer defaultPico = new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
         defaultPico.registerComponent(Touchable.class, SimpleTouchable.class);
@@ -38,7 +38,7 @@ public class DefaultPicoContainerWithComponentRegistryClassKeyTestCase extends A
 
     protected void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
         ((DefaultPicoContainer) picoContainer).registerComponent(Map.class, new HashMap());
-    }    
+    }
 
     // testXXX methods are in superclass.
 

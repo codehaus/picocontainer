@@ -33,7 +33,7 @@ public class CompositePicoContainerTestCase extends TestCase {
         pico = new DefaultPicoContainer.Default();
         pico.registerComponentByClass(SimpleTouchable.class);
         pico.instantiateComponents();
-        composite = new CompositePicoContainer.WithContainerArray(new PicoContainer[] {pico});
+        composite = new CompositePicoContainer.WithContainerArray(new PicoContainer[]{pico});
     }
 
     public void testGetComponents() {
@@ -130,13 +130,11 @@ public class CompositePicoContainerTestCase extends TestCase {
             public void instantiateComponents() throws PicoInstantiationException {
             }
 
-            public Object getCompositeComponent()
-            {
+            public Object getCompositeComponent() {
                 return null;
             }
 
-            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
-            {
+            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
                 return null;
             }
         };
@@ -166,13 +164,11 @@ public class CompositePicoContainerTestCase extends TestCase {
             public void instantiateComponents() throws PicoInstantiationException {
             }
 
-            public Object getCompositeComponent()
-            {
+            public Object getCompositeComponent() {
                 return null;
             }
 
-            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
-            {
+            public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
                 return null;
             }
         };

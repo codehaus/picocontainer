@@ -24,18 +24,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.1 $
  */
 public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Serializable {
-    
+
     private static Method equals;
     private static Method hashCode;
 
-    static{
+    static {
         try {
-            equals = Object.class.getMethod("equals", new Class[] {Object.class});
+            equals = Object.class.getMethod("equals", new Class[]{Object.class});
             hashCode = Object.class.getMethod("hashCode", null);
         } catch (NoSuchMethodException e) {
             ///CLOVER:OFF
@@ -82,13 +82,13 @@ public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Seri
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Class declaringClass = method.getDeclaringClass();
-            if( declaringClass.equals(Object.class) ) {
-                if(method.equals(hashCode)) {
-					// Return the hashCode of ourself, as Proxy.newProxyInstance() may
-					// return cached proxies. We want a unique hashCode for each created proxy!
+            if (declaringClass.equals(Object.class)) {
+                if (method.equals(hashCode)) {
+                    // Return the hashCode of ourself, as Proxy.newProxyInstance() may
+                    // return cached proxies. We want a unique hashCode for each created proxy!
                     return new Integer(System.identityHashCode(AggregatingInvocationHandler.this));
                 }
-                if(method.equals(equals)) {
+                if (method.equals(equals)) {
                     return new Boolean(proxy == args[0]);
                 }
                 // If the method is defined by Object (like hashCode or equals), call

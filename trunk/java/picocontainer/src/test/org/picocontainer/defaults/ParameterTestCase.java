@@ -20,7 +20,8 @@ public class ParameterTestCase extends TestCase {
     }
 
     static class TestClass {
-        public TestClass(String s1, String s2, String s3) {}
+        public TestClass(String s1, String s2, String s3) {
+        }
     }
 
     public void testComponentSpecificationCreatesDefaultParameters() throws PicoIntrospectionException {
@@ -50,7 +51,7 @@ public class ParameterTestCase extends TestCase {
     public void testFredWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         SimpleTouchable touchable = new SimpleTouchable();
-        pico.registerComponent(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[] {
+        pico.registerComponent(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[]{
             new ConstantParameter(touchable)
         });
         pico.instantiateComponents();

@@ -11,7 +11,6 @@
 package org.picocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.tck.DependsOnTwoComponents;
 import org.picocontainer.tck.DependsOnTouchable;
 import org.picocontainer.tck.SimpleTouchable;
 
@@ -22,7 +21,6 @@ public class NoPicoTestCase extends TestCase {
      * This was one of the design goals.
      *
      * This is manual lacing of components.
-     *
      */
     public void testTouchableWithoutPicoTestCase() {
 
@@ -32,6 +30,4 @@ public class NoPicoTestCase extends TestCase {
         assertTrue("Touchable should have had its wasTouched method called",
                 touchable.wasTouched);
     }
-
-
 }

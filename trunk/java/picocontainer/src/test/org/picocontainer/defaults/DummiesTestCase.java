@@ -42,7 +42,7 @@ public class DummiesTestCase extends TestCase {
         assertNotNull(decorated);
     }
 
-    public void donot_testInstantiation() throws PicoInitializationException  {
+    public void donot_testInstantiation() throws PicoInitializationException {
         CompositePicoContainer acc = new CompositePicoContainer.WithContainerArray(new PicoContainer[0]);
         // Should not barf. Should do nothing, but that hard to test.
         // Hmmm, should it be silent, ot barf ?

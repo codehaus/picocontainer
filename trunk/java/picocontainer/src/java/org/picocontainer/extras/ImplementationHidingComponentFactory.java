@@ -35,7 +35,7 @@ public class ImplementationHidingComponentFactory implements ComponentFactory {
         // TODO: search for all interfaces for component-implementation instead
         Class[] interfaces = new Class[]{(Class) componentSpec.getComponentKey()};
         return Proxy.newProxyInstance(componentSpec.getComponentImplementation().getClassLoader(),
-            interfaces, new ImplementationHidingProxy(componentInstance));
+                interfaces, new ImplementationHidingProxy(componentInstance));
     }
 
     public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {

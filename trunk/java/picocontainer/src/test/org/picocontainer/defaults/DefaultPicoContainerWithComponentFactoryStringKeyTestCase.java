@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class DefaultPicoContainerWithComponentFactoryStringKeyTestCase extends AbstractBasicStringCompatabilityTestCase {
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
-        AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+            AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
 
         ComponentFactory componentFactory = new DefaultComponentFactory();
         DefaultPicoContainer defaultPico = new DefaultPicoContainer.WithComponentFactory(componentFactory);
@@ -33,7 +33,7 @@ public class DefaultPicoContainerWithComponentFactoryStringKeyTestCase extends A
     protected void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
         ((DefaultPicoContainer) picoContainer).registerComponent("map", new HashMap());
     }
-    
+
     // testXXX methods are in superclass.
 
 }

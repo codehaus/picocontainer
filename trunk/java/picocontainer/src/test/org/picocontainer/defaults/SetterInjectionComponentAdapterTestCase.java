@@ -243,10 +243,13 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
     }
 
-    // TODO: fails with NPE
+    // TODO: fails with wrong order
     public void XXXtestOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer(
+                new CachingComponentAdapterFactory(
+                        new SetterInjectionComponentAdapterFactory(
+                                new ConstructorInjectionComponentAdapterFactory())));
         pico.registerComponent(
                 new CachingComponentAdapter(
                         new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));

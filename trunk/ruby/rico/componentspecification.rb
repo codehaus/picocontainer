@@ -8,9 +8,9 @@ class ComponentSpecification
   def create_component(container)
       check_access @type, @create_method # calling by reflection doesn't check access
       args = @dependencies.collect { |dep| container.component(dep) }
-      @component = @type.send(@create_method, *args)
+      return @component = @type.send(@create_method, *args)
   end
-  
+
   def component(container)
   	return @component || create_component(container)
   end

@@ -30,10 +30,10 @@ class ContainerTest < Test::Unit::TestCase
     assert_equal Object, rico.component_class(:object), "component class"
     assert_equal [], rico.dependencies(:object), "dependencies"
   end
-    
+  
   class Dependent
     attr_reader :needed, :also_needed
-      
+          
     def initialize needed, also_needed
       @needed, @also_needed = needed, also_needed
     end
@@ -41,47 +41,45 @@ class ContainerTest < Test::Unit::TestCase
   class Needed; end
   class AlsoNeeded; end
   
-  def rico_with_dependent_components
+  def build_rico_with_dependent_components
     rico = Container.new
     rico.register_component :needed, Needed
     rico.register_component :also_needed, AlsoNeeded
     rico.register_component :dependent, Dependent, [ :needed, :also_needed ]
-    rico
+    return rico
   end 
 
   def test_register_component_with_dependencies
-    rico = rico_with_dependent_components
+    rico = build_rico_with_dependent_components
     assert_equal 3, rico.component_count, "component count"
     assert_equal Dependent, rico.component_class(:dependent), "component class"
     assert_equal [ :needed, :also_needed ], rico.dependencies(:dependent), "dependencies"
   end
-
+  
   def test_register_component_with_missing_dependencies_fails
     rico = Container.new
     assert_raises NonexistentComponentError do
-      rico.register_component :key, Object, [ :nonexistent ]
+       rico.register_component :key, Object, [ :nonexistent ]
     end
   end
   
-  class SimpleComponent; end
-  
   def test_get_component_with_no_dependencies
     rico = Container.new
-    rico.register_component :component, SimpleComponent
-    result = rico.component :component
-    assert_equal SimpleComponent, result.class
+    rico.register_component :object, Object
+    result = rico.component :object
+    assert_equal Object, result.class
   end
   
   def test_get_component_twice_gives_same_component
     rico = Container.new
-    rico.register_component :component, SimpleComponent
-    one = rico.component :component
-    two = rico.component :component
+    rico.register_component :object, Object
+    one = rico.component :object
+    two = rico.component :object
     assert_same one, two
   end
     
   def test_get_component_with_dependencies
-    rico = rico_with_dependent_components
+    rico = build_rico_with_dependent_components
     dependent = rico.component :dependent
     assert_instance_of Needed, dependent.needed
     assert_instance_of AlsoNeeded, dependent.also_needed
@@ -95,7 +93,7 @@ class ContainerTest < Test::Unit::TestCase
   end
     
   def test_get_component_with_multiple_levels_of_dependencies
-    rico = rico_with_dependent_components
+    rico = build_rico_with_dependent_components
     rico.register_component :higher, Higher, [ :dependent ]
     
     # check top level has dependent

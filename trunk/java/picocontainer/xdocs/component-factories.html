@@ -3,13 +3,22 @@
 <head>
 </head>
 <body>
-<h2>Component Factories<br>
-</h2>
+<h1>Component Factories<br>
+</h1>
 A component will be instantiated via a instance of
-ComponentFactory.&nbsp; The default one is called
-DefaultComponentFactory.&nbsp; <br>
-<br>
-This is pluggable. <br>
+ComponentFactory.&nbsp; There is no NullObject implementation of this.
+This is pluggable of course.<br>
+<pre>public interface ComponentFactory {</pre>
+<pre>&nbsp;&nbsp;&nbsp; Object createComponent(</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Class compType, </pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constructor constructor, </pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Object[] args) </pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws PicoInvocationTargetInitailizationException;</pre>
+<pre>}</pre>
+<h2>DefaultComponentFactory</h2>
+This component factory uses basic reflection to instantiate a component.<br>
+<h2><span style="font-weight: bold;">Future ComponentFactories :</span></h2>
+One that logs instantiations ?<br>
 <br>
 <br>
 </body>

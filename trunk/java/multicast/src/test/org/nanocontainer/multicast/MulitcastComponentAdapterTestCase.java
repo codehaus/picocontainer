@@ -13,7 +13,7 @@ import org.picocontainer.defaults.Invoker;
  */
 public class MulitcastComponentAdapterTestCase extends TestCase {
 
-    public static interface Kissable {
+    public static interQQQQface Kissable {
         void kiss();
     }
 

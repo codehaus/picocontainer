@@ -14,9 +14,9 @@ import org.nanocontainer.nanoaop.script.groovy
 import org.nanocontainer.script.groovy.PicoBuilderException
 import org.picocontainer.defaults.DefaultComponentAdapterFactory
 
-public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
+public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
 
-    builder = new NanoAopGroovyContainerBuilder()
+    builder = new NanoAopGroovyBuilder()
     cuts = builder.pointcuts()
 
     public void testContainerScopedInterceptor() {
@@ -204,7 +204,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
     public void testExample() {
         log = new StringBuffer()
         logger = new LoggingInterceptor(log)
-        builder = new NanoAopGroovyContainerBuilder()
+        builder = new NanoAopGroovyBuilder()
         cuts = builder.pointcuts()
 
         pico = builder.container() {

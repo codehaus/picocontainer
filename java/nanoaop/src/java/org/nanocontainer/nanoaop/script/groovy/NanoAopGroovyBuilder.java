@@ -43,27 +43,27 @@ import dynaop.ProxyFactory;
  * @version $Revision$
  * @see org.nanocontainer.script.groovy.NanoGroovyBuilder
  */
-public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
+public class NanoAopGroovyBuilder extends NanoGroovyBuilder {
 
     private PointcutsFactory pointcutsFactory;
     private AspectablePicoContainer currentPico;
     private Object currentKey;
 
     /**
-     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use
+     * Creates a new <code>NanoAopGroovyBuilder</code> that will use
      * a <code>org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory</code>.
      */
-    public NanoAopGroovyContainerBuilder() {
+    public NanoAopGroovyBuilder() {
         this(new DynaopPointcutsFactory());
     }
 
     /**
-     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use
+     * Creates a new <code>NanoAopGroovyBuilder</code> that will use
      * the given pointcuts factory.
      * 
      * @param pointcutsFactory the pointcuts factory.
      */
-    public NanoAopGroovyContainerBuilder(PointcutsFactory pointcutsFactory) {
+    public NanoAopGroovyBuilder(PointcutsFactory pointcutsFactory) {
         this.pointcutsFactory = pointcutsFactory;
     }
 

@@ -26,15 +26,24 @@ module Rico
   class ComponentSpecification
     attr_reader :component_class, :dependencies
     
-    def initialize(component_class, dependencies, create_method)
-      @component_class, @dependencies, @create_method = component_class, dependencies, create_method
+    def initialize(component_class, dependencies, create_method, attrs = nil)
+      @component_class, @dependencies, @create_method, @attrs = component_class, dependencies, create_method, attrs
       @component_instance = nil
     end
     
     def create_component_instance(container, unresolved_keys)
         assert_create_method_is_accessible # calling by reflection doesn't check access
         args = resolve_dependencies container, unresolved_keys
-        return @component_class.send(@create_method, *args)
+        component_instance = @component_class.send(@create_method, *args)
+        
+        if(!@attrs.nil?)
+          @attrs.each do |attr, value|
+            writer = "#{attr}=".intern
+            component_instance.send(writer, *value)
+          end
+        end
+        
+        return component_instance
     end
     
     def resolve_dependencies(container, unresolved_keys)

@@ -49,7 +49,7 @@ module Rico
       @interceptor_class, @entry_proc = interceptor_class, entry_proc
     end
     
-    def create_component_specification(component_class, dependencies, create_method)
+    def create_component_specification(component_class, dependencies, create_method, attrs)
       return InterceptingComponentSpecification.new(component_class, dependencies, create_method, @interceptor_class, @entry_proc)
     end
   end

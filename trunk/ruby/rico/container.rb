@@ -22,10 +22,9 @@ module Rico
       return component_count == 0
     end
     
-    def register_component_implementation(key, component_class = key, dependencies = [], create_method = :new)
-#      puts "Registering #{key} -> #{component_class}"
+    def register_component_implementation(key, component_class = key, dependencies = [], create_method = :new, attrs = {})
       raise DuplicateComponentKeyRegistrationError.new(key) if @specs.has_key? key
-      @specs[key] = create_component_specification component_class, dependencies, create_method
+      @specs[key] = create_component_specification(component_class, dependencies, create_method, attrs)
     end
     
     def component_class(key)
@@ -73,11 +72,11 @@ module Rico
       return Multicaster.new(self)
     end
     
-    private
+  private
     
-    def create_component_specification(component_class, dependencies, create_method)
+    def create_component_specification(component_class, dependencies, create_method, attrs)
       if component_class.is_a? Class
-        result = ComponentSpecification.new component_class, dependencies, create_method
+        result = ComponentSpecification.new component_class, dependencies, create_method, attrs
       else
         result = ConstantComponentSpecification.new component_class
       end

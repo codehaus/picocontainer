@@ -196,7 +196,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy();
+        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy(true, true);
 
         ((Washable) myPeelableAndWashableContainer).wash();
 

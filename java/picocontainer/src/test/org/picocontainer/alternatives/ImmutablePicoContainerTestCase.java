@@ -15,6 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Disposable;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collection;
@@ -29,6 +30,15 @@ import java.util.Vector;
  * @version $Revision$
  */
 public class ImmutablePicoContainerTestCase extends TestCase {
+
+    public void testImmutingofNullBarfs() {
+        try {
+            ImmutablePicoContainer ipc = new ImmutablePicoContainer(null);
+            fail("Should have barfed");
+        } catch (NullPointerException e) {
+            //expected
+        }
+    }
 
     public void testDelegationOfGettingComponentInstance() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
@@ -211,5 +221,42 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         }
         MyDisposable disposable = (MyDisposable ) ipc.getComponentInstance(MyDisposable.class);
         assertTrue(disposable.disposed);
+    }
+
+    public void testFacetiouslyThatLifeCycleGuardPreventsCyclingOfChildContainersAsComponentsAreNotTheOnlyThingsThatAreLifecycleable() {
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        MutablePicoContainer child = parent.makeChildContainer();
+        parent.registerComponentImplementation("foo", MyDisposable.class);
+        child.registerComponentImplementation("bar", MyDisposable.class);
+        ImmutablePicoContainer ipc = new ImmutablePicoContainer(parent);
+        try {
+            ipc.dispose();
+            fail("Should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+
+        MyDisposable parentDisposable = (MyDisposable) parent.getComponentInstance("foo");
+        assertFalse(parentDisposable.disposed);
+
+        MyDisposable childDisposable = (MyDisposable) child.getComponentInstance("bar");
+        assertFalse(childDisposable.disposed);
+
+        // If this were on parent, it would cascade to child.
+        ((Disposable) ipc.getComponentInstances().get(0)).dispose();
+
+        // I can live with this below....
+        assertTrue(parentDisposable.disposed);
+
+        // However, I'd be in favor of changing
+        //   interface PicoContainer extends Startable, Disposable {}
+        // to
+        //   interface PicoContainer {}
+        // AND
+        //   interface MutablePicoContainer extends PicoContainer {}
+        // to
+        //   interface MutablePicoContainer extends PicoContainer implements Startable, Disposable {}
+        // That despite breaking (marginally) backwards compatability.
+        // - Paul
     }
 }

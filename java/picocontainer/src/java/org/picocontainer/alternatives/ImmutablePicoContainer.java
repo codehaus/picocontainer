@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 // TODO: replace this with a proxy? It don't do nothing! (AH)
+// Am open to elegant solution. This, at least, is instantiable (PH)
 
 /**
  * @author Paul Hammant
@@ -31,7 +32,7 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     private PicoContainer delegate;
 
     public ImmutablePicoContainer(PicoContainer delegate) {
-        if(delegate == null) throw new NullPointerException();
+        if(delegate == null) throw new NullPointerException("You must pass in a picoContainer instance");
         this.delegate = delegate;
     }
 
@@ -76,7 +77,6 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
-        visitor.visitContainer(this);
         delegate.accept(visitor, componentType, visitInInstantiationOrder);
     }
 

@@ -86,5 +86,32 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 		TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
 		assertNotNull(tca);
 	}
+	
+    public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <instance key='bean1'>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello1</bar>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
+                "  </instance>" +
+                "  <instance key='bean2'>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello2</bar>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
+                "  </instance>" +
+                "  <implementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
+				"		<dependency key='bean1'/>" + 
+				"		<dependency key='bean2'/>" +
+                "  </implementation>" +
+                "</container>");
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+        assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
+        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
+        assertEquals("bean1", "hello1", composer.getBean1().getBar());
+        assertEquals("bean2", "hello2", composer.getBean2().getBar());
+    }
 }
 

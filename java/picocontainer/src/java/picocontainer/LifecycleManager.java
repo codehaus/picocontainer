@@ -23,7 +23,7 @@ public interface LifecycleManager {
      * implementor. The presence of a 'void start()' method is fine for
      * ReflectionUsingLifecycleManager, but other implementations of
      * this interface may choose harder contracts like if the components
-     * implemented say Startable.
+     * implemented say some Startable interface.
      *
      * @param component The component to start
      * @throws PicoStartException if there was a problem with starting

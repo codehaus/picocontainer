@@ -9,12 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.script.ScriptedContainerBuilder;
@@ -26,13 +20,19 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.Reader;
+import java.io.StringReader;
+
 /**
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  */
 public class ScopedContainerComposerTestCase extends MockObjectTestCase {
 
-    public void testDefaultConfiguration() throws Exception {
+    public void testDefaultConfiguration() throws ClassNotFoundException {
         ScopedContainerComposer composer = new ScopedContainerComposer();
 
         MutablePicoContainer application = new DefaultPicoContainer();
@@ -52,7 +52,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(request.getComponentInstance("requestScopedInstance"));
     }
 
-    public void testCustomConfiguration() throws Exception {
+    public void testCustomConfiguration() throws ClassNotFoundException {
         PicoContainer pico = createPicoContainerWithConfiguredComponents();
         ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponentInstance(ScopedContainerConfigurator.class);
         assertNotNull("configurator", configurator);

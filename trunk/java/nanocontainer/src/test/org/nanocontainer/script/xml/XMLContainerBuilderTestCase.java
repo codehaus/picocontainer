@@ -112,16 +112,16 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.indexOf("-NotStartable") == -1);
     }
 
-
-    public void testUnknownclassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testUnknownclassThrowsPicoCompositionException() throws SAXException, ParserConfigurationException, IOException {
         try {
             Reader script = new StringReader("" +
                     "<container>" +
                     "  <componentimplementation class='Foo'/>" +
                     "</container>");
             buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-            fail("Should have thrown a ClassNotFoundException");
-        } catch (RuntimeException cnfe) {
+            fail("Expected PicoCompositionException");
+        } catch (PicoCompositionException e) {
+            assertTrue("ClassNotFoundException", e.getCause() instanceof ClassNotFoundException);
         }
     }
 
@@ -129,6 +129,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         try {
             Reader script = new StringReader("<container/>");
             buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+            fail("Expected EmptyCompositionException");
         } catch (EmptyCompositionException expected) {
         }
     }
@@ -239,6 +240,27 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertEquals(8080, config.getPort());
     }
 
+    public void TODO_testInstantiationOfComponentsWithInstances() throws Exception {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <componentinstance key='bean1'>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello1</bar>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
+                "  </componentinstance>" +
+                "  <componentinstance key='bean2'>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello1</bar>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
+                "  </componentinstance>" +
+                "  <componentimplementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
+                "  </componentimplementation>" +
+                "</container>");
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
+    }
     
     // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() throws IOException, ParserConfigurationException, SAXException {

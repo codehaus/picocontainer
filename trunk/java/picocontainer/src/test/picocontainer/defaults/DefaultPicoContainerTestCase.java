@@ -132,7 +132,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponents().length);
 
-        Peelable myPeelableContainer = (Peelable) pico.getMultipleInheritanceProxy();
+        Peelable myPeelableContainer = (Peelable) pico.getAggregateComponentProxy();
 
         myPeelableContainer.peel();
 
@@ -155,7 +155,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
+        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -193,7 +193,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
+        Object myPeelableAndWashableContainer = pico.getAggregateComponentProxy();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -287,7 +287,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        Object proxy = pico.getMultipleInheritanceProxy();
+        Object proxy = pico.getAggregateComponentProxy();
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -302,6 +302,117 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue(peelNWash.wasWashed);
 
     }
+
+    public static interface FoodFactory {
+        Food makeFood();
+    }
+
+    public abstract static class AbstractFoodFactory extends RecordingAware implements FoodFactory {
+        public AbstractFoodFactory(Recorder recorder) {
+            super(recorder);
+        }
+    }
+
+    public static class AppleFactory extends AbstractFoodFactory  {
+        public AppleFactory(Recorder recorder) {
+            super(recorder);
+        }
+
+        public Food makeFood() {
+            return new Apple(recorder);
+        }
+    }
+
+    public static class OrangeFactory extends AbstractFoodFactory {
+        public OrangeFactory(Recorder recorder) {
+            super(recorder);
+        }
+
+        public Food makeFood() {
+            return new Orange(recorder);
+        }
+    }
+
+    public static interface Food {
+        void eat();
+    }
+
+    public abstract static class AbstractFood extends RecordingAware implements Food {
+        public AbstractFood(Recorder recorder) {
+            super(recorder);
+        }
+    }
+
+    public static class Apple extends AbstractFood {
+        public Apple(Recorder recorder) {
+            super(recorder);
+        }
+
+        public void eat() {
+            recorder.record("Apple eaten");
+        }
+    }
+
+    public static class Orange extends AbstractFood {
+        public Orange(Recorder recorder) {
+            super(recorder);
+        }
+
+        public void eat() {
+            recorder.record("Orange eaten");
+        }
+    }
+
+
+    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, WrongNumberOfConstructorsRegistrationException, PicoInitializationException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Recorder.class);
+        pico.registerComponent(AppleFactory.class);
+        pico.registerComponent(OrangeFactory.class);
+
+        pico.instantiateComponents();
+
+        // Get the proxy for AppleFactory and OrangeFactory
+        FoodFactory foodFactory = (FoodFactory) pico.getAggregateComponentProxy();
+
+        // Get the proxied Food and eat it. Should eat the orange and apple in one go.
+        Food food = foodFactory.makeFood();
+        food.eat();
+
+        // Get the recorder so we can see if the apple and orange were actually eaten
+        Recorder recorder = (Recorder) pico.getComponent(Recorder.class);
+        assertTrue( "Apple should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Apple eaten" ) );
+        assertTrue( "Orange should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Orange eaten" ) );
+    }
+
+//    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
+//
+//    }
+
+//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
+//
+//        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
+//                new MorphingHierarchicalPicoContainer(
+//                        new NullContainer(),
+//                        new NullLifecycleManager(),
+//                        new DefaultComponentFactory())
+//                .as(PeelableAndWashableContainer.class);
+//
+//        pawContainer.registerComponent(PeelableComponent.class);
+//        pawContainer.registerComponent(PeelableAndWashableComponent.class);
+//
+//        pawContainer.instantiateComponents();
+//
+//        pawContainer.wash();
+//        pawContainer.peel();
+//
+//        PeelableComponent pComp = (PeelableComponent) pawContainer.getComponent(PeelableComponent.class);
+//        PeelableAndWashableComponent peelNWash = (PeelableAndWashableComponent) pawContainer.getComponent(PeelableAndWashableComponent.class);
+//
+//        assertTrue(pComp.wasPeeled);
+//        assertTrue(peelNWash.wasWashed);
+//
+//    }
 
     public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException
     {

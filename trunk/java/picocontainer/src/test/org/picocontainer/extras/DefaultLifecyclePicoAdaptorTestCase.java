@@ -55,15 +55,15 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
             return disposing;
         }
 
-        public void start() throws Exception {
+        public void start() {
             startCalled("One");
         }
 
-        public void stop() throws Exception {
+        public void stop() {
             stopCalled("One");
         }
 
-        public void dispose() throws Exception {
+        public void dispose() {
             disposeCalled("One");
         }
 
@@ -89,15 +89,15 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
             this.one = one;
         }
 
-        public void start() throws Exception {
+        public void start() {
             one.startCalled("Two");
         }
 
-        public void stop() throws Exception {
+        public void stop() {
             one.stopCalled("Two");
         }
 
-        public void dispose() throws Exception {
+        public void dispose() {
             one.disposeCalled("Two");
         }
     }
@@ -110,15 +110,15 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
             this.one = one;
         }
 
-        public void start() throws Exception {
+        public void start() {
             one.startCalled("Three");
         }
 
-        public void stop() throws Exception {
+        public void stop() {
             one.stopCalled("Three");
         }
 
-        public void dispose() throws Exception {
+        public void dispose() {
             one.disposeCalled("Three");
         }
     }
@@ -131,15 +131,15 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
             this.one = one;
         }
 
-        public void start() throws Exception {
+        public void start() {
             one.startCalled("Four");
         }
 
-        public void stop() throws Exception {
+        public void stop() {
             one.stopCalled("Four");
         }
 
-        public void dispose() throws Exception {
+        public void dispose() {
             one.disposeCalled("Four");
         }
     }
@@ -179,7 +179,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     public void testStartStopStartStopAndDispose() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
         pico.registerComponentImplementation(One.class);
         pico.registerComponentImplementation(Two.class);
@@ -234,7 +234,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     public void testStartStartCausingBarf() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         pico.registerComponentImplementation(DependsOnTouchable.class);
@@ -256,7 +256,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testStartStopStopCausingBarf() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         pico.registerComponentImplementation(DependsOnTouchable.class);
@@ -279,7 +279,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testDisposeDisposeCausingBarf() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         pico.registerComponentImplementation(DependsOnTouchable.class);
@@ -303,7 +303,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         pico.registerComponentImplementation(DependsOnTouchable.class);
@@ -360,7 +360,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public void testStartStopOfDaemonizedThread() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         pico.registerComponentImplementation(DependsOnTouchable.class);
@@ -388,7 +388,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     public void testForgivingNatureOfLifecycleAdapter() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+        LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
 
         // Touchable is not Startable (etc). This internals should be able to handle the

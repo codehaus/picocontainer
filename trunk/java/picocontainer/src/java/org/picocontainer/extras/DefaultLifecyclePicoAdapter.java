@@ -24,7 +24,7 @@ import org.picocontainer.lifecycle.Disposable;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
+public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
 
     private Startable startableAggregatedComponent;
     private Stoppable stoppableAggregatedComponent;
@@ -33,7 +33,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
     private boolean disposed;
     private final PicoContainer picoContainer;
 
-    public DefaultLifecyclePicoAdaptor(PicoContainer picoContainer) {
+    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer) {
         this.picoContainer = picoContainer;
     }
 
@@ -72,7 +72,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
 
     }
 
-    public void start() throws Exception {
+    public void start() {
         checkDisposed();
         initializeIfNotInitialized();
         if (started) {
@@ -84,11 +84,11 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
         }
     }
 
-    public void stop() throws Exception {
+    public void stop() {
         checkDisposed();
         initializeIfNotInitialized();
         if (started == false) {
-            throw new IllegalStateException("Already stopped.");
+            throw new IllegalStateException("Already stopped (or maybe never started).");
         }
         started = false;
         if (stoppableAggregatedComponent != null) {
@@ -96,7 +96,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
         }
     }
 
-    public void dispose() throws Exception {
+    public void dispose() {
         checkDisposed();
         initializeIfNotInitialized();
         disposed = true;
@@ -107,7 +107,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
 
     private void checkDisposed() {
         if (disposed) {
-            throw new IllegalStateException("Components Disposed Of");
+            throw new IllegalStateException("Components already disposed of");
         }
     }
 

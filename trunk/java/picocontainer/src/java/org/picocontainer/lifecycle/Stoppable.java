@@ -11,5 +11,5 @@
 package org.picocontainer.lifecycle;
 
 public interface Stoppable {
-    void stop() throws Exception;
+    void stop();
 }

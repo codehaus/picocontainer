@@ -5,20 +5,38 @@
 <body>
 <h1>Inversion of Control<br>
 </h1>
-What is this all about ?<br>
-<br>
-IoC is a design pattern that is also sometimes called the Hollywood
-Patten ("Don't call us we'll call you") or the Chain of Command pattern.<br>
-<br>
-Simply put, an IoC component does not go off and get other components that
-it needs on instantiation. It instead declares them to its boss, and
-the boss supplies them.<br>
-<h2>Basics</h2>
+Inversion of Control (IoC) is an object-oriented design pattern that
+favours loose coupling between classes. Loose coupling in turn favours:<br>
+<ul>
+  <li>More reusable classes<br>
+  </li>
+  <li>Classes that are easier to test</li>
+  <li>Systems that are easier to assemble and configure</li>
+</ul>
+<h2>DIP</h2>
+Another well-known synonym for IoC is DIP (Dependency Inversion
+Principle). This is described in an excellent paper written by Robert
+C. Martin: <a
+ href="http://www.objectmentor.com/resources/articles/dip.pdf">dip.pdf</a><br>
+<h2>The Hollywood Principle<br>
+</h2>
+A third nickname for IoC is "The Hollywood
+Principle" ("Don't call us we'll call you").<br>
+<h2>Explanation</h2>
+Simply put, a class (or as we often say, a component) designed
+according to IoC does not go off and get other components that
+it needs in order to do its job. It instead declares them to its boss,
+and
+the boss supplies them. Thus the name IoC/DIP/Hollywood Principle. The
+control of the dependencies for a given class is <span
+ style="font-style: italic;">inverted</span>. It is no longer the class
+itself that establishes its own dependencies, but "something" on the
+outside.<br>
+<h2>Examples</h2>
 Without worrying about the generations of IoC that let us arrive at
 the PicoContainer design, here is the simplest possible IoC component :<br>
-<br>
-<pre>public interface Apple {</pre>
-<pre>&nbsp; // methods</pre>
+<pre>public interface Bookmaker {</pre>
+<pre>   void bet();<br></pre>
 <pre>}</pre>
 <pre><br>public interface Orange {</pre>
 <pre>&nbsp; // methods</pre>
@@ -41,8 +59,10 @@ Here are some common smells that should lead you to refactor to IoC :<br>
 <pre>&nbsp; // other methods</pre>
 <pre>}</pre>
 <br>
-The problem is that you are tied to the OrangleImpl <em>implementation</em> for provision of Orange
-<em>services</em>. Simply put, the above apple cannot be a (configurable) component. It's an
+The problem is that you are tied to the OrangleImpl <em>implementation</em>
+for provision of Orange
+<em>services</em>. Simply put, the above apple cannot be a
+(configurable) component. It's an
 application. All hard coded. Not reusable. It is going to be very
 difficult to have multiple instances in the same classloader with
 different assembly.<br>

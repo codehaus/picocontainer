@@ -11,8 +11,6 @@
 package org.picocontainer.monitors;
 
 import org.picocontainer.defaults.ComponentMonitor;
-import org.picocontainer.defaults.ComponentMonitor;
-
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;

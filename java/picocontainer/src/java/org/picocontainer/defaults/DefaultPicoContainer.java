@@ -226,21 +226,41 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return Collections.unmodifiableList(parents);
     }
 
-    public void addChild(MutablePicoContainer child) {
+    public boolean addChild(MutablePicoContainer child) {
+        boolean result = false;
         if (!children.contains(child)) {
-            children.add(child);
+            result = children.add(child);
         }
         if (!child.getParentContainers().contains(this)) {
             child.addParent(this);
         }
+        return result;
     }
 
-    public void addParent(MutablePicoContainer parent) {
+    public boolean addParent(MutablePicoContainer parent) {
+        boolean result = false;
         if (!parents.contains(parent)) {
-            parents.add(parent);
+            result = parents.add(parent);
         }
         if (!parent.getChildContainers().contains(this)) {
             parent.addChild(this);
         }
+        return result;
+    }
+
+    public boolean removeChild(MutablePicoContainer child) {
+        boolean removed = children.remove(child);
+        if (child.getParentContainers().contains(this)) {
+            child.removeParent(this);
+        }
+        return removed;
+    }
+
+    public boolean removeParent(MutablePicoContainer parent) {
+        boolean removed = parents.remove(parent);
+        if (parent.getChildContainers().contains(this)) {
+            parent.removeChild(this);
+        }
+        return removed;
     }
 }

@@ -10,7 +10,8 @@
 
 package picocontainer.aggregated;
 
-import picocontainer.AbstractContainer;
+import picocontainer.defaults.DefaultPicoContainer;
+import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInitializationException;
 
@@ -29,11 +30,12 @@ import java.util.HashSet;
  * constructor puts paid to that).
  *
  */
-public class AggregatedContainersContainer extends AbstractContainer {
+public class AggregatedContainersContainer extends DefaultPicoContainer {
 
     private final PicoContainer[] containers;
 
     public AggregatedContainersContainer(final PicoContainer[] containers) {
+        super(new DefaultComponentFactory());
         if( containers == null ) {
             throw new NullPointerException("containers can't be null");
         }

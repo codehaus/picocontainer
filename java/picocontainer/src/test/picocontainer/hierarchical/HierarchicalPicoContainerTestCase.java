@@ -86,7 +86,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testDupeImplementationsOfComponents() throws PicoInstantiationException {
+    public void testSharedImplementationOfTwoTypes() throws PicoInstantiationException {
 
         List messages = new ArrayList();
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
@@ -99,14 +99,14 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             assertEquals("Should only have one instance of Webster", 1, messages.size());
             Object dictionary = pico.getComponent(Dictionary.class);
             Object thesaurus = pico.getComponent(Thesaurus.class);
-            assertSame("The dictionary and the thesaurus should heve been the same object", dictionary, thesaurus);
+            assertSame("The dictionary and the thesaurus should have been the same object", dictionary, thesaurus);
 
         } catch (PicoRegistrationException e) {
-            fail("Should not have barfed with dupe registration");
+            fail("Should not have barfed for any reason");
         }
     }
 
-    public void testDupeTypesWithClass() throws PicoInstantiationException, PicoRegistrationException {
+    public void testDuplicateRegistration() throws PicoInstantiationException, PicoRegistrationException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);
@@ -120,7 +120,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testDupeTypesWithObject() throws PicoInstantiationException, PicoRegistrationException {
+    public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);

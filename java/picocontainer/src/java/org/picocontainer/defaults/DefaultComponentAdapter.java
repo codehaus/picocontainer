@@ -104,6 +104,10 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                     break;
                 } else {
                     // we can't depend on ourself
+                    if(adapter.equals(this)) {
+                        failedDependency = true;
+                        break;
+                    }
                     if(getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
                         break;

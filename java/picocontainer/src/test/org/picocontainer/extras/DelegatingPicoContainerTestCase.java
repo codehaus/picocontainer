@@ -19,46 +19,38 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 
-public class DecoratingPicoContainerTestCase extends TestCase {
-    private AbstractPicoContainer london;
-    private AbstractPicoContainer bangalore;
-    private DecoratingPicoContainer globe;
+public class DelegatingPicoContainerTestCase extends TestCase {
+    private MutablePicoContainer parent;
+    private DelegatingPicoContainer child;
 
     public void setUp() throws PicoRegistrationException, PicoInitializationException {
-        london = new DefaultPicoContainer();
-        london.registerComponentImplementation(DependsOnTouchable.class);
-
-        bangalore = new DefaultPicoContainer();
-        bangalore.registerComponentImplementation(SimpleTouchable.class);
-
-        globe = new DecoratingPicoContainer();
+        parent = new DefaultPicoContainer();
+        child = new DelegatingPicoContainer(parent);
     }
 
-    public void testSuccessfulSimpleDelegation() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        globe.addDelegate(bangalore);
-        assertNotNull(globe.getComponentInstance(SimpleTouchable.class));
+    public void testChildGetsFromParent() {
+        parent.registerComponentImplementation(SimpleTouchable.class);
+        child.registerComponentImplementation(DependsOnTouchable.class);
+        DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) child.getComponentInstance(DependsOnTouchable.class);
+
+        assertNotNull(dependsOnTouchable);
     }
 
-    public void testFailingSimpleDelegation() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        globe.addDelegate(london);
+    public void testParentDoesntGetFromChild() {
+        child.registerComponentImplementation(SimpleTouchable.class);
+        parent.registerComponentImplementation(DependsOnTouchable.class);
         try {
-            globe.getComponentInstance(DependsOnTouchable.class);
+            DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) parent.getComponentInstance(DependsOnTouchable.class);
             fail();
         } catch (NoSatisfiableConstructorsException e) {
         }
     }
 
-    public void testMultiDelegation() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        globe.addDelegate(london);
-        globe.addDelegate(bangalore);
-        assertNotNull(globe.getComponentInstance(DependsOnTouchable.class));
-    }
-
     public void testMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        globe.addDelegate(london);
-        globe.addDelegate(bangalore);
+        parent.registerComponentImplementation(SimpleTouchable.class);
+        child.registerComponentImplementation(DependsOnTouchable.class);
 
-        Object multicaster = globe.getComponentMulticaster();
+        Object multicaster = child.getComponentMulticaster();
         assertTrue(multicaster instanceof Serializable);
         assertTrue(multicaster instanceof Touchable);
     }

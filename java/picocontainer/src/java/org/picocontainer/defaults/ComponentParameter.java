@@ -8,6 +8,8 @@ import org.picocontainer.ComponentAdapter;
 import java.io.Serializable;
 
 /**
+ * A parameter that resolves to a different component.
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$

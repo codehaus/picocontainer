@@ -14,9 +14,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 
-import java.util.List;
-
 /**
+ * A parameter that resolves to a constant value.
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -28,7 +28,7 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistries) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ComponentAdapter resolveAdapter(MutablePicoContainer picoContainer) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new InstanceComponentAdapter(value, value);
     }
 }

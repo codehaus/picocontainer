@@ -13,10 +13,14 @@ package org.picoextras.script.xml;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
+import org.picoextras.integrationkit.ContainerBuilder;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
-import org.picoextras.integrationkit.PicoAssemblyException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,22 +35,25 @@ import java.util.List;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class XMLContainerAssembler implements ContainerAssembler {
+public class XMLContainerBuilder implements ContainerBuilder {
     private Element rootElement;
 
-    public XMLContainerAssembler(Element rootElement) {
+    public XMLContainerBuilder(Element rootElement) {
         this.rootElement = rootElement;
     }
 
-    public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
-        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(getClass().getClassLoader(),container);
+    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
+
         try {
+            MutablePicoContainer container = createContainer();
+            ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(getClass().getClassLoader(), container);
+            containerRef.set(container);
             registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
         } catch (ClassNotFoundException e) {
             throw new PicoAssemblyException(e);
@@ -54,7 +61,21 @@ public class XMLContainerAssembler implements ContainerAssembler {
             throw new PicoAssemblyException(e);
         } catch (SAXException e) {
             throw new PicoAssemblyException(e);
+        } catch (IllegalAccessException e) {
+            throw new PicoAssemblyException(e);
+        } catch (InstantiationException e) {
+            throw new PicoAssemblyException(e);
         }
+    }
+
+    private MutablePicoContainer createContainer() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String cafName = rootElement.getAttribute("componentadapterfactory");
+        if ("".equals(cafName) || cafName == null) {
+            cafName = DefaultComponentAdapterFactory.class.getName();
+        }
+        Class cfaClass = getClass().getClassLoader().loadClass(cafName);
+        ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
+        return new DefaultPicoContainer(componentAdapterFactory);
     }
 
     private void registerComponentsAndChildContainers(ReflectionContainerAdapter reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
@@ -143,7 +164,7 @@ public class XMLContainerAssembler implements ContainerAssembler {
         }
         String[] parameterTypes = null;
         String[] parameterValues = null;
-        if(!parameterTypesList.isEmpty()) {
+        if (!parameterTypesList.isEmpty()) {
             parameterTypes = (String[]) parameterTypesList.toArray(new String[parameterTypesList.size()]);
             parameterValues = (String[]) parameterValuesList.toArray(new String[parameterValuesList.size()]);
         }
@@ -151,13 +172,13 @@ public class XMLContainerAssembler implements ContainerAssembler {
         String key = componentElement.getAttribute("key");
         ComponentAdapter componentAdapter;
         if (key == null || key.equals("")) {
-            if(parameterTypes == null) {
+            if (parameterTypes == null) {
                 componentAdapter = reflectionFrontEnd.registerComponentImplementation(className);
             } else {
                 componentAdapter = reflectionFrontEnd.registerComponentImplementation(className, parameterTypes, parameterValues);
             }
         } else {
-            if(parameterTypes == null) {
+            if (parameterTypes == null) {
                 componentAdapter = reflectionFrontEnd.registerComponentImplementation(key, className);
             } else {
                 componentAdapter = reflectionFrontEnd.registerComponentImplementation(key, className, parameterTypes, parameterValues);
@@ -201,5 +222,10 @@ public class XMLContainerAssembler implements ContainerAssembler {
         } catch (final SAXException e) {
             throw new PicoAssemblyException(e);
         }
+    }
+
+
+    public void killContainer(ObjectReference containerRef) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

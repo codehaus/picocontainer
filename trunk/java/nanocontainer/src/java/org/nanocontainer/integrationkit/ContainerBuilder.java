@@ -23,9 +23,9 @@ public interface ContainerBuilder {
      * Create, assemble, init and start a new PicoContainer and store it
      * at a given reference.
      *
-     * @param containerRef        Where to store the new container.
-     * @param parentContainerRef  reference to a container that may be used as a parent to the new container (may be null).
-     * @param assemblyScope       Argument to be passed to ContainerAssembler.
+     * @param containerRef       Where to store the new container.
+     * @param parentContainerRef reference to a container that may be used as a parent to the new container (may be null).
+     * @param assemblyScope      Argument to be passed to ContainerAssembler.
      */
     void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope);
 
@@ -33,7 +33,8 @@ public interface ContainerBuilder {
      * Locate a container at the given reference so it can be stopped,
      * destroyed and removed.
      *
-     * @param containerRef        Where the container is stored.
+     * @param containerRef Where the container is stored.
+     * @deprecated Not needed anymore??
      */
     void killContainer(ObjectReference containerRef);
 

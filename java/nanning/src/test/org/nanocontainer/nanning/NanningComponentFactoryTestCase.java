@@ -44,19 +44,19 @@ public class NanningComponentFactoryTestCase extends TestCase {
     private StringBuffer log = new StringBuffer();
 
     public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
-        NanningComponentAdapter componentFactory =
-                new NanningComponentAdapter(new AspectSystem(), new DefaultComponentAdapter(Wilma.class, WilmaImpl.class));
-        Object component = componentFactory.getComponentInstance(new DefaultPicoContainer());
+        NanningComponentAdapter componentAdapter =
+                new NanningComponentAdapter(new AspectSystem(), new ConstructorComponentAdapter(Wilma.class, WilmaImpl.class));
+        Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
     }
 
     public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException, PicoRegistrationException {
-        NanningComponentAdapter componentFactory = new NanningComponentAdapter(new AspectSystem(),
-                new DefaultComponentAdapter(FredImpl.class, FredImpl.class));
+        NanningComponentAdapter componentAdapter = new NanningComponentAdapter(new AspectSystem(),
+                new ConstructorComponentAdapter(FredImpl.class, FredImpl.class));
         DefaultPicoContainer registry = new DefaultPicoContainer();
         registry.registerComponent(new InstanceComponentAdapter(Wilma.class, new WilmaImpl()));
-        Object component = componentFactory.getComponentInstance(registry);
+        Object component = componentAdapter.getComponentInstance(registry);
         assertFalse(Aspects.isAspectObject(component));
     }
 

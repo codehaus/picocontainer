@@ -5,7 +5,7 @@ import java.io.File
 
 hiddenJarPath = new File(parent.getComponentInstance("workingDir"), "/MCA-INF/hidden/hidden.jar").getCanonicalPath()
 
-pico = new NanoContainerBuilder(new JmxDecorationDelegate()).container(parent:parent) {
+pico = builder.container(parent:parent) {
 
 	classpathelement(path:hiddenJarPath);
 	// the two keys should already be in the classpath (classloader tree)

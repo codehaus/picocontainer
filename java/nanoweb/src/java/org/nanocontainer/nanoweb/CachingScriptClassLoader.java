@@ -23,7 +23,7 @@ public class CachingScriptClassLoader {
     private final Map scriptClasses = Collections.synchronizedMap(new HashMap());
     private static final Long NEVER = new Long(Long.MIN_VALUE);
 
-    public Class getClass(URL scriptURL) throws SyntaxException, IOException {
+    public Class getClass(URL scriptURL) throws IOException, ScriptException {
         // Find the timestamp of the scriptURL
         String urlAsString = scriptURL.toExternalForm();
         URLConnection urlConnection = scriptURL.openConnection();
@@ -42,7 +42,7 @@ public class CachingScriptClassLoader {
         return scriptClass;
     }
 
-    private Class loadAndCache(URL scriptURL, URLConnection urlConnection) throws SyntaxException, IOException {
+    private Class loadAndCache(URL scriptURL, URLConnection urlConnection) throws IOException, ScriptException {
         Class scriptClass = loadGroovyClass(urlConnection, scriptURL);
         String urlAsString = scriptURL.toExternalForm();
         scriptClasses.put(urlAsString, scriptClass);
@@ -53,9 +53,13 @@ public class CachingScriptClassLoader {
 
     // May be factored out to a separate strategy later if we decide to support
     // other languages than Groovy
-    private Class loadGroovyClass(URLConnection urlConnection, URL scriptURL) throws SyntaxException, IOException {
+    private Class loadGroovyClass(URLConnection urlConnection, URL scriptURL) throws IOException, ScriptException {
         GroovyClassLoader loader = new GroovyClassLoader(getClass().getClassLoader());
-        Class scriptClass = loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
-        return scriptClass;
+        try {
+            Class scriptClass = loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
+            return scriptClass;
+        } catch (SyntaxException e) {
+            throw new ScriptException(scriptURL, e);
+        }
     }
 }

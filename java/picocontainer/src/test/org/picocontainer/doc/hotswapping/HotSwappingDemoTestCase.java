@@ -1,8 +1,8 @@
 package org.picocontainer.doc.hotswapping;
 
 import junit.framework.TestCase;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.Swappable;
@@ -14,7 +14,7 @@ import org.picocontainer.defaults.Swappable;
 public class HotSwappingDemoTestCase extends TestCase {
     public void testDemo() {
 // START SNIPPET: circular
-ComponentAdapterFactory caf = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
+ComponentAdapterFactory caf = new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory());
 DefaultPicoContainer pico = new DefaultPicoContainer(caf);
 // Register two classes with mutual dependencies on each other. (See ImplementationHidingComponentAdapterFactoryTestCase)
 pico.registerComponentImplementation(Wife.class);

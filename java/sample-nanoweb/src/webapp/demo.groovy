@@ -8,17 +8,9 @@ package org.nanocontainer.sample.nanoweb;
  */
 public class DemoAction {
 
-    private String magic = "This is not correct";
+    property magic = "This is not correct";
 
-    public void setMagic(String magic) {
-        this.magic = magic;
-    }
-
-    public String getMagic() {
-        return magic;
-    }
-
-    public String execute() {
+    public execute() {
         if (magic.equals("NanoWeb")) {
             return "input";
         } else {

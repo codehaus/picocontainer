@@ -79,7 +79,16 @@
             <ant:copy file="${maven.multiproject.basedir}/navigation.template" toFile="${maven.gen.docs}/navigation.xml" filtering="true" />
         </j:if>
     </goal>
+    
+    <goal name="nano:site-directory">
+        <util:available file="${basedir}/xdocs/navigation.xml">
+            ${pom.setSiteDirectory("/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}")}
+        </util:available>
+    </goal>
 
+    <preGoal name="site">
+        <attainGoal name="nano:site-directory" />
+    </preGoal>
     <postGoal name="site">
         <attainGoal name="nano:replace-index" />
     </postGoal>

@@ -2,9 +2,10 @@
 <project>
 
  <!--
-  ! This POM has NanoContainer settings and not PicoContainer.
-  ! This is because the PicoContainer sub project is the only
-  ! one with special settings (which are overridden) and that
+  ! This POM has NanoContainer settings and neither PicoContainer
+  ! nor MicroContainer.
+  ! This is because these two sub project are the only
+  ! ones with special settings (which are overridden) and that
   ! way we avoid a lot of duplication in the various NanoContainer
   ! sub projects.
   !-->
@@ -30,7 +31,7 @@
     <issueTrackingUrl>http://jira.codehaus.org/browse/NANO</issueTrackingUrl>
 
     <siteAddress>beaver.codehaus.org</siteAddress>
-    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/${maven.multiproject.aggregateDir}${pom.artifactId}</siteDirectory>
 
     <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>

@@ -42,10 +42,14 @@ import java.util.List;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder {
+
     private final Element rootElement;
+
+    private final static String DEFAULT_INSTANCE_FACTORY = BeanXMLPseudoComponentFactory.class.getName();
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
@@ -62,9 +66,6 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private static final String EMPTY = "";
     
-    //TODO some tests for this that use a classloader that is retrieved at testtime. 
-    // i.e. not a programatic consequence of this.getClass().getClassLoader()
-
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
         InputSource inputSource = new InputSource(script);
@@ -129,7 +130,6 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     registerPseudoComponent(parentContainer, (Element) child);
                     count++;
                 } else if (name.equals(COMPONENT)) {
-
                     registerComponentImplementation(parentContainer, (Element) child);
                     count++;
                 } else if (name.equals(CONTAINER)) {
@@ -220,17 +220,17 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         return null;
     }
 
-    private void registerPseudoComponent(ReflectionContainerAdapter pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
+    private void registerPseudoComponent(ReflectionContainerAdapter reflectionComponentAdapter, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
         String factoryClass = componentElement.getAttribute(FACTORY);
-
+        String key = componentElement.getAttribute(KEY);
+        
         if (factoryClass == null || factoryClass.equals(EMPTY)) {
-            throw new java.lang.IllegalArgumentException("factory attribute should be specified for pseudocomponent element");
-            // unless we provide a default.
+            factoryClass = DEFAULT_INSTANCE_FACTORY;
         }
 
-        ReflectionContainerAdapter tempContainer = new DefaultReflectionContainerAdapter();
-        tempContainer.registerComponentImplementation(XMLPseudoComponentFactory.class.getName(), factoryClass);
-        XMLPseudoComponentFactory factory = (XMLPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
+        ReflectionContainerAdapter tempContainerAdapter = new DefaultReflectionContainerAdapter();
+        tempContainerAdapter.registerComponentImplementation(XMLPseudoComponentFactory.class.getName(), factoryClass);
+        XMLPseudoComponentFactory factory = (XMLPseudoComponentFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);
 
         NodeList nl = componentElement.getChildNodes();
         Element childElement = null;
@@ -241,7 +241,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
         }
 
-        Object pseudoComp = factory.makeInstance(childElement);
-        pico.getPicoContainer().registerComponentInstance(pseudoComp);
+        Object instance = factory.makeInstance(childElement);
+        if ( key == null || key.equals(EMPTY) ){ 
+            reflectionComponentAdapter.getPicoContainer().registerComponentInstance(instance);
+        } else {
+            reflectionComponentAdapter.getPicoContainer().registerComponentInstance(key, instance);            
+        }
     }
 }

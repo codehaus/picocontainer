@@ -31,10 +31,14 @@ import java.io.StringReader;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
+    //TODO some tests for XMLContainerBuilder that use a classloader that is retrieved at testtime. 
+    // i.e. not a programatic consequence of this.getClass().getClassLoader()
+    
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -129,7 +133,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         }
     }
 
-    public void testPseudoXMLPseudoComponentFactoryCanBeUsed() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testPseudoComponentWithFactoryCanBeUsed() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
@@ -138,27 +142,47 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-        assertNotNull(pico.getComponentInstances().get(0));
-        assertTrue(pico.getComponentInstances().get(0) instanceof String);
-        assertEquals("Hello", pico.getComponentInstances().get(0).toString());
+        Object instance = pico.getComponentInstances().get(0);
+        assertNotNull(instance);
+        assertTrue(instance instanceof String);
+        assertEquals("Hello", instance.toString());
     }
 
-    public void TODO_testPseudoXMLPseudoComponentFactoryCanBeUsedWithKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testPseudoComponentWithDefaultFactory() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory' key='foo'>" +
-                "    <config-or-whatever>" +
-                "      <see-XStreamXMLPseudoComponentFactoryTestCase-for-one/>" +
-                "    </config-or-whatever>" +
+                "  <pseudocomponent>" +
+                "	<org.nanocontainer.script.xml.TestPseudoComp>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello</bar>" +
+                "	</org.nanocontainer.script.xml.TestPseudoComp>" +
                 "  </pseudocomponent>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-        assertNotNull(pico.getComponentInstances().get(0));
-        assertTrue(pico.getComponentInstance("foo") instanceof String);
-        assertEquals("Hello", pico.getComponentInstance("foo").toString());
+        Object instance = pico.getComponentInstances().get(0);
+        assertNotNull(instance);
+        assertTrue(instance instanceof TestPseudoComp);
+        assertEquals(10, ((TestPseudoComp)instance).getFoo());
+        assertEquals("hello", ((TestPseudoComp)instance).getBar());
     }
 
+    public void testPseudoComponentWithFactoryAndKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'" +
+                "						key='aKey'>" +
+                "    <config-or-whatever/>" +
+                "  </pseudocomponent>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        Object instance = pico.getComponentInstance("aKey");
+        assertNotNull(instance);
+        assertTrue(instance instanceof String);
+        assertEquals("Hello", instance.toString());
+    }
+    
     public static class TestFactory implements XMLPseudoComponentFactory {
         public Object makeInstance(Element elem) throws ClassNotFoundException {
             return "Hello";

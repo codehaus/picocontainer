@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 /**
  * This is the core interface used for registration of components with a container. It is possible to register {@link
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
@@ -143,5 +145,6 @@ public interface MutablePicoContainer extends PicoContainer {
 
     MutablePicoContainer makeChildContainer();
     void addChildContainer(MutablePicoContainer child);
+    void removeChildContainer(MutablePicoContainer child);
 
 }

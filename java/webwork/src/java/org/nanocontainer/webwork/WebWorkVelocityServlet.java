@@ -43,7 +43,10 @@ import webwork.view.velocity.WebWorkUtil;
 public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyConstants {
 	
     static final String WEBWORK_UTIL = "webwork";
-	
+	// those have to be removed once dependency problem is solved.
+	// will bomb anyway. 
+	static final String REQUEST = "req";
+	static final String RESPONSE = "res";
 	
     protected Context createContext(javax.servlet.http.HttpServletRequest request,
                                    javax.servlet.http.HttpServletResponse response)

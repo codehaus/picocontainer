@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.main;
+package org.nanocontainer;
 
 import org.nanocontainer.NanoContainer;
 import org.realityforge.cli.CLArgsParser;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-public class NanoContainerMain {
+public class Standalone {
 
     private static final int HELP_OPT = 'h';
     private static final int VERSION_OPT = 'v';
@@ -100,7 +100,7 @@ public class NanoContainerMain {
 
     AH
     */
-    private static void buildAndStartContainer(String compositionFileName) throws Exception, InstantiationException {
+    private static void buildAndStartContainer(String compositionFileName) throws Exception {
 
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 

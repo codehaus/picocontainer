@@ -25,7 +25,7 @@ import org.picocontainer.testmodel.Webster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OldDefaultPicoContainerTestCase extends TestCase {
+public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
     public void testGetComponentSpecification() throws PicoRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {

@@ -46,7 +46,6 @@ public class ClassLoaderFactoryTestCase extends TestCase {
 		Class clazz = classLoader.loadClass(className);
 		assertEquals(className, clazz.getName());
 
-		// todo this will need to be updated if the "todo" in HiddenPromotedClassLoader is implemented
-        assertTrue(clazz.getClassLoader() instanceof HiddenPromotedClassLoader);
+		assertNotSame(classLoader, clazz.getClassLoader());
 	}
 }

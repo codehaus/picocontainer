@@ -15,6 +15,7 @@ import org.microcontainer.McaDeployer;
 import java.io.File;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLClassLoader;
 
 /**
  * @author Mike Ward
@@ -24,19 +25,19 @@ public class ClassLoaderFactory {
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
 	protected McaDeployer mcaDeployer = null;
+	private ClassLoaderDelegate classLoaderDelegate; // promoted classloaders
 
 	public ClassLoaderFactory(McaDeployer mcaDeployer) {
 		this.mcaDeployer = mcaDeployer;
+		this.classLoaderDelegate = new ClassLoaderDelegate(this.getClass().getClassLoader());
 	}
 
 	public ClassLoader build(String contextName) {
-		ClassLoader classLoader = this.getClass().getClassLoader();
 		URL[] urls = getURLs(contextName, PROMOTED_PATH);
+		ClassLoader hidden = new URLClassLoader(urls, this.getClass().getClassLoader());
+        classLoaderDelegate.addClassLoader(contextName, hidden);
 
-        HiddenPromotedClassLoader hiddenPromotedClassLoader = new HiddenPromotedClassLoader(urls, classLoader);
-		ClassLoader promotedClassLoader = new PromotedClassLoader(hiddenPromotedClassLoader, classLoader);
-
-		return new StandardMicroClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
+		return new StandardMicroClassLoader(getStandardApiURLs(contextName), classLoaderDelegate);
 	}
 
 	protected URL[] getStandardApiURLs(String context) {

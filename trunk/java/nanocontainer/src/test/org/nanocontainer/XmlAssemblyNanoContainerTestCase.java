@@ -121,10 +121,10 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
                         "    <pseudocomponent factory='org.nanocontainer.xml.XStreamXmlPseudoComponentFactory'>" +
-                        "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "       <org.nanocontainer.testmodel.WebServerConfigStub>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +
-                        "       </org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "       </org.nanocontainer.testmodel.WebServerConfigStub>" +
                         "    </pseudocomponent>" +
                         "    <component typekey='org.nanocontainer.testmodel.WebServer' " +
                         "               impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
@@ -136,13 +136,12 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertEquals(4321,wsc.getPort());
     }
 
-    // This one next
-    public void donot_testInstantiateWithBeanComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithBeanComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = null;
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <pseudocomponent factory='org.nanocontainer.bean.BeanXmlPseudoComponentFactory'>" +
+                        "    <pseudocomponent factory='org.nanocontainer.xml.BeanXmlPseudoComponentFactory'>" +
                         "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
                         "         <host>foobar.com</host> " +
                         "         <port>4321</port> " +

@@ -44,7 +44,6 @@
   -->
   <preGoal name="test:test">
     <delete file="${maven.build.dir}/testfailure"/>
-<echo>AAAAAAAA ${maven.test.failure.ignore}</echo>
   </preGoal>
 
   <!--

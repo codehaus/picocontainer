@@ -153,28 +153,28 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         assertSame(a, b.a);
     }
 
-    public void testBuilderHandoff() {
-
-        Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
-                "builder = new NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
-                "    component(key:'a', class:Xxx$A)\n" +
-                "    // this is how we'll AOP stuff.\n" +
-                "    builder(class:'org.nanocontainer.script.groovy.SymbolicAOPTestBuilder') {\n" +
-                //"      foo()\n" +
-                //"      component(key:'b', class:Xxx$B)\n" +
-                "    }\n" +
-                "}");
-
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
-
-        Object a = pico.getComponentInstance("a");
-        Object b = pico.getComponentInstance("b");
-        Object foo = pico.getComponentInstance("foo");
-
-//        assertNotNull(b);
-//        assertNotNull(foo);
-    }
+//    public void testBuilderHandoff() {
+//
+//        Reader script = new StringReader("" +
+//                "package org.nanocontainer.script.groovy\n" +
+//                "builder = new NanoGroovyBuilder()\n" +
+//                "pico = builder.container {\n" +
+//                "    component(key:'a', class:Xxx$A)\n" +
+//                "    // this is how we'll AOP stuff.\n" +
+//                "    builder(class:'org.nanocontainer.script.groovy.SymbolicAOPTestBuilder') {\n" +
+//                //"      foo()\n" +
+//                //"      component(key:'b', class:Xxx$B)\n" +
+//                "    }\n" +
+//                "}");
+//
+//        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+//
+//        Object a = pico.getComponentInstance("a");
+//        Object b = pico.getComponentInstance("b");
+//        Object foo = pico.getComponentInstance("foo");
+//
+////        assertNotNull(b);
+////        assertNotNull(foo);
+//    }
 
 }

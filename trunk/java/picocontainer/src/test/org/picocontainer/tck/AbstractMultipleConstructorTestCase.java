@@ -11,8 +11,11 @@ package org.picocontainer.tck;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 
 /**
@@ -44,6 +47,18 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 
         public Multi(Three three, One one) {
             message = "three one";
+        }
+
+        public Multi(One one, String string) {
+            message = "one string";
+        }
+
+        public Multi(One one, int i) {
+            message = "one int";
+        }
+        
+        public Multi() {
+            message = "none";
         }
     }
 
@@ -98,5 +113,39 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
             assertEquals(2, e.getConstructors().size());
             assertEquals(Multi.class, e.getForImplementationClass());
         }
+    }
+
+    public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation("MultiOneTwo", Multi.class, new Parameter[] {
+                new ComponentParameter(One.class),
+                new ComponentParameter("Two"),
+        });
+        pico.registerComponentImplementation("MultiTwoOne", Multi.class, new Parameter[] {
+                new ComponentParameter("Two"),
+                new ComponentParameter(One.class),
+        });
+        pico.registerComponentImplementation("MultiOneString", Multi.class, new Parameter[] {
+                new ComponentParameter(One.class),
+                new ConstantParameter(""),
+        });
+        pico.registerComponentImplementation("MultiOneInt", Multi.class, new Parameter[] {
+                new ComponentParameter(One.class),
+                new ConstantParameter(new Integer(5)),
+        });
+        pico.registerComponentImplementation("MultiNone", Multi.class, new Parameter[] { });
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation("Two", Two.class);
+
+        Multi multiOneTwo = (Multi) pico.getComponentInstance("MultiOneTwo");
+        assertEquals("one two", multiOneTwo.message);
+        Multi multiTwoOne = (Multi) pico.getComponentInstance("MultiTwoOne");
+        assertEquals("two one", multiTwoOne.message);
+        Multi multiOneString = (Multi) pico.getComponentInstance("MultiOneString");
+        assertEquals("one string", multiOneString.message);
+        Multi multiOneInt = (Multi) pico.getComponentInstance("MultiOneInt");
+        assertEquals("one int", multiOneInt.message);
+        Multi multiNone = (Multi) pico.getComponentInstance("MultiNone");
+        assertEquals("none", multiNone.message);
     }
 }

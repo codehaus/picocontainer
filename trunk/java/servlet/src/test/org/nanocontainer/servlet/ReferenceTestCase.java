@@ -10,8 +10,8 @@
 package org.nanocontainer.servlet;
 
 import junit.framework.TestCase;
-import org.jmock.C;
 import org.jmock.Mock;
+import org.jmock.C;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
@@ -54,7 +54,7 @@ public class ReferenceTestCase extends TestCase {
     private Mock createMock(final Class clazz) {
         Mock mock = new Mock(clazz);
         mock.expect("setAttribute", C.eq(key, value));
-        mock.expectAndReturn("getAttribute", C.eq(key), value);
+        mock.expectAndReturn("getAttribute", C.args(C.eq(key)), value);
         return mock;
     }
 

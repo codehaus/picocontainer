@@ -1,4 +1,4 @@
-<project>
+<project default="binary:install">
     <goal name="binary:install" prereqs="jar:install"/>
 
     <postGoal name="test:compile">

@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.script.jython;
 
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.python.util.PythonInterpreter;
@@ -29,7 +29,7 @@ import java.io.Reader;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class JythonContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+public class JythonContainerBuilder extends ScriptedContainerBuilder {
     public JythonContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }

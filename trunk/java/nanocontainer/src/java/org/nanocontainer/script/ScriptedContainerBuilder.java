@@ -5,12 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
  *****************************************************************************/
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.script;
 
 import org.nanocontainer.integrationkit.ComposingLifecycleContainerBuilder;
@@ -22,20 +17,24 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScriptedComposingLifecycleContainerBuilder extends ComposingLifecycleContainerBuilder {
+/**
+ * @author Aslak Helles&oslash;y
+ * @version $Revision$
+ */
+public class ScriptedContainerBuilder extends ComposingLifecycleContainerBuilder {
     private static final Map EXTENSION_TO_BUILDER_CLASS_NAME_MAP = new HashMap();
 
     static {
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("groovy", "org.nanocontainer.script.groovy.GroovyContainerBuilder");
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("py", "org.nanocontainer.script.jython.JythonContainerBuilder");
-        ScriptedComposingLifecycleContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
+        ScriptedContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("groovy", "org.nanocontainer.script.groovy.GroovyContainerBuilder");
+        ScriptedContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
+        ScriptedContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("py", "org.nanocontainer.script.jython.JythonContainerBuilder");
+        ScriptedContainerBuilder.EXTENSION_TO_BUILDER_CLASS_NAME_MAP.put("xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
     }
 
     protected final Reader script;
     protected final ClassLoader classLoader;
 
-    public ScriptedComposingLifecycleContainerBuilder(Reader script, ClassLoader classLoader) {
+    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
         this.script = script;
         this.classLoader = classLoader;
     }
@@ -45,7 +44,7 @@ public class ScriptedComposingLifecycleContainerBuilder extends ComposingLifecyc
         if(containerBuilderClassName == null) {
             throw new IllegalArgumentException("Unknown extension: '" + extension + "' (There should be no '.')");
         }
-        return ScriptedComposingLifecycleContainerBuilder.class.getClassLoader().loadClass(containerBuilderClassName);
+        return ScriptedContainerBuilder.class.getClassLoader().loadClass(containerBuilderClassName);
     }
 
     public static ContainerBuilder createBuilder(String extension, Reader scriptReader, ClassLoader applicationClassLoader) throws ClassNotFoundException {

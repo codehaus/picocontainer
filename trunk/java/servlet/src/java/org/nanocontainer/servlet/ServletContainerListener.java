@@ -12,7 +12,7 @@ import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
@@ -69,7 +69,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             if(initParameter.startsWith("nanocontainer")) {
                 String extension = initParameter.substring(initParameter.lastIndexOf('.') + 1);
                 String script = context.getInitParameter(initParameter);
-                return ScriptedComposingLifecycleContainerBuilder.createBuilder(extension, new StringReader(script), Thread.currentThread().getContextClassLoader());
+                return ScriptedContainerBuilder.createBuilder(extension, new StringReader(script), Thread.currentThread().getContextClassLoader());
             }
             if(initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);

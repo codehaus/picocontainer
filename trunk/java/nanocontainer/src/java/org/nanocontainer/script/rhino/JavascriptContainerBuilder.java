@@ -18,7 +18,7 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -34,7 +34,7 @@ import java.io.Reader;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }

@@ -10,7 +10,7 @@
 
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -45,7 +45,7 @@ import java.util.List;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+public class XMLContainerBuilder extends ScriptedContainerBuilder {
     private final Element rootElement;
 
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {

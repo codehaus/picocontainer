@@ -11,6 +11,7 @@ package org.nanocontainer.integrationkit;
 
 import junit.framework.TestCase;
 import org.jmock.Mock;
+import org.jmock.C;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -25,8 +26,8 @@ import org.picocontainer.Startable;
 public class LifecycleContainerBuilderTestCase extends TestCase {
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
         final Mock childStartable = new Mock(Startable.class);
-        childStartable.expect("start");
-        childStartable.expect("stop");
+        childStartable.expect("start", C.args());
+        childStartable.expect("stop", C.args());
 
         ContainerComposer containerAssembler = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {

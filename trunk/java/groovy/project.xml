@@ -5,7 +5,7 @@
     <groupId>nanocontainer</groupId>
     <id>nanocontainer-groovy</id>
     <name>nanocontainer-groovy</name>
-    <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
 
 
     <dependencies>
@@ -18,18 +18,18 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
+            <version>1.0-beta-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
+            <version>1.0-beta-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-2</version>
+            <version>1.0-beta-3</version>
         </dependency>
 
         <dependency>
@@ -37,19 +37,6 @@
             <version>1.3.4</version>
         </dependency>
 
-        <!-- temp hack - won't need this soon -->
-        <dependency>
-            <id>asm+util</id>
-            <version>1.3.4</version>
-            <url>http://asm.objectweb.org/</url>
-        </dependency>
-
-        <!--
-        <dependency>
-          <id>log4j</id>
-          <version>1.2.8</version>
-        </dependency>
-      -->
     </dependencies>
 
 </project>

@@ -10,11 +10,11 @@
 package org.nanocontainer.servlet;
 
 import junit.framework.TestCase;
-import org.jmock.C;
-import org.jmock.Mock;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.script.jython.JythonContainerBuilder;
+import org.jmock.Mock;
+import org.jmock.C;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -40,7 +40,7 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
         Mock servletContextMock = new Mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add("nanocontainer.py");
-        servletContextMock.expectAndReturn("getInitParameterNames", initParams.elements());
+        servletContextMock.expectAndReturn("getInitParameterNames", C.args(), initParams.elements());
         servletContextMock.expectAndReturn("getInitParameter", C.args(C.eq("nanocontainer.py")), pythonScript);
         servletContextMock.expect("setAttribute", C.args(C.eq(BUILDER), C.isA(JythonContainerBuilder.class)));
         servletContextMock.expect("setAttribute", C.args(C.eq(APPLICATION_CONTAINER), C.isA(PicoContainer.class)));
@@ -54,7 +54,7 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
 
         Mock httpSessionMock = new Mock(HttpSession.class);
         Mock servletContextMock = new Mock(ServletContext.class);
-        httpSessionMock.expectAndReturn("getServletContext", servletContextMock.proxy());
+        httpSessionMock.expectAndReturn("getServletContext", C.args(), servletContextMock.proxy());
         httpSessionMock.expect("setAttribute", C.args(C.eq(ServletContainerListener.KILLER_HELPER), C.isA(HttpSessionBindingListener.class)));
         servletContextMock.expectAndReturn("getAttribute", C.args(C.eq(APPLICATION_CONTAINER)), new DefaultPicoContainer());
         servletContextMock.expectAndReturn("getAttribute", C.args(C.eq(BUILDER)), new JythonContainerBuilder(new StringReader(pythonScript), getClass().getClassLoader()));

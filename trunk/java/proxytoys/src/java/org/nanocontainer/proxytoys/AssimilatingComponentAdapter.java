@@ -129,7 +129,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
      */
     public Object getComponentKey() {
         final Object key = super.getComponentKey();
-        if (key instanceof Class && (!isCompatible || type.isAssignableFrom((Class) key))) {
+        if (key instanceof Class && (!isCompatible || !type.isAssignableFrom((Class) key))) {
             return type;
         }
         return key;

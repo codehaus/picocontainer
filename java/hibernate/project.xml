@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-hibernate</id>
+    <name>nanocontainer-hibernatek</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
+    <dependencies>
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-RC-1-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+        
+        <!--
+            hibernate related dependencies
+        -->
+        <dependency>
+          <id>hibernate</id>
+          <version>2.1.2</version>
+        </dependency>
+        <dependency>
+          <id>dom4j</id>
+          <version>1.4-dev-8</version>
+        </dependency>
+
+        <!--
+            those below are not required, as long as we do not have any 
+            unit tests
+        -->
+        <!--
+        <dependency>
+          <id>ehcache</id>
+          <version>0.6</version>
+        </dependency>
+        <dependency>
+          <id>cglib</id>
+          <version>2.0-rc2-hibernate</version>
+        </dependency>
+        <dependency>
+          <id>commons-lang</id>
+          <version>1.0.1</version>
+        </dependency>
+        <dependency>
+          <id>odmg</id>
+          <version>3.0</version>
+        </dependency>
+        <dependency>
+          <id>jta</id>
+          <version>1.0.1B</version>
+        </dependency>
+        <dependency>
+          <id>commons-collections</id>
+          <version>2.1</version>
+        </dependency>
+        -->
+    </dependencies>
+
+</project>

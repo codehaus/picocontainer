@@ -40,7 +40,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class NanoGroovyBuilder extends BuilderSupport {
+public class NanoContainerBuilder extends BuilderSupport {
 
     protected void setParent(Object parent, Object child) {
     }

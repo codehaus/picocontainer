@@ -1,4 +1,4 @@
-//import org.nanocontainer.script.groovy.NanoGroovyBuilder
+//import org.nanocontainer.script.groovy.NanoContainerBuilder
 import org.microcontainer.MicroGroovyBuilder
 import javax.management.MBeanServerFactory
 import javax.management.MBeanOperationInfo;

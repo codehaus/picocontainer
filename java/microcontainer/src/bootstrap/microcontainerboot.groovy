@@ -1,4 +1,4 @@
-import org.nanocontainer.script.groovy.NanoGroovyBuilder
+import org.nanocontainer.script.groovy.NanoContainerBuilder
 
 builder = new NanoGroovyBuilder()
 

@@ -28,9 +28,7 @@ namespace PicoContainer.Defaults
 	public class ConstructorInjectionComponentAdapter : InstantiatingComponentAdapter
 	{
 		private IList sortedMatchingConstructors;
-
 		private ConstructorInjectionGuard constructorInjectionGuard;
-
 		private IComponentMonitor componentMonitor = new NullComponentMonitor();
 
 		public IComponentMonitor ComponentMonitor
@@ -38,74 +36,23 @@ namespace PicoContainer.Defaults
 			get { return componentMonitor; }
 		}
 
-		/// <summary>
-		/// Guard description...
-		/// </summary>
-		[Serializable]
-		internal class ConstructorInjectionGuard : ThreadStaticCyclicDependencyGuard 
+		public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters, bool allowNonPublicClasses, IComponentMonitor componentMonitor)
+			: base(componentKey, componentImplementation, parameters, allowNonPublicClasses)
 		{
-			protected ConstructorInjectionComponentAdapter cica;
-			protected IPicoContainer guardedContainer;
+			this.componentMonitor = componentMonitor;
+		}
 
-			public ConstructorInjectionGuard(ConstructorInjectionComponentAdapter cica, IPicoContainer container)
-			{
-				this.cica = cica;
-				this.guardedContainer = container;
-			}
-
-			public override Object Run() 
-			{
-				ConstructorInfo constructor;
-				try 
-				{
-					constructor = cica.GetGreediestSatisfiableConstructor(guardedContainer);
-				} 
-				catch (AmbiguousComponentResolutionException e) 
-				{
-					e.Component = cica.ComponentImplementation;
-					throw e;
-				}
-				try 
-				{
-					Object[] parameters = cica.GetConstructorArguments(guardedContainer, constructor);
-					cica.ComponentMonitor.Instantiating(constructor);
-					long startTime = DateTime.Now.Millisecond;
-					Object inst = constructor.Invoke(parameters);
-					cica.componentMonitor.Instantiated(constructor, startTime, DateTime.Now.Millisecond - startTime);
-					return inst;
-				} 
-				catch (Exception e)
-				{
-					Console.WriteLine(e.StackTrace);
-
-					cica.componentMonitor.InstantiationFailed(constructor, e);
-					if (e is SystemException || e is ApplicationException) 
-					{
-						throw e.GetBaseException();
-					} 
-					throw new PicoInitializationException(e);
-				}
-			}
+		public ConstructorInjectionComponentAdapter(Object componentKey, Type componentImplementation, IParameter[] parameters)
+			: this(componentKey, componentImplementation, parameters, false, new NullComponentMonitor())
+		{
 		}
 
 		/// <summary>
-		/// Constructor
+		/// Use default parameters.
 		/// </summary>
-		/// <param name="componentKey">The component's key</param>
-		/// <param name="componentImplementation">The component implementing type</param>
-		/// <param name="parameters">Parameters used to initialize the component</param>
-		public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)
-			: base(componentKey, componentImplementation, parameters)
-		{
-			sortedMatchingConstructors = GetSortedMatchingConstructors();
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="componentKey">The component's key</param>
-		/// <param name="componentImplementation">The component implementing type</param>
-		public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation)
+		/// <param name="componentKey"></param>
+		/// <param name="componentImplementation"></param>
+		public ConstructorInjectionComponentAdapter(Object componentKey, Type componentImplementation)
 			: this(componentKey, componentImplementation, null)
 		{
 		}
@@ -190,7 +137,7 @@ namespace PicoContainer.Defaults
 			{
 				// be nice to the user, show all constructors that were filtered out 
 				StringBuilder ctorDetails = new StringBuilder();
-				ConstructorInfo[] constructors = ComponentImplementation.GetConstructors();
+				ConstructorInfo[] constructors = GetAllConstructorInfo();
 
 				foreach (ConstructorInfo constructor in constructors)
 				{
@@ -217,10 +164,26 @@ namespace PicoContainer.Defaults
 			return result;
 		}
 
+		/// <summary>
+		/// Gets all valid constructors. Non Public constructors are returned if the allowNonPublicClasses flag
+		/// was set accordingly.
+		/// </summary>
+		/// <returns></returns>
+		private ConstructorInfo[] GetAllConstructorInfo()
+		{
+			if (allowNonPublicClasses)
+			{
+				return ComponentImplementation.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+			}
+
+			return ComponentImplementation.GetConstructors();
+		}
+
 		private IList GetSortedMatchingConstructors()
 		{
 			ArrayList matchingConstructors = new ArrayList();
-			ConstructorInfo[] allConstructors = ComponentImplementation.GetConstructors();
+			ConstructorInfo[] allConstructors = GetAllConstructorInfo();
+
 			// filter out all constructors that will definately not match 
 			for (int i = 0; i < allConstructors.Length; i++)
 			{
@@ -248,6 +211,61 @@ namespace PicoContainer.Defaults
 				Type[] parameterTypes1 = Utils.TypeUtils.GetParameterTypes((ConstructorInfo) arg1);
 
 				return parameterTypes1.Length - parameterTypes0.Length;
+			}
+		}
+
+		/// <summary>
+		/// Guard description...
+		/// </summary>
+		[Serializable]
+		internal class ConstructorInjectionGuard : ThreadStaticCyclicDependencyGuard 
+		{
+			protected ConstructorInjectionComponentAdapter cica;
+			protected IPicoContainer guardedContainer;
+
+			public ConstructorInjectionGuard(ConstructorInjectionComponentAdapter cica, IPicoContainer container)
+			{
+				this.cica = cica;
+				this.guardedContainer = container;
+			}
+
+			public override Object Run() 
+			{
+				ConstructorInfo constructor;
+				try 
+				{
+					constructor = cica.GetGreediestSatisfiableConstructor(guardedContainer);
+				} 
+				catch (AmbiguousComponentResolutionException e) 
+				{
+					e.Component = cica.ComponentImplementation;
+					throw e;
+				}
+				try 
+				{
+					Object[] parameters = cica.GetConstructorArguments(guardedContainer, constructor);
+					cica.ComponentMonitor.Instantiating(constructor);
+					long startTime = DateTime.Now.Millisecond;
+					Object inst = constructor.Invoke(parameters);
+					cica.componentMonitor.Instantiated(constructor, startTime, DateTime.Now.Millisecond - startTime);
+					return inst;
+				} 
+				catch (Exception e)
+				{
+					cica.componentMonitor.InstantiationFailed(constructor, e);
+					if(e is TargetInvocationException)
+					{
+						throw new PicoInvocationTargetInitializationException(e);	
+					}
+					else if (e is SystemException || e is ApplicationException) 
+					{
+						throw e.GetBaseException();
+					} 
+					else
+					{
+						throw new PicoInitializationException(e);
+					}
+				}
 			}
 		}
 	}

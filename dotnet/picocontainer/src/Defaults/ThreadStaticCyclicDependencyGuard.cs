@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 
 namespace PicoContainer.Defaults
 {
@@ -12,11 +11,12 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public abstract class ThreadStaticCyclicDependencyGuard : ICyclicDependencyGuard
 	{
-		private LocalDataStoreSlot guardFlag = Thread.AllocateDataSlot(); 
+		[ThreadStatic]
+		private static Boolean guardFlag = new Boolean();
 
 		public ThreadStaticCyclicDependencyGuard()
 		{
-			Thread.SetData(guardFlag, false);
+			guardFlag = false;
 		}
 
 		/**
@@ -38,7 +38,7 @@ namespace PicoContainer.Defaults
 		 */
 		public Object Observe(Type stackFrame)
 		{
-			if (true.Equals(Thread.GetData(guardFlag)))
+			if (true.Equals(guardFlag))
 			{
 				throw new CyclicDependencyException(stackFrame);
 			}
@@ -46,7 +46,7 @@ namespace PicoContainer.Defaults
 			
 			try
 			{
-				Thread.SetData(guardFlag, true);
+				guardFlag = true;
 				result = Run();
 			}
 			catch (CyclicDependencyException e)
@@ -56,7 +56,7 @@ namespace PicoContainer.Defaults
 			}
 			finally
 			{
-				Thread.SetData(guardFlag, false);
+				guardFlag = false;
 			}
 			return result;
 		}

@@ -13,19 +13,32 @@ using System;
 
 namespace PicoContainer.Defaults
 {
-	/// <summary>
-	/// Summary description for ConstructorComponentAdapterFactory.
-	/// </summary>
 	[Serializable]
 	public class ConstructorInjectionComponentAdapterFactory : IComponentAdapterFactory
 	{
+		private bool allowNonPublicClasses;
+		private IComponentMonitor componentMonitor;
+
+		public ConstructorInjectionComponentAdapterFactory(bool allowNonPublicClasses, IComponentMonitor componentMonitor) 
+		{
+			this.allowNonPublicClasses = allowNonPublicClasses;
+			this.componentMonitor = componentMonitor;
+		}
+
+		public ConstructorInjectionComponentAdapterFactory(bool allowNonPublicClasses) 
+			: this(allowNonPublicClasses, new NullComponentMonitor())
+		{
+		}
+
+		public ConstructorInjectionComponentAdapterFactory() : this(false)
+		{
+		}
+
 		public IComponentAdapter CreateComponentAdapter(object componentKey,
 		                                                Type componentImplementation,
 		                                                IParameter[] parameters)
 		{
-			return new ConstructorInjectionComponentAdapter(componentKey,
-			                                                componentImplementation,
-			                                                parameters);
+			return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor);
 		}
 	}
 }

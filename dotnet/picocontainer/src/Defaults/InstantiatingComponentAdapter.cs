@@ -27,6 +27,10 @@ namespace PicoContainer.Defaults
 	{
 		[NonSerialized] internal VerifyingGuard guard;
 		internal IParameter[] parameters;
+		/// <summary>
+		/// Flag indicating instanciation of non-public classes.
+		/// </summary>
+		protected bool allowNonPublicClasses;
 
 		/// <summary>
 		/// Constructor
@@ -34,9 +38,23 @@ namespace PicoContainer.Defaults
 		/// <param name="componentKey">The component's key</param>
 		/// <param name="componentImplementation">The component implementing type</param>
 		/// <param name="parameters">Parameters used to initialize the component</param>
-		public InstantiatingComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) : base(componentKey, componentImplementation)
+		/// <param name="allowNonPublicClasses">flag to allow instantiation of non-public classes.</param>
+		public InstantiatingComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters, bool allowNonPublicClasses) 
+			: base(componentKey, componentImplementation)
 		{
+			CheckConcrete();
+
 			this.parameters = parameters;
+			this.allowNonPublicClasses = allowNonPublicClasses;
+		}
+
+		private void CheckConcrete()
+		{
+			// Assert that the component class is concrete.
+			if (ComponentImplementation.IsAbstract || ComponentImplementation.IsInterface)
+			{
+				throw new NotConcreteRegistrationException(ComponentImplementation);
+			}
 		}
 
 		/// <summary>

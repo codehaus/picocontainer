@@ -241,8 +241,12 @@ public class MicroGroovyBuilder  extends BuilderSupport {
                 } else {
                     softPico = new DefaultSoftCompositionPicoContainer(cl, parent);
                 }
-                parent.addChildContainer(name, softPico);
-
+                if (parent instanceof SoftCompositionPicoContainer) {
+                    ((SoftCompositionPicoContainer) parent).addChildContainer(name, softPico);
+                } else {
+                    parent.addChildContainer(softPico);
+                }
+                
             } else {
                 if (adapterFactory != null) {
                     softPico = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader(), adapterFactory, null);

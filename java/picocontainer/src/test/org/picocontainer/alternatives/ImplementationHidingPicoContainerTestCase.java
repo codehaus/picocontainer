@@ -21,4 +21,8 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new ImplementationHidingPicoContainer(parent);
     }
+
+    public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
+        super.testStartStopAndDisposeNotCascadedtoRemovedChildren();
+    }
 }

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 
 /**
  * <p/>
@@ -66,10 +67,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     // Keeps track of instantiation order.
     private List orderedComponentAdapters = new ArrayList();
 
-    protected Map namedChildContainers = new HashMap();
-
     private boolean started = false;
     private boolean disposed = false;
+    private HashSet children = new HashSet();
+
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
      * <p/>
@@ -396,35 +397,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer() {
-        return makeChildContainer("containers" + namedChildContainers.values().size());
-    }
-
-    public MutablePicoContainer makeChildContainer(String name) {
         DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
-        addChildContainer(name, pc);
+        addChildContainer(pc);
         return pc;
     }
 
     public void addChildContainer(PicoContainer child) {
-        addChildContainer(null, child);
-    }
-
-    public void addChildContainer(String name, PicoContainer child) {
-        if (name == null) {
-            name = "containers" + namedChildContainers.values().size();
-        }
-        namedChildContainers.put(name, child);
+        children.add(child);
     }
 
     public void removeChildContainer(PicoContainer child) {
-        Iterator children = namedChildContainers.entrySet().iterator();
-        while (children.hasNext()) {
-            Map.Entry e = (Map.Entry) children.next();
-            PicoContainer pc = (PicoContainer) e.getValue();
-            if (pc == child) {
-                children.remove();
-            }
-        }
+        children.remove(child);
     }
 
     public void accept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
@@ -443,8 +426,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     private void childContainersAccept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
-        Collection childContainers = namedChildContainers.values();
-        for (Iterator iterator = childContainers.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
             child.accept(visitor, ofType, visitInInstantiationOrder);
         }
@@ -463,7 +445,5 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             visitor.visitComponentInstance(o);
         }
     }
-    protected Map getNamedContainers() {
-        return namedChildContainers;
-    }
+
 }

@@ -14,10 +14,12 @@ import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoContainer;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A base class for SoftCompositionPicoContainers. As well as the functionality indicated by the interface it
@@ -26,6 +28,8 @@ import java.util.Map;
  * @version $Revision$
  */
 public abstract class AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer {
+
+    protected Map namedChildContainers = new HashMap();
 
     public final Object getComponentInstance(Object componentKey) throws PicoException {
 
@@ -72,5 +76,22 @@ public abstract class AbstractSoftCompositionPicoContainer implements SoftCompos
 
     protected abstract Object getComponentInstanceFromDelegate(Object componentKey);
 
-    protected abstract Map getNamedContainers();
+    public final MutablePicoContainer makeChildContainer() {
+        return makeChildContainer("containers" + namedChildContainers.size());
+    }
+
+    public void removeChildContainer(PicoContainer child) {
+        Iterator children = namedChildContainers.entrySet().iterator();
+        while (children.hasNext()) {
+            Map.Entry e = (Map.Entry) children.next();
+            PicoContainer pc = (PicoContainer) e.getValue();
+            if (pc == child) {
+                children.remove();
+            }
+        }
+    }
+
+    protected final Map getNamedContainers() {
+        return namedChildContainers;
+    }
 }

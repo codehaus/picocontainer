@@ -20,7 +20,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -29,7 +28,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -43,26 +41,26 @@ import java.util.Map;
  */
 public class DefaultSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final InnerMutablePicoContainer delegate;
+    private final MutablePicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
 
     public DefaultSoftCompositionPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
+        delegate = new DefaultPicoContainer(caf, parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
 
     public DefaultSoftCompositionPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(new DefaultComponentAdapterFactory(), parent);
+        delegate = new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
 
     public DefaultSoftCompositionPicoContainer(ComponentAdapterFactory caf) {
-        delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, null);
+        delegate = new DefaultPicoContainer(caf, null);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(DefaultSoftCompositionPicoContainer.class.getClassLoader(), delegate);
     }
@@ -82,10 +80,6 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
 
     public Object getComponentInstanceFromDelegate(Object componentKey) throws PicoException {
         return delegate.getComponentInstance(componentKey);
-    }
-
-    protected Map getNamedContainers() {
-        return delegate.getNamedContainers();
     }
 
     public Object getComponentInstanceOfType(Class componentType) {
@@ -170,27 +164,27 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         return delegate.unregisterComponentByInstance(componentInstance);
     }
 
-    public MutablePicoContainer makeChildContainer() {
-        return makeChildContainer(null);
-    }
-
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = reflectionAdapter.getComponentClassLoader();
-        DefaultSoftCompositionPicoContainer pc = new DefaultSoftCompositionPicoContainer(currentClassloader, this);
-        delegate.addChildContainer(name, pc);
-        return pc;
+        DefaultSoftCompositionPicoContainer child = new DefaultSoftCompositionPicoContainer(currentClassloader, this);
+        delegate.addChildContainer(child);
+        namedChildContainers.put(name, child);
+        return child;
     }
 
     public void addChildContainer(PicoContainer child) {
         delegate.addChildContainer(child);
+        namedChildContainers.put("containers" + namedChildContainers.size(), child);
     }
 
     public void addChildContainer(String name, PicoContainer child) {
-        delegate.addChildContainer(name, child);
+        delegate.addChildContainer(child);
+        namedChildContainers.put(name, child);
     }
 
     public void removeChildContainer(PicoContainer child) {
         delegate.removeChildContainer(child);
+        super.removeChildContainer(child);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {
@@ -237,23 +231,6 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
 
     public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
         delegate.accept(visitor, componentType, visitInInstantiationOrder);
-    }
-
-    private class InnerMutablePicoContainer extends DefaultPicoContainer {
-        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-            super(componentAdapterFactory, parent);
-        }
-
-        protected Map getNamedContainers() {
-            return namedChildContainers;
-        }
-
-        public boolean equals(Object obj) {
-            if (obj == DefaultSoftCompositionPicoContainer.this) {
-                return true;
-            }
-            return super.equals(obj);
-        }
     }
 
 }

@@ -13,7 +13,6 @@ package org.picocontainer.defaults;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.picocontainer.Disposable;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
@@ -118,19 +117,18 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation(One.class);
         child.registerComponentImplementation(Three.class);
 
-        LifecycleManager lm = parent.getLifecycleManager();
-        lm.start();
-        lm.stop();
-        lm.dispose();
+        parent.start();
+        parent.stop();
+        parent.dispose();
 
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording").toString());
     }
 
     public void testStartStartShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.getLifecycleManager().start();
+        pico.start();
         try {
-            pico.getLifecycleManager().start();
+            pico.start();
             fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
@@ -139,10 +137,10 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testStartStopStopShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.getLifecycleManager().start();
-        pico.getLifecycleManager().stop();
+        pico.start();
+        pico.stop();
         try {
-            pico.getLifecycleManager().stop();
+            pico.stop();
             fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
@@ -151,11 +149,11 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
     public void testStartStopDisposeDisposeShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.getLifecycleManager().start();
-        pico.getLifecycleManager().stop();
-        pico.getLifecycleManager().dispose();
+        pico.start();
+        pico.stop();
+        pico.dispose();
         try {
-            pico.getLifecycleManager().dispose();
+            pico.dispose();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
@@ -204,15 +202,15 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         pico.registerComponentImplementation(FooRunnable.class);
 
         pico.getComponentInstances();
-        pico.getLifecycleManager().start();
+        pico.start();
         Thread.sleep(100);
-        pico.getLifecycleManager().stop();
+        pico.stop();
 
         FooRunnable foo = (FooRunnable) pico.getComponentInstance(FooRunnable.class);
         assertEquals(1, foo.runCount());
-        pico.getLifecycleManager().start();
+        pico.start();
         Thread.sleep(100);
-        pico.getLifecycleManager().stop();
+        pico.stop();
         assertEquals(2, foo.runCount());
     }
 

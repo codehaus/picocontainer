@@ -9,10 +9,10 @@
 
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.NanoContainerMarkupException;
 
-public class EmptyCompositionException extends PicoCompositionException {
-    public String getMessage() {
-        return "No components in the XML composition";
+public class EmptyCompositionException extends NanoContainerMarkupException {
+    public EmptyCompositionException() {
+        super("No components in the XML composition");
     }
 }

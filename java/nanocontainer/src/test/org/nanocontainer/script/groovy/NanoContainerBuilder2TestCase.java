@@ -3,6 +3,7 @@ package org.nanocontainer.script.groovy;
 import org.jmock.Mock;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.groovy.Xxx.A;
 import org.nanocontainer.script.groovy.Xxx.B;
 import org.picocontainer.PicoContainer;
@@ -61,8 +62,8 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-            fail("NanoContainerBuilderException should have been raised");
-        } catch (NanoContainerBuilderException e) {
+            fail("NanoContainerMarkupException should have been raised");
+        } catch (NanoContainerMarkupException e) {
             // expected
         }
     }

@@ -77,7 +77,7 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         verifyIntercepted(dao, log);
     }
 
-    public void todo_testComponentScopedInterceptor() {
+    public void testComponentScopedInterceptor() {
 
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +

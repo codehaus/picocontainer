@@ -15,6 +15,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -75,11 +76,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new PicoCompositionException("SAXException : " + e.getMessage(), e);
+            throw new NanoContainerMarkupException("SAXException : " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PicoCompositionException("IOException : " + e.getMessage(), e);
+            throw new NanoContainerMarkupException("IOException : " + e.getMessage(), e);
         } catch (ParserConfigurationException e) {
-            throw new PicoCompositionException("PArserConfigurationException :" + e.getMessage(), e);
+            throw new NanoContainerMarkupException("PArserConfigurationException :" + e.getMessage(), e);
         }
     }
 
@@ -94,7 +95,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             populateContainer(childContainer);
             return childContainer;
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException("Class not found:" + e.getMessage(), e);
+            throw new NanoContainerMarkupException("Class not found:" + e.getMessage(), e);
         }
     }
 
@@ -103,11 +104,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             NanoContainer nanoContainer = new DefaultNanoContainer(classLoader, container);
             registerComponentsAndChildContainers(nanoContainer, rootElement);
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException("Class not found:" + e.getMessage(), e);
+            throw new NanoContainerMarkupException("Class not found:" + e.getMessage(), e);
         } catch (IOException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (SAXException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
     }
 
@@ -147,7 +148,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     registerComponentAdapter(parentContainer, childElement);
                     count++;
                 } else {
-                    throw new PicoCompositionException("Unsupported element:" + name);
+                    throw new NanoContainerMarkupException("Unsupported element:" + name);
                 }
             }
         }
@@ -179,10 +180,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private PicoContainer registerComponentImplementation(NanoContainer container, Element element) throws ClassNotFoundException, SAXException {
+    private PicoContainer registerComponentImplementation(NanoContainer container, Element element) throws ClassNotFoundException {
         String className = element.getAttribute(CLASS);
         if (EMPTY.equals(className)) {
-            throw new SAXException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
+            throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
         }
 
         Parameter[] parameters = createChildParameters(container, element);
@@ -281,11 +282,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
         Object key = element.getAttribute(KEY);
         if (EMPTY.equals(key)) {
-            throw new PicoCompositionException("'" + KEY + "' attribute not specified for " + element.getNodeName());
+            throw new NanoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
         }
         String className = element.getAttribute(CLASS);
         if (EMPTY.equals(className)) {
-            throw new PicoCompositionException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
+            throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
         }
         Class implementationClass = classLoader.loadClass(className);
         Parameter[] parameters = createChildParameters(container, element);
@@ -298,9 +299,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         try {
             return (ComponentAdapterFactory) factoryClass.newInstance();
         } catch (InstantiationException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         } catch (IllegalAccessException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
     }
 }

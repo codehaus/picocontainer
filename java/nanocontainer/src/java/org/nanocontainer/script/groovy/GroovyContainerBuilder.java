@@ -15,8 +15,8 @@ import groovy.lang.Script;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.PicoContainer;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         } else if (picoVariable instanceof NanoContainer) {
             return ((NanoContainer) picoVariable).getPico();
         } else {
-            throw new PicoCompositionException("Bad type for pico:" + picoVariable.getClass().getName());
+            throw new NanoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }
     }
 
@@ -80,7 +80,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         } catch (CompilationFailedException e) {
             throw new NanoGroovyCompositionException("Compilation Failed '" + e.getMessage() + "'", e);
         } catch (IOException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoContainerMarkupException(e);
         }
 
     }

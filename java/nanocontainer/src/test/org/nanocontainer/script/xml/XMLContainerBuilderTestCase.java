@@ -12,6 +12,7 @@ package org.nanocontainer.script.xml;
 
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
@@ -120,9 +121,9 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                     "  <component-implementation class='Foo'/>" +
                     "</container>");
             buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-            fail("Expected PicoCompositionException");
-        } catch (PicoCompositionException e) {
-            assertTrue("ClassNotFoundException", e.getCause() instanceof ClassNotFoundException);
+            fail();
+        } catch (NanoContainerMarkupException expected) {
+            assertTrue("ClassNotFoundException", expected.getCause() instanceof ClassNotFoundException);
         }
     }
 

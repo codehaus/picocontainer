@@ -18,8 +18,8 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.PicoContainer;
 
 import java.io.IOException;
@@ -70,27 +70,27 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {
-                throw new PicoCompositionException("The script must define a variable named 'pico'");
+                throw new NanoContainerMarkupException("The script must define a variable named 'pico'");
             }
             if (!(pico instanceof NativeJavaObject)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
+                throw new NanoContainerMarkupException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
             if (!(javaObject instanceof PicoContainer)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
+                throw new NanoContainerMarkupException("The 'pico' variable must be of type " + PicoContainer.class.getName());
             }
             return (PicoContainer) javaObject;
-        } catch (PicoCompositionException e) {
+        } catch (NanoContainerMarkupException e) {
             throw e;
         } catch (JavaScriptException e) {
             Object value = e.getValue();
             if (value instanceof Throwable) {
-                throw new PicoCompositionException((Throwable) value);
+                throw new NanoContainerMarkupException((Throwable) value);
             } else {
-                throw new PicoCompositionException(e);
+                throw new NanoContainerMarkupException(e);
             }
         } catch (IOException e) {
-            throw new PicoCompositionException("IOException encountered, message -'" + e.getMessage() + "'", e);
+            throw new NanoContainerMarkupException("IOException encountered, message -'" + e.getMessage() + "'", e);
         } finally {
             Context.exit();
         }

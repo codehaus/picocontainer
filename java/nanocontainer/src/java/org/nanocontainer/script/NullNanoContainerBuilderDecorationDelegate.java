@@ -1,6 +1,7 @@
-package org.nanocontainer.script.groovy;
+package org.nanocontainer.script;
 
-import org.nanocontainer.NanoContainerBuilderDecorationDelegate;
+import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -20,8 +21,8 @@ public class NullNanoContainerBuilderDecorationDelegate implements NanoContainer
         return picoContainer;
     }
 
-    public Object createChildOfContainerNode(Map attributes, Object name) {
-        throw new NanoContainerBuilderException("Don't know how to create a '" + name + "' child of a container element");
+    public Object createNode(Object name, Map attributes, Object parentElement) {
+        throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + parentElement.toString() + "' element");
     }
 
     public void rememberComponentKey(Map attributes) {

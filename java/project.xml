@@ -171,14 +171,6 @@
                 <exclude>**/Abstract*TestCase.java</exclude>
             </excludes>
         </unitTest>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/conf</directory>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 
     <reports>

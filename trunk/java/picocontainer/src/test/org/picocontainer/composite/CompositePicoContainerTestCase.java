@@ -151,6 +151,7 @@ public class CompositePicoContainerTestCase extends TestCase {
         assertTrue(acc.getComponent(String.class) == acomp);
         assertTrue(acc.getComponent(Integer.class) == bcomp);
         assertTrue(acc.getComponents().size() == 2);
+        assertTrue(acc.getComponentKeys().size() == 2);        
 
     }
 

@@ -1,7 +1,6 @@
 <project default="jar:install"
     xmlns:j="jelly:core">
 
-
     <preGoal name="xdoc:jelly-transform">
         <attainGoal name="html2xdoc"/>
     </preGoal>

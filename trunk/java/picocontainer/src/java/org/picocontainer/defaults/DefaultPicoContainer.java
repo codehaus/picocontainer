@@ -98,7 +98,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public void registerComponent(Object componentKey, Class componentImplementation) throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentKey, componentImplementation);
-        checkKeyDuplication(componentKey); //HERE
+        checkKeyDuplication(componentKey); 
 
         registerComponent(new ComponentSpecification(componentFactory, componentKey, componentImplementation));
     }

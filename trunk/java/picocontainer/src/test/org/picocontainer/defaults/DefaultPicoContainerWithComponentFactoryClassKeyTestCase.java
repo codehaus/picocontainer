@@ -1,21 +1,15 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentRegistry;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractBasicClassCompatabilityTestCase;
-import org.picocontainer.tck.Touchable;
-import org.picocontainer.tck.SimpleTouchable;
 import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.tck.Touchable;
 
-
-public class DefaultPicoContainerWithComponentFactory extends AbstractBasicClassCompatabilityTestCase {
+public class DefaultPicoContainerWithComponentFactoryClassKeyTestCase extends AbstractBasicClassCompatabilityTestCase {
 
     private ComponentFactory componentFactory = new DefaultComponentFactory();
 
@@ -35,9 +29,9 @@ public class DefaultPicoContainerWithComponentFactory extends AbstractBasicClass
     }
 
     protected void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
-        ((DefaultPicoContainer) picoContainer).registerComponentByClass(SimpleTouchable.class);
+        ((DefaultPicoContainer) picoContainer).registerComponent(Touchable.class,SimpleTouchable.class);
     }
-    
+
     // testXXX methods are in superclass.
 
 }

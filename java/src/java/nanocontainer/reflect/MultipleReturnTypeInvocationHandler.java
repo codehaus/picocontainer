@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
 package nanocontainer.reflect;

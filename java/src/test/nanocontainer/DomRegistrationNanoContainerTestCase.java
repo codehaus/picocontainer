@@ -17,10 +17,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 
 import picocontainer.PicoStartException;
+import picocontainer.PicoRegistrationException;
 
 public class DomRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws NanoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
@@ -30,7 +31,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         nc.start();
     }
 
-    public void testAlternate() throws NanoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
+    public void testAlternate() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
@@ -41,7 +42,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     }
 
 
-    public void testRegistrationMismatch() throws NanoRegistrationException, ParserConfigurationException {
+    public void testRegistrationMismatch() throws PicoRegistrationException, ParserConfigurationException {
         DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         try {
             nc.registerComponent("Foo");

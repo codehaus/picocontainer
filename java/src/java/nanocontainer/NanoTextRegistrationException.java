@@ -10,7 +10,9 @@
 
 package nanocontainer;
 
-public class NanoTextRegistrationException extends NanoRegistrationException
+import picocontainer.PicoRegistrationException;
+
+public class NanoTextRegistrationException extends PicoRegistrationException
 {
     private final String message;
 

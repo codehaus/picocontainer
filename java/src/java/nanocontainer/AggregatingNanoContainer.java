@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
 package nanocontainer;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Arrays;
 
 
-public class AggregatingNanoContainer implements NanoContainer {
+public class AggregatingNanoContainer implements Container {
 
     private final Container containerToAggregateComponentsFor;
     private final InvocationHandler invocationHandler;
@@ -33,12 +33,6 @@ public class AggregatingNanoContainer implements NanoContainer {
                                     InvocationHandler invocationHandler) {
         this.containerToAggregateComponentsFor = containerToAggregateComponentsFor;
         this.invocationHandler = invocationHandler;
-    }
-
-    public void start() throws PicoStartException {
-    }
-
-    public void stop() throws PicoStopException {
     }
 
     public boolean hasComponent(Class aClass) {

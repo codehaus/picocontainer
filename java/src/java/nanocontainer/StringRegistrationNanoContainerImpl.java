@@ -37,28 +37,20 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         }
     }
 
-    public void registerComponent(String compClassName) throws NanoRegistrationException, ClassNotFoundException {
-        try {
-            picoContainer.registerComponent(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
-        } catch (PicoRegistrationException e) {
-            throw new NanoPicoRegistrationException(e);
-        }
+    public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException {
+        picoContainer.registerComponent(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
     }
 
-    public void registerComponent(String typeClassName, String compClassName) throws NanoRegistrationException, ClassNotFoundException {
-        try {
-            ClassLoader classLoader = StringRegistrationNanoContainerImpl.class.getClassLoader();
-            picoContainer.registerComponent(
-                    classLoader.loadClass(typeClassName),
-                    classLoader.loadClass(compClassName)
-            );
-        } catch (PicoRegistrationException e) {
-            throw new NanoPicoRegistrationException(e);
-        }
+    public void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException {
+        ClassLoader classLoader = StringRegistrationNanoContainerImpl.class.getClassLoader();
+        picoContainer.registerComponent(
+                classLoader.loadClass(typeClassName),
+                classLoader.loadClass(compClassName)
+        );
     }
 
     public void start() throws PicoStartException {
-            picoContainer.start();
+        picoContainer.start();
     }
 
     public void stop() throws PicoStopException {

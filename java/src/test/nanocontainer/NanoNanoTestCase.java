@@ -19,11 +19,12 @@ import org.xml.sax.InputSource;
 import java.io.StringReader;
 
 import picocontainer.PicoStartException;
+import picocontainer.PicoRegistrationException;
 
 public class NanoNanoTestCase extends TestCase {
 
     public void testStringRegistrationNanoContainerImpl()
-            throws NanoRegistrationException, PicoStartException,
+            throws PicoRegistrationException, PicoStartException,
             ClassNotFoundException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
@@ -38,7 +39,7 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws NanoRegistrationException, ClassNotFoundException, PicoStartException {
+    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoStartException {
 
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
@@ -46,7 +47,7 @@ public class NanoNanoTestCase extends TestCase {
     }
 
     public void testDomRegistrationNanoContainerImpl()
-            throws NanoRegistrationException, PicoStartException,
+            throws PicoRegistrationException, PicoStartException,
             ParserConfigurationException, ClassNotFoundException {
 
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
@@ -64,7 +65,7 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws NanoRegistrationException, ClassNotFoundException, PicoStartException {
+    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws PicoRegistrationException, ClassNotFoundException, PicoStartException {
         nc2.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
                 "      <component class=\"nanocontainer.testmodel.DefaultWebServerConfig\"/>" +

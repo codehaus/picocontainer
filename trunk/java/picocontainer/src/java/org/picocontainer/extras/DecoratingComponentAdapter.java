@@ -10,9 +10,6 @@
 
 package org.picocontainer.extras;
 
-import org.codehaus.nanning.AspectInstance;
-import org.codehaus.nanning.Mixin;
-import org.codehaus.nanning.config.AspectSystem;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.internals.*;

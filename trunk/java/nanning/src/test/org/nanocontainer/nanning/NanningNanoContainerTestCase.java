@@ -9,6 +9,7 @@ import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
 
 /**
  * Contains both unit-tests for the NanninNanoContainer and acceptance-tests outlining an example
@@ -101,7 +102,7 @@ public class NanningNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        container = new DefaultPicoContainer(new NanningComponentAdapterFactory());
+        container = new DefaultPicoContainer(new CachingComponentAdapterFactory(new NanningComponentAdapterFactory()));
     }
 
     public void testServiceIsInstantiated() throws PicoRegistrationException, PicoInitializationException {

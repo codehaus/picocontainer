@@ -54,10 +54,10 @@ public interface PicoContainer extends Lifecycle {
     Object getComponentInstanceOfType(Class componentType);
 
     /**
-     * Gets all the registered component instances in the container, including
-     * those in the parent (unless it is null).
+     * Gets all the registered component instances in the container, (not including
+     * those in the parent container).
      * The components are returned in their order of instantiation, which
-     * depends on the dependency order between components.
+     * depends on the dependency order between them.
      *
      * @return all the components.
      * @throws PicoException if one of the components could not be instantiated or dependencies

@@ -11,9 +11,10 @@
 
 using System;
 
-namespace PicoContainer.Defaults {
-
-  public interface IComponentAdapterFactory {
-    IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) ;
-  }
+namespace PicoContainer.Defaults
+{
+	public interface IComponentAdapterFactory
+	{
+		IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters);
+	}
 }

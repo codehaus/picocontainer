@@ -1,45 +1,48 @@
-using System;
 using NUnit.Framework;
 using PicoContainer;
-
 using PicoContainer.Defaults;
-using PicoContainer.Tests.Tck;
-
 using PicoContainer.Tests.TestModel;
 
-namespace Test.Defaults  {
-  /// <summary>
-  /// Summary description for DefaultComponentRegistryTestCase.
-  /// </summary>
-  [TestFixture]
-  public class DefaultComponentRegistryTestCase {
-    private DefaultPicoContainer picoContainer;
+namespace Test.Defaults
+{
+	/// <summary>
+	/// Summary description for DefaultComponentRegistryTestCase.
+	/// </summary>
+	[TestFixture]
+	public class DefaultComponentRegistryTestCase
+	{
+		private DefaultPicoContainer picoContainer;
 
-    [SetUp]
-    protected void setUp() {
-      picoContainer = new DefaultPicoContainer();
-    }
-    public void testRegisterComponent() {
-      IComponentAdapter componentSpecification = CreateComponentAdapter();
+		[SetUp]
+		protected void setUp()
+		{
+			picoContainer = new DefaultPicoContainer();
+		}
 
-      picoContainer.RegisterComponent(componentSpecification);
+		public void testRegisterComponent()
+		{
+			IComponentAdapter componentSpecification = CreateComponentAdapter();
 
-      Assert.IsTrue(picoContainer.ComponentAdapters.Contains(componentSpecification));
-    }
+			picoContainer.RegisterComponent(componentSpecification);
 
-    public void testUnregisterComponent() {
-      IComponentAdapter componentSpecification = CreateComponentAdapter();
+			Assert.IsTrue(picoContainer.ComponentAdapters.Contains(componentSpecification));
+		}
 
-      picoContainer.RegisterComponent(componentSpecification);
+		public void testUnregisterComponent()
+		{
+			IComponentAdapter componentSpecification = CreateComponentAdapter();
 
-      picoContainer. UnregisterComponent(typeof(Touchable));
+			picoContainer.RegisterComponent(componentSpecification);
 
-      Assert.IsFalse(picoContainer.ComponentAdapters.Contains(componentSpecification));
-    }
+			picoContainer.UnregisterComponent(typeof (Touchable));
 
-    private IComponentAdapter CreateComponentAdapter() {
-      return new ConstructorInjectionComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
-    }
+			Assert.IsFalse(picoContainer.ComponentAdapters.Contains(componentSpecification));
+		}
 
-  }
+		private IComponentAdapter CreateComponentAdapter()
+		{
+			return new ConstructorInjectionComponentAdapter(typeof (Touchable), typeof (SimpleTouchable));
+		}
+
+	}
 }

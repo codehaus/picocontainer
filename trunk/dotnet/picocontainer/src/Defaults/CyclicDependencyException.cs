@@ -10,47 +10,49 @@
  *****************************************************************************/
 
 using System;
-using System.Reflection;
 using System.Runtime.Serialization;
-
 using PicoContainer;
 
 namespace PicoContainer.Defaults
 {
-  [Serializable]
-  public class CyclicDependencyException : PicoInitializationException
+	[Serializable]
+	public class CyclicDependencyException : PicoInitializationException
 	{
-    private readonly Type [] dependencies;
+		private readonly Type[] dependencies;
 
-    public CyclicDependencyException(){ }
+		public CyclicDependencyException()
+		{
+		}
 
-    public CyclicDependencyException(Exception ex) : base (ex) {}
-    public CyclicDependencyException(string message) : base(message) { }
+		public CyclicDependencyException(Exception ex) : base(ex)
+		{
+		}
 
-    public CyclicDependencyException(string message, Exception ex) : base(message,ex) {}
+		public CyclicDependencyException(string message) : base(message)
+		{
+		}
 
+		public CyclicDependencyException(string message, Exception ex) : base(message, ex)
+		{
+		}
 
+		public CyclicDependencyException(Type[] dependencies)
+		{
+			this.dependencies = dependencies;
+		}
 
-    public CyclicDependencyException(Type[] dependencies) 
-    {
-      this.dependencies = dependencies;
-    }
+		protected CyclicDependencyException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
 
-    protected CyclicDependencyException(SerializationInfo info, StreamingContext context) : base (info, context) {}
+		public Type[] Dependencies
+		{
+			get { return dependencies; }
+		}
 
-    public Type[] Dependencies 
-    {
-      get {
-        return dependencies;
-      }
-    }
-
-    public override String Message 
-    {
-      get {
-        return "Cyclic dependency: (" + Utils.StringUtils.ArrayToString(dependencies) + ")";
-      }
-    }
-
-  }
+		public override String Message
+		{
+			get { return "Cyclic dependency: (" + Utils.StringUtils.ArrayToString(dependencies) + ")"; }
+		}
+	}
 }

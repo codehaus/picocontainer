@@ -12,23 +12,27 @@
 using System;
 using System.Collections;
 
-namespace PicoContainer.Defaults {
+namespace PicoContainer.Defaults
+{
+	public class BeanPropertyComponentAdapterFactory : DecoratingComponentAdapterFactory
+	{
+		IDictionary adapterCache = new Hashtable();
 
-  public class BeanPropertyComponentAdapterFactory : DecoratingComponentAdapterFactory {
+		public BeanPropertyComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate)
+		{
+		}
 
-    IDictionary adapterCache = new Hashtable();
-    public BeanPropertyComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate) {
-    }
+		public override IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)
+		{
+			IComponentAdapter decoratedAdapter = base.CreateComponentAdapter(componentKey, componentImplementation, parameters);
+			BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter);
+			adapterCache.Add(componentKey, propertyAdapter);
+			return propertyAdapter;
+		}
 
-    public override IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
-      IComponentAdapter decoratedAdapter = base.CreateComponentAdapter(componentKey, componentImplementation, parameters);
-      BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter);
-      adapterCache.Add(componentKey,  propertyAdapter);
-      return propertyAdapter;
-    }
-
-    public BeanPropertyComponentAdapter getComponentAdapter(object key) {
-      return (BeanPropertyComponentAdapter) adapterCache[key];
-    }
-  }
+		public BeanPropertyComponentAdapter getComponentAdapter(object key)
+		{
+			return (BeanPropertyComponentAdapter) adapterCache[key];
+		}
+	}
 }

@@ -11,85 +11,80 @@
 
 using System;
 using PicoContainer;
-using PicoContainer.Defaults;
 
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// Decorates a Component adapter, used for combining the functionality of multiple IComponentAdapters
+	/// </summary>
+	public class DecoratingComponentAdapter : IComponentAdapter
+	{
+		private IComponentAdapter theDelegate;
 
-namespace PicoContainer.Defaults{
-  /// <summary>
-  /// Decorates a Component adapter, used for combining the functionality of multiple IComponentAdapters
-  /// </summary>
-  public class DecoratingComponentAdapter : IComponentAdapter {
-    private IComponentAdapter theDelegate;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="theDelegate">The component adapter to decorate</param>
+		public DecoratingComponentAdapter(IComponentAdapter theDelegate)
+		{
+			this.theDelegate = theDelegate;
+		}
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="theDelegate">The component adapter to decorate</param>
-    public DecoratingComponentAdapter(IComponentAdapter theDelegate) {
-      this.theDelegate = theDelegate;
-    }
+		/// <summary>
+		/// Returns the component's key
+		/// </summary>
+		virtual public object ComponentKey
+		{
+			get { return theDelegate.ComponentKey; }
+		}
 
-    /// <summary>
-    /// Returns the component's key
-    /// </summary>
-    virtual public object ComponentKey {
-      get {
-        return theDelegate.ComponentKey;
-      }
-    }
+		/// <summary>
+		/// Returns the component's implementing type
+		/// </summary>
+		virtual public Type ComponentImplementation
+		{
+			get { return theDelegate.ComponentImplementation; }
+		}
 
-    /// <summary>
-    /// Returns the component's implementing type
-    /// </summary>
-    virtual public Type ComponentImplementation {
-      get {
-        return theDelegate.ComponentImplementation;
-      }
-    }
+		/// <summary>
+		/// Gets the component instance. This method will usually create
+		/// a new instance for each call.
+		/// </summary>
+		/// <remarks>
+		/// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
+		/// </remarks>
+		/// <returns>a component instance</returns>
+		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
+		public virtual object ComponentInstance
+		{
+			get { return theDelegate.ComponentInstance; }
+		}
 
-    /// <summary>
-    /// Gets the component instance. This method will usually create
-    /// a new instance for each call.
-    /// </summary>
-    /// <remarks>
-    /// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
-    /// </remarks>
-    /// <returns>a component instance</returns>
-    /// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
-    public virtual object ComponentInstance{
-      get {
-        return theDelegate.ComponentInstance;
-      }
-    }
+		/// <summary>
+		/// Verify that all dependencies for this adapter can be satisifed.
+		/// </summary>
+		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
+		public virtual void Verify()
+		{
+			theDelegate.Verify();
+		}
 
-    /// <summary>
-    /// Verify that all dependencies for this adapter can be satisifed.
-    /// </summary>
-    /// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
-    public virtual void Verify() {
-      theDelegate.Verify();
-    }
+		/// <summary>
+		/// The delegate decorated by this adapter
+		/// </summary>
+		public virtual IComponentAdapter Delegate
+		{
+			get { return theDelegate; }
+		}
 
-    /// <summary>
-    /// The delegate decorated by this adapter
-    /// </summary>
-    public virtual IComponentAdapter Delegate {
-      get {
-        return theDelegate;
-      }			
-    }
-
-    /// 
-    /// <summary>
-    ///  Property containing the container in which this instance is registered, called by the container upon registration
-    /// </summary>
-    public virtual IPicoContainer Container {
-      get {
-        return theDelegate.Container;
-      }
-      set {
-        theDelegate.Container = value;
-      }
-    }
-  }
+		/// 
+		/// <summary>
+		///  Property containing the container in which this instance is registered, called by the container upon registration
+		/// </summary>
+		public virtual IPicoContainer Container
+		{
+			get { return theDelegate.Container; }
+			set { theDelegate.Container = value; }
+		}
+	}
 }

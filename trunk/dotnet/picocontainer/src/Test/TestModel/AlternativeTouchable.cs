@@ -16,10 +16,9 @@ namespace PicoContainer.Tests.TestModel
 	[Serializable]
 	public class AlternativeTouchable : Touchable
 	{
-		
 		public bool wasTouched = false;
-		
-		public virtual void  touch()
+
+		public virtual void touch()
 		{
 			wasTouched = true;
 		}

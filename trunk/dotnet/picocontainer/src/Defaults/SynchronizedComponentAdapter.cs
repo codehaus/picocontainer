@@ -12,34 +12,36 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace PicoContainer.Defaults {
-  public class SynchronizedComponentAdapter : DecoratingComponentAdapter {
-    public SynchronizedComponentAdapter(IComponentAdapter theDelegate) : base (theDelegate) { }
+namespace PicoContainer.Defaults
+{
+	public class SynchronizedComponentAdapter : DecoratingComponentAdapter
+	{
+		public SynchronizedComponentAdapter(IComponentAdapter theDelegate) : base(theDelegate)
+		{
+		}
 
-    
-    public override object ComponentKey {
-      [MethodImpl(MethodImplOptions.Synchronized)]
-      get {
-        return base.ComponentKey;
-      }
-    }
-    
-    public override Type ComponentImplementation {
-      [MethodImpl(MethodImplOptions.Synchronized)]
-      get {
-        return base.ComponentImplementation;
-      }
-    }
+		public override object ComponentKey
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get { return base.ComponentKey; }
+		}
 
-    public override object ComponentInstance{
-      [MethodImpl(MethodImplOptions.Synchronized)]      
-      get {
-        return base.ComponentInstance;
-      }
-    }
-    [MethodImpl(MethodImplOptions.Synchronized)]
-    public override void Verify() {
-      base.Verify();
-    }
-  }
+		public override Type ComponentImplementation
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get { return base.ComponentImplementation; }
+		}
+
+		public override object ComponentInstance
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get { return base.ComponentInstance; }
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public override void Verify()
+		{
+			base.Verify();
+		}
+	}
 }

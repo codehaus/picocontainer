@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -9,14 +9,13 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-using System;
-
-namespace PicoContainer.Defaults {
-  /// <summary>
-  /// Summary description for Swappable.
-  /// </summary>
-  public interface ISwappable {
-    object HotSwap(object newSubject);
-
-  }
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// Summary description for Swappable.
+	/// </summary>
+	public interface ISwappable
+	{
+		object HotSwap(object newSubject);
+	}
 }

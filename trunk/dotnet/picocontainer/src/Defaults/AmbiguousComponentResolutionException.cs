@@ -12,70 +12,73 @@
 using System;
 using System.Text;
 using System.Runtime.Serialization;
-
 using PicoContainer;
 
-namespace PicoContainer.Defaults {
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// The PicoIntrospectionException is thrown when the initialization could be done with more than one
+	/// component.
+	/// </summary>
+	[Serializable]
+	public class AmbiguousComponentResolutionException : PicoIntrospectionException
+	{
+		private Type ambiguousType;
+		private readonly object[] ambiguousComponentKeys;
 
-  /// <summary>
-  /// The PicoIntrospectionException is thrown when the initialization could be done with more than one
-  /// component.
-  /// </summary>
-  [Serializable]
-  public class AmbiguousComponentResolutionException : PicoIntrospectionException {
-    private Type ambiguousType;
-    private readonly object[] ambiguousComponentKeys;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="ambiguousType">The type that could be resolved with more than one component.</param>
+		/// <param name="componentKeys">The keys of the components that where resolved</param>
+		public AmbiguousComponentResolutionException(Type ambiguousType, object[] componentKeys)
+		{
+			this.ambiguousType = ambiguousType;
+			this.ambiguousComponentKeys = new Type[componentKeys.Length];
+			for (int i = 0; i < componentKeys.Length; i++)
+			{
+				ambiguousComponentKeys[i] = componentKeys[i];
+			}
+		}
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="ambiguousType">The type that could be resolved with more than one component.</param>
-    /// <param name="componentKeys">The keys of the components that where resolved</param>
-    public AmbiguousComponentResolutionException(Type ambiguousType, object[] componentKeys) {
-      this.ambiguousType = ambiguousType;
-      this.ambiguousComponentKeys = new Type[componentKeys.Length];
-      for (int i = 0; i < componentKeys.Length; i++) {
-        ambiguousComponentKeys[i] = componentKeys[i];
-      }
-    }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="AmbiguousComponentResolutionException"/> class with serialized data.
+		/// </summary>
+		/// <remarks>
+		/// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.
+		/// </remarks>
+		/// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that holds the serialized 
+		/// object data about the exception being thrown.</param>
+		/// <param name="context">The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual 
+		/// information about the source or destination. </param>
+		protected AmbiguousComponentResolutionException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AmbiguousComponentResolutionException"/> class with serialized data.
-    /// </summary>
-    /// <remarks>
-    /// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.
-    /// </remarks>
-    /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that holds the serialized 
-    /// object data about the exception being thrown.</param>
-    /// <param name="context">The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual 
-    /// information about the source or destination. </param>
-    protected AmbiguousComponentResolutionException(SerializationInfo info, StreamingContext context) : base (info, context)
-    {
-      
-    }
+		/// <summary>
+		/// Returns a customized message showing what type resolved to multiple keys.
+		/// </summary>
+		public override String Message
+		{
+			get
+			{
+				StringBuilder msg = new StringBuilder("Ambiguous type ");
+				msg.Append(ambiguousType).Append(", ").Append("resolves to multiple keys [");
+				foreach (object key in AmbiguousComponentKeys)
+				{
+					msg.Append(key).Append(" ");
+				}
+				msg.Append("resolves to multiple keys ]");
+				return msg.ToString();
+			}
+		}
 
-    /// <summary>
-    /// Returns a customized message showing what type resolved to multiple keys.
-    /// </summary>
-    public override String Message {
-      get {
-        StringBuilder msg = new StringBuilder("Ambiguous type ");
-        msg.Append(ambiguousType).Append(", ").Append("resolves to multiple keys [");
-        foreach (object key in AmbiguousComponentKeys) {
-          msg.Append(key).Append(" ");
-        }
-        msg.Append("resolves to multiple keys ]");
-        return msg.ToString();
-      }
-    }
-
-    /// <summary>
-    /// The keys that resolved the dependency.
-    /// </summary>
-    public object[] AmbiguousComponentKeys {
-      get {
-        return ambiguousComponentKeys;
-      }
-    }
-  }
+		/// <summary>
+		/// The keys that resolved the dependency.
+		/// </summary>
+		public object[] AmbiguousComponentKeys
+		{
+			get { return ambiguousComponentKeys; }
+		}
+	}
 }

@@ -12,28 +12,34 @@
 using System;
 using PicoContainer;
 
-namespace PicoContainer.Defaults {
-  /// <summary>
-  /// Summary description for ImplementationHidingComponentAdapterFactory.
-  /// </summary>
-  public class ImplementationHidingComponentAdapterFactory : DecoratingComponentAdapterFactory {
-    private readonly bool strict;
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// Summary description for ImplementationHidingComponentAdapterFactory.
+	/// </summary>
+	public class ImplementationHidingComponentAdapterFactory : DecoratingComponentAdapterFactory
+	{
+		private readonly bool strict;
 
-    public ImplementationHidingComponentAdapterFactory() : this(new DefaultComponentAdapterFactory(),true) {
-    }
+		public ImplementationHidingComponentAdapterFactory() : this(new DefaultComponentAdapterFactory(), true)
+		{
+		}
 
-    public ImplementationHidingComponentAdapterFactory(IComponentAdapterFactory theDelegate) : this(theDelegate, true) {
-    }
+		public ImplementationHidingComponentAdapterFactory(IComponentAdapterFactory theDelegate) : this(theDelegate, true)
+		{
+		}
 
-    public ImplementationHidingComponentAdapterFactory(IComponentAdapterFactory theDelegate, bool strict) : base(theDelegate) {
-      this.strict = strict;
-    }
+		public ImplementationHidingComponentAdapterFactory(IComponentAdapterFactory theDelegate, bool strict) : base(theDelegate)
+		{
+			this.strict = strict;
+		}
 
-    public override IComponentAdapter CreateComponentAdapter(object componentKey,
-      Type componentImplementation,
-      IParameter[] parameters) {
-      return new ImplementationHidingComponentAdapter(base.CreateComponentAdapter(componentKey, componentImplementation, parameters),strict);
-    }
+		public override IComponentAdapter CreateComponentAdapter(object componentKey,
+		                                                         Type componentImplementation,
+		                                                         IParameter[] parameters)
+		{
+			return new ImplementationHidingComponentAdapter(base.CreateComponentAdapter(componentKey, componentImplementation, parameters), strict);
+		}
 
-  }
+	}
 }

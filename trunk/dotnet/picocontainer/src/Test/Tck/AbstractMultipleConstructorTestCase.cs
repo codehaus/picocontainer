@@ -11,103 +11,110 @@
 
 using System;
 using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
 using NUnit.Framework;
 
 namespace PicoContainer.Tests.Tck
 {
-  /// <summary>
-  /// Summary description for AbstractMultipleConstructorTestCase.
-  /// </summary>
-  public abstract class AbstractMultipleConstructorTestCase
-  {
-    protected abstract IMutablePicoContainer createPicoContainer();
+	/// <summary>
+	/// Summary description for AbstractMultipleConstructorTestCase.
+	/// </summary>
+	public abstract class AbstractMultipleConstructorTestCase
+	{
+		protected abstract IMutablePicoContainer createPicoContainer();
 
-    public class Multi 
-    {
-      public String message;
+		public class Multi
+		{
+			public String message;
 
-      public Multi(One one, Two two, Three three) 
-      {
-        message = "one two three";
-      }
+			public Multi(One one, Two two, Three three)
+			{
+				message = "one two three";
+			}
 
-      public Multi(One one, Two two) 
-      {
-        message = "one two";
-      }
+			public Multi(One one, Two two)
+			{
+				message = "one two";
+			}
 
-      public Multi(Two two, One one) 
-      {
-        message = "two one";
-      }
+			public Multi(Two two, One one)
+			{
+				message = "two one";
+			}
 
-      public Multi(Two two, Three three) 
-      {
-        message = "two three";
-      }
+			public Multi(Two two, Three three)
+			{
+				message = "two three";
+			}
 
-      public Multi(Three three, One one) 
-      {
-        message = "three one";
-      }
-    }
+			public Multi(Three three, One one)
+			{
+				message = "three one";
+			}
+		}
 
-    public  class One {}
-    public class Two {}
-    public class Three {}
+		public class One
+		{
+		}
 
-    [Test]
-    public void testStringWorks() 
-    {
-      // Difference in java and .net
-    }
-    
+		public class Two
+		{
+		}
 
-    [Test]
-    public void testMultiWithOnlySmallSatisfiedDependencyWorks() 
-    {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(Multi));
-      pico.RegisterComponentImplementation(typeof(One));
-      pico.RegisterComponentImplementation(typeof(Three));
+		public class Three
+		{
+		}
 
-      Multi multi = (Multi) pico.GetComponentInstance(typeof(Multi));
-      Assert.AreEqual("three one", multi.message);
-    }
+		[Test]
+		public void testStringWorks()
+		{
+			// Difference in java and .net
+		}
 
-    [Test]
-    public void testMultiWithBothSatisfiedDependencyWorks() 
-    {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(Multi));
-      pico.RegisterComponentImplementation(typeof(One));
-      pico.RegisterComponentImplementation(typeof(Two));
-      pico.RegisterComponentImplementation(typeof(Three));
 
-      Multi multi = (Multi) pico.GetComponentInstance(typeof(Multi));
-      Assert.AreEqual("one two three", multi.message);
-    }
+		[Test]
+		public void testMultiWithOnlySmallSatisfiedDependencyWorks()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (Multi));
+			pico.RegisterComponentImplementation(typeof (One));
+			pico.RegisterComponentImplementation(typeof (Three));
 
-    [Test]
-    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() 
-    {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(Multi));
-      pico.RegisterComponentImplementation(typeof(One));
-      pico.RegisterComponentImplementation(typeof(Two));
+			Multi multi = (Multi) pico.GetComponentInstance(typeof (Multi));
+			Assert.AreEqual("three one", multi.message);
+		}
 
-      try 
-      {
-        Multi multi = (Multi) pico.GetComponentInstance(typeof(Multi));
-        Assert.Fail();
-      } 
-      catch (TooManySatisfiableConstructorsException e) 
-      {
-        Assert.IsTrue(e.Message.IndexOf("Three") == -1);
-        Assert.AreEqual(2, e.Constructors.Count);
-        Assert.AreEqual(typeof(Multi), e.ForImplementationClass);
-      }
-    }
-  }
+		[Test]
+		public void testMultiWithBothSatisfiedDependencyWorks()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (Multi));
+			pico.RegisterComponentImplementation(typeof (One));
+			pico.RegisterComponentImplementation(typeof (Two));
+			pico.RegisterComponentImplementation(typeof (Three));
+
+			Multi multi = (Multi) pico.GetComponentInstance(typeof (Multi));
+			Assert.AreEqual("one two three", multi.message);
+		}
+
+		[Test]
+		public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (Multi));
+			pico.RegisterComponentImplementation(typeof (One));
+			pico.RegisterComponentImplementation(typeof (Two));
+
+			try
+			{
+				Multi multi = (Multi) pico.GetComponentInstance(typeof (Multi));
+				Assert.Fail();
+			}
+			catch (TooManySatisfiableConstructorsException e)
+			{
+				Assert.IsTrue(e.Message.IndexOf("Three") == -1);
+				Assert.AreEqual(2, e.Constructors.Count);
+				Assert.AreEqual(typeof (Multi), e.ForImplementationClass);
+			}
+		}
+	}
 }

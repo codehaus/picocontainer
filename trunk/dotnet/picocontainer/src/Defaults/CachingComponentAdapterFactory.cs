@@ -11,17 +11,20 @@
 
 using System;
 
-namespace PicoContainer.Defaults {
-  /// <summary>
-  /// Summary description for CachingComponentAdapterFactory.
-  /// </summary>
-  public class CachingComponentAdapterFactory : DecoratingComponentAdapterFactory {
-    
-    public CachingComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base (theDelegate) {
-    }
+namespace PicoContainer.Defaults
+{
+	/// <summary>
+	/// Summary description for CachingComponentAdapterFactory.
+	/// </summary>
+	public class CachingComponentAdapterFactory : DecoratingComponentAdapterFactory
+	{
+		public CachingComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate)
+		{
+		}
 
-    public override IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)  {
-      return new CachingComponentAdapter(base.CreateComponentAdapter(componentKey, componentImplementation, parameters));
-    }
-  }
-} 
+		public override IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)
+		{
+			return new CachingComponentAdapter(base.CreateComponentAdapter(componentKey, componentImplementation, parameters));
+		}
+	}
+}

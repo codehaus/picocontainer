@@ -1,4 +1,3 @@
-using System;
 
 namespace PicoContainer.Tests.TestModel
 {
@@ -7,16 +6,17 @@ namespace PicoContainer.Tests.TestModel
 	/// </summary>
 	public class DecoratedTouchable : Touchable
 	{
-    private readonly Touchable theDelegate;
+		private readonly Touchable theDelegate;
 
 		public DecoratedTouchable(Touchable theDelegate)
 		{
-      this.theDelegate = theDelegate;
+			this.theDelegate = theDelegate;
 		}
 
-    public void touch() {
-      theDelegate.touch(); 
-    }
-                           
+		public void touch()
+		{
+			theDelegate.touch();
+		}
+
 	}
 }

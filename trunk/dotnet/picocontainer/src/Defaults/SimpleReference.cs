@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -9,22 +9,23 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-using System;
-
 namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Summary description for SimpleReference.
 	/// </summary>
-  public class SimpleReference : IObjectReference {
-    private object instance;
+	public class SimpleReference : IObjectReference
+	{
+		private object instance;
 
-    public object Get() {
-      return instance;
-    }
+		public object Get()
+		{
+			return instance;
+		}
 
-    public void Set(object item) {
-      this.instance = item;
-    }
-  }
+		public void Set(object item)
+		{
+			this.instance = item;
+		}
+	}
 }

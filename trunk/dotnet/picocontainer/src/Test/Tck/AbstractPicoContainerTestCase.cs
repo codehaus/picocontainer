@@ -13,57 +13,64 @@ using System;
 using System.Text;
 using System.Reflection;
 using System.Collections;
-
 using NUnit.Framework;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
 
-namespace PicoContainer.Tests.Tck {
-  /// <summary>
-  /// Summary description for AbstractPicoContainerTestCase.
-  /// </summary>
-  public abstract class AbstractPicoContainerTestCase {
-    protected abstract IMutablePicoContainer createPicoContainer(IPicoContainer parent);
-    protected IMutablePicoContainer createPicoContainer()
-    {
-      return this.createPicoContainer(null);
-    }
+namespace PicoContainer.Tests.Tck
+{
+	/// <summary>
+	/// Summary description for AbstractPicoContainerTestCase.
+	/// </summary>
+	public abstract class AbstractPicoContainerTestCase
+	{
+		protected abstract IMutablePicoContainer createPicoContainer(IPicoContainer parent);
 
-    protected IMutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-      return pico;
-    }
+		protected IMutablePicoContainer createPicoContainer()
+		{
+			return this.createPicoContainer(null);
+		}
+
+		protected IMutablePicoContainer createPicoContainerWithDependsOnTouchableOnly()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (DependsOnTouchable));
+			return pico;
+		}
 
 
-    protected IMutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() {
-      IMutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
-      pico.RegisterComponentImplementation(typeof(Touchable), typeof(SimpleTouchable));
-      return pico;
-    }
+		protected IMutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable()
+		{
+			IMutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
+			pico.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
+			return pico;
+		}
 
-    public void testNewContainerIsNotNull() {
-      Assert.IsNotNull(createPicoContainerWithTouchableAndDependsOnTouchable());
-    }
+		public void testNewContainerIsNotNull()
+		{
+			Assert.IsNotNull(createPicoContainerWithTouchableAndDependsOnTouchable());
+		}
 
-    public void testRegisteredComponentsExistAndAreTheCorrectTypes() {
-      IPicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+		public void testRegisteredComponentsExistAndAreTheCorrectTypes()
+		{
+			IPicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
 
-      Assert.IsNotNull(pico.GetComponentAdapter(typeof(Touchable)));
-      Assert.IsNotNull(pico.GetComponentAdapter(typeof(DependsOnTouchable)));
-      Assert.IsTrue(pico.GetComponentInstance(typeof(Touchable)) is Touchable);
-      Assert.IsTrue(pico.GetComponentInstance(typeof(DependsOnTouchable)) is DependsOnTouchable);
-      Assert.IsNull(pico.GetComponentAdapter(typeof(System.Collections.ICollection)));
-    }
+			Assert.IsNotNull(pico.GetComponentAdapter(typeof (Touchable)));
+			Assert.IsNotNull(pico.GetComponentAdapter(typeof (DependsOnTouchable)));
+			Assert.IsTrue(pico.GetComponentInstance(typeof (Touchable)) is Touchable);
+			Assert.IsTrue(pico.GetComponentInstance(typeof (DependsOnTouchable)) is DependsOnTouchable);
+			Assert.IsNull(pico.GetComponentAdapter(typeof (System.Collections.ICollection)));
+		}
 
-    public void testRegistersSingleInstance() {
-      IMutablePicoContainer pico = createPicoContainer();
-      StringBuilder sb = new StringBuilder();
-      pico.RegisterComponentInstance(sb);
-      Assert.AreSame(sb, pico.GetComponentInstance(typeof(StringBuilder)));
-    }
+		public void testRegistersSingleInstance()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			StringBuilder sb = new StringBuilder();
+			pico.RegisterComponentInstance(sb);
+			Assert.AreSame(sb, pico.GetComponentInstance(typeof (StringBuilder)));
+		}
 
-    /*
+		/*
         public void testContainerIsSerializable() {
     PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
 
@@ -82,241 +89,296 @@ namespace PicoContainer.Tests.Tck {
                                                                                                                                                                                                     assertTrue(touchable.wasTouched);
                                                                                                                                                                                                   }*/
 
-    public void testGettingComponentWithMissingDependencyFails()  {
-      IPicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
-      try {
-        picoContainer.GetComponentInstance(typeof(DependsOnTouchable));
-        Assert.Fail("should need a Touchable");
-      } catch (UnsatisfiableDependenciesException e) {
-        Assert.AreSame(picoContainer.GetComponentAdapterOfType(typeof(DependsOnTouchable)).ComponentImplementation, e.UnsatisfiableComponentAdapter.ComponentImplementation);
-        IList unsatisfiableDependencies = e.UnsatisfiableDependencies;
-        Assert.AreEqual(1, unsatisfiableDependencies.Count);
-        Assert.AreEqual(typeof(Touchable), unsatisfiableDependencies[0]);
-      }
-    }
+		public void testGettingComponentWithMissingDependencyFails()
+		{
+			IPicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
+			try
+			{
+				picoContainer.GetComponentInstance(typeof (DependsOnTouchable));
+				Assert.Fail("should need a Touchable");
+			}
+			catch (UnsatisfiableDependenciesException e)
+			{
+				Assert.AreSame(picoContainer.GetComponentAdapterOfType(typeof (DependsOnTouchable)).ComponentImplementation, e.UnsatisfiableComponentAdapter.ComponentImplementation);
+				IList unsatisfiableDependencies = e.UnsatisfiableDependencies;
+				Assert.AreEqual(1, unsatisfiableDependencies.Count);
+				Assert.AreEqual(typeof (Touchable), unsatisfiableDependencies[0]);
+			}
+		}
 
-    public void testDuplicateRegistration() {
-      try {
-        IMutablePicoContainer pico = createPicoContainer();
-        pico.RegisterComponentImplementation(typeof(object));
-        pico.RegisterComponentImplementation(typeof(object));
-        Assert.Fail("Should have failed with duplicate registration");
-      } catch (DuplicateComponentKeyRegistrationException e) {
-        Assert.IsTrue(e.DuplicateKey == typeof(object));
-      }
-    }
+		public void testDuplicateRegistration()
+		{
+			try
+			{
+				IMutablePicoContainer pico = createPicoContainer();
+				pico.RegisterComponentImplementation(typeof (object));
+				pico.RegisterComponentImplementation(typeof (object));
+				Assert.Fail("Should have failed with duplicate registration");
+			}
+			catch (DuplicateComponentKeyRegistrationException e)
+			{
+				Assert.IsTrue(e.DuplicateKey == typeof (object));
+			}
+		}
 
-    public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookUp() {
-      IMutablePicoContainer pico = createPicoContainer();
-      Hashtable map = new Hashtable();
-      pico.RegisterComponentInstance(typeof(Hashtable), map);
-      Assert.AreSame(map, pico.GetComponentInstance(typeof(Hashtable)));
-    }
+		public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookUp()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			Hashtable map = new Hashtable();
+			pico.RegisterComponentInstance(typeof (Hashtable), map);
+			Assert.AreSame(map, pico.GetComponentInstance(typeof (Hashtable)));
+		}
 
-    public void testAmbiguousResolution() {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation("ping", typeof(string));
-      pico.RegisterComponentInstance("pong", "pang");
-      try {
-        pico.GetComponentInstance(typeof(string));
-      } catch (AmbiguousComponentResolutionException e) {
-        Assert.IsTrue(e.Message.IndexOf("System.String") != -1);
-      }
-    }
+		public void testAmbiguousResolution()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation("ping", typeof (string));
+			pico.RegisterComponentInstance("pong", "pang");
+			try
+			{
+				pico.GetComponentInstance(typeof (string));
+			}
+			catch (AmbiguousComponentResolutionException e)
+			{
+				Assert.IsTrue(e.Message.IndexOf("System.String") != -1);
+			}
+		}
 
-    public void testLookupWithUnregisteredKeyReturnsNull() {
-      IMutablePicoContainer pico = createPicoContainer();
-      Assert.IsNull(pico.GetComponentInstance(typeof(string)));
-    }
+		public void testLookupWithUnregisteredKeyReturnsNull()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			Assert.IsNull(pico.GetComponentInstance(typeof (string)));
+		}
 
-    public class ListAdder {
-      public ListAdder(IList list) {
-        list.Add("something");
-      }
-    }
+		public class ListAdder
+		{
+			public ListAdder(IList list)
+			{
+				list.Add("something");
+			}
+		}
 
-    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(ComponentD));
+		public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (ComponentD));
 
-      try {
-        pico.GetComponentInstance(typeof(ComponentD));
-      } catch (UnsatisfiableDependenciesException e) {
-        IList unsatisfiableDependencies = e.UnsatisfiableDependencies;
-        Assert.AreEqual(2, unsatisfiableDependencies.Count);
-        Assert.IsTrue(unsatisfiableDependencies.Contains(typeof(ComponentE)));
-        Assert.IsTrue(unsatisfiableDependencies.Contains(typeof(ComponentB)));
+			try
+			{
+				pico.GetComponentInstance(typeof (ComponentD));
+			}
+			catch (UnsatisfiableDependenciesException e)
+			{
+				IList unsatisfiableDependencies = e.UnsatisfiableDependencies;
+				Assert.AreEqual(2, unsatisfiableDependencies.Count);
+				Assert.IsTrue(unsatisfiableDependencies.Contains(typeof (ComponentE)));
+				Assert.IsTrue(unsatisfiableDependencies.Contains(typeof (ComponentB)));
 
-        Assert.IsTrue(e.Message.IndexOf(typeof(ComponentB).Name) != -1);
-        Assert.IsTrue(e.Message.IndexOf(typeof(ComponentB).Name) != -1);
-      }
-    }                                        
-                                                                                                                                                                                                                                      
-    public void testCyclicDependencyThrowsCyclicDependencyException() {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation(typeof(ComponentB));
-      pico.RegisterComponentImplementation(typeof(ComponentD));
-      pico.RegisterComponentImplementation(typeof(ComponentE));
+				Assert.IsTrue(e.Message.IndexOf(typeof (ComponentB).Name) != -1);
+				Assert.IsTrue(e.Message.IndexOf(typeof (ComponentB).Name) != -1);
+			}
+		}
 
-      try {
-        pico.GetComponentInstance(typeof(ComponentD));
-        Assert.Fail();
-      } catch (CyclicDependencyException e) {
-        ParameterInfo[] parms = typeof(ComponentD).GetConstructors()[0].GetParameters();
-        Type[] dDependencies = new Type[parms.Length];
-        int x=0;
-        foreach (ParameterInfo p in parms) {
-          dDependencies[x++] = p.ParameterType;
-        }
-        
-        Type[] reportedDependencies = e.Dependencies;
-        for (x=0;x< reportedDependencies.Length;x++) {
-          Assert.AreEqual(dDependencies[x], reportedDependencies[x]);
-        }
-      } catch (Exception) {
-        Assert.Fail();
-      }
-    }
-                          
-    public void testRemovalNonRegisteredIComponentAdapterWorksAndReturnsNull() {
-      IMutablePicoContainer picoContainer = createPicoContainer();
-      Assert.IsNull(picoContainer.UnregisterComponent("COMPONENT DOES NOT EXIST"));
-    }
-                                                                                     
-    
-    public void testIComponentAdapterRegistrationOrderIsMaintained() {
-      ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", typeof(object));
-      ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", typeof(MyString));
+		public void testCyclicDependencyThrowsCyclicDependencyException()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation(typeof (ComponentB));
+			pico.RegisterComponentImplementation(typeof (ComponentD));
+			pico.RegisterComponentImplementation(typeof (ComponentE));
 
-      IMutablePicoContainer picoContainer = createPicoContainer();
-      picoContainer.RegisterComponent(c1);
-      picoContainer.RegisterComponent(c2);
-      ArrayList l = new ArrayList();
-      l.Add(c1);
-      l.Add(c2);
+			try
+			{
+				pico.GetComponentInstance(typeof (ComponentD));
+				Assert.Fail();
+			}
+			catch (CyclicDependencyException e)
+			{
+				ParameterInfo[] parms = typeof (ComponentD).GetConstructors()[0].GetParameters();
+				Type[] dDependencies = new Type[parms.Length];
+				int x = 0;
+				foreach (ParameterInfo p in parms)
+				{
+					dDependencies[x++] = p.ParameterType;
+				}
 
-      object[] org = new object[]{c1,c2};
-      for (int x = 0; x< 2;x++) {
-        Assert.AreEqual(org[x], new ArrayList(picoContainer.ComponentAdapters).ToArray()[x]);
-      }
+				Type[] reportedDependencies = e.Dependencies;
+				for (x = 0; x < reportedDependencies.Length; x++)
+				{
+					Assert.AreEqual(dDependencies[x], reportedDependencies[x]);
+				}
+			}
+			catch (Exception)
+			{
+				Assert.Fail();
+			}
+		}
 
-      object o = picoContainer.ComponentInstances; // create all the instances at once
-      Assert.IsFalse(picoContainer.ComponentInstances[0] is MyString);
-      Assert.IsTrue(picoContainer.ComponentInstances[1] is MyString);
+		public void testRemovalNonRegisteredIComponentAdapterWorksAndReturnsNull()
+		{
+			IMutablePicoContainer picoContainer = createPicoContainer();
+			Assert.IsNull(picoContainer.UnregisterComponent("COMPONENT DOES NOT EXIST"));
+		}
 
-      IMutablePicoContainer reversedPicoContainer = createPicoContainer();
-      reversedPicoContainer.RegisterComponent(c2);
-      reversedPicoContainer.RegisterComponent(c1);
-      
-      l.Clear();
-      l.Add(c2);
-      l.Add(c1);
-      org = new object[]{c2,c1};
-      for (int x = 0; x< 2;x++) {
-        Assert.AreEqual(org[x], new ArrayList(reversedPicoContainer.ComponentAdapters).ToArray()[x]);
-      }
 
-      object o1 = reversedPicoContainer.ComponentInstances; // create all the instances at once
-      Assert.IsTrue(reversedPicoContainer.ComponentInstances[0] is MyString);
-      Assert.IsFalse(reversedPicoContainer.ComponentInstances[1] is MyString);
-    }
-                            
-    public class MyString {
-    }
+		public void testIComponentAdapterRegistrationOrderIsMaintained()
+		{
+			ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", typeof (object));
+			ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", typeof (MyString));
 
-    public class NeedsTouchable {
-      public Touchable touchable;
+			IMutablePicoContainer picoContainer = createPicoContainer();
+			picoContainer.RegisterComponent(c1);
+			picoContainer.RegisterComponent(c2);
+			ArrayList l = new ArrayList();
+			l.Add(c1);
+			l.Add(c2);
 
-      public NeedsTouchable(Touchable touchable) {
-        this.touchable = touchable;
-      }
-    }
+			object[] org = new object[] {c1, c2};
+			for (int x = 0; x < 2; x++)
+			{
+				Assert.AreEqual(org[x], new ArrayList(picoContainer.ComponentAdapters).ToArray()[x]);
+			}
 
-    public class NeedsWashable {
-      public Washable washable;
+			object o = picoContainer.ComponentInstances; // create all the instances at once
+			Assert.IsFalse(picoContainer.ComponentInstances[0] is MyString);
+			Assert.IsTrue(picoContainer.ComponentInstances[1] is MyString);
 
-      public NeedsWashable(Washable washable) {
-        this.washable = washable;
-      }
-    }
+			IMutablePicoContainer reversedPicoContainer = createPicoContainer();
+			reversedPicoContainer.RegisterComponent(c2);
+			reversedPicoContainer.RegisterComponent(c1);
 
-    public void testSameInstanceCanBeUsedAsDifferentType() {
-      IMutablePicoContainer pico = createPicoContainer();
-      pico.RegisterComponentImplementation("wt", typeof(WashableTouchable));
-      pico.RegisterComponentImplementation("nw", typeof(NeedsWashable));
-      pico.RegisterComponentImplementation("nt", typeof(NeedsTouchable));
+			l.Clear();
+			l.Add(c2);
+			l.Add(c1);
+			org = new object[] {c2, c1};
+			for (int x = 0; x < 2; x++)
+			{
+				Assert.AreEqual(org[x], new ArrayList(reversedPicoContainer.ComponentAdapters).ToArray()[x]);
+			}
 
-      NeedsWashable nw = (NeedsWashable) pico.GetComponentInstance("nw");
-      NeedsTouchable nt = (NeedsTouchable) pico.GetComponentInstance("nt");
-      Assert.AreSame(nw.washable, nt.touchable);
-    }
+			object o1 = reversedPicoContainer.ComponentInstances; // create all the instances at once
+			Assert.IsTrue(reversedPicoContainer.ComponentInstances[0] is MyString);
+			Assert.IsFalse(reversedPicoContainer.ComponentInstances[1] is MyString);
+		}
 
-    public void testRegisterComponentWithObjectBadType() {
-      IMutablePicoContainer pico = createPicoContainer();
+		public class MyString
+		{
+		}
 
-      try {
-        pico.RegisterComponentInstance(typeof(IList), new Object());
-        Assert.Fail("Shouldn't be able to register an Object.class as IList because it is not, " +
-          "it does not implement it, Object.class does not implement much.");
-      } catch (AssignabilityRegistrationException) {
-      }
-    }
-                                                                           
-    public class JMSService {
-      public readonly String serverid;
-      public readonly String path;
+		public class NeedsTouchable
+		{
+			public Touchable touchable;
 
-      public JMSService(String serverid, String path) {
-        this.serverid = serverid;
-        this.path = path;
-      }
-    }
+			public NeedsTouchable(Touchable touchable)
+			{
+				this.touchable = touchable;
+			}
+		}
 
-    // http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
-    public void testPico52() {
-      IMutablePicoContainer pico = createPicoContainer();
+		public class NeedsWashable
+		{
+			public Washable washable;
 
-      pico.RegisterComponentImplementation("foo", typeof(JMSService), new IParameter[]{
-                                                                                        new ConstantParameter("0"),
-                                                                                        new ConstantParameter("something"),
-      });
-      JMSService jms = (JMSService) pico.GetComponentInstance("foo");
-      Assert.AreEqual("0", jms.serverid);
-      Assert.AreEqual("something", jms.path);
-    }
-                                                                                                                                                                                                                                      
-    public class ComponentA {
-      public ComponentA(ComponentB b, ComponentC c) {
-        Assert.IsNotNull(b);
-        Assert.IsNotNull(c);
-      }
-    }
+			public NeedsWashable(Washable washable)
+			{
+				this.washable = washable;
+			}
+		}
 
-    public class ComponentB {
-    }
+		public void testSameInstanceCanBeUsedAsDifferentType()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+			pico.RegisterComponentImplementation("wt", typeof (WashableTouchable));
+			pico.RegisterComponentImplementation("nw", typeof (NeedsWashable));
+			pico.RegisterComponentImplementation("nt", typeof (NeedsTouchable));
 
-    public class ComponentC {
-    }
+			NeedsWashable nw = (NeedsWashable) pico.GetComponentInstance("nw");
+			NeedsTouchable nt = (NeedsTouchable) pico.GetComponentInstance("nt");
+			Assert.AreSame(nw.washable, nt.touchable);
+		}
 
-    public class ComponentD {
-      public ComponentD(ComponentE e, ComponentB b) {
-        Assert.IsNotNull(e);
-        Assert.IsNotNull(b);
-      }
-    }
+		public void testRegisterComponentWithObjectBadType()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
 
-    public class ComponentE {
-      public ComponentE(ComponentD d) {
-        Assert.IsNotNull(d);
-      }
-    }
+			try
+			{
+				pico.RegisterComponentInstance(typeof (IList), new Object());
+				Assert.Fail("Shouldn't be able to register an Object.class as IList because it is not, " +
+					"it does not implement it, Object.class does not implement much.");
+			}
+			catch (AssignabilityRegistrationException)
+			{
+			}
+		}
 
-    public class ComponentF {
-      public ComponentF(ComponentA a) {
-        Assert.IsNotNull(a);
-      }
-    }
-  }
+		public class JMSService
+		{
+			public readonly String serverid;
+			public readonly String path;
+
+			public JMSService(String serverid, String path)
+			{
+				this.serverid = serverid;
+				this.path = path;
+			}
+		}
+
+		// http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
+		public void testPico52()
+		{
+			IMutablePicoContainer pico = createPicoContainer();
+
+			pico.RegisterComponentImplementation("foo", typeof (JMSService), new IParameter[]
+				{
+					new ConstantParameter("0"),
+					new ConstantParameter("something"),
+				});
+			JMSService jms = (JMSService) pico.GetComponentInstance("foo");
+			Assert.AreEqual("0", jms.serverid);
+			Assert.AreEqual("something", jms.path);
+		}
+
+		public class ComponentA
+		{
+			public ComponentA(ComponentB b, ComponentC c)
+			{
+				Assert.IsNotNull(b);
+				Assert.IsNotNull(c);
+			}
+		}
+
+		public class ComponentB
+		{
+		}
+
+		public class ComponentC
+		{
+		}
+
+		public class ComponentD
+		{
+			public ComponentD(ComponentE e, ComponentB b)
+			{
+				Assert.IsNotNull(e);
+				Assert.IsNotNull(b);
+			}
+		}
+
+		public class ComponentE
+		{
+			public ComponentE(ComponentD d)
+			{
+				Assert.IsNotNull(d);
+			}
+		}
+
+		public class ComponentF
+		{
+			public ComponentF(ComponentA a)
+			{
+				Assert.IsNotNull(a);
+			}
+		}
+	}
 
 }
-

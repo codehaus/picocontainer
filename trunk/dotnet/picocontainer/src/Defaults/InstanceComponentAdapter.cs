@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -9,23 +9,25 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-using System;
+namespace PicoContainer.Defaults
+{
+	public class InstanceComponentAdapter : AbstractComponentAdapter
+	{
+		private object componentInstance;
 
-namespace PicoContainer.Defaults {
-  public class InstanceComponentAdapter : AbstractComponentAdapter {
-    private object componentInstance;
 
+		public InstanceComponentAdapter(object componentKey, object componentInstance) : base(componentKey, componentInstance.GetType())
+		{
+			this.componentInstance = componentInstance;
+		}
 
-    public InstanceComponentAdapter(object componentKey, object componentInstance) : base(componentKey, componentInstance.GetType()) {
-      this.componentInstance = componentInstance;
-    }
+		public override object ComponentInstance
+		{
+			get { return componentInstance; }
+		}
 
-    public override object ComponentInstance {
-      get {
-        return componentInstance;
-      }
-    }
-
-    public override void Verify() {}
-  }
+		public override void Verify()
+		{
+		}
+	}
 }

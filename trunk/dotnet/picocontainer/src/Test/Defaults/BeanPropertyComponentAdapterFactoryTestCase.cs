@@ -6,117 +6,129 @@ using System.Collections;
 using PicoContainer.Tests.TestModel;
 using PicoContainer.Tests.Tck;
 
-namespace Test.Defaults {
+namespace Test.Defaults
+{
+	[TestFixture]
+	public class BeanPropertyComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase
+	{
+		public class Foo
+		{
+			private String message;
 
-  [TestFixture]
-  public class BeanPropertyComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase{
-    public class Foo {
-      private String message;
+			public String Message
+			{
+				get { return message; }
+				set { message = value; }
+			}
+		}
 
-      public String Message {
-        get { return message; }
-        set { message = value; }
-      }
-    }
+		public class Failing
+		{
+			public String Message
+			{
+				set { throw new ApplicationException(); }
+			}
+		}
 
-    public class Failing {
-      public String Message {
-        set {
-          throw new ApplicationException();
-        }
-      }
-    }
+		public class A
+		{
+			private B b;
 
-    public class A {
-      private B b;
+			public B B
+			{
+				get { return b; }
+				set { b = value; }
+			}
 
-      public B B {
-        get {
-          return b;
-        }
-        set {
-          b = value;
-        }
-      }
-      public void setB(B b) {
-        this.b = b;
-      }
+			public void setB(B b)
+			{
+				this.b = b;
+			}
 
-      public B getB() {
-        return b;
-      }
-    }
+			public B getB()
+			{
+				return b;
+			}
+		}
 
-    public class B {
-    }
+		public class B
+		{
+		}
 
-    [Test]
-    public void testSetProperties() {
-      IComponentAdapter adapter = CreateAdapterCallingSetMessage(typeof(Foo));
-      Foo foo = (Foo) adapter.ComponentInstance;
-      Assert.IsNotNull(foo);
-      Assert.AreEqual("hello", foo.Message);
-    }
-  
-    [Test]
-    [ExpectedException(typeof(PicoInitializationException))]
-    public void testFailingSetter() {
-      IComponentAdapter adapter = CreateAdapterCallingSetMessage(typeof(Failing));
-      object instance = adapter.ComponentInstance;
-    }
+		[Test]
+		public void testSetProperties()
+		{
+			IComponentAdapter adapter = CreateAdapterCallingSetMessage(typeof (Foo));
+			Foo foo = (Foo) adapter.ComponentInstance;
+			Assert.IsNotNull(foo);
+			Assert.AreEqual("hello", foo.Message);
+		}
 
-    [Test]
-    public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
-      BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
+		[Test]
+		[ExpectedException(typeof (PicoInitializationException))]
+		public void testFailingSetter()
+		{
+			IComponentAdapter adapter = CreateAdapterCallingSetMessage(typeof (Failing));
+			object instance = adapter.ComponentInstance;
+		}
 
-      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter("foo", typeof(Foo), null);
+		[Test]
+		public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount()
+		{
+			BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
 
-      Hashtable properties = new Hashtable();
-      properties.Add("Message", "hello");
-      adapter.Properties = properties;
+			BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter("foo", typeof (Foo), null);
 
-      Foo foo = (Foo) adapter.ComponentInstance;
+			Hashtable properties = new Hashtable();
+			properties.Add("Message", "hello");
+			adapter.Properties = properties;
 
-      Assert.AreEqual("hello", foo.Message);
-    }
+			Foo foo = (Foo) adapter.ComponentInstance;
 
-    public void testDelegateIsAccessible() {
-      DecoratingComponentAdapter componentAdapter =
-        (DecoratingComponentAdapter) CreateComponentAdapterFactory().CreateComponentAdapter(typeof(Touchable), typeof(SimpleTouchable), null);
+			Assert.AreEqual("hello", foo.Message);
+		}
 
-      Assert.IsNotNull(componentAdapter.Delegate);
-    }
+		public void testDelegateIsAccessible()
+		{
+			DecoratingComponentAdapter componentAdapter =
+				(DecoratingComponentAdapter) CreateComponentAdapterFactory().CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
 
-    protected override IComponentAdapterFactory CreateComponentAdapterFactory() {
-      return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
-    }
+			Assert.IsNotNull(componentAdapter.Delegate);
+		}
 
-    private IComponentAdapter CreateAdapterCallingSetMessage(Type impl) {
-      BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
+		protected override IComponentAdapterFactory CreateComponentAdapterFactory()
+		{
+			return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
+		}
 
-      Hashtable properties = new Hashtable();
-      properties.Add("Message", "hello");
+		private IComponentAdapter CreateAdapterCallingSetMessage(Type impl)
+		{
+			BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
 
-      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter(impl, impl, null);
-      adapter.Properties = properties;
-      return adapter;
-    }
+			Hashtable properties = new Hashtable();
+			properties.Add("Message", "hello");
 
-    public void testSetDependenComponentWillBeSetByTheAdapter() {
-      picoContainer.RegisterComponentImplementation("b", typeof(B));
-      BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
-      Hashtable properties = new Hashtable();
+			BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter(impl, impl, null);
+			adapter.Properties = properties;
+			return adapter;
+		}
 
-      // the second b is the key of the B implementation
-      properties.Add("B", "b");
-      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter(typeof(A),typeof(A), null);
-      adapter.Properties = properties;
-      picoContainer.RegisterComponent(adapter);
-      A a = (A) picoContainer.GetComponentInstance(typeof(A));
+		public void testSetDependenComponentWillBeSetByTheAdapter()
+		{
+			picoContainer.RegisterComponentImplementation("b", typeof (B));
+			BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
+			Hashtable properties = new Hashtable();
 
-      Assert.IsNotNull(a);
-      Assert.IsNotNull(a.getB());
-    }
+			// the second b is the key of the B implementation
+			properties.Add("B", "b");
+			BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter(typeof (A), typeof (A), null);
+			adapter.Properties = properties;
+			picoContainer.RegisterComponent(adapter);
+			A a = (A) picoContainer.GetComponentInstance(typeof (A));
 
-  }
+			Assert.IsNotNull(a);
+			Assert.IsNotNull(a.getB());
+		}
+
+	}
 }

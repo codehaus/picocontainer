@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<p>
+Integrates the <a href="https://dynaop.dev.java.net">Dynaop</a> AOP framework with the PicoContainer dependency injection framework.
+
+<h3>Usage</h3>
+To use, create and configure an instance of <code>dynaop.Aspects</code>.  See the Dynaop documentation for more information on how to do this.  Next, create an instance of {@link org.nanocontainer.dynaop.AspectsComponentAdapterFactory}, passing in the <code>dynaop.Aspects</code> instance to the constructor.  Finally, pass the <code>DynaComponentAdapterFactory</code> to your <code>PicoContainer</code>, and configure the container like normal.  Advice will be applied to components as they are instantiated.  Note that the components must implement an interface for the advice to be applied.
+
+<h3>Example</h3>
+Here's a short example.  Let's say we have the following interface:
+
+<pre>
+public interface MyComponent {
+    void aMethod();
+}
+</pre>
+
+<p>
+Here's our implementation of this interface:
+
+<pre>
+public class MyComponentImpl implements MyComponent {
+    void aMethod() { }
+}
+</pre>
+
+<p>
+We want to decorate calls to <code>MyComponent</code> objects, so we'll create a Dynaop <code>Interceptor</code>, like this:
+
+<pre>
+public class LoggingInterceptor implements dynaop.Interceptor {
+
+    public Object intercept(Invocation invocation) throws Throwable {
+        System.out.println("start");
+        Object result = invocation.proceed();
+        System.out.println("end");
+        return result;
+    }
+}
+</pre>
+
+<p>
+We'll configure our advice as follows:
+
+<pre>
+   Aspects aspects = new Aspects();
+   aspects.interceptor(Pointcuts.instancesOf(MyComponent.class),
+                       Pointcuts.ALL_METHODS, new LoggingInterceptor());
+</pre>
+
+<p>
+Next, we will create the <code>AspectsComponentAdapterFactory</code>, passing in the <code>dynaop.Aspects</code> instance:
+
+<pre>
+    AspectsComponentAdapterFactory factory = new AspectsComponentAdapterFactory(
+                    new DefaultComponentAdapterFactory(), aspects);
+    MutablePicoContainer container = new DefaultPicoContainer(factory);
+</pre>
+
+<p>
+(We could also have used the single argument <code>AspectsComponentAdapterFactory</code> constructor, which uses the default <code>Aspects</code> instance.   In this case the aspects get configured from a "/dynaop.bsh" BeanShell script at the root of the classpath.)  Finally, we'll create our container with the factory, and configure the container:
+
+<pre>
+    MutablePicoContainer container = new DefaultPicoContainer(factory);
+    container.registerComponentImplementation(MyComponent.class, MyComponentImpl.class);
+</pre>
+
+<p>
+We can obtain an instance of a <code>MyComponent</code> object like normal:
+
+<pre>
+    MyComponent foo = (MyComponent) container.getComponentInstance(MyComponent.class);
+    foo.aMethhod(); // will print logging traces
+</pre>
+
+<p>
+The <code>LoggingInterceptor</code> advice will be applied to the <code>foo</code> object, so when we make a call to <code>foo.aMethod</code>, we'll see the "start" and "end" messages printed to the standard output.
+
+<p>
+We hard coded the Dynaop configuration in this example, but you might consider using Dynaop's <a href="http://beanshell.org">BeanShell</a> configuration mechanism.  It's more concise.  And while you're at it, you might want to take a look at NanoContainer to use a BeanShell script to configure the PicoContainer as well. 
+
+<p>
+For a slightly longer example that includes mixin advice, see the <code>org.nanocontainer.dynaop.AspectsComponentAdapterTestCase</code> in the test tree of the source code.
+
+<h3>Advice with dependencies on other components</h3>
+If you have an <code>Interceptor</code> or <code>Mixin</code> that needs to be instantiated by the Pico container because it has dependencies on other components, use <code>PicoInterceptorFactory</code> or <code>PicoMixinFactory</code>.  When configuring the <code>Aspects</code> instance, instead of passing in the interceptor or mixin reference directly, pass in an instance of the appropriate factory.  For example:
+
+<pre>
+aspects.interceptor(Pointcuts.instancesOf(MyComponent.class),
+                    Pointcuts.ALL_METHODS, new PicoInterceptorFactory(container, MyInterceptor.class));
+</pre>
+
+This code will use the component key <code>MyInterceptor.class</code> to look up the interceptor, and apply it to all methods of <code>MyComponent</code>.
+
+</body>
+</html>

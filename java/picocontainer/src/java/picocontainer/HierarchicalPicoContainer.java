@@ -49,8 +49,8 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     private List orderedComponents = new ArrayList();
 
     public HierarchicalPicoContainer(Container parentContainer,
-            StartableLifecycleManager startableLifecycleManager,
-            ComponentFactory componentFactory) {
+                                     StartableLifecycleManager startableLifecycleManager,
+                                     ComponentFactory componentFactory) {
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
         }
@@ -99,7 +99,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         checkConstructor(componentClass);
         checkTypeCompatibility(componentType, componentClass);
         checkTypeDuplication(componentType);
-        checkImplementationDuplication(componentClass);
+        //checkImplementationDuplication(componentClass);
         registeredComponents.add(new ComponentSpecification(componentType, componentClass));
     }
 
@@ -122,14 +122,15 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     // todo rename componentClass to componentImplementation everywhere
-    private void checkImplementationDuplication(Class componentImplementation) throws DuplicateComponentClassRegistrationException {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
-            Class aClass = ((ComponentSpecification) iterator.next()).getComponentClass();
-            if (aClass == componentImplementation) {
-                throw new DuplicateComponentClassRegistrationException(aClass);
-            }
-        }
-    }
+//    private void checkImplementationDuplication(Class componentImplementation)
+//            throws DuplicateComponentClassRegistrationException {
+//        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+//            Class aClass = ((ComponentSpecification) iterator.next()).getComponentClass();
+//            if (aClass == componentImplementation) {
+//                throw new DuplicateComponentClassRegistrationException(aClass);
+//            }
+//        }
+//    }
 
     private void checkTypeCompatibility(Class componentType, Class componentClass) throws AssignabilityRegistrationException {
         if (!componentType.isAssignableFrom(componentClass)) {
@@ -140,7 +141,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     private void checkConcrete(Class componentClass) throws NotConcreteRegistrationException {
         // Assert that the component class is concrete.
         boolean isAbstract = (componentClass.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
-        if (componentClass.isInterface() || isAbstract ) {
+        if (componentClass.isInterface() || isAbstract) {
             throw new NotConcreteRegistrationException(componentClass);
         }
     }
@@ -153,7 +154,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
         checkTypeCompatibility(componentType, component.getClass());
         checkTypeDuplication(componentType);
-        checkImplementationDuplication(component.getClass());
+        //checkImplementationDuplication(component.getClass());
         componentTypeToInstanceMap.put(componentType, component);
     }
 
@@ -166,34 +167,14 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
                 ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
                 Class componentClass = componentSpec.getComponentClass();
                 Class componentType = componentSpec.getComponentType();
+
+                boolean reused = resuseImplementationIfAppropriate(componentType, componentClass);
                 if (componentTypeToInstanceMap.get(componentType) == null) {
-                    // hook'em up
-                    try {
-                        Constructor[] constructors = componentClass.getConstructors();
-                        Constructor constructor = constructors[0];
-                        Class[] parameters = constructor.getParameterTypes();
-
-                        // For each param, look up the instantiated componentClass.
-                        Object[] args = new Object[parameters.length];
-                        for (int i = 0; i < parameters.length; i++) {
-                            Class param = parameters[i];
-                            args[i] = getComponentForParam(param);
-                        }
-                        if (hasNulls(args) == false) {
-                            Object componentInstance = null;
-                         componentInstance = makeComponentInstance(componentType, constructor, args);
-                            // Put the instantiated comp back in the map
-                            componentTypeToInstanceMap.put(componentType, componentInstance);
-                         orderedComponents.add(componentInstance);
-                            progress = true;
-                        }
-
-                    } catch (InvocationTargetException e) {
-                        throw new PicoInvocationTargetStartException(e.getCause());
-                    } catch (InstantiationException e) {
-                        // covered by checkConcrete() in registration
-                    } catch (IllegalAccessException e) {
-                        // covered by checkConstructor() in registration
+                    if (reused) {
+                        progress = true;
+                    } else {
+                        // hook'em up
+                        progress = hookEmUp(componentClass, componentType, progress);
                     }
                 }
             }
@@ -203,6 +184,51 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
 
         startComponents();
 
+    }
+
+    protected boolean hookEmUp(Class componentClass, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
+        try {
+            Constructor[] constructors = componentClass.getConstructors();
+            Constructor constructor = constructors[0];
+            Class[] parameters = constructor.getParameterTypes();
+
+            // For each param, look up the instantiated componentClass.
+            Object[] args = new Object[parameters.length];
+            for (int i = 0; i < parameters.length; i++) {
+                Class param = parameters[i];
+                args[i] = getComponentForParam(param);
+            }
+            if (hasAnyNullArguments(args) == false) {
+                Object componentInstance = null;
+                componentInstance = makeComponentInstance(componentType, constructor, args);
+                // Put the instantiated comp back in the map
+                componentTypeToInstanceMap.put(componentType, componentInstance);
+                orderedComponents.add(componentInstance);
+                progress = true;
+            }
+
+        } catch (InvocationTargetException e) {
+            throw new PicoInvocationTargetStartException(e.getCause());
+        } catch (InstantiationException e) {
+            // covered by checkConcrete() in registration
+        } catch (IllegalAccessException e) {
+            // covered by checkConstructor() in registration
+        }
+        return progress;
+    }
+
+    protected boolean resuseImplementationIfAppropriate(Class componentType, Class componentClass) {
+        Set compEntries = componentTypeToInstanceMap.entrySet();
+        for (Iterator iterator = compEntries.iterator();
+             iterator.hasNext();) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            Object exisitingCompClass = entry.getValue();
+            if (exisitingCompClass.getClass() == componentClass) {
+                componentTypeToInstanceMap.put(componentType, exisitingCompClass);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void stop() throws PicoStopException {
@@ -217,7 +243,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     protected void stopComponents() throws PicoStopException {
-        for (int i = orderedComponents.size() -1 ; i >= 0 ; i--) {
+        for (int i = orderedComponents.size() - 1; i >= 0; i--) {
             Object component = orderedComponents.get(i);
             startableLifecycleManager.stopComponent(component);
         }
@@ -270,7 +296,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         return result;
     }
 
-    private boolean hasNulls(Object[] args) {
+    private boolean hasAnyNullArguments(Object[] args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
             if (arg == null) {
@@ -282,7 +308,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
 
     public Object getComponent(Class componentType) {
         Object result = componentTypeToInstanceMap.get(componentType);
-        if( result == null ) {
+        if (result == null) {
             result = parentContainer.getComponent(componentType);
         }
         return result;
@@ -290,7 +316,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
 
     public Class[] getComponentTypes() {
         // Get my own
-        Set types = new HashSet( componentTypeToInstanceMap.keySet() );
+        Set types = new HashSet(componentTypeToInstanceMap.keySet());
 
         // Get those from my parent.
         types.addAll(Arrays.asList(parentContainer.getComponentTypes()));

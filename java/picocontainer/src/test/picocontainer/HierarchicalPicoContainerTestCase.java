@@ -78,17 +78,23 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testDupeImplementationsOfComponents() throws PicoRegistrationException {
-        PicoContainer pico = new HierarchicalPicoContainer.Default();
+    public void testDupeImplementationsOfComponents() throws PicoStartException {
 
-        pico.registerComponent(Dictionary.class, Webster.class);
+        List messages = new ArrayList();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
         try {
+            pico.registerComponent(List.class, messages);
+            pico.registerComponent(Dictionary.class, Webster.class);
+
             pico.registerComponent(Thesaurus.class, Webster.class);
-            fail("Should have barfed with dupe registration");
-        } catch (DuplicateComponentClassRegistrationException e) {
-            // expected
-            assertTrue(e.getDuplicateClass() == Webster.class);
-            assertTrue(e.getMessage().indexOf(Webster.class.getName()) > 0);
+            pico.start();
+            assertEquals("Should only habe one instance of Webster", 1,messages.size());
+            Object dict = pico.getComponent(Dictionary.class);
+            Object the = pico.getComponent(Thesaurus.class);
+            assertEquals(dict, the);
+
+        } catch (PicoRegistrationException e) {
+            fail("Should not have barfed with dupe registration");
         }
     }
 
@@ -212,11 +218,11 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         // doesn't receive anything until the components are instantiated.
         pico.start();
 
-        List types = Arrays.asList( pico.getComponentTypes() );
-        assertEquals( "There should be 2 types", 2, types.size() );
-        assertTrue( "There should be a FredImpl type", types.contains(FredImpl.class) );
-        assertTrue( "There should be a Wilma type", types.contains(Wilma.class) );
-        assertTrue( "There should not be a WilmaImpl type", !types.contains(WilmaImpl.class) );
+        List types = Arrays.asList(pico.getComponentTypes());
+        assertEquals("There should be 2 types", 2, types.size());
+        assertTrue("There should be a FredImpl type", types.contains(FredImpl.class));
+        assertTrue("There should be a Wilma type", types.contains(Wilma.class));
+        assertTrue("There should not be a WilmaImpl type", !types.contains(WilmaImpl.class));
     }
 
     public void testParentContainer() throws PicoRegistrationException, PicoStartException {
@@ -237,7 +243,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             }
 
             public Class[] getComponentTypes() {
-                return new Class[] { Wilma.class };
+                return new Class[]{Wilma.class};
             }
         });
 
@@ -370,7 +376,6 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public static class D {
         public D() {
-            System.out.println("D instantiated");
         }
     }
 

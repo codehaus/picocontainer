@@ -43,7 +43,6 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
         } catch (PicoInvocationTargetStartException e) {
             assertEquals(SQLException.class, e.getCause().getClass());
             // expected
-            e.printStackTrace();
         }
     }
 
@@ -81,7 +80,6 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
         } catch (PicoInvocationTargetStopException e) {
             assertEquals(SQLException.class, e.getCause().getClass());
             // expected
-            e.printStackTrace();
         }
     }
 

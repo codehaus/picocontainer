@@ -51,8 +51,8 @@ public class NanoNanoTestCase extends TestCase {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
-                "      <component class=\"picocontainer.hierarchical.HierarchicalPicoContainer$Default\"/>" +
-                "      <component class=\"nanocontainer.DomRegistrationNanoContainer$WithParentContainer\"/>" +
+                "      <component class=\"org.picocontainer.hierarchical.HierarchicalPicoContainer$Default\"/>" +
+                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithParentContainer\"/>" +
                 "</conponents>")));
 
         nc.instantiateComponents();

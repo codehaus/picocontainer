@@ -10,23 +10,48 @@
 package org.picocontainer;
 
 /**
+ * Subclass of {@link PicoException} that is thrown when there is a problem creating, providing or locating a component
+ * instance or a part of the PicoContainer API, for example, when a request for a component is ambiguous.
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
+ * @since 1.0
  */
 public class PicoIntrospectionException extends PicoRegistrationException {
+    /**
+     * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
+     * that caused this one. 
+     */ 
     public PicoIntrospectionException() {
     }
 
-    public PicoIntrospectionException(String message) {
+    /**
+     * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the
+     * exception that caused this one. 
+     * 
+     * @param message the message detailing the exception.
+     */ 
+    public PicoIntrospectionException(final String message) {
         super(message);
     }
 
-    public PicoIntrospectionException(Throwable cause) {
+    /**
+     * Construct a new exception with the specified cause and no detail message.
+     * 
+     * @param cause the exception that caused this one.
+     */ 
+    public PicoIntrospectionException(final Throwable cause) {
         super(cause);
     }
 
-    public PicoIntrospectionException(String message, Throwable cause) {
-        super(message, cause);
+    /**
+     * Construct a new exception with the specified cause and the specified detail message.
+     * 
+     * @param message the message detailing the exception. 
+     * @param cause the exception that caused this one.
+     */ 
+    public PicoIntrospectionException(final String message, final Throwable cause) {
+        super(message,cause);
     }
 }

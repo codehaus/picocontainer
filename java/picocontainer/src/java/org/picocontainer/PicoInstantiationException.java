@@ -10,9 +10,22 @@
 
 package org.picocontainer;
 
-public class PicoInstantiationException extends PicoInitializationException {
 
-    protected PicoInstantiationException(String message, Throwable cause) {
+/**
+ * Subclass of {@link PicoException} that is thrown when there is a problem creating an instance of a container or some
+ * other part of the PicoContainer api, for example, when an invocation through the reflection api fails.
+ * 
+ * @version $Revision$
+ * @since 1.0
+ */ 
+public class PicoInstantiationException extends PicoInitializationException {
+    /**
+     * Construct a new exception with the specified cause and the specified detail message.
+     * 
+     * @param message the message detailing the exception. 
+     * @param cause the exception that caused this one.
+     */ 
+    protected PicoInstantiationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

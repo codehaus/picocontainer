@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
@@ -35,7 +39,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
     }
 
     public void testInstancesCanBeRecycled() {
-        Object borrowed0 =  componentAdapter.getComponentInstance();
+        Object borrowed0 = componentAdapter.getComponentInstance();
         Object borrowed1 = componentAdapter.getComponentInstance();
         Object borrowed2 = componentAdapter.getComponentInstance();
 
@@ -124,29 +128,76 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         assertNotSame(borrowed[1], borrowed[2]);
     }
 
-    public void testFailsWhenExhausted() {
+    public void testTimeoutWhenExhausted() throws InterruptedException {
         final PoolingComponentAdapter componentAdapter2 =
-                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 0);
+                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 250);
         Object borrowed0 = componentAdapter2.getComponentInstance();
         Object borrowed1 = componentAdapter2.getComponentInstance();
+        long time = System.currentTimeMillis();
         try {
             Object borrowed2 = componentAdapter2.getComponentInstance();
+            fail("Missing ExhaustedException, pool cannot grow further.");
         } catch (ExhaustedException e) {
+            assertTrue(System.currentTimeMillis() - time >= 250);
         }
     }
-
-    public void testGrowsWhenExhausted() {
+    public void testGrowsAlways() {
         final PoolingComponentAdapter componentAdapter2 =
-                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 5);
+                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), -1);
+        final Set set = new HashSet();
+        try {
+            final int max = 5;
+            int i;
+            for (i = 0; i < max; ++i) {
+                assertEquals(i, componentAdapter2.getTotalSize());
+                final Object object = componentAdapter2.getComponentInstance();
+                assertNotNull(object);
+                assertEquals(i+1, componentAdapter2.getBusy());
+                assertEquals(0, componentAdapter2.getAvailable());
+                set.add(object);
+            }
+            assertEquals(i, componentAdapter2.getTotalSize());
+            assertEquals(i, componentAdapter2.getBusy());
+            assertEquals(i, set.size());
+
+            for (Iterator iter = set.iterator(); iter.hasNext();) {
+              Object object = iter.next();
+              componentAdapter2.returnComponentInstance(object);
+                assertEquals(max, componentAdapter2.getTotalSize());
+                assertEquals(--i, componentAdapter2.getBusy());
+                assertEquals(max-i, componentAdapter2.getAvailable());
+            }
+            
+            for (i = 0; i < max; ++i) {
+                assertEquals(max, componentAdapter2.getTotalSize());
+                final Object object = componentAdapter2.getComponentInstance();
+                assertNotNull(object);
+                assertEquals(i+1, componentAdapter2.getBusy());
+                assertEquals(max-i-1, componentAdapter2.getAvailable());
+                set.add(object);
+            }
+
+            assertEquals(max, set.size());
+            
+        } catch (ExhaustedException e) {
+            fail("This pool should not get exhausted.");
+        }
+    }
+    
+    public void testFailsWhenExhausted() {
+        final PoolingComponentAdapter componentAdapter2 =
+                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2);
         assertEquals(0, componentAdapter2.getTotalSize());
         Object borrowed0 = componentAdapter2.getComponentInstance();
         assertEquals(1, componentAdapter2.getTotalSize());
         Object borrowed1 = componentAdapter2.getComponentInstance();
         assertEquals(2, componentAdapter2.getTotalSize());
-        Object borrowed2 = componentAdapter2.getComponentInstance();
-        assertEquals(3, componentAdapter2.getTotalSize());
+        try {
+            Object borrowed2 = componentAdapter2.getComponentInstance();
+            fail("Missing ExhaustedException, pool cannot grow further.");
+        } catch (ExhaustedException e) {
+        }
 
         assertNotSame(borrowed0, borrowed1);
-        assertNotSame(borrowed1, borrowed2);
     }
 }

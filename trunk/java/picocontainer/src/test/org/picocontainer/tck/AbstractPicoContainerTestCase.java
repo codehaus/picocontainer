@@ -145,9 +145,9 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             assertEquals(1, unsatisfiableDependencies.size());
 
             // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
-            List unstaisifed = (List) unsatisfiableDependencies.iterator().next();
-            assertEquals(1, unstaisifed.size());
-            assertEquals(Touchable.class, unstaisifed.get(0));
+            List unsatisfied = (List) unsatisfiableDependencies.iterator().next();
+            assertEquals(1, unsatisfied.size());
+            assertEquals(Touchable.class, unsatisfied.get(0));
         }
     }
 

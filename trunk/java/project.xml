@@ -16,7 +16,7 @@
   <logo>/images/nanocontainer.jpg</logo>
   <description>Extension of PicoContainer</description>
   <shortDescription>Extension of PicoContainer</shortDescription>
-  <url>http://nanocontainer.codehaus.org/</url>
+  <url>http://www.nanocontainer.org/</url>
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
   <siteAddress>codehaus.org</siteAddress>
   <siteDirectory>/www/nanocontainer.codehaus.org</siteDirectory>

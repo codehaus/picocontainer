@@ -16,7 +16,7 @@
   <logo>/images/picocontainer.jpg</logo>
   <description>Small footprint IoC container</description>
   <shortDescription>Small footprint IoC container</shortDescription>
-  <url>http://picocontainer.codehaus.org/</url>
+  <url>http://www.picocontainer.org/</url>
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
   <siteAddress>codehaus.org</siteAddress>
   <siteDirectory>/www/picocontainer.codehaus.org</siteDirectory>

@@ -164,6 +164,35 @@ class ContainerTest < Test::Unit::TestCase
     assert_not_same thing1.common, thing2.common
   end
   
+  class SelfDependent
+    def initialize(self_dependent); end
+  end
+  
+  def test_component_cannot_be_dependent_on_itself
+    rico = Container.new
+    rico.register_component_implementation :self_dependent, SelfDependent, [ :self_dependent ]
+    assert_raises CyclicDependencyError do
+      rico.component_instance :self_dependent
+    end
+  end
+  
+  class A
+    def initialize(b); end
+  end
+  
+  class B
+    def initialize(a); end
+  end
+  
+  def TODO_test_component_cannot_be_indirectly_dependent_on_itself
+    rico = Container.new
+    rico.register_component_implementation :a, A, [ :b ]
+    rico.register_component_implementation :b, B, [ :a ]
+    assert_raises CyclicDependencyError do
+      rico.component_instance :a
+    end
+  end
+  
   class Washable
     attr_accessor :washed # creates washed and washed= methods
     def initialize

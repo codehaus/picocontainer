@@ -25,7 +25,6 @@ module Rico
     def register_component_implementation(key, component_class = key, dependencies = [], create_method = :new)
 #      puts "Registering #{key} -> #{component_class}"
       raise DuplicateComponentKeyRegistrationError.new(key) if @specs.has_key? key
-#      dependencies.each { |dep| assert_key_exists dep }
       @specs[key] = create_component_specification component_class, dependencies, create_method
     end
     
@@ -45,7 +44,7 @@ module Rico
     
     def component_instance(key)
       begin
-        return component_specification(key).component_instance(self)
+        return component_specification(key).component_instance(self, key)
       rescue UnresolvableComponentError
         raise unless key.instance_of? Class
         return matching_component_instance_by_type(key)
@@ -53,7 +52,7 @@ module Rico
     end
     
     def component_instances
-    	return @specs.values.collect { |spec| spec.component_instance self }
+    	return @specs.collect { |key, spec| spec.component_instance(self, key) }
     end
 
     def has_component?(key)
@@ -94,7 +93,7 @@ module Rico
       matches = @specs.values.select { |spec| required_type <= spec.component_class }
       case matches.size
         when 0 then raise UnresolvableComponentError, "Missing component [#{required_type.to_s}]"
-        when 1 then return matches[0].component_instance(self)
+        when 1 then return matches[0].component_instance(self, matches[0].component_class)
         else raise AmbiguousComponentResolutionError, "Found #{matches.size} matching components for type #{required_type}"
       end
     end

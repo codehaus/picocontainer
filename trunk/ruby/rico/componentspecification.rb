@@ -10,22 +10,28 @@ module Rico
     
     def initialize(component_class, dependencies, create_method)
       @component_class, @dependencies, @create_method = component_class, dependencies, create_method
+      @component_instance = nil
     end
     
-    def create_component_instance(container)
+    def create_component_instance(container, unresolved_keys)
         assert_create_method_is_accessible # calling by reflection doesn't check access
-        args = @dependencies.collect { |dep|
-          begin
-            container.component_instance(dep)
-          rescue UnresolvableComponentError
-            raise NoSatisfiableConstructorsError, component_class.name + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + dep.name + "]"
-          end
-        }
-        return @component_instance = @component_class.send(@create_method, *args)
+        args = resolve_dependencies container, unresolved_keys
+        return @component_class.send(@create_method, *args)
     end
     
-    def component_instance(container)
-    	return @component_instance || create_component_instance(container)
+    def resolve_dependencies(container, unresolved_keys)
+      @dependencies.collect do |dep|
+        begin
+          raise CyclicDependencyError if unresolved_keys.include?(dep)
+          container.component_instance(dep)
+        rescue UnresolvableComponentError
+          raise NoSatisfiableConstructorsError, component_class.name + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + dep.name + "]"
+        end
+      end
+    end
+    
+    def component_instance(container, key)
+    	return @component_instance ||= create_component_instance(container, [key])
     end
     
     private
@@ -43,7 +49,7 @@ module Rico
       @value = value
     end
     
-    def component_instance(container)
+    def component_instance(container, key)
       return @value
     end
     

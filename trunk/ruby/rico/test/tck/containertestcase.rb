@@ -67,7 +67,7 @@ module Rico
         rico.component_instance DependsOnTouchable
       end
     end
-  
+    
     def test_getting_same_component_twice_gives_same_component
       rico = create_container
       rico.register_component_implementation Object, Object
@@ -134,73 +134,41 @@ module Rico
       end
     end
 
-#    public static class A {
-#        public A(B b, C c){}
-#    }
-#    public static class B {}
-#    public static class C {}
-#
-#    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
+    class D
+      def initialize(b, e); end
+    end
+    
+    class E
+      def initialize(d); end
+    end
+    
+    def test_cyclic_dependency_raises_cyclic_dependency_error
+      rico = create_container
+      rico.register_component_implementation B
+      rico.register_component_implementation D, D, [ B, E ]
+      rico.register_component_implementation E, E, [ D ]
+    end
+    
+#    public void testCyclicDependencyThrowsCyclicDependencyException() {
 #        MutablePicoContainer pico = createPicoContainer();
-#        pico.registerComponentImplementation(A.class);
 #        pico.registerComponentImplementation(B.class);
+#        pico.registerComponentImplementation(D.class);
+#        pico.registerComponentImplementation(E.class);
 #
 #        try {
-#            pico.getComponentInstance(A.class);
-#        } catch (NoSatisfiableConstructorsException e) {
-#            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
-#            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-#            assertEquals(1, unsatisfiableDependencies.size());
-#            assertTrue(unsatisfiableDependencies.contains(C.class));
+#            pico.getComponentInstance(D.class);
+#            fail();
+#        } catch (CyclicDependencyException e) {
+#            assertEquals("Cyclic dependency: " + D.class.getConstructors()[0].getName() + "(" + E.class.getName() + "," + B.class.getName() + ")", e.getMessage());
+#            assertEquals(D.class.getConstructors()[0], e.getConstructor());
+#        } catch (StackOverflowError e) {
+#            fail();
 #        }
 #    }
 
   end
 end
 
-#    public static class ListAdder {
-#        public ListAdder(Collection list) {
-#            list.add("something");
-#        }
-#    }
-#
-#    public void TODOtestMulticasterResolution() throws PicoRegistrationException, PicoInitializationException {
-#        MutablePicoContainer pico = createPicoContainer();
-#
-#        pico.registerComponentImplementation(ListAdder.class);
-#        pico.registerComponentImplementation("a", ArrayList.class);
-#        pico.registerComponentImplementation("l", LinkedList.class);
-#
-#        pico.getComponentInstance(ListAdder.class);
-#
-#        List a = (List) pico.getComponentInstance("a");
-#        assertTrue(a.contains("something"));
-#
-#        List l = (List) pico.getComponentInstance("l");
-#        assertTrue(l.contains("something"));
-#    }
-#
-#    public static class A {
-#        public A(B b, C c){}
-#    }
-#    public static class B {}
-#    public static class C {}
-#
-#    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
-#        MutablePicoContainer pico = createPicoContainer();
-#        pico.registerComponentImplementation(A.class);
-#        pico.registerComponentImplementation(B.class);
-#
-#        try {
-#            pico.getComponentInstance(A.class);
-#        } catch (NoSatisfiableConstructorsException e) {
-#            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
-#            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-#            assertEquals(1, unsatisfiableDependencies.size());
-#            assertTrue(unsatisfiableDependencies.contains(C.class));
-#        }
-#    }
-#
 #    public static class D {
 #        public D(E e, B b){}
 #    }

@@ -85,7 +85,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
-
         assertNotNull("Container should have Touchable component",
                 pico.getComponentAdapter(Touchable.class));
         assertNotNull("Container should have DependsOnTouchable component",
@@ -588,6 +587,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public void testShouldCascadeStartStopAndDisposeToChild() {
+
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(sb);

@@ -18,7 +18,8 @@ import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-
+import java.util.List;
+import java.util.Iterator;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -98,13 +99,8 @@ public class BasicComponentParameter
 
     private ComponentAdapter resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
 
-        final ComponentAdapter result = getTargetAdapter(container, expectedType);
+        final ComponentAdapter result = getTargetAdapter(container, expectedType,adapter);
         if (result == null) {
-            return null;
-        }
-
-        // can't depend on ourselves
-        if (adapter != null && adapter.getComponentKey().equals(result.getComponentKey())) {
             return null;
         }
 
@@ -128,12 +124,46 @@ public class BasicComponentParameter
         return result;
     }
 
-    private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType) {
+    private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType, ComponentAdapter excludeAdapter) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return container.getComponentAdapter(componentKey);
-        } else {
+        } else if(excludeAdapter == null) {
             return container.getComponentAdapterOfType(expectedType);
+        } else {
+            Object excludeKey = excludeAdapter.getComponentKey();
+            ComponentAdapter byKey = container.getComponentAdapter(expectedType);
+            if(byKey != null ) {
+                if( byKey.getComponentKey().equals(excludeKey)) {
+                    return null;
+                }
+                return byKey;
+            }
+            List found = container.getComponentAdaptersOfType(expectedType);
+            ComponentAdapter exclude = null;
+            ComponentAdapter work;
+            for(Iterator iterator = found.iterator(); iterator.hasNext();) {
+                work = (ComponentAdapter) iterator.next();
+                if( work.getComponentKey().equals(excludeKey)) {
+                    exclude = work;
+                }
+            }
+            found.remove(exclude);
+            if(found.size() == 0) {
+                if( container.getParent() != null) {
+                    return container.getParent().getComponentAdapterOfType(expectedType);
+                } else {
+                    return null;
+                }
+            } else if(found.size() == 1) {
+                return (ComponentAdapter)found.get(0);
+            } else {
+                Class[] foundClasses = new Class[found.size()];
+                for (int i = 0; i < foundClasses.length; i++) {
+                    foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
+                }
+                throw new AmbiguousComponentResolutionException(expectedType, foundClasses);
+            }
         }
     }
 }

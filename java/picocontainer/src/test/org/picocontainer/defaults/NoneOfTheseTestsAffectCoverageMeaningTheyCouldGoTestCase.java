@@ -218,7 +218,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         public BB(I i) {
         }
     }
-
+    // this test is meaningless, since  this is no longer illegal...
     public void testExtendAndDependOnSameType() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
@@ -227,8 +227,10 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
         try {
             pico.getComponentInstance(BB.class);
+            // should be cyclic dependecy, really...
+            // see pico-222
             fail("Should have barfed");
-        } catch (AmbiguousComponentResolutionException e) {
+        } catch (CyclicDependencyException e) {
             // Neither can be instantiated without the other.
         }
     }

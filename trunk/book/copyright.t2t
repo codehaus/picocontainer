@@ -1,0 +1,32 @@
+Constructor Dependency Injection - Copyright
+by PicoContainer Committers and friends, (c) PicoContainer Committers
+%%date(%c)
+
+= Copyright and participating in the book =
+
+== Copyright ==
+
+This book is copyrighted to the committers of the PicoContainer project. The PicoContainer project is lead by Paul Hammant and Aslak
+Hellesoy, but this book is the art of the committers without explicit leadership.
+
+== Contributing ==
+
+Contributors to this book understand that they are granting copyright to the PicoContainer committers. They understand that as well
+as retaining a copyright on portions of the book that they have authored, they are donating a right to the committers to take the
+content of the book and publish it. They understand that once they have consented to the donation of copyright and assured the
+committers that they have a legal right to donate copyright (sometimes retained by employers), they should email changes in to
+dev@picocontainer.codehaus.org. The subject of the email should be preceded by "[book] ". At any stage, a contributor may
+discontinue their ongoing contributions by ending their emails to the mail-list with the "[Book] " prefix.
+
+The content donators can expect to be credited in an early section of the book. If it is possible the ordering of contributors is
+likely indicate the size of the contribution. This size is to be determined by some crude mechanism that measures the byte size of
+diffs.  The PicoContainer committers are likely to be listed before those of non-committers.
+
+== Profits ==
+
+Only luminaries make money from publishing books these days. The profits from "Constructor Dependency Injection" are not expected to
+be high. The committers will share the profits amongst themselves (probably proportioned in terms of size of contribution). At their
+discretion, non-committers who have made sizable contributions may be invited to profit share. It is our intention to donate 10% of
+the profits to Codehaus, the Open Source portal that fosters our development.
+
+

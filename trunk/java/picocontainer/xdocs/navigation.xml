@@ -4,6 +4,7 @@
 
   <body>
     <links>
+      <item name="JavaDoc API"           href="/apidocs/index.html"/>
       <item name="Wiki"                  href="http://wiki.codehaus.org/picocontainer/PicoContainer"/>
       <item name="Download"              href="/download.html"/>
       <item name="Issue Tracker"         href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120"/>
@@ -12,6 +13,7 @@
     </links>
 
     <menu name="PicoContainer">
+      <item name="JavaDoc API"           href="/apidocs/index.html"/>
       <item name="Introduction"          href="/introduction.html"/>
       <item name="FAQ"                   href="/faq.html"/>
       <item name="Inversion of Control"  href="/ioc.html"/>

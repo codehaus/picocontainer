@@ -7,15 +7,15 @@
 </h1>
 What is this all about ?<br>
 <br>
-Well it is a design pattern that also sometimes called the Hollywood
+IoC is a design pattern that is also sometimes called the Hollywood
 Patten ("Don't call us we'll call you") or the Chain of Command pattern.<br>
 <br>
-Simply put, a component does not go off and get other components that
-it needs on instantiation, it instead declares them to its boss, and
+Simply put, an IoC component does not go off and get other components that
+it needs on instantiation. It instead declares them to its boss, and
 the boss supplies them.<br>
 <h2>Basics</h2>
-Without worrying about the generationos of IoC that let us arrive at
-the PicoContainer design, Here is the simplest possible IoC component :<br>
+Without worrying about the generations of IoC that let us arrive at
+the PicoContainer design, here is the simplest possible IoC component :<br>
 <br>
 <pre>public interface Apple {</pre>
 <pre>&nbsp; // methods</pre>
@@ -31,18 +31,18 @@ the PicoContainer design, Here is the simplest possible IoC component :<br>
 <pre>&nbsp; // other methods</pre>
 <pre>}</pre>
 <br>
-Here are some common smells that lead you refactor to IoC<br>
+Here are some common smells that should lead you to refactor to IoC :<br>
 <br>
 <pre>public class AppleImpl implements Apple{</pre>
 <pre>&nbsp; private Orange orange;</pre>
 <pre>&nbsp; public Apple() {</pre>
-<pre>&nbsp;&nbsp;&nbsp; this.orange = OrangeImpl.getOrange();</pre>
+<pre>&nbsp;&nbsp;&nbsp; this.orange = new OrangeImpl();</pre>
 <pre>&nbsp; }</pre>
 <pre>&nbsp; // other methods</pre>
 <pre>}</pre>
 <br>
-The problem is that you are tied to OrangleImpl for provision of Orange
-services.&nbsp; Simply put, the above cannot be a component, it's an
+The problem is that you are tied to the OrangleImpl <em>implementation</em> for provision of Orange
+<em>services</em>. Simply put, the above apple cannot be a (configurable) component. It's an
 application. All hard coded. Not reusable. It is going to be very
 difficult to have multiple instances in the same classloader with
 different assembly.<br>
@@ -67,7 +67,7 @@ Sometimes we see configuration like so ...<br>
 <pre>&nbsp;&nbsp;}</pre>
 <pre>&nbsp; // other methods</pre>
 <pre>}</pre>
-In the IoC design, it might be better to see the following for simple
+In the IoC world, it might be better to see the following for simple
 designs :<br>
 <pre>public class BigFatComponent {</pre>
 <pre>&nbsp;&nbsp;String config01;<br>  String config02;</pre>
@@ -79,8 +79,8 @@ designs :<br>
 <pre>}</pre>
 Or this for more complex ones ..<br>
 <pre>public interface BigFatComponentConfig {</pre>
-<pre>&nbsp;&nbsp;void getConfig01();</pre>
-<pre>&nbsp;&nbsp;void getConfig02();</pre>
+<pre>&nbsp;&nbsp;String getConfig01();</pre>
+<pre>&nbsp;&nbsp;String getConfig02();</pre>
 <pre>}</pre>
 <pre></pre>
 <pre>public class BigFatComponent {</pre>
@@ -92,7 +92,7 @@ Or this for more complex ones ..<br>
 <pre>&nbsp;&nbsp;}</pre>
 <pre>&nbsp;&nbsp;// other methods</pre>
 <pre>}</pre>
-Where there could be many design for the implementation of
+Where there could be many different implementations of
 BigFatComponentConfig:<br>
 <ul>
   <li>Hard codes (a default impl)</li>
@@ -100,10 +100,10 @@ BigFatComponentConfig:<br>
 using class)</li>
   <li>Properties File.</li>
 </ul>
-It is the deployers or container makers choice.<br>
+It is the deployers or container maker's choice.<br>
 <br>
 Of course, in all of these discussuions, it is important to point out
-that Logging is a common exception to the IoC rule. Apache has two
+that logging is a common exception to the IoC rule. Apache has two
 static logging frameworks that are in common use - Commons-Logging and
 Log4J.<br>
 </body>

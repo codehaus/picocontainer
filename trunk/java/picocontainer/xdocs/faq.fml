@@ -26,7 +26,7 @@
         <p>
           No. We are delivering small interoperable containers and components of containers. There will never be a 
           quest for the BorgContainer. We encourage diversity and compatibility with the essential idea here - 
-          components designed along the PicoContainer principles (dependancies and config in constructors). 
+          components designed along the PicoContainer principles (dependencies and config in constructors). 
         </p>
       </answer>
     </faq>
@@ -49,8 +49,8 @@
       </question>
       <answer>
         <p>
-          Yes for the most part. We're not perfect though and our coverage reports have sometimes shown 
-          that we are making/committing un tested code. At those rare moments we switch some attention 
+          Yes for the most part. We're not perfect though, and our coverage reports have sometimes shown 
+          that we are making/committing untested code. At those rare moments we switch some attention 
           to test coverage and whip out the electric cattle prod to reprimand the offender (usually Paul). 
         </p>
       </answer>
@@ -80,11 +80,12 @@
         <p>
           PicoContainer will instantiate a given component using the "greediest" satisfiable constructor.
           By greedy, we mean the constructor that takes the most parameters.
-          By satisfiable, we mean constructors where all arguments can be satisfied by other.
+          By satisfiable, we mean constructors where all arguments can be satisfied by other registered components.
         </p>
         <p>
-          If there are no satisfiable constructors, or two or more ambiguous "largest" constructors,
-          a RuntimeException will be thrown when you ask for the component instance.
+          If you register a component with no satisfiable constructors, or two or more ambiguous "largest" constructors,
+          a RuntimeException will be thrown when you ask for the component instance with 
+          <pre><a href="apidocs/org/picocontainer/PicoContainer.html#getComponentInstance(java.lang.Object)">getComponentInstance(java.lang.Object)</a></pre>.
         </p>
         <p>
           We recommend, for the sake of predictablility, that PicoContainer compatible components
@@ -106,12 +107,15 @@
           These dependencies need to be manually bound at configuration time by doing
         </p>
         <source>
-container.registerComponent(
+pico.registerComponentInstance(
     SomeComponent.class, 
     new Parameter[] { 
         new ComponentParameter(keyUsedToRegisterSomeOtherCompoent) 
     }
 );
+        <p>
+          When doing this, you must specify parameters (in correct order) for all parameters in the desired constructor.
+        </p>
         </source>
       </answer>
     </faq>
@@ -122,7 +126,9 @@ container.registerComponent(
       </question>
       <answer>
         <p>
-          Yes great, We also pass in configuration by constructor. This is not the simplest mode of operation of the default PicoContainer, but it is by no means hard.
+          Yes great. Configuration values/objects should also be passed in via constructors. 
+          This is not the simplest mode of operation of the default PicoContainer, but it is by no means hard.
+          Just use a ConstantParameter for Strings, Integers and Foos.
         </p>
       </answer>
     </faq>
@@ -139,9 +145,13 @@ container.registerComponent(
       <answer>
         <p>
           Avalon's Serviceable, Configurable and Initializable interfaces are eliminated. A component writer does 
-          not have to import anything like those.  For Startable we have a replacement design in our lifecycle 
+          not have to implement anything like those.  For Startable we have a replacement design in our lifecycle 
           package. We're not precious though and suggest that you may prefer to use your own lifecycle interfaces
           which may be more than just start() and stop().
+        </p>
+        <p>
+          PicoContainer supports any imaginary lifecycle scheme via its 
+          <pre><a href="apidocs/org/picocontainer/PicoContainer.html#getComponentMulticaster()">getComponentMulticaster()</a></pre> method.
         </p>
       </answer>
     </faq>
@@ -152,7 +162,11 @@ container.registerComponent(
       </question>
       <answer>
         <p>
-          Oh blimey, it is rather different. EJB has loads of things you must extend, implement, provide and throw. It is also not an IoC design. It is close in that comps are managed by a container, but the cumbersome and static nature of the JNDI lookups ensure that it is not actually IoC.  PicoContainer is not a superset of EJB though, as it provides no remoting capability. At least the PicoContainer compatible comps hosted in this project do not. 
+          Oh blimey, it is rather different. EJB has loads of things you must extend, implement, provide and throw. 
+          It is also not an IoC design. It is close in that components are managed by a container, but the cumbersome and 
+          static nature of the JNDI lookups ensure that it is not actually IoC.  PicoContainer is not a superset of 
+          EJB though, as it provides no remoting capability. At least the PicoContainer compatible components hosted in 
+          this project do not. 
         </p>
       </answer>
     </faq>

@@ -4,6 +4,7 @@ import org.picocontainer.*;
 import org.picocontainer.defaults.DefaultComponentMulticasterFactory;
 import org.picocontainer.defaults.Invoker;
 import org.picocontainer.defaults.AbstractComponentAdapter;
+import org.picocontainer.defaults.InvocationInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,11 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     private final List componentInstances = new ArrayList();
 
     private final Invoker invoker;
+    private InvocationInterceptor invocationInterceptor;
 
-    public MulticastingComponentAdapter(Object key, Class componentImplementation, Invoker invoker) {
+    public MulticastingComponentAdapter(Object key, Class componentImplementation, InvocationInterceptor invocationInterceptor, Invoker invoker) {
         super(key, componentImplementation);
+        this.invocationInterceptor = invocationInterceptor;
         this.invoker = invoker;
     }
 
@@ -27,6 +30,7 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
                 getClass().getClassLoader(),
                 componentInstances,
                 true,
+                invocationInterceptor,
                 invoker
         );
     }

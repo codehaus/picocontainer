@@ -26,8 +26,12 @@ public class DefaultComponentMulticasterAdapter implements ComponentMulticasterA
         this.factory = factory;
     }
 
-    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder) throws PicoException {
+    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder, InvocationInterceptor invocationInterceptor) throws PicoException {
         List componentsToMulticast = picoContainer.getComponentInstances();
-        return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder, new MulticastInvoker());
+        return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder, invocationInterceptor, new MulticastInvoker());
+    }
+
+    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder) {
+        return getComponentMulticaster(picoContainer, callInInstantiationOrder, new NullInvocationInterceptor());
     }
 }

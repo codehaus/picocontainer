@@ -139,9 +139,8 @@
 
     <!-- test time only -->
     <dependency>
-      <groupId>mockobjects</groupId>
-      <artifactId>mockobjects-core</artifactId>
-      <version>0.09</version>
+      <id>jmock</id>
+      <version>SNAPSHOT</version>
     </dependency>
 
   </dependencies>

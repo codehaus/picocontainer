@@ -11,6 +11,7 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.defaults.Invoker;
+import org.picocontainer.defaults.InvocationInterceptor;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface ComponentMulticasterFactory {
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder,
+            InvocationInterceptor invocationInterceptor,
             Invoker invoker
             );
 }

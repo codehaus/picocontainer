@@ -3,8 +3,9 @@ package org.picoextras.multicast;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.MulticastInvoker;
 import org.picocontainer.defaults.Invoker;
+import org.picocontainer.defaults.MulticastInvoker;
+import org.picocontainer.defaults.NullInvocationInterceptor;
 
 /**
  * @author Chris Stevenson
@@ -57,7 +58,7 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         girl1 = new TestGirl();
         girl2 = new TestGirl();
         girl3 = new TestGirl();
-        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, invoker);
+        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, new NullInvocationInterceptor(), invoker);
         multicastingComponentAdapter.addComponentInstance(girl1);
         multicastingComponentAdapter.addComponentInstance(girl2);
         multicastingComponentAdapter.addComponentInstance(girl3);
@@ -67,7 +68,6 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         MulticastInvoker invoker = new MulticastInvoker();
         setUpGirls(invoker);
 
-        MutablePicoContainer pico = new DefaultPicoContainer();
         Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance();
         kissable.kiss();
 
@@ -80,7 +80,6 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         RoundRobinInvoker invoker = new RoundRobinInvoker();
         setUpGirls(invoker);
 
-        MutablePicoContainer pico = new DefaultPicoContainer();
         Kissable kissable = (Kissable) multicastingComponentAdapter.getComponentInstance();
 
         wipeGirls();

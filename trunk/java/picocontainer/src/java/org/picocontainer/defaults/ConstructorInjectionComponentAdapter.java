@@ -103,7 +103,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(getContainer(), parameterTypes[j]);
                 if (adapter == null) {
                     failedDependency = true;
-                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                    unsatisfiableDependencyTypes.add(parameterTypes[j]);
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {

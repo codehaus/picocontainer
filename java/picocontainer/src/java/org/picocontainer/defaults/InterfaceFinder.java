@@ -77,27 +77,37 @@ public class InterfaceFinder implements Serializable {
         }
     }
 
+    /**
+     * Get most common superclass for all given objects. 
+     * @param objects The array of objects to consider.
+     * @return Returns the superclass or <code>{@link Void}.class</code> for an empty array.
+     */
     public Class getClass(Object[] objects) {
         Class clazz = null;
         boolean found = false;
-        while (!found) {
-            for (int i = 0; i < objects.length; i++) {
-                found = true;
-                if (objects[i] != null) {
-                    Class currentClazz = objects[i].getClass();
-                    if(clazz == null) {
-                        clazz = currentClazz;
-                    }
-                    if(!clazz.isAssignableFrom(currentClazz)) {
-                        clazz = currentClazz.getSuperclass();
-                        found = false;
-                        break;
+        if (objects == null || objects.length == 0) {
+            clazz = Void.class;
+        } else {
+            while (!found) {
+                for (int i = 0; i < objects.length; i++) {
+                    found = true;
+                    if (objects[i] != null) {
+                        Class currentClazz = objects[i].getClass();
+                        if(clazz == null) {
+                            clazz = currentClazz;
+                        }
+                        if(!clazz.isAssignableFrom(currentClazz)) {
+                            if(currentClazz.isAssignableFrom(clazz)) {
+                                clazz = currentClazz;
+                            } else {
+                                clazz = clazz.getSuperclass();
+                                found = false;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-        }
-        if(clazz == null) {
-            clazz = Void.class;
         }
         return clazz;
     }

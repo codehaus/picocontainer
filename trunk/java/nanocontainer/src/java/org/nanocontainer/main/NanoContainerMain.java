@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.main;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Main {
+public class NanoContainerMain {
 
     private static final int HELP_OPT = 'h';
     private static final int VERSION_OPT = 'v';
@@ -128,7 +128,7 @@ public class Main {
         // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.registerComponentInstance( new FileReader(composition));
-        dpc.registerComponentInstance(Main.class.getClassLoader());
+        dpc.registerComponentInstance(NanoContainerMain.class.getClassLoader());
         DefaultReflectionContainerAdapter defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
         final ContainerBuilder cb = (ContainerBuilder) componentAdapter.getComponentInstance();

@@ -11,7 +11,7 @@ package org.nanocontainer.servlet;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 
@@ -54,11 +54,11 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, null, context);
         } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (InstantiationException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -77,7 +77,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }
-        throw new PicoAssemblyException("Couldn't create a builder from context parameters in web.xml");
+        throw new PicoCompositionException("Couldn't create a builder from context parameters in web.xml");
     }
 
     public void contextDestroyed(ServletContextEvent event) {

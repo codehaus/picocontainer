@@ -9,9 +9,9 @@
 
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 
-public class EmptyCompositionException extends PicoAssemblyException {
+public class EmptyCompositionException extends PicoCompositionException {
     public String getMessage() {
         return "No components in the XML composition";
     }

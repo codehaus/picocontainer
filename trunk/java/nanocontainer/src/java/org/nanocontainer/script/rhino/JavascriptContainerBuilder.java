@@ -12,7 +12,7 @@ import org.mozilla.javascript.Scriptable;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 
 import java.io.Reader;
 
@@ -57,27 +57,27 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {
-                throw new PicoAssemblyException("The script must define a variable named 'pico'");
+                throw new PicoCompositionException("The script must define a variable named 'pico'");
             }
             if (!(pico instanceof NativeJavaObject)) {
-                throw new PicoAssemblyException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
+                throw new PicoCompositionException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
             if (!(javaObject instanceof MutablePicoContainer)) {
-                throw new PicoAssemblyException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
+                throw new PicoCompositionException("The 'pico' variable must be of type " + MutablePicoContainer.class.getName());
             }
             return (MutablePicoContainer) javaObject;
-        } catch (PicoAssemblyException e) {
+        } catch (PicoCompositionException e) {
             throw e;
         } catch (JavaScriptException e) {
             Object value = e.getValue();
             if(value instanceof Throwable) {
-                throw new PicoAssemblyException((Throwable) value);
+                throw new PicoCompositionException((Throwable) value);
             } else {
-                throw new PicoAssemblyException(e);
+                throw new PicoCompositionException(e);
             }
         } catch (Exception e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } finally {
             Context.exit();
         }

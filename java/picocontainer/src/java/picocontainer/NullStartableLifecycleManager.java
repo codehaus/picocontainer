@@ -17,4 +17,7 @@ public class NullStartableLifecycleManager
 
     public void stopComponent(Object component) throws PicoStopException {
     }
+
+    public void disposeOfComponent(Object component) throws PicoDisposalException {
+    }
 }

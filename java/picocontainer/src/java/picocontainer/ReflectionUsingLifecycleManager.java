@@ -34,6 +34,14 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         }
     }
 
+    public void disposeOfComponent(Object component) throws PicoDisposalException {
+        try {
+            invokeMethodByName(component, "dispose");
+        } catch (InvocationTargetException e) {
+            throw new PicoInvocationTargetDisposalException(e.getTargetException());
+        }
+    }
+
     protected void invokeMethodByName(Object component, String methodName) throws InvocationTargetException {
         try {
             Method method = component.getClass().getMethod(methodName, NOPARMS);

@@ -14,7 +14,10 @@ public class AggregatedContainersContainerTestCase extends TestCase {
     }
 
     public void tearDown() throws PicoStopException {
-        pico.stop();
+        try {
+            pico.stop();
+        } catch (IllegalStateException e) {
+        }
         pico = null;
         filter = null;
     }

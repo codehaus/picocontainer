@@ -42,6 +42,9 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     private List orderedComponents = new ArrayList();
 
     private Map parametersForComponent = new HashMap();
+    private boolean disposedOf;
+    private boolean initialized;
+    private boolean started;
 
     public HierarchicalPicoContainer(Container parentContainer,
                                      StartableLifecycleManager startableLifecycleManager,
@@ -145,7 +148,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         if (!parametersForComponent.containsKey(componentType)) {
             parametersForComponent.put(componentType, new ArrayList());
         }
-        List args = (List)parametersForComponent.get(componentType);
+        List args = (List) parametersForComponent.get(componentType);
         args.add(new ParameterSpec(/*parameter,*/ arg));
     }
 
@@ -161,6 +164,22 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     public void start() throws PicoStartException {
+        checkNotDisposedOf();
+        if (initialized == false) {
+            initializeComponents();
+            checkUnsatisfiedDependencies();
+            initialized = true;
+        }
+        if (started == false) {
+            startComponents();
+            started = true;
+        } else {
+            throw new IllegalStateException("Container Started Already");
+        }
+    }
+
+    // This is Lazy and NOT public :-)
+    private void initializeComponents() throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
         boolean progress = true;
         while (progress == true) {
             progress = false;
@@ -181,11 +200,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
                 }
             }
         }
-
-        checkUnsatisfiedDependencies();
-
-        startComponents();
-
     }
 
     protected boolean hookEmUp(Class componentImplementation, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
@@ -194,7 +208,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             Constructor constructor = constructors[0];
             Class[] parameters = constructor.getParameterTypes();
 
-            List paramSpecs = (List)parametersForComponent.get(componentImplementation);
+            List paramSpecs = (List) parametersForComponent.get(componentImplementation);
             paramSpecs = paramSpecs == null ? Collections.EMPTY_LIST : new LinkedList(paramSpecs); // clone because we are going to modify it
 
             // For each param, look up the instantiated componentImplementation.
@@ -240,7 +254,24 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     public void stop() throws PicoStopException {
-        stopComponents();
+        checkNotDisposedOf();
+        if (started == true) {
+            stopComponents();
+            started = false;
+        } else {
+            throw new IllegalStateException("Container Not started");
+        }
+    }
+
+    private void checkNotDisposedOf() {
+        if (disposedOf == true) {
+            throw new IllegalStateException("Container Disposed Of");
+        }
+    }
+
+    public void dispose() throws PicoDisposalException {
+        checkNotDisposedOf();
+        disposeOfComponents();
     }
 
     protected void startComponents() throws PicoStartException {
@@ -256,6 +287,15 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             startableLifecycleManager.stopComponent(component);
         }
     }
+
+    protected void disposeOfComponents() throws PicoDisposalException {
+        for (int i = 0; i < orderedComponents.size(); i++) {
+            Object component = orderedComponents.get(i);
+            startableLifecycleManager.disposeOfComponent(component);
+        }
+        disposedOf = true;
+    }
+
 
     private void checkUnsatisfiedDependencies() throws UnsatisfiedDependencyStartupException {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {

@@ -87,7 +87,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             pico.registerComponent(Thesaurus.class, Webster.class);
             pico.start();
 
-            assertEquals("Should only have one instance of Webster", 1,messages.size());
+            assertEquals("Should only have one instance of Webster", 1, messages.size());
             Object dictionary = pico.getComponent(Dictionary.class);
             Object thesaurus = pico.getComponent(Thesaurus.class);
             assertSame("The dictionary and the thesaurus should heve been the same object", dictionary, thesaurus);
@@ -452,7 +452,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.addParameterToComponent(Dino.class, String.class, "bones");
         pico.start();
 
-        Animal animal = (Animal)pico.getComponent(Animal.class);
+        Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("bones", animal.getFood());
     }
@@ -469,7 +469,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.addParameterToComponent(Dino2.class, Integer.class, new Integer(22));
         pico.start();
 
-        Animal animal = (Animal)pico.getComponent(Animal.class);
+        Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("22", animal.getFood());
     }
@@ -487,7 +487,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.addParameterToComponent(Dino3.class, String.class, "b");
         pico.start();
 
-        Animal animal = (Animal)pico.getComponent(Animal.class);
+        Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("ab", animal.getFood());
 
@@ -508,9 +508,74 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.addParameterToComponent(Dino4.class, String.class, "b");
         pico.start();
 
-        Animal animal = (Animal)pico.getComponent(Animal.class);
+        Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("a3b picocontainer.testmodel.WilmaImpl", animal.getFood());
+    }
+
+    public void testStartStopStartStopAndDispose() throws PicoStartException, PicoRegistrationException, PicoStopException, PicoDisposalException {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.start();
+        pico.stop();
+
+        pico.start();
+        pico.stop();
+
+        pico.dispose();
+
+    }
+
+
+    public void testStartStartCausingBarf() throws PicoStartException, PicoRegistrationException, PicoStopException, PicoDisposalException {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.start();
+        try {
+            pico.start();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+    public void testStartStopStopCausingBarf() throws PicoStartException, PicoRegistrationException, PicoStopException, PicoDisposalException {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.start();
+        pico.stop();
+        try {
+            pico.stop();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+    public void testStartStopDisposeDisposeCausingBarf() throws PicoStartException, PicoRegistrationException, PicoStopException, PicoDisposalException {
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.start();
+        pico.stop();
+        pico.dispose();
+        try {
+            pico.dispose();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
     }
 
 

@@ -1,9 +1,11 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.io.Serializable;
-import java.util.HashSet;
 
 /**
  * A ComponentParameter should be used to pass in a particular component

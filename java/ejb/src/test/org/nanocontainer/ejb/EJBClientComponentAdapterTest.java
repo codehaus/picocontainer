@@ -157,3 +157,4 @@ public class EJBClientComponentAdapterTest
         assertEquals(EJBClientComponentAdapter.class.getName() + "[Hello]", stringRep);
     }
 }
+

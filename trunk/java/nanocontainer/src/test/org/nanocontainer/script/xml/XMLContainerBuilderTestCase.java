@@ -69,7 +69,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         // Paul's path to TestComp. PLEASE do not take out.
         //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
 
-        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        assertNotNull("The testcomp.jar system property should point to nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         assertTrue(testCompJar.isFile());

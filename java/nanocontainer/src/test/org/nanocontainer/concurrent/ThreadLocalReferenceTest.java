@@ -16,6 +16,7 @@ import org.picocontainer.defaults.ObjectReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.IOException;
 
 
 /**
@@ -62,7 +63,7 @@ public class ThreadLocalReferenceTest
                     thread.wait();
                 }
                 Assert.assertEquals(thread.getName(), m_reference.get());
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 m_exceptionList.add(e);
             }
         }

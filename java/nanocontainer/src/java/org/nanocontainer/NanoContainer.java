@@ -79,7 +79,7 @@ public class NanoContainer {
         DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
         {
             // disposable.
-            DefaultPicoContainer dpc = new DefaultPicoContainer();
+            DefaultPicoContainer dpc = new DefaultPicoContainer(); // TODO parent?
             dpc.registerComponentInstance(composition);
             dpc.registerComponentInstance(classLoader);
             defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);

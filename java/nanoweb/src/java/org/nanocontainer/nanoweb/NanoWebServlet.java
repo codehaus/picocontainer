@@ -83,28 +83,39 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             ServletContext servletContext = getServletContext();
             dispatcher.dispatch(servletContext, httpServletRequest, httpServletResponse, scriptPathWithoutExtension, actionMethod, result);
         } catch (ScriptException e) {
-            e.printStackTrace();
-            // Print the stack trace and the script (for debugging)
-            PrintWriter writer = httpServletResponse.getWriter();
-            writer.println("<html>");
-            writer.println("<pre>");
-            e.printStackTrace(writer);
-            writer.println(httpServletRequest.getRequestURI());
-            URL scriptURL = e.getScriptURL();
-            InputStream in = scriptURL.openStream();
-            int c;
-            while ((c = in.read()) != -1) {
-                writer.write(c);
-            }
-            writer.println("</pre>");
-            writer.println("</html>");
+            handleServiceScriptException(e, httpServletResponse, httpServletRequest);
         } finally {
-            try {
-                containerLauncher.killContainer();
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
+            containerLauncher.killContainer();
         }
+    }
+
+    /**
+     * This overridable method contains the default behavior for the catching of ScriptException during the
+     * service call. Because different containers suck at handling exceptions, this default behavior displays
+     * a simple page. Teams deploying NanoWebServlet may want to extend and replace this functionality. This
+     * servlet may be participating with some larger model-2 design.
+     *
+     * @param e the script exception
+     * @param httpServletResponse the servlet response
+     * @param httpServletRequest the servlet request
+     * @throws IOException if for some bizarre reason the outgoing page cannot be written to.
+     */
+    protected void handleServiceScriptException(ScriptException e, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws IOException {
+        e.printStackTrace();
+        // Print the stack trace and the script (for debugging)
+        PrintWriter writer = httpServletResponse.getWriter();
+        writer.println("<html>");
+        writer.println("<pre>");
+        e.printStackTrace(writer);
+        writer.println(httpServletRequest.getRequestURI());
+        URL scriptURL = e.getScriptURL();
+        InputStream in = scriptURL.openStream();
+        int c;
+        while ((c = in.read()) != -1) {
+            writer.write(c);
+        }
+        writer.println("</pre>");
+        writer.println("</html>");
     }
 
     private Object getActionObject(String path, HttpServletRequest request) throws ServletException, ScriptException {

@@ -89,7 +89,7 @@ public class ContainerViewPanel extends JSplitPane {
 //							dialog.show();
 //							table.repaint();
 //						}
-                    } catch (Exception ex) {
+                    } catch (RuntimeException ex) {
                         // Ignore it
                     }
                 }

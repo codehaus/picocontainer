@@ -28,6 +28,7 @@ import org.picocontainer.defaults.SimpleReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -69,8 +70,8 @@ public class PicoContainerTask extends Task {
                 try {
                     BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) containerAdapter.registerComponentImplementation(component.getKey(), component.getClassname());
                     adapter.setProperties(component.getProperties());
-                } catch (Exception e) {
-                    throw new BuildException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new BuildException("Class Not Found: " + e.getMessage(), e);
                 }
             }
         }
@@ -100,7 +101,7 @@ public class PicoContainerTask extends Task {
                 ex = ((java.lang.reflect.InvocationTargetException) ex).getTargetException();
             }
             throw new BuildException(ex);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new BuildException(e);
         }
     }

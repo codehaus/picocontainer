@@ -14,6 +14,7 @@ import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Extends AxisServlet to build a container for the request and kill it when
@@ -28,14 +29,10 @@ public class NanoAxisServlet extends AxisServlet {
         try {
             containerLauncher.startContainer();
             super.service(request, response);
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new ServletException(e);
         } finally {
-            try {
-                containerLauncher.killContainer();
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
+            containerLauncher.killContainer();
         }
     }
 

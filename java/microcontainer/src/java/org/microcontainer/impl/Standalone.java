@@ -1,5 +1,7 @@
 package org.megacontainer.impl;
 
+import java.io.IOException;
+
 /**
  * @author Paul Hammant
  * @version $Revision$
@@ -17,7 +19,7 @@ public class Standalone {
                 try {
                     kernel.stop();
                     kernel.dispose();
-                } catch (Exception e) {
+                } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
                     System.out.println("Exiting JVM");

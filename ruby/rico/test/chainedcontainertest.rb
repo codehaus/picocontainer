@@ -63,6 +63,12 @@ class ChainedContainerTest < Test::Unit::TestCase
     assert_not_nil outer.component_instance(:inner_washable), "inner component should be found"
     assert_not_nil outer.component_instance(:middle_washable), "middle component should be found"
     assert_not_nil outer.component_instance(:middle_washable), "outer component should be found"
+    
+    # let's see how it works after yamling
+    outer = YAML::load(YAML::dump(outer))
+    assert_not_nil outer.component_instance(:inner_washable), "inner component should be found"
+    assert_not_nil outer.component_instance(:middle_washable), "middle component should be found"
+    assert_not_nil outer.component_instance(:middle_washable), "outer component should be found"
   end
   
   def test_multicasts_to_parent

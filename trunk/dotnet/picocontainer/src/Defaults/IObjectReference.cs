@@ -13,6 +13,12 @@ using System;
 
 namespace PicoContainer.Defaults
 {
+  /// <summary>
+  ///  A way to refer to objects that are stored in awkward places
+  /// (for example HttpSession).
+  /// <remarks>This is typically implemented by someone integrating Pico into
+  /// an existing container.</remarks> 
+  /// </summary>
 	public interface IObjectReference
 	{
     object Get();

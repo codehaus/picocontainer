@@ -20,18 +20,34 @@ namespace PicoContainer.Defaults {
   /// Instantiates components using empty constructors and Setter Injection
   /// <remarks>
   /// <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
-  /// For easy setting of primitive properties, also <see cref"BeanPropertyComponentAdapter"/>.
+  /// For easy setting of primitive properties, also <see cref="BeanPropertyComponentAdapter"/>.
   /// Note that this class doesn't cache instances. If you want caching,
   /// use a <see cref="CachingComponentAdapter"/> around this one.
   /// </remarks>
   /// </summary>
-  public class BeanComponentAdapter : DecoratingComponentAdapter {
+  public class SetterInjectionComponentAdapter : DecoratingComponentAdapter {
     private ArrayList setters;
+    private readonly IParameter[] parameters;
 
-    public BeanComponentAdapter(IComponentAdapter theDelegate) :    base(theDelegate) {
-  }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="theDelegate">The component adapter to decorate</param>
+    public SetterInjectionComponentAdapter(IComponentAdapter theDelegate) : this(theDelegate, null) {  }
 
+    public SetterInjectionComponentAdapter(IComponentAdapter theDelegate,IParameter[] parameters) : base(theDelegate) {  
+      this.parameters = parameters;
+    }
 
+    /// <summary>
+    /// Gets the component instance. This method will usually create
+    /// a new instance for each call.
+    /// </summary>
+    /// <remarks>
+    /// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
+    /// </remarks>
+    /// <returns>a component instance</returns>
+    /// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
     public override object ComponentInstance {
       get {
 
@@ -49,7 +65,7 @@ namespace PicoContainer.Defaults {
       for (int i = 0; i < setters.Length; i++) {
         MethodInfo setter = setters[i];
         Type dependencyType = setter.GetParameters()[0].ParameterType;
-        object dependency = GetDependencyInstance(dependencyType);
+        object dependency = GetDependencyInstance(dependencyType,unsatisfiableDependencyTypes);
         if(dependency != null) {
           try {
             setter.Invoke(componentInstance, new object[]{dependency});
@@ -65,13 +81,30 @@ namespace PicoContainer.Defaults {
       }
     }
 
-    private object GetDependencyInstance(Type type) {
+    private object GetDependencyInstance(Type type, IList unsatisfiableDependencyTypes) {
+      if (parameters != null) {
+        return GetDependencyInstanceFromParameters(type,unsatisfiableDependencyTypes);
+      }
+
       IComponentAdapter adapterDependency = Container.GetComponentAdapterOfType(type);
       if (adapterDependency != null) {
         return adapterDependency.ComponentInstance;
       } else {
+        unsatisfiableDependencyTypes.Add(type);
         return null;
       }
+    }
+
+    private object GetDependencyInstanceFromParameters(Type type, IList unsatisfiableDependencyTypes) {
+      for (int i = 0; i < parameters.Length; i++) {
+        IParameter parameter = parameters[i];
+        IComponentAdapter adapter = parameter.ResolveAdapter(Container, type);
+        if(adapter != null) {
+          return adapter.ComponentInstance;
+        }
+      }
+      unsatisfiableDependencyTypes.Add(type);
+      return null;
     }
 
     private  MethodInfo[] GetSetters() {

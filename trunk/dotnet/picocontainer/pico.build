@@ -1,4 +1,4 @@
-<project name="Pico" default="all" basedir=".">
+<project name="Pico" default="dist" basedir=".">
 	<property name="build.dir" value="build"/>
 	<property name="build.debug" value="true"/>
 	<property name="build.doc" value=""/>
@@ -6,6 +6,8 @@
 	<target name="clean">
 		<delete dir="src/bin" failonerror="false"/>
 		<delete dir="src/obj" failonerror="false"/>
+		<delete dir="src/Test/bin" failonerror="false"/>
+		<delete dir="src/Test/obj" failonerror="false"/>
 		<delete dir="PicoContainer.resharper" failonerror="false"/>
 	</target>
 

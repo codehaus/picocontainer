@@ -99,11 +99,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\BeanComponentAdapterTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Defaults\BeanPropertyComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -175,6 +170,16 @@
                 />
                 <File
                     RelPath = "Defaults\ParameterTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SetterInjectionComponentAdapterFactoryTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SetterInjectionComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

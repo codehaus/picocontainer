@@ -69,6 +69,16 @@
                     AssemblyName = "System"
                     HintPath = "..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.XML"
+                    HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -145,11 +155,6 @@
                 />
                 <File
                     RelPath = "Defaults\AssignabilityRegistrationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\BeanComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -270,6 +275,16 @@
                 />
                 <File
                     RelPath = "Defaults\PicoInvocationTargetInitializationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SetterInjectionComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\SetterInjectionComponentAdapterFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

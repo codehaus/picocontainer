@@ -15,25 +15,39 @@ using System.Runtime.Serialization;
 using PicoContainer;
 
 namespace PicoContainer.Defaults {
+  /// <summary>
+  /// An exception thrown when a type could not be assigned.
+  /// </summary>
   [Serializable]
   public class AssignabilityRegistrationException: PicoRegistrationException {
-    private Type type;
-    private Type typeToAssign;
+    private readonly Type type;
+    private readonly Type typeToAssign;
 
-    public AssignabilityRegistrationException(){ }
-
-    public AssignabilityRegistrationException(Exception ex) : base (ex) {}
-    public AssignabilityRegistrationException(string message) : base(message) { }
-
-    public AssignabilityRegistrationException(string message, Exception ex) : base(message,ex) {}
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AssignabilityRegistrationException"/> class with serialized data.
+    /// </summary>
+    /// <remarks>
+    /// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.
+    /// </remarks>
+    /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that holds the serialized 
+    /// object data about the exception being thrown.</param>
+    /// <param name="context">The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual 
+    /// information about the source or destination. </param>
     protected AssignabilityRegistrationException(SerializationInfo info, StreamingContext context) : base (info, context) {}
 
+    /// <summary>
+    /// Initializes a new ins
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="typeToAssign"></param>
     public AssignabilityRegistrationException(Type type, Type typeToAssign) {
       this.type = type;
       this.typeToAssign = typeToAssign;
     }
 
+    /// <summary>
+    /// Returns a customized message containing the name of the types.
+    /// </summary>
     public override String Message {
       get {
         return "The type:" + type.Name + "  was not assignable from the class " + typeToAssign.Name;

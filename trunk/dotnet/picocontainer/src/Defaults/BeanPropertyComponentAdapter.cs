@@ -8,6 +8,10 @@ namespace PicoContainer.Defaults {
     private PropertyInfo[] propertyDescriptors;
     private IDictionary propertyDescriptorMap = new Hashtable();
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="theDelegate">The component adapter to decorate</param>
     public BeanPropertyComponentAdapter(IComponentAdapter theDelegate) : base(theDelegate) {
       Type implementation = theDelegate.ComponentImplementation;
       propertyDescriptors = implementation.GetProperties();
@@ -19,8 +23,10 @@ namespace PicoContainer.Defaults {
     }
 
 
-
-
+    /// <summary>
+    /// Returns the component's implementing type.
+    /// <remarks>Initializing additional properties using the properties set using the Properties property</remarks>
+    /// </summary>
     public override object ComponentInstance {
       get {
         object componentInstance = base.ComponentInstance;
@@ -87,6 +93,9 @@ namespace PicoContainer.Defaults {
       return propertyValue;
     }
 
+    /// <summary>
+    /// Setter for additional properties not set via PicoContainer
+    /// </summary>
     public IDictionary Properties {
       set {
         this.properties = value;

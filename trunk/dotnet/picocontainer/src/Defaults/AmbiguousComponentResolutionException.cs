@@ -16,32 +16,51 @@ using System.Runtime.Serialization;
 using PicoContainer;
 
 namespace PicoContainer.Defaults {
+
+  /// <summary>
+  /// The PicoIntrospectionException is thrown when the initialization could be done with more than one
+  /// component.
+  /// </summary>
   [Serializable]
   public class AmbiguousComponentResolutionException : PicoIntrospectionException {
-    private Type ambiguousClass;
-    private object[] ambiguousComponentKeys;
+    private Type ambiguousType;
+    private readonly object[] ambiguousComponentKeys;
 
-    public AmbiguousComponentResolutionException(Type ambiguousClass, object[] componentKeys) {
-      this.ambiguousClass = ambiguousClass;
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="ambiguousType">The type that could be resolved with more than one component.</param>
+    /// <param name="componentKeys">The keys of the components that where resolved</param>
+    public AmbiguousComponentResolutionException(Type ambiguousType, object[] componentKeys) {
+      this.ambiguousType = ambiguousType;
       this.ambiguousComponentKeys = new Type[componentKeys.Length];
       for (int i = 0; i < componentKeys.Length; i++) {
         ambiguousComponentKeys[i] = componentKeys[i];
       }
     }
 
-    public AmbiguousComponentResolutionException(){ }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AmbiguousComponentResolutionException"/> class with serialized data.
+    /// </summary>
+    /// <remarks>
+    /// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.
+    /// </remarks>
+    /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that holds the serialized 
+    /// object data about the exception being thrown.</param>
+    /// <param name="context">The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual 
+    /// information about the source or destination. </param>
+    protected AmbiguousComponentResolutionException(SerializationInfo info, StreamingContext context) : base (info, context)
+    {
+      
+    }
 
-    public AmbiguousComponentResolutionException(Exception ex) : base (ex) {}
-    public AmbiguousComponentResolutionException(string message) : base(message) { }
-
-    public AmbiguousComponentResolutionException(string message, Exception ex) : base(message,ex) {}
-
-    protected AmbiguousComponentResolutionException(SerializationInfo info, StreamingContext context) : base (info, context) {}
-
+    /// <summary>
+    /// Returns a customized message showing what type resolved to multiple keys.
+    /// </summary>
     public override String Message {
       get {
-        StringBuilder msg = new StringBuilder("Ambiguous class ");
-        msg.Append(ambiguousClass).Append(", ").Append("resolves to multiple keys [");
+        StringBuilder msg = new StringBuilder("Ambiguous type ");
+        msg.Append(ambiguousType).Append(", ").Append("resolves to multiple keys [");
         foreach (object key in AmbiguousComponentKeys) {
           msg.Append(key).Append(" ");
         }
@@ -50,6 +69,9 @@ namespace PicoContainer.Defaults {
       }
     }
 
+    /// <summary>
+    /// The keys that resolved the dependency.
+    /// </summary>
     public object[] AmbiguousComponentKeys {
       get {
         return ambiguousComponentKeys;

@@ -20,17 +20,16 @@
     <package>org.nanocontainer</package>
     <logo>/images/nanocontainer.jpg</logo>
     <description>NanoContainer is a Standalone PicoContainer</description>
+    <shortDescription>NanoContainer is a Standalone PicoContainer</shortDescription>
     <url>http://www.nanocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
     <siteAddress>codehaus.org</siteAddress>
     <siteDirectory>/www/nanocontainer.codehaus.org/maven</siteDirectory>
     <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
-        <url>http://cvs.nanocontainer.codehaus.org/java</url>
-        <!-- statcvs only works with this one: -->
-        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=nanocontainer</url-->
+        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
+        <url>http://cvs.nanocontainer.codehaus.org/java/nanocontainer/?viewcvs.cgi</url>
     </repository>
 
     <mailingLists>

@@ -20,8 +20,6 @@
     <inceptionYear>2003</inceptionYear>
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
-    <description>Small footprint IoC container</description>
-    <shortDescription>Small footprint IoC container</shortDescription>
     <description>
         PicoContainer is a small, simple container for arbitrary components. It is embeddable and
         extentensible.  PicoContainer is designed for server and client
@@ -41,16 +39,15 @@
         PicoContainer is more than an IoC container. It's a tribute to simple, but controlled power.
        
     </description>
+    <shortDescription>Small footprint IoC container</shortDescription>
     <url>http://www.picocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
     <siteAddress>codehaus.org</siteAddress>
     <siteDirectory>/www/picocontainer.codehaus.org/java</siteDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
-        <!--url>http://cvs.picocontainer.codehaus.org/java</url-->
-        <!-- statcvs only works with this one: -->
-        <url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
+        <url>http://cvs.picocontainer.codehaus.org/java/picocontainer/?viewcvs.cgi</url>
     </repository>
 
     <versions>
@@ -99,15 +96,15 @@
     <mailingLists>
         <mailingList>
             <name>PicoContainer Users</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-user/</archive>
+            <subscribe>http://archive.picocontainer.org/user</subscribe>
+            <unsubscribe>http://archive.picocontainer.org/user</unsubscribe>
+            <archive>http://archive.picocontainer.org/user</archive>
         </mailingList>
         <mailingList>
             <name>PicoContainer Developers</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
+            <subscribe>http://archive.picocontainer.org/dev</subscribe>
+            <unsubscribe>http://archive.picocontainer.org/dev</unsubscribe>
+            <archive>http://archive.picocontainer.org/dev</archive>
         </mailingList>
         <mailingList>
             <name>PicoContainer CVS Commits (CVSSpam)</name>
@@ -183,6 +180,101 @@
         </developer>
     </developers>
 
+    <contributors>
+        <contributor>
+            <name>Joe Walnes</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mike Hogan</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>James Strachan</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Steve Freeman</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Stacy Curl</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Leo Simons</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Zohar Melamed</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Dan North</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Rafal Krzewski</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Paulo Silvera</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Michael Rettig</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mirco Novakovic</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Laurent Etiemble</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mathias Bogaert</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Vincent Tence</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Rao Chejarla</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Aapo Laakkonen</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Kevin O'Neill</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Jeppe Cramon</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Adam Rosien</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Gilles Philippart</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Calvin Yu</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Matt Ho</name>
+            <email/>
+        </contributor>
+    </contributors>
+
     <dependencies>
 
         <!-- test time only -->
@@ -196,78 +288,6 @@
         </dependency>
 
     </dependencies>
-
-    <contributors>
-        <contributor>
-            <name>Joe Walnes</name>
-        </contributor>
-        <contributor>
-            <name>Mike Hogan</name>
-        </contributor>
-        <contributor>
-            <name>James Strachan</name>
-        </contributor>
-        <contributor>
-            <name>Steve Freeman</name>
-        </contributor>
-        <contributor>
-            <name>Stacy Curl</name>
-        </contributor>
-        <contributor>
-            <name>Leo Simons</name>
-        </contributor>
-        <contributor>
-            <name>Zohar Melamed</name>
-        </contributor>
-        <contributor>
-            <name>Dan North</name>
-        </contributor>
-        <contributor>
-            <name>Rafal Krzewski</name>
-        </contributor>
-        <contributor>
-            <name>Paulo Silvera</name>
-        </contributor>
-        <contributor>
-            <name>Michael Rettig</name>
-        </contributor>
-        <contributor>
-            <name>Mirco Novakovic</name>
-        </contributor>
-        <contributor>
-            <name>Laurent Etiemble</name>
-        </contributor>
-        <contributor>
-            <name>Mathias Bogaert</name>
-        </contributor>
-        <contributor>
-            <name>Vincent Tence</name>
-        </contributor>
-        <contributor>
-            <name>Rao Chejarla</name>
-        </contributor>
-        <contributor>
-            <name>Aapo Laakkonen</name>
-        </contributor>
-        <contributor>
-            <name>Kevin O'Neill</name>
-        </contributor>
-        <contributor>
-            <name>Jeppe Cramon</name>
-        </contributor>
-        <contributor>
-            <name>Adam Rosien</name>
-        </contributor>
-        <contributor>
-            <name>Gilles Philippart</name>
-        </contributor>
-        <contributor>
-            <name>Calvin Yu</name>
-        </contributor>
-        <contributor>
-            <name>Matt Ho</name>
-        </contributor>
-    </contributors>
 
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>

@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.microcontainer.Kernel;
 import org.microcontainer.DeploymentException;
 import org.microcontainer.McaDeployer;
+import org.microcontainer.DeploymentScriptHandler;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.testmodel.Wilma;
@@ -40,7 +41,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
     protected void setUp() throws Exception {
         super.setUp();
-        kernel = new DefaultKernel( new DefaultMcaDeployer() );
+		kernel = TestFixture.createKernel();
     }
 
     public void testDeploymentOfMcaFileYieldsAccesibleComponent() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
@@ -268,7 +269,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testMultipleKernelsPeacefullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException
     {
         // was an issue with phoenix at times...ie these guys don't claim server sockets...
-        Kernel kernel2 = new DefaultKernel(new DefaultMcaDeployer());
+        Kernel kernel2 = TestFixture.createKernel();
 
         testDeploymentOfMcaFileYieldsAccesibleComponent();
 
@@ -284,6 +285,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         DefaultPicoContainer c = new DefaultPicoContainer();
         c.registerComponentImplementation(Kernel.class, DefaultKernel.class);
         c.registerComponentImplementation(McaDeployer.class, DefaultMcaDeployer.class);
+        c.registerComponentImplementation(DeploymentScriptHandler.class, GroovyDeploymentScriptHandler.class);
         assertNotNull( c.getComponentInstance(Kernel.class) );
         c.start();
         c.stop();

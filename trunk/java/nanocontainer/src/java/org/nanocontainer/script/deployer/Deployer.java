@@ -12,10 +12,9 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
-import org.picoextras.script.jython.JythonContainerBuilder;
-import org.picoextras.script.rhino.JavascriptContainerBuilder;
-import org.picoextras.script.xml.XMLContainerBuilder;
+import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
+import org.nanocontainer.script.jython.JythonContainerBuilder;
+import org.nanocontainer.script.xml.XMLContainerBuilder;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;

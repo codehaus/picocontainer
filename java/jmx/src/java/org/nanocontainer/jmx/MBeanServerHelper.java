@@ -35,10 +35,13 @@ public class MBeanServerHelper {
 			ObjectName objectName = asObjectName(adapter.getComponentKey());
 			MBeanServer mBeanServer = getMBeanServer(adapter);
 
-			if(!mBeanServer.isRegistered(objectName)) { // only register once!
+			if(mBeanServer == null) {
+             	throw new JMXRegistrationException("An MBeanServer instance MUST be registered with the container");
+			}
+			else if(!mBeanServer.isRegistered(objectName)) { // only register once!
 				mBeanServer.registerMBean(mbean, objectName);
 			}
-		} catch (Exception e) {
+		} catch (JMException e) {
 			throw new JMXRegistrationException(e);
 		}
 	}

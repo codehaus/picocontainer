@@ -10,15 +10,55 @@
 
 package org.nanocontainer.jmx;
 
-import junit.framework.TestCase;
+import org.jmock.MockObjectTestCase;
+import org.jmock.Mock;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 /**
  * @author Michael Ward
  * @version $Revision$
  */
-public class MBeanServerHelperTestCase extends TestCase {
+public class MBeanServerHelperTestCase extends MockObjectTestCase {
 
-	public void testMBeanOnlyRegisteredOnce() {
-		//todo MBeanServerHelper
+	private MutablePicoContainer pico;
+	private ObjectName objectName;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+		pico = new DefaultPicoContainer();
+        objectName = new ObjectName("pico:name=one");
+    }
+
+	public void testMBeanOnlyRegisteredOnce() throws Exception {
+		ComponentAdapter adapter = JMXTestFixture.createJMXComponentAdapter(objectName);
+		pico.registerComponent(adapter);
+		pico.registerComponentInstance(FooBarMBeanInfo.class.getName(), JMXTestFixture.createMBeanInfo());
+
+		// Mock the MBeanServer
+		Mock mockMBeanServer = new Mock(MBeanServer.class);
+		mockMBeanServer.expects(atLeastOnce()).method("isRegistered").withAnyArguments().will(onConsecutiveCalls(returnValue(false), returnValue(true)));
+		mockMBeanServer.expects(once()).method("registerMBean").withAnyArguments().isVoid();
+
+		// register Mock with pico
+		pico.registerComponentInstance(MBeanServer.class, mockMBeanServer.proxy());
+
+		// call twice make to ensure MBean NOT registered to the MBeanServer twice
+		pico.getComponentInstances();
+		pico.getComponentInstances();
+	}
+
+	public void testRegisterFailed() throws Exception {
+		ComponentAdapter adapter = JMXTestFixture.createJMXComponentAdapter(objectName);
+		pico.registerComponent(adapter);
+		try {
+			MBeanServerHelper.register(adapter, null);
+			fail("JMXRegistrationException should have been thrown");
+		} catch (JMXRegistrationException ignore) {
+		}
 	}
 }

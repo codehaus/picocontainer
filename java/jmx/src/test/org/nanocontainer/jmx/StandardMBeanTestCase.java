@@ -19,6 +19,8 @@ import javax.management.MBeanServerFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.testmodel.WilmaImpl;
+import org.nanocontainer.testmodel.Wilma;
 
 /**
  * @author Michael Ward
@@ -38,14 +40,19 @@ public class StandardMBeanTestCase extends TestCase {
     }
 
 	public void testAccessViaMBeanServer() throws Exception {
-		ComponentAdapter componentAdapter = new StandardMBeanComponentAdapter(objectName, new SampleMBean(), SampleInterface.class);
+		WilmaImpl wilma = new WilmaImpl();
+		ComponentAdapter componentAdapter = new StandardMBeanComponentAdapter(objectName, wilma, Wilma.class);
 		pico.registerComponent(componentAdapter);
 
+		// validate registration
 		assertFalse(mbeanServer.isRegistered(objectName));
 		pico.getComponentInstances();
 		assertTrue(mbeanServer.isRegistered(objectName));
-        Object object = mbeanServer.getAttribute(objectName, "Count");
-		assertEquals(new Integer(1), object);
+
+		// validate invokable
+		assertFalse(wilma.helloCalled());
+        mbeanServer.invoke(objectName, "hello", null, null);
+		assertTrue(wilma.helloCalled());
 	}
 
 }

@@ -11,7 +11,7 @@ public class Game {
 
     numberToGuess
 
-    property guess = Integer.MIN_VALUE
+    property int guess = Integer.MIN_VALUE
     property hint = GUESS_NEW_HINT
 
     public Game(NumberToGuess n) {

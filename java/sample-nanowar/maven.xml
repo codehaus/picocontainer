@@ -1,0 +1,46 @@
+<project default="binary:install"
+    xmlns:j="jelly:core"
+    xmlns:license="license"
+    xmlns:util="jelly:util"
+    xmlns:ant="jelly:ant"
+    xmlns:artifact="artifact"
+    xmlns:deploy="deploy">
+
+    <goal name="binary:install" prereqs="war:install"/>
+    <goal name="binary:deploy" prereqs="war:install">
+        <deploy:artifact
+            artifact="${maven.build.dir}/${pom.artifactId}.war"
+            type="war"
+            assureDirectoryCommand="mkdir -p"
+            siteCommand="cd @deployDirectory@; chmod g+w ${maven.final.name}.war"
+            />
+    </goal>
+
+   <goal name="tomcat:deploy" prereqs="war:install">
+		<ant:property environment="env"/>
+   		<ant:copy file="${maven.build.dir}/${pom.artifactId}.war" todir="${env.TOMCAT_HOME}/webapps"/>
+		<ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}" failonerror="false"/>
+    </goal>
+
+    <preGoal name="test:test">
+        <copy todir="${basedir}/target/nanocontainer-sample-nanowar/">
+            <fileset dir="${basedir}/src/webapp"/>
+        </copy>
+        <mkdir dir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/classes"/>
+        <copy todir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/classes">
+            <fileset dir="${basedir}/target/classes"/>
+        </copy>
+
+        <mkdir dir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/lib"/>
+
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            <j:if test="${dep.getProperty('war.bundle')=='true'}">
+                <j:if test="${dep.type =='jar'}">
+                    <copy todir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/lib" file="${lib.path}"/>
+                </j:if>
+            </j:if>
+        </j:forEach>
+    </preGoal>
+
+</project>

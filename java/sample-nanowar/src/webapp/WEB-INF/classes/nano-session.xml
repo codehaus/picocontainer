@@ -1,0 +1,5 @@
+<container>
+    <instance key='scope'>
+    	<string>session</string>
+    </instance>
+</container>

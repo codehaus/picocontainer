@@ -3,5 +3,5 @@ distributions.*
 *.iws
 *.log
 target
+dist
 cachedir
-

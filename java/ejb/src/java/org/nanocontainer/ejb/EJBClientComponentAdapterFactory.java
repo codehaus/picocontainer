@@ -9,16 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.ThreadLocalComponentAdapter;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
  * {@link ComponentAdapterFactory} for EJB components.
@@ -40,7 +40,7 @@ public class EJBClientComponentAdapterFactory
 
     /**
      * Construct an EJBClientComponentAdapterFactory using a special {@link InitialContext}.
-     * @param initialContext The InitialContext. 
+     * @param initialContext The InitialContext.
      */
     public EJBClientComponentAdapterFactory(final InitialContext initialContext) {
         super();

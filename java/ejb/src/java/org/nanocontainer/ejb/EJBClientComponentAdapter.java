@@ -9,29 +9,28 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import javax.ejb.EJBHome;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.*;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * {@link ComponentAdapter}, that is able to lookup and instantiate an EJB as client.
- * <p>If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter}, 
- * you have to use a {@link ThreadLocalReference}, since you may not use an instance of the EJB 
+ * <p>If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter},
+ * you have to use a {@link org.picocontainer.defaults.ThreadLocalReference}, since you may not use an instance of the EJB
  * in different threads.</p>
- * <p>Use a EJBClientComponnatAdapterFactory for a completely transparent {@link ThreadLocal} 
- * support.</p>  
+ * <p>Use a EJBClientComponnatAdapterFactory for a completely transparent {@link ThreadLocal}
+ * support.</p>
+ *
  * @author J&ouml;rg Schaible
  */
 public class EJBClientComponentAdapter implements ComponentAdapter {
@@ -44,13 +43,13 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
 
     /**
      * Construct a {@link ComponentAdapter} for an EJB.
-     * @param ejb The EJB's name.
+     *
+     * @param ejb           The EJB's name.
      * @param homeInterface The home interface of the EJB.
-     * @param context The {@link InitialContext} to use.
+     * @param context       The {@link InitialContext} to use.
      * @throws PicoIntrospectionException Thrown if lookup of home interface fails.
      */
     public EJBClientComponentAdapter(final String ejb, final Class homeInterface, final InitialContext context) {
-        super();
         try {
             if (!EJBHome.class.isAssignableFrom(homeInterface)) {
                 throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
@@ -74,6 +73,7 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
 
     /**
      * Instantiate the EJB.
+     *
      * @see org.picocontainer.ComponentAdapter#getComponentInstance()
      */
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
@@ -92,6 +92,7 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
 
     /**
      * This implementation has nothing to verify.
+     *
      * @see org.picocontainer.ComponentAdapter#verify()
      */
     public void verify() throws UnsatisfiableDependenciesException {

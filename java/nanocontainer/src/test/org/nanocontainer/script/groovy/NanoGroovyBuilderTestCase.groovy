@@ -246,4 +246,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertSame(a, b.getA())
     }
 
+
+
+
 }

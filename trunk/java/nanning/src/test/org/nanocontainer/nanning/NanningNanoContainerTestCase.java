@@ -117,7 +117,6 @@ public class NanningNanoContainerTestCase extends TestCase {
         container.registerComponentImplementation(TransactionManager.class, LoggingTransactionManager.class);
         container.getComponentInstances();
 
-        assertTrue(container.hasComponent(TransactionManager.class));
         assertNotNull(container.getComponentInstance(TransactionManager.class));
     }
 

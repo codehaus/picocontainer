@@ -225,7 +225,7 @@ public class PicoPoolTestCase extends TestCase {
 
         pool.clearPool();
         assertEquals(0, pool.getSize());
-        assertEquals(0, pool.getPoolContainer().getComponentKeys().size());
+        assertEquals(0, pool.getPoolContainer().getComponentAdapters().size());
 
         pool.borrowComponent();
         assertEquals(1, pool.getSize());

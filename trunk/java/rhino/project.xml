@@ -20,7 +20,8 @@
     </dependency>
     
     <dependency>
-      <id>rhino</id>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
       <version>1.5R4.1</version>
     </dependency> 
     

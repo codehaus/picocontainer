@@ -61,8 +61,8 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-            fail("PicoBuilderException should have been raised");
-        } catch (PicoBuilderException e) {
+            fail("NanoContainerBuilderException should have been raised");
+        } catch (NanoContainerBuilderException e) {
             // expected
         }
     }

@@ -28,7 +28,7 @@ import org.nanocontainer.aop.dynaop.DynaopAspectsManager;
 import org.nanocontainer.aop.dynaop.DynaopPointcutsFactory;
 import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.nanocontainer.script.groovy.NanoContainerBuilder;
-import org.nanocontainer.script.groovy.PicoBuilderException;
+import org.nanocontainer.script.groovy.NanoContainerBuilderException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 

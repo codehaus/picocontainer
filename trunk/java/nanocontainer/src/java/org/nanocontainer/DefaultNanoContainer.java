@@ -11,7 +11,7 @@
 package org.nanocontainer;
 
 import org.nanocontainer.reflection.StringToObjectConverter;
-import org.nanocontainer.script.groovy.PicoBuilderException;
+import org.nanocontainer.script.groovy.NanoContainerBuilderException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -187,7 +187,7 @@ public class DefaultNanoContainer implements NanoContainer {
             Object componentInstance = picoContainer.getComponentInstanceOfType(compType);
             return componentInstance;
         } catch (ClassNotFoundException e) {
-            throw new PicoBuilderException("Can't resolve class as type '" + componentType + "'");
+            throw new NanoContainerBuilderException("Can't resolve class as type '" + componentType + "'");
         }
     }
 

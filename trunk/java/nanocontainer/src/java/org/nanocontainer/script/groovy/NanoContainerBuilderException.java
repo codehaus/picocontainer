@@ -19,13 +19,13 @@ import org.picocontainer.PicoException;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @version $Revision$
  */
-public class PicoBuilderException extends PicoException {
+public class NanoContainerBuilderException extends PicoException {
 
-    public PicoBuilderException(String message) {
+    public NanoContainerBuilderException(String message) {
         super(message);
     }
 
-    public PicoBuilderException(String message, Exception e) {
+    public NanoContainerBuilderException(String message, Exception e) {
         super(message, e);
     }
 }

@@ -13,6 +13,7 @@ import org.picoextras.gui.swing.ComponentRegistrar;
  * @version $Revision$
  */
 public class ComponentRegistrarTestCase extends TestCase {
+    
     public void testCreateComponentNode() throws IntrospectionException {
         ContainerNode containerNode = new ContainerNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(containerNode);

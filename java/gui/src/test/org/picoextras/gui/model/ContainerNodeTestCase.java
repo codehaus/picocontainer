@@ -2,6 +2,8 @@ package org.picoextras.gui.model;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
+import org.picoextras.gui.model.*;
+import org.picoextras.gui.model.NeedsFoo;
 
 import java.util.ArrayList;
 import java.beans.IntrospectionException;
@@ -37,7 +39,7 @@ public class ContainerNodeTestCase extends TestCase {
         ContainerNode childContainerNode = new ContainerNode();
         parentContainerNode.add(childContainerNode);
 
-        ComponentNode fooNode = new ComponentNode(new BeanPropertyModel(Foo.class));
+        ComponentNode fooNode = new ComponentNode(new BeanPropertyModel(org.picoextras.gui.model.Foo.class));
         ComponentNode needsFooNode = new ComponentNode(new BeanPropertyModel(NeedsFoo.class));
 
         parentContainerNode.add(fooNode);

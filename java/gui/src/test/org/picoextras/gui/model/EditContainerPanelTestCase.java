@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.picoextras.gui.swing.EditContainerPanel;
 
 import javax.swing.*;
-import javax.swing.tree.TreePath;
 
 /**
  * @author Aslak Helles&oslash;y

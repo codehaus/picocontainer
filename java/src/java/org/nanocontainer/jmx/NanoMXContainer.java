@@ -25,6 +25,7 @@ import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 
 /**
  * A simple PicoContainer which allow multiple implementations of the same interface
@@ -40,7 +41,7 @@ public class NanoMXContainer extends DefaultPicoContainer {
     private MBeanServer mbeanServer;
 
     public NanoMXContainer(MBeanServer mbeanServer, ComponentFactory componentFactory) {
-        super(new NanoMXComponentFactory(mbeanServer, componentFactory));
+        super(new NanoMXComponentFactory(mbeanServer, componentFactory), new DefaultComponentRegistry());
         this.mbeanServer = mbeanServer;
     }
 

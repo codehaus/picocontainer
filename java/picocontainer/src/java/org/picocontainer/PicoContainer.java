@@ -10,8 +10,6 @@
 
 package org.picocontainer;
 
-
-
 /**
  * PicoContainer - guaranteed to resolve the needs of components
  * as it instantiates them.

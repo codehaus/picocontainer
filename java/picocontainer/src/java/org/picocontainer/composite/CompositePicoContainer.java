@@ -15,6 +15,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public class CompositePicoContainer extends DefaultPicoContainer {
     private final List containers = new ArrayList();
 
     public CompositePicoContainer(final PicoContainer[] containers) {
-        super(new DefaultComponentFactory());
+        super(new DefaultComponentFactory(), new DefaultComponentRegistry());
         if (containers == null) {
             throw new NullPointerException("containers can't be null");
         }

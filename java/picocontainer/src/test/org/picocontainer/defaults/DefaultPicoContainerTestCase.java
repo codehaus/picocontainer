@@ -715,4 +715,21 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
+    public void testBasicContainerAsserts() {
+        try {
+            new DefaultPicoContainer(new DefaultComponentFactory(), null);
+            fail("Should have had NPE)");
+        } catch (NullPointerException npe) {
+            assertTrue(npe.getMessage().indexOf("componentRegistry") >= 0);
+        }
+        try {
+            new DefaultPicoContainer(null, new DefaultComponentRegistry());
+            fail("Should have had NPE)");
+        } catch (NullPointerException npe) {
+            assertTrue(npe.getMessage().indexOf("componentFactory") >= 0);
+        }
+
+    }
+
+
 }

@@ -10,7 +10,6 @@
 
 package org.picocontainer;
 
-
 public interface RegistrationPicoContainer extends PicoContainer {
 
     /**

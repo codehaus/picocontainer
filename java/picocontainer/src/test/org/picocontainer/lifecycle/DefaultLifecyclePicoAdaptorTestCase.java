@@ -17,6 +17,9 @@ import org.picocontainer.testmodel.WilmaImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
@@ -400,6 +403,5 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         assertTrue(lifecycle.isStarted());
 
     }
-
 
 }

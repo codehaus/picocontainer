@@ -33,6 +33,10 @@ public class DefaultCheeseService implements CheeseService {
         return dao.all();
     }
 
+    public Cheese find(Cheese example) {
+        return dao.get(example.getName());
+    }
+    
     public void save(Cheese cheese) {
         dao.save(cheese);
     }

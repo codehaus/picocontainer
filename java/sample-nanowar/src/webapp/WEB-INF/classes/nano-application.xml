@@ -1,8 +1,0 @@
-<container>
-	<implementation type='org.nanocontainer.sample.nanowar.dao.CheeseDao'
-			class='org.nanocontainer.sample.nanowar.dao.simple.MemoryCheeseDao'> 
-	</implementation>
-	<implementation type='org.nanocontainer.sample.nanowar.service.CheeseService'
-			class='org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService'>
-	</implementation>
-</container>

@@ -8,14 +8,21 @@
  *****************************************************************************/
 package org.nanocontainer.sample.nanowar.model;
 
+import java.io.Serializable;
+
 /**
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public class Cheese {
+public class Cheese implements Serializable {
 
     private String name;
     private String country;
+
+
+    public Cheese() {
+        // default constructor used by some frameworks
+    }
 
     public Cheese(String name, String country) {
         this.name = name;
@@ -32,12 +39,20 @@ public class Cheese {
         return name;
     }
 
+    public void setName( String name ) {
+        this.name = name;
+    }
+    
     public String getCountry() {
         return country;
     }
+    
+    public void setCountry( String country ) {
+        this.country = country;
+    }
 
     public String toString() {
-        return "[Cheese name=" + getName() + ", country=" + getCountry() + "]";
+        return "[Cheese name=" + name + ", country=" + country + "]";
     }
 
 }

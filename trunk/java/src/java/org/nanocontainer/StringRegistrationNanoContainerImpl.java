@@ -69,6 +69,9 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
     }
 
     public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+        if(compClassName == null) {
+            throw new NullPointerException("compClassName can't be null");
+        }
         picoContainer.registerComponentByClass(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
     }
 

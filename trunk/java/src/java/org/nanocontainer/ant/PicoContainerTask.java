@@ -4,17 +4,19 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.internals.ComponentRegistry;
-import org.nanocontainer.StringRegistrationNanoContainer;
-import org.nanocontainer.StringRegistrationNanoContainerImpl;
+import org.picocontainer.internals.Parameter;
+import org.picocontainer.internals.ComponentAdapter;
+import org.nanocontainer.MethodInvoker;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.DynamicConfigurator;
 import org.apache.tools.ant.BuildException;
 
-import java.util.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -23,93 +25,112 @@ import java.lang.reflect.InvocationTargetException;
  * The components's execute() method (if it exists) will be invoked
  * in the order of instantiation.
  *
- * <taskdef name="pico" classname="org.nanocontainer.ant.PicoContainerTask"/>
+ * &lt;taskdef name="pico" classname="org.nanocontainer.ant.PicoContainerTask"/&gt;
  *
- * <pico>
- *    <component name="foo.Bar"/>
- *    <component name="ping.Pong"/>
- * </pico>
+ * &lt;pico&gt;
+ *    &lt;component classname="foo.Bar" someprop="somevalue"/&gt;
+ *    &lt;component classname="ping.Pong"/&gt;
+ * &lt;/pico&gt;
+ *
+ * Also note that bean/ant style properties can be set too. The above
+ * usage will call <code>setSomeprop("somevalue")</code> on the
+ * <code>foo.Bar</code> instance.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class PicoContainerTask extends Task implements DynamicConfigurator {
-    private StringRegistrationNanoContainer picoContainer;
-    private List antComponents = new ArrayList();
-    private ComponentRegistry componentRegistry = new DefaultComponentRegistry();
+public class PicoContainerTask extends Task {
+    private final RegistrationPicoContainer picoContainer;
+    private final Map classNameToComponentMap = new HashMap();
+    private AntComponentRegistry componentRegistry = new AntComponentRegistry();
+
+    public final class AntComponentRegistry extends DefaultComponentRegistry {
+
+        public Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException {
+            Object result = super.createComponent(componentAdapter);
+            Component component = findComponent(result);
+            if( component != null) {
+                component.setPropertiesOn(result, getProject());
+            }
+
+            return result;
+        }
+
+        private Component findComponent(Object instance) {
+            return (Component) classNameToComponentMap.get(instance.getClass().getName());
+        }
+    };
+
+    private final AntComponentRegistry getAntComponentRegistry() {
+        return componentRegistry;
+    }
+
+    protected RegistrationPicoContainer createRegistrationPicoContainer(ComponentRegistry componentRegistry) throws PicoRegistrationException, PicoIntrospectionException {
+        return new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
+    }
+
 
     public PicoContainerTask() {
-        picoContainer = new StringRegistrationNanoContainerImpl.WithClassLoaderAndComponentRegistry(
-                getClass().getClassLoader(),
-                componentRegistry
-                );
-    }
-
-    public void setDynamicAttribute(String name, String value) throws BuildException {
-    }
-
-    public Object createDynamicElement(String elementName) {
-        if("component".equals(elementName)) {
-            return createAntComponent();
+        try {
+            picoContainer = createRegistrationPicoContainer(componentRegistry);
+        } catch (PicoRegistrationException e) {
+            throw new BuildException(e);
+        } catch (PicoIntrospectionException e) {
+            throw new BuildException(e);
         }
-        return null;
     }
 
-    protected AntComponent createAntComponent() {
-        AntComponent antComponent = new AntComponent();
-        antComponents.add(antComponent);
-        return antComponent;
+    /**
+     * Convenience method for subclasses and tests that wish to register components
+     * programatically.
+     */
+    protected Component registerComponent(Class componentClass) {
+        Component component = new Component();
+        component.setClassname(componentClass.getName());
+        addConfiguredComponent(component);
+        return component;
     }
 
-    public void execute() {
-        registerComponents();
+    public void addConfiguredComponent(Component component) {
+        classNameToComponentMap.put(component.getClassname(), component);
+    }
 
+    public final void execute() {
+        registerComponentsSpecifiedInAnt();
+        doExecute();
+    }
+
+    protected void doExecute() {
         try {
             getPicoContainer().instantiateComponents();
         } catch (PicoInitializationException e) {
             throw new BuildException(e);
         }
 
-        prepareComponents();
-
-        executeComponents();
-    }
-
-    /**
-     * Override this method if you need to prepare some components
-     * before they are all executed.
-     */
-    protected void prepareComponents() {
-    }
-
-    private void executeComponents() {
-        Collection instantiationOrderedComponents = componentRegistry.getOrderedComponents();
-        for (Iterator iterator = instantiationOrderedComponents.iterator(); iterator.hasNext();) {
-            Object component = iterator.next();
-            Class componentClass = component.getClass();
-            try {
-                Method execute = componentClass.getMethod("execute", null);
-                execute.invoke(component, null);
-            } catch (NoSuchMethodException e) {
-                // ignore
-            } catch (SecurityException e) {
-                throw new BuildException(e);
-            } catch (IllegalAccessException e) {
-                // ignore
-            } catch (IllegalArgumentException e) {
-                // ignore
-            } catch (InvocationTargetException e) {
-                throw new BuildException(e.getTargetException());
-            }
+        try {
+            configureComponents();
+        } catch (Exception e) {
+            throw new BuildException(e);
         }
+
+        new MethodInvoker().invokeMethod("execute", getAntComponentRegistry());
     }
 
-    private void registerComponents() {
-        for (Iterator iterator = antComponents.iterator(); iterator.hasNext();) {
-            AntComponent antComponent = (AntComponent) iterator.next();
+    protected void configureComponents() throws Exception {
+    }
+
+    private void registerComponentsSpecifiedInAnt() {
+        for (Iterator iterator = classNameToComponentMap.values().iterator(); iterator.hasNext();) {
+            Component componentdef = (Component) iterator.next();
+            Parameter[] parameters = componentdef.getParameters();
 
             try {
-                picoContainer.registerComponent(antComponent.getClassName());
+                Class aClass = getClassLoader().loadClass(componentdef.getClassname());
+                if (parameters != null) {
+                    picoContainer.registerComponent(aClass, aClass, parameters);
+                } else {
+                    picoContainer.registerComponent(aClass, aClass);
+                }
             } catch (PicoRegistrationException e) {
                 throw new BuildException(e);
             } catch (ClassNotFoundException e) {
@@ -120,8 +141,15 @@ public class PicoContainerTask extends Task implements DynamicConfigurator {
         }
     }
 
+    private ClassLoader getClassLoader() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = getClass().getClassLoader();
+        }
+        return classLoader;
+    }
+
     public PicoContainer getPicoContainer() {
         return picoContainer;
     }
-
 }

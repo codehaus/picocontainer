@@ -153,4 +153,8 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
     public void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException {
         mainContainer.addParameterToComponent(componentKey, parameter, arg);
     }
+
+    public void unregisterComponent(Object componentKey) {
+        mainContainer.unregisterComponent(componentKey);
+    }
 }

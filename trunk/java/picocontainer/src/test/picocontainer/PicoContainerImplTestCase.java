@@ -24,7 +24,7 @@ import picocontainer.testmodel.WilmaImpl;
 import picocontainer.testmodel.*;
 import picocontainer.testmodel.Dictionary;
 
-public class DefaultPicoContainerTestCase extends TestCase {
+public class PicoContainerImplTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
@@ -58,6 +58,10 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
+
+        assertEquals("There should be two comps in the container", 2, pico.getComponents().length);
+        assertEquals("There should have been a Fred in the container", FredImpl.class, pico.getComponents()[0].getClass());
+        assertEquals("There should have been a Wilma in the container", WilmaImpl.class, pico.getComponents()[1].getClass());
 
     }
 

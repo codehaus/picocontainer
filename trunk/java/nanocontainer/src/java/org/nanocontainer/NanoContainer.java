@@ -33,6 +33,9 @@ import java.util.Map;
  * </ul>
  * -And the content of the file likewise. See <a href="http://docs.codehaus.org/display/NANO/NanoContainer">NanoContainer documentation</a>
  * for details.
+ *
+ * @author Paul Hammant
+ * @author Aslak Helles&oslah;y
  */
 public class NanoContainer {
 

@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.io.StringReader;
+import java.io.Reader;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 
 /**
@@ -70,7 +72,14 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 String extension = initParameter.substring(initParameter.lastIndexOf('.'));
                 String builderClassName = NanoContainer.getBuilderClassName(extension);
                 String script = context.getInitParameter(initParameter);
-                NanoContainer nanoContainer = new NanoContainer(new StringReader(script), builderClassName, Thread.currentThread().getContextClassLoader());
+                Reader scriptReader;
+                if(script.trim().startsWith("/") && !(script.trim().startsWith("//") || script.trim().startsWith("/*"))) {
+                    // the script isn't inlined, but in a separate file.
+                    scriptReader = new InputStreamReader(context.getResourceAsStream(script));
+                } else {
+                    scriptReader = new StringReader(script);
+                }
+                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
                 return nanoContainer.getContainerBuilder();
             }
             if(initParameter.equals(ContainerComposer.class.getName())) {

@@ -60,7 +60,7 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = container.getComponentClassLoader();
         DefaultNanoPicoContainer child = new DefaultNanoPicoContainer(currentClassloader, this);
-        delegate.addChildContainer(child);
+        getDelegate().addChildContainer(child);
         namedChildContainers.put(name, child);
         return child;
     }

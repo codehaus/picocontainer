@@ -59,7 +59,7 @@ public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoConta
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = container.getComponentClassLoader();
         ImplementationHidingNanoPicoContainer child = new ImplementationHidingNanoPicoContainer(currentClassloader, this);
-        delegate.addChildContainer(child);
+        getDelegate().addChildContainer(child);
         namedChildContainers.put(name, child);
         return child;
     }

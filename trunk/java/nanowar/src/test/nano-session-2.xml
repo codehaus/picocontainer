@@ -1,0 +1,5 @@
+<container>
+    <instance key="sessionScopedInstance2">
+        <string>foo bar</string>
+    </instance>
+</container>

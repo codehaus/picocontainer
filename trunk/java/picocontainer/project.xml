@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>picocontainer</id>
   <name>PicoContainer</name>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <currentVersion>1.0-alpha-1</currentVersion>
 
   <organization>
     <name>Codehaus</name>
@@ -17,13 +17,13 @@
   <description>Small footprint IoC container</description>
   <shortDescription>Small footprint IoC container</shortDescription>
   <description>
-    PicoContainer is a small, simple container for arbitary components. It is embedable and
-    extentendable.  PicoContainer is designed for server and client 
-    side, for small and enterprise applications. It is designed to be extendable. There are 
+    PicoContainer is a small, simple container for arbitrary components. It is embeddable and
+    extentensible.  PicoContainer is designed for server and client 
+    side, for small and enterprise applications. There are 
     already quite a few diverse containers that deliver the PicoContainer design.
     Components can be created for it without importing or extending any
     interfaces or classes outside of the java.* package.  Components also have no
-    meta-info specification.I.e. no XML. Most importantly of all, components for PicoContainer
+    meta-info specification. I.e. no XML. Most importantly of all, components for PicoContainer
     can be used without PicoContainer for good old-fashioned hard-coded deployments.
   </description>
   <url>http://www.picocontainer.org/</url>
@@ -35,6 +35,19 @@
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
     <url>http://cvs.codehaus.org/viewcvs.cgi/pico/</url>
   </repository>
+
+  <versions>
+    <version>
+      <id>1.0-alpha-1</id>
+      <name>1.0-alpha-1</name>
+      <tag>PICOCONTAINER_1_0_ALPHA_1</tag>
+    </version>
+    <version>
+      <id>1.0-beta-1</id>
+      <name>1.0-beta-1</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
 
   <mailingLists>
     <mailingList>

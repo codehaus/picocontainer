@@ -20,6 +20,7 @@ import junit.framework.TestCase;
  * @author Konstantin Pribluda
  *
  */
+// SNIPPET START: testcase
 public class CheeseActionTest extends TestCase {
     
     /**
@@ -43,3 +44,5 @@ public class CheeseActionTest extends TestCase {
         
     }
 }
+// SNIPPET END: testcase
+

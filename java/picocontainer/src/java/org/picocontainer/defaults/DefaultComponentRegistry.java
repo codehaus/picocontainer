@@ -72,10 +72,6 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.containsKey(componentKey);
     }
 
-    //RMV public Iterator getInstanceMapIterator() {
-    //    return componentKeyToInstanceMap.entrySet().iterator();
-    //}
-
     public Object getComponentInstance(Object componentKey) {
         return componentKeyToInstanceMap.get(componentKey);
     }

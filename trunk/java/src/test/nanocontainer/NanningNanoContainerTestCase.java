@@ -22,9 +22,9 @@ public class NanningNanoContainerTestCase extends TestCase {
      * @author Jon Tirsen
      * @version $Revision$
      */
-    public static class NanningPicoContainer extends PicoContainerImpl {
+    public static class NanningPicoContainer extends PicoContainerImpl.WithComponentFactory {
         public NanningPicoContainer(final AspectSystem aspectSystem) {
-            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DefaultComponentFactory() {
+            super(new DefaultComponentFactory() {
                 public Object createComponent(Class compType, Constructor constructor, Object[] args)
                         throws InvocationTargetException, IllegalAccessException, InstantiationException
                 {
@@ -44,7 +44,6 @@ public class NanningNanoContainerTestCase extends TestCase {
                         aspectSystem.initialize(aspectInstance);
                         component = aspectInstance.getProxy();
                     }
-
                     return component;
                 }
             });

@@ -21,8 +21,14 @@ import java.util.*;
  */
 public class NanoContainer {
     private final List lifecycleAdapters = new ArrayList();
+    private final NanoContainerMonitor monitor;
 
     public NanoContainer(Reader nanoContainerXml) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
+        this(nanoContainerXml, new ConsoleNanoContainerMonitor());
+    }
+
+    public NanoContainer(Reader nanoContainerXml, NanoContainerMonitor monitor) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
+        this.monitor = monitor;
         InputSource is = new InputSource(nanoContainerXml);
         InputSourceFrontEnd isfe = new InputSourceFrontEnd();
         final PicoContainer rootContainer = isfe.createPicoContainer(is);
@@ -32,6 +38,7 @@ public class NanoContainer {
     }
 
     private void instantiateComponentsBreadthFirst(PicoContainer picoContainer) {
+        monitor.componentsInstantiated(picoContainer);        
         LifecyclePicoAdapter lpa = new DefaultLifecyclePicoAdapter(picoContainer);
         lifecycleAdapters.add(lpa);
         picoContainer.getComponentInstances();
@@ -46,6 +53,7 @@ public class NanoContainer {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
             DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
             lpa.start();
+            monitor.componentsLifecycleEvent("started",lpa);
         }
         Collections.reverse(lifecycleAdapters); // for stop and dispose
     }
@@ -54,6 +62,7 @@ public class NanoContainer {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
             DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
             lpa.stop();
+            monitor.componentsLifecycleEvent("stopped",lpa);
         }
     }
 
@@ -61,6 +70,7 @@ public class NanoContainer {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
             DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
             lpa.dispose();
+            monitor.componentsLifecycleEvent("disposed",lpa);
         }
     }
 

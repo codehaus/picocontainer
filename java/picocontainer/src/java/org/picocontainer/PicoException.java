@@ -9,6 +9,9 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
  * Superclass for all Exceptions in PicoContainer. You can use this if you want to catch all exceptions thrown by
  * PicoContainer. Be aware that some parts of the PicoContainer API will also throw {@link NullPointerException} when
@@ -66,9 +69,31 @@ public abstract class PicoException extends RuntimeException {
      * Retrieve the exception that caused this one.
      *
      * @return the exception that caused this one, or null if it was not set.
-     * @see Throwable#getCause() the method available since JDK 1.3 that is overridden by this method.
+     * @see Throwable#getCause() the method available since JDK 1.4 that is overridden by this method.
      */
     public Throwable getCause() {
         return cause;
+    }
+
+    /**
+     * Overridden to provide 1.4 style stack traces on pre-1.4.
+     */
+    public void printStackTrace(PrintStream s) {
+        super.printStackTrace(s);
+        if(cause!=null) {
+            s.println("Caused by:\n");
+            cause.printStackTrace(s);
+        }
+    }
+
+    /**
+     * Overridden to provide 1.4 style stack traces on pre-1.4.
+     */
+o    public void printStackTrace(PrintWriter s) {
+        super.printStackTrace(s);
+        if(cause!=null) {
+            s.println("Caused by:\n");
+            cause.printStackTrace(s);
+        }
     }
 }

@@ -24,6 +24,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentParameter;
@@ -51,7 +52,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -388,7 +388,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(ComponentA.class);
         pico.registerComponentImplementation(ComponentE.class);
         try {
-            pico.accept(new VerifyingVisitor());
+            new VerifyingVisitor().traverse(pico);
             fail("we expect a PicoVerificationException");
         } catch (PicoVerificationException e) {
             List nested = e.getNestedExceptions();
@@ -587,14 +587,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
     
-    public static class RecordingStrategyVisitor implements PicoVisitor {
+    public static class RecordingStrategyVisitor extends AbstractPicoVisitor {
         
         private final List list;
-        private final boolean reverse;
 
-        public RecordingStrategyVisitor(List list, boolean reverse) {
+        public RecordingStrategyVisitor(List list) {
             this.list = list;
-            this.reverse = reverse;
         }
 
         public void visitContainer(PicoContainer pico) {
@@ -608,14 +606,10 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         public void visitParameter(Parameter parameter) {
             list.add(parameter);
         }
-
-        public boolean isReverseTraversal() {
-            return reverse;
-        }
         
     }
 
-    public void testAcceptShouldRespectSearchStrategy() {
+    public void testAcceptImplementsBreadthFirstStrategy() {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashMap.class, HashMap.class));
@@ -641,14 +635,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             throwableParameter
         });
         List visitedList = new LinkedList();
-        PicoVisitor visitor = new RecordingStrategyVisitor(visitedList, false);
-        parent.accept(visitor);
-        assertEquals(expectedList, visitedList);
-
-        Collections.reverse(expectedList);
-        visitedList.clear();
-        visitor = new RecordingStrategyVisitor(visitedList, true);
-        parent.accept(visitor);
+        PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
+        visitor.traverse(parent);
         assertEquals(expectedList, visitedList);
     }
 

@@ -12,16 +12,18 @@ package org.picocontainer.tck;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.JVM;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
@@ -39,8 +41,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -120,10 +122,10 @@ public abstract class AbstractComponentAdapterTestCase
         final Class type = getComponentAdapterType();
         assertSame(type, componentAdapter.getClass());
         boolean hasParameters = supportsParameters(type);
-        final RecordingVisitor visitor = new RecordingVisitor(false);
-        componentAdapter.accept(visitor);
-        final List visitedElements = visitor.getVisitedElements();
-        assertTrue(visitedElements.contains(componentAdapter));
+        final RecordingVisitor visitor = new RecordingVisitor();
+        visitor.traverse(componentAdapter);
+        final List visitedElements = new ArrayList(visitor.getVisitedElements());
+        assertSame(componentAdapter, visitedElements.get(0));
         if (hasParameters) {
             hasParameters = false;
             for (final Iterator iter = visitedElements.iterator(); iter.hasNext() && !hasParameters;) {
@@ -131,10 +133,6 @@ public abstract class AbstractComponentAdapterTestCase
             }
             assertTrue("ComponentAdapter " + type + " supports parameters, provide some", hasParameters);
         }
-        Collections.reverse(visitedElements);
-        final RecordingVisitor reverseVisitor = new RecordingVisitor(true);
-        componentAdapter.accept(reverseVisitor);
-        assertEquals(visitedElements, reverseVisitor.getVisitedElements());
     }
 
     /**
@@ -160,8 +158,8 @@ public abstract class AbstractComponentAdapterTestCase
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepDEF_isAbleToTakeParameters(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final RecordingVisitor visitor = new RecordingVisitor(false);
-            componentAdapter.accept(visitor);
+            final RecordingVisitor visitor = new RecordingVisitor();
+            visitor.traverse(componentAdapter);
             final List visitedElements = visitor.getVisitedElements();
             if (hasParameters) {
                 hasParameters = false;
@@ -480,13 +478,8 @@ public abstract class AbstractComponentAdapterTestCase
     // ============================================
 
     static class RecordingVisitor
-            implements PicoVisitor {
+            extends AbstractPicoVisitor {
         private final List visitedElements = new LinkedList();
-        private final boolean isReverse;
-
-        public RecordingVisitor(boolean isReverse) {
-            this.isReverse = isReverse;
-        }
 
         public void visitContainer(PicoContainer pico) {
             visitedElements.add(pico);
@@ -502,10 +495,6 @@ public abstract class AbstractComponentAdapterTestCase
 
         List getVisitedElements() {
             return visitedElements;
-        }
-
-        public boolean isReverseTraversal() {
-            return isReverse;
         }
     }
 

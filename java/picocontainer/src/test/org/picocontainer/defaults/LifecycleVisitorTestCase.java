@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *****************************************************************************/
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
@@ -13,6 +20,7 @@ import java.io.FileNotFoundException;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class LifecycleVisitorTestCase
@@ -103,9 +111,9 @@ public class LifecycleVisitorTestCase
         parent.registerComponentImplementation(One.class, One.class, new Parameter[] { new ComponentParameter() });
         child.registerComponentImplementation(Three.class);
 
-        parent.accept(starter);
-        parent.accept(stopper);
-        parent.accept(disposer);
+        starter.traverse(parent);
+        stopper.traverse(parent);
+        disposer.traverse(parent);
 
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording")
                 .toString());
@@ -117,7 +125,7 @@ public class LifecycleVisitorTestCase
         MutablePicoContainer pico = new DefaultPicoContainer();
         mutableParentMock.expects(once()).method("removeChildContainer").with(same(pico));
         pico.addChildContainer((PicoContainer) mutableParentMock.proxy());
-        LifecycleVisitor.DISPOSER.visitContainer(pico);
+        LifecycleVisitor.dispose(pico);
     }
 
     public void testPicoIntrospectionExceptionForInvalidMethod() throws NoSuchMethodException {
@@ -127,7 +135,7 @@ public class LifecycleVisitorTestCase
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
         try {
-            pico.accept(visitor);
+            visitor.traverse(pico);
             fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof IllegalArgumentException);
@@ -141,7 +149,7 @@ public class LifecycleVisitorTestCase
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
         try {
-            pico.accept(visitor);
+            visitor.traverse(pico);
             fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof FileNotFoundException);
@@ -155,7 +163,7 @@ public class LifecycleVisitorTestCase
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
         try {
-            pico.accept(visitor);
+            visitor.traverse(pico);
             fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof IllegalAccessException);

@@ -148,12 +148,15 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         }
                         throw new PicoInvocationTargetInitializationException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        // can't get her because checkConcrete() will catch it earlier, but see PICO-191
+                        // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
                         throw new PicoInitializationException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
+                        // can't get here because either filtered or access mode set
+                        ///CLOVER:OFF
                         throw new PicoInitializationException(e);
+                        ///CLOVER:ON
                     }
                 }
             };

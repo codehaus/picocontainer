@@ -53,12 +53,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
     }
 
     public void accept(PicoVisitor visitor) {
-        if (!visitor.isReverseTraversal()) {
-            visitor.visitComponentAdapter(this);
-        }
+        visitor.visitComponentAdapter(this);
         delegate.accept(visitor);
-        if (visitor.isReverseTraversal()) {
-            visitor.visitComponentAdapter(this);
-        }
     }
 }

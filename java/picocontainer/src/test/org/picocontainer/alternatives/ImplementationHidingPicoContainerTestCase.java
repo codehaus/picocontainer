@@ -41,7 +41,7 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer();
         pico.registerComponentImplementation(String.class);
         pico.registerComponentImplementation(Runnable.class, MyThread.class);
-        pico.accept(new VerifyingVisitor());
+        new VerifyingVisitor().traverse(pico);
     }
 
     public void testUsageOfADifferentComponentAdapterFactory() {

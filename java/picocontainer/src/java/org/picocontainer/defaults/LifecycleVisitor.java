@@ -7,44 +7,36 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Disposable;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Startable;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Disposable;
-import org.picocontainer.ComponentAdapter;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision$
+ * @since 1.1
  */
-public class LifecycleVisitor implements PicoVisitor {
-    public static final PicoVisitor STARTER;
-    public static final PicoVisitor STOPPER;
-    public static final PicoVisitor DISPOSER;
+public class LifecycleVisitor extends AbstractPicoVisitor {
+    private static final Method START;
+    private static final Method STOP;
+    private static final Method DISPOSE;
     static {
         try {
-            STARTER = new LifecycleVisitor(Startable.class.getMethod("start", null), Startable.class, true);
-            STOPPER = new LifecycleVisitor(Startable.class.getMethod("stop", null), Startable.class, false);
-            DISPOSER = new LifecycleVisitor(Disposable.class.getMethod("dispose", null), Disposable.class, false) {
-                public void visitContainer(PicoContainer pico) {
-                    super.visitContainer(pico);
-                    // TODO: Never true for DPC, fix this!
-                    if (pico.getParent() instanceof MutablePicoContainer) {
-                        ((MutablePicoContainer) pico.getParent()).removeChildContainer(pico);
-                    }
-                }
-            };
+            START = Startable.class.getMethod("start", null);
+            STOP = Startable.class.getMethod("stop", null);
+            DISPOSE = Disposable.class.getMethod("dispose", null);
         } catch (NoSuchMethodException e) {
             ///CLOVER:OFF
             throw new InternalError(e.getMessage());
@@ -55,49 +47,79 @@ public class LifecycleVisitor implements PicoVisitor {
     private final Method method;
     private final Class type;
     private final boolean visitInInstantiationOrder;
+    private final List componentInstances;
 
     public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
         this.method = method;
         this.type = ofType;
         this.visitInInstantiationOrder = visitInInstantiationOrder;
-    }
-
-    public void visitContainer(PicoContainer pico) {
-        List componentInstances = new LinkedList(pico.getComponentInstancesOfType(type));
-        if(visitInInstantiationOrder) {
-            visitComponentInstances(componentInstances);
-        } else {
-            Collections.reverse(componentInstances);
-            visitComponentInstances(componentInstances);
-        }
-    }
-
-    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
-    }
-
-    public void visitParameter(Parameter parameter) {
-    }
-
-    private void visitComponentInstances(List componentInstances) {
-        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            Object o = iterator.next();
-            try {
-                method.invoke(o, null);
-            } catch (IllegalArgumentException e) {
-                throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
-            } catch (IllegalAccessException e) {
-                throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
-            } catch (InvocationTargetException e) {
-                throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
-            }
-        }
+        this.componentInstances = new ArrayList();
     }
 
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.PicoVisitor#isReverseTraversal()
+     * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
      */
-    public boolean isReverseTraversal() {
-        return !visitInInstantiationOrder;
+    public Object traverse(Object node) {
+        componentInstances.clear();
+        try {
+            super.traverse(node);
+            if (!visitInInstantiationOrder) {
+                Collections.reverse(componentInstances);
+            }
+            for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
+                Object o = iterator.next();
+                try {
+                    method.invoke(o, null);
+                } catch (IllegalArgumentException e) {
+                    throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
+                } catch (IllegalAccessException e) {
+                    throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
+                } catch (InvocationTargetException e) {
+                    throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
+                }
+            }
+        } finally {
+            componentInstances.clear();
+        }
+        return Void.TYPE;
     }
+
+    public void visitContainer(PicoContainer pico) {
+        checkTraversal();
+        componentInstances.addAll(pico.getComponentInstancesOfType(type));
+    }
+
+    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        checkTraversal();
+    }
+
+    public void visitParameter(Parameter parameter) {
+        checkTraversal();
+    }
+    
+    /**
+     * Invoke the standard PicoContainer lifecycle for {@link Startable#start()}.
+     * @param node The node to start the traversal.
+     */
+    public static void start(Object node) {
+        new LifecycleVisitor(START, Startable.class, true).traverse(node);;
+    }
+    
+    /**
+     * Invoke the standard PicoContainer lifecycle for {@link Startable#stop()}.
+     * @param node The node to start the traversal.
+     */
+    public static void stop(Object node) {
+        new LifecycleVisitor(STOP, Startable.class, false).traverse(node);;
+    }
+    
+    /**
+     * Invoke the standard PicoContainer lifecycle for {@link Disposable#dispose()}.
+     * @param node The node to start the traversal.
+     */
+    public static void dispose(Object node) {
+        new LifecycleVisitor(DISPOSE, Disposable.class, false).traverse(node);;
+    }
+
 }

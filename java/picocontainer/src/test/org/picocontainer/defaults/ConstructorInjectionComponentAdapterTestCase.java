@@ -213,6 +213,11 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         }
     }
 
+    public abstract class InstantiationExceptionThrowing {
+        public InstantiationExceptionThrowing() {
+        }
+    }
+
     public void testInstantiationExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
@@ -220,6 +225,11 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
             picoContainer.getComponentInstance(InstantiationExceptionThrowing.class);
             fail();
         } catch (NotConcreteRegistrationException e) {
+        }
+    }
+
+    public class IllegalAccessExceptionThrowing {
+        private IllegalAccessExceptionThrowing() {
         }
     }
 

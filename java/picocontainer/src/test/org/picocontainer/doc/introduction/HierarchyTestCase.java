@@ -31,7 +31,6 @@ public class HierarchyTestCase extends TestCase {
             Juicer juicer = (Juicer) y.getComponentInstance(Juicer.class);
             // END SNIPPET: wontwork
         } catch (UnsatisfiableDependenciesException e) {
-            e.printStackTrace();
             // expected
         }
     }

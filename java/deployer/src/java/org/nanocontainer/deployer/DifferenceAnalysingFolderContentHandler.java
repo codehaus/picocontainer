@@ -70,7 +70,7 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
                 result = fileObject;
             } else if(fileObject.getType().equals(FileType.FILE)) {
                 String extension = fileObject.getName().getExtension();
-                if(extension.equals("zip")) {
+                if(extension.equals("zip") || extension.equals("jar")) {
                     String url = "zip:" + fileObject.getURL().getFile();
                     result = fileSystemManager.resolveFile(url);
                 }
@@ -87,6 +87,13 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
     private FolderListener folderListener;
 
     public void addFolderListener(FolderListener folderListener) {
+        if(this.folderListener != null) {
+            throw new IllegalStateException(FolderListener.class.getName() + " already added");
+        }
         this.folderListener = folderListener;
+    }
+
+    public void removeFolderListener(DeployingFolderListener deployingFolderListener) {
+        this.folderListener = null;
     }
 }

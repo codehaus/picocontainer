@@ -119,9 +119,9 @@ public class NanoContainerDeployer implements Deployer {
     private FileObject getDeploymentScript(FileObject applicationFolder) throws FileSystemException {
         final FileObject metaInf = applicationFolder.getChild("META-INF");
         if(metaInf == null) {
-            throw new FileSystemException("No deployment script (nanocontainer.[js|groovy|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
+            throw new FileSystemException("Missing META-INF folder in " + applicationFolder.getName().getPath());
         }
-        final FileObject[] picocontainerScripts = metaInf.findFiles(new FileSelector(){
+        final FileObject[] nanocontainerScripts = metaInf.findFiles(new FileSelector(){
             public boolean includeFile(FileSelectInfo fileSelectInfo) throws Exception {
                 return fileSelectInfo.getFile().getName().getBaseName().startsWith("nanocontainer");
             }
@@ -129,6 +129,9 @@ public class NanoContainerDeployer implements Deployer {
                 return true;
             }
         });
-        return picocontainerScripts[0];
+        if(nanocontainerScripts == null || nanocontainerScripts.length < 1) {
+            throw new FileSystemException("No deployment script (nanocontainer.[groovy|bsh|js|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
+        }
+        return nanocontainerScripts[0];
     }
 }

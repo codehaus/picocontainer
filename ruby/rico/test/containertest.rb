@@ -267,4 +267,15 @@ class ContainerTest < Test::Unit::TestCase
     touchable = rico.component_instance(:touchable)
     assert(touchable.was_touched)    
   end
+
+  class WithProp
+    attr_accessor :foo
+  end
+  
+  def test_should_set_attributes
+    rico = Container.new
+    rico.register_component_implementation :with_prop, WithProp, [], :new, {:foo=>"foo"}
+    with_prop = rico.component_instance(:with_prop)
+    assert_equal("foo", with_prop.foo)
+  end
 end

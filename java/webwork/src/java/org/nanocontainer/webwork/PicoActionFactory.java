@@ -8,11 +8,11 @@
  *****************************************************************************/
 package org.nanocontainer.webwork;
 
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.servlet.KeyConstants;
-import org.nanocontainer.servlet.RequestScopeObjectReference;
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;
@@ -63,15 +63,14 @@ public class PicoActionFactory extends ActionFactory implements KeyConstants {
     }
 
     protected Action instantiateAction(Class actionClass) {
-        MutablePicoContainer container = new DefaultPicoContainer(getParentContainer());
+        MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer());
         container.registerComponentImplementation(actionClass);
         return (Action) container.getComponentInstance(actionClass);
     }
 
-    private MutablePicoContainer getParentContainer() {
+    private MutablePicoContainer getRequestContainer() {
         HttpServletRequest request = ServletActionContext.getRequest();
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
-
 }

@@ -18,6 +18,7 @@ import java.net.URL;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -95,6 +96,9 @@ public class BeanShellComponentAdapter implements ComponentAdapter {
                 i.eval(sourceReader, i.getNameSpace(), scriptURL.toExternalForm());
 
                 instance = i.get("instance");
+                if(i == null) {
+					throw new BeanShellScriptInitializationException("The 'instance' variable was not instantiated");
+				}
             } catch (EvalError e) {
                 throw new BeanShellScriptInitializationException(e);
             } catch (IOException e) {
@@ -105,6 +109,5 @@ public class BeanShellComponentAdapter implements ComponentAdapter {
     }
 
     public void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
-        //TODO Aslak!!
     }
 }

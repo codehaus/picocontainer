@@ -16,19 +16,12 @@ import org.picocontainer.PicoIntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Manish Shah
  * @version $Revision$
  */
 public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
     public SynchronizedComponentAdapter(ComponentAdapter delegate) {
         super(delegate);
-    }
-
-    public synchronized Object getComponentKey() {
-        return super.getComponentKey();
-    }
-
-    public synchronized Class getComponentImplementation() {
-        return super.getComponentImplementation();
     }
 
     public synchronized Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {

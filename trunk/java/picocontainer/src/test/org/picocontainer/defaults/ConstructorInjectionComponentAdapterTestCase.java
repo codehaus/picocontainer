@@ -192,28 +192,6 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         return componentAdapter;
     }
 
-    public static class Service {
-    }
-
-    public static class TransientComponent {
-        private Service service;
-
-        public TransientComponent(Service service) {
-            this.service = service;
-        }
-    }
-
-    // TODO Move this to DPC
-    public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(Service.class);
-        picoContainer.registerComponent(new ConstructorInjectionComponentAdapter(TransientComponent.class, TransientComponent.class));
-        TransientComponent c1 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
-        TransientComponent c2 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
-        assertNotSame(c1, c2);
-        assertSame(c1.service, c2.service);
-    }
-
     public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.registerComponentImplementation(NormalExceptionThrowing.class);

@@ -80,4 +80,14 @@ public class PicoExceptionsTestCase
     public void testPicoRegistrationException() {
         executeTestOfStandardException(PicoRegistrationException.class);
     }
+    
+    public void testCyclicDependencyException() {
+        final CyclicDependencyException cdEx = new CyclicDependencyException(getClass());
+        cdEx.push(String.class);
+        final Class[] classes = cdEx.getDependencies();
+        assertEquals(2, classes.length);
+        assertSame(getClass(), classes[0]);
+        assertSame(String.class, classes[1]);
+        assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
+    }
 }

@@ -43,11 +43,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
 
     private Map parametersForComponent = new HashMap();
 
-    // Cache the types and components. For speed, but also to make sure
-    // subsequent calls return the same object arrays (and not only
-    // the same content.
-    private Class[] cachedComponentTypes = null;
-
     public HierarchicalPicoContainer(Container parentContainer,
                                      StartableLifecycleManager startableLifecycleManager,
                                      ComponentFactory componentFactory) {
@@ -151,15 +146,16 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
             parametersForComponent.put(componentType, new ArrayList());
         }
         List args = (List)parametersForComponent.get(componentType);
-        args.add(new ParameterSpec(parameter, arg));
+        args.add(new ParameterSpec(/*parameter,*/ arg));
     }
 
+    // TODO (AH): Shouldn't this be a private class????
     class ParameterSpec {
-        private Class parameterType;
+//        private Class parameterType;
         private Object arg;
 
-        ParameterSpec(Class parameterType, Object parameter) {
-            this.parameterType = parameterType;
+        ParameterSpec(/*Class parameterType,*/ Object parameter) {
+//            this.parameterType = parameterType;
             this.arg = parameter;
         }
     }
@@ -327,16 +323,13 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     public Class[] getComponentTypes() {
-        if( cachedComponentTypes == null ) {
-            // Get my own
-            Set types = new HashSet(componentTypeToInstanceMap.keySet());
+        // Get my own
+        Set types = new HashSet(componentTypeToInstanceMap.keySet());
 
-            // Get those from my parent.
-            types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
+        // Get those from my parent.
+        types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
 
-            cachedComponentTypes = (Class[]) types.toArray(new Class[types.size()]);
-        }
-        return cachedComponentTypes;
+        return (Class[]) types.toArray(new Class[types.size()]);
     }
 
     public boolean hasComponent(Class componentType) {

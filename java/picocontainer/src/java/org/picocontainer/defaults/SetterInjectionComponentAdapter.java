@@ -61,9 +61,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     /**
-     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getGreediestSatisifableConstructor(java.util.List)
+     * @see org.picocontainer.defaults.InstantiatingComponentAdapter#getGreediestSatisfiableConstructor(java.util.List)
      */
-    protected Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor;
         try {
             constructor = getComponentImplementation().getConstructor(null);
@@ -121,7 +121,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      */
     protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
-            final Constructor constructor = getGreediestSatisifableConstructor(adapterInstantiationOrderTrackingList);
+            final Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
             if (instantiating) {
                 throw new CyclicDependencyException(setterTypes);
             }

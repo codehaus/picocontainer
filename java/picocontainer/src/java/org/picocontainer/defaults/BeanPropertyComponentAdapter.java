@@ -19,9 +19,10 @@ import java.util.Set;
 
 /**
  * Decorating component adapter that can be used to set additional properties
- * on a component. These properties must be managed manually by the user of the API,
- * and will not be managed by PicoContainer. This class is therefore <em>not</em>
- * the same as {@link SetterInjectionComponentAdapter}, which is a true Setter Injection adapter.
+ * on a component in a bean style. These properties must be managed manually 
+ * by the user of the API, and will not be managed by PicoContainer. This class 
+ * is therefore <em>not</em> the same as {@link SetterInjectionComponentAdapter}, 
+ * which is a true Setter Injection adapter.
  * <p/>
  * This adapter is mostly handy for setting various primitive properties via setters.
  * <p/>
@@ -32,30 +33,37 @@ import java.util.Set;
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
+ * @since 1.0
  */
 public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private Map properties;
-    private PropertyDescriptor[] propertyDescriptors;
-    private Map propertyDescriptorMap = new HashMap();
+    private transient Map propertyDescriptorMap = null;
 
+    /**
+     * Construct a BeanProeprtyComponentAdapter.
+     *     
+     * @param delegate the wrapped {@link ComponentAdapter}
+     * @throws PicoInitializationException {@inheritDoc}
+     */
     public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
         super(delegate);
-
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(delegate.getComponentImplementation());
-            propertyDescriptors = beanInfo.getPropertyDescriptors();
-            for (int i = 0; i < propertyDescriptors.length; i++) {
-                PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-                propertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
-            }
-        } catch (IntrospectionException e) {
-            ///CLOVER:OFF
-            throw new PicoInitializationException("Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
-            ///CLOVER:ON
-        }
     }
 
+    /**
+     * Get a component instance and set given property values.
+     * 
+     * @see #setProperties(Map)
+     * @return the component instance with any properties of the properties map set.
+     * @throws PicoInitializationException {@inheritDoc}
+     * @throws PicoIntrospectionException {@inheritDoc}
+     * @throws AssignabilityRegistrationException {@inheritDoc}
+     * @throws NotConcreteRegistrationException {@inheritDoc}
+     */
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        if (propertyDescriptorMap == null) {
+            initializePropertyDescriptorMap();
+        }
+        
         final Object componentInstance = super.getComponentInstance();
 
         if (properties != null) {
@@ -81,6 +89,22 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             }
         }
         return componentInstance;
+    }
+    
+    private void initializePropertyDescriptorMap() throws PicoInitializationException {
+        propertyDescriptorMap = new HashMap();
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(getComponentImplementation());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (int i = 0; i < propertyDescriptors.length; i++) {
+                PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
+                propertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
+            }
+        } catch (IntrospectionException e) {
+            ///CLOVER:OFF
+            throw new PicoInitializationException("Couldn't load BeanInfo for" + getComponentImplementation().getName(), e);
+            ///CLOVER:ON
+        }
     }
 
     private Object convertType(Method setter, Object propertyValue) throws MalformedURLException, ClassNotFoundException {

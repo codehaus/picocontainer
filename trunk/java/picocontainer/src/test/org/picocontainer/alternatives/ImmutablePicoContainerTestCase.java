@@ -137,7 +137,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         mpc.registerComponentImplementation(Iterator.class, UnsatisfiableIterator.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         try {
-            ipc.accept(new VerifyingVisitor());
+            new VerifyingVisitor().traverse(ipc);;
             fail("wrong!");
         } catch (PicoVerificationException e) {
             // expected
@@ -273,7 +273,6 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         ComponentAdapter componentAdapter = pico.registerComponentInstance(foo);
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
-        fooVisitor.expects(atLeastOnce()).method("isReverseTraversal").withNoArguments().will(returnValue(false));
         fooVisitor.expects(once()).method("visitContainer").with(eq(pico));
         fooVisitor.expects(once()).method("visitComponentAdapter").with(eq(componentAdapter));
 

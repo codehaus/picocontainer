@@ -121,25 +121,10 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @see org.picocontainer.ComponentAdapter#accept(org.picocontainer.PicoVisitor)
      */
     public void accept(PicoVisitor visitor) {
-        if (visitor.isReverseTraversal()) {
-            acceptParameters(visitor);
-        }
         super.accept(visitor);
-        if (!visitor.isReverseTraversal()) {
-            acceptParameters(visitor);
-        }
-    }
-    
-    private void acceptParameters(PicoVisitor visitor) {
         if (parameters != null) {
-            if (!visitor.isReverseTraversal()) {
-                for (int i = 0; i < parameters.length; i++) {
-                    parameters[i].accept(visitor);
-                }
-            } else {
-                for (int i = parameters.length; i-- > 0; ) {
-                    parameters[i].accept(visitor);
-                }
+            for (int i = 0; i < parameters.length; i++) {
+                parameters[i].accept(visitor);
             }
         }
     }

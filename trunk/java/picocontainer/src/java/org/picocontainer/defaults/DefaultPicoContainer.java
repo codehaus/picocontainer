@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -367,7 +366,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
-        accept(LifecycleVisitor.STARTER);
+        LifecycleVisitor.start(this);
         started = true;
     }
 
@@ -381,7 +380,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
-        accept(LifecycleVisitor.STOPPER);
+        LifecycleVisitor.stop(this);
         started = false;
     }
 
@@ -394,7 +393,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
-        accept(LifecycleVisitor.DISPOSER);
+        LifecycleVisitor.dispose(this);
         disposed = true;
     }
 
@@ -418,33 +417,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void accept(PicoVisitor visitor) {
-        boolean reverseTraversal = visitor.isReverseTraversal();
-        if (!reverseTraversal) {
-            visitor.visitContainer(this);
-            componentAdaptersAccept(visitor);
-        }
-        final List allChildren = new LinkedList(children);
-        if (reverseTraversal) {
-            Collections.reverse(allChildren);
-        }
-        for (Iterator iterator = allChildren.iterator(); iterator.hasNext();) {
-            PicoContainer child = (PicoContainer) iterator.next();
-            child.accept(visitor);
-        }
-        if (reverseTraversal) {
-            componentAdaptersAccept(visitor);
-            visitor.visitContainer(this);
-        }
-    }
-
-    private void componentAdaptersAccept(PicoVisitor visitor) {
-        final List componentAdapters = new LinkedList(getComponentAdapters());
-        if (visitor.isReverseTraversal()) {
-            Collections.reverse(componentAdapters);
-        }
+        visitor.visitContainer(this);
+        final List componentAdapters = new ArrayList(getComponentAdapters());
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             componentAdapter.accept(visitor);
+        }
+        final List allChildren = new ArrayList(children);
+        for (Iterator iterator = allChildren.iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            child.accept(visitor);
         }
     }
 }

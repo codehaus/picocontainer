@@ -19,6 +19,17 @@ package org.picocontainer;
  */
 public interface PicoVisitor {
     /**
+     * Entry point for the PicoVisitor traversal. The given node is the first object, that is 
+     * asked for acceptance. Only objects of type {@link PicoContainer}, {@link ComponentAdapter},
+     * or {@link Parameter} are valid.
+     * 
+     * @param node the start node of the traversal.
+     * @return a visitor-specific value.
+     * @throws IllegalArgumentException in case of an argument of invalid type. 
+     * @since 1.1
+     */
+    Object traverse(Object node);
+    /**
      * Visit a {@link PicoContainer} that has to accept the visitor.
      * 
      * @param pico the visited container.
@@ -39,11 +50,4 @@ public interface PicoVisitor {
      * @since 1.1
      */
     void visitParameter(Parameter parameter);
-    
-    /**
-     * @return <code>true</code> if the visited composite notes should perform
-     *          the visits in reverse order..
-     * @since 1.1.
-     */
-    boolean isReverseTraversal();
 }

@@ -14,37 +14,56 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 /**
- * Visitor to verify {@link PicoContainer} instances. The visitor walks down the
- * logical container hierarchy.
- * 
+ * Visitor to verify {@link PicoContainer}instances. The visitor walks down the logical container hierarchy.
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
 public class VerifyingVisitor
-        implements PicoVisitor {
+        extends AbstractPicoVisitor {
+
+    private final List nestedVerificationExceptions;
+    private final Set verifiedComponentAdapters;
+    private final PicoVisitor componentAdapterCollector;
+    private PicoContainer currentPico;
+
+    public VerifyingVisitor() {
+        nestedVerificationExceptions = new ArrayList();
+        verifiedComponentAdapters = new HashSet();
+        componentAdapterCollector = new ComponentAdapterCollector();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
+     */
+    public Object traverse(Object node) {
+        nestedVerificationExceptions.clear();
+        verifiedComponentAdapters.clear();
+        try {
+            super.traverse(node);
+            if (!nestedVerificationExceptions.isEmpty()) {
+                throw new PicoVerificationException(new ArrayList(nestedVerificationExceptions));
+            }
+        } finally {
+            nestedVerificationExceptions.clear();
+            verifiedComponentAdapters.clear();
+        }
+        return Void.TYPE;
+    }
 
     /**
      * {@inheritDoc}
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
     public void visitContainer(PicoContainer pico) {
-        final List nestedVerificationExceptions = new ArrayList();
-        for (Iterator iterator = pico.getComponentAdapters().iterator(); iterator.hasNext();) {
-            final ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            try {
-                componentAdapter.verify(pico);
-            } catch (PicoVerificationException e) {
-                nestedVerificationExceptions.add(e.getNestedExceptions());
-            }
-        }
-
-        if (!nestedVerificationExceptions.isEmpty()) {
-            throw new PicoVerificationException(nestedVerificationExceptions);
-        }
+        checkTraversal();
+        currentPico = pico;
     }
 
     /**
@@ -52,6 +71,15 @@ public class VerifyingVisitor
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        checkTraversal();
+        if (!verifiedComponentAdapters.contains(componentAdapter)) {
+            try {
+                componentAdapter.verify(currentPico);
+            } catch (PicoVerificationException e) {
+                nestedVerificationExceptions.add(e.getNestedExceptions());
+            }
+            componentAdapter.accept(componentAdapterCollector);
+        }
     }
 
     /**
@@ -59,14 +87,24 @@ public class VerifyingVisitor
      * @see org.picocontainer.PicoVisitor#visitParameter(org.picocontainer.Parameter)
      */
     public void visitParameter(Parameter parameter) {
+        checkTraversal();
     }
 
-    /**
-     * @return <code>false</code>
-     * @see org.picocontainer.PicoVisitor#isReverseTraversal()
-     */
-    public boolean isReverseTraversal() {
-        return false;
-    }
+    private class ComponentAdapterCollector
+            implements PicoVisitor {
+        ///CLOVER:OFF
+        public Object traverse(Object node) {
+            return null;
+        }
+        public void visitContainer(PicoContainer pico) {
+        }
+        ///CLOVER:ON
 
+        public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+            verifiedComponentAdapters.add(componentAdapter);
+        }
+
+        public void visitParameter(Parameter parameter) {
+        }
+    }
 }

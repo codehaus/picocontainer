@@ -6,9 +6,9 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. D
 
 TODO Kraig ..... 
 
-{snippet:id=one|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
+{snippet:id=one|url=@BOOK_MODULE_URL@/java/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
 
 more....
 
-{snippet:id=two|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
+{snippet:id=two|url=@BOOK_MODULE_URL@/java/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
 

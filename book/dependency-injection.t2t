@@ -9,17 +9,17 @@ instantiation.
 
 Here is a simple component..
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/Simple.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/cdicomps/Simple.java|lineNumbers=false}
 
 Here is one that is not so simple..
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/NotSoSimple.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/cdicomps/NotSoSimple.java|lineNumbers=false}
 
 Here is one that is one with defaults..
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/AnotherSimple.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/cdicomps/AnotherSimple.java|lineNumbers=false}
 
 Better still would be one that chained constructors..
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/BetterSimple.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/cdicomps/BetterSimple.java|lineNumbers=false}
 

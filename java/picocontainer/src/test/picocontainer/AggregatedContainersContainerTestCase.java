@@ -21,6 +21,10 @@ public class AggregatedContainersContainerTestCase extends TestCase {
             public Object[] getComponents() {
                 return new Object[] {acomp};
             }
+
+            public Class[] getComponentTypes() {
+                return new Class[] {String.class};
+            }
         };
 
         Container b = new Container() {
@@ -34,6 +38,10 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
             public Object[] getComponents() {
                 return new Object[] {bcomp};
+            }
+
+            public Class[] getComponentTypes() {
+                return new Class[] {Integer.class};
             }
         };
 

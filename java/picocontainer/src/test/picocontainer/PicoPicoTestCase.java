@@ -21,11 +21,11 @@ public class PicoPicoTestCase extends TestCase {
 
     public void testDefaultPicoContainer() throws PicoRegistrationException, PicoStartException {
 
-        PicoContainer pc = new PicoContainerImpl.Default();
-        pc.registerComponent(PicoContainerImpl.Default.class);
+        PicoContainer pc = new HierarchicalPicoContainer.Default();
+        pc.registerComponent(HierarchicalPicoContainer.Default.class);
         pc.start();
 
-        tryDefaultPicoContainer((PicoContainer) pc.getComponent(PicoContainerImpl.Default.class));
+        tryDefaultPicoContainer((PicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
 
     }
 

@@ -2,8 +2,10 @@ package picocontainer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.HashSet;
 
-public class AggregatedContainersContainer implements Container {
+public class AggregatedContainersContainer extends AbstractContainer {
 
     private final Container[] containers;
 
@@ -31,12 +33,12 @@ public class AggregatedContainersContainer implements Container {
         return null;
     }
 
-    public Object[] getComponents() {
-        ArrayList comps = new ArrayList();
+    public Class[] getComponentTypes() {
+        Set componentTypes = new HashSet();
         for (int i = 0; i < containers.length; i++) {
             Container container = containers[i];
-            comps.addAll(Arrays.asList(container.getComponents()));
+            componentTypes.addAll(Arrays.asList(container.getComponentTypes()));
         }
-        return comps.toArray();
+        return (Class[]) componentTypes.toArray(new Class[containers.length]);
     }
 }

@@ -15,20 +15,24 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
 
-public class PicoContainerImpl implements PicoContainer {
+public class HierarchicalPicoContainer extends AbstractContainer implements PicoContainer {
 
     private final Container parentContainer;
     private final StartableLifecycleManager startableLifecycleManager;
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
+    // Keeps track of the order in which components should be started
     private List orderedComponents = new ArrayList();
 
-    public PicoContainerImpl(Container parentContainer,
+    public HierarchicalPicoContainer(Container parentContainer,
             StartableLifecycleManager startableLifecycleManager,
             ComponentFactory componentFactory) {
         if (parentContainer == null) {
@@ -45,39 +49,35 @@ public class PicoContainerImpl implements PicoContainer {
         this.componentFactory = componentFactory;
     }
 
-    public static class Default extends PicoContainerImpl {
+    public static class Default extends HierarchicalPicoContainer {
         public Default() {
             super(new NullContainer(), new NullStartableLifecycleManager(), new DefaultComponentFactory());
         }
 
     }
 
-    public static class WithParentContainer extends PicoContainerImpl {
+    public static class WithParentContainer extends HierarchicalPicoContainer {
         public WithParentContainer(Container parentContainer) {
             super(parentContainer, new NullStartableLifecycleManager(), new DefaultComponentFactory());
         }
     }
 
-    public static class WithStartableLifecycleManager extends PicoContainerImpl {
+    public static class WithStartableLifecycleManager extends HierarchicalPicoContainer {
         public WithStartableLifecycleManager(StartableLifecycleManager startableLifecycleManager) {
             super(new NullContainer(), startableLifecycleManager, new DefaultComponentFactory());
         }
     }
 
-    public static class WithComponentFactory extends PicoContainerImpl {
+    public static class WithComponentFactory extends HierarchicalPicoContainer {
         public WithComponentFactory(ComponentFactory componentFactory) {
             super(new NullContainer(), new NullStartableLifecycleManager(), componentFactory);
         }
     }
 
-    // TODO:ASLAK just declare PicoRegistrationException?
-    // NOT-TODO:PAUL On interface spec yes, on impl no. The tightly-coupled (to impl) user will thank you :-)
     public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
-    // TODO:ASLAK just declare PicoRegistrationException?
-    // NOT-TODO:PAUL On interface spec yes, on impl no. The tightly-coupled (to impl) user will thank you :-)
     public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         checkConcrete(componentClass);
         checkConstructor(componentClass);
@@ -163,7 +163,7 @@ public class PicoContainerImpl implements PicoContainer {
                             Class param = parameters[i];
                             args[i] = getComponentForParam(param);
                         }
-                        if (hasNullArgs(args) == false) {
+                        if (hasNulls(args) == false) {
                             Object componentInstance = null;
                          componentInstance = makeComponentInstance(componentType, constructor, args);
                             // Put the instantiated comp back in the map
@@ -254,16 +254,7 @@ public class PicoContainerImpl implements PicoContainer {
         return result;
     }
 
-    public Object getComponent(Class compType) {
-        return componentTypeToInstanceMap.get(compType);
-    }
-
-    public Object[] getComponents() {
-        return componentTypeToInstanceMap.values().toArray();
-
-    }
-
-    private boolean hasNullArgs(Object[] args) {
+    private boolean hasNulls(Object[] args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
             if (arg == null) {
@@ -273,8 +264,26 @@ public class PicoContainerImpl implements PicoContainer {
         return false;
     }
 
-    public boolean hasComponent(Class compType) {
-        return componentTypeToInstanceMap.get(compType) != null;
+    public Object getComponent(Class componentType) {
+        Object result = componentTypeToInstanceMap.get(componentType);
+        if( result == null ) {
+            result = parentContainer.getComponent(componentType);
+        }
+        return result;
+    }
+
+    public Class[] getComponentTypes() {
+        // Get my own
+        Set types = new HashSet( componentTypeToInstanceMap.keySet() );
+
+        // Get those from my parent.
+        types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
+
+        return (Class[]) types.toArray(new Class[types.size()]);
+    }
+
+    public boolean hasComponent(Class componentType) {
+        return getComponent(componentType) != null;
     }
 
 }

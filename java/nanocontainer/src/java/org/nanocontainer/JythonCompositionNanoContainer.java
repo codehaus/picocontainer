@@ -8,8 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
-import org.nanocontainer.reflection.ReflectionFrontEnd;
+import org.picoextras.reflection.DefaultReflectionFrontEnd;
+import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picocontainer.PicoCompositionException;
 import org.python.util.PythonInterpreter;
 
@@ -32,7 +32,7 @@ public class JythonCompositionNanoContainer extends NanoContainer {
             throws PicoCompositionException, ClassNotFoundException, IOException {
         super(monitor);
         interpreter = new PythonInterpreter();
-        interpreter.exec("from org.nanocontainer.reflection import DefaultReflectionFrontEnd");
+        interpreter.exec("from org.picoextras.reflection import DefaultReflectionFrontEnd");
         reflectionRootContainer = new DefaultReflectionFrontEnd();
         compose(script);
     }

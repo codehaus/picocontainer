@@ -11,7 +11,7 @@ package org.nanocontainer;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 import org.mozilla.javascript.EcmaError;
-import org.nanocontainer.testmodel.WebServerConfig;
+import org.picoextras.testmodel.WebServerConfig;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
@@ -146,11 +146,11 @@ public class JavaScriptCompositionNanoContainerTestCase extends TestCase {
         NanoContainer nano = new JavaScriptCompositionNanoContainer(new StringReader("" +
                 "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
-                "  var pc = new Packages.org.nanocontainer.testmodel.WebServerConfigBean();\n" +
+                "  var pc = new Packages.org.picoextras.testmodel.WebServerConfigBean();\n" +
                 "  pc.setHost('foobar.com');\n" +
                 "  pc.setPort(4321);\n" +
                 "  addComponentInstance(pc);\n" +
-                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
+                "  addComponentWithClassKey('org.picoextras.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
                 "}\n" +
                 "nano.setNanoRhinoScriptable(parentContainer)\n"
         ), new MockMonitor());

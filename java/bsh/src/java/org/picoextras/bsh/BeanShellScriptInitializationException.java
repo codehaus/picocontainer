@@ -5,21 +5,27 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
+ * Original code by Leo Simons                                               *
  *****************************************************************************/
+package org.picoextras.bsh;
 
-package org.nanocontainer;
+import org.picocontainer.PicoInitializationException;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.picoextras.rhino.DefaultNanoRhinoScriptable;
+/**
+ *
+ *
+ * @author <a href="mail at leosimons dot com">Leo Simons</a>
+ * @version $Id$
+ */
+public class BeanShellScriptInitializationException
+        extends PicoInitializationException {
 
-
-public class BogusNanoRhinoScriptable extends ScriptableObject {
-    public String getClassName() {
-        return "NanoRhinoScriptable";
+    BeanShellScriptInitializationException(String message) {
+        super(message);
     }
 
-    // all pub static javascript methods missing.
+    BeanShellScriptInitializationException(Throwable cause) {
+        this("BeanShellScriptInitializationException: " + cause.getClass().getName() + " "
+                + cause.getMessage());
+    }
 }

@@ -16,6 +16,8 @@
     <goal
         name="generic"
         description="Build each sub project with a particular goal. e.g. maven -Dgoals=site:deploy generic">
+        
+        <attainGoal name="cleanall"/>
 
         <available file="${basedir}/swt/lib/swt.jar" property="swt" value="dummy/*"/>
         <property name="swt" value="swt/*"/>

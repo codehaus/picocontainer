@@ -101,7 +101,7 @@ public class JythonCompositionNanoContainerTestCase extends TestCase {
                 "wsc.setHost('foobar.com')\n" +
                 "wsc.setPort(4321)\n" +
                 "rootContainer.getPicoContainer().registerComponentInstance(wsc)\n" +
-                "rootContainer.registerComponent('org.picoextras.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "')\n"
+                "rootContainer.registerComponentImplementation('org.picoextras.testmodel.WebServer','" + XmlCompositionNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "')\n"
         ), new MockMonitor());
 
         assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());

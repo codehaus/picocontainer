@@ -22,6 +22,9 @@ import java.lang.reflect.Proxy;
  * This component adapter makes it possible to hide the implementation
  * of a real subject (behind a proxy) provided the key is an interface.
  *
+ * This class exists here, because a) it has no deps on external jars, b) dynamic proxy is quite easy.
+ * The user is prompted to look at nanocontainer-proxytoys for alternate and bigger implementations.
+ *
  * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapter for a more feature-rich version of this class.
  * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory
  * @author Aslak Helles&oslash;y

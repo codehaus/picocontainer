@@ -260,7 +260,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return registerComponentImplementation(componentKey, componentImplementation, parametersAsArray);
     }
 
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+    private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
         if (!orderedComponentAdapters.contains(componentAdapter)) {
             orderedComponentAdapters.add(componentAdapter);
         }
@@ -462,9 +462,5 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             Object o = iterator.next();
             visitor.visitComponentInstance(o);
         }
-    }
-
-    protected Map getNamedContainers() {
-        return namedChildContainers;
     }
 }

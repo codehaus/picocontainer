@@ -21,6 +21,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
@@ -503,9 +504,9 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     }
 
     public void testStartStopAndDisposeCascadedtoChildren() {
-        StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);
-        parent.registerComponentInstance(sb);
+        parent.registerComponentInstance(new StringBuffer());
+        StringBuffer sb = (StringBuffer) ((ComponentAdapter) parent.getComponentAdaptersOfType(StringBuffer.class).get(0)).getComponentInstance(parent);
         final MutablePicoContainer child = createPicoContainer(parent);
         parent.addChildContainer(child);
         child.registerComponentImplementation(LifeCycleMonitoring.class);
@@ -518,12 +519,20 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     }
 
-    public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
-        StringBuffer sb = new StringBuffer();
+    public void testMakingOfChildContainer() {
         final MutablePicoContainer parent = createPicoContainer(null);
-        parent.registerComponentInstance(sb);
+        MutablePicoContainer child = parent.makeChildContainer();
+        MutablePicoContainer child2 = parent.makeChildContainer("foo");
+        assertNotNull(child);
+        assertNotNull(child2);
+    }
+
+    public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(new StringBuffer());
+        StringBuffer sb = (StringBuffer) parent.getComponentInstancesOfType(StringBuffer.class).get(0);
         final MutablePicoContainer child = createPicoContainer(parent);
-        parent.addChildContainer(child);
+        parent.addChildContainer("foo", child);
         child.registerComponentImplementation(LifeCycleMonitoring.class);
         parent.removeChildContainer(child);
         parent.start();

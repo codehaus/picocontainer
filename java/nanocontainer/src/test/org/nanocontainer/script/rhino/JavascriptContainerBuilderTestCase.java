@@ -71,13 +71,13 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
                 "child.registerComponentImplementation('childComponent','TestComp')\n" +
-                "pico.registerComponentInstance('child1', child)"); // ugly hack for testing
+                "pico.addChildContainer(child)\n" +
+                "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance('childComponent'))"); // ugly hack for testing
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object parentComponent = pico.getComponentInstance("parentComponent");
 
-        PicoContainer childContainer = (PicoContainer) pico.getComponentInstance("child1");
-        Object childComponent = childContainer.getComponentInstance("childComponent");
+        Object childComponent = pico.getComponentInstance("wayOfPassingSomethingToTestEnv");
 
         assertNotSame(parentComponent.getClass().getClassLoader(), childComponent.getClass().getClassLoader());
         /*

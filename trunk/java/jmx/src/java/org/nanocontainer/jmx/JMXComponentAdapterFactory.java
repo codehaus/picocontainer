@@ -5,30 +5,32 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
+ * Original code by Michael Ward                                    		 *
  *****************************************************************************/
+
 package org.nanocontainer.jmx;
 
+import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import javax.management.MBeanServer;
 import java.io.Serializable;
 
-public class MX4JComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
-    private MBeanServer mbeanServer;
+/**
+ * @author Michael Ward
+ * @version $Revision$
+ */
+public class JMXComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
 
-    public MX4JComponentAdapterFactory(MBeanServer mbeanServer, ComponentAdapterFactory delegate) {
+	public JMXComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
-        this.mbeanServer = mbeanServer;
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new MX4JComponentAdapter(mbeanServer, super.createComponentAdapter(componentKey, componentImplementation, parameters));
+        return new JMXComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

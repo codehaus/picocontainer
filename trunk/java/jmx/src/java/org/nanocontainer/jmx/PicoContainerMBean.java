@@ -11,14 +11,18 @@ package org.nanocontainer.jmx;
 
 import mx4j.AbstractDynamicMBean;
 
+import javax.management.MBeanInfo;
+
 /**
  * @author James Strachan
+ * @author Michael Ward
  * @version $Revision$
  */
 public class PicoContainerMBean extends AbstractDynamicMBean {
 
-    public PicoContainerMBean(Object componentInstance) {
+    public PicoContainerMBean(Object componentInstance, MBeanInfo mBeanInfo) {
         setResource(componentInstance);
+		setMBeanInfo(mBeanInfo);
     }
 
     /* Method of the second group that is overridden */

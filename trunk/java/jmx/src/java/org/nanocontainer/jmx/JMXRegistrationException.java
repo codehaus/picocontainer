@@ -5,8 +5,9 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by James Strachan and Mauro Talevi                          *
+ * Original code by Michael Ward                                    		 *
  *****************************************************************************/
+
 package org.nanocontainer.jmx;
 
 import org.picocontainer.PicoRegistrationException;
@@ -14,16 +15,20 @@ import org.picocontainer.PicoRegistrationException;
 /**
  * A registration exception caused trying to register the component with JMX
  *
- * @author James Strachan
- * @author Mauro Talevi
- * @author Jeppe Cramon
+ * @author Michael Ward
  * @version $Revision$
  */
-public class MX4JRegistrationException extends PicoRegistrationException {
+public class JMXRegistrationException extends PicoRegistrationException {
 
-    public MX4JRegistrationException(String message) {
-        super(message);
-    }
+	public JMXRegistrationException(final String message) {
+		super(message);
+	}
 
+	public JMXRegistrationException(final Throwable cause) {
+		super(cause);
+	}
 
+	public JMXRegistrationException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

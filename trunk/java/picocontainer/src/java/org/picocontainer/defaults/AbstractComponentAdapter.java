@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.lang.reflect.Modifier;
 
 /**
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$

@@ -13,7 +13,6 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoRegistrationException;
 
 /**
- *
  * @author Aslak Hellesoy
  * @version $Revision: 1.6 $
  */

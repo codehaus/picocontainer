@@ -10,6 +10,9 @@
 
 package org.picocontainer;
 
+/**
+ * @version $Revision$
+ */
 public interface Disposable {
     void dispose();
 }

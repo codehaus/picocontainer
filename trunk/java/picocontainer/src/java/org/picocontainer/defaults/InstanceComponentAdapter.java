@@ -11,6 +11,7 @@ package org.picocontainer.defaults;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @version $Revision$
  */
 public class InstanceComponentAdapter extends AbstractComponentAdapter {

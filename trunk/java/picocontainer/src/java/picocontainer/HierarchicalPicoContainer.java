@@ -48,6 +48,11 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     // Keeps track of the order in which components should be started
     private List orderedComponents = new ArrayList();
 
+    // Cache the types and components. For speed, but also to make sure
+    // subsequent calls return the same object arrays (and not only
+    // the same content.
+    private Class[] cachedComponentTypes = null;
+
     public HierarchicalPicoContainer(Container parentContainer,
                                      StartableLifecycleManager startableLifecycleManager,
                                      ComponentFactory componentFactory) {
@@ -157,7 +162,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
                 Class componentType = componentSpec.getComponentType();
 
                 if (componentTypeToInstanceMap.get(componentType) == null) {
-                    boolean reused = resuseImplementationIfAppropriate(componentType, componentImplementation);
+                    boolean reused = reuseImplementationIfAppropriate(componentType, componentImplementation);
                     if (reused) {
                         progress = true;
                     } else {
@@ -205,7 +210,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         return progress;
     }
 
-    protected boolean resuseImplementationIfAppropriate(Class componentType, Class componentImplementation) {
+    protected boolean reuseImplementationIfAppropriate(Class componentType, Class componentImplementation) {
         Set compEntries = componentTypeToInstanceMap.entrySet();
         for (Iterator iterator = compEntries.iterator();
              iterator.hasNext();) {
@@ -303,13 +308,16 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
     }
 
     public Class[] getComponentTypes() {
-        // Get my own
-        Set types = new HashSet(componentTypeToInstanceMap.keySet());
+        if( cachedComponentTypes == null ) {
+            // Get my own
+            Set types = new HashSet(componentTypeToInstanceMap.keySet());
 
-        // Get those from my parent.
-        types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
+            // Get those from my parent.
+            types.addAll(Arrays.asList(parentContainer.getComponentTypes()));
 
-        return (Class[]) types.toArray(new Class[types.size()]);
+            cachedComponentTypes = (Class[]) types.toArray(new Class[types.size()]);
+        }
+        return cachedComponentTypes;
     }
 
     public boolean hasComponent(Class componentType) {

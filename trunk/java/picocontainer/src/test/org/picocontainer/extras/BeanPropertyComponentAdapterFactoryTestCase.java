@@ -1,16 +1,14 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.defaults.*;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
-import java.lang.reflect.Method;
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -32,14 +30,14 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         }
     }
 
-    public void testSetProperties() throws PicoInitializationException, NoSuchMethodException, IntrospectionException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testSetProperties() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
         Foo foo = (Foo) adapter.getComponentInstance(picoContainer);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
 
-    public void testFailingSetter() throws NoSuchMethodException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testFailingSetter() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
             adapter.getComponentInstance(picoContainer);
@@ -52,25 +50,21 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
-    public void testDelegateIsAccessible() throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testDelegateIsAccessible()  {
         DecoratingComponentAdapter componentAdapter =
                 (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
         assertNotNull(componentAdapter.getDelegate());
     }
 
-    private ComponentAdapter createAdapterCallingSetMessage(Class impl) throws PicoIntrospectionException, NoSuchMethodException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        BeanPropertyComponentAdapterFactory.Adapter adapter =
-                (BeanPropertyComponentAdapterFactory.Adapter) createComponentAdapterFactory().createComponentAdapter("whatever", impl, null);
+    private ComponentAdapter createAdapterCallingSetMessage(Class impl) {
+        BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
 
-        final Method setMessage = Foo.class.getMethod("setMessage", new Class[]{String.class});
-        PropertyDescriptor[] pd = adapter.getPropertyDescriptors();
-        for (int i = 0; i < pd.length; i++) {
-            if(setMessage.equals(pd[i].getWriteMethod())) {
-                adapter.setPropertyValue(pd[i], "hello");
-                assertEquals("hello", adapter.getPropertValue(pd[i]));
-            }
-        }
+        Map properties = new HashMap();
+        properties.put("message", "hello");
+        factory.setProperties(impl, properties);
+
+        ComponentAdapter adapter = factory.createComponentAdapter(impl, impl, null);
         return adapter;
     }
 

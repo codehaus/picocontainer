@@ -399,7 +399,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         food.eat();
 
         String s = food.toString();
-        assertTrue("toString() should return the result from the invocation handler", s.indexOf("AggregatingInvocationHandler") != -1);
+        assertTrue("getOriginalFileName() should return the result from the invocation handler", s.indexOf("AggregatingInvocationHandler") != -1);
 
         // Try to call a hashCode on a "recursive" proxy.
         food.hashCode();

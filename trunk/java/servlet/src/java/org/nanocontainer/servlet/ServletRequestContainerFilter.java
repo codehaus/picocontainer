@@ -23,21 +23,34 @@ import java.io.IOException;
 /**
  * @author <a href="mailto:hoju@visi.com">Jacob Kjome</a>
  * @author Thomas Heller
+ * @author Konstantin Pribluda
  */
 public class ServletRequestContainerFilter implements Filter {
 	private ServletContext context;
-
+	
+	private final static String ALREADY_FILTERED_KEY = "nanocontainer_request_filter_already_filtered";
+	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest  hrequest = (HttpServletRequest) request;
 		HttpServletResponse hresponse = (HttpServletResponse) response;
 
-		ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, hrequest);
-		try {
-			launcher.startContainer();
+		if(hrequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
+			// we were not here, filter
+			hrequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
+			ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, hrequest);
+			
+			try {
+				launcher.startContainer();
+				chain.doFilter(hrequest, hresponse);
+			}
+			finally {
+				launcher.killContainer();
+			}
+			
+			
+		} else {
+			// do not filter, passthrough
 			chain.doFilter(hrequest, hresponse);
-		}
-		finally {
-			launcher.killContainer();
 		}
 	}
 

@@ -71,6 +71,10 @@ public class BeanShellComponentAdapter extends AbstractComponentAdapter {
                 i.eval("import " + getComponentImplementation().getName() + ";");
 
                 String scriptPath = "/" + getComponentImplementation().getName().replace('.', '/') + ".bsh";
+
+                // Inside IDEA, this relies on the compilation output path being the same directory as the source path.
+                // kludge - copy ScriptableDemoBean.bsh to the same location in the test output compile class path.
+                // the same problem exists for maven, but some custom jelly script will be able to fix that.
                 URL scriptURL = getComponentImplementation().getResource(scriptPath);
                 if (scriptURL == null) {
                     throw new BeanShellScriptInitializationException("Couldn't load script at path " + scriptPath);

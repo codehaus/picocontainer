@@ -8,3 +8,5 @@ distributions.*
 target
 junit*
 cachedir
+jcoverage.ser
+

@@ -4,21 +4,21 @@
 </head>
 <body>
 <p>
-NanoAop lets you configure aspects on components in a {@link
+Lets you configure aspects on components in a {@link
 org.picocontainer.PicoContainer}.  Two kinds of advice are supported,
 interceptors and mixins.  An interceptor is invoked around method
-calls.  NanAop interceptors implement
-the <code>org.aopalliance.interceptor.MethodInterceptor</code>
+calls.  Interceptors implement the 
+<code>org.aopalliance.interceptor.MethodInterceptor</code>
 interface.  Mixins allow you to add new methods and behavior to an
 existing object.  You can think of them as a way of dynamically
 providing multiple inheritance in java.  Mixins can be any kind of
 object; they are not required to extend or implement anything.  You
-can configure aspects with nanoaop in Java, or using groovy.  Advice
+can configure aspects in Java, or using groovy.  Advice
 can be configured for all components in a container, using pointcuts,
 or advice can be applied to just one component.  Advice objects may
 themselves have dependencies on other components, supplied by the
-container.  Currently, NanoAop uses <a
-href="http://dynaop.dev.java.net">dynaop</a> to apply the aspects.
+container.  Currently, <a
+href="http://dynaop.dev.java.net">dynaop</a> is used to apply the aspects.
 Other backends may be supported in the future.
 
 <h2>Configuring Aspects</h2> 
@@ -141,7 +141,7 @@ being invoked.  Method pointcuts only apply to interceptor advice;
 they are not used for mixins.
 
 <h3>Groovy Configuration</h3>
-To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyBuilder}.  
+To configure aspects using groovy, use {@link org.nanocontainer.aop.script.groovy.DynaopNanoContainerBuilder}.  
 
 <h2>Limitations</h2>
 Components that have aspects applied to them must implement an interface. Advice is not applied to components registered 

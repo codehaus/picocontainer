@@ -10,15 +10,13 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.ContainerVisitor;
-import org.picocontainer.ComponentVisitor;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -59,7 +57,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
-    private final LifecycleManagerFactory lifecycleManagerFactory;
     private PicoContainer parent;
     private List componentAdapters = new ArrayList();
 
@@ -67,8 +64,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private List orderedComponentAdapters = new ArrayList();
 
     protected Map namedChildContainers = new HashMap();
-    private LifecycleManager lifecycleManager;
 
+    private boolean started = false;
+    private boolean disposed = false;
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
      * <p/>
@@ -80,36 +78,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycleManagerFactory the LifecycleManagerFactory to use.
      * @param parent                  the parent container (used for component dependency lookups).
      */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, LifecycleManagerFactory lifecycleManagerFactory, PicoContainer parent) {
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
-        this.lifecycleManagerFactory = lifecycleManagerFactory;
         this.parent = parent;
     }
 
     /**
-     * Creates a new container with a {@link DefaultLifecycleManagerFactory} and a parent container.
-     *
-     * @param componentAdapterFactory the ComponentAdapterFactory to use.
-     * @param parent                  the parent container (used for component dependency lookups).
-     */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new DefaultLifecycleManagerFactory(), parent);
-    }
-
-    /**
-     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory},
-     * a {@link DefaultLifecycleManagerFactory} and a parent container.
+     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
+     * and a parent container.
      */
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
 
     /**
-     * Creates a new container with a custom ComponentAdapterFactory, a
-     * {@link DefaultLifecycleManagerFactory} and no parent container.
+     * Creates a new container with a custom ComponentAdapterFactory and no parent container.
      *
      * @param componentAdapterFactory the ComponentAdapterFactory to use.
      */
@@ -122,15 +107,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public DefaultPicoContainer() {
         this(new DefaultComponentAdapterFactory(), null);
-    }
-
-    /**
-     * Creates a new container with a {@link DefaultComponentAdapterFactory} and no parent container.
-     *
-     * @param lifecycleManagerFactory the LifecycleManagerFactory to use.
-     */
-    public DefaultPicoContainer(LifecycleManagerFactory lifecycleManagerFactory) {
-        this(new DefaultComponentAdapterFactory(), lifecycleManagerFactory, null);
     }
 
     public Collection getComponentAdapters() {
@@ -364,24 +340,32 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated Use {@link #getLifecycleManager()}.start()
+     * @deprecated Use {@link LifecycleVisitor}.STARTER.visitContainer(this)
      */
     public void start() {
-        getLifecycleManager().start();
+        if (disposed) throw new IllegalStateException("Already disposed");
+        if (started) throw new IllegalStateException("Already started");
+        LifecycleVisitor.STARTER.visitContainer(this);
+        started = true;
     }
 
     /**
-     * @deprecated Use {@link #getLifecycleManager()}.start()
+     * @deprecated Use {@link LifecycleVisitor}.STOPPER.visitContainer(this)
      */
     public void stop() {
-        getLifecycleManager().stop();
+        if (disposed) throw new IllegalStateException("Already disposed");
+        if (!started) throw new IllegalStateException("Not started");
+        LifecycleVisitor.STOPPER.visitContainer(this);
+        started = false;
     }
 
     /**
-     * @deprecated Use {@link #getLifecycleManager()}.start()
+     * @deprecated Use {@link LifecycleVisitor}.DISPOSER.visitContainer(this)
      */
     public void dispose() {
-        getLifecycleManager().dispose();
+        if (disposed) throw new IllegalStateException("Already disposed");
+        LifecycleVisitor.DISPOSER.visitContainer(this);
+        disposed = true;
     }
 
     public MutablePicoContainer makeChildContainer() {
@@ -389,7 +373,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer(String name) {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, lifecycleManagerFactory, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
         addChildContainer(name, pc);
         return pc;
     }
@@ -416,37 +400,34 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
-    public LifecycleManager getLifecycleManager() {
-        if (lifecycleManager == null) {
-            lifecycleManager = lifecycleManagerFactory.createLifecycleManager(this);
-        }
-        return lifecycleManager;
-    }
-
-    public void accept(ContainerVisitor containerVisitor) {
-        for (Iterator iterator = getChildContainers().iterator(); iterator.hasNext();) {
-            PicoContainer child = (PicoContainer) iterator.next();
-            containerVisitor.visit(child);
-        }
-    }
-
-    public void accept(ComponentVisitor componentVisitor, Class ofType, boolean visitInInstantiationOrder) {
+    public void accept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
         List componentInstances = getComponentInstancesOfType(ofType);
-        if(!visitInInstantiationOrder) {
+        if(visitInInstantiationOrder) {
+            visitComponentInstances(componentInstances, visitor);
+            visitChildContainers(visitor);
+        } else {
             Collections.reverse(componentInstances);
+            visitChildContainers(visitor);
+            visitComponentInstances(componentInstances, visitor);
         }
+    }
+
+    private void visitChildContainers(PicoVisitor visitor) {
+        Collection childContainers = namedChildContainers.values();
+        for (Iterator iterator = childContainers.iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            visitor.visitContainer(child);
+        }
+    }
+
+    private void visitComponentInstances(List componentInstances, PicoVisitor visitor) {
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
-            componentVisitor.visitComponentInstance(o);
+            visitor.visitComponentInstance(o);
         }
-    }
-
-    private Collection getChildContainers() {
-        return namedChildContainers.values();
     }
 
     protected Map getNamedContainers() {
         return namedChildContainers;
     }
-
 }

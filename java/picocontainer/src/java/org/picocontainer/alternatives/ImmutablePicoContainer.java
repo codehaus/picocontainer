@@ -14,6 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,6 +99,10 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
     public List getComponentInstancesOfType(Class type) throws PicoException {
         return delegate.getComponentInstancesOfType(type);
+    }
+
+    public void accept(PicoVisitor containerVisitor, Class componentType, boolean visitInInstantiationOrder) {
+        delegate.accept(containerVisitor, componentType, visitInInstantiationOrder);
     }
 
     public void start() {

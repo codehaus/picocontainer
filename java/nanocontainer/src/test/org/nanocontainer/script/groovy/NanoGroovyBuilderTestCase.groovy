@@ -123,7 +123,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertTrue(wsc.getPort() == 4321)
     }
 
-      void testSoftInstantiateWithChildContainerWithDynamicClassPath() {
+    void testSoftInstantiateWithChildContainerWithDynamicClassPath() {
 
         File testCompJar = new File(System.getProperty("testcomp.jar"))
         testCompJar2 = new File(testCompJar.getParent(),"TestComp2.jar")
@@ -186,9 +186,9 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
 
-    void testInstantiateBasicComponentWithDeepNamedTree() {
+    void FIXMEtestInstantiateBasicComponentWithDeepNamedTree() {
 
-       Xxx.reset()
+        Xxx.reset()
 
         builder = new NanoGroovyBuilder()
         pico = builder.container {

@@ -21,7 +21,6 @@ import org.nanocontainer.nanoaop.Interceptor;
 import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutFactory;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

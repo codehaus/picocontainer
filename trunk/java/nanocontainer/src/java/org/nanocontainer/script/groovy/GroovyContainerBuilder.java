@@ -26,6 +26,7 @@ import java.io.Reader;
  * @version $Revision$
  */
 public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+
     public GroovyContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }

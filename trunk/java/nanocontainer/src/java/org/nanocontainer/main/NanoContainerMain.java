@@ -9,38 +9,21 @@
 
 package org.nanocontainer.main;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.NanoContainer;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
 
-import java.io.FileReader;
-import java.util.HashMap;
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class NanoContainerMain {
 
     private static final int HELP_OPT = 'h';
     private static final int VERSION_OPT = 'v';
-    private static final int MONITOR_OPT = 'm';
     private static final int COMPOSITION_OPT = 'c';
-
-    private static final Map extensionToAssemblerMap = new HashMap();
-
-    static {
-        extensionToAssemblerMap.put(".js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
-        extensionToAssemblerMap.put(".xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
-        extensionToAssemblerMap.put(".py", "org.nanocontainer.script.jython.JythonContainerBuilder");
-        extensionToAssemblerMap.put(".groovy", "org.nanocontainer.script.groovy.GroovyContainerBuilder");
-    }
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
@@ -52,10 +35,6 @@ public class NanoContainerMain {
                 CLOptionDescriptor.ARGUMENT_DISALLOWED,
                 VERSION_OPT,
                 "print the version information and exit"),
-        new CLOptionDescriptor("monitor",
-                CLOptionDescriptor.ARGUMENT_REQUIRED,
-                MONITOR_OPT,
-                "specify the monitor implemenatation"),
         new CLOptionDescriptor("composition",
                 CLOptionDescriptor.ARGUMENT_REQUIRED,
                 COMPOSITION_OPT,
@@ -66,7 +45,6 @@ public class NanoContainerMain {
     public static void main(String[] args) throws Exception, InstantiationException {
         List options = getOptions(args);
 
-        String monitor = "";
         String composition = "";
 
         for (Iterator iterator = options.iterator(); iterator.hasNext();) {
@@ -85,10 +63,6 @@ public class NanoContainerMain {
 
                 case VERSION_OPT:
                     printVersion();
-                    break;
-
-                case MONITOR_OPT:
-                    monitor = option.getArgument();
                     break;
 
                 case COMPOSITION_OPT:
@@ -121,28 +95,17 @@ public class NanoContainerMain {
 
     AH
     */
-    private static void buildAndStartContainer(String composition) throws Exception, InstantiationException {
-        final String extension = composition.substring(composition.indexOf("."));
-        String containerAssemblerClassName = (String) extensionToAssemblerMap.get(extension);
+    private static void buildAndStartContainer(String compositionFileName) throws Exception, InstantiationException {
+        final String extension = compositionFileName.substring(compositionFileName.indexOf("."));
 
-        // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
-        DefaultPicoContainer dpc = new DefaultPicoContainer();
-        dpc.registerComponentInstance( new FileReader(composition));
-        dpc.registerComponentInstance(NanoContainerMain.class.getClassLoader());
-        DefaultReflectionContainerAdapter defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
-        ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
-        final ContainerBuilder cb = (ContainerBuilder) componentAdapter.getComponentInstance();
-        final ObjectReference containerRef = new SimpleReference();
-
-        // build and start the container
-        cb.buildContainer(containerRef, null, null);
+        final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
                 System.out.println("Shutting Down NanoContainer");
                 try {
-                    cb.killContainer(containerRef);
+                    nanoContainer.killContainer();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

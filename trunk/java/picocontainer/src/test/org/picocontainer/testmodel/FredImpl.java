@@ -12,8 +12,17 @@ package org.picocontainer.testmodel;
 
 import junit.framework.Assert;
 
-public class FredImpl {
+import java.io.Externalizable;
+import java.io.ObjectInput;
+import java.io.IOException;
+import java.io.ObjectOutput;
+
+public class FredImpl implements Externalizable {
     private Wilma wilma;
+
+    // to satify Externalizable
+    public FredImpl() {
+    }
 
     public FredImpl(Wilma wilma) {
         Assert.assertNotNull("Wilma cannot be passed in as null", wilma);
@@ -24,4 +33,14 @@ public class FredImpl {
     public Wilma getWilma() {
         return wilma;
     }
+
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        // whatever
+    }
+
+    public void writeExternal(ObjectOutput out) throws IOException {
+        // whatever
+    }
+
+
 }

@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version $Revision: 1.8 $
  */
 public class DefaultComponentFactory implements ComponentFactory {
-    public Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, WrongNumberOfConstructorsException {
+    public Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, NoPicoSuitableConstructorException {
         try {
             Constructor constructor = getConstructor(componentSpec.getComponentImplementation());
             return constructor.newInstance(instanceDependencies);
@@ -41,12 +41,28 @@ public class DefaultComponentFactory implements ComponentFactory {
         return constructor.getParameterTypes();
     }
 
-    private Constructor getConstructor(Class componentImplementation) throws WrongNumberOfConstructorsException {
+    /**
+     * This is now IoC 2.5 compatible.  Multi ctors next.
+     * @param componentImplementation
+     * @return
+     * @throws NoPicoSuitableConstructorException
+     */
+    private Constructor getConstructor(Class componentImplementation) throws NoPicoSuitableConstructorException {
         Constructor[] constructors = componentImplementation.getConstructors();
-        if (constructors.length != 1) {
-            throw new WrongNumberOfConstructorsException(constructors.length);
+        Constructor picoConstructor = null;
+        for (int i = 0; i < constructors.length; i++) {
+            Constructor constructor = constructors[i];
+            if (constructor.getParameterTypes().length != 0 || constructors.length == 1) {
+                if (picoConstructor != null) {
+                    throw new NoPicoSuitableConstructorException(componentImplementation);
+                }
+                picoConstructor = constructor;
+            }
         }
-        // Get the sole constructor
-        return componentImplementation.getConstructors()[0];
+        if (picoConstructor == null) {
+            throw new NoPicoSuitableConstructorException(componentImplementation);
+        }
+        // Get the pico enabled constructor
+        return picoConstructor;
     }
 }

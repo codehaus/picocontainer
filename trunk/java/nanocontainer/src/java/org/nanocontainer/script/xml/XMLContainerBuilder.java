@@ -50,6 +50,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     private final Element rootElement;
 
     private final static String DEFAULT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
+    private static final String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
@@ -84,7 +85,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         try {
             String cafName = rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY);
             if (EMPTY.equals(cafName) || cafName == null) {
-                cafName = DefaultComponentAdapterFactory.class.getName();
+                cafName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
             }
             Class cfaClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
@@ -115,8 +116,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             short type = child.getNodeType();
             if (type == Document.ELEMENT_NODE) {
                 String name = child.getNodeName();
-                if (name.equals(CLASSPATH)) {
-                    registerClasspathElement(parentContainer, (Element) child);
+                if ( CLASSPATH.equals(name)) {
+                    registerClasspath(parentContainer, (Element) child);
                 }
             }
         }
@@ -148,7 +149,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerClasspathElement(ReflectionContainerAdapter reflectionContainerAdapter, Element classpathElement) throws IOException {
+    private void registerClasspath(ReflectionContainerAdapter reflectionContainerAdapter, Element classpathElement) throws IOException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
@@ -177,7 +178,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     private PicoContainer registerComponentImplementation(ReflectionContainerAdapter reflectionContainerAdapter, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
         String className = componentElement.getAttribute(CLASS);
         if (EMPTY.equals(className)) {
-            throw new SAXException("class attribute not specified for " + componentElement.getNodeName());
+            throw new SAXException("'class' attribute not specified for " + componentElement.getNodeName());
         }
 
         List parameterTypesList = new ArrayList();
@@ -187,7 +188,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             final Node node = parameters.item(i);
             if (node.getNodeType() == Document.ELEMENT_NODE) {
                 Element parameterElement = (Element) node;
-                if (parameterElement.getNodeName().equals(PARAMETER)) {
+                if ( PARAMETER.equals(parameterElement.getNodeName()) ) {
                     String type = parameterElement.getAttribute(CLASS);
                     String value = parameterElement.getChildNodes().item(0).getNodeValue();
                     parameterTypesList.add(type);
@@ -221,17 +222,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
     private void registerComponentInstance(ReflectionContainerAdapter reflectionComponentAdapter, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
-        String factoryClass = componentElement.getAttribute(FACTORY);
-        String key = componentElement.getAttribute(KEY);
-        
-        if (factoryClass == null || factoryClass.equals(EMPTY)) {
-            factoryClass = DEFAULT_INSTANCE_FACTORY;
-        }
-
-        ReflectionContainerAdapter tempContainerAdapter = new DefaultReflectionContainerAdapter();
-        tempContainerAdapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
-        XMLComponentInstanceFactory factory = (XMLComponentInstanceFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);
-
+        XMLComponentInstanceFactory factory = createComponentInstanceFactory(componentElement.getAttribute(FACTORY));
         NodeList nl = componentElement.getChildNodes();
         Element childElement = null;
         for (int i = 0; i < nl.getLength(); i++) {
@@ -241,11 +232,22 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
         }
 
+        String key = componentElement.getAttribute(KEY);
         Object instance = factory.makeInstance(childElement);
         if ( key == null || key.equals(EMPTY) ){ 
             reflectionComponentAdapter.getPicoContainer().registerComponentInstance(instance);
         } else {
             reflectionComponentAdapter.getPicoContainer().registerComponentInstance(key, instance);            
         }
+    }
+    
+    private XMLComponentInstanceFactory createComponentInstanceFactory(String factoryClass) throws ClassNotFoundException{        
+        if (factoryClass == null || factoryClass.equals(EMPTY)) {
+            factoryClass = DEFAULT_INSTANCE_FACTORY;
+        }
+
+        ReflectionContainerAdapter tempContainerAdapter = new DefaultReflectionContainerAdapter();
+        tempContainerAdapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
+        return (XMLComponentInstanceFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);        
     }
 }

@@ -1,0 +1,52 @@
+
+NanoContainer BNF syntax
+
+Terminology:
+    <S> ::= D  Symbol S uniquely defined by the content of definition D 
+    <E>*     repeat expression E zero or more times 
+    <E>+     repeat expression E one or more times 
+    <E>?     optional expression E  
+    <A>|<B>  either A or B 
+
+Syntax:
+<container> ::= <classpath>* <container>* <component>* 
+
+<container> ::= <container-class> <container-parent> <assembly-scope>
+
+<container-class> ::= Implements org.nanocontainer.SoftCompositionPicoContainer
+
+<container-parent> ::= Implements org.nanocontainer.SoftCompositionPicoContainer | <null>
+
+<null> ::= Null reference
+
+<assembly-scope> ::= java.lang.Object
+
+<classpath> ::= <classloader-url>* 
+ 
+<classloader-url> ::= java.net.URL  
+
+<component> ::= <component-adapter> | <component-implementation> | <component-instance>
+
+<component-adapter> ::= {<adapter-class>|<adapter-factory} <key> {<implementation-class> <parameters>* |<instance>}
+
+<component-implementation> ::= <key>? <implementation-class> <parameter>* 
+
+<component-instance> ::= <key>? <instance>
+
+<adapter-class> :== java.lang.Class
+
+<adapter-factory> :== java.lang.Class
+
+<key> :== java.lang.Object
+
+<implementation-class> :== java.lang.Class
+
+<instance> :== java.lang.Object | <instance-factory>
+
+<instance-factory> :== java.lang.Class
+ 
+<parameter> :== <component-parameter> | <constant-parameter>
+
+<component-parameter> :== <key>
+
+<constant-parameter> :== <instance>

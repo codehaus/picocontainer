@@ -91,14 +91,16 @@ public class PoolingComponentAdapterTestCase extends TestCase {
 
         final Object[] borrowed = new Object[3];
         final Throwable[] threadException = new Throwable[2];
-        final Sync sync = new Latch();
+        //final Sync sync = new Latch();
         final StringBuffer order = new StringBuffer();
         final Thread returner = new Thread() {
             public void run() {
                 try {
+                    // sleep for 3000 millis to allow test to block on pool
+                    sleep(3000);
                     order.append("returner ");
                     componentAdapter2.returnComponentInstance(borrowed[0]);
-                    sync.release();
+                    //sync.release();
                 } catch (Throwable t) {
                     t.printStackTrace();
                     synchronized (componentAdapter2) {
@@ -114,7 +116,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         returner.start();
 
         order.append("main ");
-        assertTrue(sync.attempt(2000));
+        //assertTrue(sync.attempt(2000));
         borrowed[2] = componentAdapter2.getComponentInstance(null);
         order.append("main");
 

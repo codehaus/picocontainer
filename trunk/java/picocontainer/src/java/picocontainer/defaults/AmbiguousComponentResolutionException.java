@@ -11,23 +11,28 @@ package picocontainer.defaults;
 
 import picocontainer.PicoInstantiationException;
 
-public class AmbiguousComponentResolutionException extends PicoInstantiationException {
-    private final Class[] ambiguousClasses;
+import java.util.Arrays;
 
-    public AmbiguousComponentResolutionException(Class[] ambiguousClass) {
-        this.ambiguousClasses = ambiguousClass;
+public class AmbiguousComponentResolutionException extends PicoInstantiationException {
+    private Class ambiguousClass;
+    private final Class[] resultingClasses;
+
+    public AmbiguousComponentResolutionException(Class ambiguousClass, Class[] resultingClasses) {
+        this.ambiguousClass = ambiguousClass;
+        this.resultingClasses = resultingClasses;
     }
 
     public String getMessage() {
-        String msg = "Ambiguous Classes:";
-        for (int i = 0; i < ambiguousClasses.length; i++) {
-            Class ambiguousClass = ambiguousClasses[i];
-            msg = msg + " " + ambiguousClass.getName();
-        }
-        return msg;
+        StringBuffer msg = new StringBuffer();
+        msg.append("Ambigious class ");
+        msg.append(ambiguousClass);
+        msg.append(", ");
+        msg.append("resolves to ");
+        msg.append(Arrays.asList(resultingClasses));
+        return msg.toString();
     }
 
-    public Class[] getAmbiguousClasses() {
-        return ambiguousClasses;
+    public Class[] getResultingClasses() {
+        return resultingClasses;
     }
 }

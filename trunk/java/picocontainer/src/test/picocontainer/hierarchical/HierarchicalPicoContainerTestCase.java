@@ -157,7 +157,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         } catch (AmbiguousComponentResolutionException e) {
             // expected
 
-            List ambiguous = Arrays.asList(e.getAmbiguousClasses());
+            List ambiguous = Arrays.asList(e.getResultingClasses());
             assertTrue(ambiguous.contains(DerivedWilma.class));
             assertTrue(ambiguous.contains(WilmaImpl.class));
             assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
@@ -177,7 +177,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
     }
 
-    public void testRegisterComponentWithObjectBadType() {
+    public void testRegisterComponentWithObjectBadType() throws PicoIntrospectionException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
         try {

@@ -21,7 +21,7 @@ public class WrongNumberOfConstructorsException extends PicoIntrospectionExcepti
     }
 
     public String getMessage() {
-        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
+        return "Wrong Number of Constructors for Pico Component. Expected 1, found " + numOfCtors;
     }
 
 }

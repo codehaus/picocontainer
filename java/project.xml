@@ -129,8 +129,6 @@
       <url>http://jakarta.apache.org/</url>
     </dependency>
 
-
-
   </dependencies>
 
   <build>
@@ -156,6 +154,7 @@
     <report>maven-license-plugin</report> 
     <report>maven-checkstyle-plugin</report> 
     <report>maven-pmd-plugin</report> 
+    <report>maven-simian-plugin</report> 
     <report>maven-jdepend-plugin</report> 
     <report>maven-changelog-plugin</report> 
     <report>maven-statcvs-plugin</report>

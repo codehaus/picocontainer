@@ -20,8 +20,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 import picocontainer.Container;
-import picocontainer.NullContainer;
 import picocontainer.PicoRegistrationException;
+import picocontainer.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl

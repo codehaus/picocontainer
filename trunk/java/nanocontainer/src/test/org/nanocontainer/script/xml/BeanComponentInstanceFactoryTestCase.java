@@ -26,7 +26,7 @@ import java.io.StringReader;
 public class BeanComponentInstanceFactoryTestCase extends TestCase {
 
     public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
-        BeanComponentInstanceFactory xsf = new BeanComponentInstanceFactory();
+        BeanComponentInstanceFactory factory = new BeanComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +
                 "<org.nanocontainer.script.xml.TestBean>" +
@@ -37,7 +37,7 @@ public class BeanComponentInstanceFactoryTestCase extends TestCase {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = db.parse(is);
 
-        Object o = xsf.makeInstance(null, doc.getDocumentElement());
+        Object o = factory.makeInstance(null, doc.getDocumentElement(), Thread.currentThread().getContextClassLoader());
         TestBean bean = (TestBean) o;
         assertEquals("hello", bean.getBar());
         assertEquals(10, bean.getFoo());

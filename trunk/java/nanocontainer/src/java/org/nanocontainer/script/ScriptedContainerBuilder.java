@@ -14,20 +14,35 @@ import org.picocontainer.PicoContainer;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URL;
 
 /**
  * Baseclass for container builders based on scripting.
  *
  * @author Aslak Helles&oslash;y
+ * @author Obie Fernandez
  * @version $Revision$
  */
 public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder {
     protected final Reader script;
     protected final ClassLoader classLoader;
+    protected final URL scriptURL;
 
+    public ScriptedContainerBuilder(URL scriptURL, ClassLoader classLoader) {
+        this.scriptURL = scriptURL;
+        this.classLoader = classLoader;
+        this.script = null;
+    }
+
+    /**
+     * @deprecated
+     */
     public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
+        if(script == null) { throw new NullPointerException("script was null"); }
+        if(classLoader == null) { throw new NullPointerException("classLoader was null"); }
         this.script = script;
         this.classLoader = classLoader;
+        this.scriptURL = null;
     }
 
     protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
@@ -35,7 +50,9 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
             return createContainerFromScript(parentContainer, assemblyScope);
         } finally {
             try {
-                script.close();
+                if (script != null) {
+                    script.close();
+                }
             } catch (IOException e) {
             }
         }

@@ -37,7 +37,7 @@ module Rico
     
     def register_component(key, type, dependencies = [], create_method = :new)
       check_stopped
-      @specs.each { |dep| check_key dep }
+      dependencies.each { |dep| check_key dep }
       @specs[key] = ComponentSpecification.new type, dependencies, create_method
     end
     

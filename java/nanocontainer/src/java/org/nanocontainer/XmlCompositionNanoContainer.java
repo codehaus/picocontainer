@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.script.xml.XMLContainerBuilder;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -16,7 +15,7 @@ import org.picoextras.script.xml.XMLContainerBuilder;
  * @author Ward Cunningham
  * @version $Revision$
  * @deprecated To replace with a NanoContainer instance that is given a
- * {@link XMLContainerBuilder} instance in its ctor.
+ * {@link org.nanocontainer.script.xml.XMLContainerBuilder} instance in its ctor.
  */
 public class XmlCompositionNanoContainer /*extends NanoContainer*/ {
 

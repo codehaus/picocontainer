@@ -2,7 +2,7 @@ package org.nanocontainer.script.jython;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.python.util.PythonInterpreter;
 import org.python.core.PySystemState;
 

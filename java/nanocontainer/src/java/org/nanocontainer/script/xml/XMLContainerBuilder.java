@@ -20,7 +20,7 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
-import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

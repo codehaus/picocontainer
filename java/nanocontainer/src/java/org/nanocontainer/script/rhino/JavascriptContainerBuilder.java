@@ -3,7 +3,7 @@ package org.nanocontainer.script.rhino;
 import org.mozilla.javascript.*;
 import org.picocontainer.MutablePicoContainer;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 
 import java.io.Reader;
 

@@ -14,13 +14,13 @@ import org.picocontainer.defaults.SimpleReference;
 import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
-import org.picoextras.script.rhino.JavascriptContainerBuilder;
-import org.picoextras.script.xml.XMLContainerBuilder;
-import org.picoextras.script.jython.JythonContainerBuilder;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
+import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
+import org.nanocontainer.script.xml.XMLContainerBuilder;
+import org.nanocontainer.script.jython.JythonContainerBuilder;
 
 import java.util.HashMap;
 import java.util.Iterator;

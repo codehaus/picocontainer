@@ -13,25 +13,25 @@ import org.picocontainer.defaults.Swappable;
  */
 public class HotSwappingDemoTestCase extends TestCase {
     public void testDemo() {
-        // START SNIPPET: circular
-        ComponentAdapterFactory caf = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
-        DefaultPicoContainer pico = new DefaultPicoContainer(caf);
-        // Register two classes with mutual dependencies on each other. (See ImplementationHidingComponentAdapterFactoryTestCase)
-        pico.registerComponentImplementation(Wife.class);
-        pico.registerComponentImplementation(Husband.class);
+// START SNIPPET: circular
+ComponentAdapterFactory caf = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
+DefaultPicoContainer pico = new DefaultPicoContainer(caf);
+// Register two classes with mutual dependencies on each other. (See ImplementationHidingComponentAdapterFactoryTestCase)
+pico.registerComponentImplementation(Wife.class);
+pico.registerComponentImplementation(Husband.class);
 
-        // START SNIPPET: hotswap
-        Woman woman = (Woman) pico.getComponentInstance(Wife.class);
-        // END SNIPPET: circular
+// START SNIPPET: hotswap
+Woman woman = (Woman) pico.getComponentInstance(Wife.class);
+// END SNIPPET: circular
 
-        assertEquals(10, woman.getMan().getEndurance());
+assertEquals(10, woman.getMan().getEndurance());
 
-        // let the woman use another man
-        Man superman = new Superman();
-        ((Swappable)woman.getMan()).__hotSwap(superman);
+// let the woman use another man
+Man superman = new Superman();
+((Swappable)woman.getMan()).__hotSwap(superman);
 
-        assertEquals(1000, woman.getMan().getEndurance());
-        // END SNIPPET: hotswap
+assertEquals(1000, woman.getMan().getEndurance());
+// END SNIPPET: hotswap
     }
 
 }

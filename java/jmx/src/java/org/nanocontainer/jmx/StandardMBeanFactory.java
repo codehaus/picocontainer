@@ -19,7 +19,7 @@ import javax.management.StandardMBean;
 /**
  * A factory for DynamicMBeans that can create at least {@link StandardMBean}instances.
  * @author Michael Ward
- * @author J&ouml,rg Schaible
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class StandardMBeanFactory implements DynamicMBeanFactory {

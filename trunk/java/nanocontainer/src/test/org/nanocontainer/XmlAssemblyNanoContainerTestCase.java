@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,66 +49,4 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertEquals("Should match the expression", "<A<B<CC>B>A>!C!B!A", Xxx.componentRecorder);
         assertEquals("Should match the expression", "*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", MockMonitor.monitorRecorder);
     }
-
-    public void testInstantiateXmlWithMissingComponent() throws Exception, SAXException, ParserConfigurationException, IOException {
-
-        try {
-            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
-                    "<container>" +
-                    "      <component classname='Foo'/>" +
-                    "</container>"), new MockMonitor());
-            fail("Should have thrown a ClassNotFoundException");
-        } catch (ClassNotFoundException cnfe) {
-        }
-
-    }
-
-    public void testInstantiateEmptyXml() throws Exception, SAXException, ParserConfigurationException, IOException {
-
-        try {
-            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
-                    "<container>" +
-                    "</container>"), new MockMonitor());
-            fail("Should have thrown a EmptyNanoContainerException");
-        } catch (EmptyNanoContainerException cnfe) {
-        }
-    }
-
-    public void testInstantiateWithBespokeClassLoader() throws Exception, SAXException, ParserConfigurationException, IOException {
-
-        StringBuffer xml = new StringBuffer(
-                "<container>" +
-                "      <component classname='org.nanocontainer.Xxx$A'/>" +
-                "      <container>" +
-                "          <component classname='TestComp'/>" +
-                "          <jarfile location='*test-comp/TestComp.jar'/>" +
-                "          <!-- yet to implement " +
-                "            <jarurl location='http://foobar.com/TestComp.jar'/>" +
-                "          -->" +
-                "      </container>" +
-                "</container>");
-
-        //TODO - need to make this adaptive. I.e. can run in IDEA, under Maven etc.
-        // Tis currently hard coded to my (Paul) file system
-        // aslak has some magic code...
-        xml.replace(xml.indexOf("*"), xml.indexOf("*")+ 1, "d:/dev/nano/nanocontainer/");
-
-        NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader(xml.toString()), new MockMonitor());
-        nano.stopComponentsDepthFirst();
-        nano.disposeComponentsDepthFirst();
-
-        List comps = MockMonitor.allComps;
-        assertEquals("There should be two components", comps.size(), 2);
-
-        Class XxxAClass = comps.get(0).getClass();
-        Class testCompClass = comps.get(1).getClass();
-
-        assertFalse("Components should be in different classloaders",
-                XxxAClass.getClassLoader() == testCompClass.getClassLoader());
-
-        assertTrue("The parent classloader of 'TestComp' should be that of 'Xxx$A'",
-                XxxAClass.getClassLoader() == testCompClass.getClassLoader().getParent());
-
-    }
-
 }

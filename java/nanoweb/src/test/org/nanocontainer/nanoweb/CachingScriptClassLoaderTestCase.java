@@ -1,7 +1,6 @@
 package org.nanocontainer.nanoweb;
 
 import junit.framework.TestCase;
-import org.codehaus.groovy.syntax.SyntaxException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +15,7 @@ import java.net.URLStreamHandler;
  * @version $Revision$
  */
 public class CachingScriptClassLoaderTestCase extends TestCase {
-    public void testClassesAreCachedWhenTheUrlTimeStampIsNotMoreRecent() throws IOException, SyntaxException {
+    public void testClassesAreCachedWhenTheUrlTimeStampIsNotMoreRecent() throws IOException, ScriptException {
         CachingScriptClassLoader loader = new CachingScriptClassLoader();
 
         MockURLConnection urlConnection = new MockURLConnection();
@@ -28,7 +27,7 @@ public class CachingScriptClassLoaderTestCase extends TestCase {
         assertSame(clazz1, clazz2);
     }
 
-    public void testClassesAreReloadedWhenTheUrlTimeStampIsMoreRecent() throws IOException, SyntaxException {
+    public void testClassesAreReloadedWhenTheUrlTimeStampIsMoreRecent() throws IOException, ScriptException {
         CachingScriptClassLoader loader = new CachingScriptClassLoader();
 
         MockURLConnection urlConnection = new MockURLConnection();

@@ -18,7 +18,7 @@ import java.io.Reader;
 
 /**
  * {@inheritDoc}
- * The script has return an instance of {@link PicoContainer}.
+ * The script has to return an instance of {@link PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.

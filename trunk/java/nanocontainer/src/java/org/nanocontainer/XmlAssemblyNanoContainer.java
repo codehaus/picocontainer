@@ -9,7 +9,6 @@
 package org.nanocontainer;
 
 import org.nanocontainer.xml.DefaultXmlFrontEnd;
-import org.nanocontainer.xml.EmptyXmlConfigurationException;
 import org.nanocontainer.xml.XmlFrontEnd;
 import org.picocontainer.PicoConfigurationException;
 import org.w3c.dom.Document;

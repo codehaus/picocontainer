@@ -9,17 +9,23 @@
 
 package org.nanocontainer;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.nanocontainer.rhino.DefaultNanoRhinoScriptable;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.picocontainer.PicoContainer;
+import org.apache.log4j.Category;
 
+/**
+ * @author Paul Hammant
+ * @version $Revision$
+ */
+public class Log4JNanoContainerMonitor implements NanoContainerMonitor {
 
-public class BogusNanoRhinoScriptable extends ScriptableObject {
-    public String getClassName() {
-        return "NanoRhinoScriptable";
+    private Category category = Category.getInstance("NanoContainerMonitor");
+
+    public void componentsInstantiated(PicoContainer picoContainer) {
+        category.info("Components Instantiated For Container " + picoContainer);
     }
 
-    // all pub static javascript methods missing.
+    public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {
+        category.info("ComponentEvent '" + eventName + "'" + lpa);
+    }
 }

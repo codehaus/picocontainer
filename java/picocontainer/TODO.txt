@@ -3,16 +3,7 @@ The names are only suggestions from Aslak. Feel free to change them.
 And also feel free to nuke this document and put everything in JIRA.
 
 ++ PicoContainer
-
-FAQ                  - Jon
-100% test coverage   - Paul
-Cglib support	     - Aslak
-Demo application     - Joe
-Finalise Lifecycle   - Mike
-Lifecycle docs       - Chris
-Consolidate docs     - Aslak
-Release process docs - Aslak
-Release alpha-2      - Paul
+(Old issues from this file moved to JIRA)
 
 ++ NanoContainer
 

@@ -6,12 +6,6 @@
     <name>nanocontainer-ant</name>
 
     <dependencies>
-
-        <dependency>
-            <id>picocontainer</id>
-            <version>1.1-SNAPSHOT</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>

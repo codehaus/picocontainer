@@ -10,12 +10,6 @@
     <dependencies>
 
         <dependency>
-            <id>picocontainer</id>
-            <version>1.1-SNAPSHOT</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-asm</artifactId>
             <version>1.0</version>

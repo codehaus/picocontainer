@@ -10,7 +10,7 @@
     <currentVersion>0.1-SNAPSHOT</currentVersion>
     <name>MegaContainer</name>
     <id>megacontainer</id>
-    <url>http://www.picoocontainer.org</url>
+    <url>http://www.picocontainer.org/</url>
     <organization>
         <name>Codehaus</name>
         <url>http://codehaus.org/</url>
@@ -69,7 +69,6 @@
     
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>
-        <!-- later on
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
         <unitTest>
             <includes>
@@ -79,7 +78,6 @@
                 <exclude>**/Abstract*</exclude>
             </excludes>
         </unitTest>
-        -->
     </build>
 
     

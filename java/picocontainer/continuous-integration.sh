@@ -5,17 +5,11 @@
 # In order to configure a machine to run this once a day,
 # run "crontab -e" from a shell and add the following line:
 #
-# 49 1 * * * $HOME/cvs/pico/continuous-integration.sh
+# 0 2 * * * /usr/local/builds/pico/continuous-integration.sh
 #
-# That will run this script every day at 1:49 AM. (Off peek, likely to be a quiet period).
+# That will run this script every day at 2:00 AM. (See http://wiki.codehaus.org/general/CodehausBuildmeister).
 #
-# In order to make this work, you should also set the following in your ~/build.properties:
-# (Don't set maven.test.failure.ignore to true on your developer machine).
-#
-# maven.username = <yourlogin_on_deploy_machine>
-# maven.test.failure.ignore = true
-#
-# Finally, to get the full picture, see maven.xml
+# To get the full picture, see maven.xml
 #
 
 cd /usr/local/builds/pico
@@ -27,7 +21,7 @@ rm -Rf target
 mkdir target
 
 # Compile and test
-maven test:test &> target/cleanbuild.log
+maven -e -Dmaven.test.failure.ignore=true test:test &> target/cleanbuild.log
 
 # See if the "compiling" file is there. If it is, compilation
 # failed.
@@ -43,9 +37,9 @@ else
     # Deploy site only if compile and tests pass. Logs currently not used.
     # Must be run separately to get the files uploaded in the proper dir
     # on the server.
-    maven -Dmaven.username=$USER jar:deploy &> target/jardeploy.log
-    maven -Dmaven.username=$USER dist:deploy &> target/distdeploy.log
+    maven -e -Dmaven.username=$USER jar:deploy &> target/jardeploy.log
+    maven -e -Dmaven.username=$USER dist:deploy &> target/distdeploy.log
   fi
   # We'll deploy the site even if the tests fail. Log currently not used.
-  maven -Dmaven.username=$USER site:deploy &> target/sitedeploy.log
+  maven -e -Dmaven.username=$USER site:deploy &> target/sitedeploy.log
 fi

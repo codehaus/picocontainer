@@ -29,13 +29,11 @@ import java.util.HashMap;
 public class DefaultKernel implements Kernel, Startable, Disposable {
 
 	protected HashMap contextMap = null;
-	protected ClassLoaderFactory classLoaderFactory = null;
 	protected McaDeployer mcaDeployer = null;
 	protected GroovyDeploymentScriptHandler groovyDeploymentScriptHandler = null;
 
 	public DefaultKernel(McaDeployer mcaDeployer) {
 		contextMap = new HashMap();
-		classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
 		this.mcaDeployer = mcaDeployer;
 		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler(mcaDeployer);
 	}

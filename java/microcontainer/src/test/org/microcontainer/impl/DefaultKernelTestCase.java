@@ -295,9 +295,11 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         kernel.deploy(new File("test.mca"));
 
 		ObjectName objectName = new ObjectName("microcontainer:kernel=default");
-		MBeanServer mBeanServer = (MBeanServer)kernel.getComponent("test/*" + MBeanServer.class.getName());
-		HashMap map = (HashMap)kernel.getComponent("test/" + objectName.getCanonicalName());
-		MBeanInfo mBeanInfo = (MBeanInfo)kernel.getComponent("test/java.util.HashMapMBeanInfo");
+		PicoContainer root = kernel.getRootContainer("test");
+		MBeanServer mBeanServer = (MBeanServer)root.getComponentInstance(MBeanServer.class);
+
+		HashMap map = (HashMap)root.getComponentInstance(objectName.getCanonicalName());
+		MBeanInfo mBeanInfo = (MBeanInfo)root.getComponentInstance("java.util.HashMapMBeanInfo");
 
 		assertNotNull(map);
 		assertNotNull(mBeanInfo);

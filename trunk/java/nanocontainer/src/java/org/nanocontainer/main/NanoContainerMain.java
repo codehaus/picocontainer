@@ -42,7 +42,7 @@ public class NanoContainerMain {
 
     };
 
-    public static void main(String[] args) throws Exception, InstantiationException {
+    public static void main(String[] args) {
         List options = getOptions(args);
 
         String composition = "";
@@ -72,7 +72,12 @@ public class NanoContainerMain {
             }
         }
 
-        buildAndStartContainer(composition);
+        try {
+            buildAndStartContainer(composition);
+        } catch (Exception e) {
+            System.out.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /*

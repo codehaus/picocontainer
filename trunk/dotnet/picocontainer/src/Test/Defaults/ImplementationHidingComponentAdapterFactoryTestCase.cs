@@ -85,7 +85,7 @@ namespace Test.Defaults {
 
       // Let the wife use another (single) man
       Man newMan = new Husband(null);
-      Man oldMan = (Man) ((ISwappable) man).PicoHotSwap(newMan);
+      Man oldMan = (Man) ((ISwappable) man).HotSwap(newMan);
 
       Assert.IsFalse(newMan.wasKissed());
       wife.getMan().kiss();
@@ -117,7 +117,7 @@ namespace Test.Defaults {
 
       // Let the wife use another (single) man
       Man newMan = new Husband(null);
-      Man oldMan = (Man) ((ISwappable) man).PicoHotSwap(newMan);
+      Man oldMan = (Man) ((ISwappable) man).HotSwap(newMan);
 
       wife.getMan().kiss();
       Assert.IsFalse(oldMan.wasKissed());
@@ -128,7 +128,7 @@ namespace Test.Defaults {
 
     [Test]
     public void testBigamy() {
-      DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
+      DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
       pico.RegisterComponentImplementation(typeof(Woman), typeof(Wife));
       Woman firstWife = (Woman) pico.GetComponentInstance(typeof(Woman));
       Woman secondWife = (Woman) pico.GetComponentInstance(typeof(Woman));
@@ -139,7 +139,7 @@ namespace Test.Defaults {
 
     [Test]
     public void testComponentsRegisteredWithClassKeyOnlyImplementThatInterface() {
-      DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
+      DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
       pico.RegisterComponentImplementation(typeof(Woman), typeof(Wife));
       Woman wife = (Woman) pico.GetComponentInstance(typeof(Woman));
       Assert.IsFalse(wife is SuperWoman);
@@ -149,7 +149,7 @@ namespace Test.Defaults {
     public void testIHCAFwithCTORandNoCaching() {
       // http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
       IMutablePicoContainer pico = new DefaultPicoContainer();
-      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("l", typeof(ArrayList))));
+      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", typeof(ArrayList))));
 
       IList list1 = (IList) pico.GetComponentInstance("l");
       IList list2 = (IList) pico.GetComponentInstance("l");
@@ -164,11 +164,11 @@ namespace Test.Defaults {
 
     public void testSwappingViaSwappableInterface() {
       IMutablePicoContainer pico = new DefaultPicoContainer();
-      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("l", typeof(ArrayList))));
+      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", typeof(ArrayList))));
       IList l = (IList) pico.GetComponentInstance("l");
       l.Add("Hello");
       ArrayList newList = new ArrayList();
-      ArrayList oldSubject = (ArrayList) ((ISwappable) l).PicoHotSwap(newList);
+      ArrayList oldSubject = (ArrayList) ((ISwappable) l).HotSwap(newList);
       Assert.AreEqual("Hello", oldSubject[0]);
       Assert.IsTrue(l.Count == 0);
       l.Add("World");
@@ -189,7 +189,7 @@ namespace Test.Defaults {
 
     public void testInterferingSwapMethodsInComponentMasksHotSwappingFunctionality() {
       IMutablePicoContainer pico = new DefaultPicoContainer();
-      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("os", typeof(OtherSwappableImpl))));
+      pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("os", typeof(OtherSwappableImpl))));
       OtherSwappable os = (OtherSwappable) pico.GetComponentInstance("os");
       OtherSwappable os2 = new OtherSwappableImpl();
 

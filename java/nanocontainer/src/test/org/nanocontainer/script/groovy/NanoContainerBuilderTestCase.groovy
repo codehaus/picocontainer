@@ -45,8 +45,6 @@ class NanoContainerBuilderTestCase extends GroovyTestCase {
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
 
-
-
     void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() {
 
         // A and C have no no dependencies. B Depends on A.

@@ -8,23 +8,20 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
 import picocontainer.PicoRegistrationException;
 
-public class AssignabilityRegistrationException extends PicoRegistrationException
-{
-    private final Class type;
-    private final Class clazz;
+public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
 
-    public AssignabilityRegistrationException(Class type, Class clazz)
-    {
-        this.type = type;
-        this.clazz = clazz;
+    int numOfCtors;
+
+    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
+        this.numOfCtors = numOfCtors;
     }
 
-    public String getMessage()
-    {
-        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
+    public String getMessage() {
+        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
     }
+
 }

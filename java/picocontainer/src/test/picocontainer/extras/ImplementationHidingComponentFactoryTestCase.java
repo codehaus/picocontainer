@@ -8,17 +8,15 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.extras;
 
 import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import picocontainer.hierarchical.ImplementationHidingComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.extras.ImplementationHidingComponentFactory;
 
 public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 

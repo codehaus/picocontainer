@@ -8,27 +8,26 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
-import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInitializationException;
 
-/**
- *
- * @author Aslak Hellesoy
- * @version $Revision: 1.6 $
- */
-public class NotConcreteRegistrationException extends PicoRegistrationException {
-    private final Class componentImplementation;
+public class UnsatisfiedDependencyStartupException extends PicoInitializationException
+{
+    private Class classThatNeedsDeps;
 
-    public NotConcreteRegistrationException(Class componentImplementation) {
-        this.componentImplementation = componentImplementation;
+    public UnsatisfiedDependencyStartupException(Class classThatNeedsDeps)
+    {
+        this.classThatNeedsDeps = classThatNeedsDeps;
     }
 
-    public String getMessage() {
-        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
+    public String getMessage()
+    {
+        return "Class " + classThatNeedsDeps.getName() + " needs unnamed dependencies";
     }
 
-    public Class getComponentImplementation() {
-        return componentImplementation;
+    public Class getClassThatNeedsDeps()
+    {
+        return classThatNeedsDeps;
     }
 }

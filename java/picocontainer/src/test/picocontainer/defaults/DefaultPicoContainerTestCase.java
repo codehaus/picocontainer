@@ -13,7 +13,9 @@ package picocontainer.defaults;
 import junit.framework.TestCase;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoInitializationException;
-import picocontainer.hierarchical.WrongNumberOfConstructorsRegistrationException;
+import picocontainer.testmodel.FredImpl;
+import picocontainer.testmodel.WilmaImpl;
+import picocontainer.defaults.WrongNumberOfConstructorsRegistrationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public static class NotReallyPeelableComponent {
+    public static class CoincidentallyPeelableComponent {
         boolean wasPeeled;
 
         public void peel() {
@@ -125,7 +127,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(PeelableComponent.class);
-        pico.registerComponent(NotReallyPeelableComponent.class);
+        pico.registerComponent(CoincidentallyPeelableComponent.class);
         pico.instantiateComponents();
 
         assertEquals(2, pico.getComponents().length);
@@ -136,8 +138,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         PeelableComponent peelableComponent =
                 (PeelableComponent) pico.getComponent(PeelableComponent.class);
-        NotReallyPeelableComponent notReallyPeelableComponent =
-                (NotReallyPeelableComponent) pico.getComponent(NotReallyPeelableComponent.class);
+        CoincidentallyPeelableComponent notReallyPeelableComponent =
+                (CoincidentallyPeelableComponent) pico.getComponent(CoincidentallyPeelableComponent.class);
 
         assertTrue(peelableComponent.wasPeeled);
         assertFalse(notReallyPeelableComponent.wasPeeled);
@@ -148,7 +150,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(PeelableComponent.class);
-        pico.registerComponent(NotReallyPeelableComponent.class);
+        pico.registerComponent(CoincidentallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
         pico.instantiateComponents();
@@ -159,8 +161,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         PeelableComponent peelableComponent =
                 (PeelableComponent) pico.getComponent(PeelableComponent.class);
-        NotReallyPeelableComponent notReallyPeelableComponent =
-                (NotReallyPeelableComponent) pico.getComponent(NotReallyPeelableComponent.class);
+        CoincidentallyPeelableComponent notReallyPeelableComponent =
+                (CoincidentallyPeelableComponent) pico.getComponent(CoincidentallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponent(PeelableAndWashableComponent.class);
         ;
@@ -186,7 +188,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(PeelableComponent.class, peelableComponent);
 
         //some managed ones
-        pico.registerComponent(NotReallyPeelableComponent.class);
+        pico.registerComponent(CoincidentallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
         pico.instantiateComponents();
@@ -195,8 +197,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
-        NotReallyPeelableComponent notReallyPeelableComponent =
-                (NotReallyPeelableComponent) pico.getComponent(NotReallyPeelableComponent.class);
+        CoincidentallyPeelableComponent notReallyPeelableComponent =
+                (CoincidentallyPeelableComponent) pico.getComponent(CoincidentallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponent(PeelableAndWashableComponent.class);
 
@@ -301,34 +303,18 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-//    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
-//
-//    }
+    public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException
+    {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
-//
-//        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
-//                new MorphingHierarchicalPicoContainer(
-//                        new NullContainer(),
-//                        new NullLifecycleManager(),
-//                        new DefaultComponentFactory())
-//                .as(PeelableAndWashableContainer.class);
-//
-//        pawContainer.registerComponent(PeelableComponent.class);
-//        pawContainer.registerComponent(PeelableAndWashableComponent.class);
-//
-//        pawContainer.instantiateComponents();
-//
-//        pawContainer.wash();
-//        pawContainer.peel();
-//
-//        PeelableComponent pComp = (PeelableComponent) pawContainer.getComponent(PeelableComponent.class);
-//        PeelableAndWashableComponent peelNWash = (PeelableAndWashableComponent) pawContainer.getComponent(PeelableAndWashableComponent.class);
-//
-//        assertTrue(pComp.wasPeeled);
-//        assertTrue(peelNWash.wasWashed);
-//
-//    }
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
 
+        pico.instantiateComponents();
+
+        WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);
+
+        assertTrue("hello should have been called in wilma", wilma.helloCalled());
+    }
 
 }

@@ -7,27 +7,27 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+package picocontainer.defaults;
 
-package picocontainer.hierarchical;
+import picocontainer.PicoInitializationException;
 
-import picocontainer.PicoRegistrationException;
+public class AmbiguousComponentResolutionException extends PicoInitializationException {
+    private final Class[] ambiguousClasses;
 
-public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException
-{
-    private Class clazz;
-
-    public DuplicateComponentTypeRegistrationException(Class clazz)
-    {
-        this.clazz = clazz;
+    public AmbiguousComponentResolutionException(Class[] ambiguousClass) {
+        this.ambiguousClasses = ambiguousClass;
     }
 
-    public Class getDuplicateClass()
-    {
-        return clazz;
+    public String getMessage() {
+        String msg = "Ambiguous Classes:";
+        for (int i = 0; i < ambiguousClasses.length; i++) {
+            Class ambiguousClass = ambiguousClasses[i];
+            msg = msg + " " + ambiguousClass.getName();
+        }
+        return msg;
     }
 
-    public String getMessage()
-    {
-        return "Class " + clazz.getName() + " duplicated";
+    public Class[] getAmbiguousClasses() {
+        return ambiguousClasses;
     }
 }

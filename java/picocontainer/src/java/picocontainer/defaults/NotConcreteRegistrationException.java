@@ -8,20 +8,27 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
 import picocontainer.PicoRegistrationException;
 
-public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
+/**
+ *
+ * @author Aslak Hellesoy
+ * @version $Revision: 1.6 $
+ */
+public class NotConcreteRegistrationException extends PicoRegistrationException {
+    private final Class componentImplementation;
 
-    int numOfCtors;
-
-    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
-        this.numOfCtors = numOfCtors;
+    public NotConcreteRegistrationException(Class componentImplementation) {
+        this.componentImplementation = componentImplementation;
     }
 
     public String getMessage() {
-        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
+        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
     }
 
+    public Class getComponentImplementation() {
+        return componentImplementation;
+    }
 }

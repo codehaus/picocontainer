@@ -10,12 +10,6 @@
 
 package picocontainer.defaults;
 
-import picocontainer.hierarchical.DuplicateComponentTypeRegistrationException;
-import picocontainer.hierarchical.AssignabilityRegistrationException;
-import picocontainer.hierarchical.NotConcreteRegistrationException;
-import picocontainer.hierarchical.WrongNumberOfConstructorsRegistrationException;
-import picocontainer.hierarchical.AmbiguousComponentResolutionException;
-import picocontainer.hierarchical.UnsatisfiedDependencyStartupException;
 import picocontainer.PicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoRegistrationException;

@@ -49,7 +49,8 @@ namespace PicoContainer.Defaults
      *                   dependency.
      */
 
-		public CollectionComponentParameter(Type componentValueType, bool emptyCollection) : this(typeof (object), componentValueType, emptyCollection)
+		public CollectionComponentParameter(Type componentValueType, bool emptyCollection) 
+			: this(typeof (object), componentValueType, emptyCollection)
 		{
 		}
 
@@ -156,9 +157,9 @@ namespace PicoContainer.Defaults
 				{
 					if (!emptyCollection)
 					{
-						throw new PicoIntrospectionException(expectedType.Name
+						throw new PicoIntrospectionException(expectedType.FullName
 							+ " not resolvable, no components of type "
-							+ GetValueType(expectedType).Name
+							+ GetValueType(expectedType).FullName
 							+ " available");
 					}
 				}
@@ -184,7 +185,7 @@ namespace PicoContainer.Defaults
      * @return <code>true</code> if the adapter takes part
      */
 
-		protected bool Evaluate(IComponentAdapter adapter)
+		protected virtual bool Evaluate(IComponentAdapter adapter)
 		{
 			return adapter != null; // use parameter, prevent compiler warning
 		}
@@ -262,18 +263,19 @@ namespace PicoContainer.Defaults
 			Type valueType = componentValueType;
 			if (collectionType.IsArray)
 			{
-				valueType = collectionType.GetType();
+				valueType = collectionType.GetElementType();
 			}
 			return valueType;
 		}
 
 		private object[] GetArrayInstance(IPicoContainer container, Type expectedType, IDictionary adapterList)
 		{
-			object[] result = (Object[]) Array.CreateInstance(expectedType, adapterList.Count);
+			object[] result = (object[])Array.CreateInstance(expectedType.GetElementType(), adapterList.Count);
 			int i = 0;
 
-			foreach (IComponentAdapter componentAdapter in adapterList)
+			foreach (DictionaryEntry entry in adapterList)
 			{
+				IComponentAdapter componentAdapter = (IComponentAdapter)entry.Value;
 				result[i] = container.GetComponentInstance(componentAdapter.ComponentKey);
 				i++;
 			}
@@ -308,8 +310,9 @@ namespace PicoContainer.Defaults
 			{
 				IList result = (IList) Activator.CreateInstance(collectionType);
 
-				foreach (IComponentAdapter componentAdapter in adapterList)
+				foreach (DictionaryEntry entry in adapterList)
 				{
+					IComponentAdapter componentAdapter = (IComponentAdapter)entry.Value;
 					result.Add(container.GetComponentInstance(componentAdapter.ComponentKey));
 				}
 

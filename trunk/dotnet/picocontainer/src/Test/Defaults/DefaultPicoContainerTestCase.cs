@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NUnit.Framework;
 using PicoContainer;
@@ -53,6 +54,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
+		[ExpectedException(typeof (UnsatisfiableDependenciesException))]
 		public void UpDownDependenciesCannotBeFollowed()
 		{
 			IMutablePicoContainer parent = CreatePicoContainer();
@@ -64,14 +66,8 @@ namespace Test.Defaults
 			child.RegisterComponentImplementation(typeof (ComponentB));
 			child.RegisterComponentImplementation(typeof (ComponentC));
 
-			try
-			{
-				child.GetComponentInstance(typeof (ComponentF));
-				Assert.Fail();
-			}
-			catch (UnsatisfiableDependenciesException)
-			{
-			}
+			// This should fail
+			child.GetComponentInstance(typeof (ComponentF));
 		}
 
 		[Test]

@@ -180,11 +180,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\ImplementationHidingComponentAdapterFactoryTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Defaults\ImplementationHidingComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

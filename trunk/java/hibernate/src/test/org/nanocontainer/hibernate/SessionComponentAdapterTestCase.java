@@ -11,6 +11,7 @@ package org.nanocontainer.hibernate;
 
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.Transaction;
 import net.sf.hibernate.cfg.Configuration;
 import net.sf.hibernate.tool.hbm2ddl.SchemaExport;
 
@@ -75,7 +76,7 @@ public class SessionComponentAdapterTestCase extends TestCase {
 	}
 	
 	/**
-	 * test that we can find our session factory by key
+	 * test that we can find our session factory by key and by class
 	 */ 
 	public void testDependencyByKey() throws Exception {
 		DefaultPicoContainer container = new DefaultPicoContainer();
@@ -88,8 +89,9 @@ public class SessionComponentAdapterTestCase extends TestCase {
 		Session session = (Session) container.getComponentInstance("session");
 		assertNotNull(session);
 		
+		
 		session = (Session)container.getComponentInstanceOfType(Session.class);
-				
+		assertNotNull(session);
 	}
 
 }

@@ -24,8 +24,13 @@ import java.util.Set;
 import java.util.Arrays;
 
 /**
- * Instantiates components using Constructor-Based Dependency Injection.
  * {@inheritDoc}
+ * Instantiates components using Constructor-Based Dependency Injection.
+ * <p>
+ * <em>
+ * Note that this class doesn't cache instances. If you want caching,
+ * use a {@link CachingComponentAdapter} around this one.
+ * </em>
  *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant

@@ -21,12 +21,12 @@ import junit.framework.TestCase;
 /**
  * @author Mike Ward
  */
-public class MarDeployerTestCase extends TestCase {
-    private MarDeployer deployer;
+public class McaDeployerTestCase extends TestCase {
+    private McaDeployer deployer;
 	private File unitTestDir;
 
 	protected void setUp() throws Exception {
-		deployer = new MarDeployer();
+		deployer = new McaDeployer();
 		unitTestDir = new File("work/unittest");
 	}
 
@@ -53,8 +53,8 @@ public class MarDeployerTestCase extends TestCase {
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
-		MarDeployer marDeployer = new MarDeployer();
-		marDeployer.handleRemoteMAR(unitTestDir, connection);
+		McaDeployer marDeployer = new McaDeployer();
+		marDeployer.handleRemoteMCA(unitTestDir, connection);
 
 		validateMarDeployedToWorkingDir();
 

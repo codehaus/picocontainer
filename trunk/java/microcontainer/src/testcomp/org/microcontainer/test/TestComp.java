@@ -8,5 +8,5 @@ public interface TestComp {
     String testMe();
     ClassLoader unHideImplClassLoader();
     boolean isRunning();
-    void testKernelImplIsInvisibleFromMarsSandbox();
+    void testKernelImplIsInvisibleFromMcaSandbox();
 }

@@ -36,9 +36,9 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         return instantiateComponent(adapterDependencies, picoContainer);
     }
 
-    private Parameter[] getParameters(PicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private Parameter[] getParameters(PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (parameters == null) {
-            return createDefaultParameters(getDependencies(componentRegistry));
+            return createDefaultParameters(getDependencies(picoContainer));
         } else {
             return parameters;
         }

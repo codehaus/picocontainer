@@ -196,6 +196,14 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.getNamedContainers();
     }
 
+    public boolean equals(Object obj) {
+        if (obj == delegate) {
+            return true;
+        }
+        return super.equals(obj);
+    }
+
+
     // TODO: Paul this is a vanilla class now ... remove it and use DPC directly ?
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
@@ -204,6 +212,13 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
         public Map getNamedContainers() {
             return super.getNamedContainers();
+        }
+
+        public boolean equals(Object obj) {
+            if (obj == ImplementationHidingPicoContainer.this) {
+                return true;
+            }
+            return super.equals(obj); 
         }
     }
 

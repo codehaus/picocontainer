@@ -225,12 +225,26 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         return reflectionAdapter.getComponentClassLoader();
     }
 
+    public boolean equals(Object obj) {
+        if (obj.equals(delegate)) {
+            return true;
+        }
+        return super.equals(obj);
+    }
+
     private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
         }
         public Map getNamedContainers() {
             return super.getNamedContainers();
+        }
+
+        public boolean equals(Object obj) {
+            if (obj.equals(ImplementationHidingSoftCompositionPicoContainer.this)) {
+                return true;
+            }
+            return super.equals(obj);
         }
     }
 }

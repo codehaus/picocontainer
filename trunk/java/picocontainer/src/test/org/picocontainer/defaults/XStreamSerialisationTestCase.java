@@ -13,10 +13,10 @@ import junit.framework.TestCase;
  * @version $Revision$
  */
 public class XStreamSerialisationTestCase extends TestCase {
+    private XStream xStream = new XStream(new DomDriver());
 
     public void testShouldBeAbleToSerialiseEmptyPico() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 
@@ -27,8 +27,6 @@ public class XStreamSerialisationTestCase extends TestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(SimpleTouchable.class);
         pico.registerComponentImplementation(DependsOnTouchable.class);
-
-        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 
@@ -40,8 +38,6 @@ public class XStreamSerialisationTestCase extends TestCase {
         pico.registerComponentImplementation(SimpleTouchable.class);
         pico.registerComponentImplementation(DependsOnTouchable.class);
         pico.getComponentInstances();
-
-        XStream xStream = new XStream(new DomDriver());
         String picoXml = xStream.toXML(pico);
         PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 

@@ -11,23 +11,23 @@ package org.nanocontainer.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerComposer;
+import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.BeanPropertyComponentAdapter;
+import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
-import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -53,9 +53,6 @@ import java.util.Map;
 public class PicoContainerTask extends Task {
     private final List antSpecifiedComponents = new ArrayList();
 
-    private final BeanPropertyComponentAdapterFactory propertyFactory =
-            new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
-
     // for subclasses
     protected ContainerComposer extraContainerComposer = null;
 
@@ -69,15 +66,9 @@ public class PicoContainerTask extends Task {
             ReflectionContainerAdapter containerAdapter = new DefaultReflectionContainerAdapter(getClass().getClassLoader(), picoContainer);
             for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
                 Component component = (Component) iterator.next();
-
-                // set the properties on the adapter factory
-                // they will be set upon instantiation
-                Object key = component.getKey();
-                Map properties = component.getProperties();
-                propertyFactory.setProperties(key, properties);
-
                 try {
-                    containerAdapter.registerComponentImplementation(component.getKey(), component.getClassname());
+                    BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) containerAdapter.registerComponentImplementation(component.getKey(), component.getClassname());
+                    adapter.setProperties(component.getProperties());
                 } catch (Exception e) {
                     throw new BuildException(e);
                 }
@@ -93,6 +84,9 @@ public class PicoContainerTask extends Task {
 
     public void execute() {
 		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
+            BeanPropertyComponentAdapterFactory propertyFactory =
+                    new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
+
 			protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
 				return new DefaultPicoContainer(propertyFactory);
 			}

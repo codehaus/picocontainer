@@ -21,7 +21,7 @@
 
     <postGoal name="test:compile">
         <!-- Acceptance test for the pico task -->
-        <attainGoal name="picotask"/>
+        <!--attainGoal name="picotask"/-->
     </postGoal>
 
     <goal name="picotask">

@@ -10,8 +10,6 @@
 
 package picocontainer;
 
-import java.lang.reflect.InvocationHandler;
-
 public interface PicoContainer extends LifecycleContainer {
 
     /**
@@ -25,7 +23,7 @@ public interface PicoContainer extends LifecycleContainer {
             throws PicoRegistrationException;
 
     /**
-     * Alternate way of registering components with additional 
+     * Alternate way of registering components with additional
      * component type.
      *
      * @param componentType Component type
@@ -36,7 +34,7 @@ public interface PicoContainer extends LifecycleContainer {
             throws PicoRegistrationException;
 
     /**
-     * Regiters a component that is instantiated and configured outside
+     * Registers a component that is instantiated and configured outside
      * the container. Useful in cases where pico doesn't have sufficient
      * knowledge to instantiate a component.
      *

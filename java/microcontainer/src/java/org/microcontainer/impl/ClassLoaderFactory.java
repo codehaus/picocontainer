@@ -19,20 +19,18 @@ import java.net.MalformedURLException;
  * @author Mike Ward
  */
 public class ClassLoaderFactory {
-	public static final String PROMOTED_PATH = "/MAR-INF/promoted/";
-	public static final String COMPONENT_PATH = "/MAR-INF/components/";
-	public static final String LIB_PATH = "/MAR-INF/lib/";
-	public static final String HIDDEN_PATH = "/MAR-INF/hidden/";
-	protected MarDeployer marDeployer = null; // todo fix this should be configurable
+	public static final String PROMOTED_PATH = "/MCA-INF/promoted/";
+	public static final String COMPONENT_PATH = "/MCA-INF/components/";
+	public static final String LIB_PATH = "/MCA-INF/lib/";
+	protected McaDeployer mcaDeployer = null; // todo fix this should be configurable
 
 	public ClassLoaderFactory() {
-		marDeployer = new MarDeployer();
+		mcaDeployer = new McaDeployer();
 	}
 
 	public ClassLoader build(String contextName) {
 		ClassLoader promotedClassLoader = new URLClassLoader(getURLs(contextName, PROMOTED_PATH), this.getClass().getClassLoader());
-		ClassLoader apiClassLoader = new URLClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
-		return new URLClassLoader(getURLs(contextName, HIDDEN_PATH), apiClassLoader);
+		return new URLClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
 	}
 
 	protected URL[] getStandardApiURLs(String context) {
@@ -55,7 +53,7 @@ public class ClassLoaderFactory {
 	}
 
 	protected URL[] getURLs(String context, String path) {
-		File dir = new File(marDeployer.getWorkingDir(), context + path);
+		File dir = new File(mcaDeployer.getWorkingDir(), context + path);
 		File[] files = dir.listFiles();
 
 		if(files == null) {

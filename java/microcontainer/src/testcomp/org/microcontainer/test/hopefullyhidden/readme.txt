@@ -1,1 +1,1 @@
-these classes go to a jar of their own in MAR-INF/hidden/
+these classes go to a jar of their own in MCA-INF/hidden/

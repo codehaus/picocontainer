@@ -1,21 +1,21 @@
 <project  xmlns:j="jelly:core" xmlns:u="jelly:util" >
 
 	<preGoal name="test:test" >
-        <echo>Building test.mar file for use with unit tests </echo>
-		<attainGoal name="build-test.mar"/>
+        <echo>Building test.mca file for use with unit tests </echo>
+		<attainGoal name="build-test.mca"/>
     </preGoal>
 	
-	<goal name="build-test.mar" >
+	<goal name="build-test.mca" >
 		<attainGoal name="compile-testcomp"/>
         <attainGoal name="test-promoted.jar"/>
         <attainGoal name="test-components.jar"/>
         <attainGoal name="test-hidden.jar"/>
-		<delete file="test.mar"/>
-		<zip destfile="test.mar">
+		<delete file="test.mca"/>
+		<zip destfile="test.mca">
 			<fileset dir="src/testcomp/" includes="*.groovy"/>
-			<zipfileset dir="target/classes/" includes="promoted.jar" prefix="MAR-INF/promoted"/>
-			<zipfileset dir="target/classes/" includes="components.jar" prefix="MAR-INF/components"/>
-			<zipfileset dir="target/classes/" includes="hidden.jar" prefix="MAR-INF/hidden"/>
+			<zipfileset dir="target/classes/" includes="promoted.jar" prefix="MCA-INF/promoted"/>
+			<zipfileset dir="target/classes/" includes="components.jar" prefix="MCA-INF/components"/>
+			<zipfileset dir="target/classes/" includes="hidden.jar" prefix="MCA-INF/hidden"/>
 		</zip>
 	</goal>
 

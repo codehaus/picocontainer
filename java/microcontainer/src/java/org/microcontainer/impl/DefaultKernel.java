@@ -28,62 +28,62 @@ import java.util.HashMap;
  */
 public class DefaultKernel implements Kernel, Startable, Disposable {
 
-	protected ClassLoaderFactory classLoaderFactory = null;
 	protected HashMap contextMap = null;
-	protected MarDeployer marDeployer = null;
+	protected ClassLoaderFactory classLoaderFactory = null;
+	protected McaDeployer mcaDeployer = null;
 	protected GroovyDeploymentScriptHandler groovyDeploymentScriptHandler = null;
 
 	public DefaultKernel() {
-		classLoaderFactory = new ClassLoaderFactory();
 		contextMap = new HashMap();
-		marDeployer = new MarDeployer();
+		classLoaderFactory = new ClassLoaderFactory();
+		mcaDeployer = new McaDeployer();
 		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler();
 	}
 
-	protected void doDeploy(String context, URL marFile, boolean start) throws DeploymentException {
+	protected void doDeploy(String context, URL mcaFile, boolean start) throws DeploymentException {
 		try {
 			// deploy to work folder
-			marDeployer.deploy(context, marFile);
+			mcaDeployer.deploy(context, mcaFile);
 
-			PicoContainer container = groovyDeploymentScriptHandler.handle(context, marFile);
+			PicoContainer container = groovyDeploymentScriptHandler.handle(context);
 			contextMap.put(context, container);
 
 			// start container now, or defer until later
-			if(start) {
+			/*if(start) {
 				container.start();
-			}
+			}*/
 		} catch (IOException e) {
 			throw new DeploymentException(e);
 		}
 	}
 
-	public void deploy(String context, URL marFile) throws DeploymentException {
-		doDeploy(context, marFile, true);
+	public void deploy(String context, URL mcaFile) throws DeploymentException {
+		doDeploy(context, mcaFile, true);
 	}
 
-	private void handleDeployForMarFile(File marFile, boolean start) throws DeploymentException {
+	private void handleDeployForMcaFile(File mcaFile, boolean start) throws DeploymentException {
 		try {
-			String context = marFile.getName().split(".mar")[0];
-			URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
+			String context = mcaFile.getName().split(".mca")[0];
+			URL url = new URL("jar:file:" + mcaFile.getCanonicalPath() + "!/");
 			this.doDeploy(context, url, start);
 		} catch (IOException e) {
 			throw new DeploymentException(e);
 		}
 	}
 
-	public void deploy(File marFile) throws DeploymentException {
-		handleDeployForMarFile(marFile, true);
+	public void deploy(File mcaFile) throws DeploymentException {
+		handleDeployForMcaFile(mcaFile, true);
 	}
 
-	public void deploy(URL remoteMarFile) throws DeploymentException {
-		String[] file = remoteMarFile.getFile().split("/|\\\\");
-		String context = file[file.length - 1].split("\\.mar")[0];
+	public void deploy(URL remoteMcaFile) throws DeploymentException {
+		String[] file = remoteMcaFile.getFile().split("/|\\\\");
+		String context = file[file.length - 1].split("\\.mca")[0];
 
-		doDeploy(context, remoteMarFile, true);
+		doDeploy(context, remoteMcaFile, true);
 	}
 
-	public void deferredDeploy(File marFile) throws DeploymentException {
-		handleDeployForMarFile(marFile, false);
+	public void deferredDeploy(File mcaFile) throws DeploymentException {
+		handleDeployForMcaFile(mcaFile, false);
 	}
 
 	public Object getComponent(String relativeComponentPath) {

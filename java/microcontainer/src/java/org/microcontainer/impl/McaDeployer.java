@@ -21,13 +21,13 @@ import java.io.*;
 
 /**
  * @author Mike Ward
- * Responsible for deploying a MAR to the file system.
+ * Responsible for deploying a MCA to the file system.
  */
-public class MarDeployer {
+public class McaDeployer {
 	protected File workingDir = null;
 	protected File tempDir = null;
 
-	public MarDeployer() {
+	public McaDeployer() {
 		// todo this should be configurable! Pico-tize?
 		workingDir = new File("work");
 		workingDir.mkdir();
@@ -39,35 +39,35 @@ public class MarDeployer {
 		return workingDir;
 	}
 
-	public void deploy(String context, URL marURL) throws IOException {
-		URLConnection connection = marURL.openConnection();
+	public void deploy(String context, URL mcaURL) throws IOException {
+		URLConnection connection = mcaURL.openConnection();
 		File sandboxDir = new File(workingDir, context);
 		sandboxDir.mkdir();
 
 		if(connection instanceof JarURLConnection) {
-			handleLocalMAR(sandboxDir, (JarURLConnection)connection);
+			handleLocalMCA(sandboxDir, (JarURLConnection)connection);
 		}
 		else if(connection instanceof HttpURLConnection) {
-			handleRemoteMAR(sandboxDir, (HttpURLConnection)connection);
+			handleRemoteMCA(sandboxDir, (HttpURLConnection)connection);
 		}
 		else {
 			throw new IOException("Unsupported URLConnection type [" + connection.getClass() + "]");
 		}
 	}
 
-	protected void handleRemoteMAR(File sandboxDir, HttpURLConnection connection) throws IOException {
-		// copy the remote MAR file to the temp dir
-		String marFileName = sandboxDir.getName() + ".mar";
-		expand(connection.getInputStream(), tempDir, marFileName);
+	protected void handleRemoteMCA(File sandboxDir, HttpURLConnection connection) throws IOException {
+		// copy the remote MCA file to the temp dir
+		String mcaFileName = sandboxDir.getName() + ".mca";
+		expand(connection.getInputStream(), tempDir, mcaFileName);
 		connection.disconnect();
-		URL jarURL = new URL("jar:file:" + tempDir.getCanonicalPath() + "\\" + marFileName + "!/");
+		URL jarURL = new URL("jar:file:" + tempDir.getCanonicalPath() + "\\" + mcaFileName + "!/");
 
 		// handle as local
-		handleLocalMAR(sandboxDir, (JarURLConnection)jarURL.openConnection());
+		handleLocalMCA(sandboxDir, (JarURLConnection)jarURL.openConnection());
 	}
 
-	protected void handleLocalMAR(File dir, JarURLConnection connection) throws IOException {
-		// Expand the MAR into working directory
+	protected void handleLocalMCA(File dir, JarURLConnection connection) throws IOException {
+		// Expand the MCA into working directory
 		connection.setUseCaches(false);
 		JarFile jarFile = null;
 		InputStream input = null;
@@ -126,6 +126,9 @@ public class MarDeployer {
         dir.delete();
 	}
 
+	/**
+	 * expand the content of the MCA or JAR passed in
+	 */
 	protected void expand(InputStream input, File docBase, String name) throws IOException {
 		File file = new File(docBase, name);
 		BufferedOutputStream bos = null;

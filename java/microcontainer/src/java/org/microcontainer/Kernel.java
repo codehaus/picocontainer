@@ -18,11 +18,11 @@ import java.net.URL;
  */
 
 public interface Kernel {
-    void deploy(File marFile) throws DeploymentException;
+    void deploy(File mcaFile) throws DeploymentException;
 
-    void deploy(URL remoteMarFile) throws DeploymentException; // aka lightweight java web start (context determined from marFile name)
+    void deploy(URL remoteMcaFile) throws DeploymentException; // aka lightweight java web start (context determined from mcaFile name)
 
-	void deploy(String context, URL marFile) throws DeploymentException; // handleDeployForMarFile the marFile to the named context
+	void deploy(String context, URL mcaFile) throws DeploymentException; // handleDeployForMcaFile the mcaFile to the named context
 
     void deferredDeploy(File file) throws DeploymentException ;
 

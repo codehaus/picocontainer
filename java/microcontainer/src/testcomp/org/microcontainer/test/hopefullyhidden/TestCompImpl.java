@@ -30,7 +30,7 @@ public class TestCompImpl implements TestComp, Startable {
         return isRunning;
     }
 
-    public void testKernelImplIsInvisibleFromMarsSandbox() {
+    public void testKernelImplIsInvisibleFromMcaSandbox() {
         //TODO
     }
 }

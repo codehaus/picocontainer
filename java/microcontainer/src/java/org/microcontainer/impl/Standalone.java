@@ -1,7 +1,5 @@
 package org.microcontainer.impl;
 
-import java.io.IOException;
-
 /**
  * @author Paul Hammant
  * @version $Revision$
@@ -12,7 +10,7 @@ public class Standalone {
 
         final DefaultKernel kernel = new DefaultKernel();
 
-       // add a shutdown hook that will tell the builder to kill it.
+		// add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
                 System.out.println("Shutting Down MicroContainer");

@@ -11,13 +11,14 @@
 package org.nanocontainer.nanowar.struts;
 
 /**
- * Request, session, and servlet context attribute keys used to store the various Pico containers.
+ * Request, session, and servlet context attribute keys used to store the
+ * various Pico containers.
  */
 public interface KeyConstants extends org.nanocontainer.nanowar.KeyConstants {
-
+    
     /**
      * The action container request attribute key.
      */
-    String ACTION_CONTAINER = "org.nanocontainer.struts.actions";
+    String ACTIONS_CONTAINER = "org.nanocontainer.struts.actions";
 
 }

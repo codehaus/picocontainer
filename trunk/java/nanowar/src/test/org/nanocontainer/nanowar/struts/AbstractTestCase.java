@@ -47,7 +47,7 @@ public abstract class AbstractTestCase extends MockObjectTestCase {
         container = new DefaultPicoContainer();
         container.registerComponentInstance(MyDao.class, dao);
 
-        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTION_CONTAINER)).will(returnValue(container));
+        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
     }
 
 }

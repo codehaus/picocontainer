@@ -1,9 +1,7 @@
 package org.nanocontainer.script;
 
-import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
-import org.nanocontainer.script.NanoContainerMarkupException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.util.Map;
 

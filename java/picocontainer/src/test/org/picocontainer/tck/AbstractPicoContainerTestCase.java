@@ -21,6 +21,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
@@ -533,6 +534,15 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-stopped") != -1);
         parent.dispose();
         assertTrue(sb.toString().indexOf("-disposed") != -1);
+    }
+
+    public void testEqualsAlwaysBarfsForDifferentContainers() {
+        MutablePicoContainer mpc = createPicoContainer(null);
+        try {
+            assertFalse(mpc.equals(new DefaultPicoContainer()));
+        } catch (junit.framework.AssertionFailedError e) {
+            assertFalse(mpc.equals(new ImmutablePicoContainer(new DefaultPicoContainer())));
+        }
     }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {

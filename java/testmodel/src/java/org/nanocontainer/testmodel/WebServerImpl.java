@@ -17,9 +17,11 @@ public class WebServerImpl implements WebServer, Startable {
 
     public WebServerImpl(WebServerConfig wsc) {
         this(wsc, new StringBuffer("d"));
+        System.out.println("SMALL");
     }
 
     public WebServerImpl(WebServerConfig wsc, StringBuffer sb) {
+        System.out.println("BIG");
         Assert.assertTrue("No port number specified", wsc.getPort() > 0);
         Assert.assertNotNull("No host name specified", wsc.getHost());
         sb.append("-WebServerImpl:" + wsc.getHost() + ":" + wsc.getPort());

@@ -48,7 +48,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
     }
 
-    public void testAPicocontainerCanHostItself() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testAPicocontainerCanHostAChild() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -58,7 +58,8 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </container>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        XMLContainerBuilder builder = new XMLContainerBuilder(script, getClass().getClassLoader());
+        PicoContainer pico = buildContainer(builder, null);
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
 
         StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);

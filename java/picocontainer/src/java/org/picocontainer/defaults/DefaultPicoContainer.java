@@ -345,12 +345,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (started) throw new IllegalStateException("Already started");
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            ((Startable) iterator.next()).start();
+            Startable startable = ((Startable) iterator.next());
+            System.out.println("startable = " + startable);
+            startable.start();
         }
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
             MutablePicoContainer mpc = (MutablePicoContainer) it.next();
             mpc.getComponentInstances();
+            System.out.println("mpc = " + mpc);
             mpc.start();
         }
         started = true;

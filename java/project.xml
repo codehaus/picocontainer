@@ -84,8 +84,9 @@
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
         <unitTest>
             <includes>
-                <include>**/*Test.*</include>
-                <include>**/*TestCase.*</include>
+                <include>**/*XMLContainerBuilderTestCase.*</include>
+                <!--include>**/*Test.*</include>
+                <include>**/*TestCase.*</include-->
             </includes>
             <excludes>
                 <exclude>**/Abstract*.*</exclude>

@@ -135,14 +135,6 @@
         </dependency>
 
         <dependency>
-            <id>servletapis</id>
-            <version>2.4-jetty</version>
-            <properties>
-                <war.bundle>false</war.bundle>
-            </properties>
-        </dependency>
-
-        <dependency>
             <groupId>tomcat</groupId>
             <artifactId>jasper-compiler</artifactId>
             <version>5.0.18</version>

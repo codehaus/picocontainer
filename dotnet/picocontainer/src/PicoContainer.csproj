@@ -279,16 +279,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\SynchronizedComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\SynchronizedComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Defaults\TooManySatisfiableConstructorsException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

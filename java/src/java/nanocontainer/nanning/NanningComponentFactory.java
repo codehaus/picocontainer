@@ -40,7 +40,7 @@ class NanningComponentFactory implements ComponentFactory {
         if (component.getClass().getInterfaces().length == 1) {
             Class intf = component.getClass().getInterfaces()[0];
             // the trick: set up first mixin manually with the component as target
-            AspectInstance aspectInstance = new AspectInstance();
+            AspectInstance aspectInstance = new AspectInstance(intf);
             Mixin mixin = new Mixin(intf, component);
             aspectInstance.addMixin(mixin);
 

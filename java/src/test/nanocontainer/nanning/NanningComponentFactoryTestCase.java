@@ -14,8 +14,10 @@ import junit.framework.TestCase;
 import org.codehaus.nanning.Aspects;
 import org.codehaus.nanning.Invocation;
 import org.codehaus.nanning.MethodInterceptor;
+import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.config.AspectSystem;
 import org.codehaus.nanning.config.InterceptorAspect;
+import org.codehaus.nanning.config.Aspect;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.RegistrationPicoContainer;
@@ -51,6 +53,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem(), new DefaultComponentFactory());
         Object component = componentFactory.createComponent(new ComponentSpecification(componentFactory, Wilma.class, WilmaImpl.class), null);
         assertTrue(Aspects.isAspectObject(component));
+        assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
     }
 
     public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException {

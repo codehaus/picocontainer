@@ -10,17 +10,16 @@ package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 import org.picoextras.integrationkit.ContainerComposer;
+import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.picoextras.script.jython.JythonContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
+import javax.servlet.http.*;
+import java.io.StringReader;
+import java.util.Enumeration;
 
 /**
  * Servlet listener class that hooks into the underlying servlet
@@ -31,6 +30,7 @@ import javax.servlet.http.HttpSessionBindingListener;
  * To use, add this as a listener-class to web.xml.
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Aslak Helles&oslash;y
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
     private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
@@ -38,14 +38,38 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void contextInitialized(ServletContextEvent event) {
 
         ServletContext context = event.getServletContext();
-        ContainerComposer assembler = loadAssembler(context);
+        try {
+            ContainerBuilder containerBuilder = createBuilder(context);
 
-        ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
-        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
-        builderRef.set(containerBuilder);
+            ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
+            builderRef.set(containerBuilder);
 
-        ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-        containerBuilder.buildContainer(containerRef, null, context);
+            ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+            containerBuilder.buildContainer(containerRef, null, context);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ContainerBuilder createBuilder(ServletContext context) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Enumeration initParameters = context.getInitParameterNames();
+        while (initParameters.hasMoreElements()) {
+            String initParameter = (String) initParameters.nextElement();
+            if(initParameter.startsWith("application.picocontainer.py")) {
+                String script = context.getInitParameter(initParameter);
+                return new JythonContainerBuilder(new StringReader(script), Thread.currentThread().getContextClassLoader());
+            }
+            if(initParameter.equals(ContainerComposer.class.getName())) {
+                String containerComposerClassName = context.getInitParameter(initParameter);
+                ContainerComposer containerComposer = (ContainerComposer) Thread.currentThread().getContextClassLoader().loadClass(containerComposerClassName).newInstance();
+                return new DefaultLifecycleContainerBuilder(containerComposer);
+            }
+        }
+        throw new RuntimeException("Couldn't create a builder from context parameters in web.xml");
     }
 
     public void contextDestroyed(ServletContextEvent event) {
@@ -57,11 +81,9 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession();
         ServletContext context = session.getServletContext();
-        ContainerComposer assembler = getAssembler(context);
+        ContainerBuilder containerBuilder = getBuilder(context);
         ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
         ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-
-        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
         containerBuilder.buildContainer(containerRef, parentContainerRef, session);
 
         session.setAttribute("picoextras session container killer helper", new HttpSessionBindingListener() {
@@ -80,26 +102,31 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void sessionDestroyed(HttpSessionEvent event) {
     }
 
-    private ContainerComposer loadAssembler(ServletContext context) {
-        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-        //TODO Is this right? It still feel like a mouthful.
-        String className = context.getInitParameter("picoextras-servlet-container-composer");
-        ContainerComposer result = null;
-        try {
-            result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();
-        } catch (Exception e) {
-            // Don't use exception chaining to be JDK 1.3 compatible
-            //TODO Use a PicoException derived exception (Paul)?
-            throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
-        }
-        assemblerRef.set(result);
-        return result;
+    private ContainerBuilder getBuilder(ServletContext context) {
+        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, BUILDER);
+        return (ContainerBuilder) assemblerRef.get();
     }
 
-    private ContainerComposer getAssembler(ServletContext context) {
-        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-        return (ContainerComposer) assemblerRef.get();
-    }
+//    private ContainerComposer loadAssembler(ServletContext context) {
+//        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, BUILDER);
+//        //TODO Is this right? It still feel like a mouthful.
+//        String className = context.getInitParameter("picoextras-servlet-container-composer");
+//        ContainerComposer result = null;
+//        try {
+//            result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();
+//        } catch (Exception e) {
+//            // Don't use exception chaining to be JDK 1.3 compatible
+//            //TODO Use a PicoException derived exception (Paul)?
+//            throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
+//        }
+//        assemblerRef.set(result);
+//        return result;
+//    }
+//
+//    private ContainerComposer getAssembler(ServletContext context) {
+//        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
+//        return (ContainerComposer) assemblerRef.get();
+//    }
 
     private void killContainer(ObjectReference containerRef) {
         if (containerRef.get() != null) {

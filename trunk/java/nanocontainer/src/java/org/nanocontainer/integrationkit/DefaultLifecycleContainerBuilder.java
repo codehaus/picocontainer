@@ -9,13 +9,13 @@ package org.picoextras.integrationkit;
 import org.picocontainer.MutablePicoContainer;
 
 public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder {
-    private final ContainerComposer assembler;
+    private final ContainerComposer composer;
 
-    public DefaultLifecycleContainerBuilder(ContainerComposer assembler) {
-        this.assembler = assembler;
+    public DefaultLifecycleContainerBuilder(ContainerComposer composer) {
+        this.composer = composer;
     }
 
     protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
-        assembler.composeContainer(container, assemblyScope);
+        composer.composeContainer(container, assemblyScope);
     }
 }

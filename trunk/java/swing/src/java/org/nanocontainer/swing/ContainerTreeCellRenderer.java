@@ -2,6 +2,7 @@ package org.picoextras.swing;
 
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.Color;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,6 +16,7 @@ import javax.swing.tree.TreeModel;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
  * Custom cell-renderer that makes tree nice.
@@ -23,9 +25,12 @@ import org.picocontainer.ComponentAdapter;
  * @version $Revision$
  */
 public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
-    // todo Move to PicoContainerBeanInfo?
-	private final Icon picoContainerIcon = IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON);
-	private final Icon defaultComponentIcon = IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON);
+	private final Icon picoContainerIcon = IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false);
+	private final Icon componentIcon;
+
+    public ContainerTreeCellRenderer(Icon componentIcon) {
+        this.componentIcon = componentIcon;
+    }
 
 	public Component getTreeCellRendererComponent(
 		JTree tree,
@@ -45,10 +50,16 @@ public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
             TreeModel model = tree.getModel();
             if(model.isLeaf(value)) {
                 label.setText(componentAdapter.getComponentImplementation().getName());
+                try {
+                    componentAdapter.verify();
+                    label.setForeground(Color.black);
+                } catch (UnsatisfiableDependenciesException e) {
+                    label.setForeground(Color.red);
+                }
             } else {
                 label.setText(componentAdapter.getClass().getName());
             }
-			this.setIcon(defaultComponentIcon);
+			this.setIcon(componentIcon);
 		} else if(value instanceof Class) {
             Class clazz = (Class) value;
             label.setText(clazz.getName());
@@ -60,7 +71,7 @@ public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
 				if (image != null) {
 					icon = new ImageIcon(image);
 				} else {
-					icon = defaultComponentIcon;
+					icon = componentIcon;
 				}
 				this.setIcon(icon);
 			} catch (IntrospectionException ie) {

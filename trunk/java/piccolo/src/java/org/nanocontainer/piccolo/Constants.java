@@ -10,6 +10,4 @@ public interface Constants {
 	public static final Color PICO_FILL = Color.WHITE;
 	public static final String USER_OBJECT = "UserObject";
 	public static final String TOOL_TIP = "ToolTip";
-	public static final ImageIcon picoContainerIcon = new ImageIcon(Constants.class.getResource("/picocontainer.gif"));
-	public static final ImageIcon defaultComponentIcon = new ImageIcon(Constants.class.getResource("/defaultcomponent.gif"));
 }

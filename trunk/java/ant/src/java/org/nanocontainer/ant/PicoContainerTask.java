@@ -3,6 +3,7 @@ package org.picoextras.ant;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
@@ -83,7 +84,7 @@ public class PicoContainerTask extends Task {
 
     public void execute() {
 		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
-			protected MutablePicoContainer createContainer() {
+			protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
 				return new DefaultPicoContainer(propertyFactory);
 			}
 		};

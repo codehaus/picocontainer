@@ -10,20 +10,19 @@
 
 package org.picoextras.jmx;
 
-import org.picoextras.testmodel.WilmaImpl;
-import org.picoextras.testmodel.Wilma;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.testmodel.Wilma;
+import org.picoextras.testmodel.WilmaImpl;
 
-import javax.management.MBeanServerFactory;
-import javax.management.MBeanServer;
 import javax.management.InstanceNotFoundException;
+import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
-
-import junit.framework.TestCase;
+import javax.management.MBeanServerFactory;
 
 public class MX4JComponentAdapterTestCase extends TestCase {
     private MutablePicoContainer pico;
@@ -46,19 +45,18 @@ public class MX4JComponentAdapterTestCase extends TestCase {
     }
 
     public void testClassAndKeyRegistration() throws Exception {
-        pico.registerComponentImplementation("nano:name=one", WilmaImpl.class);
-        pico.registerComponentImplementation("nano:name=two", WilmaImpl.class);
-        pico.getComponentInstance("nano:name=one");
-        pico.getComponentInstance("nano:name=two");
+        pico.registerComponentImplementation("pico:name=one", WilmaImpl.class);
+        pico.registerComponentImplementation("pico:name=two", WilmaImpl.class);
+        pico.getComponentInstances();
 
-        assertExistsInJMX("nano:name=one");
-        assertExistsInJMX("nano:name=two");
+        assertExistsInJMX("pico:name=one");
+        assertExistsInJMX("pico:name=two");
     }
 
     public void testClassOnlyRegistration() throws Exception {
         pico.registerComponentImplementation(WilmaImpl.class);
-        pico.getComponentInstance(WilmaImpl.class);
-        assertExistsInJMX("nanomx:type=" + WilmaImpl.class.getName());
+        pico.getComponentInstances();
+        assertExistsInJMX("picomx:type=" + WilmaImpl.class.getName());
     }
 
     public void testObjectAndNullKeyRegistration() throws Exception {
@@ -71,8 +69,8 @@ public class MX4JComponentAdapterTestCase extends TestCase {
     }
 
     public void testKeyRegistration() throws Exception {
-        String nameOne = "nano:name=one";
-        ObjectName nameTwo = new ObjectName("nano:name=two;type=full");
+        String nameOne = "pico:name=one";
+        ObjectName nameTwo = new ObjectName("pico:name=two;type=full");
 
         pico.registerComponentImplementation(nameOne, WilmaImpl.class);
         pico.registerComponentImplementation(nameTwo, WilmaImpl.class);

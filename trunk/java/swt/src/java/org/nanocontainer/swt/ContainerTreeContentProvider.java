@@ -2,7 +2,7 @@ package org.picoextras.swt;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picoextras.guimodel.ContainerModel;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.Collection;
  * @version $Revision$
  */
 public class ContainerTreeContentProvider extends ContainerModel implements ITreeContentProvider {
-	public ContainerTreeContentProvider(PicoContainer pico) {
+	public ContainerTreeContentProvider(MutablePicoContainer pico) {
         super(pico);
 	}
 

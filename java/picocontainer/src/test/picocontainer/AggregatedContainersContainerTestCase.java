@@ -46,4 +46,13 @@ public class AggregatedContainersContainerTestCase extends TestCase {
         assertTrue(acc.getComponents().length == 2);
 
     }
+
+    public void testEmpty() {
+
+        AggregatedContainersContainer acc = new AggregatedContainersContainer(new Container[0]);
+        assertTrue(acc.hasComponent(String.class) == false);
+        assertTrue(acc.getComponent(String.class) == null);
+        assertTrue(acc.getComponents().length == 0);
+
+    }
 }

@@ -23,12 +23,6 @@ public class AssignabilityRegistrationException extends PicoRegistrationExceptio
 
     public String getMessage()
     {
-        String msg = "The type:";
-        Class[] classes = type.getDeclaredClasses();
-        for (int i = 0; i < classes.length; i++) {
-            Class aClass = classes[i];
-            msg = msg + " " + aClass.getName();
-        }
-        return msg +  "  was not assignable from the class " + clazz.getName();
+        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
     }
 }

@@ -16,8 +16,8 @@ using PicoContainer;
 namespace PicoContainer.Defaults {
 
   public abstract class AbstractComponentAdapter : IComponentAdapter {
-    private object componentKey;
-    private Type componentImplementation;
+    private readonly object componentKey;
+    private readonly Type componentImplementation;
     private IPicoContainer container;
 
     protected AbstractComponentAdapter(object componentKey, Type componentImplementation) {
@@ -63,6 +63,7 @@ namespace PicoContainer.Defaults {
     public override string ToString() {
       return this.GetType().Name+"["+ComponentKey+"]";
     }
+    
     public IPicoContainer Container {
       get {
         return container;
@@ -76,6 +77,7 @@ namespace PicoContainer.Defaults {
     public abstract object ComponentInstance{
       get;
     }
+
     public abstract void Verify();
   }
 }

@@ -1,6 +1,11 @@
 package picocontainer;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 
 public class ImplementationHidingComponentDecorator extends DefaultComponentFactory {
     public Object createComponent(Class compType, Constructor constructor, Object[] args)

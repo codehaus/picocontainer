@@ -53,28 +53,31 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
         this(classLoader, parent, NullComponentMonitor.getInstance());
-
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(new DefaultPicoContainer(new DefaultComponentAdapterFactory(componentMonitor), parent), classLoader);
-
+        this.lifecycleManager = new DefaultLifecycleManager(componentMonitor);
     }
 
     public DefaultNanoPicoContainer(ComponentAdapterFactory caf) {
         super(new DefaultPicoContainer(caf, null), DefaultNanoPicoContainer.class.getClassLoader());
+        this.lifecycleManager = new DefaultLifecycleManager();
     }
 
     public DefaultNanoPicoContainer(PicoContainer pc) {
         super(new DefaultPicoContainer(pc), DefaultNanoPicoContainer.class.getClassLoader());
+        this.lifecycleManager = new DefaultLifecycleManager();
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader) {
         super(new DefaultPicoContainer(), classLoader);
+        this.lifecycleManager = new DefaultLifecycleManager();
     }
 
     public DefaultNanoPicoContainer() {
         super(new DefaultPicoContainer(), DefaultNanoPicoContainer.class.getClassLoader());
+        this.lifecycleManager = new DefaultLifecycleManager();
     }
 
     public MutablePicoContainer makeChildContainer(String name) {

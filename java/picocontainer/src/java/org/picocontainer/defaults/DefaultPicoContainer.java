@@ -18,6 +18,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import java.io.Serializable;
@@ -385,6 +387,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
         lifecycleManager.start(this);
+        for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            if (child instanceof Startable) {
+                child.start();
+            }
+        }
         started = true;
     }
 
@@ -399,6 +407,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
+        for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            if (child instanceof Startable) {
+                child.stop();
+            }
+        }
         lifecycleManager.stop(this);
         started = false;
     }
@@ -413,6 +427,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
+        for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+            PicoContainer child = (PicoContainer) iterator.next();
+            if (child instanceof Disposable) {
+                child.dispose();
+            }
+        }
         lifecycleManager.dispose(this);
         disposed = true;
     }

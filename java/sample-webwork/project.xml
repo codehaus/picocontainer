@@ -51,7 +51,7 @@
         -->
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-7</version>
+            <version>1.0-beta-8</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -59,7 +59,7 @@
 
         <dependency>
             <id>asm</id>
-            <version>1.4.3</version>
+            <version>1.5.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm-util</artifactId>
-            <version>1.4.3</version>
+            <version>1.5.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

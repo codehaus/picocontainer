@@ -13,11 +13,11 @@ package org.picocontainer.defaults;
 import org.picocontainer.Disposable;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * This class implements the default lifecycle based on
@@ -36,70 +36,67 @@ import java.lang.reflect.Method;
  */
 public class DefaultLifecycleManager implements LifecycleManager, Serializable {
 
-    private static final Method START;
-    private static final Method STOP;
-    private static final Method DISPOSE;
-    private PicoVisitor startVisitor;
-    private PicoVisitor stopVisitor;
-    private PicoVisitor disposeVisitor;
+    private ComponentMonitor componentMonitor;
+
+    protected static Method startMethod = null;
+    protected static Method stopMethod = null;
+    protected static Method disposeMethod = null;
+
+    private static Object[] emptyArray = new Object[0];
 
     static {
         try {
-            START = Startable.class.getMethod("start", null);
-            STOP = Startable.class.getMethod("stop", null);
-            DISPOSE = Disposable.class.getMethod("dispose", null);
+            startMethod = Startable.class.getMethod("start", new Class[0]);
+            stopMethod = Startable.class.getMethod("stop", new Class[0]);
+            disposeMethod = Disposable.class.getMethod("dispose", new Class[0]);
         } catch (NoSuchMethodException e) {
-            ///CLOVER:OFF
-            throw new InternalError(e.getMessage());
-            ///CLOVER:ON
         }
     }
 
-    /**
-     * Creates a lifecycle manager which will invoke lifecycle methods on components implementing:
-     * <ul>
-     * <li>{@link org.picocontainer.Startable#start()}</li>
-     * <li>{@link org.picocontainer.Startable#stop()}</li>
-     * <li>{@link org.picocontainer.Disposable#dispose()}</li>
-     * </ul>
-     *
-     * @param componentMonitor the monitor that will receive lifecycle events.
-     */
     public DefaultLifecycleManager(ComponentMonitor componentMonitor) {
-        this(new LifecycleVisitor(START, Startable.class, true, componentMonitor),
-                new LifecycleVisitor(STOP, Startable.class, false, componentMonitor),
-                new LifecycleVisitor(DISPOSE, Disposable.class, false, componentMonitor));
+        this.componentMonitor = componentMonitor;
     }
 
-    /**
-     * Creates a lifecycle manager using pluggable lifecycle.
-     *
-     * @param startVisitor the visitor to use on start()
-     * @param stopVisitor the visitor to use on stop()
-     * @param disposeVisitor the visitor to use on dispose()
-     */
-    public DefaultLifecycleManager(PicoVisitor startVisitor, PicoVisitor stopVisitor, PicoVisitor disposeVisitor) {
-        this.startVisitor = startVisitor;
-        this.stopVisitor = stopVisitor;
-        this.disposeVisitor = disposeVisitor;
-    }
-
-    /**
-     * Creates a lifecycle manager with default visitors using a {@link NullComponentMonitor}.
-     */
     public DefaultLifecycleManager() {
-        this(new NullComponentMonitor());
+        this.componentMonitor = NullComponentMonitor.getInstance();
     }
 
     public void start(PicoContainer node) {
-        startVisitor.traverse(node);
+        List startables = node.getComponentInstancesOfType(Startable.class);
+        for (int i = 0; i < startables.size(); i++) {
+            doMethod(startMethod ,startables.get(i));
+        }
     }
 
     public void stop(PicoContainer node) {
-        stopVisitor.traverse(node);
+        List startables = node.getComponentInstancesOfType(Startable.class);
+        for (int i = startables.size() -1 ; 0 <= i; i--) {
+            doMethod(stopMethod ,startables.get(i));
+        }
     }
 
     public void dispose(PicoContainer node) {
-        disposeVisitor.traverse(node);
+        List disposables = node.getComponentInstancesOfType(Disposable.class);
+        for (int i = disposables.size() -1 ; 0 <= i; i--) {
+            doMethod(disposeMethod, disposables.get(i));
+        }
     }
+
+    protected void doMethod(Method method, Object instance) {
+        componentMonitor.invoking(method, instance);
+        try {
+            long beginTime = System.currentTimeMillis();
+            method.invoke(instance, emptyArray);
+            componentMonitor.invoked(method, instance, System.currentTimeMillis() - beginTime);
+        } catch (Exception e) {
+            invocationFailed(method, instance, e);
+        }
+    }
+
+    protected void invocationFailed(Method method, Object instance, Exception e) {
+        componentMonitor.invocationFailed(method, instance, e);
+        throw new org.picocontainer.PicoInitializationException("Method '" + method.getName()
+                + "' failed on instance '" + instance+ "' for reason '" + e.getMessage() + "'", e);
+    }
+
 }

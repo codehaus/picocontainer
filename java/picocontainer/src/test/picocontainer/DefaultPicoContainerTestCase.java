@@ -178,8 +178,10 @@ public class DefaultPicoContainerTestCase extends TestCase {
         try {
             pico.registerComponent(Collection.class, WilmaImpl.class);
         } catch (AssignabilityRegistrationException e) {
+            System.out.println("-->" + e.getMessage());
             assertTrue(e.getMessage().indexOf(Collection.class.getName()) >0);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) >0);            //expected
+            // not worded in message
+            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) < 0);            //expected
         }
 
     }

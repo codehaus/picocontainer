@@ -51,7 +51,7 @@ else
   # See if the "testfailure" file is there. If it is, tests failed.
   if [ -e "target/testfailure" ] ; then
     # Mail Maven's output to the dev list.
-    cat target/cleanbuild.log | mutt -s "[BUILD] Test failure" picocontainer-dev@lists.codehaus.org
+    cat target/cleanbuild.log | mutt -s "[BUILD] Test failure - see http://www.picocontainer.org/junit-report.html" picocontainer-dev@lists.codehaus.org
 
     # We'll deploy the site even if the tests fail. Log currently not used.
     maven site:deploy > target/sitedeploy.log

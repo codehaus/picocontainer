@@ -32,7 +32,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private PropertyDescriptor[] propertyDescriptors;
     private Map propertyDescriptorMap = new HashMap();
 
-    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws BeanPropertyComponentAdapterFactory.PicoBeanInfoInitializationException {
+    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
         super(delegate);
 
         try {
@@ -44,7 +44,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             }
         } catch (IntrospectionException e) {
             ///CLOVER:OFF
-            throw new BeanPropertyComponentAdapterFactory.PicoBeanInfoInitializationException("Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
+            throw new PicoInitializationException("Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
             ///CLOVER:ON
         }
     }

@@ -1,7 +1,5 @@
 package org.picocontainer.gui.model;
 
-import org.picocontainer.ComponentAdapter;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**

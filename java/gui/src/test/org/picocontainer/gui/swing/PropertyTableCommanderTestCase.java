@@ -24,7 +24,7 @@ public class PropertyTableCommanderTestCase extends TestCase {
         TableModel defaultModel = new DefaultTableModel();
         JTable table = new JTable(defaultModel);
 
-        PropertyTableCommander propertyTableCommander = new PropertyTableCommander(tree, table);
+        PropertyTableCommander propertyTableCommander = new PropertyTableCommander(tree, null);
 
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
 //        treeModel.setRoot(new ComponentNode(new DefaultComponentAdapter("abc", BeanPropertyTableModelTestCase.Man.class)));

@@ -6,7 +6,6 @@ import java.beans.Introspector;
 import java.beans.IntrospectionException;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Collections;
 
 /**
  * A model for a bean that
@@ -56,6 +55,6 @@ public class BeanPropertyModel {
     }
 
     public Map getPropertyMap() {
-        return Collections.unmodifiableMap(propertyMap);
+        return propertyMap;
     }
 }

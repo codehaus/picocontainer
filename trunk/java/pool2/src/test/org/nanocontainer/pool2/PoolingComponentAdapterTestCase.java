@@ -95,8 +95,8 @@ public class PoolingComponentAdapterTestCase extends TestCase {
                 try {
                     synchronized (this) {
                         notifyAll();
+                        wait(200); // ensure, that main thread is blocked
                     }
-                    Thread.sleep(100); // ensure, that main thread is blocked
                     order.append("returner ");
                     componentAdapter2.returnComponentInstance(borrowed[0]);
                 } catch (Throwable t) {

@@ -82,7 +82,6 @@ public class CompositePicoContainer2 implements PicoContainer, Serializable {
             componentTypes.addAll(container.getComponentKeys());
         }
         return Collections.unmodifiableCollection(componentTypes);
-            //RMV (Class[]) componentTypes.toArray(new Class[containers.size()]);
     }
 
     public void instantiateComponents() {

@@ -13,10 +13,10 @@ package org.nanocontainer.nanning;
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Mixin;
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

@@ -14,7 +14,7 @@ import org.nanocontainer.reflection.StringToObjectConverter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.w3c.dom.Document;
@@ -80,7 +80,7 @@ public class DomRegistrationNanoContainer  implements InputSourceRegistrationNan
                 DomRegistrationNanoContainer.class.getClassLoader(),
                 componentRegistry);
         }
-    }        
+    }
 
     public void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException
     {

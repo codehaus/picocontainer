@@ -25,7 +25,7 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
         assertExistsInJMX(pico, "nano:name=one");
         assertExistsInJMX(pico, "nano:name=two");
@@ -38,7 +38,7 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 1, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 1, pico.getComponents().size());
 
         assertExistsInJMX(pico, "nanomx:type=" + WilmaImpl.class.getName());
     }

@@ -46,7 +46,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
     void addParameterToComponent(String compClassName, String paramClassName, String value) throws ClassNotFoundException, PicoIntrospectionException;
 
     /**
-     * Used for classloader juggling. The container will look in each classloader in
+     * Used for classloader juggling. The internals will look in each classloader in
      * turn to look for classes it wants to instnatiate.
      *
      * This is entirely option as the classloader that the
@@ -61,7 +61,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      * Thus, if you are going to this level of effort, you might want to separate
      * classes in jars to such an extent that the classes pertaining to type are
      * in a jar/clasloader of their own and already mounted in the  scope of
-     * this container. Mounted by the parent pico container perhaps (if
+     * this internals. Mounted by the parent pico internals perhaps (if
      * applicable)
      *
      * You may use this if you are doing separation of components

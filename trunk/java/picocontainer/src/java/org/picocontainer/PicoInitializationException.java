@@ -10,5 +10,5 @@
 
 package org.picocontainer;
 
-public abstract class PicoInitializationException extends Exception {
+public abstract class PicoInitializationException extends PicoException {
 }

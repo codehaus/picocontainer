@@ -30,7 +30,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
         assertEquals("Looking up one Wilma", one, pico.getComponent("nano:name=one"));
         assertEquals("Looking up two Wilma", two, pico.getComponent("nano:name=two"));
@@ -59,7 +59,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
         assertEquals("Looking up one Wilma", one, pico.getComponent(nameOne));
         assertEquals("Looking up two Wilma", two, pico.getComponent(nameTwo));
@@ -87,7 +87,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
         MBeanServer server = pico.getMBeanServer();
 

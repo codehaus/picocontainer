@@ -13,6 +13,8 @@ package org.nanocontainer.nanning;
 import org.codehaus.nanning.config.Aspect;
 import org.codehaus.nanning.config.AspectSystem;
 import org.picocontainer.*;
+import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.internals.Parameter;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DefaultComponentFactory;

@@ -17,9 +17,9 @@ import org.nanocontainer.servlet.ContainerFactory;
 import org.nanocontainer.servlet.ObjectInstantiator;
 import org.xml.sax.InputSource;
 import org.picocontainer.*;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.extras.HierarchicalComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;
@@ -39,7 +39,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
             return container;
         } catch (Exception e) {
             // TODO: Better exception
-            throw new RuntimeException("Cannot build container for config: " + configName, e);
+            throw new RuntimeException("Cannot build internals for config: " + configName, e);
         }
     }
 
@@ -54,7 +54,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
             return childContainer;
         } catch (Exception e) {
             // TODO: Better exception
-            throw new RuntimeException("Cannot build container for config: " + configName, e);
+            throw new RuntimeException("Cannot build internals for config: " + configName, e);
         }
     }
 
@@ -88,7 +88,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                     childContainer.instantiateComponents();
                 } catch (PicoInitializationException e) {
                     // TODO: throw a custom exception
-                    throw new RuntimeException("Could not initialize container", e);
+                    throw new RuntimeException("Could not initialize internals", e);
                 }
                 return childContainer.getComponent(cls);
             }

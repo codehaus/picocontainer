@@ -11,7 +11,7 @@
 package org.nanocontainer.servlet;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 
 public interface ContainerFactory {
     PicoContainer buildContainer(String configName, ComponentRegistry componentRegistry);
@@ -22,4 +22,3 @@ public interface ContainerFactory {
 
     void destroyContainer(PicoContainer container);
 }
-

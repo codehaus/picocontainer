@@ -7,15 +7,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase {
 
@@ -31,7 +23,7 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
 
     public void testBasicInstantiationAndContainment() throws PicoInitializationException, PicoRegistrationException {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
         assertTrue("Container should have Touchable component",
                 picoContainer.hasComponent("touchable"));
         assertTrue("Container should have DependsOnTouchable component",
@@ -48,7 +40,7 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
     public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependency();
         addAHashMapByInstance(picoContainer);
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the internals", 3, picoContainer.getComponents().size());
         assertEquals("Key - 'map', Impl - HashMap should be in internals", HashMap.class, picoContainer.getComponent("map").getClass());
         //TODO - some way to test hashmap was passed in as an instance ?

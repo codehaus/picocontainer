@@ -57,8 +57,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         dpc.registerComponent(Map.class, hashMap);
         dpc2.registerComponent(Set.class, hashSet);
 
-        dpc.instantiateComponents();
-        dpc2.instantiateComponents();
+        dpc.getComponents();
+        dpc2.getComponents();
 
         Collection keys = hcr.getComponentKeys();
         assertTrue(keys.contains(DependsOnTouchable.class));
@@ -87,16 +87,16 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
     public void testRegisterComponentWithObject() throws PicoRegistrationException, PicoInitializationException {
         DefaultComponentRegistry parentReg = new DefaultComponentRegistry();
         DefaultPicoContainer parent = new DefaultPicoContainer.WithComponentRegistry(parentReg);
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
-        DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
-
-        parent.registerComponentByClass(DependsOnTouchable.class);
         parent.registerComponentByInstance(new SimpleTouchable());
 
-        parent.instantiateComponents();
+        DefaultComponentRegistry childReg = new DefaultComponentRegistry();
+        DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(childReg);
+        child.registerComponentByClass(DependsOnTouchable.class);
 
-        assertTrue("There should have been a Fred in the internals", child.hasComponent(DependsOnTouchable.class));
-        assertTrue("There should have been a Touchable in the internals", child.hasComponent(SimpleTouchable.class));
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry(parentReg, childReg);
+
+        assertNotNull("There should have been a DependsOnTouchable in the internals", hcr.getComponentInstance(DependsOnTouchable.class));
+        assertNotNull("There should have been a Touchable in the internals", hcr.getComponentInstance(SimpleTouchable.class));
     }
 
     public void testGetComponentTypes() throws PicoRegistrationException, PicoInitializationException {
@@ -112,8 +112,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         // You might have thought that starting the internals shouldn't be necessary
         // just to get the types, but it is. The map holding the types->component instances
         // doesn't receive anything until the components are instantiated.
-        parent.instantiateComponents();
-        child.instantiateComponents();
+        parent.getComponents();
+        child.getComponents();
 
         Collection types = child.getComponentKeys();
         assertEquals("There should be 2 types", 2, types.size());
@@ -121,9 +121,9 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         assertTrue("There should be a Touchable type", types.contains(Touchable.class));
         assertTrue("There should not be a SimpleTouchable type", !types.contains(SimpleTouchable.class));
 
-        assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class));
-        assertEquals("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class).getClass(), SimpleTouchable.class);
-        assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponentAdapter(Touchable.class));
+        assertNotNull("Should have a thing implementing Touchable", hcr.getComponentInstance(Touchable.class));
+        assertEquals("Should have a thing implementing Touchable", hcr.getComponentInstance(Touchable.class).getClass(), SimpleTouchable.class);
+        assertNotNull("Should have a thing implementing Touchable", hcr.getComponentInstance(Touchable.class));
 
     }
 
@@ -131,17 +131,17 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         DefaultComponentRegistry parentReg = new DefaultComponentRegistry();
         DefaultPicoContainer parent = new DefaultPicoContainer.WithComponentRegistry(parentReg);
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
-        DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
-
         parent.registerComponent(Touchable.class, SimpleTouchable.class);
-        parent.instantiateComponents();
-        child.registerComponentByClass(DependsOnTouchable.class);
-        child.instantiateComponents();
 
-        assertEquals("The parent should return 2 components (one from the parent)", 2, child.getComponents().size());
-        assertTrue("Touchable should have been passed through the parent internals", child.hasComponent(Touchable.class));
-        assertTrue("There should have been a DependsOnTouchable in the internals", child.hasComponent(DependsOnTouchable.class));
+        DefaultComponentRegistry childReg = new DefaultComponentRegistry();
+        DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(childReg);
+        child.registerComponentByClass(DependsOnTouchable.class);
+
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry(parentReg, childReg);
+
+        assertEquals("The parent should return 2 components (one from the parent)", 2, hcr.getComponentInstances().size());
+        assertNotNull("Touchable should have been passed through the parent internals", hcr.getComponentInstance(Touchable.class));
+        assertNotNull("There should have been a DependsOnTouchable in the internals", hcr.getComponentInstance(DependsOnTouchable.class));
 
     }
 

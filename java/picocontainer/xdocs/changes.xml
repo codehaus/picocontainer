@@ -6,35 +6,56 @@
     </properties>
 
     <body>
-        <release version="1.0-beta-1" date="2003-08-14">
+        <release version="1.0-beta-2" date="In CVS">
 
-            <action dev="tirsen" type="update">
-                - Added unregistration for components.
+            <action dev="rinkrank" type="update">
+                Fixed
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-39</a>
+                - Support multiple constructors.
             </action>
 
             <action dev="rinkrank" type="update">
-                - Moved loads of classes. Simplified package structure. In prep for release.
+                Fixed
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-6</a>
+                - Lazy instantiation of components. As a result, PicoContainer.instantiateComponents()
+                is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
+            </action>
+
+            <action dev="rinkrank" type="add">
+                Added an Ant task for PicoContainer (It currently lives in the NanoContainer codebase).
+            </action>
+
+        </release>
+
+        <release version="1.0-beta-1" date="2003-08-14">
+
+            <action dev="tirsen" type="update">
+                Added unregistration for components.
+            </action>
+
+            <action dev="rinkrank" type="update">
+                Moved loads of classes. Simplified package structure. In prep for release.
             </action>
 
             <action dev="paul" type="update">
-                - CompositePicoContainer changed to take ComponentRegistry and no longer
+                CompositePicoContainer changed to take ComponentRegistry and no longer
                 extend DefaultPicoContainer.
             </action>
 
             <action dev="paul" type="update">
-                - HierarchicalPicoContainer obsoleted for sake of HierarchicalComponentRegistry
+                HierarchicalPicoContainer obsoleted for sake of HierarchicalComponentRegistry
             </action>
 
             <action dev="paul" type="update">
-                - Moved findxxx methods from DefaultPicoContainer to ComponentRegistry
+                Moved findxxx methods from DefaultPicoContainer to ComponentRegistry
             </action>
 
             <action dev="paul" type="update">
-                - ComponentRegistry refactored out of DefaultPicoContainer
+                ComponentRegistry refactored out of DefaultPicoContainer
             </action>
 
             <action dev="paul" type="update">
-                - Changed nethod signatures from Object[] to java.util.Collection.
+                Changed nethod signatures from Object[] to java.util.Collection.
             </action>
 
             <action dev="rinkrank" type="update">
@@ -46,43 +67,43 @@
                 method names.
             </action>
 
-            <action dev="paul" type="fix">
+            <action dev="paul" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-20">PICO-20</a>
                 - Merge default lifecycle interfaces into one.
             </action>
 
-            <action dev="paul" type="fix">
+            <action dev="paul" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-21">PICO-21</a>
                 - Change package name from picocontainer to org.picocontainer.
             </action>
 
-            <action dev="paul" type="fix">
+            <action dev="paul" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-23">PICO-23</a>
                 - Nuke BeanStyleComponentFactory.
             </action>
 
-            <action dev="paul" type="fix">
+            <action dev="paul" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-28">PICO-28</a>
                 - Merge PicoInstantiationException and PicoIntrospectionException.
             </action>
 
-            <action dev="rinkrank" type="fix">
+            <action dev="rinkrank" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-29">PICO-29</a>
                 - Rename AggregatedContainersContainer to CompositePicoContainer.
             </action>
 
-            <action dev="paul" type="fix">
+            <action dev="paul" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-31">PICO-31</a>
                 - Make getAggregateComponentProxy() an interface method on PicoContainer.
             </action>
 
-            <action dev="tirsen" type="fix">
+            <action dev="tirsen" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-32">PICO-32</a>
                 - Support multiple implementations of same service.

@@ -59,19 +59,19 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
     }
 
     private void configureAndStart(String configName, InputSourceRegistrationNanoContainer container)
-            throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException, IOException {
+            throws PicoRegistrationException, ClassNotFoundException, IOException {
         InputStream in = getConfigInputStream(configName);
         try {
             container.registerComponents(new InputSource(in));
         } finally {
             in.close();
         }
-        container.instantiateComponents();
+//        container.instantiateComponents();
     }
 
     public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer, final ComponentRegistry parentRegistry) {
         return new ObjectInstantiator() {
-            public Object newInstance(Class cls) {
+            public Object newInstance(Class cls) throws PicoInitializationException {
                 HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentRegistry);
                 RegistrationPicoContainer childContainer = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
@@ -83,12 +83,6 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                 } catch (PicoIntrospectionException e) {
                     // TODO: throw a custom exception
                     throw new RuntimeException("Could not instantiate " + cls.getName(), e);
-                }
-                try {
-                    childContainer.instantiateComponents();
-                } catch (PicoInitializationException e) {
-                    // TODO: throw a custom exception
-                    throw new RuntimeException("Could not initialize internals", e);
                 }
                 return childContainer.getComponent(cls);
             }

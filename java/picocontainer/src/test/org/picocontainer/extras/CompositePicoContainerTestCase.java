@@ -19,6 +19,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
@@ -33,15 +34,17 @@ public class CompositePicoContainerTestCase extends TestCase {
     public void setUp() throws PicoRegistrationException, PicoInitializationException {
         pico = new DefaultPicoContainer.Default();
         pico.registerComponentByClass(SimpleTouchable.class);
-        pico.instantiateComponents();
+//        pico.instantiateComponents();
         composite = new CompositePicoContainer.WithContainerArray(new PicoContainer[]{pico});
     }
 
-    public void testGetComponents() {
-        assertEquals("Collections of Component Keys should be the same", new HashSet(pico.getComponents()), new HashSet(composite.getComponents()));
+    public void testGetComponents() throws PicoInitializationException {
+        HashSet picoComponents = new HashSet(pico.getComponents());
+        HashSet compositeComponents = new HashSet(composite.getComponents());
+        assertEquals("Collections of Component Keys should be the same", picoComponents, compositeComponents);
     }
 
-    public void testGetComponent() {
+    public void testGetComponent() throws PicoInitializationException {
         assertSame("Touchable should be the same", pico.getComponent(SimpleTouchable.class), composite.getComponent(SimpleTouchable.class));
     }
 
@@ -98,7 +101,7 @@ public class CompositePicoContainerTestCase extends TestCase {
     }
 
 
-    public void testBasic() {
+    public void testBasic() throws PicoInitializationException {
 
         final String acomp = "hello";
         final Integer bcomp = new Integer(123);
@@ -174,14 +177,14 @@ public class CompositePicoContainerTestCase extends TestCase {
 
         assertTrue(acc.hasComponent(String.class));
         assertTrue(acc.hasComponent(Integer.class));
-        assertTrue(acc.getComponent(String.class) == acomp);
-        assertTrue(acc.getComponent(Integer.class) == bcomp);
+        assertSame(acomp, acc.getComponent(String.class));
+        assertSame(bcomp, acc.getComponent(Integer.class));
         assertTrue(acc.getComponents().size() == 2);
         assertTrue(acc.getComponentKeys().size() == 2);
 
     }
 
-    public void testEmpty() {
+    public void testEmpty() throws PicoInitializationException {
 
         CompositePicoContainer acc = new CompositePicoContainer.WithContainerArray(new PicoContainer[0]);
         assertTrue(acc.hasComponent(String.class) == false);
@@ -189,9 +192,9 @@ public class CompositePicoContainerTestCase extends TestCase {
         assertTrue(acc.getComponents().size() == 0);
     }
 
-    public void testParentComponentRegistryDominance() {
+    public void testParentComponentRegistryDominance() throws PicoInitializationException {
         ComponentRegistry cr = new DefaultComponentRegistry();
-        cr.putComponent(Touchable.class, new SimpleTouchable());
+        cr.registerComponent(new InstanceComponentAdapter(Touchable.class, new SimpleTouchable()));
         CompositePicoContainer acc = new CompositePicoContainer(cr, new PicoContainer[0]);
         assertTrue(acc.hasComponent(Touchable.class));
         assertTrue(acc.getComponent(Touchable.class) instanceof SimpleTouchable);

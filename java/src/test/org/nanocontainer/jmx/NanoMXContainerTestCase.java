@@ -28,7 +28,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
         pico.registerComponent("nano:name=one", one);
         pico.registerComponent("nano:name=two", two);
 
-        pico.instantiateComponents();
+//        pico.instantiateComponents();
 
         assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
@@ -57,7 +57,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
         pico.registerComponent(nameOne, one);
         pico.registerComponent(nameTwo, two);
 
-        pico.instantiateComponents();
+//        pico.instantiateComponents();
 
         assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
@@ -85,7 +85,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
         pico.registerComponent(nameOne, one);
         pico.registerComponent(nameTwo, two);
 
-        pico.instantiateComponents();
+//        pico.instantiateComponents();
 
         assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
@@ -111,7 +111,7 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
         catch (Exception e) {
             // expected
 //            assertTrue("Wrong key", e.getKey() == "nano:name=one");
-//            assertTrue("Wrong component", e.getComponent() instanceof WilmaImpl);
+//            assertTrue("Wrong component", e.findComponentInstance() instanceof WilmaImpl);
 //            assertTrue(
 //                "Wrong message: " + e.getMessage(),
 //                e.getMessage().startsWith("Key: one duplicated, cannot register:"));
@@ -136,12 +136,12 @@ public class NanoMXContainerTestCase extends AbstractNanoMXTestCase {
 //
 //        pico.registerComponent("nano:name=foo", new WilmaImpl());
 //
-//        assertTrue("has component", pico.getComponent("nano:name=foo") != null);
+//        assertTrue("has component", pico.findComponentInstance("nano:name=foo") != null);
 //
 //        pico.removeComponent("nano:name=foo");
 //
 //        assertEquals("hasComponent(foo)", false, pico.hasComponent("nano:name=foo"));
-//        assertEquals("getComponent(foo)", null, pico.getComponent("nano:name=foo"));
+//        assertEquals("findComponentInstance(foo)", null, pico.findComponentInstance("nano:name=foo"));
 //    }
 
 }

@@ -19,10 +19,7 @@ import org.codehaus.nanning.config.InterceptorAspect;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultComponentAdapter;
+import org.picocontainer.defaults.*;
 
 /**
  * @author Jon Tirsen
@@ -51,7 +48,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException {
         NanningComponentAdapter componentFactory =
                 new NanningComponentAdapter(new AspectSystem(), new DefaultComponentAdapter(Wilma.class, WilmaImpl.class));
-        Object component = componentFactory.instantiateComponent(null);
+        Object component = componentFactory.instantiateComponent(new DefaultComponentRegistry());
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
     }
@@ -60,7 +57,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
         NanningComponentAdapter componentFactory = new NanningComponentAdapter(new AspectSystem(),
                 new DefaultComponentAdapter(FredImpl.class, FredImpl.class));
         DefaultComponentRegistry registry = new DefaultComponentRegistry();
-        registry.putComponent(Wilma.class, new WilmaImpl());
+        registry.registerComponent(new InstanceComponentAdapter(Wilma.class, new WilmaImpl()));
         Object component = componentFactory.instantiateComponent(registry);
         assertFalse(Aspects.isAspectObject(component));
     }
@@ -88,7 +85,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
         assertEquals("", log.toString());
 
-        nanningEnabledPicoContainer.instantiateComponents();
+        nanningEnabledPicoContainer.getComponents();
 
         // fred says hello to wilma, even the interceptor knows
         assertEquals("hello ", log.toString());

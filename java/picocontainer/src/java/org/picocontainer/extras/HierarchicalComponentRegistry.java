@@ -50,13 +50,32 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
     public void registerComponent(ComponentAdapter compSpec) {
         childRegistry.registerComponent(compSpec);
     }
-    
+
 	public void unregisterComponent(Object componentKey) {
 		childRegistry.unregisterComponent(componentKey);
 	}
 
     public List getComponentAdapters() {
-        return childRegistry.getComponentAdapters();
+        List result = new ArrayList(childRegistry.getComponentAdapters());
+        for (Iterator iterator = parentRegistry.getComponentAdapters().iterator(); iterator.hasNext();) {
+            ComponentAdapter parentAdapter = (ComponentAdapter) iterator.next();
+            if(!result.contains(parentAdapter)) {
+                result.add(parentAdapter);
+            }
+        }
+        return result;
+    }
+
+    public ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
+        // First look in child
+        ComponentAdapter result = childRegistry.findComponentAdapter(componentKey);
+
+        // Then look in parent if we had nothing
+        if (result == null) {
+            result = parentRegistry.findComponentAdapter(componentKey);
+        }
+        return result;
+
     }
 
     public List getOrderedComponents() {
@@ -69,28 +88,26 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         return Collections.unmodifiableList(types);
     }
 
-    public void addOrderedComponent(Object component) {
-        childRegistry.addOrderedComponent(component);
+    public void addOrderedComponentInstance(Object component) {
+        childRegistry.addOrderedComponentInstance(component);
     }
 
-    public void putComponent(Object componentKey, Object component) {
-        childRegistry.putComponent(componentKey, component);
-    }
-
-    public boolean contains(Object componentKey) {
-        return childRegistry.contains(componentKey);
-    }
-
-    public Object getComponentInstance(Object componentKey) {
-
-        // First look in child
-        Object result = childRegistry.getComponentInstance(componentKey);
-
-        // Then look in parent if we had nothing
-        if (result == null) {
-            result = parentRegistry.getComponentInstance(componentKey);
+    public Object getComponentInstance(Object componentKey) throws PicoInitializationException {
+        ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
+        if(componentAdapter != null) {
+            return componentAdapter.instantiateComponent(this);
+        } else {
+            return null;
         }
-        return result;
+    }
+
+    public Collection getComponentInstances() throws PicoInitializationException {
+        Collection componentKeys = getComponentKeys();
+        Collection result = new ArrayList(componentKeys.size());
+        for (Iterator iterator = componentKeys.iterator(); iterator.hasNext();) {
+            result.add(getComponentInstance(iterator.next()));
+        }
+        return Collections.unmodifiableCollection(result);
     }
 
     public Collection getComponentKeys() {
@@ -105,42 +122,27 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
 
     }
 
-    public Collection getComponentInstances() {
-        // Get child types
-        Set types = new HashSet(childRegistry.getComponentInstances());
-
-        // Get those from parent.
-        types.addAll(parentRegistry.getComponentInstances());
-
-        return Collections.unmodifiableCollection(types);
-    }
-
     public boolean hasComponentInstance(Object componentKey) {
         return childRegistry.hasComponentInstance(componentKey)
                 | parentRegistry.hasComponentInstance(componentKey);
     }
 
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
-        // First look in child
-        ComponentAdapter result = childRegistry.getComponentAdapter(componentKey);
-
-        // Then look in parent if we had nothing
-        if (result == null) {
-            result = parentRegistry.getComponentAdapter(componentKey);
-        }
-        return result;
-
-    }
-
-    public Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
+    public Object findComponentInstance(Class componentType) throws PicoInitializationException {
+        Object result = null;
 
         // First look in child
-        Object result = childRegistry.findImplementingComponent(componentType);
+        ComponentAdapter childAdapter = childRegistry.findComponentAdapter(componentType);
+        if( childAdapter != null ) {
+            result = childAdapter.instantiateComponent(this);
+            if( result == null ) {
+                ComponentAdapter parentAdapter = parentRegistry.findComponentAdapter(componentType);
+                if( parentAdapter != null ) {
+                    result = parentAdapter.instantiateComponent(this);
+                }
 
-        // Then look in parent if we had nothing
-        if (result == null) {
-            result = parentRegistry.findImplementingComponent(componentType);
+            }
         }
+
         return result;
 
     }
@@ -156,18 +158,4 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         }
         return result;
     }
-
-    public Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException {
-        if (!contains(componentAdapter.getComponentKey())) {
-            Object component = componentAdapter.instantiateComponent(this);
-            addOrderedComponent(component);
-
-            putComponent(componentAdapter.getComponentKey(), component);
-
-            return component;
-        } else {
-            return getComponentInstance(componentAdapter.getComponentKey());
-        }
-    }
-
 }

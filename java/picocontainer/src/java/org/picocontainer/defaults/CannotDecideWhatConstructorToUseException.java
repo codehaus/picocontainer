@@ -12,12 +12,16 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
 
+import java.util.Collection;
+
 public class CannotDecideWhatConstructorToUseException extends PicoIntrospectionException {
 
     private Class forClass;
+    private Collection constructors;
 
-    public CannotDecideWhatConstructorToUseException(Class forClass) {
+    public CannotDecideWhatConstructorToUseException(Class forClass, Collection constructors) {
         this.forClass = forClass;
+        this.constructors = constructors;
     }
 
     public Class getForImplementationClass() {
@@ -25,7 +29,7 @@ public class CannotDecideWhatConstructorToUseException extends PicoIntrospection
     }
 
     public String getMessage() {
-        return "No suitable constructor for " + forClass.getName();
+        return "Too many satisfiable constructors:" + constructors.toString();
     }
 
 }

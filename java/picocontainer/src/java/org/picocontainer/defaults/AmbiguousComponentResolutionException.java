@@ -9,17 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.util.Arrays;
 
-public class AmbiguousComponentResolutionException extends PicoInstantiationException {
+public class AmbiguousComponentResolutionException extends PicoIntrospectionException {
     private Class ambiguousClass;
-    private final Object[] foundKeys;
+    private final Object[] ambiguousComponentKeys;
 
-    public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] foundKeys) {
+    public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] componentKeys) {
         this.ambiguousClass = ambiguousClass;
-        this.foundKeys = foundKeys;
+        this.ambiguousComponentKeys = new Class[componentKeys.length];
+        for (int i = 0; i < componentKeys.length; i++) {
+            ambiguousComponentKeys[i] = componentKeys[i];
+        }
     }
 
     public String getMessage() {
@@ -28,11 +31,11 @@ public class AmbiguousComponentResolutionException extends PicoInstantiationExce
         msg.append(ambiguousClass);
         msg.append(", ");
         msg.append("resolves to multiple keys ");
-        msg.append(Arrays.asList(foundKeys));
+        msg.append(Arrays.asList(getAmbiguousComponentKeys()));
         return msg.toString();
     }
 
-    public Object[] getResultingKeys() {
-        return foundKeys;
+    public Object[] getAmbiguousComponentKeys() {
+        return ambiguousComponentKeys;
     }
 }

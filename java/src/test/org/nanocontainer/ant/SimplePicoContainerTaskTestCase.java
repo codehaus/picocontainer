@@ -1,11 +1,8 @@
 package org.nanocontainer.ant;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.internals.ConstantParameter;
-import org.picocontainer.internals.ComponentAdapter;
-
-import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -13,7 +10,7 @@ import java.util.Collection;
  */
 public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTestCase {
 
-    public void testPicoContainerTaskWithoutParameters() {
+    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoInitializationException {
         Component pongComp = new Component();
         pongComp.setClassname(Pong.class.getName());
         task.addConfiguredComponent(pongComp);
@@ -27,28 +24,24 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
 
         DefaultPicoContainer pico = task.getPicoContainer();
 
-        assertEquals("order of components not same as in build.xml (important for Nanning)",
-                Pong.class, componentAdapter(pico, 0).getComponentImplementation());
-        assertEquals("order of components not same as in build.xml (important for Nanning)",
-                Ping.class, componentAdapter(pico, 1).getComponentImplementation());
-
         Ping ping = (Ping) pico.getComponent(Ping.class);
         assertNotNull(ping);
         assertTrue(ping.wasExecuted);
     }
 
-    private ComponentAdapter componentAdapter(DefaultPicoContainer pico, int index) {
-        return ((ComponentAdapter) pico.getComponentRegistry().getComponentAdapters().get(index));
-    }
-
-    public void testPicoContainerTaskWithParameters() {
+    public void testPicoContainerTaskWithParameters() throws PicoInitializationException {
         Component pingComp = new Component();
         pingComp.setClassname(Ping.class.getName());
         task.addConfiguredComponent(pingComp);
 
         Component pungComp = new Component();
         pungComp.setClassname(Pung.class.getName());
-        pungComp.createComponent();
+
+        // one component param
+        Component.ComponentParam componentParam = pungComp.createComponent();
+        componentParam.setType(Ping.class);
+
+        // and one constant param
         Component.ConstantParam constantParam = pungComp.createConstant();
         constantParam.setValue("bajs");
 
@@ -69,5 +62,4 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
     protected PicoContainerTask createPicoContainerTask() {
         return new PicoContainerTask();
     }
-
 }

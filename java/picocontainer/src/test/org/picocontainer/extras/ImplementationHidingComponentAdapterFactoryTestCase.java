@@ -13,7 +13,9 @@ package org.picocontainer.extras;
 import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.internals.ComponentRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends TestCas
         ImplementationHidingComponentAdapterFactory cf =
                 new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
         ComponentAdapter componentAdapter = cf.createComponentAdapter(List.class, OneConstructorArrayList.class, null);
-        Object o = componentAdapter.instantiateComponent(null);
+        DefaultComponentRegistry componentRegistry = new DefaultComponentRegistry();
+        Object o = componentAdapter.instantiateComponent(componentRegistry);
         assertTrue(o instanceof List);
         assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");

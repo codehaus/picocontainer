@@ -36,14 +36,7 @@ public interface StringRegistrationNanoContainer extends PicoContainer {
      */
     void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    /**
-     * (Subject to change ... Joe? )
-     * @param compClassName
-     * @param paramClassName
-     * @param value
-     * @throws ClassNotFoundException
-     */
-    void addParameterToComponent(String compClassName, String paramClassName, String value) throws ClassNotFoundException, PicoIntrospectionException;
+    void registerComponent(String typeClassName, String compClassName, String[] parameterClassNames, String[] parameterValues) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     /**
      * Used for classloader juggling. The internals will look in each classloader in

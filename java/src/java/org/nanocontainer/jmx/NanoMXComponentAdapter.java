@@ -14,8 +14,7 @@ import org.picocontainer.extras.DecoratingComponentAdapter;
 import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.internals.ComponentRegistry;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
+import javax.management.*;
 
 /**
  * @author James Strachan
@@ -42,8 +41,13 @@ public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
             ObjectName name = NanoMXContainer.asObjectName(getComponentKey());
             Object mbean = NanoMXContainer.asMBean(component);
             mbeanServer.registerMBean(mbean, name);
-        }
-        catch (Exception e) {
+        } catch (MalformedObjectNameException e) {
+            throw new NanoMXInitializationException(e);
+        } catch (MBeanRegistrationException e) {
+            throw new NanoMXInitializationException(e);
+        } catch (NotCompliantMBeanException e) {
+            throw new NanoMXInitializationException(e);
+        } catch (InstanceAlreadyExistsException e) {
             throw new NanoMXInitializationException(e);
         }
         return component;

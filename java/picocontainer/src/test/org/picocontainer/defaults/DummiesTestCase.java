@@ -15,7 +15,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.DefaultComponentAdapter;
 import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.extras.NullContainer;
 

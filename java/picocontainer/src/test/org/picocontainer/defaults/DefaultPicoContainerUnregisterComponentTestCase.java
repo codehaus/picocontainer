@@ -18,35 +18,35 @@ import org.picocontainer.testmodel.Touchable;
 
 public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
 	private DefaultPicoContainer picoContainer;
-	
+
 	protected void setUp() throws Exception {
 		picoContainer = new DefaultPicoContainer.Default();
 	}
-	
+
 	public void testCannotInstantiateAnUnregisteredComponent() throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
 		picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
 		picoContainer.unregisterComponent(Touchable.class);
-		
-		picoContainer.instantiateComponents();
-		
+
+//		picoContainer.instantiateComponents();
+
 		assertTrue(picoContainer.getComponents().isEmpty());
 	}
-	
+
 	public void testCanInstantiateReplacedComponent() throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
 		picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
 		picoContainer.unregisterComponent(Touchable.class);
-				
+
 		picoContainer.registerComponent(Touchable.class, AlternativeTouchable.class);
-		
-		picoContainer.instantiateComponents();
-		
+
+//		picoContainer.instantiateComponents();
+
 		assertEquals("Container should container 1 component",
 			1, picoContainer.getComponents().size());
 	}
 
     public void testUnregisterAfterInstantiateComponents() throws NotConcreteRegistrationException, AssignabilityRegistrationException, PicoInitializationException, DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException {
         picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.instantiateComponents();
+//        picoContainer.instantiateComponents();
         picoContainer.unregisterComponent(Touchable.class);
         assertNull(picoContainer.getComponent(Touchable.class));
     }
@@ -54,16 +54,16 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
 	public void testReplacedInstantiatedComponentHasCorrectClass() throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
 		picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
 		picoContainer.unregisterComponent(Touchable.class);
-				
+
 		picoContainer.registerComponent(Touchable.class, AlternativeTouchable.class);
-		
-		picoContainer.instantiateComponents();
-		
+
+//		picoContainer.instantiateComponents();
+
 		Object component = picoContainer.getComponents().iterator().next();
-		
+
 		assertEquals(AlternativeTouchable.class, component.getClass());
 	}
-	
+
 //	public void testCanInstantiateOriginalComponentThenReplaceAndInstantiateReplacement() throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
 //		picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
 //		picoContainer.instantiateComponents();
@@ -72,7 +72,7 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
 //		picoContainer.registerComponent(Touchable.class, AlternativeTouchable.class);
 //
 //		picoContainer.instantiateComponents();
-//		
+//
 //		assertEquals("Container should contain 2 components: the original and the replacement", 2,
 //			picoContainer.getComponents().size());
 //	}

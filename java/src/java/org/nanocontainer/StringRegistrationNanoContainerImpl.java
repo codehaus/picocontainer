@@ -16,6 +16,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.internals.ComponentRegistry;
+import org.picocontainer.internals.Parameter;
+import org.picocontainer.internals.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
@@ -46,7 +48,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public static class Default extends StringRegistrationNanoContainerImpl {
         public Default() {
-            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(),new DefaultComponentRegistry());
+            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(), new DefaultComponentRegistry());
         }
     }
 
@@ -69,7 +71,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
     }
 
     public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        if(compClassName == null) {
+        if (compClassName == null) {
             throw new NullPointerException("compClassName can't be null");
         }
         picoContainer.registerComponentByClass(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
@@ -81,39 +83,40 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         picoContainer.registerComponent(typeClass, compClass);
     }
 
-    public void addParameterToComponent(String compClassName, String paramClassName, String valueAsString) throws ClassNotFoundException, PicoIntrospectionException {
+    public void registerComponent(
+            String typeClassName,
+            String compClassName,
+            String[] parameterTypesAsString,
+            String[] parameterValuesAsString
+            ) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+        Class typeClass = loadClass(typeClassName);
         Class compClass = loadClass(compClassName);
-        Class paramClass = loadClass(paramClassName);
-
-        Object value = converter.convertTo(paramClass, valueAsString);
-
-        picoContainer.addParameterToComponent(compClass, paramClass, value);
-
-    }
-
-    public void instantiateComponents() throws PicoInitializationException {
-        picoContainer.instantiateComponents();
+        Parameter[] parameters = new Parameter[parameterTypesAsString.length];
+        for (int i = 0; i < parameters.length; i++) {
+            Class paramTypeClass = loadClass(parameterTypesAsString[i]);
+            Object value = converter.convertTo(paramTypeClass, parameterValuesAsString[i]);
+            parameters[i] = new ConstantParameter(value);
+        }
+        picoContainer.registerComponent(typeClass, compClass, parameters);
     }
 
     public boolean hasComponent(Object clazz) {
         return picoContainer.hasComponent(clazz);
     }
 
-    public Object getComponent(Object clazz) {
+    public Object getComponent(Object clazz) throws PicoInitializationException {
         return picoContainer.getComponent(clazz);
     }
 
-    public Collection getComponents() {
+    public Collection getComponents() throws PicoInitializationException {
         return picoContainer.getComponents();
     }
 
-    public Object getComponentMulticaster()
-    {
+    public Object getComponentMulticaster() throws PicoInitializationException {
         return picoContainer.getComponentMulticaster();
     }
 
-    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
-    {
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException {
         return picoContainer.getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 

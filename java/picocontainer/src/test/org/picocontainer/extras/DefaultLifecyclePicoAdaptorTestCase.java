@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.extras.DefaultLifecyclePicoAdaptor;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Disposable;
@@ -22,9 +21,6 @@ import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
@@ -36,6 +32,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         List disposing = new ArrayList();
 
         public One() {
+            System.out.println("new One");
             instantiation("One");
         }
 
@@ -89,6 +86,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Two(One one) {
+            System.out.println("new Two");
             one.instantiation("Two");
             this.one = one;
         }
@@ -110,6 +108,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Three(One one, Two two) {
+            System.out.println("new Three");
             one.instantiation("Three");
             this.one = one;
         }
@@ -131,6 +130,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         One one;
 
         public Four(Two two, Three three, One one) {
+            System.out.println("new Four");
             one.instantiation("Four");
             this.one = one;
         }
@@ -158,7 +158,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(One.class);
         pico.registerComponentByClass(Three.class);
 
-        pico.instantiateComponents();
+        assertEquals(4, pico.getComponents().size());
 
         Startable startup = (Startable) pico.getComponentMulticaster(true, false);
         Stoppable shutdown = (Stoppable) pico.getComponentMulticaster(false, false);
@@ -190,7 +190,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(Three.class);
         pico.registerComponentByClass(Four.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
 
         One one = (One) pico.getComponent(One.class);
 
@@ -244,7 +244,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(DependsOnTouchable.class);
         pico.registerComponentByClass(SimpleTouchable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
 
         assertTrue(lifecycle.isStopped());
         lifecycle.start();
@@ -266,7 +266,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(DependsOnTouchable.class);
         pico.registerComponentByClass(SimpleTouchable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
         assertTrue(lifecycle.isStopped());
         lifecycle.start();
         assertTrue(lifecycle.isStarted());
@@ -289,7 +289,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(DependsOnTouchable.class);
         pico.registerComponentByClass(SimpleTouchable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
         lifecycle.start();
         lifecycle.stop();
         assertFalse(lifecycle.isDisposed());
@@ -313,7 +313,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(DependsOnTouchable.class);
         pico.registerComponentByClass(SimpleTouchable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
         lifecycle.start();
         lifecycle.stop();
         lifecycle.dispose();
@@ -371,7 +371,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         pico.registerComponentByClass(SimpleTouchable.class);
         pico.registerComponentByClass(FooRunnable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
         lifecycle.start();
         assertTrue(lifecycle.isStarted());
         Thread.sleep(100);
@@ -399,7 +399,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         // fact that none of the comps are Startable (etc).
         pico.registerComponentByClass(SimpleTouchable.class);
 
-        pico.instantiateComponents();
+        pico.getComponents();
 
         assertTrue(lifecycle.isStopped());
         lifecycle.start();

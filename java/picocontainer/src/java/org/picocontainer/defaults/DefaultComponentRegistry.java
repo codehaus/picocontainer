@@ -25,110 +25,107 @@ import java.util.*;
 
 public class DefaultComponentRegistry implements ComponentRegistry, Serializable {
 
-    protected final List registeredComponentSpecifications;
-
     // Keeps track of the instantiation order
-    protected final List orderedComponents;
+    private final List orderedComponents;
 
-    protected final Map componentKeyToInstanceMap;
-
-    protected final Map componentToSpec;
+    private final Map componentKeyToAdapterMap;
 
 
     public DefaultComponentRegistry() {
-        registeredComponentSpecifications = new ArrayList();
         orderedComponents = new ArrayList();
-        componentKeyToInstanceMap = new HashMap();
-        componentToSpec = new HashMap();
+        componentKeyToAdapterMap = new HashMap();
     }
 
-    public void registerComponent(ComponentAdapter compSpec) {
-        componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
-        registeredComponentSpecifications.add(compSpec);
+    public void registerComponent(ComponentAdapter componentAdapter) {
+        componentKeyToAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);
     }
 
     public void unregisterComponent(Object componentKey) {
-        for (Iterator iterator = registeredComponentSpecifications.iterator(); iterator.hasNext();) {
-            ComponentAdapter currentCompSpec = (ComponentAdapter) iterator.next();
-
-            if (currentCompSpec.getComponentKey().equals(componentKey)) {
-                registeredComponentSpecifications.remove(currentCompSpec);
-                componentKeyToInstanceMap.remove(componentKey);
-                break;
-            }
-        }
+        componentKeyToAdapterMap.remove(componentKey);
     }
 
     public List getComponentAdapters() {
-        return registeredComponentSpecifications;
+        // TODO this might break the ordering Jon introduced. --Aslak
+        return new ArrayList(componentKeyToAdapterMap.values());
     }
 
     public List getOrderedComponents() {
         return new ArrayList(orderedComponents);
     }
 
-    public void addOrderedComponent(Object component) {
-        orderedComponents.add(component);
+    public void addOrderedComponentInstance(Object componentInstance) {
+        orderedComponents.add(componentInstance);
     }
 
-    public void putComponent(Object componentKey, Object component) {
-        componentKeyToInstanceMap.put(componentKey, component);
+    public Object getComponentInstance(Object componentKey) throws PicoInitializationException {
+        ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
+        if(componentAdapter != null) {
+            return componentAdapter.instantiateComponent(this);
+        } else {
+            return null;
+        }
     }
 
-    public boolean contains(Object componentKey) {
-        return componentKeyToInstanceMap.containsKey(componentKey);
-    }
-
-    public Object getComponentInstance(Object componentKey) {
-        return componentKeyToInstanceMap.get(componentKey);
+    public Collection getComponentInstances() throws PicoInitializationException {
+        ArrayList componentInstances = new ArrayList(componentKeyToAdapterMap.size());
+        for (Iterator iterator = componentKeyToAdapterMap.keySet().iterator(); iterator.hasNext();) {
+            componentInstances.add(getComponentInstance(iterator.next()));
+        }
+        return Collections.unmodifiableCollection(componentInstances);
     }
 
     public Collection getComponentKeys() {
-        return Collections.unmodifiableCollection(componentKeyToInstanceMap.keySet());
+        return Collections.unmodifiableCollection(componentKeyToAdapterMap.keySet());
     }
 
-    public Collection getComponentInstances() {
-        return Collections.unmodifiableCollection(componentKeyToInstanceMap.values());
-    }
-
-    public boolean hasComponentInstance(Object componentKey) {
-        return componentKeyToInstanceMap.containsKey(componentKey);
-    }
-
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
-        return (ComponentAdapter) componentToSpec.get(componentKey);
-    }
-
-    public Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
-        List found = new ArrayList();
-
+    public Object findComponentInstance(Class componentType) throws PicoInitializationException {
+        List foundKeys = new ArrayList();
+        Object result = null;
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
             Object key = iterator.next();
-            Object component = getComponentInstance(key);
-            if (componentType.isInstance(component)) {
-                found.add(key);
+            Object componentInstance = getComponentInstance(key);
+            if (componentType.isInstance(componentInstance)) {
+                result = componentInstance;
+                foundKeys.add(key);
             }
         }
 
-        if (found.size() > 1) {
-            Object[] ambiguousKeys = found.toArray();
-            throw new AmbiguousComponentResolutionException(componentType, ambiguousKeys);
+        if (foundKeys.size() == 0) {
+            return null;
+        } else if(foundKeys.size() >= 2) {
+            throw new AmbiguousComponentResolutionException(componentType, foundKeys.toArray());
         }
 
-        return found.isEmpty() ? null : getComponentInstance(found.get(0));
+        return result;
+    }
+
+    public boolean hasComponentInstance(Object componentKey) {
+        return componentKeyToAdapterMap.containsKey(componentKey);
+    }
+
+    public ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
+        ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.get(componentKey);
+        if(result == null && componentKey instanceof Class) {
+            // see if we find a matching one if the key is a class
+            Class classKey = (Class) componentKey;
+            result = findImplementingComponentAdapter(classKey);
+        }
+        return result;
     }
 
     public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
-            ComponentAdapter componentSpecification = (ComponentAdapter) iterator.next();
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
 
-            if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
-                found.add(componentSpecification);
+            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+                found.add(componentAdapter);
             }
         }
 
-        if (found.size() > 1) {
+        if (found.size() == 0) {
+            return null;
+        } else if (found.size() >= 2) {
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
                 foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
@@ -137,20 +134,6 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         }
 
         return found.isEmpty() ? null : ((ComponentAdapter) found.get(0));
-    }
-
-
-    public Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException {
-        if (!contains(componentAdapter.getComponentKey())) {
-            Object component = componentAdapter.instantiateComponent(this);
-            addOrderedComponent(component);
-
-            putComponent(componentAdapter.getComponentKey(), component);
-
-            return component;
-        } else {
-            return getComponentInstance(componentAdapter.getComponentKey());
-        }
     }
 
 }

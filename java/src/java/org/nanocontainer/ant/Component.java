@@ -64,7 +64,7 @@ public class Component implements DynamicConfigurator {
 
         Parameter[] result = new Parameter[parameters.size()];
         for (ListIterator iterator = parameters.listIterator(); iterator.hasNext();) {
-            Param constant = (Param) iterator.next();
+            AbstractParam constant = (AbstractParam) iterator.next();
             result[iterator.previousIndex()] = constant.createParameter();
         }
 
@@ -77,26 +77,27 @@ public class Component implements DynamicConfigurator {
         return param;
     }
 
-    public static abstract class Param {
+    public static abstract class AbstractParam {
+        protected Class type = String.class;
+
         public abstract Parameter createParameter();
-    }
-
-    public static class ComponentParam extends Param {
-        public Parameter createParameter() {
-            return new ComponentParameter();
-        }
-    }
-
-    public static class ConstantParam extends Param {
-        private String value;
-        private Class type = String.class;
-
-        public void setValue(String value) {
-            this.value = value;
-        }
 
         public void setType(Class type) {
             this.type = type;
+        }
+    }
+
+    public static class ComponentParam extends AbstractParam {
+        public Parameter createParameter() {
+            return new ComponentParameter(type);
+        }
+    }
+
+    public static class ConstantParam extends AbstractParam {
+        private String value;
+
+        public void setValue(String value) {
+            this.value = value;
         }
 
         public Parameter createParameter() {

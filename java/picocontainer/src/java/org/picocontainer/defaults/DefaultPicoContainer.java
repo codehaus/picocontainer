@@ -37,7 +37,6 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     // Keeps track of unmanaged components - components instantiated outside this internals
     protected List unmanagedComponents = new ArrayList();
 
-    private boolean initialized;
     private CompositeProxyFactory compositeProxyFactory = new DefaultCompositeProxyFactory();
 
     public static class Default extends DefaultPicoContainer {
@@ -59,69 +58,73 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, ComponentRegistry componentRegistry) {
-        if (componentAdapterFactory == null) {
-            throw new NullPointerException("componentAdapterFactory cannot be null");
-        }
-        if (componentRegistry == null) {
-            throw new NullPointerException("childRegistry cannot be null");
-        }
+        checkNotNull("componentAdapterFactory", componentAdapterFactory);
+        checkNotNull("componentRegistry", componentRegistry);
         this.componentAdapterFactory = componentAdapterFactory;
         this.componentRegistry = componentRegistry;
     }
 
-    // see PicoContainer interface for Javadocs
-    public final Object getComponentMulticaster() {
+    // TODO: take a MultiCasterFactory as argument. That way we can support
+    // multicasters based on reflection (e.g. look for execute() methods) too.
+    // Nice for ppl who want lifecycle by following naming conventions
+    // on methods instead of implementing interfaces. --Aslak
+
+    public final Object getComponentMulticaster() throws PicoInitializationException {
         return getComponentMulticaster(true, false);
     }
 
-    // see PicoContainer interface for Javadocs
-    public final Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-        List aggregateComponents = componentRegistry.getOrderedComponents();
+    public final Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException {
+        getComponents();
+        List componentsToMulticast = componentRegistry.getOrderedComponents();
         if (!callUnmanagedComponents) {
             for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {
-                aggregateComponents.remove(iterator.next());
+                componentsToMulticast.remove(iterator.next());
             }
         }
         return compositeProxyFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
-                aggregateComponents,
+                componentsToMulticast,
                 callInInstantiationOrder
         );
     }
 
     public void registerComponent(Object componentKey, Class componentImplementation) throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+        checkNotNull("componentKey", componentKey);
+        checkNotNull("componentImplementation", componentImplementation);
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentKey, componentImplementation);
         checkKeyDuplication(componentKey);
 
-        registerComponent(createDefaultComponentAdapter(componentKey, componentImplementation, null));
+        registerComponent(createComponentAdapter(componentKey, componentImplementation, null));
     }
 
-    private ComponentAdapter createDefaultComponentAdapter(Object componentKey,
+    private void checkNotNull(String name, Object object) {
+        if(object == null) {
+            throw new NullPointerException(name + " can't be null");
+        }
+    }
+
+    private ComponentAdapter createComponentAdapter(Object componentKey,
                                                            Class componentImplementation,
                                                            Parameter[] parameters)
             throws PicoIntrospectionException {
-        return componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
+        ComponentAdapter adapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
+        return adapter;
     }
 
     public void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException, PicoIntrospectionException {
+        checkNotNull("componentKey", componentKey);
+        checkNotNull("componentImplementation", componentImplementation);
+        checkNotNull("parameters", parameters);
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentKey, componentImplementation);
         checkKeyDuplication(componentImplementation);
 
-        registerComponent(createDefaultComponentAdapter(componentKey, componentImplementation, parameters));
+        registerComponent(createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
-
-    /**
-     * TODO: Should be moved to some interface? -- jon
-     */
-    public void registerComponent(ComponentAdapter adapter) {
-        componentRegistry.registerComponent(adapter);
-    }
-
-    public void registerComponent(Class component) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException, PicoIntrospectionException {
-        registerComponent(component, component);
+    private void registerComponent(ComponentAdapter componentAdapter) {
+        componentRegistry.registerComponent(componentAdapter);
     }
 
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
@@ -160,19 +163,10 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public void registerComponent(Object componentKey, Object component) throws PicoRegistrationException, PicoIntrospectionException {
         checkTypeCompatibility(componentKey, component.getClass());
         checkKeyDuplication(componentKey);
-        // TODO this is a hack, for registered instances we specify empty parameter list to suppress
-        // TODO default parameter initialization, we should really have a special ComponentAdapter implementation
-        // TODO for such occasions, --jon
-        registerComponent(createDefaultComponentAdapter(componentKey, component.getClass(), new Parameter[0]));
-        componentRegistry.putComponent(componentKey, component);
+        registerComponent(new InstanceComponentAdapter(componentKey, component));
 
-        componentRegistry.addOrderedComponent(component);
+        componentRegistry.addOrderedComponentInstance(component);
         unmanagedComponents.add(component);
-    }
-
-    public void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException {
-        ComponentAdapter componentSpec = componentRegistry.getComponentAdapter(componentKey);
-        componentSpec.addConstantParameterBasedOnType(parameter, arg);
     }
 
     public void registerComponentByClass(Class componentImplementation) throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
@@ -180,67 +174,21 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     /**
-     * TODO promote to RegistrationPicoContainer, it's all Pauls fault anyway
      * @param componentKey
      */
     public void unregisterComponent(Object componentKey) {
         componentRegistry.unregisterComponent(componentKey);
     }
 
-    public void instantiateComponents() throws PicoInitializationException, PicoInvocationTargetInitializationException {
-        if (initialized == false) {
-            initializeComponents();
-            initialized = true;
-        } else {
-            throw new IllegalStateException("PicoContainer already started");
-        }
-    }
-
-    // This is Lazy and NOT public :-)
-    private void initializeComponents() throws PicoInitializationException {
-        for (Iterator iterator = componentRegistry.getComponentAdapters().iterator(); iterator.hasNext();) {
-            componentRegistry.createComponent((ComponentAdapter) iterator.next());
-        }
-    }
-
-
-    public Object getComponent(Object componentKey) {
+    /**
+     * @param componentKey
+     * @return
+     */
+    public Object getComponent(Object componentKey) throws PicoInitializationException {
         return componentRegistry.getComponentInstance(componentKey);
     }
 
-    public Collection getComponents() {
-        /* <ASLAK>
-         * TODO: make final again
-         *
-         * There is a reason why we're not simply doing
-         *
-         * return componentKeyToInstanceMap.values().toArray();
-         *
-         * getComponents() and getComponentKeys() are tightly related.
-         * They have a "contract" between each other. More specifically:
-         *
-         * 1) They should always return equally sized arrays.
-         * 2) For each key returned by getComponentKeys() the call to getComponent(key)
-         *    should never return null.
-         *
-         * If Java had supported DBC, we would have expressed this contract on the PicoContainer
-         * interface itself, forcing that contract to be respected through the whole hierarchy.
-         * Since this isn't possible in Java, we as programmers use other means (comments and final
-         * being some of them) to "enforce" the contract to be respected.
-         *
-         * Overriding getComponents() and not getComponentType() has the potential danger in that
-         * it might violate the contract. Making one of the methods final (that would naturally be
-         * getComponents()) and finalising the contract in that final method prevents the contract
-         * from being violated. Ever.
-         *
-         * Using final on methods is a way to avoid contracts being broken.
-         *
-         * Ideally, this method should be final, so we can avoid the contract being accidentally
-         * broken.
-         *
-         * </ASLAK>
-         */
-
+    public Collection getComponents() throws PicoInitializationException {
         return componentRegistry.getComponentInstances();
     }
 
@@ -251,7 +199,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     public final boolean hasComponent(Object componentKey) {
-        return getComponent(componentKey) != null;
+        return componentRegistry.hasComponentInstance(componentKey);
     }
 
     public ComponentRegistry getComponentRegistry() {

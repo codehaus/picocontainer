@@ -31,13 +31,13 @@ public interface PicoContainer {
      * @param componentKey The component type to look for.
      * @return the component, or null of no such component.
      */
-    Object getComponent(Object componentKey);
+    Object getComponent(Object componentKey) throws PicoInitializationException;
 
     /**
      * Get all components (random order).
      * @return A collection of components.
      */
-    Collection getComponents();
+    Collection getComponents() throws PicoInitializationException;
 
     /**
      * Get all component types (random order).
@@ -46,15 +46,10 @@ public interface PicoContainer {
     Collection getComponentKeys();
 
     /**
-     * Initialize the internals.
-     */
-    void instantiateComponents() throws PicoInitializationException;
-
-    /**
      * Shorthand for {@link #getComponentMulticaster(boolean, boolean)}(true, true).
      * @return a proxy.
      */
-    Object getComponentMulticaster();
+    Object getComponentMulticaster() throws PicoInitializationException;
 
     /**
      * Returns a proxy that implements the union of all the components'
@@ -66,7 +61,7 @@ public interface PicoContainer {
      * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)
      * @param callUnmanagedComponents whether to exclude components registered via instance rather than class
      */
-    Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents);
+    Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException;
 
 
 }

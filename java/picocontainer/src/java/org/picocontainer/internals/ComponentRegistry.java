@@ -24,27 +24,28 @@ public interface ComponentRegistry {
 
     List getOrderedComponents();
 
-    void addOrderedComponent(Object component);
+    void addOrderedComponentInstance(Object component);
 
-    void putComponent(Object componentKey, Object component);
+    /**
+     * @param componentKey key to look up instance
+     *
+     * @return the component instance, or null if key is not registered
+     * @throws PicoInitializationException if the key is registered, but the associated
+     * component can't be instantiated.
+     */
+    Object getComponentInstance(Object componentKey) throws PicoInitializationException;
 
-    boolean contains(Object componentKey);
-
-    Object getComponentInstance(Object componentKey);
+    Collection getComponentInstances() throws PicoInitializationException;
 
     Collection getComponentKeys();
 
-    Collection getComponentInstances();
-
     boolean hasComponentInstance(Object componentKey);
 
-    ComponentAdapter getComponentAdapter(Object componentKey);
+    ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException;
 
-    Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException;
+    Object findComponentInstance(Class componentType) throws PicoInitializationException;
 
     ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException;
-
-    Object createComponent(ComponentAdapter componentAdapter) throws PicoInitializationException;
 
 	void unregisterComponent(Object componentKey);
 }

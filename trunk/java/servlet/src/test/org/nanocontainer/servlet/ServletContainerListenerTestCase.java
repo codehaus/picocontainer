@@ -26,14 +26,14 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
             "pico = DefaultPicoContainer()\n" +
             "pico.registerComponentImplementation(ArrayList)\n";
 
-    public void XXtestApplicationScopeContainerIsCreatedWhenServletContextIsInitialised() {
+    public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialised() {
         ServletContainerListener listener = new ServletContainerListener();
 
         Mock servletContextMock = new Mock(ServletContext.class);
         final Vector initParams = new Vector();
-        initParams.add("application.picocontainer.py");
+        initParams.add("nanocontainer.py");
         servletContextMock.expectAndReturn("getInitParameterNames", initParams.elements());
-        servletContextMock.expectAndReturn("getInitParameter", C.args(C.eq("application.picocontainer.py")), pythonScript);
+        servletContextMock.expectAndReturn("getInitParameter", C.args(C.eq("nanocontainer.py")), pythonScript);
         servletContextMock.expect("setAttribute", C.args(C.eq(BUILDER), C.isA(JythonContainerBuilder.class)));
         servletContextMock.expect("setAttribute", C.args(C.eq(APPLICATION_CONTAINER), C.isA(PicoContainer.class)));
 

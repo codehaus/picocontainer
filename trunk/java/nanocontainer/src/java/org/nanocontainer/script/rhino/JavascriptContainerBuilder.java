@@ -30,7 +30,7 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
                 return new DefiningClassLoader(classLoader) {
@@ -42,6 +42,7 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
         try {
             Scriptable scope = new ImporterTopLevel(cx);
             scope.put("parent", scope, parentContainer);
+            scope.put("assemblyScope", scope, assemblyScope);
             ImporterTopLevel.importPackage(cx,
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.defaults", classLoader),

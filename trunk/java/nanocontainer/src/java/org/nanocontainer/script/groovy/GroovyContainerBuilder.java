@@ -30,7 +30,7 @@ public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerB
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         Object result = null;
         try {
             GroovyClassLoader loader = new GroovyClassLoader(classLoader);
@@ -38,10 +38,10 @@ public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerB
                 public int read() throws IOException {
                     return script.read();
                 }
-            }, "picocontainer.groovy");
+            }, "nanocontainer.groovy");
 
             GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
-            Object[] args = {parentContainer};
+            Object[] args = {parentContainer, assemblyScope};
             result = groovyObject.invokeMethod("buildContainer", args);
         } catch (Exception e) {
             throw new PicoAssemblyException(e);

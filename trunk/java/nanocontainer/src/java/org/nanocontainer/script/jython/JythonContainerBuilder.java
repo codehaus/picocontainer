@@ -25,12 +25,13 @@ public class JythonContainerBuilder extends ScriptedComposingLifecycleContainerB
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
         interpreter.exec("from org.nanocontainer.reflection import *");
         interpreter.exec("from java.net import *");
         interpreter.set("parent", parentContainer);
+        interpreter.set("assemblyScope", assemblyScope);
         interpreter.execfile(new InputStream() {
             public int read() throws IOException {
                 return script.read();

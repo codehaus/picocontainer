@@ -11,7 +11,8 @@ package org.nanocontainer.servlet;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.script.jython.JythonContainerBuilder;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
@@ -51,11 +52,11 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, null, context);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new PicoAssemblyException(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new PicoAssemblyException(e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            throw new PicoAssemblyException(e);
         }
     }
 
@@ -63,9 +64,10 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();
-            if(initParameter.startsWith("application.picocontainer.py")) {
+            if(initParameter.startsWith("nanocontainer")) {
+                String extension = initParameter.substring(initParameter.lastIndexOf('.') + 1);
                 String script = context.getInitParameter(initParameter);
-                return new JythonContainerBuilder(new StringReader(script), Thread.currentThread().getContextClassLoader());
+                return ScriptedComposingLifecycleContainerBuilder.createBuilder(extension, new StringReader(script), Thread.currentThread().getContextClassLoader());
             }
             if(initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
@@ -73,7 +75,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }
-        throw new RuntimeException("Couldn't create a builder from context parameters in web.xml");
+        throw new PicoAssemblyException("Couldn't create a builder from context parameters in web.xml");
     }
 
     public void contextDestroyed(ServletContextEvent event) {

@@ -11,21 +11,13 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.nanocontainer.script.jython.JythonContainerBuilder;
-import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
-import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is capable of deploying an application from any kind of file system
@@ -81,18 +73,6 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  */
 public class Deployer {
-    private static final Map EXTENSION_TO_BUILDER_CLASS_MAP = new HashMap();
-
-    static {
-        EXTENSION_TO_BUILDER_CLASS_MAP.put("groovy", GroovyContainerBuilder.class);
-        EXTENSION_TO_BUILDER_CLASS_MAP.put("js", JavascriptContainerBuilder.class);
-        EXTENSION_TO_BUILDER_CLASS_MAP.put("py", JythonContainerBuilder.class);
-        EXTENSION_TO_BUILDER_CLASS_MAP.put("xml", XMLContainerBuilder.class);
-    }
-
-    private static Class getContainerBuilderClass(String extension) {
-        return (Class) EXTENSION_TO_BUILDER_CLASS_MAP.get(extension);
-    }
 
     /**
      * Deploys an application.
@@ -108,38 +88,27 @@ public class Deployer {
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, fileSystemManager, parentClassLoader);
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
-        MutablePicoContainer builderFactory = new DefaultPicoContainer();
 
         String extension = deploymentScript.getName().getExtension();
-        Class builderClass = getContainerBuilderClass(extension);
-        builderFactory.registerComponentImplementation("builder", builderClass);
-        Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
-        builderFactory.registerComponentInstance(scriptReader);
-        builderFactory.registerComponentInstance(applicationClassLoader);
 
-        ContainerBuilder builder = (ContainerBuilder) builderFactory.getComponentInstance("builder");
-        return invokeBuildContainer(builder, parentContainerRef);
-    }
-
-    private ObjectReference invokeBuildContainer(ContainerBuilder builder, ObjectReference parentContainerRef) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         ObjectReference result = new SimpleReference();
-        Method buildContainer = builder.getClass().getMethod("buildContainer", new Class[] {
-            ObjectReference.class,
-            ObjectReference.class,
-            Object.class
-        });
-        buildContainer.invoke(builder, new Object[]{result, parentContainerRef, null});
+        Object compositionScope = null;
+        Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
+
+        ContainerBuilder builder = ScriptedComposingLifecycleContainerBuilder.createBuilder(extension, scriptReader, applicationClassLoader);
+        builder.buildContainer(result, parentContainerRef, compositionScope);
+
         return result;
     }
 
     private FileObject getDeploymentScript(FileObject applicationFolder) throws FileSystemException {
         final FileObject metaInf = applicationFolder.getChild("META-INF");
         if(metaInf == null) {
-            throw new FileSystemException("No deployment script (picocontainer.[js|groovy|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
+            throw new FileSystemException("No deployment script (nanocontainer.[js|groovy|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
         }
         final FileObject[] picocontainerScripts = metaInf.findFiles(new FileSelector(){
             public boolean includeFile(FileSelectInfo fileSelectInfo) throws Exception {
-                return fileSelectInfo.getFile().getName().getBaseName().startsWith("picocontainer");
+                return fileSelectInfo.getFile().getName().getBaseName().startsWith("nanocontainer");
             }
             public boolean traverseDescendents(FileSelectInfo fileSelectInfo) throws Exception {
                 return true;

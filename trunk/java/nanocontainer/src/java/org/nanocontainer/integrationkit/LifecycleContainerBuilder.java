@@ -22,7 +22,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
-        MutablePicoContainer container = createContainer(parentContainer);
+        MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
 
         composeContainer(container, assemblyScope);
         container.start();
@@ -44,7 +44,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
 		return new DefaultPicoContainer(parentContainer);
 	}
 }

@@ -84,7 +84,7 @@ public class PicoContainerTask extends Task {
 
     public void execute() {
 		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
-			protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+			protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
 				return new DefaultPicoContainer(propertyFactory);
 			}
 		};

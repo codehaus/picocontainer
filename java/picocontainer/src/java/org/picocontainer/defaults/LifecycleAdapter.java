@@ -10,10 +10,9 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.Disposable;
-import org.picocontainer.Lifecycle;
-import org.picocontainer.*;
 import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
+import org.picocontainer.PicoContainer;
 
 import java.io.Serializable;
 
@@ -27,7 +26,7 @@ import java.io.Serializable;
  * @author Chris Stevenson
  * @version $Revision$
  */
-class LifecycleAdapter implements Lifecycle, Serializable {
+class LifecycleAdapter implements Startable, Disposable, Serializable {
 
     private boolean started;
     private boolean disposed;

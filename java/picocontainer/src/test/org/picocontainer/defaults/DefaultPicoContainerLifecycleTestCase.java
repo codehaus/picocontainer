@@ -12,17 +12,15 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
-import org.picocontainer.Lifecycle;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.Disposable;
+import org.picocontainer.Startable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
@@ -407,7 +405,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         assertEquals(0, child.getComponentInstances().size());
     }
 
-    public abstract static class RecordingLifecycle implements Lifecycle {
+    public abstract static class RecordingLifecycle implements Startable, Disposable {
         private final StringBuffer recording;
 
         protected RecordingLifecycle(StringBuffer recording) {

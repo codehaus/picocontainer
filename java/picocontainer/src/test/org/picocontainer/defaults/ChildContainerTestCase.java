@@ -3,7 +3,8 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Lifecycle;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 
 /**
  * @author Paul Hammant
@@ -11,7 +12,7 @@ import org.picocontainer.Lifecycle;
  * @version $Revision$
  */
 public class ChildContainerTestCase extends TestCase {
-    public static abstract class Xxx implements Lifecycle {
+    public static abstract class Xxx implements Startable, Disposable {
 
         public static String componentRecorder = "";
 

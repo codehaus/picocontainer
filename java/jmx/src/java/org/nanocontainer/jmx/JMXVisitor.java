@@ -16,9 +16,7 @@ import java.util.Map;
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
-import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
-import javax.management.StandardMBean;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
@@ -84,7 +82,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	}
 
 	/**
-	 * Create a DynamicMBean from the MBeanInfoWrapper being passed in
+	 * Create a DynamicMBean from the MBeanInfoWrapper being passed in.
 	 */
 	protected void handleMBeanInfo(ComponentAdapter componentAdapter, MBeanInfoWrapper mBeanInfoWrapper) {
 		MBeanInfo mBeanInfo = mBeanInfoWrapper.getmBeanInfo();
@@ -94,18 +92,32 @@ public class JMXVisitor extends AbstractPicoVisitor {
 		registerWithMBeanServer(mbean, objectName);
 	}
 
+	/**
+     * Retrieve the DynamicMBeanFactory to use. The implementation will lookup such an instance in the picoContainer. If none is
+     * found, a default {@link DynamicMBeanFactory} is used, that may not be capable of handling all cases.
+     * @param picoContainer used to lookup the DynamicMBeanFactory.
+     * @return the DynamicMBeanFactory to use.
+     */
 	protected DynamicMBeanFactory getDynamicMBeanFactory(PicoContainer picoContainer) {
         if (factory == null) {
             factory = (DynamicMBeanFactory)picoContainer.getComponentInstanceOfType(DynamicMBeanFactory.class);
             if (factory == null) {
-                factory = new StandardMBeanFactory();
+                factory = createDynamicMBeanFactory();
             }
         }
         return factory;
 	}
 
+    /**
+     * Instantiate a new StandardMBeanFactory as default DynamicMBeanFactory.
+     * @return the new instance.
+     */
+    protected DynamicMBeanFactory createDynamicMBeanFactory() {
+        return new StandardMBeanFactory();
+    }
+
 	/**
-	 * Create a StandardMBean and register it to the MBeanServer
+	 * Create a StandardMBean and register it to the MBeanServer.
 	 */
 	protected void handleStandardMBean(ComponentAdapter componentAdapter, ObjectName objectName) {
         Object key = componentAdapter.getComponentKey();
@@ -116,6 +128,11 @@ public class JMXVisitor extends AbstractPicoVisitor {
         }
     }
 
+	/**
+	 * Register a MBean in the MBeanServer. The {@link MBeanServer} must be available fro mthe visited {@link PicoContainer}.
+	 * @param dynamicMBean the MBean to register.
+	 * @param objectName the {@link ObjectName} of the MBean registered the MBeanServer.
+	 */
 	protected void registerWithMBeanServer(DynamicMBean dynamicMBean, ObjectName objectName) {
 		MBeanServer mBeanServer = (MBeanServer) picoContainer.getComponentInstanceOfType(MBeanServer.class);
 

@@ -10,11 +10,13 @@ import java.lang.reflect.Proxy;
 
 /**
  * This component adapter makes it possible to hide the implementation
- * of a real subject (behind a proxy). The proxy will also implement
+ * of a real subject (behind a proxy).
+ * If the key of the component is of type {@link java.lang.Class} and that class represents an interface, the proxy
+ * will only implement the interface represented by that Class. Otherwise (if the key is
+ * something else), the proxy will implement all the interfaces of the underlying subject.
+ * In any case, the proxy will also implement
  * {@link Swappable}, making it possible to swap out the underlying
- * subject at runtime.
- *
- * @author Aslak Helles&oslash;y
+ * subject at runtime. * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @version $Revision$
  */
@@ -28,7 +30,13 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
-        Class[] interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
+        Class[] interfaces;
+        if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
+            // If the compo
+            interfaces = new Class[] {(Class) getDelegate().getComponentKey()};
+        } else {
+            interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
+        }
         Class[] swappableAugmentedInterfaces = new Class[interfaces.length + 1];
         swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
         System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);

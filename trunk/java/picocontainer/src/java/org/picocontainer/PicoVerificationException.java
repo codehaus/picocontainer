@@ -18,4 +18,7 @@ public class PicoVerificationException extends PicoException {
         return nestedExceptions;
     }
 
+    public String getMessage() {
+        return nestedExceptions.toString();
+    }
 }

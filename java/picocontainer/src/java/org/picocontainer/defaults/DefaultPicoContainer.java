@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Arrays;
 
 /**
  * <p/>
@@ -380,9 +379,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.getComponentInstances();
-            mpc.start();
+            PicoContainer pc = (PicoContainer) it.next();
+            pc.getComponentInstances();
+            pc.start();
         }
         started = true;
     }
@@ -392,8 +391,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (!started) throw new IllegalStateException("Not started");
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.stop();
+            PicoContainer pc = (PicoContainer) it.next();
+            pc.stop();
         }
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         Collections.reverse(componentInstances);
@@ -407,8 +406,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (disposed) throw new IllegalStateException("Already disposed");
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.dispose();
+            PicoContainer pc = (PicoContainer) it.next();
+            pc.dispose();
         }
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Disposable.class);
         Collections.reverse(componentInstances);
@@ -448,11 +447,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return pc;
     }
 
-    public void addChildContainer(MutablePicoContainer child) {
+    public void addChildContainer(PicoContainer child) {
         addChildContainer(null, child);
     }
 
-    public void addChildContainer(String name, MutablePicoContainer child) {
+    public void addChildContainer(String name, PicoContainer child) {
         if (name == null) {
             name = "containers" + containerCount;
         }
@@ -466,8 +465,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         Iterator children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
             Map.Entry e = (Map.Entry) children.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) e.getValue();
-            if (mpc == child) {
+            PicoContainer pc = (PicoContainer) e.getValue();
+            if (pc == child) {
                 children.remove();
             }
         }

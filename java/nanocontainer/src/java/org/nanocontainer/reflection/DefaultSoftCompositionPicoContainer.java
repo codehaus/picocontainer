@@ -175,11 +175,11 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         return pc;
     }
 
-    public void addChildContainer(MutablePicoContainer child) {
+    public void addChildContainer(PicoContainer child) {
         delegate.addChildContainer(child);
     }
 
-    public void addChildContainer(String name, MutablePicoContainer child) {
+    public void addChildContainer(String name, PicoContainer child) {
         delegate.addChildContainer(name, child);
     }
 

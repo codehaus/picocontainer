@@ -80,7 +80,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             builderRef.set(containerBuilder);
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, new SimpleReference(), context);
+            containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
         } catch (ClassNotFoundException e) {
             // Not all servlet containers print the nested exception. Do it here.
             event.getServletContext().log(e.getMessage(), e);
@@ -129,7 +129,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ContainerBuilder containerBuilder = getBuilder(context);
         ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
         ObjectReference webappContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-        containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session);
+        containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session, false);
 
         session.setAttribute(KILLER_HELPER, new ContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {

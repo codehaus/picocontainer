@@ -113,7 +113,7 @@ public class Standalone {
         final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
 
         final ObjectReference containerRef = new SimpleReference();
-        nanoContainer.getContainerBuilder().buildContainer(containerRef, null, null);
+        nanoContainer.getContainerBuilder().buildContainer(containerRef, null, null, true);
 
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {

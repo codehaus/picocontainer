@@ -38,7 +38,7 @@ public class ServletRequestContainerLauncher {
         }
         HttpSession session = request.getSession(true);
         ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
-        containerBuilder.buildContainer(containerRef, sessionContainerRef, request);
+        containerBuilder.buildContainer(containerRef, sessionContainerRef, request, false);
     }
 
     public void killContainer() {

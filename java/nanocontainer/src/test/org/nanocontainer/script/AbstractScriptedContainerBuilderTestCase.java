@@ -24,7 +24,7 @@ public abstract class AbstractScriptedContainerBuilderTestCase extends TestCase 
 
     protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
         parentContainerRef.set(parentContainer);
-        builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE");
+        builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE", true);
         return (PicoContainer) containerRef.get();
     }
 }

@@ -17,6 +17,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
+ * This ComponentAdapter will instantiate a new object for each call to
+ * {@link #getComponentInstance(MutablePicoContainer)}. That means that
+ * when used with a PicoContainer, getComponentInstance will return a new
+ * object each time.
+ *
  * @author Jon Tirs&eacute;n
  * @author Zohar Melamed
  * @author Aslak Helles&oslash;y

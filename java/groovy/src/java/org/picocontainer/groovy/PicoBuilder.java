@@ -54,7 +54,7 @@ public class PicoBuilder extends BuilderSupport {
     protected Object createNode(Object name, Object value) {
         if (value instanceof Class) {
             Map attributes = new HashMap();
-            attributes.put("class", value);
+            attributes.put("componentClass", value);
             return createNode(name, attributes);
         }
         return createNode(name);
@@ -68,21 +68,24 @@ public class PicoBuilder extends BuilderSupport {
             Object parent = getCurrent();
             if (parent instanceof MutablePicoContainer) {
                 MutablePicoContainer pico = (MutablePicoContainer) parent;
+
+                //System.out.println("Creating node: " + name + " with " + attributes);
                 
                 if (name.equals("component")) {
-                        Class type = (Class) attributes.remove("componentClass");
-                        if (type != null) {
-                            Object key = attributes.remove("key");
-                            if (key != null) {
-                                pico.registerComponentImplementation(key, type);
-                            }
-                            else {
-                                pico.registerComponentImplementation(type);
-                            }
+                    Class type = (Class) attributes.remove("componentClass");
+                    if (type != null) {
+                        Object key = attributes.remove("key");
+                        if (key != null) {
+                            pico.registerComponentImplementation(key, type);
                         }
                         else {
-                            throw new PicoBuilderException("Must specify a componentClass attribute for a component");
+                            pico.registerComponentImplementation(type);
                         }
+                        return name;
+                    }
+                    else {
+                        throw new PicoBuilderException("Must specify a componentClass attribute for a component");
+                    }
                 }
                 else if (name.equals("bean")) {
                     // lets create a bean
@@ -107,7 +110,7 @@ public class PicoBuilder extends BuilderSupport {
             return new DefaultPicoContainer();
         }
     }
-    
+
     protected Object createBean(Map attributes) {
         Class type = (Class) attributes.remove("beanClass");
         if (type == null) {
@@ -116,7 +119,7 @@ public class PicoBuilder extends BuilderSupport {
         try {
             Object bean = type.newInstance();
             // now lets set the properties on the bean
-            for (Iterator iter = attributes.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator iter = attributes.entrySet().iterator(); iter.hasNext();) {
                 Map.Entry entry = (Map.Entry) iter.next();
                 String name = entry.getKey().toString();
                 Object value = entry.getValue();

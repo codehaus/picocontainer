@@ -11,8 +11,20 @@
 package org.picocontainer;
 
 /**
+ * Interface for disposable Pico components.
+ * This interface is part of the standard lifecycle of a 
+ * {@link org.picocontainer.defaults.DefaultPicoContainer}. The compontent's
+ * method {@link Disposable#dispose()} is called directly after
+ * {@link Startable#stop()} (if implemented). 
+ * 
+ * @since 1.0
  * @version $Revision$
  */
 public interface Disposable {
+    /**
+     * Dispose this component.
+     * The contract for this method defines a single call at the end of this component's
+     * life.
+     */
     void dispose();
 }

@@ -181,11 +181,11 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
 //    }
 
     protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
+        if (instantiating) {
+            throw new CyclicDependencyException(constructor.getParameterTypes());
+        }
         try {
-            Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
-            if (instantiating) {
-                throw new CyclicDependencyException(constructor.getParameterTypes());
-            }
             instantiating = true;
             Object[] parameters = getConstructorArguments(adapterInstantiationOrderTrackingList);
 

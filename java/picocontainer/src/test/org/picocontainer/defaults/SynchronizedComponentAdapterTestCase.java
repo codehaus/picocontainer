@@ -19,8 +19,7 @@ import org.picocontainer.PicoContainer;
  * @version $Revision$
  */
 public class SynchronizedComponentAdapterTestCase extends TestCase {
-    private Runner runner1;
-    private Runner runner2;
+    private Runner[] runner = new Runner[3];
 
     class Runner implements Runnable {
         public CyclicDependencyException exception;
@@ -42,8 +41,10 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
 
     public static class Blocker {
         public Blocker() throws InterruptedException {
-            // Yes I know sleeping in tests is bad, but it's also simple :-)
-            Thread.sleep(3000);
+            final Thread thread = Thread.currentThread();
+            synchronized (thread) {
+                thread.wait();
+            }
         }
     }
 
@@ -51,17 +52,31 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(componentAdapter);
 
-        runner1 = new Runner(pico);
-        runner2 = new Runner(pico);
+        for(int i = 0; i < runner.length; ++i) {
+            runner[i] = new Runner(pico);
+        }
+        
+        Thread racer[] = new Thread[runner.length];
+        for(int i = 0; i < racer.length; ++i) {
+            racer[i] =  new Thread(runner[i]);
+        }
 
-        Thread racer1 = new Thread(runner1);
-        Thread racer2 = new Thread(runner2);
+        for(int i = 0; i < racer.length; ++i) {
+            racer[i].start();
+            Thread.sleep(250);
+        }
+        
+        Thread.sleep(250);
+        
+        for(int i = 0; i < racer.length; ++i) {
+            synchronized (racer[i]) {
+                racer[i].notify();
+            }
+        }
 
-        racer1.start();
-        racer2.start();
-
-        racer1.join();
-        racer2.join();
+        for(int i = 0; i < racer.length; ++i) {
+            racer[i].join();
+        }
     }
 
     public void testRaceConditionIsHandledBySynchronizedComponentAdapter() throws InterruptedException {
@@ -69,17 +84,24 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
         SynchronizedComponentAdapter synchronizedComponentAdapter = new SynchronizedComponentAdapter(componentAdapter);
         initTest(synchronizedComponentAdapter);
 
-        assertNull(runner1.exception);
-        assertNull(runner2.exception);
-
-        assertNotNull(runner1.blocker);
-        assertSame(runner1.blocker, runner2.blocker);
+        for(int i = 0; i < runner.length; ++i) {
+            assertNull(runner[i].exception);
+        }
+        for(int i = 0; i < runner.length; ++i) {
+            assertNotNull(runner[i].blocker);
+        }
+        for(int i = 1; i < runner.length; ++i) {
+            assertSame(runner[0].blocker, runner[i].blocker);
+        }
     }
 
     public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
         ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("key", Blocker.class));
         initTest(componentAdapter);
 
-        assertTrue(runner1.exception != null || runner2.exception != null);
+        assertNull(runner[0].exception);
+        for(int i = 1; i < runner.length; ++i) {
+            assertNotNull(runner[i].exception);
+        }
     }
 }

@@ -8,7 +8,7 @@ import org.microcontainer.DeploymentException;
 import org.microcontainer.McaDeployer;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 
 import java.io.FileReader;
 import java.io.File;
@@ -36,7 +36,7 @@ public class GroovyDeploymentScriptHandler {
 
 			// build the container from the script
 			GroovyContainerBuilder gcb = new MicroGroovyContainerBuilder(script, classLoader);
-			MutablePicoContainer parent = new DefaultSoftCompositionPicoContainer(classLoader);
+			MutablePicoContainer parent = new DefaultNanoPicoContainer(classLoader);
 			parent.registerComponentInstance("workingDir", path);
 
             PicoContainer picoContainer = buildContainer(contextName, gcb, parent);

@@ -48,9 +48,8 @@
   </target>
   
   <target name="site:sshdeploy" depends="make-site" description="Deploy the generated site docs using ssh">
-
-    <!-- This needs to taken from the project properties -->
-    <property name="maven.homepage" value="${pom.siteDirectory}"/>
+    <!-- assume user has a ~/build.properties file with maven.username=unixuser -->
+    <property file="${user.home}/build.properties"/>
 
     <tar tarfile="site.tar" basedir="build"/>
     <gzip zipfile="site.tar.gz" src="site.tar"/>
@@ -58,16 +57,16 @@
 
     <!-- Make sure the destination directory exists before trying to copy -->
     <exec dir="." executable="plink">
-      <arg line="codehaus.org -l paul 'mkdir -p /www/picocontainer.codehaus.org'"/>
+      <arg line="codehaus.org -l ${maven.username} 'mkdir -p /www/picocontainer.codehaus.org'"/>
     </exec>
 
     <exec dir="." executable="pscp">
       <arg value="site.tar.gz"/>
-      <arg value="paul@codehaus.org:/www/picocontainer.codehaus.org"/>
+      <arg value="${maven.username}@codehaus.org:/www/picocontainer.codehaus.org"/>
     </exec>
 
     <exec dir="." executable="plink">
-      <arg line="codehaus.org -l paul 'cd /www/picocontainer.codehaus.org;gunzip site.tar.gz;tar xUvf site.tar;chmod -R g+u *;rm site.tar'"/>
+      <arg line="codehaus.org -l ${maven.username} 'cd /www/picocontainer.codehaus.org;gunzip site.tar.gz;tar xUvf site.tar;chmod -R g+u *;rm site.tar'"/>
     </exec>
 
     <delete file="site.tar.gz"/>

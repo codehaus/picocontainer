@@ -19,16 +19,20 @@ import picocontainer.PicoStopException;
 import picocontainer.NullContainer;
 import java.util.ArrayList;
 
+import nanocontainer.reflection.StringToObjectConverter;
+
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
     private final PicoContainer picoContainer;
     private ArrayList classLoaders = new ArrayList();
+    private StringToObjectConverter converter;
 
-    public StringRegistrationNanoContainerImpl(Container parentContainer, ClassLoader classLoader) {
+    public StringRegistrationNanoContainerImpl(Container parentContainer, ClassLoader classLoader, StringToObjectConverter converter) {
         this.picoContainer = makePicoContainer(parentContainer);
         if (classLoader != null) {
             classLoaders.add(classLoader);
         }
+        this.converter = converter;
     }
 
     protected PicoContainer makePicoContainer(Container parentContainer) {
@@ -37,19 +41,19 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public static class Default extends StringRegistrationNanoContainerImpl {
         public Default() {
-            super(new NullContainer(), StringRegistrationNanoContainerImpl.class.getClassLoader());
+            super(new NullContainer(), StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter());
         }
     }
 
     public static class WithParentContainer extends StringRegistrationNanoContainerImpl {
         public WithParentContainer(Container parentContainer) {
-            super(parentContainer, StringRegistrationNanoContainerImpl.class.getClassLoader());
+            super(parentContainer, StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter());
         }
     }
 
     public static class WithClassLoader extends StringRegistrationNanoContainerImpl {
         public WithClassLoader(ClassLoader classLoader) {
-            super(new NullContainer(), classLoader);
+            super(new NullContainer(), classLoader, new StringToObjectConverter());
         }
     }
 
@@ -58,22 +62,19 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
     }
 
     public void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException {
-        boolean registered = false;
-        for (int i = 0; i < classLoaders.size(); i++) {
-            ClassLoader classLoader = (ClassLoader) classLoaders.get(i);
-            try {
-                Class typeClass = classLoader.loadClass(typeClassName);
-                Class compClass = classLoader.loadClass(compClassName);
-                picoContainer.registerComponent(typeClass, compClass);
-                registered = true;
-                break;
-            } catch (ClassNotFoundException e) {
-                // OK for the time being.
-            }
-        }
-        if (registered == false) {
-            throw new ClassNotFoundException("One of " + typeClassName + " or " + classLoaders + " not found");
-        }
+        Class typeClass = loadClass(typeClassName);
+        Class compClass = loadClass(compClassName);
+        picoContainer.registerComponent(typeClass, compClass);
+    }
+
+    public void addParameterToComponent(String compClassName, String paramClassName, String valueAsString) throws ClassNotFoundException {
+        Class compClass = loadClass(compClassName);
+        Class paramClass = loadClass(paramClassName);
+
+        Object value = converter.convertTo(paramClass, valueAsString);
+
+        picoContainer.addParameterToComponent(compClass, paramClass, value);
+
     }
 
     public void start() throws PicoStartException {
@@ -102,5 +103,20 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public void addComponentClassLoader(ClassLoader classLoader) {
         classLoaders.add(classLoader);
+    }
+
+    private Class loadClass(String name) throws ClassNotFoundException {
+        for (int i = 0; i < classLoaders.size(); i++) {
+            ClassLoader classLoader = (ClassLoader) classLoaders.get(i);
+            try {
+                Class result = classLoader.loadClass(name);
+                if (result != null) {
+                    return result;
+                }
+            } catch (ClassNotFoundException e) {
+                // continue...
+            }
+        }
+        throw new ClassNotFoundException(name);
     }
 }

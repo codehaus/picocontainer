@@ -36,6 +36,7 @@ import picocontainer.NullContainer;
 import picocontainer.Container;
 import picocontainer.PicoInvocationTargetStartException;
 import picocontainer.PicoStartException;
+import nanocontainer.reflection.StringToObjectConverter;
 
 public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl
         implements InputSourceRegistrationNanoContainer {
@@ -46,7 +47,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
 
 
     public ConfiguringNanoContainerImpl(DocumentBuilder documentBuilder, Container parentContainer, ClassLoader classLoader) {
-        super(parentContainer, classLoader);
+        super(parentContainer, classLoader, new StringToObjectConverter());
         this.documentBuilder = documentBuilder;
         implConfigurationMap = new HashMap();
     }

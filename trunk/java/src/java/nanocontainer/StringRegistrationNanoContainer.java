@@ -21,4 +21,6 @@ public interface StringRegistrationNanoContainer extends LifecycleContainer {
 
     void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException;
 
+    void addParameterToComponent(String compClassName, String paramClassName, String value) throws ClassNotFoundException;
+
 }

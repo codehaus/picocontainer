@@ -10,6 +10,8 @@
 
 package picocontainer;
 
+import picocontainer.defaults.*;
+
 public interface ClassRegistrationPicoContainer extends PicoContainer {
 
     /**
@@ -53,6 +55,9 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException
      */
     void registerComponent(Object component)
+            throws PicoRegistrationException;
+
+    void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters)
             throws PicoRegistrationException;
 
     /**

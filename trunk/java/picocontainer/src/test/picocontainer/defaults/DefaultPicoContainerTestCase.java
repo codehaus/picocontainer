@@ -439,7 +439,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException {
-        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class);
+        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class, new Parameter[0]);
         Object comp = componentSpec.instantiateComponent(null);
         assertNotNull(comp);
         assertTrue(comp instanceof WilmaImpl);

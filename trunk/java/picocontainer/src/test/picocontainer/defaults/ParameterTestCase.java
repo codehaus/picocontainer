@@ -4,9 +4,8 @@ import junit.framework.TestCase;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.PicoInvocationTargetInitailizationException;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
+import picocontainer.testmodel.FredImpl;
+import picocontainer.*;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -22,7 +21,7 @@ public class ParameterTestCase extends TestCase {
 
     public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException
     {
-        DefaultPicoContainer pico = new HierarchicalPicoContainer.Default();
+        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
 
@@ -37,4 +36,15 @@ public class ParameterTestCase extends TestCase {
         ConstantParameter parameter = new ConstantParameter(value);
         assertSame(value, parameter.resolve(null, null, null));
     }
+
+    public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInstantiationException {
+        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+        WilmaImpl wilma = new WilmaImpl();
+        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[] {
+            new ConstantParameter(wilma)
+        });
+        pico.instantiateComponents();
+        assertTrue(wilma.helloCalled());
+    }
+
 }

@@ -196,11 +196,28 @@ public class DefaultPicoContainer implements PicoContainer {
     public void registerComponent(Class componentType, Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         checkConcrete(componentImplementation);
         checkConstructor(componentImplementation);
+
+        Parameter[] parameters = new Parameter[componentFactory.getDependencies(componentImplementation).length];
+        for (int i = 0; i < parameters.length; i++) {
+            parameters[i] = createDefaultParameter();
+        }
+
+        registerComponent(componentImplementation, componentType, parameters);
+    }
+
+    public void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters) throws WrongNumberOfConstructorsRegistrationException, NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
+        checkConstructor(componentImplementation);
+        checkConcrete(componentImplementation);
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
-        ComponentSpecification compSpec = new ComponentSpecification(componentFactory, componentType, componentImplementation);
+
+        ComponentSpecification compSpec = new ComponentSpecification(componentFactory, componentType, componentImplementation, parameters);
         componentToSpec.put(componentImplementation, compSpec);
         registeredComponents.add(compSpec);
+    }
+
+    protected Parameter createDefaultParameter() {
+        return new ComponentParameter();
     }
 
     private void checkConstructor(Class componentImplementation) throws WrongNumberOfConstructorsRegistrationException {

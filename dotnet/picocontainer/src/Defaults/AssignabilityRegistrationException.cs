@@ -10,33 +10,24 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using csUnit;
+using PicoContainer;
 
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+namespace PicoContainer {
+  [Serializable]
+  public class AssignabilityRegistrationException: PicoRegistrationException {
+    private Type type;
+    private Type typeToAssign;
 
-namespace PicoContainer.Tests
-{
-	
-[TestFixture]
+    public AssignabilityRegistrationException(Type type, Type typeToAssign) {
+      this.type = type;
+      this.typeToAssign = typeToAssign;
+    }
 
-	public class PicoPicoTestCase
-	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    public override String Message {
+      get {
+        return "The type:" + type.Name + "  was not assignable from the class " + typeToAssign.Name;
+      }
+    }
+  }
 }

@@ -10,33 +10,17 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using csUnit;
+namespace PicoContainer {
+  public interface ComponentAdapter {
+    object ComponentKey {
+      get;
+    }
 
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+    Type ComponentImplementation{
+      get;
+    }
 
-namespace PicoContainer.Tests
-{
-	
-[TestFixture]
-
-	public class PicoPicoTestCase
-	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    object GetComponentInstance(MutablePicoContainer dependencyContainer);
+  }
 }

@@ -10,33 +10,42 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
-
-using csUnit;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests
+using System.Collections;
+namespace PicoContainer.Defaults
 {
-	
-[TestFixture]
-
-	public class PicoPicoTestCase
+  [Serializable]
+  public class TooManySatisfiableConstructorsException : PicoIntrospectionException
 	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    private Type forClass;
+    private ICollection constructors;
+
+    public TooManySatisfiableConstructorsException(Type forClass, ICollection constructors) 
+    {
+      this.forClass = forClass;
+      this.constructors = constructors;
+    }
+
+    public Type ForImplementationClass
+    {
+      get {
+        return forClass;
+      }
+    }
+
+    public override String Message
+    {
+      get 
+      {
+        return "Too many satisfiable constructors:" + constructors.ToString();
+      }
+    }
+
+    public ICollection Constructors
+    {
+      get {
+        return constructors;
+      }
+    }
+  }
 }
+

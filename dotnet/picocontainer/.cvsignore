@@ -1,1 +1,5 @@
 *.suo
+PicoContainer.resharper
+PicoContainer.resharperoptions
+bin
+*.user

@@ -10,7 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="java version &quot;1.4.2_01&quot;" />
+    <orderEntry type="jdk" jdkName="java version &quot;1.4.2&quot;" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>

@@ -78,10 +78,6 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
         Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponent(WilmaImpl.class);
 
-        System.out.println("-->" + nanningEnabledPicoContainer.getComponents().length);
-        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[0]);
-        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[1]);
-
         assertNotNull(wilma);
 
         wilma.hello();

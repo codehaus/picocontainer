@@ -25,6 +25,11 @@ public class StandardMBeanFactory {
 	public static final String BUILD_STANDARDMBEAN_ERROR =
 				"{0} must be an instance of {1}, or {2} should define the interface to use as a proxy.";
 
+	/**
+	 *
+	 * @param implementation the instance of the Object being exposed for management.
+	 * @param management the interface defining what to should be exposed.
+	 */
 	public static StandardMBean buildStandardMBean(final Object implementation, Class management) throws NotCompliantMBeanException {
 		if(management.isAssignableFrom(implementation.getClass())) {
 			return new StandardMBean(implementation, management);
@@ -47,7 +52,27 @@ public class StandardMBeanFactory {
 	}
 
 	/**
-	 * This allows the ability to force the implementation of an interface on a StandardMBean. Very powerful!
+	 * Allows an instance, or more specifically the instance of <code>implementation</code>, to be
+	 * registered against a <code>management<code> interface that the <code>implementation</code>
+	 * is not assignable from. In other words the implementation does NOT implement the management
+	 * interface.
+	 *
+	 * For Example:
+	 *
+	 * public interface Foo {
+	 *  	int size();
+	 * }
+	 *
+	 * public class Bar {
+	 *  	public int size() {
+	 * 			return 1;
+	 * 		}
+	 * }
+	 *
+	 * Notice how Bar does not implement the interface Foo. But Bar does have an identical size() method.
+	 * Allowing for the definition of Management interfaces which actually have no implementors.
+	 * This will be useful when exposing an Object via JMX when the source code is not available or
+	 * accesible (i.e. using third party jars or "closed" code).
 	 */
 	private static class StandardMBeanInvocationHandler implements InvocationHandler {
 		private Object implementation;

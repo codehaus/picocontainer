@@ -34,7 +34,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	private PicoContainer picoContainer;
 
 	/**
-	 * register an MBeanInfo to an ObjectName
+	 * Register for a DynamicMBean which maps an MBeanInfo to an ObjectName
 	 */
 	public void register(ObjectName objectName, MBeanInfo mBeanInfo) {
 		MBeanInfoWrapper wrapper = new MBeanInfoWrapper(mBeanInfo, objectName);
@@ -42,7 +42,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	}
 
 	/**
-	 * register an MBeanInfo to an ObjectName
+	 * Register for StandardMBean's which maps a Classes name to an ObjectName
 	 */
 	public void register(ObjectName objectName, Class management) {
 		map.put(management.getName(), objectName);

@@ -13,6 +13,7 @@ module Rico
     end
     
     def register_component(key, type, dependencies = [], create_method = :new)
+      dependencies.collect! { |dep| wrap_constant dep } 
       dependencies.each { |dep| check_key dep }
       @specs[key] = create_component_specification type, dependencies, create_method
     end
@@ -30,6 +31,7 @@ module Rico
     end
     
     def component(key)
+      
       return component_specification(key).component(self)
     end
     
@@ -54,8 +56,16 @@ module Rico
     
     private
     def check_key(key)
-      raise NonexistentComponentError, "Missing component #{key.to_s}" unless @specs.has_key? key
-      key
+      raise NonexistentComponentError, "Missing component [#{key.to_s}]" unless @specs.has_key? key
+      return key
+    end
+    
+    def wrap_constant value
+      return value if value.instance_of? Symbol
+      
+      key = "__key__#{value}".intern
+      @specs[key] = ConstantComponentSpecification.new(value)
+      return key
     end
   end
 end

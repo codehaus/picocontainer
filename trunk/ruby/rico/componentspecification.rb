@@ -20,3 +20,13 @@ class ComponentSpecification
     raise NoMethodError, "undefined method `#{meth.to_s}' for #{type.to_s}" unless type.methods.include? meth.to_s
   end
 end
+
+class ConstantComponentSpecification
+  def initialize(value)
+    @value = value
+  end
+  
+  def component(container)
+    return @value
+  end
+end

@@ -40,6 +40,10 @@ class ChainedContainerTest < Test::Unit::TestCase
   
   class Washable
     attr_accessor :washed
+    
+    def initialize
+      @washed = false
+    end
   end
   
   def test_chained_container_multicasts_to_parent
@@ -47,14 +51,14 @@ class ChainedContainerTest < Test::Unit::TestCase
     parent.register_component :parent_washable, Washable
     child = ChainedContainer.new parent
     child.register_component :child_washable, Washable
-    assert_equal nil, child.component(:parent_washable).washed
-    assert_equal nil, child.component(:child_washable).washed
+    assert_equal false, child.component(:parent_washable).washed
+    assert_equal false, child.component(:child_washable).washed
     child.multicast :washed=, true
     assert_equal true, child.component(:parent_washable).washed, "parent component"
     assert_equal true, child.component(:child_washable).washed, "child component"
   end
   
-  def test_get_component_across_multiple_levels_of_container
+  def test_gets_component_across_multiple_levels_of_container
     inner = Container.new
     inner.register_component :inner_washable, Washable
     
@@ -69,7 +73,7 @@ class ChainedContainerTest < Test::Unit::TestCase
     assert_not_nil outer.component(:middle_washable), "outer component should be found"
   end
   
-  def test_multicast_across_multiple_levels_of_container
+  def test_multicasts_across_containers
     inner = Container.new
     inner.register_component :inner_washable, Washable
     
@@ -79,7 +83,7 @@ class ChainedContainerTest < Test::Unit::TestCase
     outer = ChainedContainer.new middle
     outer.register_component :outer_washable, Washable
     
-    assert_equal nil, outer.component(:inner_washable).washed
+    assert_equal false, outer.component(:inner_washable).washed
     outer.multicast :washed=, true
     assert_equal true, outer.component(:inner_washable).washed
   end

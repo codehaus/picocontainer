@@ -3,7 +3,9 @@ require 'rico/componentspecification'
 
 module Rico
   class Interceptor
-    undef_method(:type)
+    all_methods = Object.public_instance_methods(true)
+    all_methods -= [ "__send__", "__id__" ] # apparently bad news to undefine
+    all_methods.each { |m| undef_method m }
     
     def initialize(target, entry_block)
       @target, @entry_block = target, entry_block

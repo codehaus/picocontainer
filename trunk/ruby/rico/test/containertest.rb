@@ -23,7 +23,7 @@ class ContainerTest < Test::Unit::TestCase
     end
   end
   
-  def test_register_component_with_no_dependencies
+  def test_registers_component_with_no_dependencies
     rico = Container.new
     rico.register_component :object, Object
     assert_equal 1, rico.component_count, "component count"
@@ -31,7 +31,7 @@ class ContainerTest < Test::Unit::TestCase
     assert_equal [], rico.dependencies(:object), "dependencies"
   end
   
-  class Dependent
+  class HasDependents
     attr_reader :needed, :also_needed
           
     def initialize needed, also_needed
@@ -45,32 +45,32 @@ class ContainerTest < Test::Unit::TestCase
     rico = Container.new
     rico.register_component :needed, Needed
     rico.register_component :also_needed, AlsoNeeded
-    rico.register_component :dependent, Dependent, [ :needed, :also_needed ]
+    rico.register_component :has_dependents, HasDependents, [ :needed, :also_needed ]
     return rico
   end 
 
-  def test_register_component_with_dependencies
+  def test_registers_component_with_dependencies
     rico = build_rico_with_dependent_components
     assert_equal 3, rico.component_count, "component count"
-    assert_equal Dependent, rico.component_class(:dependent), "component class"
-    assert_equal [ :needed, :also_needed ], rico.dependencies(:dependent), "dependencies"
+    assert_equal HasDependents, rico.component_class(:has_dependents), "component class"
+    assert_equal [ :needed, :also_needed ], rico.dependencies(:has_dependents), "dependencies"
   end
   
-  def test_register_component_with_missing_dependencies_fails
+  def test_registering_component_with_missing_dependencies_fails
     rico = Container.new
     assert_raises NonexistentComponentError do
        rico.register_component :key, Object, [ :nonexistent ]
     end
   end
   
-  def test_get_component_with_no_dependencies
+  def test_gets_component_with_no_dependencies
     rico = Container.new
     rico.register_component :object, Object
     result = rico.component :object
     assert_equal Object, result.class
   end
   
-  def test_get_component_twice_gives_same_component
+  def test_getting_component_twice_gives_same_component
     rico = Container.new
     rico.register_component :object, Object
     one = rico.component :object
@@ -78,11 +78,11 @@ class ContainerTest < Test::Unit::TestCase
     assert_same one, two
   end
     
-  def test_get_component_with_dependencies
+  def test_gets_component_with_dependencies
     rico = build_rico_with_dependent_components
-    dependent = rico.component :dependent
-    assert_instance_of Needed, dependent.needed
-    assert_instance_of AlsoNeeded, dependent.also_needed
+    component = rico.component(:has_dependents)
+    assert_instance_of Needed, component.needed
+    assert_instance_of AlsoNeeded, component.also_needed
   end
   
   class Higher
@@ -92,13 +92,13 @@ class ContainerTest < Test::Unit::TestCase
     end
   end
     
-  def test_get_component_with_multiple_levels_of_dependencies
+  def test_gets_component_with_multiple_levels_of_dependencies
     rico = build_rico_with_dependent_components
-    rico.register_component :higher, Higher, [ :dependent ]
+    rico.register_component :higher, Higher, [ :has_dependents ]
     
     # check top level has dependent
     higher = rico.component :higher
-    assert_instance_of Dependent, higher.dependent
+    assert_instance_of HasDependents, higher.dependent
     
     # check dependent has its own dependents
     dependent = higher.dependent
@@ -161,5 +161,22 @@ class ContainerTest < Test::Unit::TestCase
     rico.multicaster.washed = true
     assert_equal true, rico.component(:washable).washed
     assert_equal true, rico.component(:also_washable).washed
+  end
+  
+  class ComponentWithDependentAndConstant
+    attr_reader :needed, :constant
+    
+    def initialize needed, constant
+      @needed, @constant = needed, constant
+    end
+  end 
+  
+  def test_dependencies_can_be_constant_values
+    rico = Container.new
+    rico.register_component :needed, Needed
+    rico.register_component :component, ComponentWithDependentAndConstant, [ :needed, "constant" ]
+    component = rico.component(:component)
+    assert_instance_of Needed, component.needed
+    assert_equal "constant", component.constant
   end
 end

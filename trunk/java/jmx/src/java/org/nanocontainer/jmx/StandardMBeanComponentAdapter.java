@@ -16,6 +16,10 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import javax.management.StandardMBean;
 import javax.management.NotCompliantMBeanException;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.text.MessageFormat;
 
 /**
  * This component adapter is needed to ensure that a StandardMBean is registered with the MBeanServer
@@ -24,6 +28,29 @@ import javax.management.NotCompliantMBeanException;
  * @version $Revision$
  */
 public class StandardMBeanComponentAdapter extends InstanceComponentAdapter {
+	public static final String BUILD_STANDARDMBEAN_ERROR = "{0} must be an instance of {1}, or {2} should define the interface to force.";
+
+	private static StandardMBean buildStandardMBean(final Object implementation, Class management) throws NotCompliantMBeanException {
+		if(management.isAssignableFrom(implementation.getClass())) {
+			return new StandardMBean(implementation, management);
+		}
+		else if(management.isInterface()) {
+			// wrap in a proxy to act as the interface passed in
+			Class[] interfaces = new Class[] {management};
+
+			Object proxy = Proxy.newProxyInstance(implementation.getClass().getClassLoader(),
+					interfaces,
+					new StandardMBeanInvocationHandler(implementation) );
+
+			return new StandardMBean(proxy, management);
+		}
+
+		String error = MessageFormat
+				.format(BUILD_STANDARDMBEAN_ERROR, new Object[] {implementation.getClass(), management, management});
+
+		throw new NotCompliantMBeanException(error);
+	}
+
 	/**
 	 *
 	 * @param componentKey
@@ -31,7 +58,7 @@ public class StandardMBeanComponentAdapter extends InstanceComponentAdapter {
 	 * @param management represents the interface to expose via JMX
 	 */
 	public StandardMBeanComponentAdapter(Object componentKey, Object implementation, Class management) throws AssignabilityRegistrationException, NotConcreteRegistrationException, NotCompliantMBeanException {
-		super(componentKey, new StandardMBean(implementation, management));
+		super(componentKey, buildStandardMBean(implementation, management));
 	}
 
 	/**
@@ -42,5 +69,23 @@ public class StandardMBeanComponentAdapter extends InstanceComponentAdapter {
 		Object componentInstance = super.getComponentInstance();
 		MBeanServerHelper.register(this, componentInstance);
 		return componentInstance;
+	}
+
+	/**
+	 * This allows the ability to force the implementation of an interface on a StandardMBean. Very powerful!
+	 */
+	static class StandardMBeanInvocationHandler implements InvocationHandler {
+		private Object implementation;
+
+		private StandardMBeanInvocationHandler(Object implementation) {
+			this.implementation = implementation;
+		}
+
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			return implementation
+					.getClass()
+					.getMethod(method.getName(), method.getParameterTypes())
+					.invoke(implementation, args);
+		}
 	}
 }

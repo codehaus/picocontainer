@@ -8,62 +8,53 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import java.util.Properties;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.BeanPropertyComponentAdapter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Implementation of XMLPseudoComponentFactory that uses BeanPropertyComponentAdapter 
+ * to create instances from DOM elements.
+ * 
  * @author Paul Hammant
  * @author Marcos Tarruella
+ * @author Mauro Talevi
  */
 public class BeanXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
-
-    public Object makeInstance(Element elem) throws ClassNotFoundException {
-        String className = elem.getNodeName();
-        ReflectionContainerAdapter rfe = new DefaultReflectionContainerAdapter();
-        rfe.registerComponentImplementation(className);
-        Object o = rfe.getPicoContainer().getComponentInstances().get(0);
-
-        NodeList nl = elem.getChildNodes();
-        for (int i = 0; i < nl.getLength(); i++) {
-            Node n = nl.item(i);
-            if (n instanceof Element) {
-                Element e = (Element) n;
-                setBeanProperty(o, e.getNodeName(), e.getChildNodes().item(0).getNodeValue());
-            }
-        }
-        return o;
+    
+    /**
+     * {@inheritDoc}
+     * @see XMLPseudoComponentFactory#makeInstance(Element)
+     */
+    public Object makeInstance(Element element) throws ClassNotFoundException {
+        String className = element.getNodeName();
+        BeanPropertyComponentAdapter propertyComponentAdapter = 
+            new BeanPropertyComponentAdapter(createComponentAdapter(className));
+        propertyComponentAdapter.setProperties(createProperties(element.getChildNodes()));
+        return propertyComponentAdapter.getComponentInstance();
     }
 
-    // TODO: use BeanPropertyComponentAdapter!!!!!!
-    private void setBeanProperty(Object o, String nodeName, String nodeValue) {
-        String methodName = "set" + nodeName.substring(0, 1).toUpperCase() + nodeName.substring(1);
-        Method[] methods = o.getClass().getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) {
-                Class paramType = method.getParameterTypes()[0];
-                try {
-                    if (paramType == String.class) {
-                        method.invoke(o, new Object[]{nodeValue});
-                        return;
-                    } else if (paramType == Integer.TYPE) {
-                        method.invoke(o, new Object[]{new Integer(nodeValue)});
-                        return;
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+    private ComponentAdapter createComponentAdapter(String className) throws ClassNotFoundException{
+        Class implementation = Class.forName(className);
+        ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
+        return factory.createComponentAdapter(className, implementation, new Parameter[]{});        
+    }
+
+    private Properties createProperties(NodeList nodeList){
+        Properties properties = new Properties();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node n = nodeList.item(i);
+            if (n instanceof Element) {
+                Element e = (Element) n;
+                properties.setProperty(e.getNodeName(), e.getChildNodes().item(0).getNodeValue());
             }
         }
-        throw new UnsupportedOperationException("Whoa - bad type!!");
+        return properties;
     }
 }

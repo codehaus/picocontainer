@@ -1,7 +1,6 @@
 package org.microcontainer.impl;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.microcontainer.DeploymentException;

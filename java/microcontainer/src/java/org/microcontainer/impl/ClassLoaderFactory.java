@@ -13,7 +13,6 @@ package org.microcontainer.impl;
 import org.microcontainer.McaDeployer;
 
 import java.io.File;
-import java.net.URLClassLoader;
 import java.net.URL;
 import java.net.MalformedURLException;
 

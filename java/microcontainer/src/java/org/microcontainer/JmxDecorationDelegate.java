@@ -45,6 +45,9 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 	public void rememberComponentKey(Map attributes) {
 	}
 
+	/**
+	 * Create a component which is a child of the jmx node
+	 */
 	protected Object createComponent(Map attributes, JmxDefinition jmxDefinition) {
 		MutablePicoContainer picoContainer = jmxDefinition.getPicoContainer();
 		Class componentKey = (Class)attributes.remove("key"); // interface

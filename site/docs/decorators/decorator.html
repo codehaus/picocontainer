@@ -9,6 +9,15 @@
   <link media="print" type="text/css" href="print.css" rel="stylesheet">
   <meta content="text/html; charset=ISO-8859-1"
  http-equiv="Content-Type">
+ <SCRIPT>
+   function boldOrNot(text, page) {
+     if (window.location.toString().indexOf(page + ".html") > 0) {
+       document.write("<b>" + text + "</b>")
+     } else {
+       document.write(text)
+     }
+   }
+ </SCRIPT>
 </head>
 <body class="composite">
 <div id="banner">
@@ -54,63 +63,43 @@
       <td id="leftcol" width="20%">
       <div id="navcolumn">
       <div> <strong>PicoContainer</strong>
-      <div> <small> <a href="index.html">Introduction</a> </small> </div>
-      <div><small><a href="download.html">Download</a> </small> </div>
-      <div> <small> <a href="faq.html">FAQ</a> </small> </div>
-      <div><small><a href="configuration.html">Configuration</a> </small>
-      </div>
-      <div> <small> <a href="lifecycle.html">Lifecycle</a> </small> </div>
-      <div> <small> <a href="components.html">Components</a> </small>
-      </div>
-      <div> <small> <a href="component-adapters.html">Component
-Adapter</a> </small> </div>
-      <div> <small> <a href="compositecomponents.html">Component
-Multicaster</a> </small> </div>
-      <div><small><a href="related-projects.html">Related Projects</a> </small>
-      </div>
-      <div> <small> <a href="people.html">People</a> </small> </div>
-      <div> <small> <a href="blogs.html">Blogs</a> </small> </div>
-      <div><small><a href="download.html">Download</a> </small> </div>
-      <div> <small> <a href="mail-lists.html">Mail Lists</a> </small>
-      </div>
-      <div> <small> <a href="issue-tracking.html">Issue Tracking</a> </small>
-      </div>
-      <div> <small> <a href="source-repositories.html">Source
-Repositories</a> </small> </div>
-      <div><small><a href="license.html">License</a> </small> </div>
+      <div> <small> <a href="index.html"><script>boldOrNot('Introduction','index')</script></a> </small> </div>
+      <div> <small> <a href="download.html"><script>boldOrNot('Download','download')</script></a> </small> </div>
+      <div> <small> <a href="faq.html"><script>boldOrNot('FAQ','faq')</script></a> </small> </div>
+      <div> <small> <a href="configuration.html"><script>boldOrNot('Configuration','configuration')</script></a> </small> </div>
+      <div> <small> <a href="lifecycle.html"><script>boldOrNot('Lifecycle','lifecycle')</script></a> </small> </div>
+      <div> <small> <a href="components.html"><script>boldOrNot('Components','/components')</script></a> </small> </div>
+      <div> <small> <a href="component-adapters.html"><script>boldOrNot('Component Adapter','component-adapters')</script></a> </small> </div>
+      <div> <small> <a href="compositecomponents.html"><script>boldOrNot('Component Multicaster','/compositecomponents')</script></a> </small> </div>
+      <div> <small> <a href="related-projects.html"><script>boldOrNot('Related Projects','related-projects')</script></a> </small> </div>
+      <div> <small> <a href="people.html"><script>boldOrNot('People','people')</script></a> </small> </div>
+      <div> <small> <a href="blogs.html"><script>boldOrNot('Blogs','blogs')</script></a> </small> </div>
+      <div> <small> <a href="mail-lists.html"><script>boldOrNot('Mail Lists','mail-lists')</script></a> </small> </div>
+      <div> <small> <a href="issue-tracking.html"><script>boldOrNot('Issue Tracking','issue-tracking')</script></a> </small> </div>
+      <div> <small> <a href="source-repositories.html"><script>boldOrNot('Source Repositories','source-repositories')</script></a> </small> </div>
+      <div><small><a href="license.html"><script>boldOrNot('License','license')</script></a> </small> </div>
       </div>
       <div> <strong>PicoExtras<br>
       </strong>
-      <div><small><a href="extras.html">Extras</a></small></div>
-      <div><small><a href="hotswapping.html">Hot Swapping</a> </small>
+      <div><small><a href="extras.html"><script>boldOrNot('Extras','extras')</script></a></small></div>
+      <div><small><a href="hotswapping.html"><script>boldOrNot('Hot Swapping','hotswapping')</script></a> </small>
       </div>
       <div> <small> <a href="hotswapping.html"> </a></small></div>
       </div>
       <div> <strong>Further Reading</strong>
-      <div> <small> <a href="presentations">Presentations</a> </small> </div>
-      <div> <small><a href="good-citizens.html">Good
-Citizens</a></small><br>
-      </div>
-      <div> <small> <a href="ioc.html">Inversion of Control</a> </small>
-      </div>
-      <div><small><a href="nirvana.html">Nirvana</a> </small> </div>
-      <div><small><a href="propaganda.html">Propaganda</a><br>
-      </small></div>
-      <div><small><a href="differentiators.html">Differentiators</a><br>
-      </small></div>
-      <div><small><a href="picosaurus.html">Picosaurus</a><br>
-      </small></div>
-      <div><small><a href="propaganda.html">Propaganda</a><br>
-      </small></div>
-      <div><small><a href="history.html">History</a><br>
-      </small></div>
-      <div><small><a href="propaganda.html">Propaganda</a><br>
-      </small></div>
+      <div> <small> <a href="presentations/">Presentations</a> </small> </div>
+      <div> <small> <a href="good-citizens.html"><script>boldOrNot('Good Citizens','good-citizens')</script></a> </small><br> </div>
+      <div> <small> <a href="ioc.html"><script>boldOrNot('Inversion of Control','ioc')</script></a> </small> </div>
+      <div><small><a href="nirvana.html"><script>boldOrNot('Nirvana','nirvana')</script></a> </small> </div>
+      <div><small><a href="propaganda.html"><script>boldOrNot('Propaganda','propaganda')</script></a><br> </small></div>
+      <div><small><a href="differentiators.html"><script>boldOrNot('Differentiators','differentiators')</script></a><br> </small></div>
+      <div><small><a href="picosaurus.html"><script>boldOrNot('Picosaurus','picosaurus')</script></a><br> </small></div>
+      <div><small><a href="history.html"><script>boldOrNot('History','history')</script></a><br> </small></div>
       </div>
       <div><strong>Java Language Implementations</strong><br>
       <div><small><a href="picocontainer/index.html">PicoContainer</a> </small>
       </div>
-      <div> <small> <a href="picoextras/index.html">PicoExtras</a> </small>
+      <div> <small> <a href="picoextras/index.html"><script>PicoExtras</a> </small>
       </div>
       </div>
       <div> <strong>Ruby Language Implementations</strong> <small> </small>

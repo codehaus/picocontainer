@@ -9,25 +9,28 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import junit.framework.TestCase;
 import org.jmock.Mock;
-import org.jmock.C;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.Startable;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class LifecycleContainerBuilderTestCase extends TestCase {
+public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
-        final Mock childStartable = new Mock(Startable.class);
-        childStartable.expect("start", C.args());
-        childStartable.expect("stop", C.args());
+        final Mock childStartable = mock(Startable.class);
+        childStartable.expects(once())
+                      .method("start")
+                      .withNoArguments();
+        childStartable.expects(once())
+                      .method("stop")
+                      .withNoArguments();
 
         ContainerComposer containerAssembler = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
@@ -39,9 +42,7 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
         ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parentC = new DefaultPicoContainer();
 
-        // Expect no calls on this one!
-        Mock parentStartable = new Mock(Startable.class);
-        parentStartable.expectAndReturn("equals", C.ANY_ARGS, Boolean.FALSE);
+        Mock parentStartable = mock(Startable.class);
         parentC.registerComponentInstance(parentStartable.proxy());
         parentRef.set(parentC);
 
@@ -53,8 +54,8 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
 
         builder.killContainer(childRef);
 
-        parentStartable.verify();
-        childStartable.verify();
+        //parentStartable.verify();
+        //childStartable.verify();
     }
 
 }

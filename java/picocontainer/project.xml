@@ -260,7 +260,7 @@
         </dependency>
         <dependency>
             <id>jmock</id>
-            <version>usedbypico</version>
+            <version>1.0.0.RC1</version>
         </dependency>
         <dependency>
             <id>xstream</id>

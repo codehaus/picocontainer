@@ -14,7 +14,7 @@ module Rico
     
     def register_component(key, type, dependencies = [], create_method = :new)
       dependencies.each { |dep| check_key dep }
-      @specs[key] = ComponentSpecification.new type, dependencies, create_method
+      @specs[key] = create_component_specification type, dependencies, create_method
     end
     
     def component_class(key)
@@ -48,6 +48,10 @@ module Rico
       return @specs[check_key(key)]
     end
     
+    def create_component_specification(type, dependencies, create_method)
+      return ComponentSpecification.new(type, dependencies, create_method)
+    end
+    
     private
     def check_key(key)
       raise NonexistentComponentError, "Missing component #{key.to_s}" unless @specs.has_key? key
@@ -55,4 +59,3 @@ module Rico
     end
   end
 end
-

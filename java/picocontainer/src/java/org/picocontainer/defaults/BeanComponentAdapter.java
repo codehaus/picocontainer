@@ -31,7 +31,7 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
 
     protected Object instantiateComponent(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Object result = super.instantiateComponent(adapterDependencies, dependencyContainer);
-        setDependencies(result, adapterDependencies, dependencyContainer);
+        setDependencies(result, adapterDependencies);
         return result;
     }
 
@@ -45,16 +45,15 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
         }
     }
 
-    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
+    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies) {
         return null;
     }
 
-    private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
+    private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies) {
         Method[] setters = getSetters();
         for (int i = 0; i < setters.length; i++) {
             Method setter = setters[i];
             ComponentAdapter adapterDependency = adapterDependencies[i];
-            PicoContainer adapterOwner = adapterDependency.getContainer();
             Object dependency = adapterDependency.getComponentInstance();
             try {
                 setter.invoke(componentInstance, new Object[]{dependency});

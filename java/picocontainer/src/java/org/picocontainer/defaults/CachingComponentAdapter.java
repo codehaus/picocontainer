@@ -39,16 +39,4 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
         }
         return instanceReference.get();
     }
-
-    private static class SimpleReference implements ObjectReference, Serializable {
-        private Object instance;
-
-        public Object get() {
-            return instance;
-        }
-
-        public void set(Object item) {
-            this.instance = item;
-        }
-    }
 }

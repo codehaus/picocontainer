@@ -12,11 +12,7 @@ package org.picocontainer;
 
 public class PicoInstantiationException extends PicoInitializationException {
 
-    public PicoInstantiationException(String message) {
-        super(message);
-    }
-
-    public PicoInstantiationException(String message, Throwable cause) {
+    protected PicoInstantiationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

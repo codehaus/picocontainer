@@ -36,7 +36,7 @@ class LifecycleAdapter implements Lifecycle, Serializable {
     private final PicoContainer picoContainer;
     private final ComponentMulticasterAdapter componentMulticasterAdapter;
 
-    public LifecycleAdapter(PicoContainer picoContainer, ComponentMulticasterAdapter componentMulticasterAdapter) {
+    private LifecycleAdapter(PicoContainer picoContainer, ComponentMulticasterAdapter componentMulticasterAdapter) {
         this.picoContainer = picoContainer;
         this.componentMulticasterAdapter = componentMulticasterAdapter;
     }

@@ -34,10 +34,6 @@ public class InterfaceFinder implements Serializable {
         }
     }
 
-    public Class[] getInterfaces(Object object) {
-        return getInterfaces(Collections.singletonList(object));
-    }
-
     /**
      * Get all the interfaces implemented by a list of objects.
      * @return an array of interfaces.
@@ -59,7 +55,7 @@ public class InterfaceFinder implements Serializable {
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
-    private void getInterfaces(Class clazz, Set interfaces) {
+    private static void getInterfaces(Class clazz, Set interfaces) {
         // Strangely enough Class.getInterfaces() does not include the interfaces
         // implemented by superclasses. So we must loop up the hierarchy.
         while (clazz != null) {

@@ -34,10 +34,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
     /**
      * Explicitly specifies parameters, if null uses default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
-     * @param parameters              
+     * {@inheritDoc}
      */
     public ConstructorComponentAdapter(final Object componentKey,
                                        final Class componentImplementation,
@@ -47,9 +44,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
     /**
      * Use default parameters.
-     * 
-     * @param componentKey            
-     * @param componentImplementation 
+     * {@inheritDoc}
      */
     public ConstructorComponentAdapter(Object componentKey,
                                        Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -61,9 +56,6 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
         return constructor.getParameterTypes();
     }
 
-    /**
-     * @return The greediest satisfiable constructor
-     */
     protected Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
         List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, dependencyContainer);
@@ -125,24 +117,12 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
         return satisfiableConstructors;
     }
 
-    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) {
+    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies) {
         Object[] result = new Object[adapterDependencies.length];
         for (int i = 0; i < adapterDependencies.length; i++) {
             ComponentAdapter adapterDependency = adapterDependencies[i];
-            PicoContainer adapterOwner = adapterDependency.getContainer();
             result[i] = adapterDependency.getComponentInstance();
         }
         return result;
     }
-
-    public boolean equals(Object object) {
-        if (!(object instanceof ComponentAdapter)) {
-            return false;
-        }
-        ComponentAdapter other = (ComponentAdapter) object;
-
-        return getComponentKey().equals(other.getComponentKey()) &&
-                getComponentImplementation().equals(other.getComponentImplementation());
-    }
-
 }

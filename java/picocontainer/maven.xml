@@ -18,4 +18,19 @@
       of the committers.
     </echo>    
   </goal>
+
+  <!--
+   ! Maven doesn't tell us whether compile was ok.
+   ! We'll work around it by creating a file and delete
+   ! it when compile is done. If compile fails, the file
+   ! is still there, and the continuous-integration.sh
+   ! script can figure out whether compile was ok.
+  -->
+  <preGoal name="java:compile">
+    <touch file="${maven.build.dir}/compiling"/>
+  </preGoal>
+
+  <postGoal name="java:compile">
+    <delete file="${maven.build.dir}/compiling"/>
+  </postGoal>
 </project>

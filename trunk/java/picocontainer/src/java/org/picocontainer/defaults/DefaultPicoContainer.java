@@ -10,20 +10,19 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentRegistry;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.Parameter;
+import org.picocontainer.RegistrationPicoContainer;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -33,31 +32,31 @@ import java.util.Set;
  */
 public class DefaultPicoContainer implements RegistrationPicoContainer {
 
-    private final ComponentFactory componentFactory;
-    private List registeredComponents = new ArrayList();
-    private Map componentKeyToInstanceMap = new HashMap();
 
-    // Keeps track of the instantiation order
-    protected List orderedComponents = new ArrayList();
+    private final ComponentRegistry componentRegistry;
+    private final ComponentFactory componentFactory;
 
     // Keeps track of unmanaged components - components instantiated outside this container
     protected List unmanagedComponents = new ArrayList();
 
     private boolean initialized;
-    private Map componentToSpec = new HashMap();
     private CompositeProxyFactory compositeProxyFactory = new DefaultCompositeProxyFactory();
 
     public static class Default extends DefaultPicoContainer {
         public Default() {
-            super(new DefaultComponentFactory());
+            super(new DefaultComponentFactory(), new DefaultComponentRegistry());
         }
     }
 
-    public DefaultPicoContainer(ComponentFactory componentFactory) {
+    public DefaultPicoContainer(ComponentFactory componentFactory, ComponentRegistry componentRegistry) {
         if (componentFactory == null) {
             throw new NullPointerException("componentFactory cannot be null");
         }
+        if (componentRegistry == null) {
+            throw new NullPointerException("componentRegistry cannot be null");
+        }
         this.componentFactory = componentFactory;
+        this.componentRegistry = componentRegistry;
     }
 
     // see PicoContainer interface for Javadocs
@@ -69,7 +68,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     // see PicoContainer interface for Javadocs
     public final Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents)
     {
-        List aggregateComponents = new ArrayList(orderedComponents);
+        List aggregateComponents = componentRegistry.getOrderedComponents();
         if(!callUnmanagedComponents) {
             for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {
                 aggregateComponents.remove( iterator.next() );
@@ -99,12 +98,11 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     }
 
     private void registerComponent(ComponentSpecification compSpec) {
-        componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
-        registeredComponents.add(compSpec);
+        componentRegistry.registerComponent(compSpec);
     }
 
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
             Object key = ((ComponentSpecification) iterator.next()).getComponentKey();
             if (key == componentKey) {
                 throw new DuplicateComponentKeyRegistrationException(key);
@@ -137,8 +135,9 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         checkTypeCompatibility(componentKey, component.getClass());
         checkKeyDuplication(componentKey);
         registerComponent(new ComponentSpecification(defaultComponentFactory(), componentKey, component.getClass(), null));
-        componentKeyToInstanceMap.put(componentKey, component);
-        orderedComponents.add(component);
+        componentRegistry.putComponent(componentKey, component);
+
+        componentRegistry.addOrderedComponent(component);
         unmanagedComponents.add(component);
     }
 
@@ -147,7 +146,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     }
 
     public void addParameterToComponent(Object componentKey, Class parameter, Object arg) throws PicoIntrospectionException {
-        ComponentSpecification componentSpec = ((ComponentSpecification) componentToSpec.get(componentKey));
+        ComponentSpecification componentSpec = componentRegistry.getComponentSpec(componentKey);
         componentSpec.addConstantParameterBasedOnType(parameter, arg);
     }
 
@@ -166,28 +165,27 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
 
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInitializationException {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
             ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
             createComponent(componentSpec);
         }
     }
 
     Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
-        if (!componentKeyToInstanceMap.containsKey(componentSpecification.getComponentKey())) {
-
+        if (!componentRegistry.contains(componentSpecification.getComponentKey())) {
             Object component = componentSpecification.instantiateComponent(this);
-            orderedComponents.add(component);
+            componentRegistry.addOrderedComponent(component);
 
-            componentKeyToInstanceMap.put(componentSpecification.getComponentKey(), component);
+            componentRegistry.putComponent(componentSpecification.getComponentKey(), component);
 
             return component;
         } else {
-            return componentKeyToInstanceMap.get(componentSpecification.getComponentKey());
+            return componentRegistry.getComponentInstance(componentSpecification.getComponentKey());
         }
     }
 
     public Object getComponent(Object componentKey) {
-        return componentKeyToInstanceMap.get(componentKey);
+        return componentRegistry.getComponentInstance(componentKey);
     }
 
     Object createComponent(Class componentType) throws PicoInitializationException {
@@ -218,7 +216,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
 
-        for (Iterator iterator = componentKeyToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getInstanceMapIterator(); iterator.hasNext();) {
             Map.Entry entry = (Map.Entry) iterator.next();
             Object key = entry.getKey();
             Object component = entry.getValue();
@@ -232,7 +230,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
             throw new AmbiguousComponentResolutionException(componentType, ambiguousKeys);
         }
 
-        return found.isEmpty() ? null : componentKeyToInstanceMap.get(found.get(0));
+        return found.isEmpty() ? null : componentRegistry.getComponentInstance(found.get(0));
     }
 
     Object getComponent(ComponentSpecification componentSpec) {
@@ -241,7 +239,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
 
     ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
 
             if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
@@ -302,10 +300,9 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         return components;
     }
 
+    //TODO - remove from PicoContainer interface?
     public Object[] getComponentKeys() {
-        // Get my own
-        Set types = componentKeyToInstanceMap.keySet();
-        return types.toArray();
+        return componentRegistry.getInstanceMapKeyArray();
     }
 
     public final boolean hasComponent(Object componentKey) {
@@ -313,7 +310,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
     }
 
     public ComponentSpecification getComponentSpecification(Object componentKey) {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
             if (componentSpecification.getComponentKey().equals(componentKey)) {
                 return componentSpecification;

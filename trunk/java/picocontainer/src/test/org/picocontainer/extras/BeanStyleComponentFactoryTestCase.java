@@ -38,7 +38,7 @@ public class BeanStyleComponentFactoryTestCase extends TestCase {
 
     public void testWithContainer() throws AssignabilityRegistrationException,
             DuplicateComponentKeyRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new BeanStyleComponentFactory());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new BeanStyleComponentFactory(), new DefaultComponentRegistry());
 
         pico.registerComponent(Dog.class, DogImpl.class);
         pico.registerComponentByClass(ManImpl.class);

@@ -26,25 +26,27 @@ TODO (Aslak):
 
 package org.picocontainer.hierarchical;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentRegistry;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentFactory;
+import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NullContainer;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class HierarchicalPicoContainer extends DefaultPicoContainer implements RegistrationPicoContainer {
 
     private final PicoContainer parentContainer;
 
-    public HierarchicalPicoContainer(ComponentFactory componentFactory, PicoContainer parentContainer) {
-        super(componentFactory);
+    public HierarchicalPicoContainer(ComponentFactory componentFactory,
+                                     PicoContainer parentContainer, ComponentRegistry componentRegistry) {
+        super(componentFactory, componentRegistry);
 
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
@@ -54,20 +56,20 @@ public class HierarchicalPicoContainer extends DefaultPicoContainer implements R
 
     public static class Default extends HierarchicalPicoContainer {
         public Default() {
-            super(new DefaultComponentFactory(), new NullContainer());
+            super(new DefaultComponentFactory(), new NullContainer(), new DefaultComponentRegistry());
         }
 
     }
 
     public static class WithParentContainer extends HierarchicalPicoContainer {
         public WithParentContainer(PicoContainer parentContainer) {
-            super(new DefaultComponentFactory(), parentContainer);
+            super(new DefaultComponentFactory(), parentContainer, new DefaultComponentRegistry());
         }
     }
 
     public static class WithComponentFactory extends HierarchicalPicoContainer {
         public WithComponentFactory(ComponentFactory componentFactory) {
-            super(componentFactory, new NullContainer());
+            super(componentFactory, new NullContainer(), new DefaultComponentRegistry());
         }
     }
 

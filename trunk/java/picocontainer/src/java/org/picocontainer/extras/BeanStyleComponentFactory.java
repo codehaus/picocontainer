@@ -1,3 +1,13 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Idea by Rachel Davies, Original code by Aslak Hellesoy                    *
+ *****************************************************************************/
+
 package org.picocontainer.extras;
 
 import org.picocontainer.ComponentFactory;
@@ -18,7 +28,7 @@ import java.util.List;
  * methods in the component implementation classes is enough to have these methods called).
  * <em>
  * This class is provided for convenience only, so components adhering to IoC type 1 can be used
- * without modification. It is however recommended to use {@link picocontainer.defaults.DefaultComponentFactory}
+ * without modification. It is however recommended to use {@link org.picocontainer.defaults.DefaultComponentFactory}
  * as the basis for component creation, as this leads to a better component design.
  * </em>
  *

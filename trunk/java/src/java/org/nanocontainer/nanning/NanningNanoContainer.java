@@ -19,6 +19,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
 /**
@@ -31,8 +32,10 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
 
     private RegistrationPicoContainer serviceAndAspectContainer;
 
-    public NanningNanoContainer(ComponentFactory componentFactory, RegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
-        super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer);
+    public NanningNanoContainer(ComponentFactory componentFactory, 
+                                RegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
+        super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer,
+            new DefaultComponentRegistry());
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.aspectSystem = aspectSystem;
     }

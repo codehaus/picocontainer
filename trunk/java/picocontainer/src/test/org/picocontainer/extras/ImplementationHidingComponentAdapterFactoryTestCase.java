@@ -117,6 +117,15 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     }
 
+    public void XtestBigamy() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
+                new TransientComponentAdapterFactory()));
+        pico.registerComponentImplementation(Woman.class, Wife.class);
+        Woman firstWife = (Woman) pico.getComponentInstance(Woman.class);
+        Woman secondWife = (Woman) pico.getComponentInstance(Woman.class);
+        assertNotSame(firstWife, secondWife);
+    }
+
     protected ComponentAdapterFactory createComponentAdapterFactory() {
         return new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }

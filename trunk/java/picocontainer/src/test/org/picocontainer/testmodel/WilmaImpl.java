@@ -10,8 +10,10 @@
 
 package org.picocontainer.testmodel;
 
+import java.io.Serializable;
 
-public class WilmaImpl implements Wilma {
+
+public class WilmaImpl implements Wilma, Serializable {
 
     private boolean helloCalled;
 

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -30,7 +31,7 @@ import java.util.Map;
  * @author Aslak Hellesoy
  * @version $Revision: 1.8 $
  */
-public class DefaultPicoContainer implements RegistrationPicoContainer {
+public class DefaultPicoContainer implements RegistrationPicoContainer, Serializable {
 
 
     private final ComponentRegistry componentRegistry;

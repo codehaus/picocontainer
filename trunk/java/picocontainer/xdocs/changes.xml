@@ -51,6 +51,12 @@
                 - Added SynchronizedComponentAdapter.
             </action>
 
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-83">PICO-83</a>
+                - findComponentAdapter(Object) throws ConcurrentModificationException.
+            </action>
+
             <action dev="rinkrank" type="update">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-85">PICO-85</a>

@@ -42,13 +42,16 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler(mcaDeployer);
 	}
 
+	protected void buildContainerAndRegisterContext(String context, boolean autoStart) throws DeploymentException {
+		PicoContainer container = groovyDeploymentScriptHandler.handle(context, autoStart);
+		contextMap.put(context, container);
+	}
+
 	protected void doDeploy(String context, URL mcaFile, boolean autoStart) throws DeploymentException {
 		try {
 			// deploy to work folder
 			mcaDeployer.deploy(context, mcaFile);
-
-			PicoContainer container = groovyDeploymentScriptHandler.handle(context, autoStart);
-			contextMap.put(context, container);
+			buildContainerAndRegisterContext(context, autoStart);
 
 			// start container now, or defer until later
 			/*if(start) {
@@ -119,6 +122,10 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
         return (PicoContainer)contextMap.get(context);
     }
 
+	public int size() {
+		return contextMap.size();
+	}
+
     public void start(String startableNode) {
 		PicoContainer container = (PicoContainer)contextMap.get(startableNode);
 		container.start();
@@ -140,6 +147,7 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	// Dispose of all containers.
 	public void dispose() {
 	}
+
 }
 
 

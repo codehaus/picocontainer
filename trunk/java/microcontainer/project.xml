@@ -82,6 +82,12 @@
         </dependency>
 
 		<dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+		<dependency>
             <id>mx4j</id>
             <version>2.0.1</version>
         </dependency>

@@ -17,6 +17,7 @@ import org.nanocontainer.NanoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.microcontainer.impl.AliasComponentAdapter;
 
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanInfo;
@@ -61,14 +62,11 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 	 */
 	protected Object createComponent(Map attributes, JmxDefinition jmxDefinition) {
 		MutablePicoContainer picoContainer = jmxDefinition.getPicoContainer();
-		Class componentKey = (Class)attributes.remove("key"); // interface
-		Class componentImplementation = (Class)attributes.remove("class"); // implementation
-
-		// register the implementation with pico
-		picoContainer.registerComponentImplementation(componentKey, componentImplementation);
+		Object key = attributes.remove("key"); // interface
+		Class componentImplementation = getComponentImplementation(attributes.remove("class"));
 
 		// Now MBean stuff...
-		List methods = getMatchingMethods(jmxDefinition.getOperations(), componentKey);
+		List methods = getMatchingMethods(jmxDefinition.getOperations(), componentImplementation);
 		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
 
 		// register the MBeanInfo
@@ -76,11 +74,30 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		MBeanInfo mBeanInfo = new MBeanInfo(className, "description", null, null, mBeanOperationInfos, null);
 		picoContainer.registerComponentInstance(className.concat("MBeanInfo"), mBeanInfo);
 
-		// register the MBean
+		// register the MBean to the objectName (as a key)
 		ComponentAdapter ca = new MBeanComponentAdapterFactory().createComponentAdapter(jmxDefinition.getKey(), componentImplementation, null);
 		picoContainer.registerComponent(ca);
 
+		// also register the implementation as a key to pico
+		picoContainer.registerComponent(new AliasComponentAdapter(key, ca));
+
 		return picoContainer;
+	}
+
+	/**
+	 * get the class regardless of whether it was defined as a class of the Class name from the groovy script
+	 */
+	protected Class getComponentImplementation(Object clazz) {
+		if(clazz instanceof Class) {
+			return (Class)clazz;
+		}
+		else {
+			try {
+				return Class.forName((String)clazz);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	protected MBeanOperationInfo[] buildMBeanOperationInfoArray(List methods) {

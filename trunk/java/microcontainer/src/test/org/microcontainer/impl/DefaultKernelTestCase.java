@@ -15,6 +15,7 @@ import org.microcontainer.DeploymentException;
 import org.microcontainer.McaDeployer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.nanocontainer.testmodel.Wilma;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
@@ -26,7 +27,6 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipException;
-import java.util.HashMap;
 
 /**
  * @author Paul Hammant
@@ -293,18 +293,18 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testJMXPublication() throws Exception {
         kernel.deploy(new File("test.mca"));
 
-		ObjectName objectName = new ObjectName("domain:map=default");
+		ObjectName objectName = new ObjectName("domain:wilma=default");
 		PicoContainer root = kernel.getRootContainer("test");
 		MBeanServer mBeanServer = (MBeanServer)root.getComponentInstance(MBeanServer.class);
 
-		HashMap map = (HashMap)root.getComponentInstance(objectName.getCanonicalName());
-		MBeanInfo mBeanInfo = (MBeanInfo)root.getComponentInstance("java.util.HashMapMBeanInfo");
+		Wilma wilma = (Wilma)root.getComponentInstance(objectName.getCanonicalName());
+		wilma.hello();
 
-		assertNotNull(map);
+		MBeanInfo mBeanInfo = (MBeanInfo)root.getComponentInstance("org.nanocontainer.testmodel.WilmaImplMBeanInfo");
 		assertNotNull(mBeanInfo);
 
-		Integer size = (Integer)mBeanServer.invoke(objectName, "size", null, null);
-		assertEquals(0, size.intValue());
+		Boolean called = (Boolean)mBeanServer.invoke(objectName, "helloCalled", null, null);
+		assertTrue(called.booleanValue());
     }
 }
 

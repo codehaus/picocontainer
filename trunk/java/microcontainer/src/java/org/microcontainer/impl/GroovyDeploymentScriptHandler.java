@@ -60,6 +60,9 @@ public class GroovyDeploymentScriptHandler {
         return (PicoContainer) containerRef.get();
     }
 
+	/**
+	 * This class is necessary to prevent autoStarting of microcontainer
+	 */
     private class MicroGroovyContainerBuilder extends GroovyContainerBuilder {
 
         public MicroGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {

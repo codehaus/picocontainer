@@ -31,7 +31,7 @@ public class DefaultNanoRhinoScriptableTestCase extends TestCase {
                 rootContainer.getComponentInstances().get(0).getClass());
     }
 
-    public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoCompositionException {
+    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         Reader script = new StringReader("" +
                 "var caf = new Packages.org.picocontainer.extras.ImplementationHidingComponentAdapterFactory();\n" +

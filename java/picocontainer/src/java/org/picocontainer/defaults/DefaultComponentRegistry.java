@@ -69,7 +69,8 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
     public Collection getComponentInstances() throws PicoInitializationException {
         ArrayList componentInstances = new ArrayList(componentKeyToAdapterMap.size());
         for (Iterator iterator = componentKeyToAdapterMap.keySet().iterator(); iterator.hasNext();) {
-            componentInstances.add(getComponentInstance(iterator.next()));
+            Object componentInstance = getComponentInstance(iterator.next());
+            componentInstances.add(componentInstance);
         }
         return Collections.unmodifiableCollection(componentInstances);
     }

@@ -180,9 +180,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     if (dependencyKey == null || "".equals(dependencyKey)) {
                         dependencyClass = ((Element) child).getAttribute(CLASS);
                         if (dependencyClass == null || "".equals(dependencyClass)) {
-                            throw new PicoCompositionException("either key or class must be present for dependecy");
+                            throw new PicoCompositionException("either key or class must be present for dependency");
                         } else {
-                            parameters.add(new ComponentParameter());
+                            parameters.add(new ComponentParameter(classLoader.loadClass(dependencyClass)));
                         }
                     } else {
                         parameters.add(new ComponentParameter(dependencyKey));

@@ -11,7 +11,7 @@ package org.nanocontainer.integrationkit;
 import org.picocontainer.defaults.ObjectReference;
 
 /**
- * The responsability of a ContainerBuilder is to <em>instantiate</em> and <em>composer</em> containers.
+ * The responsibility of a ContainerBuilder is to <em>instantiate</em> and <em>compose</em> containers.
  * (Composition means assembly (registration) and configuration (setting primitive parameters) of
  * components).
  *

@@ -4,7 +4,7 @@
   <title>How Swapping and Circular Dependencies</title>
 </head>
 <body>
-One of the new features in PicoContainer 1.0 is support for circular
+Support for circular
 dependencies and transparent hot swapping. In order to achieve this,
 your components must honour
 interface/implementation separation. It is then done simply by
@@ -31,8 +31,8 @@ the real subjects (that are hidden from
 you). Here is a UML diagram that describes the relationships between
 the objects in the system.<br>
 <br>
-<img src="implementationhiding.png" title="" alt="Implementation Hiding"
- style="width: 622px; height: 203px;"><br>
+<img style="width: 622px; height: 203px;" alt="Implementation Hiding"
+ title="" src="implementationhiding.png"><br>
 <br>
 When a component is requested via getComponentInstance(), only a
 dynamic proxy for the real subject is created. Nothing more. This means

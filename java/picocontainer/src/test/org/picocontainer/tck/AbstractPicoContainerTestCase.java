@@ -182,5 +182,30 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertTrue(unsatisfiableDependencies.contains(C.class));
         }
     }
+
+    public static class D {
+        public D(E e, B b){}
+    };
+    public static class E {
+        public E(D d){}
+    };
+
+    public void testCyclicDependencyThrowsCyclicDependencyException() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(B.class);
+        pico.registerComponentImplementation(D.class);
+        pico.registerComponentImplementation(E.class);
+
+        try {
+            pico.getComponentInstance(D.class);
+            fail();
+        } catch (CyclicDependencyException e) {
+            assertEquals("Cyclic dependency: " + D.class.getConstructors()[0].getName() + "(" + E.class.getName() + "," + B.class.getName() + ")", e.getMessage());
+            assertEquals(D.class.getConstructors()[0], e.getConstructor());
+        } catch (StackOverflowError e) {
+            fail();
+        }
+    }
+
 }
 

@@ -12,7 +12,14 @@
             <action dev="rinkrank" type="fix">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-44">PICO-44</a>
-                - Lack of information when pico is unable to satisfy dependencies..
+                - Lack of information when pico is unable to satisfy dependencies.
+            </action>
+
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-47">PICO-47</a>
+                - Avoid StackOverflowError when dependency cycle exists.
+                (CyclicDependencyException with a detailed message will be thrown instead)
             </action>
 
         </release>
@@ -38,14 +45,18 @@
             </action>
 
             <action dev="rinkrank" type="update">
-                Fixed
-                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-6">PICO-6</a>
-                - Lazy instantiation of components. As a result, PicoContainer.instantiateComponents()
-                is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
+                All exceptions are now RuntimeExceptions.
             </action>
 
             <action dev="rinkrank" type="add">
                 Added an Ant task for PicoContainer (It currently lives in the NanoContainer codebase).
+            </action>
+
+            <action dev="rinkrank" type="update">
+                Fixed
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-6">PICO-6</a>
+                - Lazy instantiation of components. As a result, PicoContainer.instantiateComponents()
+                is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
             </action>
 
             <action dev="rinkrank" type="update">
@@ -148,7 +159,7 @@
 
         <release version="1.0-alpha-2" date="2003-07-10">
 
-            <action dev="tirsen" type="update">
+            <action dev="rinkrank" type="update">
                 Factored out logic for creation of aggregating proxy for a
                 container's components. This opens up for alternative
                 implementations using e.g. cglib.

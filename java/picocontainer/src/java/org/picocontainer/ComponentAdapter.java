@@ -29,11 +29,11 @@ public interface ComponentAdapter {
      * This method should also register the instantiated component with the
      * pico container.
      *
-     * @param picoContainer container where the adapter can look for
+     * @param dependencyContainer container where the adapter can look for
      *  dependent component instances
      * @return the component instance
      * @throws PicoInitializationException if the component couldn't be instantiated
      */
-    Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException;
+    Object getComponentInstance(MutablePicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException;
 
 }

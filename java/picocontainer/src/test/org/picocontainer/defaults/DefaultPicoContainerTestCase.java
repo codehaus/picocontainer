@@ -12,9 +12,11 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.Parameter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.FredImpl;
 import org.picocontainer.testmodel.Webster;
 import org.picocontainer.testmodel.Wilma;
@@ -25,6 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -729,6 +737,32 @@ public class DefaultPicoContainerTestCase extends TestCase {
             assertTrue(npe.getMessage().indexOf("componentFactory") >= 0);
         }
 
+    }
+
+    public void testSerializabilityOfContainer() throws NotConcreteRegistrationException, 
+        AssignabilityRegistrationException, PicoInitializationException,
+        DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException,
+        IOException, ClassNotFoundException {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+
+        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(WilmaImpl.class);
+
+        pico.instantiateComponents();
+
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("test.of.serialization"));
+
+        oos.writeObject(pico);
+
+        pico = null;
+
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("test.of.serialization"));
+
+        PicoContainer deserializedPico = (PicoContainer) ois.readObject();
+
+        WilmaImpl wilma = (WilmaImpl) deserializedPico.getComponent(WilmaImpl.class);
+
+        assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }
 
 

@@ -16,8 +16,10 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Parameter;
 
 import java.util.Arrays;
+import java.io.Serializable;
 
-public class ComponentSpecification {
+public class ComponentSpecification implements Serializable {
+
     private final ComponentFactory componentFactory;
     private final Object componentKey;
     private final Class comp;

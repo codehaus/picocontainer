@@ -4,11 +4,14 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.Parameter;
 
+import java.io.Serializable;
+
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @version $Revision$
  */
-public class ComponentParameter implements Parameter {
+public class ComponentParameter implements Parameter, Serializable {
+
     private Object componentKey;
 
     public ComponentParameter() {

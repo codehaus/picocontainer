@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
  * The default component registry.
@@ -25,7 +26,7 @@ import java.util.Set;
  * @version $Revision: 1.8 $
  */
 
-public class DefaultComponentRegistry implements ComponentRegistry {
+public class DefaultComponentRegistry implements ComponentRegistry, Serializable {
 
     protected final List registeredComponents;
 

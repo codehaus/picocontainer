@@ -15,6 +15,7 @@ import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.io.Serializable;
 
 /**
  * CompoentFactory that supports IoC type 3, which is constructor based.
@@ -22,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Aslak Hellesoy
  * @version $Revision: 1.8 $
  */
-public class DefaultComponentFactory implements ComponentFactory {
+public class DefaultComponentFactory implements ComponentFactory, Serializable {
     public Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, NoPicoSuitableConstructorException {
         try {
             Constructor constructor = getConstructor(componentSpec.getComponentImplementation());

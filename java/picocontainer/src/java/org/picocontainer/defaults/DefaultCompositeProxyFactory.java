@@ -21,13 +21,15 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.io.Serializable;
 
 /**
  * 
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.1 $
  */
-public class DefaultCompositeProxyFactory implements CompositeProxyFactory {
+public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Serializable {
+    
     private static Method equals;
     private static Method hashCode;
 

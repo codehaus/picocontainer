@@ -26,7 +26,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponent("org.picoextras.testmodel.WebServer", "org.picoextras.testmodel.WebServerImpl");
+        reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServer", "org.picoextras.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
@@ -53,7 +53,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
-        reflectionFrontEnd.registerComponent(
+        reflectionFrontEnd.registerComponentImplementation(
                 className,
                 className,
                 new String[] {
@@ -120,7 +120,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
 
         parentFrontEnd.addClassLoaderURL(testCompJar.toURL());
 
-        parentFrontEnd.registerComponent("foo", "TestComp");
+        parentFrontEnd.registerComponentImplementation("foo", "TestComp");
 
         PicoContainer parentFrontEndPico = parentFrontEnd.getPicoContainer();
         Object fooTestComp = parentFrontEndPico.getComponentInstance("foo");
@@ -129,7 +129,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
         childFrontEnd.addClassLoaderURL(testCompJar2.toURL());
 
-        childFrontEnd.registerComponent("bar", "TestComp2");
+        childFrontEnd.registerComponentImplementation("bar", "TestComp2");
 
         PicoContainer childFrontEndPico = childFrontEnd.getPicoContainer();
         Object barTestComp = childFrontEndPico.getComponentInstance("bar");
@@ -156,14 +156,14 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentFrontEnd.registerComponent("foo", "org.picoextras.testmodel.DefaultWebServerConfig");
+        parentFrontEnd.registerComponentImplementation("foo", "org.picoextras.testmodel.DefaultWebServerConfig");
 
         Object fooWebServerConfig = parentFrontEnd.getPicoContainer().getComponentInstance("foo");
         assertEquals("org.picoextras.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
         childFrontEnd.addClassLoaderURL(testCompJar.toURL());
-        childFrontEnd.registerComponent("bar", "TestComp");
+        childFrontEnd.registerComponentImplementation("bar", "TestComp");
 
         Object barTestComp = childFrontEnd.getPicoContainer().getComponentInstance("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());

@@ -155,7 +155,7 @@ public class ParameterXmlFrontEnd implements XmlFrontEnd {
 		}
 		// Check for initialization parameters
 		if (element.getChildNodes().getLength() == 0) {
-			pico.registerComponent(key, className);
+			pico.registerComponentImplementation(key, className);
 		} else {
 			List parameterTypes = new ArrayList();
 			List parameterValues = new ArrayList();
@@ -177,7 +177,7 @@ public class ParameterXmlFrontEnd implements XmlFrontEnd {
 					}
 				}
 			}
-			pico.registerComponent(key, className, (String[])parameterTypes.toArray(new String[parameterTypes.size()]), (String[])parameterValues.toArray(new String[parameterValues.size()]));
+			pico.registerComponentImplementation(key, className, (String[])parameterTypes.toArray(new String[parameterTypes.size()]), (String[])parameterValues.toArray(new String[parameterValues.size()]));
 		}
 		componentCount++;
 	}

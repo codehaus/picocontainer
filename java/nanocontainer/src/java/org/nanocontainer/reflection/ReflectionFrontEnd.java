@@ -26,9 +26,9 @@ public interface ReflectionFrontEnd {
 
     void registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    void registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException;
+    void registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
 
-    void registerComponent(
+    void registerComponentImplementation(
             Object key,
             String componentImplementationClassName,
             String[] parameterTypesAsString,

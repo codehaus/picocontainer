@@ -256,7 +256,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         lifecycleAdapter.start();
     }
 
-    public void stop() {
+    public void stop(){
         lifecycleAdapter.stop();
     }
 

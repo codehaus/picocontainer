@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
  * having to implement any interfaces.
  *
  * @author Aslak Helles&oslash;y
+ * @deprecated Use the lifcycle support in PicoContainer instead.
  * @version $Revision$
  */
 public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterFactory {

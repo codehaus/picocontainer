@@ -17,7 +17,6 @@ import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Helper class for DefaultPicoContainer's Lifecycle support.

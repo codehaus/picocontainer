@@ -17,6 +17,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
+import java.util.AbstractCollection;
+import java.util.Vector;
+import java.util.LinkedList;
+import java.util.AbstractList;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -53,18 +57,20 @@ public class InterfaceFinderTestCase extends TestCase {
     }
 
     public void testMostCommonSuperclassForEmptyArray() {
+        // Makes more sense to return null perhaps?
         InterfaceFinder i = new InterfaceFinder();
         assertEquals(Void.class, i.getClass(new Object[]{}));
     }
 
     public void testMostCommonSuperclassForNullElements() {
+        // Makes more sense to return null perhaps?
         InterfaceFinder i = new InterfaceFinder();
         assertEquals(Void.class, i.getClass(new Object[]{ null, null }));
     }
 
-    public void testMostCommonSuperclassForJComponents() {
+    public void testMostCommonSuperclassForCollections() {
         InterfaceFinder i = new InterfaceFinder();
-        assertEquals(JComponent.class, i.getClass(new Object[]{new JButton(), new JTree()}));
+        assertEquals(AbstractList.class, i.getClass(new Object[]{new LinkedList(), new Vector()}));
     }
 
     public void testAllInterfacesOfListShouldBeFound() {

@@ -5,10 +5,10 @@ import nanocontainer.InputSourceRegistrationNanoContainer;
 import nanocontainer.servlet.ContainerFactory;
 import org.xml.sax.InputSource;
 import picocontainer.Container;
-
 import javax.servlet.ServletContext;
 
 public class XmlConfiguredNanoFactory implements ContainerFactory {
+
     private ServletContext servletContext;
 
     public XmlConfiguredNanoFactory(ServletContext servletContext) {
@@ -45,3 +45,4 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
     }
 
 }
+

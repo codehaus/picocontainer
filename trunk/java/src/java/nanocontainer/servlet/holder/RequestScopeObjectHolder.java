@@ -1,12 +1,13 @@
 package nanocontainer.servlet.holder;
 
 import nanocontainer.servlet.ObjectHolder;
-
 import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * Holds an object in the ServletRequest
- */ 
+ */
+
 public class RequestScopeObjectHolder implements ObjectHolder {
 
     private HttpServletRequest request;
@@ -26,3 +27,4 @@ public class RequestScopeObjectHolder implements ObjectHolder {
     }
 
 }
+

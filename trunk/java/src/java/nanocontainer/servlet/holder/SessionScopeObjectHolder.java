@@ -6,7 +6,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Holds an object in the HttpSession
- */ 
+ */
+
 public class SessionScopeObjectHolder implements ObjectHolder {
 
     private HttpSession session;
@@ -26,3 +27,4 @@ public class SessionScopeObjectHolder implements ObjectHolder {
     }
 
 }
+

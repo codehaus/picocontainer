@@ -2,9 +2,7 @@ package nanocontainer.servlet;
 
 import nanocontainer.servlet.holder.RequestScopeObjectHolder;
 import nanocontainer.servlet.lifecycle.BaseLifecycleListener;
-
 import javax.servlet.http.HttpServletRequest;
-
 import picocontainer.Container;
 
 public class WebContainer implements Container {
@@ -29,3 +27,4 @@ public class WebContainer implements Container {
     }
 
 }
+

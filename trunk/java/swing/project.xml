@@ -2,21 +2,15 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-idea</id>
-  <name>picoextras-idea</name>
+  <id>picoextras-swing</id>
+  <name>picoextras-swing</name>
 
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>picoextras-gui</artifactId>
+      <artifactId>picoextras-testmodel</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
-
-        <dependency>
-            <id>openapi</id>
-            <version></version>
-            <url>http://www.intellij.net/</url>
-        </dependency>
   </dependencies>
 
 </project>

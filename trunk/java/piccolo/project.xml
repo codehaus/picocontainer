@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picoextras-piccolo</id>
+  <name>picoextras-piccolo</name>
+
+  <dependencies>
+    <dependency>
+      <id>piccolo</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <id>piccolox</id>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>picoextras-swing</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>picoextras-testmodel</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>
+    
+  </dependencies>
+
+</project>

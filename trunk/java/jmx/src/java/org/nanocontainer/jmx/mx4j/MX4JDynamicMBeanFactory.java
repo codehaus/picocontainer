@@ -16,6 +16,9 @@ import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
 /**
+ * This is the default factory for creating DynamicMBean instances however it is tied specifically to MX4J. Those
+ * not interested in being dependent on MX4J should implement another Factory and register it to the container.
+ *
  * @author Michael Ward
  * @version $Revision$
  */

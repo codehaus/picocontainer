@@ -37,6 +37,8 @@ public interface PicoContainer extends Startable, Disposable {
      */
     Object getComponentInstance(Object componentKey);
 
+//    Object getComponentInstanceFromPath(Object componentKey);
+
     /**
      * Find a component instance matching the specified type.
      * 

@@ -13,6 +13,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoInitializationException;
 
 import java.util.List;
 import java.util.Collection;
@@ -34,6 +35,9 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public Object getComponentInstance(Object componentKey) {
+        if (componentKey instanceof String && ((String) componentKey).indexOf('/') != -1) {
+            throw new PicoInitializationException("Full Qualified Traversal not supported by ImmutablePicoContainer");
+        }
         return delegate.getComponentInstance(componentKey);
     }
 

@@ -37,6 +37,7 @@ public final class ResidualController implements Startable {
                 }
             }
         });
+        thread.setDaemon(true);
         thread.start();
         Runnable shutdownHook = new Runnable() {
             public void run() {

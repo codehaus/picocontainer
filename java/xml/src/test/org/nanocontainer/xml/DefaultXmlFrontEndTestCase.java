@@ -128,7 +128,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <pseudocomponent factory='org.nanocontainer.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
-                "      <config/>"+
+                "      <config-or-whatever/>"+
                 "    </pseudocomponent>" +
                 "</container>"));
 

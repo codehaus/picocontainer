@@ -161,8 +161,15 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         tempContainer.registerComponentWithClassKey(XmlPseudoComponentFactory.class.getName(), factoryClass);
         XmlPseudoComponentFactory factory = (XmlPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
 
-        Element childElement = (Element) componentElement.getElementsByTagName("config").item(0);
-
+        NodeList nl = componentElement.getChildNodes();
+        Element childElement = null;
+        for (int i = 0; i < nl.getLength(); i++) {
+            if (nl.item(i) instanceof Element) {
+                childElement = (Element) nl.item(i);
+                break;
+            }
+        }
+        
         try {
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);

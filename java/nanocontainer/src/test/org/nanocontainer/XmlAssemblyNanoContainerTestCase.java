@@ -115,24 +115,25 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertTrue(ws instanceof WebServerImpl);
     }
 
-    public void donot_testInstantiateWithComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
-
-        BespokeXmlFrontEnd.used = false;
+    public void testInstantiateWithComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = null;
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
                         "<container>" +
-                        "    <component impl='org.nanocontainer.testmodel.WebServerConfigBean'>" +
-                        "       <host>foobar.com</host> " +
-                        "       <port>4321</port> " +
-                        "    </component>" +
-                        "    <component typekey='org.nanocontainer.testmodel.WebServer' impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                        "    <pseudocomponent factory='org.nanocontainer.xstream.XStreamXmlPseudoComponentFactory'>" +
+                        "       <org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "         <host>foobar.com</host> " +
+                        "         <port>4321</port> " +
+                        "       </org.nanocontainer.testmodel.WebServerConfigBean>" +
+                        "    </pseudocomponent>" +
+                        "    <component typekey='org.nanocontainer.testmodel.WebServer' " +
+                        "               impl='org.nanocontainer.testmodel.WebServerImpl'/>" +
                         "</container>"), new MockMonitor());
 
-        Object a = nano.getRootContainer().getComponentInstances().get(0);
-
-        //TODO - implement !  Kinda justifies the named-params metadata feature raised recently.
-
+        assertEquals("WebServerConfigBean and WebServerImpl expected", 2, nano.getRootContainer().getComponentInstances().size());
+        WebServerConfig wsc = (WebServerConfig) nano.getRootContainer().getComponentInstance(WebServerConfig.class);
+        assertEquals("foobar.com",wsc.getHost());
+        assertEquals(4321,wsc.getPort());
     }
 
 
@@ -178,7 +179,6 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         }
 
     }
-
 
     public static class OverriddenDefaultLifecyclePicoContainer extends DefaultLifecyclePicoContainer {
 

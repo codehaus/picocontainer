@@ -37,14 +37,15 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww",Footle.class);
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
         try {
-             Object comp = ihca.getComponentInstance();
-             fail("Oh no.");
-         } catch (PicoIntrospectionException e) {
-         }
+            Object comp = ihca.getComponentInstance();
+            fail("Oh no.");
+        } catch (PicoIntrospectionException e) {
+        }
       }
 
-    class Footle implements ActionListener , MouseListener {
+    public class Footle implements ActionListener , MouseListener {
         public void actionPerformed(ActionEvent e) {
+            System.out.println("--> foo");
         }
 
         public void mouseClicked(MouseEvent e) {

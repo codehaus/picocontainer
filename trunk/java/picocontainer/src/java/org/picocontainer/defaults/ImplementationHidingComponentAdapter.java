@@ -61,7 +61,9 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                                          final Object[] args)
                             throws Throwable {
                         try {
-                            return method.invoke(getDelegate().getComponentInstance(), args);
+                            ComponentAdapter delegate = getDelegate();
+                            Object componentInstance = delegate.getComponentInstance();
+                            return method.invoke(componentInstance, args);
                         } catch (final InvocationTargetException ite) {
                             throw ite.getTargetException();
                         }

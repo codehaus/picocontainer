@@ -51,10 +51,6 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
         }
     }
     
-    public void testComponentAdapterRegistrationOrderIsMaintained() {
-        // TODO - address why this fails.
-    }
-
     public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
         // TODO - address why this fails.
     }

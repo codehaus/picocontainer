@@ -43,13 +43,24 @@
        scm:<system>:<system specific connection string> -->
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.codehaus.org:/cvshome/:pico</connection>
-    <url>http://cvs.codehaus.org/viewcvs/picocontainer/pico/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
+    <url>http://cvs.codehaus.org/viewcvs.cgi/?cvsroot=picocontainer</url>
   </repository>
-  <!-- any mailing lists for the project -->
 
-  <mailingLists/>
-  <!-- who the developers are for the project -->
+  <mailingLists>
+    <mailingList>
+      <name>Picocontainer Developers</name>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/picocontainer-dev/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Picocontainer CVS Commits</name>
+      <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
+      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
+    </mailingList>
+  </mailingLists>
 
   <developers>
     <developer>

@@ -9,6 +9,7 @@
 package org.nanocontainer.webwork2;
 
 import com.opensymphony.webwork.dispatcher.ServletDispatcher;
+import com.opensymphony.xwork.ActionProxyFactory;
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 
 import javax.servlet.ServletException;
@@ -24,6 +25,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public class PicoServletDispatcher extends ServletDispatcher {
+
+    public PicoServletDispatcher() {
+        super();
+        ActionProxyFactory.setFactory(new PicoActionProxyFactory());
+    }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);

@@ -293,7 +293,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testJMXPublication() throws Exception {
         kernel.deploy(new File("test.mca"));
 
-		ObjectName objectName = new ObjectName("microcontainer:kernel=default");
+		ObjectName objectName = new ObjectName("domain:map=default");
 		PicoContainer root = kernel.getRootContainer("test");
 		MBeanServer mBeanServer = (MBeanServer)root.getComponentInstance(MBeanServer.class);
 

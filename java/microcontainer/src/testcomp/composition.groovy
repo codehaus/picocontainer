@@ -18,14 +18,8 @@ pico = new MicroGroovyBuilder().container(parent:parent) {
     // register MBeanServer... todo this should be hidden
     component(key:javax.management.MBeanServer, instance:MBeanServerFactory.newMBeanServer())
 
-    jmx(key:'microcontainer:kernel=default', methods:['put', 'size']) {
-      component(key:java.util.Map, class:java.util.HashMap)
+    jmx(key:'domain:map=default', operations:['put', 'size']) {
+    	component(key:java.util.Map, class:java.util.HashMap)
     }
-
-
-
-    // set up MBean*Info for JMX
-    //info = new MBeanOperationInfo("size", "return the number of components", null, "int", MBeanOperationInfo.INFO)
-    //jmx(key:'microcontainer:kernel=default', class:'java.util.HashMap', operations:[info])
 }
 

@@ -2,6 +2,7 @@ package org.microcontainer;
 
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.groovy.NanoContainerBuilder;
+import org.microcontainer.jmx.JmxDecorationDelegate;
 
 import java.util.Map;
 

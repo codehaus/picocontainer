@@ -8,15 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import junit.framework.TestCase;
 import junit.framework.Assert;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerImpl;
-import org.nanocontainer.testmodel.WebServerConfig;
+import junit.framework.TestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.WebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoConfigurationException;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 import org.picocontainer.extras.DefaultLifecyclePicoContainer;
 import org.xml.sax.SAXException;
 
@@ -24,7 +24,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.Collection;
 
 /**
@@ -96,26 +95,26 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     public void testInstantiateWithBespokeComponentAdaptor() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
-        BespokeXmlFrontEnd.used = false;
+        OverriddenComponentAdapterFactory.used = false;
 
         NanoContainer nano = null;
             nano = new XmlAssemblyNanoContainer(new StringReader("" +
-                        "<container componentadaptor='org.picocontainer.extras.ImplementationHidingComponentAdapterFactory'>" +
+                        "<container componentadaptor='" + OverriddenComponentAdapterFactory.class.getName() + "'>" +
                         "    <component typekey='org.nanocontainer.testmodel.WebServerConfig' impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                        "    <component typekey='org.nanocontainer.testmodel.WebServer' impl='" + OverriddenWebServerImpl.class.getName() + "'/>" +
                         "</container>"), new MockMonitor());
 
-        Object ws = nano.getRootContainer().getComponentInstance(WebServer.class);
+        Object wsc = nano.getRootContainer().getComponentInstance(WebServerConfig.class);
 
-        assertTrue(ws instanceof WebServer);
-        assertFalse(ws instanceof WebServerImpl);
+        assertTrue(wsc instanceof WebServerConfig);
+        assertTrue(OverriddenComponentAdapterFactory.used);
 
-        ws = nano.getRootContainer().getComponentInstances().get(1);
+    }
 
-        assertTrue(ws instanceof WebServer);
-
-        //TODO - should be assertFalse( ), we're implementation hiding here !
-        assertTrue(ws instanceof WebServerImpl);
+    public static class OverriddenComponentAdapterFactory extends DefaultComponentAdapterFactory {
+        public static boolean used = false;
+        public OverriddenComponentAdapterFactory() {
+            used = true;
+        }
     }
 
     public void testInstantiateWithXStreamComponentConfiguration() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {

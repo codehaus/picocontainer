@@ -9,90 +9,66 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
-import org.realityforge.cli.CLArgsParser;
-import org.realityforge.cli.CLOption;
-import org.realityforge.cli.CLOptionDescriptor;
-import org.realityforge.cli.CLUtil;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
 public class Standalone {
 
-    private static final int HELP_OPT = 'h';
-    private static final int VERSION_OPT = 'v';
-    private static final int COMPOSITION_OPT = 'c';
-    private static final int QUIET_OPT = 'q';
-    private static final int NOWAIT_OPT = 'n';
+    private static final char HELP_OPT = 'h';
+    private static final char VERSION_OPT = 'v';
+    private static final char COMPOSITION_OPT = 'c';
+    private static final char QUIET_OPT = 'q';
+    private static final char NOWAIT_OPT = 'n';
+    private static final Options OPTIONS = createOptions();
 
-    private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
-    {
-        new CLOptionDescriptor("help",
-                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                HELP_OPT,
-                "print this message and exit"),
-        new CLOptionDescriptor("version",
-                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                VERSION_OPT,
-                "print the version information and exit"),
-        new CLOptionDescriptor("composition",
-                CLOptionDescriptor.ARGUMENT_REQUIRED,
-                COMPOSITION_OPT,
-                "specify the composition file"),
-        new CLOptionDescriptor("quiet",
-                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                QUIET_OPT,
-                "forces NanoContainer to be quiet"),
-        new CLOptionDescriptor("nowait",
-                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                NOWAIT_OPT,
-                "forces NanoContainer to exit after start")
-    };
-
+    private static final Options createOptions(){
+        Options options = new Options();
+        options.addOption(String.valueOf(HELP_OPT), "help", false,
+                "print this message and exit");
+        options.addOption(String.valueOf(VERSION_OPT), "version", false,
+                "print the version information and exit");
+        options.addOption(String.valueOf(COMPOSITION_OPT), "composition", true,
+                "specify the composition file");
+        options.addOption(String.valueOf(QUIET_OPT), "quiet", false,
+                "forces NanoContainer to be quiet");
+        options.addOption(String.valueOf(NOWAIT_OPT), "nowait", false,
+        		"forces NanoContainer to exit after start");
+        return options;
+    }
+    
     public static void main(String[] args) {
-        List options = getOptions(args);
-
-        String composition = "";
-        boolean quiet = false;
-        boolean nowait = false;
-
-        for (Iterator iterator = options.iterator(); iterator.hasNext();) {
-            CLOption option = (CLOption) iterator.next();
-
-            switch (option.getId()) {
-                case CLOption.TEXT_ARGUMENT:
-                    //This occurs when a user supplies an argument that
-                    //is not an option
-                    System.err.println("Unknown argument: " + option.getArgument());
-                    break;
-
-                case HELP_OPT:
-                    printUsage();
-                    break;
-
-                case VERSION_OPT:
-                    printVersion();
-                    break;
-
-                case COMPOSITION_OPT:
-                    composition = option.getArgument();
-                    break;
-
-                case QUIET_OPT:
-                    quiet = true;
-                    break;
-
-                case NOWAIT_OPT:
-                    nowait = true;
-                    break;
-
-            }
+        CommandLine cl = null;
+        try {
+            cl = getCommandLine(args );
+        } catch ( ParseException e ) {
+            System.out.println( "Error in parsing arguments: ");
+            e.printStackTrace();
+            System.exit( -1 );
         }
 
+        if ( cl.hasOption(HELP_OPT) ){
+            printUsage();
+            System.exit(0);
+        }
+        if ( cl.hasOption(VERSION_OPT) ){
+            printVersion();
+            System.exit(0);
+        }
+        
+        String composition = cl.getOptionValue(COMPOSITION_OPT);
+        if ( composition == null ) {
+            printUsage();
+            System.exit(0);
+        }
+        boolean quiet = cl.hasOption(QUIET_OPT);
+        boolean nowait = cl.hasOption(NOWAIT_OPT);
         try {
             buildAndStartContainer(composition, quiet, nowait);
         } catch (RuntimeException e) {
@@ -166,49 +142,31 @@ public class Standalone {
         }
     }
 
-    private static List getOptions(String[] args) {
+
+    static CommandLine getCommandLine(String[] args) throws ParseException {
         if (args.length == 0) {
-            System.err.println("NanoContainer - No arguments specified");
-            printUsage();
-            System.exit(10);
+            throw new ParseException("No arguments specified");
         }
-
-        CLArgsParser parser = new CLArgsParser(args, OPTIONS);
-
-        //Make sure that there was no errors parsing
-        //arguments
-        if (null != parser.getErrorString()) {
-            System.err.println("NanoContainer Error: " + parser.getErrorString());
-            System.exit(20);
-        }
-
-        // Get a list of parsed options
-        final List options = parser.getArguments();
-        return options;
-    }
-
-    private static void printVersion() {
-        System.out.println("1.0");
-        System.exit(0);
+        CommandLineParser parser = new PosixParser();
+        return parser.parse( OPTIONS, args );
     }
 
     private static void printUsage() {
         final String lineSeparator = System.getProperty("line.separator");
 
-        final StringBuffer msg = new StringBuffer();
-
-        msg.append(lineSeparator);
-
-        /*
-         * Notice that the next line uses CLUtil.describeOptions to generate the
-         * list of descriptions for each option
-         */
-        msg.append(CLUtil.describeOptions(OPTIONS).toString());
-
-        System.out.println(msg.toString());
-
-        System.exit(0);
+        final StringBuffer usage = new StringBuffer();
+        usage.append(lineSeparator);
+        usage.append("NanoContainer: Standalone -c <composition> [-q|-n|-h|-v]");
+        usage.append(OPTIONS.getOptions());
+        System.out.println(usage.toString());
     }
+
+    private static void printVersion() {
+        System.out.println("1.0");
+    }
+
+
+
 }
 
 

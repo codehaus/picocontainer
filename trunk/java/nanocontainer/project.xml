@@ -95,8 +95,7 @@
         </dependency>
 
         <dependency>
-            <groupId>spice</groupId>
-            <artifactId>spice-cli</artifactId>
+        	<id>commons-cli</id>
             <version>1.0</version>
         </dependency>
 

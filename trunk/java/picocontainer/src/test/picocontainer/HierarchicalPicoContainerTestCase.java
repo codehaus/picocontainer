@@ -578,5 +578,60 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
+    public static class Foo implements Runnable {
+        private int runCount;
+        private Thread thread = new Thread();
+        private boolean interrupted;
+
+        public Foo() {
+        }
+
+        public int runCount() {
+            return runCount;
+        }
+
+        public boolean isInterrupted() {
+            return interrupted;
+        }
+
+        public void start() {
+            thread = new Thread(this);
+            thread.start();
+        }
+
+        public void stop() {
+            thread.interrupt();
+        }
+
+        // this would do something a bit more concrete
+        // than counting in real life !
+        public void run() {
+            runCount++;
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                interrupted = true;
+            }
+        }
+    }
+
+    public void testStartStopOfDaemonizedThread() throws PicoStartException, PicoRegistrationException, PicoStopException, PicoDisposalException, InterruptedException {
+        PicoContainer pico = new HierarchicalPicoContainer.WithStartableLifecycleManager(new ReflectionUsingLifecycleManager());
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+        pico.registerComponent(Foo.class);
+
+        pico.start();
+        Thread.sleep(100);
+        pico.stop();
+        Foo foo = (Foo) pico.getComponent(Foo.class);
+        assertEquals(1, foo.runCount());
+        pico.start();
+        Thread.sleep(100);
+        pico.stop();
+        assertEquals(2, foo.runCount());
+
+    }
 
 }

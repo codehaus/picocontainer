@@ -3,7 +3,7 @@ package org.picoextras.servlet;
 import junit.framework.TestCase;
 import org.jmock.Mock;
 import org.jmock.C;
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletContext;

@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.picoextras.servlet;
 
-import org.picoextras.integrationkit.ObjectReference;
+import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.http.HttpSession;
 

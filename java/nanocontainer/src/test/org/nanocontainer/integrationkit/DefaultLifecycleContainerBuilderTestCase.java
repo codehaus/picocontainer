@@ -7,6 +7,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
 
 /**
  * @author Aslak Helles&oslash;y

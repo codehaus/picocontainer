@@ -8,6 +8,8 @@
  *****************************************************************************/
 package org.picoextras.integrationkit;
 
+import org.picocontainer.defaults.ObjectReference;
+
 /**
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */

@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.integrationkit;
+package org.picocontainer.defaults;
 
 /**
  * A way to refer to objects that are stored in awkward places

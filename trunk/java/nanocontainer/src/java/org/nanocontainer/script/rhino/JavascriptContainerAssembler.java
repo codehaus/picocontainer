@@ -5,6 +5,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.picocontainer.MutablePicoContainer;
 import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.PicoAssemblyException;
 
 import java.io.Reader;
 
@@ -30,9 +31,7 @@ public class JavascriptContainerAssembler implements ContainerAssembler {
             ScriptableObject.defineClass(scriptable, PicoScriptable.class);
             cx.evaluateReader(scriptable, javascript, "<cmd>", 1, null);
         } catch (Exception e) {
-            e.printStackTrace();
-            // TODO AssemblyException
-            throw new RuntimeException(e);
+            throw new PicoAssemblyException(e);
         } finally {
             Context.exit();
             PicoScriptable.picoContainer = null;

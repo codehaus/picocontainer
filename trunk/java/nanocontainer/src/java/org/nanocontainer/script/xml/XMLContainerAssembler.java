@@ -49,14 +49,11 @@ public class XMLContainerAssembler implements ContainerAssembler {
         try {
             registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-            // TODO throw new AssemblyException(e);
+            throw new PicoAssemblyException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-            // TODO throw new AssemblyException(e);
+            throw new PicoAssemblyException(e);
         } catch (SAXException e) {
-            throw new RuntimeException(e);
-            // TODO throw new AssemblyException(e);
+            throw new PicoAssemblyException(e);
         }
     }
 

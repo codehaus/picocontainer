@@ -142,7 +142,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         }
         assertTrue(parent.getComponentInstances().size() == 2)
         assertTrue(child.getComponentInstances().size() == 1)
-        //assertNotNull(child.getComponentInstance("TestComp2"))
+        assertNotNull(child.getComponentInstanceOfType("TestComp2"))
 
     }
 
@@ -163,8 +163,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
 
         startAndStop(pico)
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
-        //TODO
-        //assertEquals("org.nanocontainer.script.groovy.TestContainer",pico.getClass().getName())
+        assertEquals("org.nanocontainer.script.groovy.TestContainer",pico.getClass().getName())
     }
 
     void testInstantiateBasicComponentWithDeepTree() {

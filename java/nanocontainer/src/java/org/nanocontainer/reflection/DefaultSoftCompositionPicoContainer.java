@@ -60,6 +60,9 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         this(DefaultSoftCompositionPicoContainer.class.getClassLoader(), pc);
     }
 
+    public DefaultSoftCompositionPicoContainer(ClassLoader classLoader) {
+        this(classLoader, null);
+    }
 
     public DefaultSoftCompositionPicoContainer() {
         this(DefaultSoftCompositionPicoContainer.class.getClassLoader(), null);
@@ -71,6 +74,10 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
 
     public Object getComponentInstanceOfType(Class componentType) {
         return delegate.getComponentInstanceOfType(componentType);
+    }
+
+    public Object getComponentInstanceOfType(String componentType) {
+        return reflectionAdapter.getComponentInstanceOfType(componentType);
     }
 
     public List getComponentInstances() {

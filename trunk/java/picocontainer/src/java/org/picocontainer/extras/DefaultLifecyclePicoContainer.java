@@ -112,7 +112,7 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
     }
 
     public boolean removeParent(MutablePicoContainer parent) {
-        return removeParent(parent);
+        return mutablePicoContainer.removeParent(parent);
     }
 
     public Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {

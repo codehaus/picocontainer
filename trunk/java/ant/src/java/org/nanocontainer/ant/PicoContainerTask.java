@@ -8,7 +8,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
@@ -47,12 +47,12 @@ public class PicoContainerTask extends Task {
             new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
     // for subclasses
-    protected ContainerAssembler extraContainerAssembler = null;
+    protected ContainerComposer extraContainerAssembler = null;
 
-    private ContainerAssembler containerAssembler = new ContainerAssembler() {
-        public void assembleContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
+    private ContainerComposer containerAssembler = new ContainerComposer() {
+        public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
             if(extraContainerAssembler != null) {
-                extraContainerAssembler.assembleContainer(picoContainer, assemblyScope);
+                extraContainerAssembler.composeContainer(picoContainer, assemblyScope);
             }
 
             // register components specified in Ant

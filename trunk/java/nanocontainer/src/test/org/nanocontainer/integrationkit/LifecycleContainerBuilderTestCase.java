@@ -18,8 +18,8 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
         final Mock childStartable = new Mock(Startable.class);
         childStartable.expect("start");
 
-        ContainerAssembler containerAssembler = new ContainerAssembler() {
-            public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
+        ContainerComposer containerAssembler = new ContainerComposer() {
+            public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
                 container.registerComponentInstance(childStartable.proxy());
             }
         };

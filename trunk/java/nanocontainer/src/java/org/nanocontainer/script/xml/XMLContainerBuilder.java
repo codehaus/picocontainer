@@ -20,7 +20,7 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
-import org.picoextras.script.ScriptedAssemblingLifecycleContainerBuilder;
+import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,7 +45,7 @@ import java.util.List;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class XMLContainerBuilder extends ScriptedAssemblingLifecycleContainerBuilder {
+public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
     private final Element rootElement;
 
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
@@ -222,8 +222,8 @@ public class XMLContainerBuilder extends ScriptedAssemblingLifecycleContainerBui
         }
 
         ReflectionContainerAdapter tempContainer = new DefaultReflectionContainerAdapter();
-        tempContainer.registerComponentImplementation(zXMLPseudoComponentFactory.class.getName(), factoryClass);
-        zXMLPseudoComponentFactory factory = (zXMLPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
+        tempContainer.registerComponentImplementation(XMLPseudoComponentFactory.class.getName(), factoryClass);
+        XMLPseudoComponentFactory factory = (XMLPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
 
         NodeList nl = componentElement.getChildNodes();
         Element childElement = null;

@@ -11,9 +11,9 @@ package org.picoextras.integrationkit;
 import org.picocontainer.defaults.ObjectReference;
 
 /**
- * The responsability of a ContainerBuilder is to <em>instantiate</em> containers.
- * It delegates the responsability of the <em>assembly</em> to a
- * {@link ContainerAssembler}.
+ * The responsability of a ContainerBuilder is to <em>instantiate</em> and <em>composer</em> containers.
+ * (Composition means assembly (registration) and configuration (setting primitive parameters) of
+ * components).
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
@@ -25,9 +25,9 @@ public interface ContainerBuilder {
      *
      * @param containerRef       Where to store the new container.
      * @param parentContainerRef reference to a container that may be used as a parent to the new container (may be null).
-     * @param assemblyScope      Argument to be passed to ContainerAssembler.
+     * @param compositionScope   Hint about the scope for composition.
      */
-    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope);
+    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object compositionScope);
 
     /**
      * Locate a container at the given reference so it can be stopped,

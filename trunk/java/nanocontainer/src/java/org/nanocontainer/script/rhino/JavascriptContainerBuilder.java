@@ -3,7 +3,7 @@ package org.picoextras.script.rhino;
 import org.mozilla.javascript.*;
 import org.picocontainer.MutablePicoContainer;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.ScriptedAssemblingLifecycleContainerBuilder;
+import org.picoextras.script.ScriptedComposingLifecycleContainerBuilder;
 
 import java.io.Reader;
 
@@ -11,7 +11,7 @@ import java.io.Reader;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public class JavascriptContainerBuilder extends ScriptedAssemblingLifecycleContainerBuilder {
+public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }

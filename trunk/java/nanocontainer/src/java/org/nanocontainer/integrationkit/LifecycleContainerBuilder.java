@@ -28,14 +28,14 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
             container.setParent(parent);
         }
 
-        assembleContainer(container, assemblyScope);
+        composeContainer(container, assemblyScope);
         container.start();
 
         // hold on to it
         containerRef.set(container);
     }
 
-    protected abstract void assembleContainer(MutablePicoContainer container, Object assemblyScope);
+    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
 
     public void killContainer(ObjectReference containerRef){
         try {

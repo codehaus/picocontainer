@@ -293,7 +293,7 @@
         </dependency>
         <dependency>
             <id>xstream</id>
-            <version>0.6</version>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>

@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import java.io.StringReader;
 import java.util.Vector;
 
@@ -19,8 +20,6 @@ import java.util.Vector;
  * @version $Revision$
  */
 public class ServletContainerListenerTestCase extends TestCase implements KeyConstants {
-    public void testXXX(){}
-
     private String pythonScript =
             "from java.util import ArrayList\n" +
             "pico = DefaultPicoContainer()\n" +
@@ -41,12 +40,13 @@ public class ServletContainerListenerTestCase extends TestCase implements KeyCon
         servletContextMock.verify();
     }
 
-    public void XXtestSessionScopeContainerWithAppScopeContainerAsParentIsCreatedWhenServletContextIsInitialised() {
+    public void testSessionScopeContainerWithAppScopeContainerAsParentIsCreatedWhenServletContextIsInitialised() {
         ServletContainerListener listener = new ServletContainerListener();
 
         Mock httpSessionMock = new Mock(HttpSession.class);
         Mock servletContextMock = new Mock(ServletContext.class);
         httpSessionMock.expectAndReturn("getServletContext", servletContextMock.proxy());
+        httpSessionMock.expect("setAttribute", C.args(C.eq(ServletContainerListener.KILLER_HELPER), C.isA(HttpSessionBindingListener.class)));
         servletContextMock.expectAndReturn("getAttribute", C.args(C.eq(APPLICATION_CONTAINER)), new DefaultPicoContainer());
         servletContextMock.expectAndReturn("getAttribute", C.args(C.eq(BUILDER)), new JythonContainerBuilder(new StringReader(pythonScript), getClass().getClassLoader()));
 

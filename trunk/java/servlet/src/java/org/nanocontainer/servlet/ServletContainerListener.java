@@ -38,6 +38,7 @@ import java.util.Enumeration;
  * @author Aslak Helles&oslash;y
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
+    public static final String KILLER_HELPER = "KILLER_HELPER";
     private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public void contextInitialized(ServletContextEvent event) {
@@ -92,7 +93,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
         containerBuilder.buildContainer(containerRef, parentContainerRef, session);
 
-        session.setAttribute("picoextras session container killer helper", new HttpSessionBindingListener() {
+        session.setAttribute(KILLER_HELPER, new HttpSessionBindingListener() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
             }
 

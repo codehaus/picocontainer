@@ -1,8 +1,5 @@
 package org.microcontainer.impl;
 
-import java.net.URLClassLoader;
-import java.net.URL;
-
 /**
  * TODO This should actually be a delegation model. i.e. This class implements ClassLoader only
  * and delegates to several URL classloaders on each invocation of loadClass().

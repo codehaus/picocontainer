@@ -5,6 +5,8 @@ import org.picocontainer.MutablePicoContainer;
 import java.util.List;
 
 /**
+ * Basically a bean which is passed when building
+ *
  * @author Michael Ward
  */
 public class JmxDefinition {

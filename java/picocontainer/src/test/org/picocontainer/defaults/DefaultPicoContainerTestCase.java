@@ -12,11 +12,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.*;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
-
-import java.util.Map;
-import java.io.Serializable;
 
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 

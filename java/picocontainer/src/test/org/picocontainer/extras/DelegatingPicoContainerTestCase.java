@@ -41,7 +41,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         child.registerComponentImplementation(SimpleTouchable.class);
         parent.registerComponentImplementation(DependsOnTouchable.class);
         try {
-            DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) parent.getComponentInstance(DependsOnTouchable.class);
+            parent.getComponentInstance(DependsOnTouchable.class);
             fail();
         } catch (NoSatisfiableConstructorsException e) {
         }

@@ -5,11 +5,9 @@ package org.picocontainer.testmodel;
  * @version $Revision$
  */
 public class WashableTouchable implements Washable, Touchable {
-    public void wasTouched() {
-
+    public void touch() {
     }
 
     public void wash() {
-
     }
 }

@@ -22,7 +22,7 @@ public class DependsOnTouchable implements Serializable {
 
     public DependsOnTouchable(Touchable touchable) {
         Assert.assertNotNull("Touchable cannot be passed in as null", touchable);
-        touchable.wasTouched();
+        touchable.touch();
         this.touchable = touchable;
     }
 

@@ -18,10 +18,10 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         if(componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }
-        checkTypeCompatibility(componentKey, componentImplementation);
-        checkConcrete(componentImplementation);
         this.componentKey = componentKey;
         this.componentImplementation = componentImplementation;
+        checkTypeCompatibility();
+        checkConcrete();
     }
 
     public Object getComponentKey() {
@@ -35,7 +35,7 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         return componentImplementation;
     }
 
-    private void checkTypeCompatibility(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
+    private void checkTypeCompatibility() throws AssignabilityRegistrationException {
         if (componentKey instanceof Class) {
             Class componentType = (Class) componentKey;
             if (!componentType.isAssignableFrom(componentImplementation)) {
@@ -44,7 +44,7 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         }
     }
 
-    private void checkConcrete(Class componentImplementation) throws NotConcreteRegistrationException {
+    private void checkConcrete() throws NotConcreteRegistrationException {
         // Assert that the component class is concrete.
         boolean isAbstract = (componentImplementation.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
         if (componentImplementation.isInterface() || isAbstract) {

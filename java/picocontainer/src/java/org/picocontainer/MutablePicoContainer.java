@@ -10,8 +10,6 @@
 
 package org.picocontainer;
 
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-
 /**
  * This is the core interface for registration of components.
  *

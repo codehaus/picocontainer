@@ -18,9 +18,9 @@ import java.io.Serializable;
  */
 public class SimpleTouchable implements Touchable, Serializable {
 
-    public boolean wasTouched;
+    public boolean wasTouched = false;
 
-    public void wasTouched() {
+    public void touch() {
         wasTouched = true;
     }
 }

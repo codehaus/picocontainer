@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Text;
 
-namespace PicoContainer.Core.Utils
+namespace PicoContainer.Utils
 {
 	/// <summary>
 	/// Summary description for TypeUtls.

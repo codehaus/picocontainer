@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using PicoContainer.Core;
-using PicoContainer.Core.Tests.Tck;
+using PicoContainer.Tck;
 
-namespace Test.Alternatives
+namespace PicoContainer.Alternatives
 {
 	[TestFixture]
 	public abstract class AbstractImplementationHidingPicoContainerTestCase : AbstractPicoContainerTestCase

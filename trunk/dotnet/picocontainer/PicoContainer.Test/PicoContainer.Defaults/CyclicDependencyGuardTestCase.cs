@@ -1,8 +1,8 @@
 using System.Threading;
 using NUnit.Framework;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class CyclicDependencyGuardTestCase

@@ -1,11 +1,11 @@
 using System.Collections;
 using NUnit.Framework;
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
-using PicoContainer.Core.Tests.Tck;
-using PicoContainer.Core.Tests.TestModel;
+using PicoContainer.Defaults;
+using PicoContainer.Tck;
+using PicoContainer.TestModel;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class DefaultPicoContainerTestCase : AbstractPicoContainerTestCase

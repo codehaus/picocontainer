@@ -11,13 +11,14 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+using PicoContainer.Core;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class UnsatisfiableDependenciesException : PicoIntrospectionException

@@ -10,10 +10,11 @@
  *****************************************************************************/
 
 using System;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Core;
+using PicoContainer.Defaults;
 using NUnit.Framework;
 
-namespace PicoContainer.Core.Tests.Tck
+namespace PicoContainer.Tck
 {
 	/// <summary>
 	/// Summary description for AbstractMultipleConstructorTestCase.

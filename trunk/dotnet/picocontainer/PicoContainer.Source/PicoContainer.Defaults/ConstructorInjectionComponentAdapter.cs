@@ -13,9 +13,10 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Text;
-using PicoContainer.Core.Utils;
+using PicoContainer.Core;
+using PicoContainer.Utils;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Instantiates components using Constructor Injection.

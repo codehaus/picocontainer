@@ -13,7 +13,7 @@ using System;
 using System.Collections;
 using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class DefaultPicoContainer : IMutablePicoContainer, IDisposable

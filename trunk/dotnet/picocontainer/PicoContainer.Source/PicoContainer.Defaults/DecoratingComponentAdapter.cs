@@ -12,7 +12,7 @@
 using System;
 using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Decorates a Component adapter, used for combining the functionality of multiple IComponentAdapters

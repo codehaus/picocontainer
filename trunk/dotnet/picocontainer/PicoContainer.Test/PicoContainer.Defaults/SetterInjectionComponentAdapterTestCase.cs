@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Security;
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 using NUnit.Framework;
-using Test.Tck;
-using Test.TestModel;
+using PicoContainer.Tck;
+using PicoContainer.TestModel;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class SetterInjectionComponentAdapterTestCase : AbstractComponentAdapterTestCase

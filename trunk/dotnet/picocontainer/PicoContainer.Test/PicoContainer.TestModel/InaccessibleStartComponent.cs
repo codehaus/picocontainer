@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 
-namespace Test.TestModel
+namespace PicoContainer.TestModel
 {
 	/// <summary>
 	/// Summary description for InaccessibleStartComponent.

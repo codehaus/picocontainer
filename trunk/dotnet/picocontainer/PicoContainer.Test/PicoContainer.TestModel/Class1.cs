@@ -1,8 +1,8 @@
 using System.Collections;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 using PicoContainer.Core;
 
-namespace Test.TestModel
+namespace PicoContainer.TestModel
 {
 	/// <summary>
 	/// Summary description for Class1.

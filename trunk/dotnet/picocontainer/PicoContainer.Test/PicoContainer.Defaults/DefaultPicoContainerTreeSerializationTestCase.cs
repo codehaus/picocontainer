@@ -3,10 +3,10 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
-using PicoContainer.Core.Tests.Tck;
+using PicoContainer.Defaults;
+using PicoContainer.Tck;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class DefaultPicoContainerTreeSerializationTestCase : AbstractPicoContainerTestCase

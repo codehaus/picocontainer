@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	///

@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 
-namespace PicoContainer.Core.Monitors
+namespace PicoContainer.Monitors
 {
 	/// <summary>
 	/// Implementation of ComponentMonitor which logs to the Console.

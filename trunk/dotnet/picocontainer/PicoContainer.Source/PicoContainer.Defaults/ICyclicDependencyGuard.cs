@@ -1,6 +1,6 @@
 using System;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	public interface ICyclicDependencyGuard
 	{

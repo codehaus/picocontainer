@@ -10,8 +10,9 @@
  *****************************************************************************/
 
 using System;
+using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	public interface IComponentAdapterFactory
 	{

@@ -8,11 +8,12 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
-using PicoContainer.Core.Defaults;
-using PicoContainer.Core.Tests.TestModel;
+using PicoContainer.Core;
+using PicoContainer.Defaults;
 using NUnit.Framework;
+using PicoContainer.TestModel;
 
-namespace PicoContainer.Core.Tests.Tck
+namespace PicoContainer.Tck
 {
 	[TestFixture]
 	public abstract class AbstractComponentAdapterFactoryTestCase

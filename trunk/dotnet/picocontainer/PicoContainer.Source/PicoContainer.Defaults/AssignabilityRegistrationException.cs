@@ -13,7 +13,7 @@ using System;
 using System.Runtime.Serialization;
 using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// An exception thrown when a type could not be assigned.

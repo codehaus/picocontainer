@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Summary description for DefaultLifecycleManager.

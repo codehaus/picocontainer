@@ -11,9 +11,10 @@
 
 using System;
 using System.Reflection;
-using PicoContainer.Core.Utils;
+using PicoContainer.Core;
+using PicoContainer.Utils;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// This ComponentAdapter will instantiate a new object for each call to 

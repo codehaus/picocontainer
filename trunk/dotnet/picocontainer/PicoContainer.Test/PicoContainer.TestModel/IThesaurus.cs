@@ -1,5 +1,5 @@
 
-namespace Test.TestModel
+namespace PicoContainer.TestModel
 {
 	/// <summary>
 	/// Summary description for Thesaurus.

@@ -12,7 +12,7 @@
 using System;
 using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Base for implementing ComponentAdapters

@@ -9,8 +9,9 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 using System;
+using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// ComponentAdapter initializing the component only once. Reusing the component.

@@ -12,8 +12,9 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class TooManySatisfiableConstructorsException : PicoIntrospectionException

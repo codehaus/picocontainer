@@ -1,6 +1,6 @@
 using System;
 
-namespace Test.TestModel
+namespace PicoContainer.TestModel
 {
 	public class PersonBean
 	{

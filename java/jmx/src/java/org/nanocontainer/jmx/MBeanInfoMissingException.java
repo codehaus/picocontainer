@@ -5,32 +5,24 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by James Strachan and Mauro Talevi                          *
+ * Original code by Michael Ward                                    		 *
  *****************************************************************************/
+
 package org.nanocontainer.jmx;
 
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoVerificationException;
+
+import java.util.List;
 
 /**
- * A registration exception caused trying to register the component with JMX
+ * An MBean's associated MBeanInfo is not registered with the container
  *
- * @author James Strachan
- * @author Mauro Talevi
+ * @author Michael Ward
  * @version $Revision$
  */
-public class MX4JInitializationException extends PicoInitializationException {
-    public MX4JInitializationException() {
-    }
+public class MBeanInfoMissingException extends PicoVerificationException{
 
-    public MX4JInitializationException(String message) {
-        super(message);
-    }
-
-    public MX4JInitializationException(Throwable cause) {
-        super(cause);
-    }
-
-    public MX4JInitializationException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public MBeanInfoMissingException(List nestedExceptions) {
+		super(nestedExceptions);
+	}
 }

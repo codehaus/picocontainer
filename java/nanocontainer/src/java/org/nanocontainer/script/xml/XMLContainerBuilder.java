@@ -16,20 +16,19 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,8 +48,6 @@ import org.xml.sax.SAXException;
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
-    private final Element rootElement;
-
     private final static String DEFAULT_INSTANCE_FACTORY = XStreamComponentInstanceFactory.class.getName();
     private static final String DEFAULT_COMPONENT_ADAPTER_FACTORY = DefaultComponentAdapterFactory.class.getName();
 
@@ -68,6 +65,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     private final static String URL = "url";
 
     private static final String EMPTY = "";
+
+    private final Element rootElement;
     
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);
@@ -177,54 +176,68 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private PicoContainer registerComponentImplementation(ReflectionContainerAdapter reflectionContainerAdapter, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
+    private PicoContainer registerComponentImplementation(SoftCompositionPicoContainer container, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
         String className = componentElement.getAttribute(CLASS);
         if (EMPTY.equals(className)) {
             throw new SAXException("'class' attribute not specified for " + componentElement.getNodeName());
         }
 
-        List parameterTypesList = new ArrayList();
-        List parameterValuesList = new ArrayList();
-        NodeList parameters = componentElement.getChildNodes();
-        for (int i = 0; i < parameters.getLength(); i++) {
-            final Node node = parameters.item(i);
+        List parametersList = new ArrayList();
+        NodeList nodeList = componentElement.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            final Node node = nodeList.item(i);
             if (node.getNodeType() == Document.ELEMENT_NODE) {
-                Element parameterElement = (Element) node;
-                if ( PARAMETER.equals(parameterElement.getNodeName()) ) {
-                    String type = parameterElement.getAttribute(CLASS);
-                    String value = parameterElement.getChildNodes().item(0).getNodeValue();
-                    parameterTypesList.add(type);
-                    parameterValuesList.add(value);
+                Element element = (Element) node;
+                if ( PARAMETER.equals(element.getNodeName()) ) {
+                    String key = element.getAttribute(KEY);
+                    if ( key != null && !EMPTY.equals(key) ) {
+                        parametersList.add(new ComponentParameter(key));
+                    } else {
+                        parametersList.add(createConstantParameter(element));
+                    }                    
                 }
             }
         }
-        String[] parameterTypes = null;
-        String[] parameterValues = null;
-        if(!parameterTypesList.isEmpty()) {
-            parameterTypes = (String[]) parameterTypesList.toArray(new String[parameterTypesList.size()]);
-            parameterValues = (String[]) parameterValuesList.toArray(new String[parameterValuesList.size()]);
+        
+        Parameter[] parameters = null;
+        if(!parametersList.isEmpty()) {
+            parameters = (Parameter[]) parametersList.toArray(new Parameter[parametersList.size()]);
         }
 
-        String key = componentElement.getAttribute(KEY);
-        ComponentAdapter componentAdapter;
+        Object key = componentElement.getAttribute(KEY);
+        Class clazz = classLoader.loadClass(className);
         if (key == null || key.equals(EMPTY)) {
-            if(parameterTypes == null) {
-                componentAdapter = reflectionContainerAdapter.registerComponentImplementation(className);
+            if(parameters == null) {
+                container.getPicoContainer().registerComponentImplementation(clazz);
             } else {
-                componentAdapter = reflectionContainerAdapter.registerComponentImplementation(className, parameterTypes, parameterValues);
+                container.getPicoContainer().registerComponentImplementation(clazz, clazz, parameters);
             }
         } else {
-            if(parameterTypes == null) {
-                componentAdapter = reflectionContainerAdapter.registerComponentImplementation(key, className);
+            if(parameters == null) {
+                container.getPicoContainer().registerComponentImplementation(key, clazz);
             } else {
-                componentAdapter = reflectionContainerAdapter.registerComponentImplementation(key, className, parameterTypes, parameterValues);
+                container.getPicoContainer().registerComponentImplementation(key, clazz, parameters);
             }
         }
         return null;
     }
-
-    private void registerComponentInstance(ReflectionContainerAdapter reflectionComponentAdapter, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
-        XMLComponentInstanceFactory factory = createComponentInstanceFactory(componentElement.getAttribute(FACTORY));
+    
+    private Parameter createConstantParameter(Element element) throws ClassNotFoundException{
+        NodeList nl = element.getChildNodes();
+        Element childElement = null;
+        for (int i = 0; i < nl.getLength(); i++) {
+            if (nl.item(i) instanceof Element) {
+                childElement = (Element) nl.item(i);
+                break;
+            }
+        }
+        
+        XMLComponentInstanceFactory factory = createComponentInstanceFactory(element.getAttribute(FACTORY));
+        Object instance = factory.makeInstance(childElement);
+        return new ConstantParameter(instance);
+    }
+        
+    private void registerComponentInstance(SoftCompositionPicoContainer container, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
         NodeList nl = componentElement.getChildNodes();
         Element childElement = null;
         for (int i = 0; i < nl.getLength(); i++) {
@@ -234,12 +247,14 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
         }
 
-        String key = componentElement.getAttribute(KEY);
+        XMLComponentInstanceFactory factory = createComponentInstanceFactory(componentElement.getAttribute(FACTORY));
         Object instance = factory.makeInstance(childElement);
+
+        String key = componentElement.getAttribute(KEY);
         if ( key == null || key.equals(EMPTY) ){ 
-            reflectionComponentAdapter.getPicoContainer().registerComponentInstance(instance);
+            container.getPicoContainer().registerComponentInstance(instance);
         } else {
-            reflectionComponentAdapter.getPicoContainer().registerComponentInstance(key, instance);            
+            container.getPicoContainer().registerComponentInstance(key, instance);            
         }
     }
     
@@ -248,8 +263,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             factoryClass = DEFAULT_INSTANCE_FACTORY;
         }
 
-        ReflectionContainerAdapter tempContainerAdapter = new DefaultReflectionContainerAdapter();
-        tempContainerAdapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
-        return (XMLComponentInstanceFactory) tempContainerAdapter.getPicoContainer().getComponentInstances().get(0);        
+        ReflectionContainerAdapter adapter = new DefaultReflectionContainerAdapter();
+        adapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
+        return (XMLComponentInstanceFactory) adapter.getPicoContainer().getComponentInstances().get(0);        
     }
 }

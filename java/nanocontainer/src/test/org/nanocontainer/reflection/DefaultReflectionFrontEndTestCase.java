@@ -22,27 +22,28 @@ import org.picocontainer.PicoRegistrationException;
 import java.io.File;
 import java.net.MalformedURLException;
 
+//TODO - to rename
 public class DefaultReflectionFrontEndTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
-        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
+        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
+        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
-        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
-        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
-        reflectionFrontEnd.registerComponentImplementation("org.nanocontainer.testmodel.WebServerImpl");
+        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
+        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.WebServerImpl");
 
-        assertNotNull("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class));
-        assertTrue("WebServerImpl should exist", reflectionFrontEnd.getPicoContainer().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
+        assertNotNull("WebServerImpl should exist", reflectionContainerAdapter.getPicoContainer().getComponentInstance(WebServerImpl.class));
+        assertTrue("WebServerImpl should exist", reflectionContainerAdapter.getPicoContainer().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
+        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
         try {
-            reflectionFrontEnd.registerComponentImplementation("Ping");
+            reflectionContainerAdapter.registerComponentImplementation("Ping");
             fail("should have failed");
         } catch (ClassNotFoundException e) {
             // expected
@@ -50,10 +51,10 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     }
 
     public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
-        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
+        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
-        reflectionFrontEnd.registerComponentImplementation("thing",
+        reflectionContainerAdapter.registerComponentImplementation("thing",
                 className,
                 new String[]{
                     "java.lang.String",
@@ -65,7 +66,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
                 });
 
         ThingThatTakesParamsInConstructor thing =
-                (ThingThatTakesParamsInConstructor) reflectionFrontEnd.getPicoContainer().getComponentInstance("thing");
+                (ThingThatTakesParamsInConstructor) reflectionContainerAdapter.getPicoContainer().getComponentInstance("thing");
         assertNotNull("component not present", thing);
         assertEquals("hello22", thing.getValue());
     }

@@ -215,7 +215,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
-    public Collection getChildren() {
+    public Collection getChildContainers() {
         return Collections.unmodifiableCollection(children);
     }
 

@@ -86,7 +86,7 @@ public interface PicoContainer {
      * @return a Collection of {@link PicoContainer}.
      * @see #getParents()
      */
-    Collection getChildren();
+    Collection getChildContainers();
 
     /**
      * Get the parents. In a purely hierarchical (tree structure) container,

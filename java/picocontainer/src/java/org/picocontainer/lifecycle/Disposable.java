@@ -11,5 +11,5 @@
 package org.picocontainer.lifecycle;
 
 public interface Disposable {
-    void dispose() throws Exception;
+    void dispose();
 }

@@ -1,3 +1,9 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY amp "&#233;">
+]>
+
 <project name="picocontainer" repository="picocontainer" href="http://picocontainer.codehaus.org">
 
   <title>PicoContainer</title>
@@ -19,11 +25,11 @@
       <item name="Inversion of Control"  href="/ioc.html"/>
       <item name="Configuration"         href="/configuration.html"/>
       <item name="Lifecycle"             href="/lifecycle.html"/>
-      <item name="Containers"            href="/containers.html"/>
+      <!--item name="Containers"            href="/containers.html"/-->
       <item name="Components"            href="/components.html"/>
       <item name="Good Citizens"         href="/good-citizens.html"/>
-      <item name="Component Factories"   href="/component-factories.html"/>
-      <item name="Composite Components"  href="/compositecomponents.html"/>
+      <item name="Component Adapters"    href="/component-adapters.html"/>
+      <item name="Component Multicaster" href="/compositecomponents.html"/>
       <item name="Differentiators"       href="/differentiators.html"/>
       <item name="License"               href="/license.html"/>
       <item name="Extras"                href="/extras.html"/>

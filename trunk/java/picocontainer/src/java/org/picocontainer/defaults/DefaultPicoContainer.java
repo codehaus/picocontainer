@@ -116,7 +116,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
-        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             Object key = ((ComponentSpecification) iterator.next()).getComponentKey();
             if (key == componentKey) {
                 throw new DuplicateComponentKeyRegistrationException(key);
@@ -179,7 +179,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
 
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInitializationException {
-        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
             createComponent(componentSpec);
         }
@@ -252,7 +252,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
 
     ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
-        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
 
             if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
@@ -318,7 +318,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     }
 
     public ComponentSpecification getComponentSpecification(Object componentKey) {
-        for (Iterator iterator = componentRegistry.getRegisteredComponentIterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
             if (componentSpecification.getComponentKey().equals(componentKey)) {
                 return componentSpecification;

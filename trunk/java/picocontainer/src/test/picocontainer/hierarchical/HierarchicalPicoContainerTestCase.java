@@ -722,4 +722,21 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
     }
 
 
+		public static interface I {}
+		public static class AA implements I {
+			public AA(I i) {}
+		}
+		public static class BB implements I {
+			public BB(I i) {}
+		}
+
+    public void testExtendAndDependOnSameType() throws Exception {
+
+        ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(AA.class);
+        pico.registerComponent(BB.class);
+
+        pico.start();
+	}
 }

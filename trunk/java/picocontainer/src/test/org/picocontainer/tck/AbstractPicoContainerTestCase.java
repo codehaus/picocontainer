@@ -529,15 +529,21 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(sb);
+        parent.registerComponentImplementation(Map.class, HashMap.class);
+
         final MutablePicoContainer child = parent.makeChildContainer();
         child.registerComponentImplementation(LifeCycleMonitoring.class);
+
+        Map map = (Map) parent.getComponentInstance(Map.class);
+        assertNotNull(map);
+        assertTrue(sb.toString().indexOf("-started") == -1);
+
         parent.start();
         assertTrue(sb.toString().indexOf("-started") != -1);
         parent.stop();
         assertTrue(sb.toString().indexOf("-stopped") != -1);
         parent.dispose();
         assertTrue(sb.toString().indexOf("-disposed") != -1);
-
     }
 
     public void testNamedChildContainerIsAccessibleForStringKeys() {

@@ -40,12 +40,12 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler();
 	}
 
-	protected void doDeploy(String context, URL mcaFile, boolean start) throws DeploymentException {
+	protected void doDeploy(String context, URL mcaFile, boolean autoStart) throws DeploymentException {
 		try {
 			// deploy to work folder
 			mcaDeployer.deploy(context, mcaFile);
 
-			PicoContainer container = groovyDeploymentScriptHandler.handle(context);
+			PicoContainer container = groovyDeploymentScriptHandler.handle(context, autoStart);
 			contextMap.put(context, container);
 
 			// start container now, or defer until later
@@ -87,12 +87,15 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	}
 
 	public Object getComponent(String relativeComponentPath) {
-		String[] path = relativeComponentPath.split("/");
-		PicoContainer container = (PicoContainer)contextMap.get(path[0]); // context
-		return container.getComponentInstance(path[1]); // component key
+        String[] path = relativeComponentPath.split("/");
+		return getRootContainer(path[0]).getComponentInstance(path[1]); // component key
 	}
 
-	public void start(String startableNode) {
+    public PicoContainer getRootContainer(String context) {
+        return (PicoContainer)contextMap.get(context);
+    }
+
+    public void start(String startableNode) {
 		PicoContainer container = (PicoContainer)contextMap.get(startableNode);
 		container.start();
 	}

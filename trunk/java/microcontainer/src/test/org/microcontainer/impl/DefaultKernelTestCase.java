@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.microcontainer.Kernel;
 import org.microcontainer.DeploymentException;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +30,7 @@ import java.util.zip.ZipException;
  */
 
 public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase of some sort I'd hope
+
     private Kernel kernel;
 
     protected void setUp() throws Exception {
@@ -36,9 +38,18 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         kernel = new DefaultKernel();
     }
 
-    public void testDeploymentOfMcaFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
+    public void testDeploymentOfMcaFileYieldsAccesibleComponent() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
         kernel.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
+        assertNotNull(o);
+        Method m = o.getClass().getMethod("testMe", new Class[0]);
+        assertEquals("hello", m.invoke(o, new Object[0]));
+    }
+
+    public void testDeploymentOfMcaFileYieldsAccesibleContainer() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
+        kernel.deploy(new File("test.mca"));
+        PicoContainer pc = kernel.getRootContainer("test");
+        Object o = pc.getComponentInstance("*org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
@@ -48,19 +59,21 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         //kernel.handleDeployForMcaFile(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mca"));
 		File testMca = new File("test.mca");
 		kernel.deploy(new URL("jar:file:" + testMca.getCanonicalPath() + "!/"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
+        Method isRunningMethod = o.getClass().getMethod("isRunning", new Class[0]);
+        assertEquals(Boolean.TRUE, isRunningMethod.invoke(o, new Object[0]));
     }
 
     public void testDeferredDeploymentOfMcaFile() throws Exception {
         kernel.deferredDeploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
 		Method isRunningMethod = o.getClass().getMethod("isRunning", new Class[0]);
 		assertEquals(Boolean.FALSE, isRunningMethod.invoke(o, new Object[0]));
         kernel.start("test");
-        o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         assertEquals(Boolean.TRUE, isRunningMethod.invoke(o, new Object[0]));
         Method testMethod = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", testMethod.invoke(o, new Object[0]));
@@ -68,7 +81,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
     public void testDeployedMcaComponentsAreInDifferentClassloaderToKernel() throws DeploymentException{
         kernel.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         assertNotNull(o);
 		Class interfaceClass = o.getClass().getInterfaces()[0];
         // the interface should be two removed from each other.
@@ -82,7 +95,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
     public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
         kernel.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
+        Object o = kernel.getComponent("test/*org.microcontainer.testapi.TestPromotable");
 		Class interfaceClass =  o.getClass().getInterfaces()[0];
 
 		// the interface's class loader should be one removed from the kernel's class loader
@@ -98,9 +111,9 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testTwoDeployedMcaComponentAPIsAreInDifferentClassloader() throws Exception {
 		URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
 		kernel.deploy("test2", url);
-        Object o2 = kernel.getComponent("test2/org.microcontainer.test.TestComp");
+        Object o2 = kernel.getComponent("test2/*org.microcontainer.test.TestComp");
         assertNotNull(o);
         assertNotNull(o2);
         // LSD: this, I like...
@@ -110,10 +123,10 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testTwoDeployedMcaComponentImplementationsAreInDifferentClassloader() throws Exception {
         URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         kernel.deploy("test2", url);
-        Object o2 = kernel.getComponent("test2/org.microcontainer.test.TestComp");
+        Object o2 = kernel.getComponent("test2/*org.microcontainer.test.TestComp");
 
         // unHideImplClassLoader allows us to cater for the fact that the default behavior of Mega
         // is to hide implementations. The method would amount to a logical security flaw if
@@ -129,9 +142,13 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // might be quite hard
     }
 
-    public void testMcaWithUnsupportedNanoContainerScriptCannotBeDeployed() throws DeploymentException{
-        kernel.deploy(new File("bogus.mca"));
-        // .bogus language not supported
+    public void testMcaWithUnsupportedNanoContainerScriptCannotBeDeployed() {
+        try {
+            kernel.deploy(new File("bogus.mca"));
+            fail("should have barfed as bogus.mca is not there");
+        } catch (DeploymentException e) {
+            // expected
+        }
     }
 
     public void testMcaMissingJavaCannotBeDeployed() throws DeploymentException{
@@ -155,6 +172,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 	}
 
     public void testDeploymentOfMcaFileResultsInAProperExceptionOnBadURL() throws MalformedURLException, DeploymentException {
+        // test passes when connected to the net.
 		try {
 			kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mca.badurl"));
 			fail("DeploymentException should have been thrown");
@@ -169,7 +187,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
     public void testMcaFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
         kernel.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("isRunning", new Class[0]);
         assertTrue(((Boolean) m.invoke(o, new Object[0])).booleanValue());
         kernel.stop("test");
@@ -182,7 +200,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // might not work as IDE is going to fight to keep these at VM classpath level
 
         kernel.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("testKernelImplIsInvisibleFromMcaSandbox", new Class[0]);
         m.invoke(o, new Object[0]); // asserts using Junit that certain classes do not exist in classpath
     }
@@ -218,10 +236,10 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // was an issue with phoenix at times...ie these guys don't claim server sockets...
         Kernel kernel2 = new DefaultKernel();
 
-        testDeploymentOfMcaFile();
+        testDeploymentOfMcaFileYieldsAccesibleComponent();
 
         kernel2.deploy(new File("test.mca"));
-        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));

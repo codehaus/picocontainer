@@ -1,6 +1,6 @@
 require 'test/unit'
 
-require 'rico'
+require 'rico/container'
 require 'rico/chainedcontainer'
 
 class ChainedContainerTest < Test::Unit::TestCase

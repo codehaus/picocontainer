@@ -3,6 +3,7 @@ package org.nanocontainer.reflection;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.nanocontainer.script.groovy.TestComponentAdapterFactory;
 
 /**
  * @author Paul Hammant

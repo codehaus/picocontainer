@@ -38,7 +38,7 @@ import picocontainer.defaults.AssignabilityRegistrationException;
 import picocontainer.defaults.NotConcreteRegistrationException;
 import picocontainer.defaults.AmbiguousComponentResolutionException;
 import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-import picocontainer.defaults.PicoInvocationTargetInitailizationException;
+import picocontainer.defaults.PicoInvocationTargetInitializationException;
 import picocontainer.defaults.WrongNumberOfConstructorsException;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
@@ -344,7 +344,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(Barney.class);
         try {
             pico.instantiateComponents();
-        } catch (PicoInvocationTargetInitailizationException e) {
+        } catch (PicoInvocationTargetInitializationException e) {
             assertEquals("Whoa!", e.getCause().getMessage());
             assertTrue(e.getMessage().indexOf("Whoa!") > 0);
         }

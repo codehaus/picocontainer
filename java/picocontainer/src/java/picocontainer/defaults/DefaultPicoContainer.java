@@ -175,7 +175,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         registerComponent(componentImplementation, componentImplementation);
     }
 
-    public void instantiateComponents() throws PicoInstantiationException, PicoInvocationTargetInitailizationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoInvocationTargetInitializationException, PicoIntrospectionException {
         if (initialized == false) {
             initializeComponents();
             initialized = true;

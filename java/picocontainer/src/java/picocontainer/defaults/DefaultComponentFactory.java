@@ -23,12 +23,12 @@ import java.lang.reflect.InvocationTargetException;
  * @version $Revision: 1.8 $
  */
 public class DefaultComponentFactory implements ComponentFactory {
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInvocationTargetInitailizationException, WrongNumberOfConstructorsException {
+    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, WrongNumberOfConstructorsException {
         try {
             Constructor constructor = getConstructor(componentImplementation);
             return constructor.newInstance(instanceDependencies);
         } catch (InvocationTargetException e) {
-            throw new PicoInvocationTargetInitailizationException(e.getCause());
+            throw new PicoInvocationTargetInitializationException(e.getCause());
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {

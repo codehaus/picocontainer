@@ -16,6 +16,7 @@ import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.defaults.NullContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.WilmaImpl;
 
@@ -47,7 +48,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void testNullContainer() {
         try {
-            AggregatedContainersContainer.Filter badOne = new AggregatedContainersContainer.Filter(null);
+            new AggregatedContainersContainer.Filter(null);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine
@@ -56,7 +57,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
 
     public void testNullArrayContainer() {
         try {
-            AggregatedContainersContainer badOne = new AggregatedContainersContainer(null);
+            new AggregatedContainersContainer(null);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine
@@ -131,5 +132,12 @@ public class AggregatedContainersContainerTestCase extends TestCase {
         assertTrue(acc.getComponent(String.class) == null);
         assertTrue(acc.getComponents().length == 0);
 
+    }
+
+    public void testInstantiation() throws PicoInstantiationException
+    {
+        NullContainer nc = new NullContainer ();
+        // Should not barf. Should do nothing, but that hard to test.
+        nc.instantiateComponents();
     }
 }

@@ -48,9 +48,11 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
         } catch (ClassCastException e) {
         }
         try {
-
-            disposableAggregatedComponent = (Disposable) getAggregateComponentProxy(false, false);
+            //TODO-Aslak broken
+            Object o =  getAggregateComponentProxy(false, false);
+            disposableAggregatedComponent = (Disposable) o;
         } catch (ClassCastException e) {
+            System.out.println("");
         }
 
     }

@@ -16,10 +16,6 @@ public class UnsatisfiedDependencyInstantiationException extends PicoInstantiati
     private Class classThatNeedsDeps;
     private Class neededDep;
 
-    public UnsatisfiedDependencyInstantiationException(Class classThatNeedsDeps) {
-        this.classThatNeedsDeps = classThatNeedsDeps;
-    }
-
     public UnsatisfiedDependencyInstantiationException(Class classThatNeeds, Class neededDep) {
         this.classThatNeedsDeps = classThatNeeds;
         this.neededDep = neededDep;

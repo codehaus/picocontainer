@@ -48,32 +48,31 @@ public class ClassHierarchyIntrospector {
 
     /**
      * Get all the interfaces implemented by a list of objects.
-     * @param objects the list of objects to consider.
-     * @return an array of interfaces.
+     * @param objects the {@link List} of objects to consider.
+     * @return a {@link Set} of interfaces.
      */
-    public static Class[] getAllInterfaces(List objects) {
+    public static Set getAllInterfaces(List objects) {
         Set interfaces = new HashSet();
         for (Iterator iterator = objects.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
             Class clazz = o.getClass();
             getInterfaces(clazz, interfaces);
         }
-
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return interfaces;
     }
 
     /**
      * Get all interfaces of the given type.
-     * If the type is a class, the returned list contains any interface, that is
+     * If the type is a {@link Class}, the returned list contains any interface, that is
      * implemented by the class. If the type is an interface, the all 
      * superinterfaces and the interface itself are included.
      * @param clazz type to explore.
-     * @return an array with all interfaces. The array may be empty.
+     * @return a {@link Set} with all interfaces. The array may be empty.
      */
-    public static Class[] getAllInterfaces(Class clazz) {
+    public static Set getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return interfaces;
     }
 
     private static void getInterfaces(Class clazz, Set interfaces) {

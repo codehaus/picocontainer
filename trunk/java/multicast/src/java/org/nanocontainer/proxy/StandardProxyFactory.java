@@ -15,7 +15,7 @@ public class StandardProxyFactory implements ProxyFactory {
     public Object createProxy(Class classOrInterface, Class[] interfaces, final InvocationInterceptor invocationInterceptor) {
         if(!classOrInterface.isInterface()) {
             Set interfaceSet = new HashSet();
-            interfaceSet.addAll(Arrays.asList(ClassHierarchyIntrospector.getAllInterfaces(classOrInterface)));
+            interfaceSet.addAll(ClassHierarchyIntrospector.getAllInterfaces(classOrInterface));
             if(interfaces != null) {
                 interfaceSet.addAll(Arrays.asList(interfaces));
             }

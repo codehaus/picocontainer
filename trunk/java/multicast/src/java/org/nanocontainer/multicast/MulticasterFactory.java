@@ -17,6 +17,7 @@ import org.picocontainer.defaults.ClassHierarchyIntrospector;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Chris Stevenson
@@ -51,7 +52,8 @@ public class MulticasterFactory {
             classOrInterface = ClassHierarchyIntrospector.getMostCommonSuperclass(objectsToAggregateCallFor.toArray());
         }
         if(interfaces == null) {
-            interfaces = ClassHierarchyIntrospector.getAllInterfaces(objectsToAggregateCallFor);
+            Set interfaceSet = ClassHierarchyIntrospector.getAllInterfaces(objectsToAggregateCallFor);
+            interfaces = (Class[]) interfaceSet.toArray(new Class[interfaceSet.size()]);
         }
 
         return proxyFactory.createProxy(classOrInterface, interfaces, new AggregatingInvocationInterceptor(this, targets, invoker, proxyFactory));

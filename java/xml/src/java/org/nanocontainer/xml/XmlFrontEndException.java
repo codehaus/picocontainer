@@ -9,22 +9,29 @@
 
 package org.nanocontainer.xml;
 
-public class TestPseudoComp {
-    private int foo;
-    private String bar;
+import org.picocontainer.PicoConfigurationException;
 
-    public int getFoo() {
-        return foo;
-    }
-    public String getBar() {
-        return bar;
+/**
+ * @author Jeppe Cramon
+ */
+public class XmlFrontEndException extends PicoConfigurationException {
+
+	public XmlFrontEndException() {
+	}
+
+	/**
+	 * @param cause
+	 */
+	public XmlFrontEndException(Throwable cause) {
+		super(cause);
+	}
+
+    public XmlFrontEndException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public void setFoo(int foo) {
-        this.foo = foo;
+    public XmlFrontEndException(String message) {
+        super(message);
     }
 
-    public void setBar(String bar) {
-        this.bar = bar;
-    }
 }

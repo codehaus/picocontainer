@@ -4,10 +4,10 @@
 </head>
 <body>
 <p>
-Nanoaop lets you configure aspects on components in a {@link
+NanoAop lets you configure aspects on components in a {@link
 org.picocontainer.PicoContainer}.  Two kinds of advice are supported,
 interceptors and mixins.  An interceptor is invoked around method
-calls.  Nanaop interceptors implement
+calls.  NanAop interceptors implement
 the <code>org.aopalliance.interceptor.MethodInterceptor</code>
 interface.  Mixins allow you to add new methods and behavior to an
 existing object.  You can think of them as a way of dynamically
@@ -17,7 +17,7 @@ can configure aspects with nanoaop in Java, or using groovy.  Advice
 can be configured for all components in a container, using pointcuts,
 or advice can be applied to just one component.  Advice objects may
 themselves have dependencies on other components, supplied by the
-container.  Currently, nanoaop uses <a
+container.  Currently, NanoAop uses <a
 href="http://dynaop.dev.java.net">dynaop</a> to apply the aspects.
 Other backends may be supported in the future.
 

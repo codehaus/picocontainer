@@ -56,6 +56,20 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
+    public void testParametersCanBePassedToComponent() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
+        InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
+        nc.registerComponents(new InputSource(new StringReader(
+                "<components>" +
+                "      <component class=\"" + ThingThatTakesParamsInConstructor.class.getName() + "\">" +
+                "            <param type=\"java.lang.String\">a string</param>" +
+                "            <param type=\"java.lang.Integer\">99</param>" +
+                "      </component>" +
+                "</components>")));
+        nc.start();
+        ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
+        assertEquals("a string99", thing.getValue());
+    }
+
     public void testDigesterConfig() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(

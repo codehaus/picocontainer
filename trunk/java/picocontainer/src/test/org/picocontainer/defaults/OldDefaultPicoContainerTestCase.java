@@ -723,9 +723,8 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(Barney.class);
         try {
             pico.getComponentInstance(Barney.class);
-        } catch (PicoInvocationTargetInitializationException e) {
-            assertEquals("Whoa!", e.getCause().getMessage());
-            assertTrue(e.getMessage().indexOf("Whoa!") > 0);
+        } catch (RuntimeException e) {
+            assertEquals("Whoa!", e.getMessage());
         }
     }
 

@@ -175,6 +175,11 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
             componentInstance = constructor.newInstance(parameters);
             instantiating = false;
         } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            } else if (e.getCause() instanceof Error) {
+                throw (Error) e.getCause();                
+            }
             throw new PicoInvocationTargetInitializationException(e.getCause());
         } catch (InstantiationException e) {
             throw new PicoInvocationTargetInitializationException(e);

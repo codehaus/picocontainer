@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Lifecycle Pico Adapter</title>
+</head>
+<body>
+<h1>LifecyclePicoAdapter
+</h1>
+<br>
+The LifecyclePicoAdapter honors the classic lifecycle concepts for
+components.&nbsp; These are start(), stop() and dispose().&nbsp; If any
+of the components implements one of the applicable interfaces, the
+calling of the same method on th econtainer ( post
+instantiateComponent() ) will find that the call is pecolated though to
+it.&nbsp; The container is forgiving, as it is just fine if some of
+none of the components contained are Startable etc.<br>
+<br>
+Suitable components :<br>
+<br>
+<pre>public Peach implements Startable, Stoppable, Disposable {</pre>
+<pre>&nbsp;&nbsp; public void start() { }</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>&nbsp;&nbsp; public void dispose() { }</pre>
+<pre>}</pre>
+<pre><br>public Kiwi implements Stoppable {</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>}</pre>
+<br>
+A component that needs adaption ...<br>
+<br>
+<pre>public BananaImpl implement Banana {</pre>
+<pre>&nbsp;&nbsp; public void banana() {}</pre>
+<pre>&nbsp;&nbsp; public void start() { }</pre>
+<pre>&nbsp;&nbsp; public void stop() { }</pre>
+<pre>}</pre>
+<pre><br>public BananaExtender extends BananaImpl </pre>
+<pre>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{</pre>
+<pre>}</pre>
+<br>
+Or...<br>
+<br>
+<pre>public BananaDelegate implements Banana, Startable, Stoppable {</pre>
+<pre>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();</pre>
+<pre>&nbsp;&nbsp;&nbsp; public void start() {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>&nbsp;&nbsp;&nbsp; public void stop() {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();</pre>
+<pre>&nbsp;&nbsp;&nbsp; }</pre>
+<pre>}</pre>
+<br>
+<br>
+</body>
+</html>

@@ -108,6 +108,8 @@ class ContainerTest < Test::Unit::TestCase
     assert_instance_of AlsoNeeded, dependent.also_needed
   end
   
+  class Common; end # a shared component
+  
   class Thing1
   	attr_reader :common
     def initialize common; @common = common; end
@@ -117,8 +119,6 @@ class ContainerTest < Test::Unit::TestCase
   	attr_reader :common
     def initialize common; @common = common; end
   end
-  
-  class Common; end
 
   def test_two_components_get_the_same_instance_for_the_same_tag
     rico = Container.new
@@ -142,23 +142,25 @@ class ContainerTest < Test::Unit::TestCase
   end
   
   class Washable
-    attr_accessor :washed
+    attr_accessor :washed # creates washed and washed= methods
+    def initialize; @washed = false; end
   end
   
   class AlsoWashable
     attr_accessor :washed
+    def initialize; @washed = false; end
   end
   
   class DontWashMe; end
-    
+  
   def test_multicast_delivers_message_to_all_components
     rico = Container.new
     rico.register_component :washable, Washable
     rico.register_component :also_washable, AlsoWashable
     rico.register_component :dont_wash_me, DontWashMe
-    assert_equal nil, rico.component(:washable).washed
-    assert_equal nil, rico.component(:also_washable).washed
-    rico.multicast :washed=, true
+    assert_equal false, rico.component(:washable).washed
+    assert_equal false, rico.component(:also_washable).washed
+    rico.multicaster.washed = true
     assert_equal true, rico.component(:washable).washed
     assert_equal true, rico.component(:also_washable).washed
   end

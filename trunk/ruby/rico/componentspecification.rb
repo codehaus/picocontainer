@@ -17,7 +17,7 @@ class ComponentSpecification
   end
   
   private
-  def check_access type, method
-    raise NoMethodError, "undefined method `#{method.to_s}' for #{type.to_s}" unless type.methods.include? method.to_s
+  def check_access type, meth
+    raise NoMethodError, "undefined method `#{meth.to_s}' for #{type.to_s}" unless type.methods.include? meth.to_s
   end
 end

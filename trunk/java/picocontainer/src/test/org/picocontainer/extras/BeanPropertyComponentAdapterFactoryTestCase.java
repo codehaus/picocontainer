@@ -33,7 +33,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
     public void testSetProperties() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
-        Foo foo = (Foo) adapter.getComponentInstance(picoContainer);
+        Foo foo = (Foo) adapter.getComponentInstance();
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
@@ -41,7 +41,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     public void testFailingSetter() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
-            adapter.getComponentInstance(picoContainer);
+            adapter.getComponentInstance();
             fail();
         } catch (PicoInitializationException e) {
         }

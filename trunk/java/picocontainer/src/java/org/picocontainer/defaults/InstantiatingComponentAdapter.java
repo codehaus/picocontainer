@@ -1,11 +1,6 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,11 +8,12 @@ import java.util.Arrays;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
- * {@link #getComponentInstance(org.picocontainer.MutablePicoContainer)}. That means that
+ * {@link org.picocontainer.ComponentAdapter#getComponentInstance()}. That means that
  * when used with a PicoContainer, getComponentInstance will return a new
  * object each time.
  *
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @version $Revision$
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
@@ -30,61 +26,64 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         this.parameters = parameters;
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer)
+    public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        picoContainer.registerOrderedComponentAdapter(this);
-        ComponentAdapter[] adapterDependencies = findDependencies(picoContainer);
-        Object instance = instantiateComponent(adapterDependencies, picoContainer);
-        picoContainer.addOrderedComponentAdapter(this);
+
+        ComponentAdapter[] dependencyAdapters = getMostSatisifableDependencyAdapters(getContainer());
+        Object instance = instantiateComponent(dependencyAdapters, getContainer());
         return instance;
     }
 
     private Parameter[] getParameters(PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (parameters == null) {
-            return createDefaultParameters(getDependencies(picoContainer));
+        if (parameters == null || parameters.length == 0) {
+            return createDefaultParameters(getMostSatisfiableDependencyTypes(picoContainer), picoContainer);
         } else {
             return parameters;
         }
     }
 
-    protected static Parameter[] createDefaultParameters(Class[] parameters) {
-        ComponentParameter[] componentParameters = new ComponentParameter[parameters.length];
+    protected static Parameter[] createDefaultParameters(Class[] parameters, PicoContainer picoContainer) {
+        Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new ComponentParameter(parameters[i]);
+            if(PicoContainer.class.isAssignableFrom(parameters[i])) {
+                componentParameters[i] = new ConstantParameter(picoContainer);
+            } else {
+                componentParameters[i] = new ComponentParameter(parameters[i]);
+            }
         }
         return componentParameters;
     }
 
-    private ComponentAdapter[] findDependencies(PicoContainer picoContainer) {
-        final Class[] dependencyTypes = getDependencies(picoContainer);
-        final ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
+    private ComponentAdapter[] getMostSatisifableDependencyAdapters(PicoContainer dependencyContainer) {
+        final Class[] mostSatisfiableDependencyTypes = getMostSatisfiableDependencyTypes(dependencyContainer);
+        final ComponentAdapter[] mostSatisfiableDependencyAdapters = new ComponentAdapter[mostSatisfiableDependencyTypes.length];
 
-        final Parameter[] componentParameters = getParameters(picoContainer);
+        final Parameter[] componentParameters = getParameters(dependencyContainer);
 
-        if (componentParameters.length != adapterDependencies.length) {
+        if (componentParameters.length != mostSatisfiableDependencyAdapters.length) {
             throw new PicoInitializationException() {
                 public String getMessage() {
                     return "The number of specified parameters (" +
                             componentParameters.length + ") doesn't match the number of arguments in the greediest satisfiable constructor (" +
-                            adapterDependencies.length + "). When parameters are explicitly specified, specify them in the correct order, and one for each constructor argument." +
-                            "The greediest satisfiable constructor takes the following arguments: " + Arrays.asList(dependencyTypes).toString();
+                            mostSatisfiableDependencyAdapters.length + "). When parameters are explicitly specified, specify them in the correct order, and one for each constructor argument." +
+                            "The greediest satisfiable constructor takes the following arguments: " + Arrays.asList(mostSatisfiableDependencyTypes).toString();
                 }
             };
         }
-        for (int i = 0; i < adapterDependencies.length; i++) {
-            adapterDependencies[i] = componentParameters[i].resolveAdapter(picoContainer);
+        for (int i = 0; i < mostSatisfiableDependencyAdapters.length; i++) {
+            mostSatisfiableDependencyAdapters[i] = componentParameters[i].resolveAdapter(dependencyContainer);
         }
-        return adapterDependencies;
+        return mostSatisfiableDependencyAdapters;
     }
 
-    protected Object instantiateComponent(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Object instantiateComponent(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
-            Constructor constructor = getConstructor(picoContainer);
+            Constructor constructor = getGreediestSatisifableConstructor(dependencyContainer);
             if (instantiating) {
                 throw new CyclicDependencyException(constructor.getParameterTypes());
             }
             instantiating = true;
-            Object[] parameters = getConstructorArguments(adapterDependencies, picoContainer);
+            Object[] parameters = getConstructorArguments(adapterDependencies, dependencyContainer);
 
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
@@ -103,31 +102,25 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         }
     }
 
-    public void verify(PicoContainer picoContainer) {
-        ComponentAdapter[] adapterDependencies = findDependencies(picoContainer);
-        verifyComponent(adapterDependencies, picoContainer);
-    }
-
-    private void verifyComponent(ComponentAdapter[] adapterDependencies, PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
+    public void verify() throws UnsatisfiableDependenciesException {
         try {
+            ComponentAdapter[] adapterDependencies = getMostSatisifableDependencyAdapters(getContainer());
             if (verifying) {
-                throw new CyclicDependencyException(getDependencies(picoContainer));
+                throw new CyclicDependencyException(getMostSatisfiableDependencyTypes(getContainer()));
             }
             verifying = true;
             for (int i = 0; i < adapterDependencies.length; i++) {
                 ComponentAdapter adapterDependency = adapterDependencies[i];
-                adapterDependency.verify(picoContainer);
+                adapterDependency.verify();
             }
-        } catch (Exception e) {
-            throw new PicoInvocationTargetInitializationException(e);
         } finally {
             verifying = false;
         }
     }
 
-    protected abstract Class[] getDependencies(PicoContainer picoContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Class[] getMostSatisfiableDependencyTypes(PicoContainer dependencyContainer) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
-    protected abstract Constructor getConstructor(PicoContainer picoContainer) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
-    protected abstract Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer);
+    protected abstract Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer);
 }

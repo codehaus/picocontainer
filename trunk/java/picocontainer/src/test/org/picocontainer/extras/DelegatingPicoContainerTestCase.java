@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -15,10 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NoSatisfiableConstructorsException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.*;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -31,8 +28,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
 
     public void setUp() throws PicoRegistrationException, PicoInitializationException {
         parent = new DefaultPicoContainer();
-        child = new DefaultPicoContainer();
-        child.addParent(parent);
+        child = new DefaultPicoContainer(parent);
     }
 
     public void testChildGetsFromParent() {
@@ -49,7 +45,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         try {
             parent.getComponentInstance(DependsOnTouchable.class);
             fail();
-        } catch (NoSatisfiableConstructorsException e) {
+        } catch (UnsatisfiableDependenciesException e) {
         }
     }
 
@@ -63,12 +59,12 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         assertNotSame(parentTouchable, childTouchable);
     }
 
-    public void testMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testMulticasterDoesntMulticastToParent() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         parent.registerComponentImplementation(SimpleTouchable.class);
         child.registerComponentImplementation(DependsOnTouchable.class);
 
-        Object multicaster = child.getComponentMulticaster();
+        Object multicaster = new DefaultComponentMulticasterAdapter().getComponentMulticaster(child);
         assertTrue(multicaster instanceof Serializable);
-        assertTrue(multicaster instanceof Touchable);
+        assertFalse(multicaster instanceof Touchable);
     }
 }

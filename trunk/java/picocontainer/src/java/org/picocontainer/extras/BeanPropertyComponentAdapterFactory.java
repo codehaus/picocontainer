@@ -1,10 +1,6 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -86,8 +82,8 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             }
         }
 
-        public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            final Object componentInstance = super.getComponentInstance(picoContainer);
+        public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            final Object componentInstance = super.getComponentInstance();
 
             if (propertyValues != null) {
                 Set propertyNames = propertyValues.keySet();

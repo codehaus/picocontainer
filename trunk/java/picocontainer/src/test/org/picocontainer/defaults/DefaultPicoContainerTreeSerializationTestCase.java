@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (ComponentC) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,21 +10,13 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.*;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Collection;
+import java.io.*;
 
 /**
  * @author Thomas Heller
@@ -32,34 +24,33 @@ import java.util.Collection;
  */
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer() {
-        DefaultPicoContainer container = new DefaultPicoContainer();
-        DefaultPicoContainer child = new DefaultPicoContainer();
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
 
         child.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         child.registerComponentImplementation(DependsOnTouchable.class);
-        container.addChild(child);
-        return container;
+        return parent;
     }
 
-    public void testContainerIsDeserializableWithChildren() throws PicoException, PicoInitializationException,
+    public void testContainerIsDeserializableWithParent() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {
 
-        PicoContainer pico = createPicoContainerWithTouchableAndDependency();
+        PicoContainer parent = createPicoContainer();
+        MutablePicoContainer child = createPicoContainer();
+        child.setParent(parent);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
 
-        oos.writeObject(pico);
+        oos.writeObject(child);
 
         // yeah yeah, is not needed.
-        pico = null;
+        child = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
 
-        pico = (PicoContainer) ois.readObject();
+        child = (MutablePicoContainer) ois.readObject();
 
-        Collection children = pico.getChildContainers();
-        assertNotNull(children);
-        assertEquals(1, children.size());
+        assertNotNull(child.getParent());
     }
 }

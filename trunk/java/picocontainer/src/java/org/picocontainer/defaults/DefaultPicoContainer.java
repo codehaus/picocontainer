@@ -1,27 +1,15 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
+import org.picocontainer.*;
 
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
+ * Constructing a container c with a parent p container will cause c to look up components
+ * in p if they cannot be found inside c itself.
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -29,244 +17,69 @@ import java.util.Set;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
 
-    // WeakReferences to aid GC and avoid circular references.
-    private transient final List parentWeakReferences = new ArrayList();
+    private final LifecycleAdapter lifecycleAdapter = new LifecycleAdapter(this);
 
-    // Child containers.
-    private final Collection children = new ArrayList();
-
-    // Keeps track of unmanaged components - components instantiated outside the container
-    private final List unmanagedComponents = new ArrayList();
-
-    // Keeps track of the instantiation order (dependency order)
-    private final List instantiantionOrderedComponentAdapters = new ArrayList();
-
-    // Keeps track of the keys of the instantiation ordered components, to grant single registration
-    private final Map instantiationOrderedComponentAdapterMap = new HashMap();
-
+    private final Map componentKeyToAdapterCache = new HashMap();
     private final ComponentAdapterFactory componentAdapterFactory;
-
-    private final Map componentKeyToAdapterIndex = new HashMap();
+    private PicoContainer parent;
     private final List componentAdapters = new ArrayList();
 
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
+        setParent(parent);
+    }
+
+    public DefaultPicoContainer(PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(), parent);
+    }
+
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+        this(componentAdapterFactory, null);
     }
 
     public DefaultPicoContainer() {
-        this(new DefaultComponentAdapterFactory());
+        this(new DefaultComponentAdapterFactory(), null);
     }
 
-    public final List getComponentKeys() {
-        List result = new ArrayList();
+    public final Collection getComponentKeys() {
+        return createComponentAdapterMap(this).keySet();
+    }
+
+    private Map createComponentAdapterMap(PicoContainer container) {
+        Collection componentAdapters = container.getComponentAdapters();
+        Map result = new HashMap(componentAdapters.size());
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter adapter = (ComponentAdapter) iterator.next();
-            result.add(adapter.getComponentKey());
-        }
-        synchronized (parentWeakReferences) {
-            for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
-                WeakReference wr = (WeakReference) iterator.next();
-                if (wr.get() == null) {
-                    parentWeakReferences.remove(wr);
-                } else {
-                    MutablePicoContainer delegate = (DefaultPicoContainer) wr.get();
-                    result.addAll(delegate.getComponentKeys());
-                }
-            }
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            result.put(componentAdapter.getComponentKey(), componentAdapter);
         }
         return result;
     }
 
-    public List getComponentAdapters() {
+    /**
+     * @return a Map of {@link ComponentAdapter}. The keys are the keys of the adapters, the values the
+     *         adapters (including parent container adapters).
+     */
+    private Map getComponentAdapterMap() {
+        Map result;
+        if (parent != null) {
+            result = createComponentAdapterMap(parent);
+        } else {
+            result = new HashMap();
+        }
+        // Add ourself at last. This will override parent entries.
+        result.putAll(componentKeyToAdapterCache);
+        return result;
+    }
+
+    public Collection getComponentAdapters() {
         return Collections.unmodifiableList(componentAdapters);
     }
 
-    public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
-        Object componentKey = componentAdapter.getComponentKey();
-        if (getComponentAdapter(componentKey) != null) {
-            throw new DuplicateComponentKeyRegistrationException(componentKey);
-        }
-        componentAdapters.add(componentAdapter);
-        componentKeyToAdapterIndex.put(componentKey, componentAdapter);
+    public final ComponentAdapter getComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
+        return (ComponentAdapter) getComponentAdapterMap().get(componentKey);
     }
 
-    public ComponentAdapter unregisterComponent(Object componentKey) {
-        ComponentAdapter adapter = getComponentAdapter(componentKey);
-        if (adapter != null) {
-            unregisterComponentAdapter(adapter);
-        }
-        return adapter;
-    }
-
-    private void unregisterComponentAdapter(ComponentAdapter adapter) {
-        // TODO instantiates component even if we're just unregistering it
-        Object instance = adapter.getComponentInstance(this);
-        componentAdapters.remove(adapter);
-        componentKeyToAdapterIndex.remove(adapter.getComponentKey());
-
-        instantiantionOrderedComponentAdapters.remove(adapter);
-        instantiationOrderedComponentAdapterMap.remove(adapter.getComponentKey());
-
-        unmanagedComponents.remove(instance);
-    }
-
-    private ComponentAdapter getComponentAdapter(Object componentKey) {
-        return (ComponentAdapter) componentKeyToAdapterIndex.get(componentKey);
-    }
-
-    public final ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
-        ComponentAdapter result = findComponentAdapterImpl(componentKey);
-        if (result != null) {
-            return result;
-        } else {
-            synchronized (parentWeakReferences) {
-                for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
-                    WeakReference wr = (WeakReference) iterator.next();
-                    if (wr.get() == null) {
-                        iterator.remove();
-                    } else {
-                        MutablePicoContainer delegate = (MutablePicoContainer) wr.get();
-                        ComponentAdapter componentAdapter = delegate.findComponentAdapter(componentKey);
-                        if (componentAdapter != null) {
-                            return componentAdapter;
-                        }
-                    }
-                }
-                return null;
-            }
-        }
-    }
-
-    private ComponentAdapter findComponentAdapterImpl(Object componentKey) throws AmbiguousComponentResolutionException {
-        ComponentAdapter result = getComponentAdapter(componentKey);
-        // TODO this is ugly!!!
-        if (result == null && componentKey instanceof Class) {
-            // see if we find a matching one if the key is a class
-            Class classKey = (Class) componentKey;
-            result = findImplementingComponentAdapter(classKey);
-        }
-        return result;
-    }
-
-    public ComponentAdapter registerComponentInstance(Object component) throws PicoRegistrationException {
-        return registerComponentInstance(component.getClass(), component);
-    }
-
-    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
-        ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
-        registerComponent(componentAdapter);
-        unmanagedComponents.add(componentInstance);
-        return componentAdapter;
-    }
-
-    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
-        return registerComponentImplementation(componentImplementation, componentImplementation);
-    }
-
-    /**
-     * @deprecated Use {@link DefaultComponentMulticasterPicoAdapter).
-     */
-    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new DefaultComponentMulticasterPicoAdapter(this).getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
-    }
-
-    /**
-     * Shorthand for {@link #getComponentMulticaster(boolean, boolean)}<pre>(true, false)</pre>,
-     * which is the most common usage scenario.
-     *
-     * @return a multicaster object.
-     * @deprecated
-     */
-    public Object getComponentMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return getComponentMulticaster(true, false);
-    }
-
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        return registerComponentImplementation(componentKey, componentImplementation, null);
-    }
-
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
-        ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
-        registerComponent(componentAdapter);
-        return componentAdapter;
-    }
-
-    public void registerOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        if (!instantiationOrderedComponentAdapterMap.containsKey(componentAdapter.getComponentKey())) {
-            instantiationOrderedComponentAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);
-        }
-    }
-
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        ComponentAdapter first = (ComponentAdapter) instantiationOrderedComponentAdapterMap.get(componentAdapter.getComponentKey());
-        if (first == null) {
-            throw new IllegalStateException("need to call registerOrderedComponentAdapter first");
-        }
-        if (first.equals(componentAdapter)) {
-            instantiantionOrderedComponentAdapters.add(componentAdapter);
-        }
-    }
-
-    public List getComponentInstances() throws PicoException {
-        for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
-            // This will result in the list of ComponentAdapters being populated
-            Object o = getComponentInstance(iterator.next());
-
-            // This is a small hack to materialise the delegate in case implementation
-            // hiding component adapter is used. This is because delegates are lazily
-            // constructed, and only after the first method call occurs. Thi is what will
-            // add the real component.
-            o.hashCode();
-        }
-        List result = new ArrayList();
-        List copy = new ArrayList(instantiantionOrderedComponentAdapters);
-        for (Iterator iterator = copy.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            result.add(componentAdapter.getComponentInstance(this));
-        }
-        return result;
-    }
-
-    public List getUnmanagedComponentInstances() {
-        getComponentInstances();
-        return new ArrayList(unmanagedComponents);
-    }
-
-    public Object getComponentInstance(Object componentKey) throws PicoException {
-        ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
-        if (componentAdapter != null) {
-            return componentAdapter.getComponentInstance(this);
-        } else {
-            return null;
-        }
-    }
-
-    public Object findComponentInstance(Class componentType) throws PicoException {
-        List foundKeys = new ArrayList();
-        Object result = null;
-        for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
-            Object key = iterator.next();
-            Object componentInstance = getComponentInstance(key);
-            if (componentType.isInstance(componentInstance)) {
-                result = componentInstance;
-                foundKeys.add(key);
-            }
-        }
-
-        if (foundKeys.size() == 0) {
-            return null;
-        } else if (foundKeys.size() > 1) {
-            throw new AmbiguousComponentResolutionException(componentType, foundKeys.toArray());
-        }
-
-        return result;
-    }
-
-    public boolean hasComponent(Object componentKey) {
-        return getComponentKeys().contains(componentKey);
-    }
-
-    public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws PicoException {
+    public ComponentAdapter getComponentAdapterOfType(Class componentType) {
         List found = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
@@ -279,7 +92,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (found.size() == 1) {
             return ((ComponentAdapter) found.get(0));
         } else if (found.size() == 0) {
-            return null;
+            if (parent != null) {
+                return parent.getComponentAdapterOfType(componentType);
+            } else {
+                return null;
+            }
         } else {
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
@@ -291,80 +108,80 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
-    public Collection getChildContainers() {
-        return Collections.unmodifiableCollection(children);
+    public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
+        componentAdapter.setContainer(this);
+        componentAdapters.add(componentAdapter);
+        Object componentKey = componentAdapter.getComponentKey();
+        if (componentKeyToAdapterCache.containsKey(componentKey)) {
+            throw new DuplicateComponentKeyRegistrationException(componentKey);
+        }
+        componentKeyToAdapterCache.put(componentKey, componentAdapter);
     }
 
-    public List getParentContainers() {
-        ArrayList retval = new ArrayList();
-        synchronized (parentWeakReferences) {
-            for (int i = 0; i < parentWeakReferences.size(); i++) {
-                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
-                if (wr.get() == null) {
-                    parentWeakReferences.remove(wr);
-                } else {
-                    MutablePicoContainer mutablePicoContainer = (MutablePicoContainer) wr.get();
-                    retval.add(mutablePicoContainer);
-                }
-
-            }
-        }
-        return Collections.unmodifiableList(retval);
+    public ComponentAdapter unregisterComponent(Object componentKey) {
+        ComponentAdapter adapter = (ComponentAdapter) componentKeyToAdapterCache.remove(componentKey);
+        componentAdapters.remove(adapter);
+        return adapter;
     }
 
-    public boolean addChild(MutablePicoContainer child) {
-        boolean result = false;
-        if (!children.contains(child)) {
-            result = children.add(child);
-        }
-        if (!child.getParentContainers().contains(this)) {
-            child.addParent(this);
+    public ComponentAdapter registerComponentInstance(Object component) throws PicoRegistrationException {
+        return registerComponentInstance(component.getClass(), component);
+    }
+
+    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+        ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
+        registerComponent(componentAdapter);
+        return componentAdapter;
+    }
+
+    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
+        return registerComponentImplementation(componentImplementation, componentImplementation);
+    }
+
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
+        return registerComponentImplementation(componentKey, componentImplementation, null);
+    }
+
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+        ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
+        registerComponent(componentAdapter);
+        return componentAdapter;
+    }
+
+    public List getComponentInstances() throws PicoException {
+        List result = new ArrayList();
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            result.add(componentAdapter.getComponentInstance());
         }
         return result;
     }
 
-    public boolean addParent(MutablePicoContainer parent) {
-        boolean result = false;
-        boolean found = false;
-        synchronized (parentWeakReferences) {
-            for (int i = 0; i < parentWeakReferences.size(); i++) {
-                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
-                if (wr.get() != null && wr.get().equals(parent)) {
-                    found = true;
-                }
-            }
-            if (!found) {
-                result = parentWeakReferences.add(new WeakReference(parent));
-            }
+    public Object getComponentInstance(Object componentKey) throws PicoException {
+        ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
+        if (componentAdapter != null) {
+            PicoContainer adapterOwner = componentAdapter.getContainer();
+            return componentAdapter.getComponentInstance();
+        } else {
+            return null;
         }
-        if (!parent.getChildContainers().contains(this)) {
-            parent.addChild(this);
-        }
-        return result;
     }
 
-    public boolean removeChild(MutablePicoContainer child) {
-        boolean removed = children.remove(child);
-        if (child.getParentContainers().contains(this)) {
-            child.removeParent(this);
-        }
-        return removed;
+    public Object getComponentInstanceOfType(Class componentType) {
+        final ComponentAdapter componentAdapter = getComponentAdapterOfType(componentType);
+        return componentAdapter == null ? null : componentAdapter.getComponentInstance();
     }
 
-    public boolean removeParent(MutablePicoContainer parent) {
-        boolean removed = false;
-        synchronized (parentWeakReferences) {
-            for (int i = 0; i < parentWeakReferences.size(); i++) {
-                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
-                if (wr.get() != null && wr.get().equals(parent)) {
-                    removed = parentWeakReferences.remove(wr);
-                }
-            }
-        }
-        if (parent.getChildContainers().contains(this)) {
-            parent.removeChild(this);
-        }
-        return removed;
+    public boolean hasComponent(Object componentKey) {
+        return getComponentKeys().contains(componentKey);
+    }
+
+    public PicoContainer getParent() {
+        return parent;
+    }
+
+    public void setParent(PicoContainer parent) {
+        this.parent = parent;
     }
 
     public void verify() throws PicoVerificationException {
@@ -372,8 +189,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             try {
-                componentAdapter.verify(this);
-            } catch (NoSatisfiableConstructorsException e) {
+                componentAdapter.verify();
+            } catch (UnsatisfiableDependenciesException e) {
                 nestedVerificationExceptions.add(e);
             }
         }
@@ -381,5 +198,29 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (!nestedVerificationExceptions.isEmpty()) {
             throw new PicoVerificationException(nestedVerificationExceptions);
         }
+    }
+
+    public void start() {
+        lifecycleAdapter.start();
+    }
+
+    public void stop() {
+        lifecycleAdapter.stop();
+    }
+
+    public void dispose() {
+        lifecycleAdapter.dispose();
+    }
+
+    public boolean isStarted() {
+        return lifecycleAdapter.isStarted();
+    }
+
+    public boolean isStopped() {
+        return lifecycleAdapter.isStopped();
+    }
+
+    public boolean isDisposed() {
+        return lifecycleAdapter.isDisposed();
     }
 }

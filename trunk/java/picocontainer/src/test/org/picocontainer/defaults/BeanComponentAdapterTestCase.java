@@ -26,8 +26,9 @@ public class BeanComponentAdapterTestCase extends TestCase {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
+        pico.registerComponent(aAdapter);
 
-        A a = (A) aAdapter.getComponentInstance(pico);
+        A a = (A) aAdapter.getComponentInstance();
         assertNotNull(a.getB());
     }
 

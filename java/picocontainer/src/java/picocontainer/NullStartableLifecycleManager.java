@@ -10,17 +10,11 @@
 
 package picocontainer;
 
-public class DummyContainer implements Container {
-    public boolean hasComponent(Class compType) {
-        return false;
+public class NullStartableLifecycleManager
+        implements StartableLifecycleManager {
+    public void startComponent(Object component) throws PicoStartException {
     }
 
-    public Object getComponent(Class compType) {
-        return null;
-    }
-
-    public Object[] getComponents() {
-        return new Object[0];
+    public void stopComponent(Object component) throws PicoStopException {
     }
 }
-

@@ -47,26 +47,26 @@ public class PicoContainerImpl implements PicoContainer {
 
     public static class Default extends PicoContainerImpl {
         public Default() {
-            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DefaultComponentFactory());
+            super(new NullContainer(), new NullStartableLifecycleManager(), new DefaultComponentFactory());
         }
 
     }
 
     public static class WithParentContainer extends PicoContainerImpl {
         public WithParentContainer(Container parentContainer) {
-            super(parentContainer, new DummyStartableLifecycleManager(), new DefaultComponentFactory());
+            super(parentContainer, new NullStartableLifecycleManager(), new DefaultComponentFactory());
         }
     }
 
     public static class WithStartableLifecycleManager extends PicoContainerImpl {
         public WithStartableLifecycleManager(StartableLifecycleManager startableLifecycleManager) {
-            super(new DummyContainer(), startableLifecycleManager, new DefaultComponentFactory());
+            super(new NullContainer(), startableLifecycleManager, new DefaultComponentFactory());
         }
     }
 
     public static class WithComponentFactory extends PicoContainerImpl {
         public WithComponentFactory(ComponentFactory componentFactory) {
-            super(new DummyContainer(), new DummyStartableLifecycleManager(), componentFactory);
+            super(new NullContainer(), new NullStartableLifecycleManager(), componentFactory);
         }
     }
 

@@ -90,7 +90,7 @@ namespace PicoContainer.Defaults {
         }
       }
 
-      public object PicoHotSwap(object newSubject) {
+      public object HotSwap(object newSubject) {
         object result = delegatedInstance;
         delegatedInstance = newSubject;
         return result;

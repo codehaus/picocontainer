@@ -103,11 +103,9 @@ public class NanoContainerBuilder extends BuilderSupport {
                     throw new NanoContainerMarkupException("ClassNotFoundException:" + e.getMessage(), e);
                 }
             }
-        } else if ("component".equals(current)) {
+        } else {
             // we don't know how to handle it - delegate to the decorator.
             return nanoContainerBuilderDecorationDelegate.createNode(name, attributes, current);
-        } else {
-            throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' node under component");
         }
     }
 
@@ -195,7 +193,7 @@ public class NanoContainerBuilder extends BuilderSupport {
             key = key == null ? instance.getClass() : key;
             nano.getPico().registerComponentInstance(key, instance);
         } else {
-            throw new NanoContainerMarkupException("Must specify a class attribute for a component");
+            throw new NanoContainerMarkupException("Must specify a class attribute for a component. Attributes:" + attributes);
         }
 
         return name;

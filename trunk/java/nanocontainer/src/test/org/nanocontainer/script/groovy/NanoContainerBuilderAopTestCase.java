@@ -22,7 +22,6 @@ import java.io.StringReader;
  */
 public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-
     public void testContainerScopedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -37,6 +36,36 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
                 "builder = new NanoContainerBuilder(decorator)\n" +
                 "nano = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
+                "    component(key:Dao, class:DaoImpl)\n" +
+                "    component(key:StringBuffer, instance:log)\n" +
+                "}\n";
+
+        GroovyContainerBuilder builder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
+
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+
+        StringBuffer log = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
+        verifyIntercepted(dao, log);
+    }
+
+    public void testContainerScopedPointcutWithNestedAdvices() {
+        String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.nanocontainer.aop.*\n" +
+                "" +
+                "log = new StringBuffer()\n" +
+                "logger = new LoggingInterceptor(log)\n" +
+                "\n" +
+                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
+                "cuts = aspectsManager.getPointcutsFactory()\n" +
+                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
+                "builder = new NanoContainerBuilder(decorator)\n" +
+                "nano = builder.container() {\n" +
+                "    pointcut(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods()) {\n" +
+                "        aspect(interceptor:logger)\n" +
+                "    }\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
                 "    component(key:StringBuffer, instance:log)\n" +
                 "}\n";

@@ -13,26 +13,18 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.tck.DependsOnTwoComponents;
 import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.testmodel.Webster;
-import org.picocontainer.tck.Touchable;
+import org.picocontainer.tck.DependsOnTwoComponents;
 import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.tck.Touchable;
+import org.picocontainer.testmodel.Webster;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -747,22 +739,6 @@ public class DefaultPicoContainerTestCase extends TestCase {
             assertTrue(npe.getMessage().indexOf("componentFactory") >= 0);
         }
 
-    }
-
-    public void testTooFewComponents() throws PicoInitializationException, PicoRegistrationException {
-
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        pico.registerComponentByClass(DependsOnTouchable.class);
-
-        try {
-            pico.instantiateComponents();
-            fail("should need a Touchable");
-        } catch (UnsatisfiedDependencyInstantiationException e) {
-            // expected
-            assertTrue(e.getClassThatNeedsDeps() == DependsOnTouchable.class);
-            assertTrue(e.getMessage().indexOf(DependsOnTouchable.class.getName()) > 0);
-
-        }
     }
 
     public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {

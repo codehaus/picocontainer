@@ -28,3 +28,4 @@
 ALL /usr/local/despots/cvs/collect_diffs.rb --to scm@picocontainer.codehaus.org %{sVv}
 java cat $CVSROOT/CVSROOT/damagecontrol/picocontainer-java.conf | nc builds.codehaus.org 4711
 ruby cat $CVSROOT/CVSROOT/damagecontrol/picocontainer-ruby.conf | nc builds.codehaus.org 4711
+java ruby /scm/picocontainer/CVSROOT/dctrigger.rb http://64.7.141.17:4712/private/xmlrpc picocontainer

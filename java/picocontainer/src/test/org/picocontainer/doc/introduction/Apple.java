@@ -1,4 +1,4 @@
-package org.picocontainer.doc;
+package org.picocontainer.doc.introduction;
 
 // START SNIPPET: class
 public class Apple implements Peelable {

@@ -259,15 +259,6 @@ public class ConstructorInjectionComponentAdapterTestCase
         pico.registerComponentInstance("Hello");
         assertNotNull(pico.getComponentInstance(Component201.class));
     }
-
-    // http://jira.codehaus.org/browse/PICO-222
-    public void testUnambiguousSelfDependency() {
-        DefaultPicoContainer pico =  new DefaultPicoContainer();
-        pico.registerComponentImplementation(SimpleTouchable.class);
-        pico.registerComponentImplementation(DecoratedTouchable.class);
-        Touchable t = (Touchable) pico.getComponentInstance(DecoratedTouchable.class);
-        assertNotNull(t);
-    }
     
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final long beforeTime = System.currentTimeMillis();

@@ -2,6 +2,9 @@ package org.picocontainer.sample.stock;
 
 import junit.framework.TestCase;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -21,8 +24,8 @@ public class StockTraderTest extends TestCase {
     }
 
     public static class StockMarketStub implements StockMarket {
-        public String[] currentSellBids() {
-            return new String[0];
+        public List currentSellBids() {
+            return Collections.singletonList("MSFT");
         }
     }
 
@@ -36,6 +39,6 @@ public class StockTraderTest extends TestCase {
         StockMarketStub market = new StockMarketStub();
         new StockTrader(ticker, market);
         ticker.changeTickerValue("MSFT", 101);
-        assertEquals(new String[] { "MSFT" }, market.currentSellBids());
+        assertEquals(Collections.singletonList("MSFT"), market.currentSellBids());
     }
 }

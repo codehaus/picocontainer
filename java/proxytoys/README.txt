@@ -20,7 +20,7 @@ The proxytoys library doesn't have any external dependencies exept an optional d
 
 Does anyone object if I refactor the following PicoContainer/NanoContainer classes to depend on proxytoys? (I am suggesting moving all of the classes below to org.nanocontainer.proxytoys)
 
-o org.picocontainer.defaults.ImplementationHidingComponentAdapter (very useful, but not strictly related to the pico core)
+o org.picocontainer.alternatives.ImplementationHidingComponentAdapter (very useful, but not strictly related to the pico core)
 o org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory
 o org.nanocontainer.multicast.* (our pluggable lifecycle support - will be greatly simplified)
 o org.nanocontainer.remoting.*

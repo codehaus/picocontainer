@@ -1,4 +1,4 @@
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
@@ -6,6 +6,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+import org.picocontainer.alternatives.ImplementationHidingComponentAdapter;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;

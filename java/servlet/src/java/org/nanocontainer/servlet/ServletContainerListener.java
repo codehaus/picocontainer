@@ -17,8 +17,9 @@ import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.ImmutablePicoContainer;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

@@ -8,7 +8,7 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;

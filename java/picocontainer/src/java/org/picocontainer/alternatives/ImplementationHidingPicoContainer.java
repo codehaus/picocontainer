@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -15,6 +15,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.Serializable;
 import java.util.Collection;

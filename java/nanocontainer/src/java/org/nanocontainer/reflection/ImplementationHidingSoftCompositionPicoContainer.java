@@ -20,7 +20,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.ImplementationHidingPicoContainer;
+import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 
 import java.io.Serializable;
 import java.net.URL;

@@ -7,11 +7,14 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

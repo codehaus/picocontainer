@@ -122,7 +122,7 @@
     </property>
     <property name="title" value="NanoContainer 1.0-SNAPSHOT API">
     </property>
-    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="nanocontainer.*">
+    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.nanocontainer.*">
       <classpath>
         <fileset dir="${libdir}">
           <include name="*.jar">
@@ -134,7 +134,7 @@
     </javadoc>
   </target>
   <target name="get-deps" unless="noget" depends="init">
-    <get dest="${libdir}/picocontainer-1.0-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://dist.codehaus.org/picocontainer/jars/picocontainer-1.0-alpha-2-SNAPSHOT.jar">
+    <get dest="${libdir}/org.picocontainer-1.0-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://dist.codehaus.org/org.picocontainer/jars/org.picocontainer-1.0-alpha-2-SNAPSHOT.jar">
     </get>
     <get dest="${libdir}/commons-collections-2.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar">
     </get>

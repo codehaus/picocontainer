@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.security.AccessController;
+import java.security.PermissionCollection;
+import java.security.CodeSource;
 
 /**
  * @author Paul Hammant
@@ -146,7 +149,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         clLocked = true;
 
         if (componentClassLoader == null) {
-            componentClassLoader = new FooClassLoader(urlz, parentClassLoader);
+            componentClassLoader = new DRCAClassLoader(urlz, parentClassLoader);
         }
 
         return componentClassLoader;
@@ -156,13 +159,13 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         return picoContainer;
     }
 
-    public static class FooClassLoader extends URLClassLoader {
+    public static class DRCAClassLoader extends URLClassLoader {
         URL[] urls;
-        public FooClassLoader(URL[] urls, ClassLoader parent) {
+        public DRCAClassLoader(URL[] urls, ClassLoader parent) {
             super(urls, parent);
             this.urls = urls;
         }
-
+        
         public String toString() {
             return "FCL(parent:" + (getParent() != null ? ""+System.identityHashCode(getParent()) : "x") + " - URLS("+prtURLs()+")";
         }

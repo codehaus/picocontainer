@@ -173,4 +173,34 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         }
     }
 
+    public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException, ClassNotFoundException {
+        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
+
+        String testcompJarFileName = System.getProperty("testcomp.jar");
+        // Paul's path to TestComp. PLEASE do not take out.
+        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
+        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        File testCompJar = new File(testcompJarFileName);
+        assertTrue(testCompJar.isFile());
+
+        parentContainerAdapter.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+
+        Object fooWebServerConfig = parentContainerAdapter.getPicoContainer().getComponentInstance("foo");
+        assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
+
+        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
+        childContainerAdapter.addClassLoaderURL(testCompJar.toURL());
+        //TODO childContainerAdapter.setPermission(some permission list, that includes the preventing of general file access);
+        // Or shoud this be done in the ctor for DRCA ?
+        // or should it a parameter in the addClassLoaderURL(..) method
+        childContainerAdapter.registerComponentImplementation("bar", "org.nanocontainer.testmodel.FileSystemUsing");
+
+        try {
+            parentContainerAdapter.getPicoContainer().getComponentInstance("bar");
+            fail("Should have barfed");
+        } catch (java.security.AccessControlException e) {
+            // expected
+        }
+    }
+
 }

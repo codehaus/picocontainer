@@ -3,15 +3,19 @@
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
+ * the license.html file.                                                    *
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
 package picocontainer;
 
-public class DummyComponentDecorator implements ComponentDecorator {
-    public Object decorateComponent(Class compType, Object instance) {
-        return instance;
-    }
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+public interface ComponentFactory {
+
+    Object createComponent(Class compType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException;
+    //Object decorateObejcts(Object[] instances);
+
 }

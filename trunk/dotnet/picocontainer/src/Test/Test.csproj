@@ -205,12 +205,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\DefaultPicoContainerTreeSerializationTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\DefaultPicoContainerUnregisterComponentTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Defaults\DelegatingPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\InstanceComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -241,6 +251,11 @@
                 />
                 <File
                     RelPath = "Tck\AbstractComponentAdapterFactoryTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Tck\AbstractComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -62,7 +62,7 @@
         </dependency>
         <dependency>
             <id>velocity</id>
-            <version>1.4</version>
+            <version>1.5-dev</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

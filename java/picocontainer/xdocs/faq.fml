@@ -3,20 +3,85 @@
 
   <part id="general">
     <title>General</title>
-   
-    <faq id="comp-dep-non-comp">
+
+    <faq id="without-pico">
       <question>
-        What if my component depend on non-component objects (such as configuration, ints and strings)?
+        Is a single Uber|Super|BorgCollectivePicoContainer in development? Something that can do all things 
+        for all people in all deployment situations?
       </question>
       <answer>
         <p>
-          This is not supported in the current release (1.0-alpha). We have a design and have 
-          almost implemented support for it. Will hopefully be included in next release.
+          No. We are delivering small interoperable containers and components of containers. There will never be a 
+          quest for the BorgContainer. We encourage diversity and compatibility with the essential idea here - 
+          components designed along the PicoContainer principles (dependancies and config in constructors). 
+        </p>
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
+    <faq id="why-another">
+      <question>
+        Why another IoC framework?
+      </question>
+      <answer>
+        <p>
+          After a long period of watching IoC frameworks, and for some of us avoiding them because of their 
+          cumbersome nature, we got together to write what we believe is the simplest possible IoC design. One 
+          perhaps that considers the so-design component as more important that the container.
+        </p>
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
+
+    <faq id="without-pico">
+      <question>
+        Do I have to use PicoContainer to manage or use components designed for it?
+      </question>
+      <answer>
+        <p>
+          No. Components are instantiable and configurable without useing PicoContainer. This was one of the 
+          design goals. 
         </p>
         
         <source>bla bla</source>
       </answer>
     </faq>
+
+    <faq id="without-pico">
+      <question>
+        Do I have to use PicoContainer to manage or use components designed for it?
+      </question>
+      <answer>
+        <p>
+          No. Components are instantiable and configurable without useing PicoContainer. This was one of the 
+          design goals. 
+        </p>
+        
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
+
+    <faq id="tdd">
+      <question>
+        Is it true that PicoContainer is developed along the principles of Test Driven Development (TDD)?
+      </question>
+      <answer>
+        <p>
+          Yes for the most part. We're not perfect though and our coverage reports have sometimes shown 
+          that we are making/committing un tested code. At those rare moments we switch some attention 
+          to test coverage and whip out the electric cattle prod to reprimand the offender (usually Paul). 
+        </p>
+        
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
+  </part>
+
+  <part id="constructors">
+    <title>Constructor Design</title>
 
     <faq id="why-1-ctor">
       <question>
@@ -26,14 +91,74 @@
         <p>
           In order for Pico to unambigiously deduce what dependencies your component have. If you require 
           your component to have several constructors for other purposes, consider creating a Pico-compatible 
-          wrapper or sub-class.
+          wrapper or sub-class. We commonly create a 'Default' sub-class, in it's fairly empty constructor, NullObject implementations are passed up the optional superclass parameters as well as real defaults if they 
+          are available. 
         </p>
       </answer>
     </faq>
+
+    <faq id="multiple-impls">
+      <question>
+        How do I provide multiple imple?
+      </question>
+      <answer>
+        <p>
+          In order for Pico to unambigiously deduce what dependencies your component have. If you require 
+          your component to have several constructors for other purposes, consider creating a Pico-compatible 
+          wrapper or sub-class. We commonly create a 'Default' sub-class, in it's fairly empty constructor, NullObject implementations are passed up the optional superclass parameters as well as real defaults if they 
+          are available. 
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="comp-dep-non-comp">
+      <question>
+        What if my component depend on non-component objects (such as configuration, ints and strings)?
+      </question>
+      <answer>
+        <p>
+          Yes great, We also pass in configuration by constructor. This is not the simplest mode of operation of the default PicoContainer, but it is by no means hard.
+        </p>
+        
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
   </part>
+
+  <part id="competition">
+    <title>Competition</title>
+   
+    <faq id="avalon">
+      <question>
+        How does PicoContainer framework compare to Avalon?
+      </question>
+      <answer>
+        <p>
+          Avalon's Serviceable, Configurable and Initializable interfaces are eliminated. A component writer does 
+          not have to import anything like those.  For Startable we have a replacement design in our lifecycle 
+          package. We're not precious though and suggest that you may prefer to use your own lifecycle interfaces
+          which may be more than just start() and stop().
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="avalon">
+      <question>
+        How does PicoContainer compare to EJB?
+      </question>
+      <answer>
+        <p>
+          Oh blimey, it is rather different. EJB has loads of things you must extend, implement, provide and throw. It is also not an IoC design. It is close in that comps are managed by a container, but the cumbersome and static nature of the JNDI lookups ensure that it is not actually IoC.  PicoContainer is not a superset of EJB though, as it provides no remoting capability. At least the PicoContainer compatible comps hosted in this project do not. 
+        </p>
+      </answer>
+    </faq>
+    
+  </part> 
+
   
-  <part id="install">
-    <title>Installation</title>
+  <part id="install-n-deployment">
+    <title>Installation And Deployment</title>
    
     <faq id="how-install">
       <question>
@@ -45,5 +170,20 @@
         </p>
       </answer>
     </faq>
-  </part>  
+    
+    <faq id="where-use">
+      <question>
+        Can I use PicoContainer in EJB, Servlets, Applets, Portlets, Mailets, Beans, Classes, 
+        AnotherComponentFrameworks?
+      </question>
+      <answer>
+        <p>
+          Yes.
+        </p>
+      </answer>
+    </faq>
+    
+    
+  </part> 
+  
 </faqs>

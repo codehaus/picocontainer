@@ -50,7 +50,7 @@ public interface PicoContainer {
     /**
      * Initialize the container.
      */
-    void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException;
+    void instantiateComponents() throws PicoInitializationException;
 
     /**
      * Shorthand for {@link #getCompositeComponent(boolean, boolean)}(true, true).

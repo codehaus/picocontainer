@@ -11,7 +11,7 @@
 package picocontainer.defaults;
 
 import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ class ComponentSpecification {
     }
 
     public Object instantiateComponent(DefaultPicoContainer picoContainer)
-            throws PicoInstantiationException, PicoIntrospectionException {
+            throws PicoInitializationException {
         Class[] dependencyTypes = componentFactory.getDependencies(comp);
         Object[] dependencies = new Object[dependencyTypes.length];
         for (int i = 0; i < dependencies.length; i++) {

@@ -10,19 +10,18 @@
 
 package picocontainer.aggregated;
 
-import picocontainer.defaults.DefaultPicoContainer;
-import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.defaults.PicoInvocationTargetInitializationException;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInitializationException;
+import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.DefaultPicoContainer;
+import picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * AggregatedContainersContainer aggregates the the contents of more
@@ -89,7 +88,7 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
         return (Class[]) componentTypes.toArray(new Class[containers.size()]);
     }
 
-    public void instantiateComponents() throws PicoInvocationTargetInitializationException, PicoInstantiationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInvocationTargetInitializationException, PicoInitializationException {
         super.instantiateComponents();
         
         // @todo should we iterate through our child containers and instantiate those?

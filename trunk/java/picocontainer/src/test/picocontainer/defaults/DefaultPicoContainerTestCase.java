@@ -11,16 +11,16 @@
 package picocontainer.defaults;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.UndeclaredThrowableException;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -125,7 +125,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(PeelableComponent.class);
@@ -147,7 +147,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertFalse(notReallyPeelableComponent.wasPeeled);
     }
 
-    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -181,7 +181,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -216,7 +216,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -246,7 +246,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -280,7 +280,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
                 !recorder.thingsThatHappened.contains("Aa.wash()"));
     }
 
-    public void testPeelableAndWashable() throws PicoIntrospectionException, PicoRegistrationException, PicoInstantiationException {
+    public void testPeelableAndWashable() throws PicoInitializationException, PicoRegistrationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -385,7 +385,9 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
 
-    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, PicoIntrospectionException, PicoInstantiationException {
+    public void testRecursiveAggregation()
+            throws NotConcreteRegistrationException, AssignabilityRegistrationException,
+            DuplicateComponentTypeRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(Recorder.class);
         pico.registerComponent(AppleFactory.class);
@@ -463,7 +465,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
@@ -485,14 +487,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertNotNull(pico.findImplementingComponentSpecification(Wilma.class));
     }
 
-    public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException, PicoIntrospectionException {
+    public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInitializationException {
         ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class, new Parameter[0]);
         Object comp = componentSpec.instantiateComponent(null);
         assertNotNull(comp);
         assertTrue(comp instanceof WilmaImpl);
     }
 
-    public void testDoubleInstantiation() throws PicoInstantiationException, PicoIntrospectionException
+    public void testDoubleInstantiation() throws PicoInitializationException
     {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.instantiateComponents();
@@ -507,7 +509,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testInstantiateOneComponent() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);

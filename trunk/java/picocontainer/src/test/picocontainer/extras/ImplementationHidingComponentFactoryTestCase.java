@@ -11,14 +11,11 @@
 package picocontainer.extras;
 
 import junit.framework.TestCase;
-
-import java.util.List;
-import java.util.ArrayList;
-
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.extras.ImplementationHidingComponentFactory;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 
@@ -35,7 +32,7 @@ public class ImplementationHidingComponentFactoryTestCase extends TestCase {
         }
     }
 
-    public void testBasic() throws NoSuchMethodException, PicoInstantiationException, PicoIntrospectionException {
+    public void testBasic() throws NoSuchMethodException, PicoInitializationException {
         ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory(new DefaultComponentFactory());
         Object o = cf.createComponent(List.class, OneConstructorArrayList.class, null, null);
         assertTrue(o instanceof List);

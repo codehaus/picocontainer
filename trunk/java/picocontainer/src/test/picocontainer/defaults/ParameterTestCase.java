@@ -5,7 +5,11 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
 import picocontainer.testmodel.FredImpl;
-import picocontainer.*;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInitializationException;
+import picocontainer.ClassRegistrationPicoContainer;
+
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -19,7 +23,7 @@ public class ParameterTestCase extends TestCase {
         assertFalse(ComponentSpecification.isAssignableFrom(Integer.class, String.class));
     }
 
-    public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testComponentParameter() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
@@ -36,7 +40,7 @@ public class ParameterTestCase extends TestCase {
         assertSame(value, parameter.resolve(null, null, null));
     }
 
-    public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
+    public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
         WilmaImpl wilma = new WilmaImpl();
         pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[]{

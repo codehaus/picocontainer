@@ -10,6 +10,12 @@
 
 package picocontainer.defaults;
 
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoRegistrationException;
+
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.PicoRegistrationException;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -183,7 +183,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         registerComponent(componentImplementation, componentImplementation);
     }
 
-    public void instantiateComponents() throws PicoInstantiationException, PicoInvocationTargetInitializationException, PicoIntrospectionException {
+    public void instantiateComponents() throws PicoInitializationException, PicoInvocationTargetInitializationException {
         if (initialized == false) {
             initializeComponents();
             initialized = true;
@@ -193,14 +193,14 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
     }
 
     // This is Lazy and NOT public :-)
-    private void initializeComponents() throws PicoInstantiationException, PicoIntrospectionException {
+    private void initializeComponents() throws PicoInitializationException {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
             createComponent(componentSpec);
         }
     }
 
-    Object createComponent(ComponentSpecification componentSpecification) throws PicoInstantiationException, PicoIntrospectionException {
+    Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
         if (!componentTypeToInstanceMap.containsKey(componentSpecification.getComponentType())) {
 
             Object component = null;
@@ -236,7 +236,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         return componentTypeToInstanceMap.get(componentType);
     }
 
-    Object createComponent(Class componentType) throws PicoInstantiationException, PicoIntrospectionException {
+    Object createComponent(Class componentType) throws PicoInitializationException {
         Object componentInstance = getComponent(componentType);
 
         if (componentInstance != null) {

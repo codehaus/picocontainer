@@ -1,8 +1,7 @@
 package picocontainer.defaults;
 
 import picocontainer.PicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoInitializationException;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -10,5 +9,5 @@ import picocontainer.PicoIntrospectionException;
  */
 public interface Parameter {
     Object resolve(PicoContainer picoContainer, ComponentSpecification compSpec, Class targetType)
-            throws PicoInstantiationException, PicoIntrospectionException;
+            throws PicoInitializationException;
 }

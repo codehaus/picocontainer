@@ -5,7 +5,7 @@ Folks,
 
 Dan and I have factored out a lot of the dynamic proxy related code that is not strictly tied to picocontainer/nanocontainer. It now lives in a small project on Codehaus called proxytoys. (This project initially grew out of http://xjb.codehaus.org/). There is currently no online docs for proxytoys (will be really soon!), but you can get a quick idea of what it does by looking at:
 
-http://svn.proxytoys.codehaus.org/trunk/proxytoys/src/com/thoughtworks/proxy/
+svn checkout svn://svn.proxytoys.codehaus.org/proxytoys/scm/trunk/proxytoys
 
 In short proxytoys is:
 o A core library that lets you create dynamic proxies (implemented with standard proxies or Cglib) using the same API.

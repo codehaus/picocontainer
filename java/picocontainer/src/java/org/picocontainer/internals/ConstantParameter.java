@@ -8,12 +8,9 @@
  * Idea by Rachel Davies, Original code by Jon Tirsen                        *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.internals;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.Parameter;
-import org.picocontainer.ComponentRegistry;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -22,7 +19,7 @@ import org.picocontainer.ComponentRegistry;
 public class ConstantParameter implements Parameter {
     private Object arg;
 
-    ConstantParameter(Object parameter) {
+    public ConstantParameter(Object parameter) {
         this.arg = parameter;
     }
 

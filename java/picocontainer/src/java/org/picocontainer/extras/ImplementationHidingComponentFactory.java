@@ -10,10 +10,10 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.internals.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

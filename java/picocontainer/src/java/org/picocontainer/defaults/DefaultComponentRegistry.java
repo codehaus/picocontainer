@@ -9,9 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
 import java.util.*;

@@ -4,7 +4,14 @@ import junit.framework.TestCase;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.*;
+import org.picocontainer.internals.ConstantParameter;
+import org.picocontainer.internals.ComponentParameter;
+import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.internals.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInstantiationException;
 
 
 /**

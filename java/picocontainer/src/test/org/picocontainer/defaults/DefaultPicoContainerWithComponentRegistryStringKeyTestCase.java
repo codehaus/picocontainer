@@ -1,6 +1,6 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;

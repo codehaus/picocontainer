@@ -10,10 +10,10 @@
 
 package org.picocontainer.hierarchical;
 
-import org.picocontainer.ComponentRegistry;
+import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.io.Serializable;

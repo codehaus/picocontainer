@@ -13,7 +13,7 @@ package org.picocontainer.extras;
 import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.internals.ComponentSpecification;
 
 import java.util.ArrayList;
 import java.util.List;

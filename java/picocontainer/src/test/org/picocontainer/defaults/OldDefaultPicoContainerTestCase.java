@@ -11,13 +11,15 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.Parameter;
+import org.picocontainer.internals.ComponentFactory;
+import org.picocontainer.internals.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.internals.ComponentSpecification;
+import org.picocontainer.internals.ComponentParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -531,7 +533,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
         assertEquals("Looking up one Touchable", one, pico.getComponent("one"));
         assertEquals("Looking up two Touchable", two, pico.getComponent("two"));
@@ -551,7 +553,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 3, pico.getComponents().size());
 
         assertTrue("Object one the same", pico.getComponent("one") != null);
         assertTrue("Object two the same", pico.getComponent("two") != null);
@@ -573,11 +575,11 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 4, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 4, pico.getComponents().size());
 
-        assertTrue("There should have been a Fred in the container", pico.hasComponent(DependsOnTouchable.class));
+        assertTrue("There should have been a Fred in the internals", pico.hasComponent(DependsOnTouchable.class));
         assertTrue(
-                "There should have been a SimpleTouchable in the container",
+                "There should have been a SimpleTouchable in the internals",
                 dcr.findImplementingComponent(SimpleTouchable.class) != null);
 
         assertEquals("Looking up one Touchable", one, pico.getComponent("one"));
@@ -600,11 +602,11 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 3, pico.getComponents().size());
 
-        assertTrue("There should have been a Touchable in the container", pico.hasComponent(Touchable.class));
+        assertTrue("There should have been a Touchable in the internals", pico.hasComponent(Touchable.class));
         assertTrue(
-                "There should have been a SimpleTouchable in the container",
+                "There should have been a SimpleTouchable in the internals",
                 dcr.findImplementingComponent(SimpleTouchable.class) != null);
 
         DependsOnTouchable fred = (DependsOnTouchable) pico.getComponent("fred");
@@ -714,7 +716,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertTrue("There should have been a DependsOnTwoComponents in the container", pico.hasComponent(DependsOnTwoComponents.class));
+        assertTrue("There should have been a DependsOnTwoComponents in the internals", pico.hasComponent(DependsOnTwoComponents.class));
     }
 
     public void testTooManyContructors() throws PicoRegistrationException, PicoInitializationException {

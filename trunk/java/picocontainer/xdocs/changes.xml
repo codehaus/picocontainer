@@ -11,6 +11,12 @@
 
             <action dev="rinkrank" type="fix">
                 Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-48">PICO-48</a>
+                - Allow Hot Swapping of components.
+            </action>
+
+            <action dev="rinkrank" type="fix">
+                Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-53">PICO-53</a>
                 - Added verify() method on PicoContainer (and ComponentAdapter).
             </action>
@@ -19,6 +25,10 @@
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-56">PICO-56</a>
                 - Removing child containers is impossible.
+            </action>
+
+            <action dev="paul" type="fix">
+                Use of weak references for parent containers to avoid memory leaks.
             </action>
 
         </release>

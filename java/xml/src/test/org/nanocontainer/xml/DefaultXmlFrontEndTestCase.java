@@ -11,11 +11,10 @@
 package org.nanocontainer.xml;
 
 import junit.framework.TestCase;
-import junit.framework.AssertionFailedError;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -69,20 +68,25 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
+        //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
 
         assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
+        File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         assertTrue(testCompJar.isFile());
+        assertTrue(testCompJar2.isFile());
 
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
-                "    <component stringkey='foo' impl='java.util.Vector'/>" +
+                "    <classpath>" +
+                "        <element file='" + testCompJar.getCanonicalPath() + "'/>" +
+                "    </classpath>" +
+                "    <component stringkey='foo' impl='TestComp'/>" +
                 "    <container>" +
                 "        <classpath>" +
-                "            <element file='" + testCompJar.getAbsolutePath() + "'/>" +
+                "            <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
                 "        </classpath>" +
-                "        <component stringkey='bar' impl='TestComp'/>" +
+                "        <component stringkey='bar' impl='TestComp2'/>" +
                 "    </container>" +
                 "</container>"));
 
@@ -95,6 +99,9 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         PicoContainer childContainer = (PicoContainer) rootContainer.getChildContainers().iterator().next();
         Object barTestComp = childContainer.getComponentInstance("bar");
         assertNotNull("Container should have a 'bar' component", barTestComp);
+
+        assertEquals("foo classloader should be parent of bar",fooTestComp.getClass().getClassLoader(),
+                barTestComp.getClass().getClassLoader().getParent());
 
     }
 

@@ -145,6 +145,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\Xml\XmlContainerBuilderTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestModel\DefaultWebServer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

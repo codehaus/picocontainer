@@ -38,7 +38,7 @@ namespace NanoContainer.Script
 			return (IMutablePicoContainer) mi.Invoke(creator, new object[] {});
 		}
 
-		protected Type GetCompiledType(StreamReader scriptCode, IList assemblies)
+		protected virtual Type GetCompiledType(StreamReader scriptCode, IList assemblies)
 		{
 			Assembly created = FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
 

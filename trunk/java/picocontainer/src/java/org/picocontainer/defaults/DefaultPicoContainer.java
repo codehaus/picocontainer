@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import java.io.Serializable;
 
 /**
@@ -217,10 +218,9 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
 
-        for (Iterator iterator = componentRegistry.getInstanceMapIterator(); iterator.hasNext();) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            Object key = entry.getKey();
-            Object component = entry.getValue();
+        for (Iterator iterator = componentRegistry.getComponentInstanceKeys().iterator(); iterator.hasNext();) {
+            Object key = iterator.next();
+            Object component = componentRegistry.getComponentInstance(key);
             if(componentType.isInstance(component)) {
                 found.add(key);
             }
@@ -259,7 +259,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
     }
 
-    public Object[] getComponents() {
+    public Collection getComponents() {
        /* <ASLAK>
         * TODO: make final again
         *
@@ -292,18 +292,13 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         * </ASLAK>
         */
 
-        Object[] componentKeys = getComponentKeys();
-        Object[] components = new Object[componentKeys.length];
-        for (int i = 0; i < componentKeys.length; i++) {
-            Object componentKey = componentKeys[i];
-            components[i] = getComponent(componentKey);
-        }
-        return components;
+        return componentRegistry.getComponentInstances();
     }
 
     //TODO - remove from PicoContainer interface?
-    public Object[] getComponentKeys() {
-        return componentRegistry.getInstanceMapKeyArray();
+    //TODO - maybe not ?
+    public Collection getComponentKeys() {
+        return componentRegistry.getComponentInstanceKeys();
     }
 
     public final boolean hasComponent(Object componentKey) {

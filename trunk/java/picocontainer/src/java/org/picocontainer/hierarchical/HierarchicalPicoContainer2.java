@@ -15,10 +15,12 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NullContainer;
 
-import java.util.Arrays;
+//RMV import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 import java.io.Serializable;
 
 public class HierarchicalPicoContainer2 implements PicoContainer, Serializable {
@@ -67,30 +69,28 @@ public class HierarchicalPicoContainer2 implements PicoContainer, Serializable {
         return result;
     }
 
-    public Object[] getComponentKeys() {
+    public Collection getComponentKeys() {
         // Get child types
-        List myTypes = Arrays.asList(childContainer.getComponentKeys());
+        Set types = new HashSet(childContainer.getComponentKeys());
 
         // Get those from parent.
-        Set types = new HashSet(myTypes);
-        types.addAll(Arrays.asList(parentContainer.getComponentKeys()));
+        types.addAll(parentContainer.getComponentKeys());
 
-        return (Class[]) types.toArray(new Class[types.size()]);
+        return Collections.unmodifiableCollection(types);
     }
 
     public boolean hasComponent(Object componentKey) {
         return getComponent(componentKey) != null;
     }
 
-    public Object[] getComponents() {
+    public Collection getComponents() {
         // Get child types
-        List myTypes = Arrays.asList(childContainer.getComponents());
+        Set types = new HashSet(childContainer.getComponents());
 
         // Get those from parent.
-        Set types = new HashSet(myTypes);
-        types.addAll(Arrays.asList(parentContainer.getComponents()));
+        types.addAll(parentContainer.getComponents());
 
-        return (Class[]) types.toArray(new Class[types.size()]);
+        return Collections.unmodifiableCollection(types);
     }
 
     public void instantiateComponents() throws PicoInitializationException {

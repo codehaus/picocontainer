@@ -38,6 +38,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.Collection;
+import java.util.ArrayList;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 
@@ -64,7 +66,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("There should be two comps in the container", 2, pico.getComponents().length);
+        assertEquals("There should be two comps in the container", 2, pico.getComponents().size());
 
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
@@ -225,7 +227,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         // doesn't receive anything until the components are instantiated.
         pico.instantiateComponents();
 
-        List types = Arrays.asList(pico.getComponentKeys());
+        Collection types = pico.getComponentKeys();
         assertEquals("There should be 2 types", 2, types.size());
         assertTrue("There should be a FredImpl type", types.contains(FredImpl.class));
         assertTrue("There should be a Wilma type", types.contains(Wilma.class));
@@ -245,12 +247,16 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
                 return componentKey == Wilma.class ? wilma : null;
             }
 
-            public Object[] getComponents() {
-                return new Object[]{wilma};
+            public Collection getComponents() {
+                List list = new ArrayList();
+                list.add(wilma);
+                return list;
             }
 
-            public Object[] getComponentKeys() {
-                return new Class[]{Wilma.class};
+            public Collection getComponentKeys() {
+                List list = new ArrayList();
+                list.add(Wilma.class);
+                return list;
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
@@ -271,7 +277,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("The parent should return 2 components (one from the parent)", 2, pico.getComponents().length);
+        assertEquals("The parent should return 2 components (one from the parent)", 2, pico.getComponents().size());
         assertTrue("Wilma should have been passed through the parent container", pico.hasComponent(Wilma.class));
         assertTrue("There should have been a FredImpl in the container", pico.hasComponent(FredImpl.class));
 

@@ -25,7 +25,7 @@ public class DummiesTestCase extends TestCase {
         org.picocontainer.defaults.NullContainer dc = new org.picocontainer.defaults.NullContainer();
         assertFalse(dc.hasComponent(String.class));
         assertNull(dc.getComponent(String.class));
-        assertEquals(0, dc.getComponents().length);
+        assertEquals(0, dc.getComponents().size());
         assertNull(dc.getCompositeComponent());
         assertNull(dc.getCompositeComponent(true, false));
         assertNull(dc.getCompositeComponent(false, true));

@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * CompositePicoContainer2 aggregates the the contents of more
@@ -72,14 +74,15 @@ public class CompositePicoContainer2 implements PicoContainer {
         return answer;
     }
 
-    public Object[] getComponentKeys() {
+    public Collection getComponentKeys() {
         Set componentTypes = new HashSet();
-        componentTypes.addAll(Arrays.asList(componentRegistry.getInstanceMapKeyArray()));
+        componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
-            componentTypes.addAll(Arrays.asList(container.getComponentKeys()));
+            componentTypes.addAll(container.getComponentKeys());
         }
-        return (Class[]) componentTypes.toArray(new Class[containers.size()]);
+        return Collections.unmodifiableCollection(componentTypes);
+            //RMV (Class[]) componentTypes.toArray(new Class[containers.size()]);
     }
 
     public void instantiateComponents() {
@@ -91,19 +94,19 @@ public class CompositePicoContainer2 implements PicoContainer {
         return componentRegistry.getComponentInstance(componentKey) != null;
     }
 
-    public Object[] getComponents() {
+    public Collection getComponents() {
         Set componentTypes = new HashSet();
-        componentTypes.addAll(Arrays.asList(componentRegistry.getInstanceMapKeyArray()));
+        componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
-            componentTypes.addAll(Arrays.asList(container.getComponentKeys()));
+            componentTypes.addAll(container.getComponentKeys());
         }
         List list = new ArrayList();
         for (Iterator iterator = componentTypes.iterator(); iterator.hasNext();) {
             Object key = (Object) iterator.next();
             list.add(getComponent(key));
         }
-        return (Object[]) list.toArray(new Object[list.size()]);
+        return Collections.unmodifiableCollection(list);
     }
 
     public Object getCompositeComponent() {

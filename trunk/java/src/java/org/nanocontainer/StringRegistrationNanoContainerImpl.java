@@ -20,6 +20,7 @@ import org.picocontainer.defaults.NullContainer;
 import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
@@ -89,7 +90,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getComponent(clazz);
     }
 
-    public Object[] getComponents() {
+    public Collection getComponents() {
         return picoContainer.getComponents();
     }
 
@@ -103,7 +104,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
     }
 
-    public Object[] getComponentKeys() {
+    public Collection getComponentKeys() {
         return picoContainer.getComponentKeys();
     }
 

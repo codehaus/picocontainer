@@ -27,7 +27,9 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      <component class=\"org.nanocontainer.MockComponentImpl\"/>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        final MockComponent component = (MockComponent) container.getComponents()[0];
+        final MockComponent component;
+        Object o = container.getComponents().toArray()[0];
+        component = (MockComponent) o;
         assertNotNull(component);
     }
 
@@ -40,7 +42,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      </component>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        assertNotNull(container.getComponents()[0]);
+        assertNotNull(container.getComponents().toArray()[0]);
     }
 
     public void testCanConfigureWithSingleString()
@@ -53,7 +55,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      </component>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        final MockComponent component = (MockComponent) container.getComponents()[0];
+        final MockComponent component = (MockComponent) container.getComponents().toArray()[0];
         assertEquals("server_name", component.getServer());
     }
 
@@ -66,7 +68,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      </component>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        final MockComponent component = (MockComponent) container.getComponents()[0];
+        final MockComponent component = (MockComponent) container.getComponents().toArray()[0];
         assertEquals("server_name", component.getServer());
     }
 
@@ -79,7 +81,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      </component>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        final MockComponent component = (MockComponent) container.getComponents()[0];
+        final MockComponent component = (MockComponent) container.getComponents().toArray()[0];
         assertEquals(12345, component.getPort());
     }
 
@@ -96,7 +98,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
                 "      </component>" +
                 "</components>";
         final InputSourceRegistrationNanoContainer container = configureContainer(xml);
-        final MockComponent component = (MockComponent) container.getComponents()[0];
+        final MockComponent component = (MockComponent) container.getComponents().toArray()[0];
         assertEquals(3, component.getNumRegisters());
         assertTrue(component.hasRegister(1));
         assertTrue(component.hasRegister(2));

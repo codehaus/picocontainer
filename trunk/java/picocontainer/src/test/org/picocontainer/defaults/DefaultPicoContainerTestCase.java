@@ -144,7 +144,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentByClass(CoincidentallyPeelableComponent.class);
         pico.instantiateComponents();
 
-        assertEquals(2, pico.getComponents().length);
+        assertEquals(2, pico.getComponents().size());
 
         Peelable myPeelableContainer = (Peelable) pico.getCompositeComponent();
 
@@ -560,7 +560,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().length);
+        assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
 
         assertEquals("Looking up one Wilma", one, pico.getComponent("one"));
         assertEquals("Looking up two Wilma", two, pico.getComponent("two"));
@@ -580,7 +580,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().length);
+        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().size());
 
         assertTrue("Object one the same", pico.getComponent("one") != null);
         assertTrue("Object two the same", pico.getComponent("two") != null);
@@ -601,7 +601,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 4, pico.getComponents().length);
+        assertEquals("Wrong number of comps in the container", 4, pico.getComponents().size());
 
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue(
@@ -627,7 +627,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().length);
+        assertEquals("Wrong number of comps in the container", 3, pico.getComponents().size());
 
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(Wilma.class));
         assertTrue(

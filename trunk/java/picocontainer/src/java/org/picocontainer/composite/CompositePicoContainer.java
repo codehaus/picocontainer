@@ -13,12 +13,13 @@ package org.picocontainer.composite;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentFactory;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
-import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -79,15 +80,26 @@ public class CompositePicoContainer extends DefaultPicoContainer {
         return answer;
     }
 
-    public Object[] getComponentKeys() {
+    public Collection getComponentKeys() {
         Set componentTypes = new HashSet();
-        componentTypes.addAll(Arrays.asList(super.getComponentKeys()));
+        componentTypes.addAll(super.getComponentKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
-            componentTypes.addAll(Arrays.asList(container.getComponentKeys()));
+            componentTypes.addAll(container.getComponentKeys());
         }
-        return (Class[]) componentTypes.toArray(new Class[containers.size()]);
+        return Collections.unmodifiableCollection(componentTypes);
     }
+
+    public Collection getComponents() {
+        Set components = new HashSet();
+        components.addAll(super.getComponents());
+        for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
+            PicoContainer container = (PicoContainer) iter.next();
+            components.addAll(container.getComponents());
+        }
+        return Collections.unmodifiableCollection(components);
+    }
+
 
     public void instantiateComponents() throws PicoInvocationTargetInitializationException, PicoInitializationException {
         super.instantiateComponents();

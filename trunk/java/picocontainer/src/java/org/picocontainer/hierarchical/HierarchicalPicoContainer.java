@@ -35,9 +35,9 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NullContainer;
 
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class HierarchicalPicoContainer extends DefaultPicoContainer implements RegistrationPicoContainer {
@@ -84,15 +84,23 @@ public class HierarchicalPicoContainer extends DefaultPicoContainer implements R
         return result;
     }
 
-    public Object[] getComponentKeys() {
+    public Collection getComponentKeys() {
         // Get my own types
-        List myTypes = Arrays.asList(super.getComponentKeys());
-
+        Set types = new HashSet(super.getComponentKeys());
         // Get those from my parent.
-        Set types = new HashSet(myTypes);
-        types.addAll(Arrays.asList(parentContainer.getComponentKeys()));
+        types.addAll(parentContainer.getComponentKeys());
 
-        return (Class[]) types.toArray(new Class[types.size()]);
+        return Collections.unmodifiableCollection(types);
     }
+
+    public Collection getComponents() {
+        // Get my own comps
+        Set comps = new HashSet(super.getComponents());
+        // Get those from my parent.
+        comps.addAll(parentContainer.getComponents());
+
+        return Collections.unmodifiableCollection(comps);
+    }
+
 
 }

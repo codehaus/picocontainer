@@ -13,6 +13,9 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
 
+import java.util.Collection;
+import java.util.ArrayList;
+
 public class NullContainer implements PicoContainer {
     public boolean hasComponent(Object compType) {
         return false;
@@ -22,12 +25,12 @@ public class NullContainer implements PicoContainer {
         return null;
     }
 
-    public Object[] getComponents() {
-        return new Object[0];
+    public Collection getComponents() {
+        return new ArrayList();
     }
 
-    public Object[] getComponentKeys() {
-        return new Class[0];
+    public Collection getComponentKeys() {
+        return new ArrayList();
     }
 
     public void instantiateComponents() throws PicoInstantiationException {

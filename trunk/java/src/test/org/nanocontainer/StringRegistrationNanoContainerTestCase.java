@@ -22,6 +22,7 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.Collection;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -78,7 +79,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
         nc.instantiateComponents();
 
-        List types = Arrays.asList(nc.getComponentKeys());
+        Collection types = nc.getComponentKeys();
         assertEquals("There should be 2 types", 2, types.size());
         assertTrue("There should be a One type", types.contains(DefaultWebServerConfig.class));
     }
@@ -91,7 +92,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
         nc.instantiateComponents();
 
-        List types = Arrays.asList(nc.getComponentKeys());
+        Collection types = nc.getComponentKeys();
         assertEquals("There should be 1 types", 1, types.size());
 
         try

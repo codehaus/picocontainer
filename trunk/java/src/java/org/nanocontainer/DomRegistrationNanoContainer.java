@@ -31,6 +31,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.List;
+import java.util.Collection;
 
 public class DomRegistrationNanoContainer  implements InputSourceRegistrationNanoContainer, Serializable
 {
@@ -140,11 +142,11 @@ public class DomRegistrationNanoContainer  implements InputSourceRegistrationNan
         return stringRegistrationNanoContainer.getComponent(componentKey);
     }
 
-    public Set getComponents() {
+    public Collection getComponents() {
         return stringRegistrationNanoContainer.getComponents();
     }
 
-    public Set getComponentKeys() {
+    public Collection getComponentKeys() {
         return stringRegistrationNanoContainer.getComponentKeys();
     }
 

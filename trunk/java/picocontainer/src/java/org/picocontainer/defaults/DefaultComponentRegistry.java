@@ -11,7 +11,6 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
@@ -72,21 +71,23 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Set getComponentInstanceKeys() {
-        Set types = componentKeyToInstanceMap.keySet();
-        return Collections.unmodifiableSet(types);
+    public Collection getComponentInstanceKeys() {
+        List result = Arrays.asList( componentKeyToInstanceMap.keySet().toArray() );
+        return Collections.unmodifiableList(result);
     }
 
-    public Set getComponentInstances() {
+    public Collection getComponentInstances() {
 //        ArrayList list = new ArrayList();
 //        Set types = componentKeyToInstanceMap.entrySet();
 //        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
 //            Map.Entry e = (Map.Entry) iterator.next();
 //            list.add(e.getValue());
 //        }
-        Set result = new HashSet();
-        result.addAll(componentKeyToInstanceMap.values());
-        return Collections.unmodifiableSet(result);
+//        Set result = new HashSet();
+//        result.addAll(componentKeyToInstanceMap.values());
+//        return Collections.unmodifiableSet(result);
+        List result = Arrays.asList( componentKeyToInstanceMap.values().toArray() );
+        return Collections.unmodifiableList(result);
     }
 
     public boolean hasComponentInstance(Object componentKey) {

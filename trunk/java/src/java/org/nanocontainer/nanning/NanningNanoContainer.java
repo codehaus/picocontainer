@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -91,11 +92,11 @@ public class NanningNanoContainer implements RegistrationPicoContainer, Serializ
         return mainContainer.getComponent(componentKey);
     }
 
-    public Set getComponents() {
+    public Collection getComponents() {
         return mainContainer.getComponents();
     }
 
-    public Set getComponentKeys() {
+    public Collection getComponentKeys() {
         return mainContainer.getComponentKeys();
     }
 

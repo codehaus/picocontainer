@@ -17,14 +17,14 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class CompositePicoContainerTestCase extends TestCase {
     private RegistrationPicoContainer pico;
@@ -116,14 +116,14 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == String.class ? acomp : null;
             }
 
-            public Set getComponents() {
-                Set result = new HashSet();
+            public Collection getComponents() {
+                List result = new ArrayList();
                 result.add(acomp);
                 return result;
             }
 
-            public Set getComponentKeys() {
-                Set result = new HashSet();
+            public Collection getComponentKeys() {
+                List result = new ArrayList();
                 result.add(String.class);
                 return result;
             }
@@ -149,14 +149,14 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == Integer.class ? bcomp : null;
             }
 
-            public Set getComponents() {
-                Set result = new HashSet();
+            public Collection getComponents() {
+                List result = new ArrayList();
                 result.add(bcomp);
                 return result;
             }
 
-            public Set getComponentKeys() {
-                Set result = new HashSet();
+            public Collection getComponentKeys() {
+                List result = new ArrayList();
                 result.add(Integer.class);
                 return result;
 

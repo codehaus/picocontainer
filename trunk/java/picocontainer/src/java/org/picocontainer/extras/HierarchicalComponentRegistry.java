@@ -19,9 +19,7 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
 
 public class HierarchicalComponentRegistry implements ComponentRegistry, Serializable {
@@ -94,26 +92,26 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         return result;
     }
 
-    public Set getComponentInstanceKeys() {
+    public Collection getComponentInstanceKeys() {
 
         // Get child types
-        Set types = new HashSet(childRegistry.getComponentInstanceKeys());
+        List types = new ArrayList(childRegistry.getComponentInstanceKeys());
 
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstanceKeys());
 
-        return Collections.unmodifiableSet(types);
+        return Collections.unmodifiableList(types);
 
     }
 
-    public Set getComponentInstances() {
+    public Collection getComponentInstances() {
         // Get child types
-        Set types = new HashSet(childRegistry.getComponentInstances());
+        List types = new ArrayList(childRegistry.getComponentInstances());
 
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstances());
 
-        return Collections.unmodifiableSet(types);
+        return Collections.unmodifiableList(types);
     }
 
     public boolean hasComponentInstance(Object componentKey) {

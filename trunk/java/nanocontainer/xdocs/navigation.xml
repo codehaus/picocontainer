@@ -1,0 +1,19 @@
+<project name="qdox" repository="qdox" href="http://qdox.codehaus.org">
+
+  <title>PicoContainer</title>
+
+  <body>
+    <links>
+      <item name="PicoContainer"       href="http://picocontainer.codehaus.org/"/>
+      <item name="Nanning"             href="http://nanning.sf.net/"/>
+      <item name="Download"            href="/download.html"/>
+    </links>
+
+    <menu name="PicoContainer">
+      <item name="Introduction"        href="/introduction.html"/>
+      <item name="License"             href="/license.html"/>
+      <item name="Download"            href="/download.html"/>
+    </menu>
+  </body>
+
+</project>

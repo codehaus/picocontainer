@@ -5,7 +5,7 @@ package nanocontainer.reflect;
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
- * the license.html file.                                                    *
+ * the LICENSE.txt file.                                                     *
  *                                                                           *
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * InvocationHandler that adds multiple return type functionality.
  * The result is an array of the return values for each matching
  * method in the container's components.
- * 
+ *
  * @author Aslak Hellesoy
  * @version $Revision$
  */

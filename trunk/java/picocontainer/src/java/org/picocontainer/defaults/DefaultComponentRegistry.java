@@ -48,7 +48,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         registeredComponents.add(compSpec);
     }
     
-	public void unregisterComponent(Class componentKey) {
+	public void unregisterComponent(Object componentKey) {
 		for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
 			ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
 			

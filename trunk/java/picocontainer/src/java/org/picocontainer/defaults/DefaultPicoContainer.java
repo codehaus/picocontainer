@@ -168,7 +168,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         registerComponent(componentImplementation, componentImplementation);
     }
 
-	public void unregisterComponent(Class componentKey) {
+	public void unregisterComponent(Object componentKey) {
 		componentRegistry.unregisterComponent(componentKey);
 	}
 

@@ -1,12 +1,17 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Instantiates components using Setter-Based Dependency Injection. 
@@ -16,6 +21,8 @@ import java.util.List;
  * @version $Revision$
  */
 public class BeanComponentAdapter extends InstantiatingComponentAdapter {
+    private List setters;
+
     public BeanComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
         super(componentKey, componentImplementation, parameters);
     }
@@ -39,9 +46,9 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
         try {
             return getComponentImplementation().getConstructor(new Class[0]);
         } catch (NoSuchMethodException e) {
-            throw new UnsatisfiableDependenciesException(getComponentImplementation(), Collections.EMPTY_SET);
+            throw new PicoIntrospectionException("No empty constructor for " + getComponentImplementation().getName(), e);
         } catch (SecurityException e) {
-            throw new UnsatisfiableDependenciesException(getComponentImplementation(), Collections.EMPTY_SET);
+            throw new PicoInvocationTargetInitializationException(e);
         }
     }
 
@@ -50,31 +57,40 @@ public class BeanComponentAdapter extends InstantiatingComponentAdapter {
     }
 
     private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies) {
+        Set unsatisfiableDependencyTypes = new HashSet();
         Method[] setters = getSetters();
         for (int i = 0; i < setters.length; i++) {
             Method setter = setters[i];
             ComponentAdapter adapterDependency = adapterDependencies[i];
-            Object dependency = adapterDependency.getComponentInstance();
-            try {
-                setter.invoke(componentInstance, new Object[]{dependency});
-            } catch (Exception e) {
-                throw new PicoIntrospectionException(e);
+            if(adapterDependency != null) {
+                Object dependency = adapterDependency.getComponentInstance();
+                try {
+                    setter.invoke(componentInstance, new Object[]{dependency});
+                } catch (Exception e) {
+                    throw new PicoIntrospectionException(e);
+                }
+            } else {
+                unsatisfiableDependencyTypes.add(setter.getParameterTypes()[0]);
             }
+        }
+        if(!unsatisfiableDependencyTypes.isEmpty()) {
+            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
         }
     }
 
     private Method[] getSetters() {
-        // TODO use caching.
-        List setters = new ArrayList();
-        Method[] methods = getComponentImplementation().getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            Class[] parameterTypes = method.getParameterTypes();
-            // We're only interested if there is only one parameter and the method name is bean-style.
-            boolean hasOneParameter = parameterTypes.length == 1;
-            boolean isBeanStyle = method.getName().length() >= 4 && method.getName().startsWith("set") && Character.isUpperCase(method.getName().charAt(3));
-            if (hasOneParameter && isBeanStyle) {
-                setters.add(method);
+        if (setters == null) {
+            setters = new ArrayList();
+            Method[] methods = getComponentImplementation().getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                Method method = methods[i];
+                Class[] parameterTypes = method.getParameterTypes();
+                // We're only interested if there is only one parameter and the method name is bean-style.
+                boolean hasOneParameter = parameterTypes.length == 1;
+                boolean isBeanStyle = method.getName().length() >= 4 && method.getName().startsWith("set") && Character.isUpperCase(method.getName().charAt(3));
+                if (hasOneParameter && isBeanStyle) {
+                    setters.add(method);
+                }
             }
         }
         return (Method[]) setters.toArray(new Method[setters.size()]);

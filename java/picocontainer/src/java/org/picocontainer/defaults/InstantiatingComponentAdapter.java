@@ -1,6 +1,10 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +32,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-
         ComponentAdapter[] dependencyAdapters = getMostSatisifableDependencyAdapters(getContainer());
         Object instance = instantiateComponent(dependencyAdapters, getContainer());
 

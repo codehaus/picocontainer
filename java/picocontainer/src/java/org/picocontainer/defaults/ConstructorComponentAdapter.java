@@ -83,7 +83,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
     private List getAllSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List satisfiableConstructors = new ArrayList();
-        Set unusableAdapters = new HashSet();
+        Set unsatisfiableDependencyTypes = new HashSet();
         for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
             boolean failedDependency = false;
             Constructor constructor = (Constructor) iterator.next();
@@ -94,16 +94,16 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
                 ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer);
                 if (adapter == null) {
                     failedDependency = true;
-                    unusableAdapters.add(parameterTypes[i]);
+                    unsatisfiableDependencyTypes.add(parameterTypes[i]);
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
                         failedDependency = true;
-                        unusableAdapters.add(parameterTypes[i]);
+                        unsatisfiableDependencyTypes.add(parameterTypes[i]);
                     }
                     if (getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
-                        unusableAdapters.add(parameterTypes[i]);
+                        unsatisfiableDependencyTypes.add(parameterTypes[i]);
                     }
                 }
             }
@@ -112,7 +112,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
             }
         }
         if (satisfiableConstructors.isEmpty()) {
-            throw new UnsatisfiableDependenciesException(getComponentImplementation(), unusableAdapters);
+            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
         }
         return satisfiableConstructors;
     }

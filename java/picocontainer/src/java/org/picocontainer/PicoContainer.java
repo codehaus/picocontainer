@@ -14,33 +14,14 @@ import java.util.List;
  * @version $Revision$
  */
 public interface PicoContainer extends Startable, Disposable {
-    /**
-     * Checks for the presence of a particular component.
-     *
-     * @param componentKey key of the component to look for.
-     * @return true if there is a component for this key.
-     * @deprecated We don't need this. Can be determined with
-     * {@link #getComponentInstance(Object)} != null.
-     */
-    boolean hasComponent(Object componentKey);
-
-    /**
-     * Get all the component keys.
-     * @return all the component keys.
-     * @deprecated We don't need to expose this. The collection can be constructed outside
-     * with data from {@link #getComponentAdapters()}.
-     */
-    Collection getComponentKeys();
 
     /**
      * Gets a component instance registered with a specific key.
      *
      * @param componentKey key the component was registered with.
      * @return an instantiated component.
-     * @throws PicoException if the component could not be instantiated or dependencies
-     *    could not be properly resolved.
      */
-    Object getComponentInstance(Object componentKey) throws PicoException;
+    Object getComponentInstance(Object componentKey);
 
     /**
      * Finds a component instance matching the type, looking in parent if
@@ -58,10 +39,8 @@ public interface PicoContainer extends Startable, Disposable {
      * depends on the dependency order between them.
      *
      * @return all the components.
-     * @throws PicoException if one of the components could not be instantiated or dependencies
-     *    could not be properly resolved.
      */
-    List getComponentInstances() throws PicoException;
+    List getComponentInstances();
 
     /**
      * Get the parent container of this container.
@@ -71,21 +50,13 @@ public interface PicoContainer extends Startable, Disposable {
     PicoContainer getParent();
 
     /**
-     * Verifies that the dependencies for all the registered components can be satisfied
-     * None of the components are instantiated during the verification process.
-     *
-     * @throws PicoVerificationException if there are unsatisifiable dependencies.
-     */
-    void verify() throws PicoVerificationException;
-
-    /**
      * Finds a ComponentAdapter matching the key, looking in parent if
      * not found in self (unless parent is null).
      *
      * @param componentKey key of the component.
      * @return the adapter matching the key.
      */
-    ComponentAdapter getComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+    ComponentAdapter getComponentAdapter(Object componentKey);
 
     /**
      * Finds a ComponentAdapter matching the type, looking in parent if
@@ -97,10 +68,18 @@ public interface PicoContainer extends Startable, Disposable {
     ComponentAdapter getComponentAdapterOfType(Class componentType);
 
     /**
-     * Return all adapters (not including the adapters from the parent).
+     * Returns all adapters (not including the adapters from the parent).
      * @return Collection of {@link ComponentAdapter}.
      */
     Collection getComponentAdapters();
+
+    /**
+     * Verifies that the dependencies for all the registered components can be satisfied
+     * None of the components are instantiated during the verification process.
+     *
+     * @throws PicoVerificationException if there are unsatisifiable dependencies.
+     */
+    void verify() throws PicoVerificationException;
 
     /**
      * Callback method from the implementation to keep track of the instantiation

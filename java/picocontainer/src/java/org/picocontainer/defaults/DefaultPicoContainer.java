@@ -58,10 +58,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         this(new DefaultComponentAdapterFactory(), null);
     }
 
-    public final Collection getComponentKeys() {
-        return createComponentAdapterMap(this).keySet();
-    }
-
     private Map createComponentAdapterMap(PicoContainer container) {
         Collection componentAdapters = container.getComponentAdapters();
         Map result = new HashMap(componentAdapters.size());
@@ -236,10 +232,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public Object getComponentInstanceOfType(Class componentType) {
         final ComponentAdapter componentAdapter = getComponentAdapterOfType(componentType);
         return componentAdapter == null ? null : componentAdapter.getComponentInstance();
-    }
-
-    public boolean hasComponent(Object componentKey) {
-        return getComponentKeys().contains(componentKey);
     }
 
     public PicoContainer getParent() {

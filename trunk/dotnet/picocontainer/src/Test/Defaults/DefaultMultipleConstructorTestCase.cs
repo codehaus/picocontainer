@@ -5,9 +5,6 @@ using PicoContainer.Tests.Tck;
 
 namespace Test.Defaults
 {
-	/// <summary>
-	/// Summary description for DefaultMultipleConstructorTestCase.
-	/// </summary>
 	[TestFixture]
 	public class DefaultMultipleConstructorTestCase : AbstractMultipleConstructorTestCase
 	{

@@ -69,11 +69,17 @@ namespace PicoContainer.Defaults
 					.Append(", ")
 					.Append("resolves to multiple classes: [");
 
-				foreach (object key in AmbiguousComponentKeys)
+				for(int i = 0; i < AmbiguousComponentKeys.Length; i++)
 				{
-					msg.Append(key).Append(" ");
-				}
+					if(i != 0)
+					{
+						msg.Append(", ");
+					}
 
+					msg.Append(AmbiguousComponentKeys[i]);
+				}
+				
+				msg.Append("]");
 				return msg.ToString();
 			}
 		}

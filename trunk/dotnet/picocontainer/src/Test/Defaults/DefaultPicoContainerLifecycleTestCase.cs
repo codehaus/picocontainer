@@ -8,9 +8,6 @@ using PicoContainer.Defaults;
 
 namespace Test.Defaults
 {
-	/// <summary>
-	/// Summary description for DefaultPicoContainerLifecycleTestCase.
-	/// </summary>
 	[TestFixture]
 	public class DefaultPicoContainerLifecycleTestCase
 	{

@@ -46,6 +46,7 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
             rootContainer = nanoHelper.getRhinoFrontEnd().getPicoContainer();
 
         } catch (final JavaScriptException e) {
+            e.printStackTrace();
             throw new PicoConfigurationException() {
                 public String getMessage() {
                     return "JavaScriptException : " + e.getMessage();

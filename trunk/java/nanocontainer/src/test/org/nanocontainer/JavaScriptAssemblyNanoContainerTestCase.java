@@ -11,6 +11,8 @@ package org.nanocontainer;
 import junit.framework.TestCase;
 import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.nanocontainer.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServerImpl;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -27,14 +29,10 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     protected void setUp() throws Exception {
         MockMonitor.monitorRecorder = "";
         MockMonitor.allComps = new ArrayList();
-    }
-
-    public void testFoo() {
+        Xxx.componentRecorder = "";
     }
 
     public void testInstantiateBasicRhinoFrontEnd() throws IOException, ClassNotFoundException, PicoConfigurationException {
-
-        Xxx.componentRecorder = "";
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
                 "var parentContainer = new RhinoFrontEnd();\n" +
@@ -53,8 +51,6 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
 
         // A and C have no no dependancies. B Depends on A.
 
-        Xxx.componentRecorder = "";
-
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
                 "var parentContainer = new RhinoFrontEnd();\n" +
                 "with (parentContainer) {\n" +
@@ -71,15 +67,12 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertEquals("Should match the expression", "<C<A<BB>A>C>!B!A!C", Xxx.componentRecorder);
-        assertEquals("Should match the expression", "*C*B+C_started+B_started+B_stopped+C_stopped+B_disposed+C_disposed", MockMonitor.monitorRecorder);
+        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
+        assertEquals("Should match the expression", "*A*B+A_started+B_started+B_stopped+A_stopped+B_disposed+A_disposed", MockMonitor.monitorRecorder);
 
-        //TODO Should really be ....
-        // assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
-        // assertEquals("Should match the expression", "*A*B+A_started+B_started+B_stopped+A_stopped+B_disposed+A_disposed", MockMonitor.monitorRecorder);
     }
 
-    public void testInstantiateXmlWithImpossibleComponentDependanciesConsideringTheHierarchy() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         // A and C have no no dependancies. B Depends on A.
 
@@ -101,5 +94,29 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         } catch (NoSatisfiableConstructorsException e) {
         }
     }
+
+    public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                "var parentContainer = new RhinoFrontEnd('org.picocontainer.extras.ImplementationHidingComponentAdapterFactory');\n" +
+                "with (parentContainer) {\n" +
+                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServerConfig','org.nanocontainer.testmodel.DefaultWebServerConfig');\n" +
+                "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +
+                "}\n" +
+                "nano.setRhinoFrontEnd(parentContainer)\n"
+                ), new MockMonitor());
+        Object ws = nano.getRootContainer().getComponentInstance(WebServer.class);
+
+        assertTrue(ws instanceof WebServer);
+        assertFalse(ws instanceof WebServerImpl);
+
+        ws = nano.getRootContainer().getComponentInstances().get(1);
+
+        assertTrue(ws instanceof WebServer);
+
+        //TODO - should be assertFalse( ), we're implementation hiding here !
+        assertTrue(ws instanceof WebServerImpl);
+    }
+
 
 }

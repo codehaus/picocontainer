@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanostruts</id>
+    <name>nanocstruts</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
+    <dependencies>
+
+        <dependency>
+            <id>servletapi</id>
+            <version>2.3</version>
+        </dependency>
+
+        <dependency>
+            <id>struts</id>
+            <version>1.1</version>
+        </dependency>            
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.1-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-servlet</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.3</version>
+            <url>http://jakarta.apache.org/commons/logging.html</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-beanutils</id>
+            <version>1.6.1</version>
+            <url>http://jakarta.apache.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+            <url>http://jakarta.apache.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-digester</id>
+            <version>1.4.1</version>
+            <url>http://jakarta.apache.org/commons/digester/</url>
+        </dependency>
+
+        <!-- test time only -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-full</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock-cglib</id>
+            <version>1.0.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -135,3 +135,4 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
         return getClass().getName() + "[" + getComponentKey() + "]";
     }
 }
+

@@ -101,3 +101,4 @@ public class EJBClientComponentAdapterFactoryTest
         assertSame(hello1, hello2);
     }
 }
+

@@ -25,13 +25,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
 // TODO: This class should focus on ThreadLocal functionality and not do proxy magic at the same time!
 // TODO: These are two entirely different concerns and should be in different classes. (AH).
 /**
  * A {@link ComponentAdapter}that realizes a {@link ThreadLocal}component
  * instance. The adapter creates proxy instances, that will create the necessary
  * instances on-the-fly invoking the methods of the instance.
- *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapter
@@ -64,8 +64,8 @@ public class ThreadLocalComponentAdapter
             if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
                 interfaces = new Class[]{(Class)getDelegate().getComponentKey()};
             } else {
-                interfaces = ClassHierarchyIntrospector.getAllInterfaces(
-                        getDelegate().getComponentImplementation());
+                interfaces = ClassHierarchyIntrospector.getAllInterfaces(getDelegate()
+                        .getComponentImplementation());
             }
             if (interfaces.length == 0) { throw new PicoIntrospectionException(
                     "Can't proxy implementation for "
@@ -84,7 +84,7 @@ public class ThreadLocalComponentAdapter
 
         /**
          * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-         *          java.lang.reflect.Method, java.lang.Object[])
+         *           java.lang.reflect.Method, java.lang.Object[])
          */
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             final Object delegatedInstance = ThreadLocalComponentAdapter.this.getDelegate()

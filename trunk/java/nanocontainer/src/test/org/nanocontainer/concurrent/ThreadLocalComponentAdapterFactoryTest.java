@@ -56,3 +56,4 @@ public class ThreadLocalComponentAdapterFactoryTest
         assertSame(thread, list2.get(0));
     }
 }
+

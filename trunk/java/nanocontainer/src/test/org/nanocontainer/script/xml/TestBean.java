@@ -9,7 +9,7 @@
 
 package org.nanocontainer.script.xml;
 
-public class TestPseudoComp {
+public class TestBean {
     private int foo;
     private String bar;
 

@@ -29,17 +29,17 @@ public class BeanXMLPseudoComponentFactoryTestCase extends TestCase {
         BeanXMLPseudoComponentFactory xsf = new BeanXMLPseudoComponentFactory();
 
         StringReader sr = new StringReader("" +
-                "<org.nanocontainer.script.xml.TestPseudoComp>" +
+                "<org.nanocontainer.script.xml.TestBean>" +
                 "<foo>10</foo>" +
                 "<bar>hello</bar>" +
-                "</org.nanocontainer.script.xml.TestPseudoComp>");
+                "</org.nanocontainer.script.xml.TestBean>");
         InputSource is = new InputSource(sr);
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = db.parse(is);
 
         Object o = xsf.makeInstance(doc.getDocumentElement());
-        TestPseudoComp tsc = (TestPseudoComp) o;
-        assertEquals("hello", tsc.getBar());
-        assertEquals(10, tsc.getFoo());
+        TestBean bean = (TestBean) o;
+        assertEquals("hello", bean.getBar());
+        assertEquals(10, bean.getFoo());
     }
 }

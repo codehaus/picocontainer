@@ -152,21 +152,40 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <pseudocomponent>" +
-                "	<org.nanocontainer.script.xml.TestPseudoComp>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
                 "		<foo>10</foo>" +
                 "		<bar>hello</bar>" +
-                "	</org.nanocontainer.script.xml.TestPseudoComp>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
                 "  </pseudocomponent>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
-        assertTrue(instance instanceof TestPseudoComp);
-        assertEquals(10, ((TestPseudoComp)instance).getFoo());
-        assertEquals("hello", ((TestPseudoComp)instance).getBar());
+        assertTrue(instance instanceof TestBean);
+        assertEquals(10, ((TestBean)instance).getFoo());
+        assertEquals("hello", ((TestBean)instance).getBar());
     }
 
+    public void testPseudoComponentWithXStreamFactory() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <pseudocomponent factory='org.nanocontainer.script.xml.XStreamXMLPseudoComponentFactory'>" +
+                "	<org.nanocontainer.script.xml.TestBean>" +
+                "		<foo>10</foo>" +
+                "		<bar>hello</bar>" +
+                "	</org.nanocontainer.script.xml.TestBean>" +
+                "  </pseudocomponent>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        Object instance = pico.getComponentInstances().get(0);
+        assertNotNull(instance);
+        assertTrue(instance instanceof TestBean);
+        assertEquals(10, ((TestBean)instance).getFoo());
+        assertEquals("hello", ((TestBean)instance).getBar());
+    }
+    
     public void testPseudoComponentWithFactoryAndKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -205,6 +224,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertEquals(8080, config.getPort());
     }
 
+    
     // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() throws IOException, ParserConfigurationException, SAXException {
         Reader script = new StringReader("" +

@@ -1,0 +1,7 @@
+<!-- START SNIPPET: xml -->
+<component>
+  <dependencies>
+     <dependency type="cdibook.ioc.PersistenceStore"/>
+  </dependencies>
+</component>
+<!-- END SNIPPET: xml -->

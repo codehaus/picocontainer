@@ -1,6 +1,6 @@
 *.suo
-nanoContainer.resharper
-nanoContainer.resharperoptions
+_ReSharper.PicoContainer
+PicoContainer.resharper
+PicoContainer.resharperoptions
 bin
-obj
 *.user

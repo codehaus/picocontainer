@@ -99,6 +99,11 @@
                     AssemblyName = "PicoContainer"
                     HintPath = "..\lib\PicoContainer.dll"
                 />
+                <Reference
+                    Name = "Castle.DynamicProxy"
+                    AssemblyName = "Castle.DynamicProxy"
+                    HintPath = "..\lib\Castle.DynamicProxy.dll"
+                />
             </References>
         </Build>
         <Files>

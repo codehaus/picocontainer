@@ -2,24 +2,20 @@ using System;
 
 namespace NanoContainer.Test.TestModel
 {
-	/// <summary>
-	/// Summary description for DefaultWebServerConfig.
-	/// </summary>
-    public class DefaultWebServerConfig : WebServerConfig {
+	public class DefaultWebServerConfig : WebServerConfig
+	{
+		private int port = 80;
 
-                                          private int port = 80;
+		public String Host
+		{
+			get { return "*"; }
+		}
 
-      public String getHost() {
-        return "*";
-      }
+		public int Port
+		{
+			get { return port; }
+			set { port = value; }
+		}
 
-      public int getPort() {
-        return port;
-      }
-
-      public void setPort(int port) {
-        this.port = port;
-      }
-
-    }
-  }
+	}
+}

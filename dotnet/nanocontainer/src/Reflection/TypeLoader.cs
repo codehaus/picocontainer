@@ -1,73 +1,88 @@
 using System;
-using System.Reflection;
 using System.Collections;
+using System.IO;
+using System.Reflection;
 
-namespace NanoContainer.Reflection {
-  /// <summary>
-  /// Summary description for TypeLoader.
-  /// </summary>
-  public class TypeLoader {
-    public TypeLoader() {
-    }
-    private static Hashtable TypeMap = new Hashtable();
-    public static Type GetType(string typeSettings) {
-      return GetType(new ObjectTypeSettings(typeSettings));
-    }
+namespace NanoContainer.Reflection
+{
+	public class TypeLoader
+	{
+		public TypeLoader()
+		{
+		}
 
-    public static Type GetType(ObjectTypeSettings typeSettings) {
-      
-      Type t = TypeMap[typeSettings.Name] as Type;
-      if (t != null) {
-        return t;
-      }
+		private static Hashtable TypeMap = new Hashtable();
 
-      Assembly assemblyInstance	= null;
+		public static Type GetType(string typeSettings)
+		{
+			return GetType(new ObjectTypeSettings(typeSettings));
+		}
 
-      try {
-        if (typeSettings.Assembly != null) { 
-            assemblyInstance = Assembly.Load( typeSettings.Assembly );
-        } else
-        {
-          assemblyInstance = Assembly.GetExecutingAssembly();          
-        }
-      } 
-      catch (System.IO.FileNotFoundException e) {
-        // Maybe it is a in memory assembly try it
-        foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-        {
-          if (a.FullName.Replace(" ","") == typeSettings.Assembly)
-          {
-            assemblyInstance = a;
-            break;
-          }
-        }
+		public static Type GetType(ObjectTypeSettings typeSettings)
+		{
+			Type type = TypeMap[typeSettings.Name] as Type;
+			if (type != null)
+			{
+				return type;
+			}
 
-        if (assemblyInstance == null) {
-          throw new TypeLoadException("Can not load the assembly "+typeSettings.Assembly+" needed for the type: "+typeSettings.Type,e);
-        }
-      }
+			Assembly assemblyInstance = null;
 
-      try {
-        t = assemblyInstance.GetType( typeSettings.Type, true, false);
-        TypeMap.Add(typeSettings.Name,t);
+			try
+			{
+				if (typeSettings.Assembly != null)
+				{
+					assemblyInstance = Assembly.Load(typeSettings.Assembly);
+				}
+				else
+				{
+					assemblyInstance = Assembly.GetExecutingAssembly();
+				}
+			}
+			catch (FileNotFoundException e)
+			{
+				// Maybe it is a in memory assembly try it
+				foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+				{
+					if (a.FullName.Replace(" ", "") == typeSettings.Assembly)
+					{
+						assemblyInstance = a;
+						break;
+					}
+				}
 
-        return t;
-      } 
-      catch (Exception ex) {
-        Assembly[] assm = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (Assembly a in assm) {
-          try {
-            t = a.GetType(typeSettings.Type, true, false);
-            TypeMap.Add(typeSettings.Name,t);
-            
-            return t;
-          }
-          catch (Exception ) {
-          }          
-        }
-        throw ex;
-      }
+				if (assemblyInstance == null)
+				{
+					throw new TypeLoadException("Can not load the assembly " + typeSettings.Assembly + " needed for the type: " + typeSettings.Type, e);
+				}
+			}
 
-    }
-  }
+			try
+			{
+				type = assemblyInstance.GetType(typeSettings.Type, true, false);
+				TypeMap.Add(typeSettings.Name, type);
+
+				return type;
+			}
+			catch (Exception ex)
+			{
+				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				foreach (Assembly assembly in assemblies)
+				{
+					try
+					{
+						type = assembly.GetType(typeSettings.Type, true, false);
+						TypeMap.Add(typeSettings.Name, type);
+
+						return type;
+					}
+					catch (Exception)
+					{
+					}
+				}
+				throw ex;
+			}
+
+		}
+	}
 }

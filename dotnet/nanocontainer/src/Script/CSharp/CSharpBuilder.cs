@@ -1,26 +1,19 @@
-using System;
-using PicoContainer;
+using System.CodeDom.Compiler;
 using System.IO;
-using System.Text;
-          
+using Microsoft.CSharp;
+
 namespace NanoContainer.Script.CSharp
 {
-  /// <summary>
-  /// Summary description for CSharpBuilder.
-  /// </summary>
-  public class CSharpBuilder : AbstractFrameworkContainerBuilder
-  {
-    public CSharpBuilder(StreamReader stream): base(stream)
-    {
-    }
-    protected override System.CodeDom.Compiler.CodeDomProvider CodeDomProvider
-    {
-      get 
-      {
+	public class CSharpBuilder : AbstractFrameworkContainerBuilder
+	{
+		public CSharpBuilder(StreamReader stream) : base(stream)
+		{
+		}
 
-        return new Microsoft.CSharp.CSharpCodeProvider();   
-      }
-    }
+		protected override CodeDomProvider CodeDomProvider
+		{
+			get { return new CSharpCodeProvider(); }
+		}
 
-  }
+	}
 }

@@ -1,16 +1,10 @@
-using System;
-using PicoContainer;
-using System.IO;
 using System.Data;
 
 namespace NanoContainer.Script.Xml
 {
-	/// <summary>
-	/// Summary description for XMLContainerBuilder.
-	/// </summary>
 	public class XMLContainerBuilder //: ScriptedContainerBuilder 
 	{
-    DataSet ds = new DataSet();
+		private DataSet ds = new DataSet();
 
 /*    public XMLContainerBuilder(StreamReader stream): base(stream) {
       ds.ReadXml(stream);
@@ -31,5 +25,5 @@ namespace NanoContainer.Script.Xml
     }
 */
 //    public abstract void KillContainer (IPicoContainer containerRef);
-  }
+	}
 }

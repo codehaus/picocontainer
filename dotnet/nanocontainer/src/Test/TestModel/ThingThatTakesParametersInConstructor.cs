@@ -1,32 +1,31 @@
-using System;
-
 namespace NanoContainer.Test.TestModel
 {
-  public class ThingThatTakesParamsInConstructor {
-    private string theValue;
-    private int theInt;
-    private bool theBool;
+	public class ThingThatTakesParamsInConstructor
+	{
+		private string theValue;
+		private int theInt;
+		private bool theBool;
 
-    public ThingThatTakesParamsInConstructor (string theValue, int theInt, bool theBool)
-    {
-      this.theValue = theValue;
-      this.theInt = theInt;
-      this.theBool = theBool;
-    }
-  
-    public int Int
-    {
-      get { return theInt; }
-    }
+		public ThingThatTakesParamsInConstructor(string theValue, int theInt, bool theBool)
+		{
+			this.theValue = theValue;
+			this.theInt = theInt;
+			this.theBool = theBool;
+		}
 
-    public bool Bool
-    {
-      get { return theBool; }
-    }
+		public int Int
+		{
+			get { return theInt; }
+		}
 
-    public string Value
-    {
-      get { return theValue+theInt+theBool;}
-    }
-  }
+		public bool Bool
+		{
+			get { return theBool; }
+		}
+
+		public string Value
+		{
+			get { return theValue + theInt + theBool; }
+		}
+	}
 }

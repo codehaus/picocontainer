@@ -17,25 +17,15 @@ import java.util.TreeMap;
  * @version $Revision$
  */
 public class MapsTestCase
-        extends TestCase {
+        extends TestCase
+        implements CollectionDemoClasses {
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
         pico = new DefaultPicoContainer();
     }
 
-    // START SNIPPET: classes
-
-    public static interface Fish {
-    }
-
-    public static class Cod
-            implements Fish {
-    }
-
-    public static class Shark
-            implements Fish {
-    }
+    // START SNIPPET: bowl
 
     public static class Bowl {
         private final TreeMap fishes;
@@ -55,7 +45,7 @@ public class MapsTestCase
         }
     }
 
-    // END SNIPPET: classes
+    // END SNIPPET: bowl
 
     public void testShouldCreateBowlWithFishCollection() {
 

@@ -7,14 +7,9 @@ import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CollectionComponentParameter;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.doc.advanced.MapsTestCase.Bowl;
-import org.picocontainer.doc.advanced.MapsTestCase.Cod;
-import org.picocontainer.doc.advanced.MapsTestCase.Fish;
-import org.picocontainer.doc.advanced.MapsTestCase.Shark;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -23,7 +18,8 @@ import java.util.Map;
  * @version $Revision$
  */
 public class ArraysTestCase
-        extends TestCase {
+        extends TestCase
+        implements CollectionDemoClasses {
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
@@ -43,18 +39,7 @@ public class ArraysTestCase
         // END SNIPPET: explanation
     }
 
-    // START SNIPPET: classes
-
-    public static interface Fish {
-    }
-
-    public static class Cod
-            implements Fish {
-    }
-
-    public static class Shark
-            implements Fish {
-    }
+    // START SNIPPET: bowl
 
     public static class Bowl {
         private final Fish[] fishes;
@@ -74,7 +59,7 @@ public class ArraysTestCase
         }
     }
 
-    // END SNIPPET: classes
+    // END SNIPPET: bowl
 
     public void testShouldCreateBowlWithFishCollection() {
 
@@ -89,7 +74,7 @@ public class ArraysTestCase
 
         Shark shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
         Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
-        
+
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(2, fishes.size());
         assertTrue(fishes.contains(shark));
@@ -115,14 +100,14 @@ public class ArraysTestCase
         Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
 
         //      START SNIPPET: directDemo
-        
+
         List cods = Arrays.asList(bowl.getCods());
         assertEquals(1, cods.size());
-        
+
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(0, fishes.size());
         //      END SNIPPET: directDemo
-        
+
         assertTrue(cods.contains(cod));
     }
 
@@ -133,9 +118,7 @@ public class ArraysTestCase
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new CollectionComponentParameter(),
-            new CollectionComponentParameter()
-        });
+                new CollectionComponentParameter(), new CollectionComponentParameter()});
         pico.registerComponentInstance(new Fish[]{});
         pico.registerComponentInstance(new Cod[]{});
 
@@ -146,14 +129,14 @@ public class ArraysTestCase
         Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
 
         //      START SNIPPET: ensureDemo
-        
+
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(2, fishes.size());
 
         List cods = Arrays.asList(bowl.getCods());
         assertEquals(1, cods.size());
         //      END SNIPPET: ensureDemo
-        
+
         assertTrue(fishes.contains(shark));
         assertTrue(fishes.contains(cod));
         assertTrue(cods.contains(cod));
@@ -164,9 +147,7 @@ public class ArraysTestCase
         //      START SNIPPET: emptyArray
 
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(true),
-            new ComponentParameter(true)
-        });
+                new ComponentParameter(true), new ComponentParameter(true)});
 
         Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: emptyArray
@@ -176,7 +157,7 @@ public class ArraysTestCase
         List cods = Arrays.asList(bowl.getCods());
         assertEquals(0, cods.size());
     }
-    
+
     public void testShouldCreateBowlWithNamedFishesOnly() {
 
         //      START SNIPPET: useKeyType
@@ -184,13 +165,11 @@ public class ArraysTestCase
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation("Nemo", Cod.class);
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(String.class, Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
-        
+                new ComponentParameter(String.class, Fish.class, false), new ComponentParameter(Cod.class, false)});
+
         Bowl bowl = (Bowl) pico.getComponentInstanceOfType(Bowl.class);
         //      END SNIPPET: useKeyType
-        
+
         //      START SNIPPET: ensureKeyType
 
         List fishes = Arrays.asList(bowl.getFishes());

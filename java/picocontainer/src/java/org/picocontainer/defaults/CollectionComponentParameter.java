@@ -196,6 +196,11 @@ public class CollectionComponentParameter
         if (parent != null) {
             adapterMap.putAll(getMatchingComponentAdapters(parent, adapter, keyType, valueType));
         }
+        final Collection allAdapters = container.getComponentAdapters();
+        for (final Iterator iter = allAdapters.iterator(); iter.hasNext();) {
+            final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+            adapterMap.remove(componentAdapter.getComponentKey());
+        }
         final List adapterList = container.getComponentAdaptersOfType(valueType);
         for (final Iterator iter = adapterList.iterator(); iter.hasNext();) {
             final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();

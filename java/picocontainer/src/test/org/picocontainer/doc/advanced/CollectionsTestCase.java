@@ -19,26 +19,15 @@ import java.util.Set;
  * @version $Revision$
  */
 public class CollectionsTestCase
-        extends TestCase {
+        extends TestCase
+        implements CollectionDemoClasses {
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
         pico = new DefaultPicoContainer();
     }
 
-    // START SNIPPET: classes
-
-    public static interface Fish {
-    }
-
-    public static class Cod
-            implements Fish {
-    }
-
-    public static class Shark
-            implements Fish {
-    }
-
+    // START SNIPPET: bowl
 
     public static class Bowl {
         private final LinkedList fishes;
@@ -58,7 +47,7 @@ public class CollectionsTestCase
         }
     }
 
-    // END SNIPPET: classes
+    // END SNIPPET: bowl
 
     public void testShouldCreateBowlWithFishCollection() {
 
@@ -67,15 +56,13 @@ public class CollectionsTestCase
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+                new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
         //      END SNIPPET: usage
 
         Shark shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
         Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
         Bowl bowl = (Bowl) pico.getComponentInstanceOfType(Bowl.class);
-        
+
         Collection fishes = bowl.getFishes();
         assertEquals(2, fishes.size());
         assertTrue(fishes.contains(shark));
@@ -94,9 +81,7 @@ public class CollectionsTestCase
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+                new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
         pico.registerComponentInstance(set);
 
         Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
@@ -106,15 +91,15 @@ public class CollectionsTestCase
         Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
 
         //      START SNIPPET: directDemo
-        
+
         Collection cods = bowl.getCods();
         assertEquals(0, cods.size());
         assertSame(set, cods);
-        
+
         Collection fishes = bowl.getFishes();
         assertEquals(2, fishes.size());
         //      END SNIPPET: directDemo
-        
+
         assertTrue(fishes.contains(cod));
         assertTrue(fishes.contains(shark));
     }
@@ -126,9 +111,7 @@ public class CollectionsTestCase
         pico.registerComponentImplementation(Shark.class);
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new CollectionComponentParameter(Fish.class, false),
-            new CollectionComponentParameter(Cod.class, false)
-        });
+                new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false)});
         // This component will match both arguments of Bowl's constructor
         pico.registerComponentInstance(new LinkedList());
 
@@ -142,7 +125,7 @@ public class CollectionsTestCase
         assertEquals(2, fishes.size());
         Collection cods = bowl.getCods();
         assertEquals(1, cods.size());
-        
+
         assertTrue(fishes.contains(shark));
         assertTrue(fishes.contains(cod));
         assertTrue(cods.contains(cod));
@@ -153,9 +136,7 @@ public class CollectionsTestCase
         //      START SNIPPET: emptyCollection
 
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(true),
-            new ComponentParameter(true)
-        });
+                new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true)});
 
         Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: emptyCollection

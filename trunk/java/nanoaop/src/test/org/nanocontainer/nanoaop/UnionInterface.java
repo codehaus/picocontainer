@@ -7,22 +7,11 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
-
-import org.nanocontainer.nanoaop.ComponentPointcut;
-import org.nanocontainer.nanoaop.PointcutsFactory;
+package org.nanocontainer.nanoaop;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractPointcutsFactory implements PointcutsFactory {
-
-    public ComponentPointcut component(Object componentKey) {
-        return new KeyEqualsComponentPointcut(componentKey);
-    }
-
-    public ComponentPointcut componentName(String regex) {
-        return new NameMatchesComponentPointcut(regex);
-    }
+public interface UnionInterface extends Identifiable, AnotherInterface {
 
 }

@@ -35,7 +35,7 @@ public class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestCase {
     
     public void testMixinNotInContainer() {
         try {
-            IdentifiableMixin actualMixin = (IdentifiableMixin) mixinFactory.create(null);
+            mixinFactory.create(null);
             fail("NullPointerException should hvae been raised");
         } catch (NullPointerException e) {
         }

@@ -9,8 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.dynaop;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.nanocontainer.nanoaop.AspectsManager;
@@ -25,7 +27,6 @@ import dynaop.Aspects;
 import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
 import dynaop.MixinFactory;
-import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
@@ -36,7 +37,7 @@ public class DynaopAspectsManager implements AspectsManager {
     private final ContainerLoader containerLoader = new ContainerLoader();
     private final PicoContainer container = PicoContainerProxy.create(containerLoader);
     private final Aspects containerAspects;
-    private final Map componentAspects = new HashMap();
+    private final List componentAspects = new ArrayList();
     private final PointcutsFactory pointcutsFactory = new DynaopPointcutsFactory();
 
     public DynaopAspectsManager(Aspects containerAspects) {
@@ -48,9 +49,9 @@ public class DynaopAspectsManager implements AspectsManager {
     }
 
     public void registerInterceptor(ClassPointcut classPointcut, MethodPointcut methodPointcut,
-            ComponentPointcut interceptorComponent) {
+            Object interceptorComponentKey) {
         containerAspects.interceptor(getClassPointcut(classPointcut), getMethodPointcut(methodPointcut),
-                createInterceptorFactory(interceptorComponent));
+                createInterceptorFactory(interceptorComponentKey));
     }
 
     public void registerInterceptor(ClassPointcut classPointcut, MethodPointcut methodPointcut,
@@ -60,15 +61,15 @@ public class DynaopAspectsManager implements AspectsManager {
     }
 
     public void registerInterceptor(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
-            ComponentPointcut interceptorComponent) {
-        getComponentAspects(componentPointcut).interceptor(Pointcuts.ALL_CLASSES, getMethodPointcut(methodPointcut),
-                createInterceptorFactory(interceptorComponent));
+            Object interceptorComponentKey) {
+        componentAspects.add(new InterceptorComponentAspect(componentPointcut, getMethodPointcut(methodPointcut),
+                createInterceptorFactory(interceptorComponentKey)));
     }
 
     public void registerInterceptor(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
             MethodInterceptor interceptor) {
-        getComponentAspects(componentPointcut).interceptor(Pointcuts.ALL_CLASSES, getMethodPointcut(methodPointcut),
-                createInterceptor(interceptor));
+        componentAspects.add(new InterceptorComponentAspect(componentPointcut, getMethodPointcut(methodPointcut),
+                createInterceptor(interceptor)));
     }
 
     public void registerMixin(ClassPointcut classPointcut, Class mixinClass) {
@@ -79,64 +80,77 @@ public class DynaopAspectsManager implements AspectsManager {
         containerAspects.mixin(getClassPointcut(classPointcut), interfaces, mixinClass, null);
     }
 
-    public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, ComponentPointcut mixinComponent) {
-        containerAspects.mixin(getClassPointcut(classPointcut), interfaces, createMixinFactory(mixinComponent));
+    public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Object mixinComponentKey) {
+        containerAspects.mixin(getClassPointcut(classPointcut), interfaces, createMixinFactory(mixinComponentKey));
     }
 
     public void registerMixin(ComponentPointcut componentPointcut, Class mixinClass) {
-        getComponentAspects(componentPointcut).mixin(Pointcuts.ALL_CLASSES, mixinClass, null);
+        componentAspects.add(new MixinComponentAspect(componentPointcut, mixinClass));
     }
 
     public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Class mixinClass) {
-        getComponentAspects(componentPointcut).mixin(Pointcuts.ALL_CLASSES, interfaces, mixinClass, null);
+        componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces, mixinClass));
     }
 
-    public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, ComponentPointcut mixinComponent) {
-        getComponentAspects(componentPointcut).mixin(Pointcuts.ALL_CLASSES, interfaces,
-                createMixinFactory(mixinComponent));
-    }
-
-    public Object applyAspects(Object componentKey, Object component, PicoContainer container) {
-        containerLoader.setContainer(container);
-        Object proxy = ProxyFactory.getInstance(containerAspects).wrap(component);
-        return ProxyFactory.getInstance(getComponentAspects(componentKey)).wrap(proxy);
+    public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Object mixinComponentKey) {
+        componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces,
+                createMixinFactory(mixinComponentKey)));
     }
 
     public PointcutsFactory getPointcutsFactory() {
         return pointcutsFactory;
     }
 
-    private Aspects getComponentAspects(Object componentKey) {
-        Aspects aspects = (Aspects) componentAspects.get(componentKey);
-        if (aspects == null) {
-            aspects = new Aspects();
-            componentAspects.put(componentKey, aspects);
+    public Object applyAspects(Object componentKey, Object component, PicoContainer container) {
+        containerLoader.setContainer(container);
+        Object proxy = ProxyFactory.getInstance(containerAspects).wrap(component);
+        proxy = applyComponentAspects(componentKey, proxy);
+        return proxy;
+    }
+
+    private dynaop.ClassPointcut getClassPointcut(final ClassPointcut classPointcut) {
+        if (classPointcut instanceof dynaop.ClassPointcut) {
+            return (dynaop.ClassPointcut) classPointcut;
         }
-        return aspects;
+
+        return new dynaop.ClassPointcut() {
+            public boolean picks(Class clazz) {
+                return classPointcut.picks(clazz);
+            }
+        };
     }
 
-    private Aspects getComponentAspects(ComponentPointcut componentPointcut) {
-        return getComponentAspects(componentPointcut.getComponentKey());
-    }
+    private dynaop.MethodPointcut getMethodPointcut(final MethodPointcut methodPointcut) {
+        if (methodPointcut instanceof dynaop.MethodPointcut) {
+            return (dynaop.MethodPointcut) methodPointcut;
+        }
 
-    private dynaop.ClassPointcut getClassPointcut(ClassPointcut classPointcut) {
-        return (dynaop.ClassPointcut) classPointcut;
-    }
-
-    private dynaop.MethodPointcut getMethodPointcut(MethodPointcut methodPointcut) {
-        return (dynaop.MethodPointcut) methodPointcut;
+        return new dynaop.MethodPointcut() {
+            public boolean picks(Method method) {
+                return methodPointcut.picks(method);
+            }
+        };
     }
 
     private Interceptor createInterceptor(MethodInterceptor methodInterceptor) {
         return new MethodInterceptorAdapter(methodInterceptor);
     }
 
-    private InterceptorFactory createInterceptorFactory(ComponentPointcut interceptorComponent) {
-        return new ContainerSuppliedInterceptorFactory(container, interceptorComponent.getComponentKey());
+    private InterceptorFactory createInterceptorFactory(Object interceptorComponent) {
+        return new ContainerSuppliedInterceptorFactory(container, interceptorComponent);
     }
 
-    private MixinFactory createMixinFactory(ComponentPointcut mixinComponent) {
-        return new ContainerSuppliedMixinFactory(container, mixinComponent.getComponentKey());
+    private MixinFactory createMixinFactory(Object mixinComponent) {
+        return new ContainerSuppliedMixinFactory(container, mixinComponent);
+    }
+
+    private Object applyComponentAspects(Object componentKey, Object proxy) {
+        Iterator iterator = componentAspects.iterator();
+        while (iterator.hasNext()) {
+            ComponentAspect componentAspect = (ComponentAspect) iterator.next();
+            proxy = componentAspect.applyAspect(componentKey, proxy);
+        }
+        return proxy;
     }
 
 }

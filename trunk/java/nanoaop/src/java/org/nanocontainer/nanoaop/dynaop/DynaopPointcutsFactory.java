@@ -32,7 +32,7 @@ public class DynaopPointcutsFactory extends AbstractPointcutsFactory {
         try {
             return new DynaopClassPointcut(Pointcuts.className(regex));
         } catch (MalformedPatternException e) {
-            throw new MalformedRegularExpressionException("invalid class name regular expression", e);
+            throw new MalformedRegularExpressionException("malformed class name regular expression", e);
         }
     }
 
@@ -80,7 +80,7 @@ public class DynaopPointcutsFactory extends AbstractPointcutsFactory {
         try {
             return new DynaopMethodPointcut(Pointcuts.signature(regexp));
         } catch (MalformedPatternException e) {
-            throw new MalformedRegularExpressionException("invalid method signature regular expression", e);
+            throw new MalformedRegularExpressionException("malformed method signature regular expression", e);
         }
     }
 

@@ -9,36 +9,28 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.defaults;
 
-import org.nanocontainer.nanoaop.ComponentPointcut;
-
 import junit.framework.TestCase;
+
+import org.nanocontainer.nanoaop.ComponentPointcut;
 
 /**
  * @author Stephen Molitor
  */
-public class DefaultComponentPointcutTestCase extends TestCase {
-    
-    public void testGetComponentKey() {
-        ComponentPointcut pointcutA = new DefaultComponentPointcut("a");
-        assertEquals("a", pointcutA.getComponentKey());
-        
-        ComponentPointcut pointcutB = new DefaultComponentPointcut("b");
-        assertEquals("b", pointcutB.getComponentKey());
-    }
-    
+public class KeyEqualsComponentPointcutTestCase extends TestCase {
+
     public void testPicks() {
-        ComponentPointcut pointcutA = new DefaultComponentPointcut("a");
-        ComponentPointcut pointcutB = new DefaultComponentPointcut("b");
-        
+        ComponentPointcut pointcutA = new KeyEqualsComponentPointcut("a");
+        ComponentPointcut pointcutB = new KeyEqualsComponentPointcut("b");
+
         assertTrue(pointcutA.picks("a"));
         assertFalse(pointcutA.picks("b"));
         assertFalse(pointcutB.picks("a"));
         assertTrue(pointcutB.picks("b"));
     }
-    
+
     public void testConstructorChecksForNullComponentKey() {
         try {
-            new DefaultComponentPointcut(null);
+            new KeyEqualsComponentPointcut(null);
             fail("NullPointerException should have been raised");
         } catch (NullPointerException e) {
         }

@@ -13,7 +13,6 @@ package org.nanocontainer;
 import org.nanocontainer.reflection.StringToObjectConverter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
@@ -30,8 +29,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Set;
-import java.util.List;
 import java.util.Collection;
 
 public class DomRegistrationNanoContainer  implements InputSourceRegistrationNanoContainer, Serializable

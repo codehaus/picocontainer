@@ -18,4 +18,26 @@
       of the committers.
     </echo>    
   </goal>
+
+    <goal name="picotask">
+        <path id="pico.task.classpath">
+            <path refid="maven.dependency.classpath"/>
+            <pathelement location="${maven.build.dest}"/>
+            <pathelement location="${basedir}/target/test-classes"/>
+        </path>
+
+        <property name="CP" refid="pico.task.classpath"/>
+        <echo>CLASSPATH: ${CP}</echo>
+
+        <taskdef
+            name="pico"
+            classname="org.nanocontainer.ant.PicoContainerTask"
+            classpathref="pico.task.classpath"
+        />
+
+        <pico>
+            <component class="org.nanocontainer.ant.OneConstructorArrayList"/>
+            <component class="org.picocontainer.testmodel.Webster"/>
+        </pico>
+    </goal>
 </project>

@@ -10,13 +10,11 @@
 
 package org.picocontainer.internals;
 
-import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.PicoInitializationException;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface ComponentRegistry {
 
@@ -31,14 +29,12 @@ public interface ComponentRegistry {
     void putComponent(Object componentKey, Object component);
 
     boolean contains(Object componentKey);
-    // was...
-    // boolean contains(ComponentSpecification componentSpecification);
 
     Object getComponentInstance(Object componentKey);
 
-    Set getComponentInstanceKeys();
+    Collection getComponentInstanceKeys();
 
-    Set getComponentInstances();
+    Collection getComponentInstances();
 
     boolean hasComponentInstance(Object componentKey);
 

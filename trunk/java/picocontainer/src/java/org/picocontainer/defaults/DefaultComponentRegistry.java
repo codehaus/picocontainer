@@ -47,18 +47,18 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
         registeredComponentSpecifications.add(compSpec);
     }
-    
-	public void unregisterComponent(Object componentKey) {
-		for (Iterator iterator = registeredComponentSpecifications.iterator(); iterator.hasNext();) {
-			ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
-			
-			if (currentCompSpec.getComponentKey().equals(componentKey)) {
-				registeredComponentSpecifications.remove(currentCompSpec);
+
+    public void unregisterComponent(Object componentKey) {
+        for (Iterator iterator = registeredComponentSpecifications.iterator(); iterator.hasNext();) {
+            ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
+
+            if (currentCompSpec.getComponentKey().equals(componentKey)) {
+                registeredComponentSpecifications.remove(currentCompSpec);
                 componentKeyToInstanceMap.remove(componentKey);
-				break;
-			}
-		}
-	}
+                break;
+            }
+        }
+    }
 
     public Collection getComponentSpecifications() {
         return registeredComponentSpecifications;
@@ -84,21 +84,12 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Set getComponentInstanceKeys() {
-        Set types = componentKeyToInstanceMap.keySet();
-        return Collections.unmodifiableSet(types);
+    public Collection getComponentInstanceKeys() {
+        return Collections.unmodifiableCollection(componentKeyToInstanceMap.keySet());
     }
 
-    public Set getComponentInstances() {
-//        ArrayList list = new ArrayList();
-//        Set types = componentKeyToInstanceMap.entrySet();
-//        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
-//            Map.Entry e = (Map.Entry) iterator.next();
-//            list.add(e.getValue());
-//        }
-        Set result = new HashSet();
-        result.addAll(componentKeyToInstanceMap.values());
-        return Collections.unmodifiableSet(result);
+    public Collection getComponentInstances() {
+        return Collections.unmodifiableCollection(componentKeyToInstanceMap.values());
     }
 
     public boolean hasComponentInstance(Object componentKey) {

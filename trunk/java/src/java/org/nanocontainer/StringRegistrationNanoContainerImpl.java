@@ -21,8 +21,6 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.List;
 import java.util.Collection;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
@@ -64,7 +62,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         }
     }
 
-    public class WithClassLoaderAndComponentRegistry extends StringRegistrationNanoContainerImpl {
+    public static class WithClassLoaderAndComponentRegistry extends StringRegistrationNanoContainerImpl {
         public WithClassLoaderAndComponentRegistry(ClassLoader classLoader, ComponentRegistry componentRegistry) {
             super(classLoader, new StringToObjectConverter(), componentRegistry);
         }

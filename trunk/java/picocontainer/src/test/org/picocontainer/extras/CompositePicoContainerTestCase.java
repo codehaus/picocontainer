@@ -17,7 +17,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.Touchable;
@@ -39,11 +38,7 @@ public class CompositePicoContainerTestCase extends TestCase {
     }
 
     public void testGetComponents() {
-        assertEquals("Collections of Component Keys should be the same", pico.getComponentKeys(), composite.getComponentKeys());
-    }
-
-    public void testGetComponentKeys() {
-        assertEquals("Collections of Component Keys should be the same", pico.getComponents(), composite.getComponents());
+        assertEquals("Collections of Component Keys should be the same", new HashSet(pico.getComponents()), new HashSet(composite.getComponents()));
     }
 
     public void testGetComponent() {

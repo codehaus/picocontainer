@@ -25,7 +25,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Collection;
 
 
@@ -88,7 +87,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
                 aggregateComponents.remove(iterator.next());
             }
         }
-        return compositeProxyFactory.createCompositeProxy(
+        return compositeProxyFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
                 aggregateComponents,
                 callInInstantiationOrder
@@ -172,9 +171,9 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
      * TODO promote to RegistrationPicoContainer, it's all Pauls fault anyway
      * @param componentKey
      */
-	public void unregisterComponent(Object componentKey) {
-		componentRegistry.unregisterComponent(componentKey);
-	}
+    public void unregisterComponent(Object componentKey) {
+        componentRegistry.unregisterComponent(componentKey);
+    }
 
     public void instantiateComponents() throws PicoInitializationException, PicoInvocationTargetInitializationException {
         if (initialized == false) {

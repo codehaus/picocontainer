@@ -81,13 +81,13 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     public Collection getComponentKeys() {
-        Set componentTypes = new HashSet();
+        List componentTypes = new ArrayList();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        return Collections.unmodifiableSet(componentTypes);
+        return Collections.unmodifiableCollection(componentTypes);
     }
 
     public void instantiateComponents() {
@@ -120,7 +120,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
             Object key = (Object) iterator.next();
             set.add(getComponent(key));
         }
-        return Collections.unmodifiableSet(set);
+        return Collections.unmodifiableCollection(set);
     }
 
     public Object getComponentMulticaster() {

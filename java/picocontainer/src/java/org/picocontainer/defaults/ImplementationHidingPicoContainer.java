@@ -74,7 +74,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         if (componentKey instanceof Class) {
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
-                ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
+                ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
                 return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }

@@ -20,5 +20,11 @@ package org.picocontainer;
  * @version $Revision$
  */
 public interface Parameter {
-    ComponentAdapter resolveAdapter(PicoContainer componentRegistry, Class expectedType) throws PicoIntrospectionException;
+    /**
+     * @param picoContainer the container where dependencies are resolved from
+     * @param expectedType the expected (dependant) type
+     * @return a ComponentAdapter
+     * @throws PicoIntrospectionException
+     */
+    ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws PicoIntrospectionException;
 }

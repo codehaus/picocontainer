@@ -32,7 +32,7 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
 
     public String getMessage() {
         StringBuffer msg = new StringBuffer();
-        msg.append("Ambiguous class ");
+        msg.append("Ambiguous ");
         msg.append(ambiguousClass);
         msg.append(", ");
         msg.append("resolves to multiple keys ");

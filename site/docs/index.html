@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>PicoContainer homepage</title>
+  <title>PicoContainer</title>
 </head>
 <body>
 <h2>Slogan</h2>
@@ -14,103 +14,80 @@ components.&nbsp; It honors the Inversion of control pattern (IoC) in a
 way that we calling it type 3 IoC.&nbsp; See below for types.
 Components are typically going to live inside the same JVM. The idea is
 that this might scale from embedded containers for simple beans to
-enterprise and distributed applications. <br>
+enterprise and distributed applications.<br>
 <br>
-PicoContainer components declare their component and configuration
-needs in their
-(single) constructor.&nbsp; One of many types of PicoContainer
-implementations would resolve the needs of the components at time of
-their instantiation.&nbsp; <br>
-<h3>A component must have a single constructor.</h3>
-We have a restriction in that PicoContainer components
-must
-only have one constructor. We don't think that is a bad restriction.
-Especially as the XP "change it when you need to" has not delivered a
-use case that would preclude this design yet.&nbsp; In respect of the
-single constructor, we like the NullObject pattern and use that with
-some parameter-reducing extending class to the component in question.<br>
-<h3>Components and configuration as parameters </h3>
-The parameters in the constructor of a component can be elements of
-configuration as well as other components. The arguments detailing
-configuration need special processing. If is best to read about this on
-the configuration page - see configuration.html.<br>
-<h3>Primitives</h3>
-We also can't allow
-primitives in the constructor (yet). We're not counting
-java.lang.String and java.lang.Integer (etc) as primitives of course.<br>
 <h3>Simple Example</h3>
 In skeletal form, here is the simplest
-possible PicoContainer compatible component :<br>
+possible PicoContainer compatible component:<br>
 <pre>&nbsp;&nbsp; public class Shop {<br>&nbsp;&nbsp;&nbsp;    public Shop(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
-Imagine there were a component that could satisfy that like so :<br>
+Imagine there were a component that could satisfy that like so:<br>
 <pre>&nbsp;&nbsp; public class StockManager {<br>&nbsp;&nbsp; }<span
  style="font-weight: bold;"><br></span></pre>
 <span style="font-weight: bold;"></span>
 <h3>Use without a container</h3>
 We love the Pico design because we see the components being used
 without a
-container :<br>
+container:<br>
 <pre>&nbsp;&nbsp; new Shop(new StockManager());<br></pre>
 This is particularly good for unit testing. In-container testing being
 one of the most avoided forms of unit testing.&nbsp; This is where
 other container design s and specifications fail.<br>
 <h3>Use with a container</h3>
-With a PicoContainer :<br>
+With a PicoContainer:<br>
 <pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();<br>&nbsp;&nbsp; pc.registerComponent(StockManager.class)<br>&nbsp;&nbsp; pc.registerComponent(Shop.class)<br>&nbsp;&nbsp; pc.start();</pre>
-And perhaps some as yet unwritten PicoContainer :<br>
-<pre>&nbsp;&nbsp; MoonscapePicoContainer mc = new MoonscapePicoContainer();<br>&nbsp;&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
 It does not matter how things are laced together. It does not matter
 how tightly bound one PicoContainer is to an individual purpose.&nbsp;
 The important thing is actually the components and the numerous and
 imaginative deployments for them.<br>
-<h3>Container Interface<br>
-</h3>
-PicoContainer's most basic interface is PicoContainer :
+<h2>Features</h2>
+PicoContainer supports the following set of compelling features:<br>
+<ul>
+  <li>Dependent components are laced together through constructor
+parameters (IoC type 3)</li>
+  <li>Dependent components can also (optionally) be passed as JavaBean
+properties</li>
+  <li><a href="configuration.html">Configuration</a> of components
+(based of the above)<br>
+  </li>
+  <li>Default <a
+ href="http://picocontainer.org/picocontainer/apidocs/index.html">lifecycle</a>
+support built in (start, stop, dispose), can also be extended with
+additional states<br>
+  </li>
+  <li>Very extensible design (through for example the <a
+ href="http://picocontainer.org/picocontainer/apidocs/org/picocontainer/ComponentAdapter.html">ComponentAdapter</a>),
+enabling virtually any form of extensions to the core<br>
+  </li>
+</ul>
+<h2>Sister projects<br>
+</h2>
+<h3>PicoExtras</h3>
+PicoExtras extend PicoContainer with the following features, things
+like:<br>
+<ul>
+  <li>AOP (through integration with <a
+ href="http://nanning.codehaus.org">Nanning</a>)</li>
+  <li>XML configuration</li>
+  <li><a href="hotswapping.html">Hot-swapping</a></li>
+  <li>...and much more<br>
+  </li>
+</ul>
+<h3>NanoContainer</h3>
+NanoContainer is a container that incorporates most of the PicoExtras
+extensions into one single runnable container, almost like an
+application server. <br>
+<h2>Ports<br>
+</h2>
+<h3>.NET</h3>
+Pico.NET is the port of PicoContainer to .NET. It follows the Java
+design closely. Currently a work in progress.<br>
+<h3>Ruby</h3>
+Rico is the port of PicoContainer to Ruby. Ruby is a dynamically typed
+lanuage, so the Pico design does not map exactly.<br>
+<h3>PHP</h3>
+A port to PHP 5 is currently in the progress of being written.<br>
 <br>
-<pre>&nbsp;&nbsp; public interface PicoContainer {<br>&nbsp;&nbsp;&nbsp;&nbsp;   boolean hasComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object getComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object[] getComponents();<br>&nbsp;&nbsp;&nbsp;&nbsp;   Class[] getComponentTypes();<br>&nbsp;&nbsp;&nbsp;&nbsp;   void instantiateComponents();<br>&nbsp;&nbsp; }</pre>
-Clearly a PicoContainer is mostly a read-only thing. That's
-deliberate.&nbsp;
-We see many
-PicoContainers delivering different visions of component lacing and
-configuration.&nbsp; Some may exist in chains or trees, such that a
-tiering model could exist. Such a tiering model could provide
-hierarchies for reasons of security, kernel hiding or scope
-control.&nbsp; Joe
-has delivered a trinity of PicoContainers to fit inside the Servlet
-model -
-Application, Session and Request scoped PicoContainers.<br>
+<small>Authors: Paul Hammant, Jon Tirs&eacute;n</small><br>
 <br>
-The PicoContainer interface is only of use to container makers, the
-class
-that instantiates the container and other containers (in the case of
-chaining or directive graphs of containers).&nbsp; It should never be
-exposed to the components that it hosts (though some of the components
-may go on to instantiate their own more-fine-grained containers).<br>
-<h3>ClassRegistrationPicoContainer Interface</h3>
-This interface allows the instantiating class to register components by
-class name or class type and and implementing class name (refer
-Interface/Impl separation)<br>
-<pre>&nbsp; public interface ClassRegistrationPicoContainer extends PicoContainer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentType, Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentType, Object component) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Object component) throws PicoRegistrationException;<br>      // Subject to modification.<br>&nbsp; &nbsp; &nbsp; void addParameterToComponent(Class componentType, Class parameter, Object arg);<br>&nbsp; }<br></pre>
-This interface also allows the registration of pre-instantiated
-components. Given they are pre-instantiated, they need not of course be
-components according to our design at all.&nbsp; People may also use
-this as a way of forwarding something from lower tiers of containers.<br>
-<h3>Sister projects</h3>
-<h4>PicoExtras</h4>
-Many supplamental projects that add reflection and xml capability.<br>
-<h4>NanoContainer</h4>
-NanoContainer is not really a single container. It is four
-PicoContainer compatible containers so far.&nbsp; One that takes String
-registration of components, another that takes them via XML. One that
-aggregates components into a single fat (almost) multiple-inheritance
-comp. Another that makes Nanning (http://nanning.sourceforge.net/), the
-AOP framework, a PicoContainer
-compatible proposition.<br>
-<br>
-The big difference between PicoContainers and NanoContainers are that
-the former have no XML to lace comps together.&nbsp; Components
-themselves for Pico and NanoContainers should be interchangeable.<br>
-<br>
-<small>Authors: Paul Hammant</small><br>
 </body>
 </html>

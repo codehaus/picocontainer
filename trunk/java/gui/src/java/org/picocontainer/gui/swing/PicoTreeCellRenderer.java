@@ -1,6 +1,6 @@
-package org.picocontainer.swing;
+package org.picocontainer.gui.swing;
 
-import org.picocontainer.gui.tree.ComponentTreeNode;
+import org.picocontainer.gui.model.ComponentTreeNode;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.*;

@@ -1,7 +1,10 @@
-package org.picocontainer.gui.tree;
+package org.picocontainer.gui.model;
 
 import junit.framework.TestCase;
-import org.picocontainer.swing.EditContainerPanel;
+import org.picocontainer.gui.swing.EditContainerPanel;
+import org.picocontainer.gui.model.ComponentRegistryTreeNode;
+import org.picocontainer.gui.model.ComponentTreeNode;
+import org.picocontainer.gui.model.ComponentRegistryTreeNodeTestCase;
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 

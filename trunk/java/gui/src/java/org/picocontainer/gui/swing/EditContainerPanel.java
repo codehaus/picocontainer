@@ -1,7 +1,7 @@
-package org.picocontainer.swing;
+package org.picocontainer.gui.swing;
 
-import org.picocontainer.gui.tree.ComponentRegistryTreeNode;
-import org.picocontainer.gui.tree.ComponentTreeNode;
+import org.picocontainer.gui.model.ComponentRegistryTreeNode;
+import org.picocontainer.gui.model.ComponentTreeNode;
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoException;
 import org.nanocontainer.MethodInvoker;

@@ -164,7 +164,7 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
                 "builder = new NanoContainerBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(key:'a', class:Xxx$A)\n" +
-                "    newBuilder(class:'org.nanocontainer.script.groovy.SymbolicAOPTestBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.script.groovy.TestingChildBuilder') {\n" +
                 "      component(key:'b', class:Xxx$B)\n" +
                 "    }\n" +
                 "}");

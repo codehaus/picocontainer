@@ -112,15 +112,6 @@
     </developer>
   </developers>
 
-  <dependencies>
-      <dependency>
-        <groupId>mockobjects</groupId>
-        <artifactId>mockobjects-core</artifactId>
-        <version>0.09</version>
-        <url>http://mockobjects.org/</url>
-      </dependency>
-  </dependencies>
-
   <build>
     <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>

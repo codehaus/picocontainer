@@ -13,14 +13,25 @@ package picocontainer;
 public interface LifecycleContainer extends PicoContainer {
 
     /**
-     * Instantiates all registered components.
+     * Instantiates (if not done already) and starts all
+     * registered components.
      *
-     * @throws PicoStartException if one or more components couldn't be instantiated.
+     * @throws PicoStartException if one or more components couldn't be instantiated/started.
      */
     void start() throws PicoStartException;
 
+    /**
+     * stops all applicable registered components.
+     *
+     * @throws PicoStopException if one or more components couldn't be started.
+     */
     void stop() throws PicoStopException;
 
+    /**
+     * disposes of all registered components.
+     *
+     * @throws PicoDisposalException if one or more components couldn't be disposed of.
+     */
     void dispose() throws PicoDisposalException;
 
 }

@@ -37,6 +37,7 @@ import java.util.Map;
  * In terms of implementation it adopts the behaviour of DefaultPicoContainer and DefaulReflectionContainerAdapter
  *
  * @author Paul Hammant
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class DefaultSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
@@ -57,6 +58,12 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(new DefaultComponentAdapterFactory(), parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
+    }
+
+    public DefaultSoftCompositionPicoContainer(ComponentAdapterFactory caf) {
+        delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, null);
+
+        reflectionAdapter = new DefaultReflectionContainerAdapter(DefaultSoftCompositionPicoContainer.class.getClassLoader(), delegate);
     }
 
     public DefaultSoftCompositionPicoContainer(PicoContainer pc) {

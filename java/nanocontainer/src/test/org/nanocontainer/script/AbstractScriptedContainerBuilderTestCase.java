@@ -14,6 +14,7 @@
 package org.nanocontainer.script;
 
 import junit.framework.TestCase;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
@@ -22,9 +23,9 @@ public abstract class AbstractScriptedContainerBuilderTestCase extends TestCase 
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
-    protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
+    protected SoftCompositionPicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
         parentContainerRef.set(parentContainer);
         builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE", true);
-        return (PicoContainer) containerRef.get();
+        return (SoftCompositionPicoContainer) containerRef.get();
     }
 }

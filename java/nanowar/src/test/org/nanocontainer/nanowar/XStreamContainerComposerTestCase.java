@@ -12,8 +12,10 @@ package org.nanocontainer.nanowar;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.XStreamContainerComposer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,21 +32,21 @@ public class XStreamContainerComposerTestCase extends MockObjectTestCase impleme
     public void testThatProperConfigurationIsRead() throws Exception {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
-        DefaultPicoContainer application = new DefaultPicoContainer();
+        SoftCompositionPicoContainer application = new DefaultSoftCompositionPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
         composer.composeContainer(application, servletContextMock.proxy());
 
         assertNotNull(application.getComponentInstance("applicationScopedInstance"));
 
-        DefaultPicoContainer session = new DefaultPicoContainer();
+        SoftCompositionPicoContainer session = new DefaultSoftCompositionPicoContainer();
         Mock httpSessionMock = mock(HttpSession.class);
 
         composer.composeContainer(session, httpSessionMock.proxy());
 
         assertNotNull(session.getComponentInstance("sessionScopedInstance"));
 
-        DefaultPicoContainer request = new DefaultPicoContainer();
+        SoftCompositionPicoContainer request = new DefaultSoftCompositionPicoContainer();
         Mock httpRequestMock = mock(HttpServletRequest.class);
 
         composer.composeContainer(request, httpRequestMock.proxy());

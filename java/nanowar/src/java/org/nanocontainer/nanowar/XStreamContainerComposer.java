@@ -9,17 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.recorder.ContainerRecorder;
-import org.nanocontainer.script.xml.XStreamContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
+import java.io.InputStreamReader;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.InputStreamReader;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.integrationkit.ContainerComposer;
+import org.nanocontainer.integrationkit.ContainerRecorder;
+import org.nanocontainer.reflection.DefaultContainerRecorder;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.script.xml.XStreamContainerBuilder;
 
 /**
  * container composer reading from xml files via xstream. it pulls configuration from
@@ -47,8 +46,8 @@ public class XStreamContainerComposer implements ContainerComposer {
      */
     public XStreamContainerComposer() {
 
-        requestRecorder = new ContainerRecorder(new DefaultPicoContainer());
-        sessionRecorder = new ContainerRecorder(new DefaultPicoContainer());
+        requestRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
+        sessionRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
 		
         // create and populate request scope
         XStreamContainerBuilder reqBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(REQUEST_CONFIG)), Thread.currentThread().getContextClassLoader());
@@ -66,10 +65,8 @@ public class XStreamContainerComposer implements ContainerComposer {
      * @param container Description of Parameter
      * @param scope     Description of Parameter
      */
-    public void composeContainer(MutablePicoContainer container, Object scope) {
-
+    public void composeContainer(SoftCompositionPicoContainer container, Object scope) {
         if (scope instanceof ServletContext) {
-
             XStreamContainerBuilder appBuilder = new XStreamContainerBuilder(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(APPLICATION_CONFIG)), Thread.currentThread().getContextClassLoader());
             appBuilder.populateContainer(container);
         } else if (scope instanceof HttpSession) {

@@ -8,12 +8,11 @@
  *****************************************************************************/
 package org.nanocontainer.script;
 
-import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-
 import java.io.IOException;
 import java.io.Reader;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
+import org.picocontainer.PicoContainer;
 
 /**
  * Baseclass for container builders based on scripting.
@@ -30,7 +29,7 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         this.classLoader = classLoader;
     }
 
-    protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected final SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             return createContainerFromScript(parentContainer, assemblyScope);
         } finally {
@@ -41,9 +40,9 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         }
     }
 
-    protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
+    protected abstract SoftCompositionPicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
-    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
+    protected void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope) {
         // do nothing. assume that this is done in createContainer().
     }
 }

@@ -22,7 +22,7 @@ public class GroovyScriptGenerator {
     // When there are more requirements (in the form of tests), we can improve this.
     public String generateScript(MutablePicoContainer pico) {
         StringBuffer groovy = new StringBuffer();
-        groovy.append("pico = new org.picocontainer.defaults.DefaultPicoContainer()\n");
+        groovy.append("pico = new org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer()\n");
 
         Collection componentAdapters = pico.getComponentAdapters();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {

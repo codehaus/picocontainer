@@ -8,14 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 
 /**
  * Interface for composing a container.
- * See <a href="http://wiki.opensymphony.com/space/PicoContainer+Integration">WebWork PicoContainer Integration</a>
+ * See <a href="http://nanocontainer.org/NanoWar">NanoWar</a>
  * for sample usage.
  *
  * @author Joe Walnes <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Mauro Talevi
  */
 public interface ContainerComposer {
 
@@ -27,6 +28,6 @@ public interface ContainerComposer {
      * @param compositionScope scope of the container. This variable can be used as a hint to determine
      *                         exactly what components should be registered.
      */
-    void composeContainer(MutablePicoContainer container, Object compositionScope);
+    void composeContainer(SoftCompositionPicoContainer container, Object compositionScope);
 
 }

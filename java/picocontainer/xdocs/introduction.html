@@ -27,27 +27,31 @@ We love this design because we see the components being used without a
 container :<br>
 <pre>&nbsp;&nbsp; new Shop(new StockManager());</pre>
 But also with a PicoContainer :<br>
-<pre>&nbsp; PicoContainer pc = SomePicoContainer();
+<pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();
 &nbsp;&nbsp; pc.registerComponent(StockManager.class)
 &nbsp;&nbsp; pc.registerComponent(Shop.class)
 &nbsp;&nbsp; pc.start();</pre>
 And perhaps some as yet unwritten PicoContainer :<br>
-<pre>&nbsp; MoonscapeContainer mc = new MoonscapeContainer();
+<pre>&nbsp;&nbsp; MoonscapeContainer mc = new MoonscapeContainer();
 &nbsp;&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
 It does not matter how things are laced together. It does not matter
 how tightly bound one PicoContainer is to an individual purpose.&nbsp;
 The important thing is actually the components and how they are laced
 toegether.<br>
 <h2>Container</h2>
-PicoContainer's most basic interface is Container :<br>
-<pre>  public interface Container {<br>    boolean hasComponent(Class compType);<br>    Object getComponent(Class compType);<br>    Object[] getComponents();<br>  }<br></pre>
+PicoContainer's most basic interface is Container :
+<pre>&nbsp;&nbsp; public interface Container {
+&nbsp;&nbsp;&nbsp;&nbsp; boolean hasComponent(Class compType);
+&nbsp;&nbsp;&nbsp;&nbsp; Object getComponent(Class compType);
+&nbsp;&nbsp;&nbsp;&nbsp; Object[] getComponents();
+&nbsp;&nbsp; }</pre>
 Clearly it is a read-only thing. That's deliberate.&nbsp; We see many
 PicoContainers delivering different visions of component lacing and
 configuration.&nbsp; Some may exist in chains or trees, such that a
 tiering model could exist. Such a tiering model could provide
 hierarchys for reasons of security, kernel hiding or scope control (Joe
 has plans for a trinity of Picos to fit inside the Servlet model -
-Application, Session and Request scoped PicoContainers).<br>
+Application, Session and Request scoped PicoContainers).
 <h2>Sister projects</h2>
 NanoContainer is not really a sinlge container. It is four
 PicoContainer compatible containers so far.&nbsp; One that takes String

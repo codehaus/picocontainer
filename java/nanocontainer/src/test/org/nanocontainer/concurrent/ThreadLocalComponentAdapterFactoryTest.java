@@ -7,37 +7,38 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
 
-import java.util.ArrayList;
-import java.util.List;
+package org.nanocontainer.concurrent;
 
 import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.ThreadLocalComponentAdapterFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Test ThreadLocalComponentAdapterFactory.
+ *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterFactoryTest
         extends TestCase {
 
+
     /**
      * Test method createComponentAdapter.
+     *
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapter() throws InterruptedException {
-        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory());
+        final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory
                 .createComponentAdapter(List.class, ArrayList.class, new Parameter[]{});
-        final List list = (List)componentAdapter.getComponentInstance();
+        final List list = (List) componentAdapter.getComponentInstance();
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {
@@ -54,5 +55,4 @@ public class ThreadLocalComponentAdapterFactoryTest
         assertEquals(1, list2.size());
         assertSame(thread, list2.get(0));
     }
-
 }

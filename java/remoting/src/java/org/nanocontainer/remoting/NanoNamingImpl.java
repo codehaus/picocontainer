@@ -1,6 +1,5 @@
 package org.nanocontainer.remoting;
 
-import org.nanocontainer.proxy.ProxyFactory;
 import org.nanocontainer.remoting.rmi.RemoteInterceptorImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -9,6 +8,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.io.Serializable;
+
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -27,12 +28,12 @@ public class NanoNamingImpl extends UnicastRemoteObject implements NanoNaming {
 
     public Object lookup(ByRefKey key) throws RemoteException {
         RemoteInterceptorImpl remoteInterceptor = new RemoteInterceptorImpl(registry, pico, key, proxyFactory);
-        ClientInvocationHandler clientInvocationHandler = new ClientInvocationHandler(key, remoteInterceptor);
+        ClientInvoker clientInvocationHandler = new ClientInvoker(key, remoteInterceptor);
         ComponentAdapter componentAdapter = pico.getComponentAdapter(key);
         remoteInterceptor.bind(componentAdapter);
         return proxyFactory.createProxy(
-                componentAdapter.getComponentImplementation(),
                 new Class[]{
+                    componentAdapter.getComponentImplementation(),
                     Serializable.class,
                     KeyHolder.class
                 },

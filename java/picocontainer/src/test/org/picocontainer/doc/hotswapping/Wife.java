@@ -1,7 +1,5 @@
 package org.picocontainer.doc.hotswapping;
 
-import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactoryTestCase;
-
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$

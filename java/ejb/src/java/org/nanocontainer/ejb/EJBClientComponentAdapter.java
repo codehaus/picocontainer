@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 /**
  * {@link ComponentAdapter}, that is able to lookup and instantiate an EJB as client.
  * <p>If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter},
- * you have to use a {@link org.picocontainer.defaults.ThreadLocalReference}, since you may not use an instance of the EJB
+ * you have to use a {@link org.nanocontainer.concurrent.ThreadLocalReference}, since you may not use an instance of the EJB
  * in different threads.</p>
  * <p>Use a EJBClientComponnatAdapterFactory for a completely transparent {@link ThreadLocal}
  * support.</p>

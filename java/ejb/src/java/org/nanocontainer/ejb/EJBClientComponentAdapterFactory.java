@@ -15,7 +15,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ThreadLocalComponentAdapter;
+import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
+import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

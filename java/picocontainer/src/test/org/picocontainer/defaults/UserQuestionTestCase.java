@@ -81,46 +81,6 @@ public class UserQuestionTestCase extends TestCase {
         assertSame(roquefort, roquefortOmelette.getCheese());
     }
 
-    public void testOmeletteCanHaveDifferentCheeseUsingSwapping() {
-        MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory(), false));
-
-        pico.registerComponentImplementation(Omelette.class);
-        pico.registerComponentImplementation(Cheese.class, Gouda.class);
-
-        Omelette flexibleOmelette = (Omelette) pico.getComponentInstance(Omelette.class);
-        assertEquals("Gouda", flexibleOmelette.getCheese().getName());
-
-        // Let's swap the cheese without creating a new omelette
-        Swappable swappableCheese = (Swappable) flexibleOmelette.getCheese();
-        swappableCheese.hotswap(new Roquefort());
-        assertEquals("Roquefort", flexibleOmelette.getCheese().getName());
-    }
-
-    // From Alex Shneyderman 23/03/2004
-    public void testMultipleOmelettesCanHaveDifferentCheeseUsingSingleSwapping() {
-        MutablePicoContainer pico = new DefaultPicoContainer(
-                new CachingComponentAdapterFactory(
-                        new ImplementationHidingComponentAdapterFactory(
-                                new ConstructorInjectionComponentAdapterFactory(), false)));
-
-        pico.registerComponentImplementation("Omelette1", Omelette.class);
-        pico.registerComponentImplementation("Omelette2", Omelette.class);
-        pico.registerComponentImplementation(Cheese.class, Gouda.class);
-
-        Omelette flexibleOmelette1 = (Omelette) pico.getComponentInstance("Omelette1");
-        Omelette flexibleOmelette2 = (Omelette) pico.getComponentInstance("Omelette2");
-        assertNotSame(flexibleOmelette1, flexibleOmelette2);
-        assertSame(flexibleOmelette1.getCheese(), flexibleOmelette2.getCheese());
-
-        // Let's swap the cheese for all omelettes :)
-        Cheese cheese = (Cheese) pico.getComponentInstance(Cheese.class);
-        Swappable swappableCheese = (Swappable) cheese;
-        swappableCheese.hotswap(new Roquefort());
-        
-        assertEquals("Roquefort", flexibleOmelette1.getCheese().getName());
-        assertEquals("Roquefort", flexibleOmelette2.getCheese().getName());
-    }
-
     public static interface InterfaceX {
         String getIt();
     }

@@ -1,6 +1,6 @@
 package org.nanocontainer.remoting.rmi;
 
-import org.nanocontainer.proxy.ProxyFactory;
+import com.thoughtworks.proxy.ProxyFactory;
 import org.nanocontainer.remoting.ByRefKey;
 import org.nanocontainer.remoting.Invocation;
 import org.nanocontainer.remoting.KeyHolder;

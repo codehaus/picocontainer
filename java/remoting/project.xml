@@ -27,6 +27,11 @@
             <version>2.0</version>
         </dependency>
 
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>

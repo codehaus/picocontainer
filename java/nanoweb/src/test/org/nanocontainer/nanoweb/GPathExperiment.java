@@ -8,6 +8,7 @@ import groovy.lang.GroovyObjectSupport;
 import groovy.lang.Reference;
 
 /**
+ * See http://jira.codehaus.org/secure/ViewIssue.jspa?id=14385
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

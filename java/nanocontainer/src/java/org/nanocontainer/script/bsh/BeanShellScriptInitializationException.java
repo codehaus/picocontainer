@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.picoextras.bsh;
+package org.picoextras.script.bsh;
 
 import org.picocontainer.PicoInitializationException;
 

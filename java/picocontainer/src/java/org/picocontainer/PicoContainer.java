@@ -104,4 +104,12 @@ public interface PicoContainer {
      * @param componentKey key of the component.
      */
     ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+
+    /**
+     * Verifies that the dependencies for all the registered components can be satisfied
+     * None of the components are instantiated during the verification process.
+     * 
+     * @throws PicoVerificationException if there are unsatisifiable dependencies.
+     */
+    void verify() throws PicoVerificationException;
 }

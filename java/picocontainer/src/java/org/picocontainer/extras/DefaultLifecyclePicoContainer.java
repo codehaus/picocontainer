@@ -134,4 +134,9 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
     public Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         return mutablePicoContainer.registerComponentImplementation(componentKey, componentImplementation);
     }
+
+    public void verify() {
+        mutablePicoContainer.verify();
+
+    }
 }

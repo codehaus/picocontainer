@@ -14,7 +14,7 @@ public class NoSatisfiableConstructorsException extends PicoIntrospectionExcepti
     private final Set failedDependencies;
 
     public NoSatisfiableConstructorsException(Class componentImplementation, Set failedDependencies) {
-        super(componentImplementation.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies.toString());
+        super(componentImplementation.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies);
         this.componentImplementation = componentImplementation;
         this.failedDependencies = failedDependencies;
     }
@@ -25,5 +25,24 @@ public class NoSatisfiableConstructorsException extends PicoIntrospectionExcepti
 
     public Set getUnsatisfiableDependencies() {
         return failedDependencies;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NoSatisfiableConstructorsException)) return false;
+
+        final NoSatisfiableConstructorsException noSatisfiableConstructorsException = (NoSatisfiableConstructorsException) o;
+
+        if (!componentImplementation.equals(noSatisfiableConstructorsException.componentImplementation)) return false;
+        if (!failedDependencies.equals(noSatisfiableConstructorsException.failedDependencies)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = componentImplementation.hashCode();
+        result = 29 * result + failedDependencies.hashCode();
+        return result;
     }
 }

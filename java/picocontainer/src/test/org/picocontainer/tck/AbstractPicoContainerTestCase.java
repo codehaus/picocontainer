@@ -156,33 +156,22 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(l.contains("something"));
     }
 
-    public static class A {
-        public A(B b, C c){}
-    };
-    public static class B {};
-    public static class C {};
-
     public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
         MutablePicoContainer pico = createPicoContainer();
-        pico.registerComponentImplementation(A.class);
-        pico.registerComponentImplementation(B.class);
+        pico.registerComponentImplementation(D.class);
 
         try {
-            pico.getComponentInstance(A.class);
+            pico.getComponentInstance(D.class);
         } catch (NoSatisfiableConstructorsException e) {
-            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(1, unsatisfiableDependencies.size());
-            assertTrue(unsatisfiableDependencies.contains(C.class));
+            assertEquals(2, unsatisfiableDependencies.size());
+            assertTrue(unsatisfiableDependencies.contains(E.class));
+            assertTrue(unsatisfiableDependencies.contains(B.class));
+
+            assertTrue( e.getMessage().indexOf("class " + E.class.getName()) != -1);
+            assertTrue( e.getMessage().indexOf("class " + B.class.getName()) != -1);
         }
     }
-
-    public static class D {
-        public D(E e, B b){}
-    };
-    public static class E {
-        public E(D d){}
-    };
 
     public void testCyclicDependencyThrowsCyclicDependencyException() {
         MutablePicoContainer pico = createPicoContainer();
@@ -249,11 +238,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             this.path = path;
         }
     }
+
     // http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
     public void testPico52() {
         MutablePicoContainer pico = createPicoContainer();
 
-        pico.registerComponentImplementation("foo", JMSService.class, new Parameter[] {
+        pico.registerComponentImplementation("foo", JMSService.class, new Parameter[]{
             new ConstantParameter("0"),
             new ConstantParameter("something"),
         });
@@ -293,5 +283,42 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertFalse(parent.getChildContainers().contains(child));
 
     }
-}
 
+    public static class A {
+        public A(B b, C c) {
+        }
+    };
+    public static class B {
+    };
+    public static class C {
+    };
+    public static class D {
+        public D(E e, B b) {
+        }
+    };
+    public static class E {
+        public E(D d) {
+        }
+    };
+
+
+    public void testAggregatedVerificationException() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(A.class);
+        pico.registerComponentImplementation(E.class);
+        try {
+            pico.verify();
+            fail("we expect a PicoVerificationException");
+        } catch (PicoVerificationException e) {
+            List nested = e.getNestedExceptions();
+            assertEquals(2, nested.size());
+
+            Set bc = new HashSet(Arrays.asList(new Class[]{B.class, C.class}));
+            assertTrue(nested.contains(new NoSatisfiableConstructorsException(A.class, bc)));
+
+            Set d = new HashSet(Arrays.asList(new Class[]{D.class}));
+            assertTrue(nested.contains(new NoSatisfiableConstructorsException(E.class, d)));
+        }
+    }
+
+}

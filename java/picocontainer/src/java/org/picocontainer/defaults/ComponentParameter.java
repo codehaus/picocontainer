@@ -1,9 +1,9 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.io.Serializable;
 
@@ -27,7 +27,7 @@ public class ComponentParameter implements Parameter, Serializable {
         this.componentKey = componentKey;
     }
 
-    public ComponentAdapter resolveAdapter(MutablePicoContainer picoContainer) throws PicoIntrospectionException {
+    public ComponentAdapter resolveAdapter(PicoContainer picoContainer) throws PicoIntrospectionException {
         return picoContainer.findComponentAdapter(componentKey);
     }
 }

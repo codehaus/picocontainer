@@ -1,6 +1,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -16,5 +17,9 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter {
 
     public Object getComponentInstance(MutablePicoContainer picoContainer) {
         return componentInstance;
+    }
+
+    public void verify(PicoContainer picoContainer) {
+
     }
 }

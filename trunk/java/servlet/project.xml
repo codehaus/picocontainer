@@ -28,7 +28,7 @@
 
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-4-snapshot</version>
+            <version>1.0-rc1-snapshot</version>
         </dependency>
 
         <dependency>
@@ -44,6 +44,11 @@
         <dependency>
             <id>velocity</id>
             <version>1.4-rc1</version>
+        </dependency>
+
+        <dependency>
+            <id>velocity-tools</id>
+            <version>view-1.0</version>
         </dependency>
 
         <dependency>

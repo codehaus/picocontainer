@@ -6,7 +6,7 @@ import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletException;
@@ -65,7 +65,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private Object getAction(String key, ServletRequest request) throws ServletException {
-        MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer(request));
+        PicoContainer container = getRequestContainer(request);
         Object action = container.getComponentInstance(key);
         if (action == null) {
             String msg = "No action found for '" + key + "'";

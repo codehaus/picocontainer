@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>piccontainer-ant</id>
+  <name>piccontainer-ant</name>
+
+  <dependencies>
+    <dependency>
+      <id>picocontainer-reflection</id>
+      <version>${pom.currentVersion}</version>
+    </dependency>
+    <dependency>
+      <id>ant</id>
+      <version>1.5.3-1</version>
+      <url>http://ant.apache.org/</url>
+    </dependency>
+  </dependencies>
+
+</project>

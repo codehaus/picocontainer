@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picocontainer-jmx</id>
+  <name>picocontainer-jmx</name>
+
+  <dependencies>
+    <dependency>
+      <id>picocontainer-testmodel</id>
+      <version>${pom.currentVersion}</version>
+    </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+            <url>http://jakarta.apache.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-digester</id>
+            <version>1.4.1</version>
+            <url>http://jakarta.apache.org/commons/digester/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.1</version>
+            <url>http://jakarta.apache.org/commons/logging/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-beanutils</id>
+            <version>1.6.1</version>
+            <url>http://jakarta.apache.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>mx4j+jmx</id>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <id>mx4j+tools</id>
+            <version>1.1.1</version>
+        </dependency>
+
+  </dependencies>
+
+</project>

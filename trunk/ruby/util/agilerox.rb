@@ -18,5 +18,6 @@ module Test
 end
 
 # Load all the tests
-ARGV.each { |src_file| require src_file } if $0 == __FILE__
+ARGV.each { |test_file| require test_file } if $0 == __FILE__
+$stdout.flush
 exit! # avoid running tests at exit

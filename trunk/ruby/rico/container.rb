@@ -17,6 +17,10 @@ module Rico
       return @specs.length
     end
     
+    def is_empty?
+      return component_count == 0
+    end
+    
     def register_component(key, component_class, dependencies = [], create_method = :new)
       dependencies.collect! { |dep| wrap_constant dep } 
       dependencies.each { |dep| check_key dep }

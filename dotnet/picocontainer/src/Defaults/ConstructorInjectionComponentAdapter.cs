@@ -14,127 +14,193 @@ using System.Collections;
 using System.Reflection;
 
 using PicoContainer.Utils;
-
+using System.Text;
 
 namespace PicoContainer.Defaults {
   /// <summary>
-  /// Summary description for ConstructorComponentAdapter.
+  /// Instantiates components using Constructor Injection.
+  /// <remarks>
+  /// Note that this class doesn't cache instances. If you want caching,
+  /// use a <see cref="CachingComponentAdapter"/> around this one.
+  /// </remarks>
   /// </summary>
   public class ConstructorInjectionComponentAdapter : InstantiatingComponentAdapter {
 
+    private bool instantiating;
+    private bool verifying;
+    private IList sortedMatchingConstructors;
+
+    /// <summary>
+    /// Explicitly specifies parameters, if null uses default parameters.
+    /// </summary>
+    /// <param name="componentKey"></param>
+    /// <param name="componentImplementation"></param>
+    /// <param name="parameters"></param>
     public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) 
       : base(componentKey, componentImplementation, parameters) {
+      sortedMatchingConstructors = GetSortedMatchingConstructors();
     }
 
     public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation) 
       : this (componentKey, componentImplementation, null) {
     }
 
-    protected override Type[] GetMostSatisfiableDependencyTypes(IPicoContainer dependencyContainer) {
-      ConstructorInfo constructor = GetGreediestSatisifableConstructor(dependencyContainer);
-
-      return TypeUtils.GetParameterTypes(constructor);
+    public override void Verify(){
+      try {
+        ArrayList adapterDependencies = new ArrayList();
+        GetGreediestSatisifableConstructor(adapterDependencies);
+        if (verifying) {
+          throw new CyclicDependencyException(GetDependencyTypes(adapterDependencies));
+        }
+        verifying = true;
+        foreach (IComponentAdapter adapterDependency in adapterDependencies) {
+          adapterDependency.Verify();
+        }
+      } finally {
+        verifying = false;
+      }
     }
 
-
-    protected override ConstructorInfo GetGreediestSatisifableConstructor(IPicoContainer dependencyContainer) {
-      ConstructorInfo[] allConstructors = ComponentImplementation.GetConstructors();
-      IList satisfiableConstructors = GetAllSatisfiableConstructors(allConstructors, dependencyContainer);
-                                        
-      int arity = parameters == null ? -1 : parameters.Length; 
+    protected ConstructorInfo GetGreediestSatisifableConstructor(ArrayList adapterDependencies) {      
+      ArrayList conflicts = new ArrayList();
+      ArrayList unsatisfiableDependencyTypes = new ArrayList();
         
       // if no parameters were provided, we'll just take the biggest one
       ConstructorInfo greediestConstructor = null;
-      IList conflicts = new ArrayList();
-      IList nonMatching = new ArrayList();
-      for (int i = 0; i < satisfiableConstructors.Count; i++) {
-        ConstructorInfo currentConstructor = (ConstructorInfo) satisfiableConstructors[i];
+      foreach (ConstructorInfo currentConstructor in sortedMatchingConstructors) {
+        IList dependencies = new ArrayList();
+
+        bool failedDependency = false;
         Type[] parameterTypes = TypeUtils.GetParameterTypes( currentConstructor);
-        if (arity >= 0) {
-          if (arity == parameterTypes.Length) {
-            int j;
-            for (j = 0; j < arity; j++) {
-              IComponentAdapter adapter = parameters[j].ResolveAdapter(dependencyContainer, parameterTypes[j]);
-              if (adapter == null) {
-                nonMatching.Add(currentConstructor);
-                break;
-              }
-            }
-            if (j == arity) {
-              if (greediestConstructor == null) {
-                greediestConstructor = currentConstructor;
-              } else {
-                conflicts.Add(greediestConstructor);
-                conflicts.Add(currentConstructor);
-              }
+        IParameter[] currentParameters = parameters != null ? parameters : CreateDefaultParameters(parameterTypes);
+        
+
+        for (int j = 0; j < currentParameters.Length; j++) {
+          IComponentAdapter adapter = currentParameters[j].ResolveAdapter(Container, parameterTypes[j]);
+          if (adapter == null) {
+            failedDependency = true;
+            unsatisfiableDependencyTypes.Add(parameterTypes[j]);
+          } else {
+            // we can't depend on ourself
+            if (adapter.Equals(this)) {
+              failedDependency = true;
+              unsatisfiableDependencyTypes.Add(new ArrayList(parameterTypes));
+            } else if (ComponentKey.Equals(adapter.ComponentKey)) {
+              failedDependency = true;
+              unsatisfiableDependencyTypes.Add(new ArrayList(parameterTypes));
+            } else {
+              dependencies.Add(adapter);
             }
           }
-        } else if (greediestConstructor == null) {
-          greediestConstructor = currentConstructor;
-        } else if (TypeUtils.GetParameterTypes( greediestConstructor).Length < parameterTypes.Length) {
-          conflicts.Clear();
-          greediestConstructor = currentConstructor;
-        } else if (TypeUtils.GetParameterTypes( greediestConstructor).Length == parameterTypes.Length) {
-          conflicts.Add(greediestConstructor);
-          conflicts.Add(currentConstructor);
+        } 
+        if (!failedDependency) {
+          if(conflicts.Count == 0 && greediestConstructor == null) {
+            greediestConstructor = currentConstructor;
+            adapterDependencies.AddRange(dependencies);
+          } else if (conflicts.Count == 0 && Utils.TypeUtils.GetParameterTypes(greediestConstructor).Length > parameterTypes.Length) {
+            // remember: we're sorted by length, therefore we've already found the optimal constructor
+            break;
+          } else {
+            if (greediestConstructor != null) {
+              conflicts.Add(greediestConstructor);
+              greediestConstructor = null;
+            }
+            conflicts.Add(currentConstructor);
+            adapterDependencies.Clear();
+          }
         }
       }
-      if (conflicts.Count > 0) {
+      if (conflicts.Count != 0) {
         throw new TooManySatisfiableConstructorsException(ComponentImplementation, conflicts);
       }
-      if (greediestConstructor == null && nonMatching.Count > 0) {
-        throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.ToString());
+      if (greediestConstructor == null && unsatisfiableDependencyTypes.Count > 0) {
+        throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
+      }
+      if (greediestConstructor == null) {
+        // be nice to the user, show all constructors that were filtered out 
+        ArrayList nonMatching = new ArrayList();
+        ConstructorInfo[] constructors = ComponentImplementation.GetConstructors();
+        for (int i = 0; i < constructors.Length; i++) {
+          if (!sortedMatchingConstructors.Contains(constructors[i])) {
+            nonMatching.Add(constructors[i]);
+          }
+        }
+        StringBuilder sb = new StringBuilder();
+        foreach (ConstructorInfo ci in nonMatching)
+        {
+          sb.Append(TypeUtils.ConstructorAsString(ci));  
+        }
+        throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + sb.ToString());
       }
       return greediestConstructor;
     }
-  
-    private IList GetAllSatisfiableConstructors(IList constructors, IPicoContainer picoContainer) {
-      
-      IList satisfiableConstructors = new ArrayList();
-      IList unsatisfiableDependencyTypes = new ArrayList();
-      foreach (ConstructorInfo constructor in constructors) {
-
-        Type[] parameterTypes = TypeUtils.GetParameterTypes( constructor);
-        IParameter[] currentParameters = parameters != null ? parameters : CreateDefaultParameters(parameterTypes,picoContainer);
-
-        bool failedDependency = false;
-        IComponentAdapter adapter = null;
-        for (int i = 0; i < currentParameters.Length; i++) {
-          adapter = currentParameters[i].ResolveAdapter(picoContainer,parameterTypes[i]);
-          if (adapter == null) {
-            failedDependency = true;
-            unsatisfiableDependencyTypes.Add(parameterTypes[i]);
-          } 
-          else {
-            if (adapter.Equals(this)) {
-              failedDependency = true;
-              unsatisfiableDependencyTypes.Add(parameterTypes[i]);
-            }
-            if (ComponentKey.Equals(adapter.ComponentKey)) {
-              failedDependency = true;
-              unsatisfiableDependencyTypes.Add(parameterTypes[i]);
-            }
-          }
+    
+    protected override object InstantiateComponent(ArrayList adapterDependencies) {
+      try {
+        ConstructorInfo constructor = GetGreediestSatisifableConstructor(adapterDependencies);
+        if (instantiating) {
+          throw new CyclicDependencyException(Utils.TypeUtils.GetParameterTypes(constructor));
         }
-        if (!failedDependency) {
-          satisfiableConstructors.Add(constructor);
-        }
-      }
-      if (satisfiableConstructors.Count == 0) {
-        throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
-      }
+        instantiating = true;
+        object[] parameters = GetConstructorArguments(adapterDependencies);
 
-
-      return satisfiableConstructors;
+        return constructor.Invoke(parameters);
+      } catch (PicoException) {
+        throw;
+      }
+    catch (Exception e) {
+    throw new PicoInvocationTargetInitializationException(e);
+  } finally {
+  instantiating = false;
+}
     }
 
-    protected override object[] GetConstructorArguments(IComponentAdapter[] adapterDependencies) {
-      object[] result = new object[adapterDependencies.Length];
-      for (int i = 0; i < adapterDependencies.Length; i++) {
-        IComponentAdapter adapterDependency = adapterDependencies[i];
-        result[i] = adapterDependency.ComponentInstance;
+    private Type[] GetDependencyTypes(IList adapterDependencies) {
+      Type[] result = new Type[adapterDependencies.Count];
+      for (int i = 0; i < adapterDependencies.Count; i++) {
+        IComponentAdapter adapterDependency = (IComponentAdapter) adapterDependencies[i];
+        result[i] = adapterDependency.ComponentImplementation;
       }
       return result;
+    }
+
+
+
+    protected object[] GetConstructorArguments(IList adapterDependencies) {
+      object[] result = new object[adapterDependencies.Count];
+      int i = 0;
+      foreach (IComponentAdapter adapterDependency in adapterDependencies) {
+        result[i++] = adapterDependency.ComponentInstance;
+      }
+      return result;
+    }
+
+      private IList GetSortedMatchingConstructors() {
+        ArrayList matchingConstructors = new ArrayList();
+        ConstructorInfo[] allConstructors = ComponentImplementation.GetConstructors();
+        // filter out all constructors that will definately not match 
+        for (int i = 0; i < allConstructors.Length; i++) {
+            ConstructorInfo constructor = allConstructors[i];
+          Type []parameterTypes =Utils.TypeUtils.GetParameterTypes(constructor);
+            if (parameters == null || parameterTypes.Length == parameters.Length) {
+                matchingConstructors.Add(constructor);
+            }
+        }
+        // optimize list of constructors moving the longest at the beginning
+        if (parameters == null) {
+            matchingConstructors.Sort(new ContructorComparator ());
+        }
+        return matchingConstructors;
+    }
+
+    class ContructorComparator : IComparer
+    {
+      public int Compare(Object arg0, Object arg1) {
+        Type []parameterTypes0 =Utils.TypeUtils.GetParameterTypes((ConstructorInfo)arg0);
+        Type []parameterTypes1 =Utils.TypeUtils.GetParameterTypes((ConstructorInfo)arg1);
+        
+        return parameterTypes1.Length - parameterTypes0.Length;
+      }
     }
   }
 }

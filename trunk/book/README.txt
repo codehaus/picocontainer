@@ -1,4 +1,5 @@
 == Building the book ==
+
 1) Make sure the book module is checked out next to the java module
 2) Install Python
 3) Run ant

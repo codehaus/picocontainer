@@ -15,9 +15,6 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
     private final Class componentImplementation;
 
     protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if(componentKey == null) {
-            throw new NullPointerException("componentKey");
-        }
         if(componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }
@@ -28,6 +25,9 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
     }
 
     public Object getComponentKey() {
+        if(componentKey == null) {
+            throw new NullPointerException("componentKey");
+        }
         return componentKey;
     }
 

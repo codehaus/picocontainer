@@ -31,4 +31,9 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
         assertTrue(comp instanceof SimpleTouchable);
     }
 
+    public void testSingleUseComponentCanBeInstantiatedByDefaultComponentAdapter() {
+        ComponentAdapter componentAdapter = new DefaultComponentAdapter(null, Object.class);
+        Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
+        assertNotNull(component);
+    }
 }

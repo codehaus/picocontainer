@@ -111,10 +111,9 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                         try {
                             setter.invoke(componentInstance, new Object[]{propertyValue});
                         } catch (final Exception e) {
-                            e.printStackTrace();
                             throw new PicoInitializationException() {
                                 public String getMessage() {
-                                    return "Failed to set property " + propertyName + " to " + propertyValue + ". " + e.getMessage();
+                                    return "Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage();
                                 }
                             };
                         }

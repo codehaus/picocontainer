@@ -17,14 +17,14 @@ import java.lang.reflect.InvocationTargetException;
 public class DummiesTestCase extends TestCase {
 
     public void testDummyContainer() {
-        DummyContainer dc = new DummyContainer();
+        NullContainer dc = new NullContainer();
         assertFalse(dc.hasComponent(String.class));
         assertNull(dc.getComponent(String.class));
         assertEquals(0, dc.getComponents().length);
     }
 
     public void testDummyStartableLifecycleManager() throws PicoStartException, PicoStopException {
-        DummyStartableLifecycleManager ds = new DummyStartableLifecycleManager();
+        NullStartableLifecycleManager ds = new NullStartableLifecycleManager();
         Object o = new Object();
         ds.startComponent(o);
         ds.stopComponent(o);

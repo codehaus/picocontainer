@@ -136,6 +136,13 @@
         </contributor>
     </contributors>
 
+    <dependemcies>
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+    </dependemcies>
+
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>

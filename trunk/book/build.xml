@@ -43,6 +43,6 @@
     </target>
     
     <target name="deploy" depends="txt2tags">
-        <copy file="book.html" todir="/home/projects/picocontainer/public_html"/>
+        <copy file="target/book.html" todir="/home/projects/picocontainer/public_html"/>
     </target>
 </project>

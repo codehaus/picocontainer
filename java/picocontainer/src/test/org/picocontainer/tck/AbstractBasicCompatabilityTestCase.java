@@ -6,6 +6,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -72,6 +73,17 @@ public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
             assertTrue(e.getClassThatNeedsDeps() == DependsOnTouchable.class);
             assertTrue(e.getMessage().indexOf(DependsOnTouchable.class.getName()) > 0);
 
+        }
+    }
+
+    public void testDoubleInstantiation() throws PicoRegistrationException, PicoInitializationException {
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        picoContainer.instantiateComponents();
+        try {
+            picoContainer.instantiateComponents();
+            fail("should have barfed");
+        } catch (IllegalStateException e) {
+            // expected
         }
     }
 

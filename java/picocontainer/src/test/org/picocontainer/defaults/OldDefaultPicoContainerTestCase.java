@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class DefaultPicoContainerTestCase extends TestCase {
+public class OldDefaultPicoContainerTestCase extends TestCase {
 
     public interface Peelable {
         void peel();

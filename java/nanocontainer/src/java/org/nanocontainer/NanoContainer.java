@@ -34,8 +34,11 @@ public abstract class NanoContainer {
     }
 
     protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlConfigurationException {
-        LifecyclePicoAdapter lpa = new DefaultLifecyclePicoAdapter(picoContainer);
-        lifecycleAdapters.add(lpa);
+        if (picoContainer instanceof LifecyclePicoAdapter) {
+            lifecycleAdapters.add(picoContainer);
+        } else {
+            lifecycleAdapters.add(new DefaultLifecyclePicoAdapter(picoContainer));
+        }
         List comps = picoContainer.getComponentInstances();
         if (comps.size() == 0) {
             throw new EmptyXmlConfigurationException();

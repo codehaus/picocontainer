@@ -17,8 +17,8 @@ pico = new NanoContainerBuilder(new JmxDecorationDelegate()).container(parent:pa
     // register MBeanServer... todo this should be hidden
     component(key:javax.management.MBeanServer, instance:MBeanServerFactory.newMBeanServer())
 
-    jmx(key:'domain:wilma=default', operations:['helloCalled']) {
-    	component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl')
+    component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl') {
+    	jmx(key:'domain:wilma=default', operations:['helloCalled'], description:'This is the wilma mbeanInfo escription' )    	
     }
 }
 

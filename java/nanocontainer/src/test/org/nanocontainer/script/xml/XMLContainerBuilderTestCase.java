@@ -86,7 +86,11 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "      <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
                 "    </classpath>" +
                 "    <component key='bar' class='TestComp2'/>" +
+//TODO-NOLOAD                "    <component key='child2' class='org.picocontainer.defaults.DefaultPicoContainer'>" +
+//                "      <component class='"+TestCompThatTalks.class+"'/>" +
+//                "    </component>" +
                 "  </component>" +
+                "  <component key='sb' class='java.lang.StringBuffer'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
@@ -103,6 +107,16 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertSame("foo classloader should be parent of bar", fooLoader,
                 barLoader.getParent());
 
+        StringBuffer sb = (StringBuffer) pico.getComponentInstance("sb");
+//        System.out.println("--> " + sb.toString());
+//TODO        assertTrue("Talkative TestComp Should have been instantiated", (sb.toString().indexOf("TestCompThatTalks.instantiated") != -1));
+
+    }
+
+    public static class TestCompThatTalks {
+        public TestCompThatTalks(StringBuffer sb) {
+            sb.append("TestCompThatTalks.instantiated");
+        }
     }
 
     public void testUnknownclassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {

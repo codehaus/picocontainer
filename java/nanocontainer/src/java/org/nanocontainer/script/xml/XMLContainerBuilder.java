@@ -89,7 +89,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter(classLoader, container);
             registerComponentsAndChildContainers(reflectionContainerAdapter, rootElement);
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("Class Not Found: " + e.getMessage(), e);
         } catch (IOException e) {
             throw new PicoCompositionException(e);
         } catch (SAXException e) {

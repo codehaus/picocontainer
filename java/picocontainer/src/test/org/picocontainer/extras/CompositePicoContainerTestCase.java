@@ -17,7 +17,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.composite.CompositePicoContainer;
+import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.Touchable;

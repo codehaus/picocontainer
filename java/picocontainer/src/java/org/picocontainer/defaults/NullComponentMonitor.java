@@ -28,6 +28,9 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public void instantiated(Constructor constructor, long beforeTime, long duration) {
     }
 
+    public void instantiationFailed(Constructor constructor, Exception e) {
+    }
+
     public static synchronized NullComponentMonitor getInstance() {
         if (instance == null) {
             instance = new NullComponentMonitor();

@@ -23,7 +23,10 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -289,5 +292,41 @@ public class ConstructorInjectionComponentAdapterTestCase
         cica.getComponentInstance(null);
     }
 
+    public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
+        final long beforeTime = System.currentTimeMillis();
 
+        Mock monitor = mock(ComponentMonitor.class);
+        Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor(new Class[0]);
+        monitor.expects(once()).method("instantiating").with(eq(barfingActionListenerCtor));
+
+        Constraint isITE = new Constraint() {
+            public boolean eval(Object o) {
+                Exception ex = (Exception) o;
+                return ex instanceof InvocationTargetException;
+            }
+
+            public StringBuffer describeTo(StringBuffer stringBuffer) {
+                return stringBuffer.append("Should have been unable to instantiate");
+            }
+        };
+
+        monitor.expects(once()).method("instantiationFailed").with(eq(barfingActionListenerCtor), isITE);
+        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(ActionListener.class, BarfingActionListener.class,
+                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
+        try {
+            cica.getComponentInstance(null);
+            fail("Should barf");
+        } catch (RuntimeException e) {
+            assertEquals("Barf!", e.getMessage());
+        }
+    }
+
+    private static class BarfingActionListener implements ActionListener {
+        public BarfingActionListener() {
+            throw new RuntimeException("Barf!");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
 }

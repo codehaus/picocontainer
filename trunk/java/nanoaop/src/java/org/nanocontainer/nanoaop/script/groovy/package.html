@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+Provides support for building and configuring {@link
+org.nanocontainer.nanoaop.AspectablePicoContainer</code> objects using
+groovy.  A groovy configuration file might look something like this:
+<pre>
+    logger = new LoggingInterceptor()
+    builder = new AopNanoGroovyBuilder()
+    cuts = builder.pointcuts()
+
+    pico = builder.container() {
+        component(key:Dao, class:DaoImpl) {
+            aspect(methodCut:cuts.allMethods(), interceptor:logger)
+        }
+        component(key:CustomerEntity, class:CustomerEntityImpl)
+        component(key:OrderEntity, class:OrderEntityImpl)
+
+        aspect(cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
+        aspect(cuts.packageName('com.mycompany.buggypackage', cuts.signature("save*"), interceptor:logger)
+    }
+</pre>
+
+</body>
+</html>

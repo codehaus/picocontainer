@@ -10,8 +10,10 @@
 package org.nanocontainer.nanoaop;
 
 /**
+ * Object that can both register aspects and apply them to components.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public interface AspectsManager extends AspectsContainer, AspectsApplicator {
-
 }

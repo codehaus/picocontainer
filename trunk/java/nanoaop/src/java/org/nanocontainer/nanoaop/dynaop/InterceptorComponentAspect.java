@@ -19,7 +19,11 @@ import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
+ * Interceptor aspect that is applied to the components that match a component
+ * pointcut.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 class InterceptorComponentAspect extends ComponentAspect {
 
@@ -27,6 +31,14 @@ class InterceptorComponentAspect extends ComponentAspect {
     private Interceptor interceptor;
     private InterceptorFactory interceptorFactory;
 
+    /**
+     * Creates a new <code>InterceptorComponentAspect</code> from a given
+     * interceptor advice object.
+     * 
+     * @param componentPointcut the components to apply the interceptor to.
+     * @param methodPointcut the methods to intercept.
+     * @param interceptor the interceptor advice object to apply.
+     */
     InterceptorComponentAspect(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
             Interceptor interceptor) {
         super(componentPointcut);
@@ -34,6 +46,14 @@ class InterceptorComponentAspect extends ComponentAspect {
         this.interceptor = interceptor;
     }
 
+    /**
+     * Creates a new <code>InterceptorComponentAspect</code> from a given
+     * interceptor factory.
+     * 
+     * @param componentPointcut the components to apply the interceptor to.
+     * @param methodPointcut the methods to intercept.
+     * @param interceptorFactory produces the interceptor advice object.
+     */
     InterceptorComponentAspect(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
             InterceptorFactory interceptorFactory) {
         super(componentPointcut);

@@ -17,24 +17,55 @@ import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
+ * Mixin aspect that is applied to the components that match a component
+ * pointcut.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class MixinComponentAspect extends ComponentAspect {
-    
+class MixinComponentAspect extends ComponentAspect {
+
     private Class[] mixinInterfaces;
     private Class mixinClass;
     private MixinFactory mixinFactory;
-    
+
+    /**
+     * Creates a new <code>MixinComponentAspect</code> from the given
+     * component pointcut and mixin class.
+     * 
+     * @param componentPointcut the components to introduce the mixin to.
+     * @param mixinClass the mixin class.
+     */
     MixinComponentAspect(ComponentPointcut componentPointcut, Class mixinClass) {
         super(componentPointcut);
         this.mixinClass = mixinClass;
     }
 
+    /**
+     * Creates a new <code>MixinComponentAspect</code> from the given
+     * component pointcut and mixin class. The aspected component will implement
+     * the provided set of mixin interfaces.
+     * 
+     * @param componentPointcut the components to introduce the mixin to.
+     * @param mixinInterfaces the mixin interfaces the aspected component will
+     *        implement.
+     * @param mixinClass the mixin class.
+     */
     MixinComponentAspect(ComponentPointcut componentPointcut, Class[] mixinInterfaces, Class mixinClass) {
         this(componentPointcut, mixinClass);
         this.mixinInterfaces = mixinInterfaces;
     }
-    
+
+    /**
+     * Creates a new <code>MixinComponentAspect</code> from the given
+     * component pointcut and mixin class. The aspected component will implement
+     * the provided set of mixin interfaces.
+     * 
+     * @param componentPointcut the components to introduce the mixin to.
+     * @param mixinInterfaces the mixin interfaces the aspected component will
+     *        implement.
+     * @param mixinFactory the mixin factory.
+     */
     MixinComponentAspect(ComponentPointcut componentPointcut, Class[] mixinInterfaces, MixinFactory mixinFactory) {
         super(componentPointcut);
         this.mixinInterfaces = mixinInterfaces;
@@ -48,7 +79,7 @@ public class MixinComponentAspect extends ComponentAspect {
         } else {
             aspects.mixin(Pointcuts.ALL_CLASSES, mixinInterfaces, mixinFactory);
         }
-        return ProxyFactory.getInstance(aspects).wrap(component);        
+        return ProxyFactory.getInstance(aspects).wrap(component);
     }
 
     private void mixinClass(Aspects aspects) {

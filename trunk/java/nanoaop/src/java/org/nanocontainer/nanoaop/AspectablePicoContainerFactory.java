@@ -13,19 +13,72 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
 /**
+ * Produces <code>AspectablePicoContainer</code> objects. Mixes in an
+ * <code>AspectsContainer</code> with a
+ * <code>org.picocontainer.MutablePicoContainer</code> to produce an
+ * <code>AspectablePicoContainer</code>.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public interface AspectablePicoContainerFactory {
 
+    /**
+     * Creates a new <code>AspectablePicoContainer</code>.
+     * 
+     * @param containerClass the class of the basic container to delegate to.
+     * @param componentAdapterFactory the delegate component adapter factory
+     *        used to produce components.
+     * @param parent the parent container.
+     * @return a new <code>AspectablePicoContainer</code>.
+     */
     AspectablePicoContainer createContainer(Class containerClass, ComponentAdapterFactory componentAdapterFactory,
             PicoContainer parent);
-    
+
+    /**
+     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * delegate container.
+     * 
+     * @param componentAdapterFactory the delegate component adapter factory
+     *        used to produce components.
+     * @param parent the parent container.
+     * @return a new <code>AspectablePicoContainer</code>.
+     */
     AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
-    
+
+    /**
+     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * delegate container.
+     * 
+     * @param componentAdapterFactory the delegate component adapter factory
+     *        used to produce components.
+     * @return a new <code>AspectablePicoContainer</code>.
+     */
     AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory);
-    
+
+    /**
+     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * delegate container. Uses a
+     * <code>org.picocontainer.defaults.DefaultComponentAdapterFactory</code>
+     * as the delegate component adapter factory.
+     * 
+     * @param parent the parent container.
+     * @return a new <code>AspectablePicoContainer</code>.
+     */
     AspectablePicoContainer createContainer(PicoContainer parent);
 
+    /**
+     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * delegate container. Uses a
+     * <code>org.picocontainer.defaults.DefaultComponentAdapterFactory</code>
+     * as the delegate component adapter factory.
+     * 
+     * @return a new <code>AspectablePicoContainer</code>.
+     */
     AspectablePicoContainer createContainer();
 
 }

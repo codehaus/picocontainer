@@ -25,7 +25,10 @@ import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
+ * Uses dynaop to create <code>AspectablePicoContainer</code> objects.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 

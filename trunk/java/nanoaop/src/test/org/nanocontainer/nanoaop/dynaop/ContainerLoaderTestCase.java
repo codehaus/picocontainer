@@ -7,10 +7,11 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
+package org.nanocontainer.nanoaop.dynaop;
 
 import junit.framework.TestCase;
 
+import org.nanocontainer.nanoaop.dynaop.ContainerLoader;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.DefaultPicoContainer;

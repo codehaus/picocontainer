@@ -36,19 +36,33 @@ import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
+ * Extends <code>org.nanocontainer.script.groovy.NanoGroovyBuilder</code> to
+ * provide support for adding aspects. {@inheritDoc}
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class AopNanoGroovyBuilder extends NanoGroovyBuilder {
+public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
 
     private PointcutsFactory pointcutsFactory;
     private AspectablePicoContainer currentPico;
     private Object currentKey;
 
-    public AopNanoGroovyBuilder() {
+    /**
+     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use a
+     * <code>org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory</code>.
+     */
+    public NanoAopGroovyContainerBuilder() {
         this(new DynaopPointcutsFactory());
     }
 
-    public AopNanoGroovyBuilder(PointcutsFactory pointcutsFactory) {
+    /**
+     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use the given
+     * pointcuts factory.
+     * 
+     * @param pointcutsFactory the pointcuts factory.
+     */
+    public NanoAopGroovyContainerBuilder(PointcutsFactory pointcutsFactory) {
         this.pointcutsFactory = pointcutsFactory;
     }
 

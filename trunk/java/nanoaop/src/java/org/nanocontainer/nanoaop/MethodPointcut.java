@@ -12,10 +12,19 @@ package org.nanocontainer.nanoaop;
 import java.lang.reflect.Method;
 
 /**
+ * Pointcut that picks methods.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public interface MethodPointcut {
 
+    /**
+     * Tests to see if <code>method</code> satisfies this pointcut.
+     * 
+     * @param method the method to match against.
+     * @return true if the pointcut is satisfied, else false.
+     */
     boolean picks(Method method);
 
 }

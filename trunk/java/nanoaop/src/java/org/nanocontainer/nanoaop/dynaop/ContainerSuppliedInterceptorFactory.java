@@ -24,8 +24,9 @@ import dynaop.Proxy;
  * <code>PicoContainer</code>.
  * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
+class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
 
     private final PicoContainer pico;
     private final Object interceptorComponentKey;
@@ -40,7 +41,7 @@ public class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
      * @param interceptorComponentKey the component key that will be used to
      *        retrieve the interceptor from the pico.
      */
-    public ContainerSuppliedInterceptorFactory(PicoContainer pico, Object interceptorComponentKey) {
+    ContainerSuppliedInterceptorFactory(PicoContainer pico, Object interceptorComponentKey) {
         this.pico = pico;
         this.interceptorComponentKey = interceptorComponentKey;
     }

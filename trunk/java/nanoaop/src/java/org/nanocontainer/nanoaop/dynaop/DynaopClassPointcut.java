@@ -12,18 +12,35 @@ package org.nanocontainer.nanoaop.dynaop;
 import org.nanocontainer.nanoaop.ClassPointcut;
 
 /**
+ * Adapts a <code>dynaop.ClassPointcut</code> to the
+ * <code>org.nanocontainer.nanoaop.ClassPointcut</code> interface.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class DynaopClassPointcut implements dynaop.ClassPointcut, ClassPointcut {
-    
+class DynaopClassPointcut implements dynaop.ClassPointcut, ClassPointcut {
+
     private final dynaop.ClassPointcut delegate;
 
-    public DynaopClassPointcut(dynaop.ClassPointcut delegate) {
+    /**
+     * Creates a new <code>DynaoClassPointcut</code> that will delegate to the
+     * given <code>dyanop.ClassPointcut</code>.
+     * 
+     * @param delegate the <code>dyanop.ClassPointcut</code> to delegate to.
+     */
+    DynaopClassPointcut(dynaop.ClassPointcut delegate) {
         this.delegate = delegate;
     }
-    
+
+    /**
+     * Returns true if the <code>dynaop.ClassPointcut</code> delegate passed
+     * to the constructor picks <code>clazz</code>.
+     * 
+     * @param clazz the class to match against.
+     * @return true if this pointcut picks <code>clazz</code>, else false.
+     */
     public boolean picks(Class clazz) {
         return delegate.picks(clazz);
     }
-    
+
 }

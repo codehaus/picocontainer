@@ -15,13 +15,25 @@ import dynaop.Interceptor;
 import dynaop.Invocation;
 
 /**
+ * Adapts a <code>org.aopalliance.intercept.MethodInterceptor</code> to the
+ * <code>dynaop.Interceptor</code> interface.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class MethodInterceptorAdapter implements Interceptor {
-    
+class MethodInterceptorAdapter implements Interceptor {
+
     private final MethodInterceptor delegate;
-    
-    public MethodInterceptorAdapter(MethodInterceptor delegate) {
+
+    /**
+     * Creates a new <code>MethodInterceptorAdapter</code> that will delegate
+     * to the given <code>org.aopalliance.intercept.MethodInterceptor</code>.
+     * 
+     * @param delegate the
+     *        <code>org.aopalliance.intercept.MethodInterceptor</code> to
+     *        delegate to.
+     */
+    MethodInterceptorAdapter(MethodInterceptor delegate) {
         this.delegate = delegate;
     }
 

@@ -10,10 +10,19 @@
 package org.nanocontainer.nanoaop;
 
 /**
+ * Pointcut that picks classes.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public interface ClassPointcut {
-    
+
+    /**
+     * Returns true if <code>clazz</code> satisfies this pointcut.
+     * 
+     * @param clazz the class to check for a match.
+     * @return true if the pointcut is satisfied, else false.
+     */
     boolean picks(Class clazz);
 
 }

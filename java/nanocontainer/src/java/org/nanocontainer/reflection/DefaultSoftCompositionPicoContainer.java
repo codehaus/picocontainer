@@ -26,6 +26,9 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.lang.ref.WeakReference;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -43,6 +46,7 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
+    private ArrayList childContainers = new ArrayList();
 
     public DefaultSoftCompositionPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         delegate = new DefaultSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
@@ -100,13 +104,44 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
 
     public void start() {
         delegate.start();
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.start();
+            } else {
+                it.remove();
+            }
+        }
+
     }
 
     public void stop() {
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.stop();
+            } else {
+                it.remove();
+            }
+        }
         delegate.stop();
     }
 
     public void dispose() {
+        Iterator it = childContainers.iterator();
+        while (it.hasNext()) {
+            WeakReference weakReference = (WeakReference) it.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
+            if (mpc != null) {
+                mpc.dispose();
+            }
+            it.remove();
+        }
+
         delegate.dispose();
     }
 
@@ -151,6 +186,16 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
 
     public PicoContainer getImmutable() {
         return delegate.getImmutable();
+    }
+
+    public MutablePicoContainer makeChildContainer() {
+        DefaultSoftCompositionPicoContainer pc = new DefaultSoftCompositionPicoContainer(this);
+        childContainers.add(new WeakReference(pc));
+        return pc;
+    }
+
+    public void addChildContainer(MutablePicoContainer child) {
+        childContainers.add(new WeakReference(child));
     }
 
     // --------------------

@@ -219,6 +219,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
         return result;
     }
+    
+    public List getUnmanagedComponentInstances() {
+        getComponentInstances();
+        return new ArrayList(unmanagedComponents);
+    }
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = findComponentAdapter(componentKey);

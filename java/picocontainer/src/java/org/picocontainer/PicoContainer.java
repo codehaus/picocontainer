@@ -36,6 +36,13 @@ public interface PicoContainer {
     List getComponentInstances() throws PicoException;
 
     /**
+     * Gets component instances that are registered, but not managed by the container.
+     * 
+     * @return unmanaged components.
+     */
+    List getUnmanagedComponentInstances() throws PicoException;
+
+    /**
      * Checks for the presence of a particular component.
      *
      * @param componentKey key of the component to look for.

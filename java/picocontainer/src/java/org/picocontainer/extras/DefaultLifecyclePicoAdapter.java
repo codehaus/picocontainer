@@ -11,15 +11,15 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.DefaultComponentMulticasterPicoAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.lifecycle.Disposable;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
-import org.picocontainer.lifecycle.Disposable;
 
 /**
  * @author Paul Hammant
@@ -33,10 +33,21 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
     private Disposable disposableAggregatedComponent;
     private boolean started;
     private boolean disposed;
-    private final DefaultPicoContainer picoContainer;
+    private final PicoContainer picoContainer;
+    private final ComponentMulticasterPicoAdapter multicasterAdapter;
 
-    public DefaultLifecyclePicoAdapter(DefaultPicoContainer picoContainer) {
+    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer, ComponentMulticasterPicoAdapter multicasterAdapter) {
+         this.picoContainer = picoContainer;
+         this.multicasterAdapter = multicasterAdapter;
+    }
+
+    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer) {
         this.picoContainer = picoContainer;
+        if(picoContainer instanceof ComponentMulticasterPicoAdapter) {
+            multicasterAdapter = (ComponentMulticasterPicoAdapter)picoContainer;
+        } else {
+            multicasterAdapter = new DefaultComponentMulticasterPicoAdapter(picoContainer);
+        }
     }
 
     public boolean isStarted() {
@@ -58,19 +69,19 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
     private void initializeIfNotInitialized() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (startableAggregatedComponent == null) {
             try {
-                startableAggregatedComponent = (Startable) picoContainer.getComponentMulticaster(true, false);
+                startableAggregatedComponent = (Startable) multicasterAdapter.getComponentMulticaster(true, false);
             } catch (ClassCastException e) {
             }
         }
         if (stoppableAggregatedComponent == null) {
             try {
-                stoppableAggregatedComponent = (Stoppable) picoContainer.getComponentMulticaster(false, false);
+                stoppableAggregatedComponent = (Stoppable) multicasterAdapter.getComponentMulticaster(false, false);
             } catch (ClassCastException e) {
             }
         }
         if (disposableAggregatedComponent == null) {
             try {
-                Object o = picoContainer.getComponentMulticaster(false, false);
+                Object o = multicasterAdapter.getComponentMulticaster(false, false);
                 disposableAggregatedComponent = (Disposable) o;
             } catch (ClassCastException e) {
             }

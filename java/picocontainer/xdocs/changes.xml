@@ -51,12 +51,19 @@
                 - Added SynchronizedComponentAdapter.
             </action>
 
+            <action dev="rinkrank" type="update">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-85">PICO-85</a>
+                - Moved support for component multicaster out from PicoContainer/DefaultPicoContainer
+                into ComponentMulticasterPicoAdapter.
+            </action>
+
             <action dev="paul" type="fix">
                 Use of weak references for parent containers to avoid memory leaks.
             </action>
 
             <action dev="tirsen" type="add">
-                Added ConstructorComponentAdapter/ConstrucotrComponentAdapterFactory
+                Added ConstructorComponentAdapter/ConstructorComponentAdapterFactory
             </action>
 
             <action dev="rinkrank" type="add">

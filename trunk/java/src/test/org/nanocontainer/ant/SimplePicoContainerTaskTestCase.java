@@ -1,11 +1,7 @@
 package org.nanocontainer.ant;
 
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -13,7 +9,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  */
 public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTestCase {
 
-    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testPicoContainerTaskWithAttributeButWithoutParameters() throws PicoException {
         Component pongComp = new Component();
         pongComp.setClassname(Pong.class.getName());
         task.addConfiguredComponent(pongComp);
@@ -32,7 +28,7 @@ public class SimplePicoContainerTaskTestCase extends AbstractPicoContainerTaskTe
         assertTrue(ping.wasExecuted);
     }
 
-    public void testPicoContainerTaskWithParameters() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public void testPicoContainerTaskWithParameters() throws PicoException {
         Component pangComp = new Component();
         pangComp.setClassname(Pang.class.getName());
         task.addConfiguredComponent(pangComp);

@@ -28,7 +28,7 @@ public class NanoNanoTestCase extends TestCase {
             throws PicoRegistrationException, PicoInitializationException,
             ClassNotFoundException {
 
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");

@@ -6,6 +6,7 @@ package org.picocontainer;
  * instances and all instantiated components.
  * 
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  * @since 1.1
  */

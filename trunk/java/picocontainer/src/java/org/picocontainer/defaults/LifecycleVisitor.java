@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class LifecycleVisitor implements PicoVisitor {

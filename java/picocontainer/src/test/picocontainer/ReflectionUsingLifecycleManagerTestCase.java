@@ -79,7 +79,6 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             fail("Should have barfed");
         } catch (PicoInvocationTargetStopException e) {
             assertEquals(SQLException.class, e.getCause().getClass());
-            System.out.println("--> " + e.getMessage());
             assertTrue(e.getMessage().indexOf("SQLException") > 0 );
             assertTrue(e.getMessage().indexOf("Hello") > 0 );
             // expected

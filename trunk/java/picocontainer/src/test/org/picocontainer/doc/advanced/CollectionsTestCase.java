@@ -7,10 +7,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CollectionComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 
 /**

@@ -10,8 +10,11 @@
 package org.picocontainer.tck;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
+import com.thoughtworks.xstream.core.JVM;
+import com.thoughtworks.xstream.io.xml.XppDriver;
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -29,10 +32,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.SimpleReference;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
@@ -186,19 +185,21 @@ public abstract class AbstractComponentAdapterTestCase
     }
 
     final public void testSER_isXStreamSerializable() {
-        if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
-            final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
-            assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
-            assertNotNull(instance);
-            final XStream xstream = new XStream(new DomDriver());
-            final String xml = xstream.toXML(componentAdapter);
-            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter) xstream.fromXML(xml);
-            assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
-            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
-            assertNotNull(instanceAfterSerialization);
-            assertSame(instance.getClass(), instanceAfterSerialization.getClass());
+        if (JVM.is14()) {
+            if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
+                final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+                final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
+                assertSame(getComponentAdapterType(), componentAdapter.getClass());
+                final Object instance = componentAdapter.getComponentInstance(picoContainer);
+                assertNotNull(instance);
+                final XStream xstream = new XStream(new XppDriver());
+                final String xml = xstream.toXML(componentAdapter);
+                final ComponentAdapter serializedComponentAdapter = (ComponentAdapter) xstream.fromXML(xml);
+                assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
+                final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+                assertNotNull(instanceAfterSerialization);
+                assertSame(instance.getClass(), instanceAfterSerialization.getClass());
+            }
         }
     }
 

@@ -535,10 +535,11 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(new StringBuffer());
         StringBuffer sb = (StringBuffer) parent.getComponentInstancesOfType(StringBuffer.class).get(0);
+
         final MutablePicoContainer child = createPicoContainer(parent);
-        parent.addChildContainer(child);
+        assertTrue(parent.addChildContainer(child));
         child.registerComponentImplementation(LifeCycleMonitoring.class);
-        parent.removeChildContainer(child);
+        assertTrue(parent.removeChildContainer(child));
         parent.start();
         assertTrue(sb.toString().indexOf("-started") == -1);
         parent.stop();
@@ -628,7 +629,17 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
                     throwableParameter
                 }));
 
-        List expectedList = Arrays.asList(new Object[] {parent, hashMapAdapter, hashSetAdapter, stringAdapter, child, arrayListAdapter, exceptionAdapter, componentParameter, throwableParameter});
+        List expectedList = Arrays.asList(new Object[] {
+            parent,
+            hashMapAdapter,
+            hashSetAdapter,
+            stringAdapter,
+            child,
+            arrayListAdapter,
+            exceptionAdapter,
+            componentParameter,
+            throwableParameter
+        });
         List visitedList = new LinkedList();
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList, false);
         parent.accept(visitor);

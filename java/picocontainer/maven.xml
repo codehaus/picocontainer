@@ -81,4 +81,19 @@
 
     </goal>
 
+    <goal name="guantanamo">
+        <taskdef name="guantanamo" classname="org.codehaus.guantanamo.ant.GuantanamoTask">
+            <classpath>
+                <pathelement location="C:\scm\guantanamo\target\guantanamo.jar"/>
+                <pathelement location="C:\scm\guantanamo\lib\xpp3-1.1.2a.jar"/>
+            </classpath>
+        </taskdef>
+
+        <mkdir dir="target/guantanamo"/>
+
+        <guantanamo
+            cloverxml="target/clover.xml"
+            dest="target/guantanamo"/>
+    </goal>
+    
 </project>

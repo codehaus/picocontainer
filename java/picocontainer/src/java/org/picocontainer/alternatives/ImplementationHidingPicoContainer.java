@@ -167,12 +167,12 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     }
 
-    public void addChildContainer(PicoContainer child) {
-        delegate.addChildContainer(child);
+    public boolean addChildContainer(PicoContainer child) {
+        return delegate.addChildContainer(child);
     }
 
-    public void removeChildContainer(PicoContainer child) {
-        delegate.removeChildContainer(child);
+    public boolean removeChildContainer(PicoContainer child) {
+        return delegate.removeChildContainer(child);
     }
 
     public void accept(PicoVisitor visitor) {
@@ -184,7 +184,9 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     public boolean equals(Object obj) {
-        return delegate.equals(obj);
+        // required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about overriding hashCode()? (AH)
+        final boolean result = delegate.equals(obj) || this == obj;
+        return result;
     }
 
 }

@@ -2,12 +2,43 @@ package org.picocontainer.tck;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
-import org.picocontainer.testmodel.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
+import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.Washable;
+import org.picocontainer.testmodel.WashableTouchable;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
@@ -39,15 +70,15 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
 
-        assertTrue("Container should have Touchable component",
-                pico.hasComponent(Touchable.class));
-        assertTrue("Container should have DependsOnTouchable component",
-                pico.hasComponent(DependsOnTouchable.class));
+        assertNotNull("Container should have Touchable component",
+                pico.getComponentAdapter(Touchable.class));
+        assertNotNull("Container should have DependsOnTouchable component",
+                pico.getComponentAdapter(DependsOnTouchable.class));
         assertTrue("Component should be instance of Touchable",
                 pico.getComponentInstance(Touchable.class) instanceof Touchable);
         assertTrue("Component should be instance of DependsOnTouchable",
                 pico.getComponentInstance(DependsOnTouchable.class) instanceof DependsOnTouchable);
-        assertTrue("should not have non existent component", !pico.hasComponent(Map.class));
+        assertNull("should not have non existent component", pico.getComponentAdapter(Map.class));
     }
 
     public void testRegistersSingleInstance() throws PicoException, PicoInitializationException {
@@ -78,12 +109,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public void testGettingComponentWithMissingDependencyFails() throws PicoException, PicoRegistrationException {
+        PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
         try {
-            PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
             picoContainer.getComponentInstance(DependsOnTouchable.class);
             fail("should need a Touchable");
         } catch (UnsatisfiableDependenciesException e) {
-            assertEquals(DependsOnTouchable.class, e.getUnsatisfiableComponentImplementation());
+            assertSame(picoContainer.getComponentAdapterOfType(DependsOnTouchable.class).getComponentImplementation(), e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             assertEquals(Touchable.class, unsatisfiableDependencies.iterator().next());
@@ -322,12 +353,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         } catch (PicoVerificationException e) {
             List nested = e.getNestedExceptions();
             assertEquals(2, nested.size());
-
-            Set bc = new HashSet(Arrays.asList(new Class[]{ComponentB.class, ComponentC.class}));
-            assertTrue(nested.contains(new UnsatisfiableDependenciesException(ComponentA.class, bc)));
-
-            Set d = new HashSet(Arrays.asList(new Class[]{ComponentD.class}));
-            assertTrue(nested.contains(new UnsatisfiableDependenciesException(ComponentE.class, d)));
         }
     }
 

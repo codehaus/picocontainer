@@ -10,17 +10,17 @@ import java.util.Set;
  */
 public class UnsatisfiableDependenciesException extends PicoIntrospectionException {
 
-    private final Class componentImplementation;
+    private final InstantiatingComponentAdapter instantiatingComponentAdapter;
     private final Set failedDependencies;
 
-    public UnsatisfiableDependenciesException(Class componentImplementation, Set failedDependencies) {
-        super(componentImplementation.getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies);
-        this.componentImplementation = componentImplementation;
+    public UnsatisfiableDependenciesException(InstantiatingComponentAdapter instantiatingComponentAdapter, Set failedDependencies) {
+        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + failedDependencies);
+        this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.failedDependencies = failedDependencies;
     }
 
-    public Class getUnsatisfiableComponentImplementation() {
-        return componentImplementation;
+    public InstantiatingComponentAdapter getUnsatisfiableComponentAdapter() {
+        return instantiatingComponentAdapter;
     }
 
     public Set getUnsatisfiableDependencies() {
@@ -33,7 +33,7 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
 
         final UnsatisfiableDependenciesException noSatisfiableConstructorsException = (UnsatisfiableDependenciesException) o;
 
-        if (!componentImplementation.equals(noSatisfiableConstructorsException.componentImplementation)) return false;
+        if (!instantiatingComponentAdapter.equals(noSatisfiableConstructorsException.instantiatingComponentAdapter)) return false;
         if (!failedDependencies.equals(noSatisfiableConstructorsException.failedDependencies)) return false;
 
         return true;
@@ -41,7 +41,7 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
 
     public int hashCode() {
         int result;
-        result = componentImplementation.hashCode();
+        result = instantiatingComponentAdapter.hashCode();
         result = 29 * result + failedDependencies.hashCode();
         return result;
     }

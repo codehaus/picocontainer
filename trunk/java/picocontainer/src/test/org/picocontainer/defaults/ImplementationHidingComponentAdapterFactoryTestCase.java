@@ -11,7 +11,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.*;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
 import java.io.Serializable;

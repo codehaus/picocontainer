@@ -29,7 +29,6 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
         picoContainer.unregisterComponent(Touchable.class);
 
         assertTrue(picoContainer.getComponentAdapters().isEmpty());
-        assertTrue(picoContainer.getComponentKeys().isEmpty());
         assertTrue(picoContainer.getComponentInstances().isEmpty());
     }
 

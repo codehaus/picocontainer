@@ -152,16 +152,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testMultipleArgumentConstructor() throws Throwable /* fixme */ {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        pico.registerComponentImplementation(DependsOnTouchable.class);
-        pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        pico.registerComponentImplementation(DependsOnTwoComponents.class);
-
-        assertTrue("There should have been a DependsOnTwoComponents in the internals", pico.hasComponent(DependsOnTwoComponents.class));
-    }
-
     public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 

@@ -26,14 +26,13 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
                 "" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
-                "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
-                "builder = new NanoContainerBuilder(decorator)\n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +
                 "nano = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
@@ -54,14 +53,13 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
                 "" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
-                "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
-                "builder = new NanoContainerBuilder(decorator)\n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +
                 "nano = builder.container() {\n" +
                 "    pointcut(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods()) {\n" +
                 "        aspect(interceptor:logger)\n" +
@@ -85,10 +83,9 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
-                "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
-                "builder = new NanoContainerBuilder(decorator)\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +
                 "nano = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)\n" +
                 "    component(key:'log', class:StringBuffer)\n" +
@@ -110,13 +107,12 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
-                "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
-                "builder = new NanoContainerBuilder(decorator) \n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +
                 "nano = builder.container() {\n" +
                 "    component(key:'intercepted', class:DaoImpl) {\n" +
                 "        aspect(methodCut:cuts.allMethods(), interceptor:logger)\n" +
@@ -143,6 +139,28 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +
+                "nano = builder.container() {\n" +
+                "    component(key:Dao, class:DaoImpl) \n" +
+                "    aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)\n" +
+                "}";
+
+        GroovyContainerBuilder builder = new GroovyContainerBuilder(new StringReader(script), getClass().getClassLoader());
+
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
+
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        verifyMixin(dao);
+    }
+
+    public void testExplicitAspectsManagerAndDecorationDelegate() {
+
+        String script = "" +
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
                 "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
                 "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
@@ -165,14 +183,13 @@ public class NanoContainerBuilderAopTestCase extends AbstractScriptedContainerBu
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.aop.*\n" +
+                "import org.nanocontainer.aop.dynaop.*\n" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
                 "caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory()\n" +
                 "\n" +
-                "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
-                "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.nanocontainer.aop.defaults.AopDecorationDelegate(aspectsManager)\n" +
-                "builder = new NanoContainerBuilder(decorator) \n" +
+                "cuts = new DynaopPointcutsFactory()\n" +
+                "builder = new DynaopNanoContainerBuilder()\n" +                
                 "nano = builder.container(adapterFactory:caf) {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +

@@ -377,6 +377,11 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
             super(recording);
         }
     }
+    public static class C extends RecordingLifecycle {
+        public C(StringBuffer recording) {
+            super(recording);
+        }
+    }
 
     public void testComponentsAreStartedBreadthFirstAndStoppedDepthFirst() {
         MutablePicoContainer parent = new DefaultPicoContainer();
@@ -385,10 +390,11 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation("child", DefaultPicoContainer.class);
         DefaultPicoContainer child = (DefaultPicoContainer) parent.getComponentInstance("child");
         child.registerComponentImplementation(B.class);
+        parent.registerComponentImplementation(C.class);
         parent.start();
         parent.stop();
 
-        assertEquals("<A<BB>A>", parent.getComponentInstance("recording").toString());
+        assertEquals("<A<C<BB>C>A>", parent.getComponentInstance("recording").toString());
     }
 
     public static class NotStartable {

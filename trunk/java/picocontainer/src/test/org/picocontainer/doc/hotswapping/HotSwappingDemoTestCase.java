@@ -26,7 +26,7 @@ assertEquals(10, woman.getMan().getEndurance());
 // START SNIPPET: hotswap
 // let the woman use another man
 Man superman = new Superman();
-((Swappable)woman.getMan()).__hotSwap(superman);
+((Swappable)woman.getMan()).hotswap(superman);
 
 assertEquals(1000, woman.getMan().getEndurance());
 // END SNIPPET: hotswap

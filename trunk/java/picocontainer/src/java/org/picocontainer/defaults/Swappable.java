@@ -24,5 +24,5 @@ public interface Swappable {
      * @param newSubject the new subject the proxy will delegate to.
      * @return the old subject
      */
-    Object __hotSwap(Object newSubject);
+    Object hotswap(Object newSubject);
 }

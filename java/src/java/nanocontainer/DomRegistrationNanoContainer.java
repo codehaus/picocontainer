@@ -26,74 +26,96 @@ import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl
-        implements InputSourceRegistrationNanoContainer {
+        implements InputSourceRegistrationNanoContainer
+{
 
     private final DocumentBuilder documentBuilder;
 
-    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, PicoContainer parentContainer, ClassLoader classLoader) {
+    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, PicoContainer parentContainer, ClassLoader classLoader)
+    {
         super(parentContainer, classLoader, new StringToObjectConverter());
         this.documentBuilder = documentBuilder;
     }
 
-    public static class Default extends DomRegistrationNanoContainer {
-        public Default() throws ParserConfigurationException {
+    public static class Default extends DomRegistrationNanoContainer
+    {
+        public Default() throws ParserConfigurationException
+        {
             super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
-    public static class WithParentContainer extends DomRegistrationNanoContainer {
-        public WithParentContainer(PicoContainer parentContainer) throws ParserConfigurationException {
+    public static class WithParentContainer extends DomRegistrationNanoContainer
+    {
+        public WithParentContainer(PicoContainer parentContainer) throws ParserConfigurationException
+        {
             super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), parentContainer, DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
-    public static class WithCustomDocumentBuilder extends DomRegistrationNanoContainer {
-        public WithCustomDocumentBuilder(DocumentBuilder documentBuilder) {
+    public static class WithCustomDocumentBuilder extends DomRegistrationNanoContainer
+    {
+        public WithCustomDocumentBuilder(DocumentBuilder documentBuilder)
+        {
             super(documentBuilder, new NullContainer(), DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
-    public static class WithClassLoader extends DomRegistrationNanoContainer {
-        public WithClassLoader(ClassLoader classLoader) throws ParserConfigurationException {
+    public static class WithClassLoader extends DomRegistrationNanoContainer
+    {
+        public WithClassLoader(ClassLoader classLoader) throws ParserConfigurationException
+        {
             super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new NullContainer(), classLoader);
         }
     }
 
-    public void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException {
-        try {
+    public void registerComponents(InputSource registration) throws PicoRegistrationException, ClassNotFoundException
+    {
+        try
+        {
             Document doc = documentBuilder.parse(registration);
             NodeList components = doc.getElementsByTagName("component");
-            for (int i = 0; i < components.getLength(); i++) {
+            for (int i = 0; i < components.getLength(); i++)
+            {
                 NamedNodeMap attributes = components.item(i).getAttributes();
 
                 Node type = attributes.getNamedItem("type");
                 Node clazz = attributes.getNamedItem("class");
-                if (type != null) {
+                if (type != null)
+                {
                     registerComponent(type.getNodeValue(), clazz.getNodeValue());
-                } else {
+                }
+                else
+                {
                     registerComponent(clazz.getNodeValue());
                 }
                 addParameters(clazz.getNodeValue(), components.item(i));
             }
-        } catch (SAXException e) {
+        }
+        catch (SAXException e)
+        {
             throw new NanoTextRegistrationException("SAXException:" + e.getMessage());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new NanoTextRegistrationException("IOException:" + e.getMessage());
-        } catch (PicoIntrospectionException e) {
+        }
+        catch (PicoIntrospectionException e)
+        {
 
         }
     }
 
-    private void addParameters(String className, Node node) throws ClassNotFoundException, PicoIntrospectionException {
-        if (node instanceof Element) {
-            Element element = (Element) node;
-            NodeList paramElements = element.getElementsByTagName("param");
-            for (int i = 0; i < paramElements.getLength(); i++) {
-                Node paramNode = paramElements.item(i);
-                String type = paramNode.getAttributes().getNamedItem("type").getNodeValue();
-                String value = paramNode.getFirstChild().getNodeValue();
-                addParameterToComponent(className, type, value);
-            }
+    private void addParameters(String className, Node node) throws ClassNotFoundException, PicoIntrospectionException
+    {
+        Element element = (Element) node;
+        NodeList paramElements = element.getElementsByTagName("param");
+        for (int i = 0; i < paramElements.getLength(); i++)
+        {
+            Node paramNode = paramElements.item(i);
+            String type = paramNode.getAttributes().getNamedItem("type").getNodeValue();
+            String value = paramNode.getFirstChild().getNodeValue();
+            addParameterToComponent(className, type, value);
         }
 
     }

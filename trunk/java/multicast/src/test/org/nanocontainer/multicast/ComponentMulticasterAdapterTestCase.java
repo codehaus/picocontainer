@@ -31,8 +31,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
-public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
+public class ComponentMulticasterAdapterTestCase extends TestCase {
     public interface Peelable {
         void peel();
     }
@@ -218,8 +219,8 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         Mock mockInvocationInterceptor = new Mock(InvocationInterceptor.class);
         mockInvocationInterceptor.expect("intercept", C.args(C.isA(Method.class), C.IS_ANYTHING, C.IS_ANYTHING));
 
-        ComponentMulticasterAdapter cma = new DefaultComponentMulticasterAdapter(new DefaultComponentMulticasterFactory());
-        Startable startable = (Startable) cma.getComponentMulticaster(pico, true, (InvocationInterceptor)mockInvocationInterceptor.proxy());
+        ComponentMulticasterAdapter cma = new ComponentMulticasterAdapter(new StandardProxyMulticasterFactory(), (InvocationInterceptor)mockInvocationInterceptor.proxy());
+        Startable startable = (Startable) cma.getComponentMulticaster(pico, true);
 
         startable.start();
 
@@ -240,7 +241,7 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         parent.registerComponentImplementation(StandaloneImpl.class);
         child.registerComponentImplementation(NeedsOne.class);
 
-        Object multicaster = new DefaultComponentMulticasterAdapter().getComponentMulticaster(child, true);
+        Object multicaster = new ComponentMulticasterAdapter().getComponentMulticaster(child, true);
         assertTrue(multicaster instanceof Serializable);
         assertFalse(multicaster instanceof Standalone);
     }
@@ -253,7 +254,7 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
 
         assertEquals(2, pico.getComponentInstances().size());
 
-        Peelable myPeelableContainer = (Peelable) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        Peelable myPeelableContainer = (Peelable) new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         myPeelableContainer.peel();
 
@@ -273,7 +274,7 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(PeelableComponent.class);
         pico.registerComponentImplementation(PeelableAndWashableComponent.class);
 
-        Object proxy = new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        Object proxy = new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -298,7 +299,7 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(OrangeFactory.class);
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) new DefaultComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        FoodFactory foodFactory = (FoodFactory) new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
@@ -312,14 +313,6 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
 
         // Try to call a hashCode on a "recursive" proxy.
         food.hashCode();
-
-        // Try to call a method returning a primitive.
-        try {
-            food.magic();
-            fail("Should fail because there is no sensible return value");
-        } catch (UndeclaredThrowableException e) {
-            // That's expected, and ok.
-        }
 
         // Get some booze. Should be ok since only one is Boozable
         Boozable boozable = (Boozable) food;
@@ -337,5 +330,23 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         assertTrue("Orange should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains("Orange eaten"));
 
     }
+
+    public void testMulticastingToConcreteClasses() {
+        List one = new ArrayList();
+        List two = new ArrayList();
+
+        MulticasterFactory multicasterFactory = new StandardProxyMulticasterFactory();
+        List multicaster = (List) multicasterFactory.createComponentMulticaster(
+                getClass().getClassLoader(),
+                Arrays.asList(new List[]{one, two}),
+                false,
+                new NullInvocationInterceptor(),
+                new MulticastInvoker()
+        );
+        multicaster.add("hello");
+        assertTrue(one.contains("hello"));
+        assertTrue(two.contains("hello"));
+    }
+
 
 }

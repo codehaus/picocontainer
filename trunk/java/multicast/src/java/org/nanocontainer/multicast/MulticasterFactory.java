@@ -20,7 +20,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public interface ComponentMulticasterFactory {
+public interface MulticasterFactory {
     Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,

@@ -12,16 +12,13 @@ package org.nanocontainer.multicast;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.multicast.Invoker;
-import org.nanocontainer.multicast.MulticastInvoker;
-import org.nanocontainer.multicast.NullInvocationInterceptor;
 
 /**
  * @author Chris Stevenson
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class MulitcastComponentAdapterTestCase extends TestCase {
+public class MulitcastingComponentAdapterTestCase extends TestCase {
 
     public static interface Kissable {
         void kiss();
@@ -67,7 +64,7 @@ public class MulitcastComponentAdapterTestCase extends TestCase {
         girl1 = new TestGirl();
         girl2 = new TestGirl();
         girl3 = new TestGirl();
-        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, new NullInvocationInterceptor(), invoker);
+        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, new NullInvocationInterceptor(), invoker, new StandardProxyMulticasterFactory());
         multicastingComponentAdapter.addComponentInstance(girl1);
         multicastingComponentAdapter.addComponentInstance(girl2);
         multicastingComponentAdapter.addComponentInstance(girl3);

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-dynaop</id>
+    <name>nanocontainer-dynaop</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
+    <dependencies>
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-RC-1-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-asm</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <id>bsh</id>
+            <version>2.0b1</version>
+        </dependency>
+
+        <dependency>
+          <id>dynaop</id>
+          <version>1.0-beta</version>
+        </dependency>
+
+        <!-- test time only -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

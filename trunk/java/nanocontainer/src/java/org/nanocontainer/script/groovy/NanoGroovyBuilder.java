@@ -12,13 +12,6 @@
 package org.nanocontainer.script.groovy;
 
 import groovy.util.BuilderSupport;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -27,6 +20,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 /**
  * Builds trees of PicoContainers and Pico components using GroovyMarkup
@@ -120,27 +121,21 @@ public class NanoGroovyBuilder extends BuilderSupport {
     }
 
     private Object createComponentNode(Map attributes, SoftCompositionPicoContainer pico, Object name) throws ClassNotFoundException {
+        Object key = attributes.remove("key");
         Object type = attributes.remove("class");
+        Object instance = attributes.remove("instance");
+        
         if (type != null) {
-            Object key = attributes.remove("key");
-            if (key != null) {
-                if (type instanceof String) {
-                    pico.registerComponentImplementation(key, (String) type);
-                } else {
-                    pico.registerComponentImplementation(key, (Class) type);
-                }
-            } else {
-                if (type instanceof String) {
-                    pico.registerComponentImplementation((String) type);
-                } else {
-                    pico.registerComponentImplementation((Class) type);
-                }
-            }
-            return name;
+            registerComponentImplementation(pico, key, type);
+        } else if (instance != null) {
+            registerComponentInstance(pico, key, instance);
         } else {
             throw new PicoBuilderException("Must specify a class attribute for a component");
         }
+        
+        return name;
     }
+  
 
     protected Object createNode(Object name, Map attributes, Object value) {
         return createNode(name, attributes);
@@ -220,6 +215,30 @@ public class NanoGroovyBuilder extends BuilderSupport {
             throw new PicoBuilderException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
         } catch (InstantiationException e) {
             throw new PicoBuilderException("Failed to create bean of type " + type + "'. Reason: " + e, e);
+        }
+    }
+    
+    private void registerComponentImplementation(SoftCompositionPicoContainer pico, Object key, Object type) throws ClassNotFoundException {
+        if (key != null) {
+            if (type instanceof String) {
+                pico.registerComponentImplementation(key, (String) type);
+            } else {
+                pico.registerComponentImplementation(key, (Class) type);
+            }
+        } else {
+            if (type instanceof String) {
+                pico.registerComponentImplementation((String) type);
+            } else {
+                pico.registerComponentImplementation((Class) type);
+            }
+        }
+    }
+
+    private void registerComponentInstance(SoftCompositionPicoContainer pico, Object key, Object instance) {
+        if (key != null) {
+            pico.registerComponentInstance(key, instance);
+        } else {
+            pico.registerComponentInstance(instance);
         }
     }
 }

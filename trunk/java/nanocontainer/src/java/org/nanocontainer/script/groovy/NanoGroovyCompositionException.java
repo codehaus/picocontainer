@@ -22,11 +22,13 @@ public class NanoGroovyCompositionException extends PicoCompositionException {
         StringBuffer sb = new StringBuffer();
         sb.append(super.getMessage() + "\n");
         List errors = compilationFailedException.getUnit().getErrors();
-        for (int i = 0; i < errors.size(); i++) {
-            Object o = errors.get(i);
-            if (o instanceof ExceptionMessage) {
-                ExceptionMessage em = (ExceptionMessage) o;
-                sb.append(em.getCause().getMessage() + "\n");
+        if (errors != null) {
+            for (int i = 0; i < errors.size(); i++) {
+                Object o = errors.get(i);
+                if (o instanceof ExceptionMessage) {
+                    ExceptionMessage em = (ExceptionMessage) o;
+                    sb.append(em.getCause().getMessage() + "\n");
+                }
             }
         }
         return sb.toString();

@@ -1,202 +1,93 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!DOCTYPE project [
-    <!ENTITY eacute "&#233;">
-    <!ENTITY oslash "&#248;">
-]>
-
 <project>
-    <pomVersion>3</pomVersion>
-    <id>nanocontainer</id>
-    <name>NanoContainer</name>
-    <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
 
-    <organization>
-        <name>Codehaus</name>
-        <url>http://codehaus.org/</url>
-        <logo>http://images.werken.com/codehaus-plain.gif</logo>
-    </organization>
-    <inceptionYear>2003</inceptionYear>
-    <package>org.nanocontainer</package>
-    <logo>/images/nanocontainer.jpg</logo>
-    <description>Extension of PicoContainer</description>
-    <shortDescription>Extension of PicoContainer</shortDescription>
-    <url>http://www.nanocontainer.org/</url>
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
-    <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/nanocontainer.codehaus.org</siteDirectory>
-    <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
-    <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/nanocontainer:nano</connection>
-        <url>http://nanocontainer.cvs.codehaus.org/nano/</url>
-    </repository>
+  <pomVersion>3</pomVersion>
+  <name>Plugin Parent</name>
+  <id>nanocontainer</id>
+  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+  <url>http://www.nanocontainer.org/${pom.artifactId}/</url>
+  <organization>
+    <name>Codehaus</name>
+    <url>http://codehaus.org/</url>
+    <logo>http://images.werken.com/codehaus-plain.gif</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>org.nanocontainer</package>
+  <logo>/images/nano-logo.png</logo>
+  <description>PicoContainer extensions</description>
+  <shortDescription>PicoContainer extensions</shortDescription>
+  <description>
+    The NanoContainer project is a collection of PicoContainer extensions.
+  </description>
 
-    <versions>
-        <version>
-            <id>1.0-alpha-1</id>
-            <name>1.0-alpha-1</name>
-            <tag>NANOCONTAINER_1_0_ALPHA_1</tag>
-        </version>
-        <version>
-            <id>1.0-alpha-2</id>
-            <name>1.0-alpha-2</name>
-            <tag>HEAD</tag>
-        </version>
-    </versions>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10231</issueTrackingUrl>
 
-    <mailingLists>
-        <mailingList>
-            <name>NanoContainer Developers</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/nanocontainer-dev/</archive>
-        </mailingList>
-        <mailingList>
-            <name>NanoContainer CVS Commits (CVSSpam)</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/nanocontainer-commits/</archive>
-        </mailingList>
-    </mailingLists>
+  <siteAddress>codehaus.org</siteAddress>
+  <siteDirectory>/www/nanocontainer.codehaus.org</siteDirectory>
+  <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/nanocontainer:nano</connection>
+    <url>http://nanocontainer.cvs.codehaus.org/nano/</url>
+  </repository>
 
-    <developers>
-        <developer>
-            <name>Paul Hammant</name>
-            <id>paul</id>
-            <email>paul_hammant@yahoo.com</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Aslak Helles&oslash;y</name>
-            <id>rinkrank</id>
-            <email>rinkrank@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Jon Tirs&eacute;n</name>
-            <id>tirsen</id>
-            <email>tirsen@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Joe Walnes</name>
-            <id>joe</id>
-            <email>joe@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-    </developers>
+  <!--
+   ! Common dependencies.
+   ! Please place sub project-specific dependencies in the sub project's
+   ! project.xml
+  -->
+  <dependencies>
 
-    <dependencies>
-        <dependency>
-            <id>picocontainer</id>
-            <version>1.0-beta-2-SNAPSHOT</version>
-            <url>http://picocontainer.codehaus.org/</url>
-        </dependency>
+    <dependency>
+      <id>picocontainer</id>
+      <version>1.0-beta-2-SNAPSHOT</version>
+      <url>http://www.picocontainer.org/</url>
+    </dependency>
 
-        <dependency>
-            <id>commons-collections</id>
-            <version>2.1</version>
-            <url>http://jakarta.apache.org/</url>
-        </dependency>
+    <!-- Build/Test time only -->
 
-        <dependency>
-            <id>nanning</id>
-            <version>0.9</version>
-            <url>http://nanning.codehaus.org/</url>
-        </dependency>
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+      <url></url>
+    </dependency>
 
-        <dependency>
-            <id>servletapi</id>
-            <version>2.3</version>
-            <url>http://java.sun.com/products/servlet/</url>
-        </dependency>
+  </dependencies>
 
-        <dependency>
-            <id>webwork</id>
-            <version>1.3</version>
-            <url>http://www.opensymphony.com/webwork/</url>
-        </dependency>
+  <build>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
+    <!-- Resources tat are packaged up inside the JAR file -->
+    <resources>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.dtd</include>
+          <include>**/*.xsd</include>
+          <include>**/*.png</include>
+          <include>**/*.jpg</include>
+          <include>**/*.gif</include>
+        </includes>
+      </resource>
+    </resources>
 
-        <dependency>
-            <id>commons-digester</id>
-            <version>1.4.1</version>
-            <url>http://jakarta.apache.org/commons/digester/</url>
-        </dependency>
-
-        <dependency>
-            <id>commons-logging</id>
-            <version>1.0.1</version>
-            <url>http://jakarta.apache.org/commons/logging/</url>
-        </dependency>
-
-        <dependency>
-            <id>commons-beanutils</id>
-            <version>1.6.1</version>
-            <url>http://jakarta.apache.org/</url>
-        </dependency>
-
-        <dependency>
-            <id>mx4j+jmx</id>
-            <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <id>mx4j+tools</id>
-            <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <id>junit</id>
-            <version>3.8.1</version>
-        </dependency>
-
-        <dependency>
-            <id>ant</id>
-            <version>1.5.3-1</version>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <nagEmailAddress>nano-dev@codehaus.org</nagEmailAddress>
-        <sourceDirectory>${basedir}/src/java</sourceDirectory>
-        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
-        <unitTest>
-            <includes>
-                <include>**/*TestCase.java</include>
-            </includes>
-            <excludes>
-                <exclude>**/Abstract*TestCase.java</exclude>
-            </excludes>
-        </unitTest>
-    </build>
-
-    <reports>
-        <report>maven-license-plugin</report>
-        <report>maven-checkstyle-plugin</report>
-        <report>maven-pmd-plugin</report>
-        <report>maven-simian-plugin</report>
-        <report>maven-jdepend-plugin</report>
-        <report>maven-changelog-plugin</report>
-        <report>maven-statcvs-plugin</report>
-        <report>maven-file-activity-plugin</report>
-        <report>maven-developer-activity-plugin</report>
-        <report>maven-jxr-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-junit-report-plugin</report>
-        <report>maven-clover-plugin</report>
-    </reports>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+        <include>**/*TestCase.java</include>
+      </includes>
+      <excludes>
+        <exclude>**/Abstract*.java</exclude>
+      </excludes>
+      <resources>
+        <resource>
+          <directory>${basedir}/src/test</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+  </build>
 
 </project>
+

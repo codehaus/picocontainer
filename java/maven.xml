@@ -1,46 +1,20 @@
-<project default="jar:install">
+<project
+  default="build-subprojects"
+  xmlns:maven="jelly:maven">
 
-    <preGoal name="xdoc:jelly-transform">
-        <attainGoal name="html2xdoc"/>
-    </preGoal>
+  <goal 
+    name="build-subprojects"
+    description="Build each sub project">
 
-    <goal name="cvs:make-patch" description="Creates a patch of *your* changes">
-        <cvs command="-q diff -b -u -N" output="patch.txt"/>
-        <echo>
-      Please create a new issue in NanoContainer's JIRA: 
-      http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121
-      Then attach the patch.txt file.
-      If your patch consists of entirely new files too, please zip them
-      up and attach them too.
-      
-      If your patch includes JUnit tests and a decent description,
-      you increase the chance of having the patch applied by some
-      of the committers.
-        </echo>
-    </goal>
+    <maven:reactor
+      basedir="${basedir}"
+      includes="*/project.xml"
+      excludes="picogui/*,picoidea/*,temp/*"
+      goals="jar:install"
+      banner="Building"
+      ignoreFailures="false"
+    />
 
-    <postGoal name="test:compile">
-        <!-- Acceptance test for the pico task -->
-        <attainGoal name="picotask"/>
-    </postGoal>
+  </goal>
 
-    <goal name="picotask">
-        <!-- Does the same as SimplePicoContainerTaskTestCase -->
-        <path id="pico.task.classpath">
-            <path refid="maven.dependency.classpath"/>
-            <pathelement location="${maven.build.dest}"/>
-            <pathelement location="${basedir}/target/test-classes"/>
-        </path>
-
-        <taskdef
-            name="pico"
-            classname="org.nanocontainer.ant.PicoContainerTask"
-            classpathref="pico.task.classpath"
-            />
-
-        <pico>
-            <component classname="org.nanocontainer.ant.Ping" someprop="HELLO"/>
-            <component classname="org.nanocontainer.ant.Pong"/>
-        </pico>
-    </goal>
 </project>

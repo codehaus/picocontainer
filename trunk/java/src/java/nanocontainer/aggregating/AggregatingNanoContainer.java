@@ -11,7 +11,7 @@
 package nanocontainer.aggregating;
 
 import picocontainer.Container;
-import picocontainer.FilterContainer;
+import picocontainer.AggregatedContainersContainer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Arrays;
 
-public class AggregatingNanoContainer extends FilterContainer {
+public class AggregatingNanoContainer extends AggregatedContainersContainer.Filter {
 
     private InvocationHandler invocationHandler;
 
@@ -49,7 +49,7 @@ public class AggregatingNanoContainer extends FilterContainer {
 
             // TODO should fail if container isn't started. Throw checked exception?
             Set interfaces = new HashSet();
-            Object[] componentsToAggregate = getToFilterFor().getComponents();
+            Object[] componentsToAggregate = getSubject().getComponents();
             for (int i = 0; i < componentsToAggregate.length; i++) {
                 Class componentClass = componentsToAggregate[i].getClass();
                 Class[] implemeted = componentClass.getInterfaces();

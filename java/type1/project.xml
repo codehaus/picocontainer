@@ -22,9 +22,7 @@
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
-        <!--url>http://cvs.picocontainer.codehaus.org/java</url-->
-        <!-- statcvs only works with this one: -->
-        <url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url>
+        <url>http://cvs.picocontainer.codehaus.org/java/type1/?viewcvs.cgi</url>
     </repository>
 
     <versions>
@@ -80,7 +78,7 @@
         </dependency>
         <dependency>
             <id>xstream</id>
-            <version>0.6-rc1</version>
+            <version>0.6</version>
         </dependency>
         <dependency>
             <id>log4j</id>

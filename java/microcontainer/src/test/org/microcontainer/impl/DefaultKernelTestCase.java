@@ -103,7 +103,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
-        // these should be four removed from each other (cause of FooClassLoader from nano).
+        // these should be four removed from each other (cause of DRCAClassLoader from nano).
         assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent().getParent().getParent());
         // LSD: those numbers again...you want to expose the classloader architecture
         // to the client...that'll make it difficult to change...

@@ -8,20 +8,16 @@
  *****************************************************************************/
 package org.nanocontainer.rhino;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.*;
 import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
 import org.nanocontainer.reflection.ReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFrontEnd {
 
-    ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
-    public DefaultRhinoFrontEnd() {
-
-    }
+    private ReflectionFrontEnd reflectionFrontEnd;
 
     public MutablePicoContainer getPicoContainer() {
         return reflectionFrontEnd.getPicoContainer();
@@ -31,13 +27,39 @@ public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFront
         return "RhinoFrontEnd";
     }
 
-    public static void jsFunction_addComponent(Context cx, Scriptable thisObj,Object[] args, Function funObj) throws ClassNotFoundException {
-        DefaultRhinoFrontEnd rhino = (DefaultRhinoFrontEnd) thisObj;
-        String componentClass = (String) args[0];
-        rhino.reflectionFrontEnd.registerComponentImplementation(componentClass);
+    public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) throws ClassNotFoundException {
+        DefaultReflectionFrontEnd defaultReflectionFrontEnd;
+        if (args.length == 1) {
+            ComponentAdapterFactory caf = null;
+            {
+                DefaultReflectionFrontEnd tmpFrontEnd = new DefaultReflectionFrontEnd();
+                tmpFrontEnd.registerComponentWithClassKey(ComponentAdapterFactory.class.getName(), (String) args[0]);
+                caf = (ComponentAdapterFactory) tmpFrontEnd.getPicoContainer().getComponentInstance(ComponentAdapterFactory.class);
+            }
+            defaultReflectionFrontEnd = new DefaultReflectionFrontEnd(new DefaultPicoContainer(caf));
+        } else {
+            defaultReflectionFrontEnd = new DefaultReflectionFrontEnd();
+        }
+        DefaultRhinoFrontEnd rhino = new DefaultRhinoFrontEnd();
+        rhino.reflectionFrontEnd = defaultReflectionFrontEnd;
+        return rhino;
     }
 
-    public static void jsFunction_addContainer(Context cx, Scriptable thisObj,Object[] args, Function funObj) {
+    public static void jsFunction_addComponent(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
+        DefaultRhinoFrontEnd rhino = (DefaultRhinoFrontEnd) thisObj;
+        if (args.length == 1) {
+            rhino.reflectionFrontEnd.registerComponentImplementation((String) args[0]);
+        } else if (args.length == 2) {
+            rhino.reflectionFrontEnd.registerComponent((String) args[0], (String) args[1]);
+        }
+    }
+
+    public static void jsFunction_addComponentWithClassKey(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
+        DefaultRhinoFrontEnd rhino = (DefaultRhinoFrontEnd) thisObj;
+        rhino.reflectionFrontEnd.registerComponentWithClassKey((String) args[0], (String) args[1]);
+    }
+
+    public static void jsFunction_addContainer(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
         DefaultRhinoFrontEnd parent = (DefaultRhinoFrontEnd) thisObj;
         DefaultRhinoFrontEnd child = (DefaultRhinoFrontEnd) args[0];
         parent.reflectionFrontEnd.getPicoContainer().addChild(child.reflectionFrontEnd.getPicoContainer());

@@ -10,7 +10,6 @@
 
 package picocontainer.testmodel;
 
-import picocontainer.testmodel.Wilma;
 
 public class WilmaImpl implements Wilma {
 

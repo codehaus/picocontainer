@@ -17,6 +17,9 @@ import org.xml.sax.InputSource;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.lifecycle.Startable;
+import picocontainer.lifecycle.LifecyclePicoAdaptor;
+import picocontainer.lifecycle.DefaultLifecyclePicoAdaptor;
 import picocontainer.defaults.DefaultPicoContainer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -90,6 +93,31 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
             // expected
         }
     }
+
+    public static class Startme implements Startable {
+        public boolean started;
+        public Startme() {
+        }
+        public void start() throws Exception {
+            started = true;
+        }
+
+    }
+
+    public void testLifecycleCompatability() throws Exception {
+        InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
+        nc.registerComponents(new InputSource(new StringReader(
+                "<components>" +
+                "      <component class=\"nanocontainer.DomRegistrationNanoContainerTestCase$Startme\"/>" +
+                "</components>")));
+        nc.instantiateComponents();
+        assertTrue(nc.hasComponent(Startme.class));
+        LifecyclePicoAdaptor lifecycleAdaptor = new DefaultLifecyclePicoAdaptor(nc);
+        lifecycleAdaptor.start();
+        Startme sm = (Startme) nc.getComponent(Startme.class);
+        assertTrue("Should have been started", sm.started);
+    }
+
 
     // This is a bit of a hack.
     // If run inside IDEA, there is a different file path

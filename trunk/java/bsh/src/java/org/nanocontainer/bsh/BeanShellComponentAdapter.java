@@ -21,6 +21,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 import bsh.Interpreter;
 import bsh.EvalError;
@@ -100,5 +102,9 @@ public class BeanShellComponentAdapter implements ComponentAdapter {
             }
         }
         return instance;
+    }
+
+    public void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
+        //TODO Aslak!!
     }
 }

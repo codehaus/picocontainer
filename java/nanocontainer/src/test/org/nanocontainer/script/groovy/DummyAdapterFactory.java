@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.script.groovy;
+package org.nanocontainer.script.groovy;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

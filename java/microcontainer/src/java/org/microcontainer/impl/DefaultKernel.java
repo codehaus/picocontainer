@@ -33,10 +33,10 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	protected McaDeployer mcaDeployer = null;
 	protected GroovyDeploymentScriptHandler groovyDeploymentScriptHandler = null;
 
-	public DefaultKernel() {
+	public DefaultKernel(McaDeployer mcaDeployer) {
 		contextMap = new HashMap();
 		classLoaderFactory = new ClassLoaderFactory();
-		mcaDeployer = new McaDeployer();
+		this.mcaDeployer = mcaDeployer;
 		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler();
 	}
 

@@ -12,7 +12,7 @@
         <attainGoal name="test-hidden.jar"/>
 		<delete file="test.mar"/>
 		<zip destfile="test.mar">
-			<fileset dir="src/testcomp/" includes="composition.groovy"/>
+			<fileset dir="src/testcomp/" includes="*.groovy"/>
 			<zipfileset dir="target/classes/" includes="promoted.jar" prefix="MAR-INF/promoted"/>
 			<zipfileset dir="target/classes/" includes="components.jar" prefix="MAR-INF/components"/>
 			<zipfileset dir="target/classes/" includes="hidden.jar" prefix="MAR-INF/hidden"/>
@@ -51,3 +51,5 @@
 	</goal>
     
 </project>
+
+

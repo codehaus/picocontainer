@@ -33,7 +33,6 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
     protected void setUp() throws Exception {
         super.setUp();
-
         kernel = new DefaultKernel();
     }
 
@@ -46,7 +45,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     }
 
     public void testDeploymentOfMarFileFromURL() throws Exception {
-        //kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
+        //kernel.handleDeployForMarFile(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
 		File testMar = new File("test.mar");
 		kernel.deploy(new URL("jar:file:" + testMar.getCanonicalPath() + "!/"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
@@ -55,15 +54,16 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeferredDeploymentOfMarFile() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testDeferredDeploymentOfMarFile() throws Exception {
         kernel.deferredDeploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
-        assertNull(o);
-        kernel.start("test/org.microcontainer.test.TestComp");
+		Method isRunningMethod = o.getClass().getMethod("isRunning", new Class[0]);
+		assertEquals(Boolean.FALSE, isRunningMethod.invoke(o, new Object[0]));
+        kernel.start("test");
         o = kernel.getComponent("test/org.microcontainer.test.TestComp");
-        assertNotNull(o);
-        Method m = o.getClass().getMethod("testMe", new Class[0]);
-        assertEquals("hello", m.invoke(o, new Object[0]));
+        assertEquals(Boolean.TRUE, isRunningMethod.invoke(o, new Object[0]));
+        Method testMethod = o.getClass().getMethod("testMe", new Class[0]);
+        assertEquals("hello", testMethod.invoke(o, new Object[0]));
     }
 
     public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() throws DeploymentException{
@@ -237,5 +237,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         c.dispose();
     }
 }
+
+
 
 

@@ -32,16 +32,15 @@ import java.util.Iterator;
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final InnerMutablePicoContainer pc;
+    private final InnerMutablePicoContainer delegate;
     private final ComponentAdapterFactory caf;
-    private ArrayList childContainers = new ArrayList();
 
     /**
      * Creates a new container with a parent container.
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
-        pc = new InnerMutablePicoContainer(caf, parent);
+        delegate = new InnerMutablePicoContainer(caf, parent);
 
     }
 
@@ -68,10 +67,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
                 delegate.setContainer(this);
-                return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
+                return this.delegate.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }
-        return pc.registerComponentImplementation(componentKey, componentImplementation);
+        return delegate.registerComponentImplementation(componentKey, componentImplementation);
     }
 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
@@ -82,35 +81,35 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
                 delegate.setContainer(this);
                 ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate);
                 //ihDelegate.setContainer(this);
-                return pc.registerComponent(new CachingComponentAdapter(ihDelegate));
+                return this.delegate.registerComponent(new CachingComponentAdapter(ihDelegate));
             }
         }
-        return pc.registerComponentImplementation(componentKey, componentImplementation, parameters);
+        return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);
     }
 
     public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
-        return pc.registerComponentImplementation(componentImplementation);
+        return delegate.registerComponentImplementation(componentImplementation);
     }
 
     public ComponentAdapter registerComponentInstance(Object componentInstance) throws PicoRegistrationException {
-        return pc.registerComponentInstance(componentInstance);
+        return delegate.registerComponentInstance(componentInstance);
     }
 
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
-        return pc.registerComponentInstance(componentKey, componentInstance);
+        return delegate.registerComponentInstance(componentKey, componentInstance);
     }
 
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
         componentAdapter.setContainer(this);        
-        return pc.registerComponent(componentAdapter);
+        return delegate.registerComponent(componentAdapter);
     }
 
     public ComponentAdapter unregisterComponent(Object componentKey) {
-        return pc.unregisterComponent(componentKey);
+        return delegate.unregisterComponent(componentKey);
     }
 
     public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
-        return pc.unregisterComponentByInstance(componentInstance);
+        return delegate.unregisterComponentByInstance(componentInstance);
     }
 
     public void setParent(PicoContainer parent) {
@@ -118,88 +117,73 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     public Object getComponentInstance(Object componentKey) {
-        return pc.getComponentInstance(componentKey);
+        return delegate.getComponentInstance(componentKey);
     }
 
     public Object getComponentInstanceOfType(Class componentType) {
-        return pc.getComponentInstanceOfType(componentType);
+        return delegate.getComponentInstanceOfType(componentType);
     }
 
     public List getComponentInstances() {
-        return pc.getComponentInstances();
+        return delegate.getComponentInstances();
     }
 
     public PicoContainer getParent() {
-        return pc.getParent();
+        return delegate.getParent();
     }
 
     public ComponentAdapter getComponentAdapter(Object componentKey) {
-        return pc.getComponentAdapter(componentKey);
+        return delegate.getComponentAdapter(componentKey);
     }
 
     public ComponentAdapter getComponentAdapterOfType(Class componentType) {
-        return pc.getComponentAdapterOfType(componentType);
+        return delegate.getComponentAdapterOfType(componentType);
     }
 
     public Collection getComponentAdapters() {
-        return pc.getComponentAdapters();
+        return delegate.getComponentAdapters();
     }
 
     public List getComponentAdaptersOfType(Class componentType) {
-        return pc.getComponentAdaptersOfType(componentType);
+        return delegate.getComponentAdaptersOfType(componentType);
     }
 
     public void verify() throws PicoVerificationException {
-        pc.verify();
+        delegate.verify();
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        pc.addOrderedComponentAdapter(componentAdapter);
+        delegate.addOrderedComponentAdapter(componentAdapter);
     }
 
     public void start() {
-        pc.start();
-        Iterator it = childContainers.iterator();
-        while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.start();
-        }
+        delegate.start();
     }
 
     public void stop() {
-        Iterator it = childContainers.iterator();
-        while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.stop();
-        }
-        pc.stop();
+        delegate.stop();
     }
 
     public void dispose() {
-        Iterator it = childContainers.iterator();
-        while (it.hasNext()) {
-            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
-            mpc.dispose();
-        }
-        pc.dispose();
+        delegate.dispose();
     }
 
     public PicoContainer getImmutable() {
-        return pc.getImmutable();
+        return delegate.getImmutable();
     }
 
     public MutablePicoContainer makeChildContainer() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
-        childContainers.add(pc);
+        delegate.addChildContainer(pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
-        childContainers.add(child);
+        delegate.addChildContainer(child);
     }
 
     public void removeChildContainer(MutablePicoContainer child) {
-        childContainers.add(child);
+        delegate.removeChildContainer(child);
     }
 
     private class InnerMutablePicoContainer extends DefaultPicoContainer {

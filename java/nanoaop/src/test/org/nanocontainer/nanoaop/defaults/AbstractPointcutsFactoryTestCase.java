@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.defaults;
 
+import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
 
 import org.nanocontainer.nanoaop.ClassPointcut;
@@ -29,14 +31,74 @@ public class AbstractPointcutsFactoryTestCase extends TestCase {
         public ClassPointcut instancesOf(Class type) {
             return null;
         }
+
+        public ClassPointcut className(String regex) {
+            return null;
+        }
+
+        public MethodPointcut getMethods() {
+            return null;
+        }
+
+        public ClassPointcut intersection(ClassPointcut a, ClassPointcut b) {
+            return null;
+        }
+
+        public MethodPointcut intersection(MethodPointcut a, MethodPointcut b) {
+            return null;
+        }
+
+        public MethodPointcut isMethods() {
+            return null;
+        }
+
+        public ClassPointcut not(ClassPointcut classPointcut) {
+            return null;
+        }
+
+        public MethodPointcut not(MethodPointcut methodPointcut) {
+            return null;
+        }
+
+        public ClassPointcut oneClass(Class clazz) {
+            return null;
+        }
+
+        public MethodPointcut oneMethod(Method method) {
+            return null;
+        }
+
+        public ClassPointcut packageName(String packageName) {
+            return null;
+        }
+
+        public MethodPointcut returnType(ClassPointcut classPointcut) {
+            return null;
+        }
+
+        public MethodPointcut setMethods() {
+            return null;
+        }
+
+        public MethodPointcut signature(String regexp) {
+            return null;
+        }
+
+        public ClassPointcut union(ClassPointcut a, ClassPointcut b) {
+            return null;
+        }
+
+        public MethodPointcut union(MethodPointcut a, MethodPointcut b) {
+            return null;
+        }
     }
-    
+
     public void testComponent() {
         PointcutsFactory factory = new ConcreteFactory();
-        
+
         ComponentPointcut pointcutA = factory.component("a");
         assertEquals("a", pointcutA.getComponentKey());
-        
+
         ComponentPointcut pointcutB = factory.component("b");
         assertEquals("b", pointcutB.getComponentKey());
     }

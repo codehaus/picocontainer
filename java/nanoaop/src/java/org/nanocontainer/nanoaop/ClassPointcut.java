@@ -13,5 +13,7 @@ package org.nanocontainer.nanoaop;
  * @author Stephen Molitor
  */
 public interface ClassPointcut {
+    
+    boolean picks(Class clazz);
 
 }

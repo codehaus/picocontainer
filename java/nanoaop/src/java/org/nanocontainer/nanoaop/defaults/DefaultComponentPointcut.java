@@ -15,15 +15,22 @@ import org.nanocontainer.nanoaop.ComponentPointcut;
  * @author Stephen Molitor
  */
 public class DefaultComponentPointcut implements ComponentPointcut {
-    
+
     private final Object componentKey;
-    
+
     public DefaultComponentPointcut(Object componentKey) {
+        if (componentKey == null) {
+            throw new NullPointerException("componentKey cannot be null");
+        }
         this.componentKey = componentKey;
     }
-    
+
     public Object getComponentKey() {
         return componentKey;
+    }
+
+    public boolean picks(Object componentKey) {
+        return this.componentKey.equals(componentKey);
     }
 
 }

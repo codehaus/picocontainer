@@ -9,13 +9,15 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop;
 
-import java.lang.reflect.Method;
+import org.picocontainer.PicoException;
 
 /**
  * @author Stephen Molitor
  */
-public interface MethodPointcut {
+public class MalformedRegularExpressionException extends PicoException {
 
-    boolean picks(Method method);
+    public MalformedRegularExpressionException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
 }

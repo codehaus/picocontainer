@@ -7,15 +7,8 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
+package org.nanocontainer.nanoaop.dynaop;
 
-import java.lang.reflect.Method;
 
-/**
- * @author Stephen Molitor
- */
-public interface MethodPointcut {
-
-    boolean picks(Method method);
-
+class FooBar {
 }

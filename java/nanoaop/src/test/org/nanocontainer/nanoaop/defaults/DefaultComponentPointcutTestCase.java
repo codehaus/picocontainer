@@ -25,5 +25,23 @@ public class DefaultComponentPointcutTestCase extends TestCase {
         ComponentPointcut pointcutB = new DefaultComponentPointcut("b");
         assertEquals("b", pointcutB.getComponentKey());
     }
+    
+    public void testPicks() {
+        ComponentPointcut pointcutA = new DefaultComponentPointcut("a");
+        ComponentPointcut pointcutB = new DefaultComponentPointcut("b");
+        
+        assertTrue(pointcutA.picks("a"));
+        assertFalse(pointcutA.picks("b"));
+        assertFalse(pointcutB.picks("a"));
+        assertTrue(pointcutB.picks("b"));
+    }
+    
+    public void testConstructorChecksForNullComponentKey() {
+        try {
+            new DefaultComponentPointcut(null);
+            fail("NullPointerException should have been raised");
+        } catch (NullPointerException e) {
+        }
+    }
 
 }

@@ -9,13 +9,13 @@
     <body>
         <release version="1.0" date="In CVS">
 
-            <action dev="rinkrank" type="fix">
+            <action dev="rinkrank" type="add">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-48">PICO-48</a>
                 - Allow Hot Swapping of components.
             </action>
 
-            <action dev="rinkrank" type="fix">
+            <action dev="rinkrank" type="add">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-53">PICO-53</a>
                 - Added verify() method on PicoContainer (and ComponentAdapter).

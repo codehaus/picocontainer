@@ -9,134 +9,253 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
-import junit.framework.TestCase;
-import org.nanocontainer.ejb.rmi.mock.PortableRemoteObjectDelegateMock;
+import java.net.SocketTimeoutException;
+import java.rmi.NoSuchObjectException;
+import java.rmi.RemoteException;
+import java.util.Hashtable;
+import java.util.Properties;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBHome;
+import javax.ejb.EJBObject;
+import javax.naming.CommunicationException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
+import javax.naming.NoInitialContextException;
+
+import junit.framework.Test;
+
+import org.jmock.Mock;
+import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.ejb.testmodel.BarHomeImpl;
+import org.nanocontainer.ejb.testmodel.FooBar;
 import org.nanocontainer.ejb.testmodel.FooBarHome;
 import org.nanocontainer.ejb.testmodel.FooHomeImpl;
 import org.nanocontainer.ejb.testmodel.Hello;
 import org.nanocontainer.ejb.testmodel.HelloHome;
 import org.nanocontainer.ejb.testmodel.HelloHomeImpl;
+import org.nanocontainer.ejb.testmodel.HelloImpl;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
-import javax.ejb.EJBHome;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Unit test for EJBClientComponentAdapter.
- *
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapterTest
-        extends TestCase {
+public class EJBClientComponentAdapterTest extends MockObjectTestCase {
 
-    private Properties m_systemProperties;
-    private ComponentAdapter m_componentAdapter;
-    private InitialContext m_initialContext;
+    private Hashtable m_environment;
+    private Mock m_initialContextMock;
 
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        m_systemProperties = System.getProperties();
-        m_systemProperties.setProperty("javax.rmi.CORBA.PortableRemoteObjectClass", PortableRemoteObjectDelegateMock.class.getName());
 
-        final Map narrowMap = new HashMap();
-        narrowMap.put("HelloToNarrow", HelloHomeImpl.class.getConstructor(null));
-        narrowMap.put("FooToNarrow", FooHomeImpl.class.getConstructor(null));
-        narrowMap.put("BarToNarrow", BarHomeImpl.class.getConstructor(null));
-        PortableRemoteObjectDelegateMock.setNarrowMap(narrowMap);
-        final Hashtable env = new Hashtable();
-        env.put("java.naming.factory.initial", "org.osjava.jndi.PropertiesFactory");
-        env.put("org.osjava.jndi.root", "file://src/test-conf/jndi");
-        env.put("org.osjava.jndi.delimiter", "/");
-        m_initialContext = new InitialContext(env);
-        m_componentAdapter = new EJBClientComponentAdapter("Hello", HelloHome.class, m_initialContext);
+        m_initialContextMock = mock(InitialContextMock.class);
+        InitialContextFactoryMock.setInitialContext((InitialContext)m_initialContextMock.proxy());
+
+        m_environment = new Hashtable();
+        m_environment.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
     }
 
     /**
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {
-        System.setProperties(m_systemProperties);
+        InitialContextFactoryMock.setInitialContext(null);
         super.tearDown();
     }
 
     /**
      * Test for constructor of EJBClientComponentAdapter
      */
-    public final void testEJBComponentAdapter() {
-        assertNotNull(m_componentAdapter);
+    public final void testConstructors() {
         try {
-            new EJBClientComponentAdapter("Foo", FooBarHome.class, m_initialContext);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
-            assertTrue(e.getCause() instanceof NoSuchMethodException);
+            new EJBClientComponentAdapter("Foo", Test.class);
+            fail("Should have thrown a ClassNotFoundException");
+        } catch (ClassNotFoundException e) {
+            assertTrue(e.getMessage().indexOf("TestHome") > 0);
         }
         try {
-            new EJBClientComponentAdapter("Bar", BarHomeImpl.class, m_initialContext);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
-            assertTrue(e.getCause() instanceof ClassCastException);
-// TODO: A way to assert this that works with JDK 1.3 (which doesn't have getCause() in Throwable)
-//            assertTrue(e.getCause().getCause() instanceof IllegalArgumentException);
-        }
-        try {
-            new EJBClientComponentAdapter("NoEntry", EJBHome.class, m_initialContext);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
-            assertTrue(e.getCause() instanceof NamingException);
-        }
-        try {
-            new EJBClientComponentAdapter("Hello", FooBarHome.class, m_initialContext);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
-            assertTrue(e.getCause() instanceof ClassCastException);
-        }
-        try {
-            new EJBClientComponentAdapter("Hello", StringBuffer.class, m_initialContext);
+            new EJBClientComponentAdapter("Bar", FooBar.class, FooBar.class, m_environment, false);
             fail("Should have thrown a AssignabilityRegistrationException");
         } catch (AssignabilityRegistrationException e) {
             assertTrue(e.getMessage().indexOf(EJBHome.class.getName()) > 0);
         }
+        try {
+            new EJBClientComponentAdapter("Bar", FooBarHome.class, FooBarHome.class, m_environment, false);
+            fail("Should have thrown a AssignabilityRegistrationException");
+        } catch (AssignabilityRegistrationException e) {
+            assertTrue(e.getMessage().indexOf(EJBObject.class.getName()) > 0);
+        }
+        try {
+            new EJBClientComponentAdapter("Hello", HelloImpl.class, HelloHome.class, m_environment, false);
+            fail("Should have thrown a PicoIntrospectionException");
+        } catch (PicoIntrospectionException e) {
+            assertTrue(e.getMessage().endsWith("interface"));
+        }
+    }
+
+    /**
+     * Test lookup failures with JNDI
+     * @throws ClassNotFoundException
+     * @throws RemoteException
+     */
+    public void testJNDILookup() throws ClassNotFoundException, RemoteException {
+        m_initialContextMock.expects(once()).method("lookup").with(eq("Foo")).will(returnValue(new FooHomeImpl()));
+        try {
+            new EJBClientComponentAdapter("Foo", FooBar.class, m_environment, true);
+            fail("Should have thrown a PicoIntrospectionException");
+        } catch (PicoIntrospectionException e) {
+            assertTrue(e.getCause() instanceof NoSuchMethodException);
+        }
+        m_initialContextMock.expects(once()).method("lookup").with(eq("Bar")).will(returnValue(new BarHomeImpl()));
+        try {
+            new EJBClientComponentAdapter("Bar", FooBar.class, m_environment, true);
+            fail("Should have thrown a PicoIntrospectionException");
+        } catch (PicoIntrospectionException e) {
+            assertTrue(e.getCause() instanceof ClassCastException);
+        }
+        m_initialContextMock.expects(once()).method("lookup").with(eq("NoEntry")).will(throwException(new NameNotFoundException()));
+        try {
+            new EJBClientComponentAdapter("NoEntry", Hello.class, m_environment, true);
+            fail("Should have thrown a ServiceUnavailableException");
+        } catch (ServiceUnavailableException e) {
+            assertTrue(e.getCause() instanceof NamingException);
+        }
+        final Properties systemProperties = System.getProperties();
+        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "foo.Bar");
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Home", Hello.class);
+        final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
+        try {
+            hello.getHelloWorld();
+            fail("Should have thrown a PicoInitializationException");
+        } catch (PicoInitializationException e) {
+            assertTrue(e.getCause() instanceof NoInitialContextException);
+        } finally {
+            System.setProperties(systemProperties);
+        }
+    }
+    
+    public void testComponentCreationFailures() throws ClassNotFoundException, RemoteException {
+        final Mock helloHomeMock = mock(HelloHome.class);
+        final Mock helloMock = mock(Hello.class);
+        m_initialContextMock.stubs().method("lookup").with(eq("Hello")).will(returnValue(helloHomeMock.proxy()));
+        Throwable t = new SecurityException("junit");
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(throwException(t));
+        try {
+            new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+            fail("Should have thrown a SecurityException");
+        } catch (SecurityException e) {
+            assertSame(t, e);
+        }
+        t = new RuntimeException("junit");
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(throwException(t));
+        try {
+            new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+            fail("Should have thrown a RuntimeException");
+        } catch (RuntimeException e) {
+            assertSame(t, e);
+        }
+        t = new Error("junit");
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(throwException(t));
+        try {
+            new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+            fail("Should have thrown an Error");
+        } catch (Error e) {
+            assertSame(t, e);
+        }
+        t = new CreateException("junit");
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(throwException(t));
+        try {
+            new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+            fail("Should have thrown a PicoInvocationTargetInitializationException");
+        } catch (PicoInvocationTargetInitializationException e) {
+            assertSame(t, e.getCause());
+        }
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, false);
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(returnValue(helloMock.proxy()));
+        final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
+        t = new RemoteException("junit");
+        helloMock.expects(once()).method("getHelloWorld").withNoArguments().will(throwException(t));
+        try {
+            hello.getHelloWorld();
+            fail("Should have thrown a RemoteException");
+        } catch (RemoteException e) {
+            assertSame(t, e);
+        }
+        t = new NoSuchObjectException("junit");
+        helloHomeMock.expects(once()).method("create").withNoArguments().will(returnValue(helloMock.proxy()));
+        helloMock.expects(once()).method("getHelloWorld").withNoArguments().will(throwException(t));
+        try {
+            hello.getHelloWorld();
+            fail("Should have thrown a ServiceUnavailableException");
+        } catch (ServiceUnavailableException e) {
+            assertSame(t, e.getCause());
+        }
+    }
+
+    /**
+     * Test for failover capability.
+     * @throws ClassNotFoundException
+     * @throws RemoteException
+     */
+    public final void testFailover() throws ClassNotFoundException, RemoteException {
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, false);
+        final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
+        assertNotNull(hello);
+        final CommunicationException exception = new CommunicationException();
+        exception.setRootCause(new SocketTimeoutException());
+        m_initialContextMock.stubs().method("lookup").with(eq("Hello")).will(
+                onConsecutiveCalls(throwException(exception), returnValue(new HelloHomeImpl())));
+        try {
+            hello.getHelloWorld();
+            fail("Should have thrown a ServiceUnavailableException");
+        } catch (ServiceUnavailableException e) {
+            assertTrue(((NamingException)e.getCause()).getRootCause() instanceof SocketTimeoutException);
+        }
+        assertEquals("Hello World!", hello.getHelloWorld());
     }
 
     /**
      * Test for EJBClientComponentAdapter.getComponentInstance()
+     * @throws ClassNotFoundException
+     * @throws RemoteException
      */
-    public final void testGetComponentInstance() {
-        final Hello hello = (Hello) m_componentAdapter.getComponentInstance(null);
+    public final void testGetComponentInstance() throws ClassNotFoundException, RemoteException {
+        m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        componentAdapter.verify(null); // Dummy call, done for coverage
+        final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
         assertEquals("Hello World!", hello.getHelloWorld());
     }
 
     /**
-     * Test for EJBClientComponentAdapter.verify()
-     */
-    public final void testVerify() {
-        m_componentAdapter.verify(null); // Dummy test, done for coverage
-    }
-
-    /**
      * Test for EJBClientComponentAdapter.getComponentKey()
+     * @throws ClassNotFoundException
      */
-    public final void testGetComponentKey() {
-        assertSame("Hello", m_componentAdapter.getComponentKey());
+    public final void testGetComponentKey() throws ClassNotFoundException {
+        m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        assertSame("Hello", componentAdapter.getComponentKey());
     }
 
     /**
      * Test for EJBClientComponentAdapter.getComponentImplementation()
+     * @throws ClassNotFoundException
      */
-    public final void testGetComponentImplementation() {
-        assertSame(Hello.class, m_componentAdapter.getComponentImplementation());
+    public final void testGetComponentImplementation() throws ClassNotFoundException {
+        m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        assertSame(Hello.class, componentAdapter.getComponentImplementation());
     }
 }
-

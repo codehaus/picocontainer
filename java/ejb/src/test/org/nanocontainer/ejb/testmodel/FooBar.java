@@ -9,12 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.ejb.testmodel;
 
+import javax.ejb.EJBObject;
 
 
-/** EJB implementation */
-public class HelloImpl extends EJBObjectMock implements Hello {
-    /** @return Returns &quot;Hello World&quot; */
-    public String getHelloWorld() {
-        return "Hello World!";
-    }
+/** Dummy EJB interface */
+public interface FooBar extends EJBObject {
+    // Does offer nothing
 }

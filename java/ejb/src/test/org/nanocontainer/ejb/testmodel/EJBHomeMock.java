@@ -8,54 +8,49 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.ejb.rmi.mock;
+package org.nanocontainer.ejb.testmodel;
 
 import javax.ejb.EJBHome;
-import javax.ejb.EJBObject;
+import javax.ejb.EJBMetaData;
 import javax.ejb.Handle;
+import javax.ejb.HomeHandle;
 
 
 /**
- * Mock class for an EJBObject.
+ * Mock object for an EJBHome interface.
  * @author J&ouml;rg Schaible
  */
-public class EJBObjectMock
-        implements EJBObject {
+
+public class EJBHomeMock
+        implements EJBHome {
 
     /**
-     * @see javax.ejb.EJBObject#remove()
+     * @see javax.ejb.EJBHome#remove(java.lang.Object)
      */
-    public void remove() /* throws RemoteException, RemoveException */{
-        // Nothing
+    public void remove(Object arg0) /* throws RemoteException, RemoveException */{
+        // do nothing
     }
 
     /**
-     * @see javax.ejb.EJBObject#getPrimaryKey()
+     * @see javax.ejb.EJBHome#getEJBMetaData()
      */
-    public Object getPrimaryKey() /* throws RemoteException */{
+    public EJBMetaData getEJBMetaData() /* throws RemoteException */{
         return null;
     }
 
     /**
-     * @see javax.ejb.EJBObject#getEJBHome()
+     * @see javax.ejb.EJBHome#remove(javax.ejb.Handle)
      */
-
-    public EJBHome getEJBHome() /* throws RemoteException */{
-        return null;
+    public void remove(Handle arg0) /* throws RemoteException, RemoveException */{
+        // do nothing
     }
 
     /**
-     * @see javax.ejb.EJBObject#isIdentical(javax.ejb.EJBObject)
+     * @see javax.ejb.EJBHome#getHomeHandle()
      */
-    public boolean isIdentical(EJBObject arg0) /* throws RemoteException */{
-        return false;
-    }
-
-    /**
-     * @see javax.ejb.EJBObject#getHandle()
-     */
-    public Handle getHandle() /* throws RemoteException */{
+    public HomeHandle getHomeHandle() /* throws RemoteException */{
         return null;
     }
+
 }
 

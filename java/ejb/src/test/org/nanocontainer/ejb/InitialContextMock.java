@@ -7,14 +7,20 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.ejb.testmodel;
+package org.nanocontainer.ejb;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 
-
-/** EJB implementation */
-public class HelloImpl extends EJBObjectMock implements Hello {
-    /** @return Returns &quot;Hello World&quot; */
-    public String getHelloWorld() {
-        return "Hello World!";
+/**
+ * Mock class, that enables JMock with the CGLIB extension to mock an InitialContext itself. The class can be removed as soon as
+ * JMock/CGLIB does not execute the default constructor of the mocked class at construction time automatically.
+ * 
+ * @author J&ouml;rg Schaible
+ */
+public class InitialContextMock extends InitialContext {
+    public InitialContextMock() throws NamingException {
+        super(true); // prevent internal call of init(Hashtable)
     }
 }

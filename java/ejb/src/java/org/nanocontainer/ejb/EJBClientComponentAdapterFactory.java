@@ -9,72 +9,84 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
+import java.util.Hashtable;
+
+import javax.naming.InitialContext;
+
 import org.nanocontainer.concurrent.ThreadLocalComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
- * {@link ComponentAdapterFactory} for EJB components.
- * The instantiated components are cached for each {@link Thread}.
+ * {@link ComponentAdapterFactory}for EJB components. The instantiated components are cached for each {@link Thread}.
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapterFactory
-        implements ComponentAdapterFactory {
+public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory {
 
-    private final InitialContext m_initialContext;
+    private final Hashtable m_environment;
+    private final boolean m_earlyBinding;
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using the default {@link InitialContext}.
-     * @throws NamingException
+     * Construct an EJBClientComponentAdapterFactory using the default {@link InitialContext}and late binding.
      */
-    public EJBClientComponentAdapterFactory() throws NamingException {
-        this(new InitialContext());
+    public EJBClientComponentAdapterFactory() {
+        this(null);
     }
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using a special {@link InitialContext}.
-     * @param initialContext The InitialContext.
+     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext}with a special environment.
+     * @param environment the environment and late binding.
      */
-    public EJBClientComponentAdapterFactory(final InitialContext initialContext) {
+    public EJBClientComponentAdapterFactory(final Hashtable environment) {
+        this(environment, false);
+    }
+
+    /**
+     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext}with a special environment and binding
+     * type.
+     * @param environment the environment.
+     * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientComponentAdapter}.
+     */
+    public EJBClientComponentAdapterFactory(final Hashtable environment, final boolean earlyBinding) {
         super();
-        m_initialContext = initialContext;
+        m_environment = environment;
+        m_earlyBinding = earlyBinding;
     }
 
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
+     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class,
+     *           org.picocontainer.Parameter[])
      */
     public ComponentAdapter createComponentAdapter(
-            Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException,
-            NotConcreteRegistrationException {
+            final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            throws PicoIntrospectionException, AssignabilityRegistrationException {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
     }
 
     /**
-     * Creates a {@link ComponentAdapter} for EJB objects.
+     * Creates a {@link ComponentAdapter}for EJB objects.
      * @param componentKey The key used to lookup the {@link InitialContext}.
      * @param componentImplementation The home interface.
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
+     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class,
+     *           org.picocontainer.Parameter[])
      * @return Returns the created {@link ComponentAdapter}
-     * @throws PicoIntrospectionException Thrown if the home interface of the EJB could not instanciated.
-     * @throws AssignabilityRegistrationException Thrown if the <code>componentImplementation</code> does not extend {@link javax.ejb.EJBHome}.
-     * @throws NotConcreteRegistrationException Should not occur.
+     * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated.
+     * @throws AssignabilityRegistrationException if the <code>componentImplementation</code> does not extend
+     *                    {@link javax.ejb.EJBHome}.
      */
-    public ComponentAdapter createComponentAdapter(
-            String componentKey, Class componentImplementation)
-            throws PicoIntrospectionException, AssignabilityRegistrationException,
-            NotConcreteRegistrationException {
-        return new ThreadLocalComponentAdapter(
-                new EJBClientComponentAdapter(componentKey, componentImplementation, m_initialContext));
+    public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
+            throws PicoIntrospectionException, AssignabilityRegistrationException {
+        try {
+            return new ThreadLocalComponentAdapter(new EJBClientComponentAdapter(
+                    componentKey.toString(), componentImplementation, m_environment, m_earlyBinding));
+        } catch (final ClassNotFoundException e) {
+            throw new PicoIntrospectionException("Home interface not found", e);
+        }
     }
 
 }
-

@@ -9,11 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.ejb.testmodel;
 
+import java.rmi.RemoteException;
+
+import javax.ejb.CreateException;
 import javax.ejb.EJBHome;
 
 
 /** EJB Home interface */
 public interface HelloHome extends EJBHome {
-    /** @return Returns the EJB */
-    public Hello create(); 
+    /**
+     * @return Returns the EJB
+     * @throws CreateException
+     * @throws RemoteException
+     */
+    public Hello create() throws CreateException, RemoteException;
 }

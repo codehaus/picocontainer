@@ -8,49 +8,54 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.ejb.rmi.mock;
+package org.nanocontainer.ejb.testmodel;
 
 import javax.ejb.EJBHome;
-import javax.ejb.EJBMetaData;
+import javax.ejb.EJBObject;
 import javax.ejb.Handle;
-import javax.ejb.HomeHandle;
 
 
 /**
- * Mock object for an EJBHome interface.
+ * Mock class for an EJBObject.
  * @author J&ouml;rg Schaible
  */
-
-public class EJBHomeMock
-        implements EJBHome {
+public class EJBObjectMock
+        implements EJBObject {
 
     /**
-     * @see javax.ejb.EJBHome#remove(java.lang.Object)
+     * @see javax.ejb.EJBObject#remove()
      */
-    public void remove(Object arg0) /* throws RemoteException, RemoveException */{
-        // do nothing
+    public void remove() /* throws RemoteException, RemoveException */{
+        // Nothing
     }
 
     /**
-     * @see javax.ejb.EJBHome#getEJBMetaData()
+     * @see javax.ejb.EJBObject#getPrimaryKey()
      */
-    public EJBMetaData getEJBMetaData() /* throws RemoteException */{
+    public Object getPrimaryKey() /* throws RemoteException */{
         return null;
     }
 
     /**
-     * @see javax.ejb.EJBHome#remove(javax.ejb.Handle)
+     * @see javax.ejb.EJBObject#getEJBHome()
      */
-    public void remove(Handle arg0) /* throws RemoteException, RemoveException */{
-        // do nothing
-    }
 
-    /**
-     * @see javax.ejb.EJBHome#getHomeHandle()
-     */
-    public HomeHandle getHomeHandle() /* throws RemoteException */{
+    public EJBHome getEJBHome() /* throws RemoteException */{
         return null;
     }
 
+    /**
+     * @see javax.ejb.EJBObject#isIdentical(javax.ejb.EJBObject)
+     */
+    public boolean isIdentical(EJBObject arg0) /* throws RemoteException */{
+        return false;
+    }
+
+    /**
+     * @see javax.ejb.EJBObject#getHandle()
+     */
+    public Handle getHandle() /* throws RemoteException */{
+        return null;
+    }
 }
 

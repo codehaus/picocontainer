@@ -18,6 +18,8 @@ import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Iterator;
 
@@ -28,7 +30,7 @@ import java.util.Iterator;
  * ComponentParameter as a parameter when registering a component will give PicoContainer a hint
  * about what other component to use in the constructor. This Parameter will never resolve
  * against a collecting type, that is not directly registered in the PicoContainer itself.
- * 
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -37,7 +39,7 @@ import java.util.Iterator;
  */
 public class BasicComponentParameter
         implements Parameter, Serializable {
-    
+
     /**
      * <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor.
      */
@@ -47,7 +49,7 @@ public class BasicComponentParameter
 
     /**
      * Expect a parameter matching a component of a specific key.
-     * 
+     *
      * @param componentKey the key of the desired component
      */
     public BasicComponentParameter(Object componentKey) {
@@ -62,7 +64,7 @@ public class BasicComponentParameter
 
     /**
      * Check wether the given Parameter can be statisfied by the container.
-     * 
+     *
      * @return <code>true</code> if the Parameter can be verified.
      * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,
      *           org.picocontainer.ComponentAdapter, java.lang.Class)
@@ -83,14 +85,16 @@ public class BasicComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
         final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
         if (componentAdapter == null) {
-            throw new PicoIntrospectionException(expectedType.getName() + " is not resolvable");
+            final HashSet set = new HashSet();
+            set.add(Arrays.asList(new Class[] {expectedType}));
+            throw new UnsatisfiableDependenciesException(adapter, set);
         }
         componentAdapter.verify(container);
     }
 
     /**
      * Visit the current {@link Parameter}.
-     * 
+     *
      * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
      */
     public void accept(final PicoVisitor visitor) {

@@ -81,7 +81,7 @@ public class DefaultPicoContainer implements PicoContainer {
      * Shorthand for {@link #getAggregateComponentProxy(boolean, boolean)}(true, true).
      * @return a proxy.
      */
-    public Object getMultipleInheritanceProxy() {
+    public Object getAggregateComponentProxy() {
         return getAggregateComponentProxy( true, true);
     }
 
@@ -97,52 +97,90 @@ public class DefaultPicoContainer implements PicoContainer {
      * or {@link #registerComponent(Object)}
      */
     public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-        return Proxy.newProxyInstance(
-                getClass().getClassLoader(),
-                getComponentInterfaces(),
-                new ComponentsInvocationHandler(callInInstantiationOrder, callUnmanagedComponents));
+        return createAggregateProxy(
+            getComponentInterfaces(),
+            orderedComponents,
+            callUnmanagedComponents ? Collections.EMPTY_LIST : unmanagedComponents,
+            callInInstantiationOrder
+        );
     }
 
-    private class ComponentsInvocationHandler implements InvocationHandler {
-        private boolean callInInstantiationOrder;
-        private boolean callUnmanagedComponents;
+    private Object createAggregateProxy(
+        Class[] interfaces,
+        List objectsToAggregateCallFor,
+        List excludes,
+        boolean callInReverseOrder
+    ) {
+        List copy = new ArrayList(objectsToAggregateCallFor);
 
-        public ComponentsInvocationHandler(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-            this.callInInstantiationOrder = callInInstantiationOrder;
-            this.callUnmanagedComponents = callUnmanagedComponents;
+        if( !callInReverseOrder ) {
+            // reverse the list
+            Collections.reverse(copy);
+        }
+        Object[] objects = copy.toArray();
+
+        Object result = Proxy.newProxyInstance(
+            getClass().getClassLoader(),
+            interfaces,
+            new AggregatingInvocationHandler(objects, excludes)
+        );
+
+        return result;
+    }
+
+    private class AggregatingInvocationHandler implements InvocationHandler {
+        private Object[] children;
+        private List excludes;
+
+        public AggregatingInvocationHandler(Object[] children, List excludes) {
+            this.children = children;
+            this.excludes = excludes;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-            List orderedComponentsCopy = new ArrayList(orderedComponents);
-
-            if( !callInInstantiationOrder ) {
-                // reverse the list
-                Collections.reverse(orderedComponentsCopy);
-            }
-            Object[] components = orderedComponentsCopy.toArray();
-            return invokeOnComponents(components, method, args);
+            return invokeOnChildren(children, method, args);
         }
 
-        private Object invokeOnComponents(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-            Object result = null;
-            int invokeCount = 0;
+        private Object invokeOnChildren(Object[] components, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+            // Lazily created list holding all results.
+            List results = null;
             for (int i = 0; i < components.length; i++) {
                 Class declarer = method.getDeclaringClass();
                 boolean isValidType = declarer.isAssignableFrom(components[i].getClass());
-                boolean isUnmanaged = unmanagedComponents.contains(components[i]);
-                boolean exclude = !callUnmanagedComponents && isUnmanaged;
+                boolean exclude = excludes.contains(components[i]);
                 if (isValidType && !exclude) {
                     // It's ok to call the method on this one
-                    Object resultCandidate = method.invoke(components[i], args);
-                    invokeCount++;
-                    if( invokeCount == 1 ) {
-                        result = resultCandidate;
-                    } else {
-                        result = null;
+                    Object result = method.invoke(components[i], args);
+                    if( results == null ) {
+                        results = new ArrayList();
                     }
+                    results.add(result);
                 }
             }
+
+            Object result;
+            Class returnType = method.getReturnType();
+
+            if( results == null ) {
+                // Method wasn't called. Return null
+                result = null;
+            } else if( results.size() == 1 ) {
+                // Got exactly one result. Just return that.
+                result = results.get(0);
+            } else if( returnType.isInterface() ) {
+                // We have two or more results
+                // We can make a new proxy that aggregates all the results.
+                result = createAggregateProxy(
+                    new Class[]{returnType},
+                    results,
+                    excludes,
+                    true
+                );
+            } else  {
+                // Got m,ultiple results that can't be wrapped in a proxy. Return null.
+                result = null;
+            }
+
             return result;
         }
     }

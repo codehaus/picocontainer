@@ -23,7 +23,7 @@ import java.io.StringReader;
  */
 public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
-    public void testInstantiateXml() throws ClassNotFoundException, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         MockMonitor.monitorRecorder = "";
 

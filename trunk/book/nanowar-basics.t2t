@@ -4,7 +4,7 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 
 = NanoContainer =
 
-Look at this nice Juicer
+Look at this nice Juicer. It was grabbed from CVS.
 
 {snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/org/picocontainer/doc/introduction/Juicer.java}
 

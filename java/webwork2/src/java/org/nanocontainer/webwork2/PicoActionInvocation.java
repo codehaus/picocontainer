@@ -42,7 +42,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     }
 
     protected void createAction() {
-        Class actionClass = proxy.getConfig().getClazz();
+        Class actionClass = proxy.getConfig().getClass();// changed from getClazz() as of XWork 1.0
 
         PicoContainer requestContainer = getRequestContainer();
         action = (Action) requestContainer.getComponentInstance(actionClass);

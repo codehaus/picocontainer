@@ -90,11 +90,11 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         }
     }
 
-    public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
+    public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
-    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
+    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
         checkConcrete(componentClass);
         checkConstructor(componentClass);
         checkTypeCompatibility(componentType, componentClass);

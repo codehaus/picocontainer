@@ -11,7 +11,6 @@ package org.nanocontainer.nanoaop.dynaop;
 
 import junit.framework.TestCase;
 
-import org.nanocontainer.nanoaop.defaults.ContainerLoader;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;

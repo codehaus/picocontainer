@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.dynaop;
 
-import org.nanocontainer.nanoaop.defaults.ContainerLoader;
 import org.picocontainer.PicoContainer;
 
 import dynaop.Aspects;
@@ -19,25 +18,37 @@ import dynaop.Pointcuts;
 import dynaop.ProxyFactory;
 
 /**
+ * Creates dynamically generated <code>PicoContainer</code> proxy objects that
+ * delegate to a <code>PicoContainer</code> supplied by a
+ * <code>ContainerLoader</code>.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class PicoContainerProxy implements Interceptor {
+class PicoContainerProxy implements Interceptor {
 
     private final ContainerLoader containerLoader;
 
-    public static PicoContainer create(ContainerLoader containerLoader) {
+    /**
+     * Creates a <code>PicoContainer</code> proxy that delegates to a
+     * <code>PicoContainer</code> provided by <code>containerLoader</code>.
+     * 
+     * @param containerLoader the container loader.
+     * @return the dynamically generated proxy.
+     */
+    static PicoContainer create(ContainerLoader containerLoader) {
         Aspects aspects = new Aspects();
         aspects.interceptor(Pointcuts.ALL_CLASSES, Pointcuts.ALL_METHODS, new PicoContainerProxy(containerLoader));
         aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[] { PicoContainer.class });
         return (PicoContainer) ProxyFactory.getInstance(aspects).wrap(new Object());
     }
 
-    public PicoContainerProxy(ContainerLoader containerLoader) {
-        this.containerLoader = containerLoader;
-    }
-
     public Object intercept(Invocation invocation) throws Throwable {
         return invocation.getMethod().invoke(containerLoader.getContainer(), invocation.getArguments());
+    }
+
+    private PicoContainerProxy(ContainerLoader containerLoader) {
+        this.containerLoader = containerLoader;
     }
 
 }

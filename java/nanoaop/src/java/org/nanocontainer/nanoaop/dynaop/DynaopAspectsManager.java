@@ -20,7 +20,6 @@ import org.nanocontainer.nanoaop.ClassPointcut;
 import org.nanocontainer.nanoaop.ComponentPointcut;
 import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutsFactory;
-import org.nanocontainer.nanoaop.defaults.ContainerLoader;
 import org.picocontainer.PicoContainer;
 
 import dynaop.Aspects;
@@ -30,7 +29,10 @@ import dynaop.MixinFactory;
 import dynaop.ProxyFactory;
 
 /**
+ * An <code>AspectsManager</code> implemented using dynaop.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public class DynaopAspectsManager implements AspectsManager {
 
@@ -40,19 +42,49 @@ public class DynaopAspectsManager implements AspectsManager {
     private final List componentAspects = new ArrayList();
     private final PointcutsFactory pointcutsFactory;
 
+    /**
+     * Creates a new <code>DynaopAspectsManager</code> that will used the
+     * given <code>dynaop.Aspects</code> object and pointcuts factory. This
+     * constructor might be useful if the <code>containerAspects</code> object
+     * contains aspects already configured via dynaop's API, perhaps using
+     * dynaop's BeanShell configuration mechanism.
+     * 
+     * @param containerAspects the <code>dyanop.Aspects</code> object used to
+     *        contain the aspects.
+     * @param pointcutsFactory the pointcuts factory.
+     */
     public DynaopAspectsManager(Aspects containerAspects, PointcutsFactory pointcutsFactory) {
         this.containerAspects = containerAspects;
         this.pointcutsFactory = pointcutsFactory;
     }
 
+    /**
+     * Creates a new <code>DynaopAspectsManager</code> that will used the
+     * given <code>dynaop.Aspects</code> object. This constructor might be
+     * useful if the <code>containerAspects</code> object contains aspects
+     * already configured via dynaop's API, perhaps using dynaop's BeanShell
+     * configuration mechanism.
+     * 
+     * @param containerAspects the <code>dyanop.Aspects</code> object used to
+     *        contain the aspects.
+     */
     public DynaopAspectsManager(Aspects containerAspects) {
         this(containerAspects, new DynaopPointcutsFactory());
     }
-    
+
+    /**
+     * Creates a new <code>DynaopAspectsManager</code> that will use the given
+     * pointcuts factory.
+     * 
+     * @param pointcutsFactory the pointcuts factory.
+     */
     public DynaopAspectsManager(PointcutsFactory pointcutsFactory) {
         this(new Aspects(), pointcutsFactory);
     }
 
+    /**
+     * Creates a new <code>DynaopAspectsManager</code>.
+     */
     public DynaopAspectsManager() {
         this(new Aspects());
     }
@@ -121,7 +153,6 @@ public class DynaopAspectsManager implements AspectsManager {
         if (classPointcut instanceof dynaop.ClassPointcut) {
             return (dynaop.ClassPointcut) classPointcut;
         }
-
         return new dynaop.ClassPointcut() {
             public boolean picks(Class clazz) {
                 return classPointcut.picks(clazz);
@@ -133,7 +164,6 @@ public class DynaopAspectsManager implements AspectsManager {
         if (methodPointcut instanceof dynaop.MethodPointcut) {
             return (dynaop.MethodPointcut) methodPointcut;
         }
-
         return new dynaop.MethodPointcut() {
             public boolean picks(Method method) {
                 return methodPointcut.picks(method);

@@ -15,24 +15,44 @@ import dynaop.MixinFactory;
 import dynaop.Proxy;
 
 /**
+ * Produces mixin advice from a mixin instance object.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public class InstanceMixinFactory implements MixinFactory {
-    
+
     private final Object instance;
-    
+
+    /**
+     * Creates a new <code>InstanceMixinFactory</code> with the given mixin
+     * instance.
+     * 
+     * @param instance the mixin instance.
+     */
     public InstanceMixinFactory(Object instance) {
         this.instance = instance;
     }
 
+    /**
+     * Returns the mixin instance passed to the constructor.
+     * 
+     * @param proxy not used.
+     * @return the mixin instance object passed to the constructor.
+     */
     public Object create(Proxy proxy) {
         return instance;
     }
 
+    /**
+     * Used for debugging.
+     * 
+     * @return a set of properties useful for debugging.
+     */
     public Properties getProperties() {
         Properties properties = new Properties();
         properties.setProperty("advice", "instance mixin");
         return properties;
     }
-    
+
 }

@@ -12,10 +12,20 @@ package org.nanocontainer.nanoaop;
 import org.picocontainer.PicoException;
 
 /**
+ * Exception thrown by <code>PointcutsFactory</code> when it is passed an
+ * invalid regular expression.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public class MalformedRegularExpressionException extends PicoException {
 
+    /**
+     * Creates a new <code>MalformedRegularExpression</code> object.
+     * 
+     * @param message the error message.
+     * @param cause the original exception that caused this error.
+     */
     public MalformedRegularExpressionException(final String message, final Throwable cause) {
         super(message, cause);
     }

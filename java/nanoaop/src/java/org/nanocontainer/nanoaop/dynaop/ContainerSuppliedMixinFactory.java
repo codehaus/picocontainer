@@ -21,8 +21,9 @@ import dynaop.Proxy;
  * has dependencies on other components in the <code>PicoContainer</code>.
  * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class ContainerSuppliedMixinFactory implements MixinFactory {
+class ContainerSuppliedMixinFactory implements MixinFactory {
 
     private final PicoContainer pico;
     private final Object mixinComponentKey;
@@ -36,7 +37,7 @@ public class ContainerSuppliedMixinFactory implements MixinFactory {
      * @param mixinComponentKey the component key that will be used to retrieve
      *        the mixin object from the pico.
      */
-    public ContainerSuppliedMixinFactory(PicoContainer pico, Object mixinComponentKey) {
+    ContainerSuppliedMixinFactory(PicoContainer pico, Object mixinComponentKey) {
         this.pico = pico;
         this.mixinComponentKey = mixinComponentKey;
     }

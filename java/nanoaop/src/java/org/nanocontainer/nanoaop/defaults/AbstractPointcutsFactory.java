@@ -13,7 +13,11 @@ import org.nanocontainer.nanoaop.ComponentPointcut;
 import org.nanocontainer.nanoaop.PointcutsFactory;
 
 /**
+ * Provides implementations of pointcut factory methods not supplied by the
+ * 'back-end' (nanning, dynop, etc.).
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public abstract class AbstractPointcutsFactory implements PointcutsFactory {
 

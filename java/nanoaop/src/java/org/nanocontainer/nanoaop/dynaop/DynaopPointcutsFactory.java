@@ -20,7 +20,11 @@ import org.nanocontainer.nanoaop.defaults.AbstractPointcutsFactory;
 import dynaop.Pointcuts;
 
 /**
+ * Implements the <code>org.nanocontainer.nanoaop.PointcutsFactory</code>
+ * interface using dynaop.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
 public class DynaopPointcutsFactory extends AbstractPointcutsFactory {
 

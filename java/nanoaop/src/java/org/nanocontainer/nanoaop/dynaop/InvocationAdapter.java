@@ -17,13 +17,24 @@ import org.aopalliance.intercept.MethodInvocation;
 import dynaop.Invocation;
 
 /**
+ * Adapts a <code>dynaop.Invocation</code> object to the
+ * <code>org.nanocontainer.nanoaop.MethodInvocation</code> interface.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class InvocationAdapter implements MethodInvocation {
+class InvocationAdapter implements MethodInvocation {
 
     private final Invocation delegate;
 
-    public InvocationAdapter(Invocation delegate) {
+    /**
+     * Creates a new <code>InvocationAdapter</code> that delegates to the
+     * given <code>dynaop.Invocation</code>.
+     * 
+     * @param delegate the <code>dynaop.Invocation</code> object to delegate
+     *        to.
+     */
+    InvocationAdapter(Invocation delegate) {
         this.delegate = delegate;
     }
 
@@ -46,5 +57,5 @@ public class InvocationAdapter implements MethodInvocation {
     public Object proceed() throws Throwable {
         return delegate.proceed();
     }
-    
+
 }

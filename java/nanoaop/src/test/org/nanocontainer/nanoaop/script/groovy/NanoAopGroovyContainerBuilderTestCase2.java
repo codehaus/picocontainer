@@ -27,7 +27,7 @@ import org.picocontainer.defaults.SimpleReference;
 /**
  * @author Stephen Molitor
  */
-public class AopNanoGroovyBuilderTestCase2 extends TestCase {
+public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
 
     public void testContainerScopedAdvice() throws PicoCompositionException {
         Reader script = new StringReader(
@@ -35,7 +35,7 @@ public class AopNanoGroovyBuilderTestCase2 extends TestCase {
                         + "import org.nanocontainer.nanoaop.*\n"
                         + ""
                         + "LoggingInterceptor logger = new LoggingInterceptor(log)\n"
-                        + "builder = new org.nanocontainer.nanoaop.script.groovy.AopNanoGroovyBuilder()\n"
+                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
                         + "cuts = builder.pointcuts()\n"
                         + "pico = builder.container() {\n"
                         + "    component(key:Dao, class:DaoImpl)\n"
@@ -56,7 +56,7 @@ public class AopNanoGroovyBuilderTestCase2 extends TestCase {
                         + "import org.nanocontainer.nanoaop.*\n"
                         + ""
                         + "LoggingInterceptor logger = new LoggingInterceptor(log)\n"
-                        + "builder = new org.nanocontainer.nanoaop.script.groovy.AopNanoGroovyBuilder()\n"
+                        + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
                         + "cuts = builder.pointcuts()\n"
                         + "pico = builder.container() {\n"
                         + "    component(key:Dao, class:DaoImpl) {\n"

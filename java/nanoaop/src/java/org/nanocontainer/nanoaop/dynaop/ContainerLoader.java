@@ -7,29 +7,52 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
+package org.nanocontainer.nanoaop.dynaop;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 
 /**
+ * Loads a <code>PicoContainer</code> 'late'. Used to create a late-loading
+ * <code>PicoContainer</code> proxy which is passed to
+ * <code>dynaop.MixinFactory</code> and <code>dynaop.InterceptorFactory</code>
+ * objects whose mixin or interceptor advice is a component in the container,
+ * specified by component key. The container object may be created after the
+ * advice factories.
+ * 
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class ContainerLoader {
+class ContainerLoader {
 
     private PicoContainer container;
 
-    public ContainerLoader() {
+    /**
+     * Creates a new <code>ContainerLoader</code>.
+     */
+    ContainerLoader() {
     }
 
-    public PicoContainer getContainer() {
+    /**
+     * Gets the Pico container. The <code>setContainer</code> method must have
+     * been called prior to calling this method.
+     * 
+     * @return the loaded <code>PicoContainer</code> object.
+     * @throws PicoInitializationException if the container has not been set.
+     */
+    PicoContainer getContainer() {
         if (container == null) {
             throw new PicoInitializationException("Container has not been set");
         }
         return container;
     }
 
-    public void setContainer(PicoContainer container) {
+    /**
+     * Sets the container.
+     * 
+     * @param container the <code>PicoContainer</code>.
+     */
+    void setContainer(PicoContainer container) {
         this.container = container;
     }
 

@@ -9,18 +9,16 @@
 package org.nanocontainer;
 
 import junit.framework.TestCase;
+import org.mozilla.javascript.EcmaError;
 import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerImpl;
 import org.nanocontainer.testmodel.WebServerConfig;
+import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
-import org.mozilla.javascript.JavaScriptException;
-import org.mozilla.javascript.EcmaError;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -134,7 +132,8 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "var parentContainer = new NanoRhinoScriptable('org.picocontainer.extras.ImplementationHidingComponentAdapterFactory');\n" +
+                "var caf = new Packages.org.picocontainer.extras.ImplementationHidingComponentAdapterFactory();\n" +
+                "var parentContainer = new NanoRhinoScriptable(caf);\n" +
                 "with (parentContainer) {\n" +
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServerConfig','org.nanocontainer.testmodel.DefaultWebServerConfig');\n" +
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +

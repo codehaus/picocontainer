@@ -82,5 +82,7 @@ namespace PicoContainer
     /// </summary>
     /// <param name="componentAdapter">the adapter</param>
     void AddOrderedComponentAdapter (IComponentAdapter componentAdapter);
+ 
+    IList GetComponentAdaptersOfType(Type componentType);
   }
 }

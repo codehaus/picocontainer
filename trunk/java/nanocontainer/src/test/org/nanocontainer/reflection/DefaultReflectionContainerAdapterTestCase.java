@@ -22,8 +22,7 @@ import org.picocontainer.PicoRegistrationException;
 import java.io.File;
 import java.net.MalformedURLException;
 
-//TODO - to rename
-public class DefaultReflectionFrontEndTestCase extends TestCase {
+public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
@@ -71,7 +70,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         assertEquals("hello22", thing.getValue());
     }
 
-    public void testChildFrontEndCanRelyOnParentFrontEnd() throws MalformedURLException, ClassNotFoundException {
+    public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException, ClassNotFoundException {
         String testcompJarFileName = System.getProperty("testcomp.jar");
 
         // Paul's path to TestComp. PLEASE do not take out.
@@ -84,21 +83,21 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         assertTrue(testCompJar2.isFile());
 
         // Set up parent
-        ReflectionContainerAdapter parentFrontEnd = new DefaultReflectionContainerAdapter();
-        parentFrontEnd.addClassLoaderURL(testCompJar.toURL());
-        parentFrontEnd.registerComponentImplementation("parentTestComp", "TestComp");
+        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
+        parentContainerAdapter.addClassLoaderURL(testCompJar.toURL());
+        parentContainerAdapter.registerComponentImplementation("parentTestComp", "TestComp");
 
-        PicoContainer parentFrontEndPico = parentFrontEnd.getPicoContainer();
-        Object parentTestComp = parentFrontEndPico.getComponentInstance("parentTestComp");
+        PicoContainer parentContainerAdapterPico = parentContainerAdapter.getPicoContainer();
+        Object parentTestComp = parentContainerAdapterPico.getComponentInstance("parentTestComp");
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(parentFrontEnd);
-        childFrontEnd.addClassLoaderURL(testCompJar2.toURL());
-        childFrontEnd.registerComponentImplementation("childTestComp", "TestComp2");
+        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
+        childContainerAdapter.addClassLoaderURL(testCompJar2.toURL());
+        childContainerAdapter.registerComponentImplementation("childTestComp", "TestComp2");
 
-        PicoContainer childFrontEndPico = childFrontEnd.getPicoContainer();
-        Object childTestComp = childFrontEndPico.getComponentInstance("childTestComp");
+        PicoContainer childContainerAdapterPico = childContainerAdapter.getPicoContainer();
+        Object childTestComp = childContainerAdapterPico.getComponentInstance("childTestComp");
         assertEquals("TestComp2", childTestComp.getClass().getName());
 
         assertNotSame(parentTestComp, childTestComp);
@@ -106,7 +105,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
                 parentTestComp.getClass().getClassLoader(),
                 childTestComp.getClass().getClassLoader().getParent());
 
-        assertSame(parentFrontEndPico, childFrontEndPico.getParent());
+        assertSame(parentContainerAdapterPico, childContainerAdapterPico.getParent());
     }
 
     public static class AnotherFooComp {
@@ -114,7 +113,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     }
 
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException, ClassNotFoundException {
-        ReflectionContainerAdapter parentFrontEnd = new DefaultReflectionContainerAdapter();
+        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -123,16 +122,16 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentFrontEnd.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+        parentContainerAdapter.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
 
-        Object fooWebServerConfig = parentFrontEnd.getPicoContainer().getComponentInstance("foo");
+        Object fooWebServerConfig = parentContainerAdapter.getPicoContainer().getComponentInstance("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(parentFrontEnd);
-        childFrontEnd.addClassLoaderURL(testCompJar.toURL());
-        childFrontEnd.registerComponentImplementation("bar", "TestComp");
+        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
+        childContainerAdapter.addClassLoaderURL(testCompJar.toURL());
+        childContainerAdapter.registerComponentImplementation("bar", "TestComp");
 
-        Object barTestComp = childFrontEnd.getPicoContainer().getComponentInstance("bar");
+        Object barTestComp = childContainerAdapter.getPicoContainer().getComponentInstance("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());
 
         assertNotSame(fooWebServerConfig.getClass().getClassLoader(), barTestComp.getClass().getClassLoader());

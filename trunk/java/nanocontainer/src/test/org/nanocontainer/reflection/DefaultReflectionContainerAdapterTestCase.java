@@ -10,6 +10,8 @@
 
 package org.nanocontainer.reflection;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import junit.framework.TestCase;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
@@ -18,9 +20,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-
-import java.io.File;
-import java.net.MalformedURLException;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
@@ -126,7 +126,8 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
                 parentTestComp.getClass().getClassLoader(),
                 childTestComp.getClass().getClassLoader().getParent());
 
-        assertSame(parentContainerAdapterPico, childContainerAdapterPico.getParent());
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parentContainerAdapterPico, childContainerAdapterPico.getParent());
     }
 
     public static class AnotherFooComp {

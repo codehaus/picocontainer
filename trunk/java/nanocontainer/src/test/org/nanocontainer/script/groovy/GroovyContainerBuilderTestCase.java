@@ -35,7 +35,8 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "}");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent);
-        assertSame(parent, pico.getParent());
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent()); 
         assertEquals(StringBuffer.class, pico.getComponentInstance(StringBuffer.class).getClass());
     }
 

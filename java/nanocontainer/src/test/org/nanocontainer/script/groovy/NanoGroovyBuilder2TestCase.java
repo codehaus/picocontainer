@@ -1,13 +1,11 @@
 package org.nanocontainer.script.groovy;
 
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.mozilla.javascript.JavaScriptException;
-import org.picocontainer.PicoContainer;
-
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Paul Hammant

@@ -22,12 +22,12 @@ import picocontainer.testmodel.WilmaImpl;
 
 public class CompositePicoContainerTestCase extends TestCase {
     private ClassRegistrationPicoContainer pico;
-    private AggregatedContainersContainer.Filter filter;
+    private CompositePicoContainer.Filter filter;
 
     public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
         pico = new HierarchicalPicoContainer.Default();
         pico.registerComponentByClass(WilmaImpl.class);
-        filter = new AggregatedContainersContainer.Filter(pico);
+        filter = new CompositePicoContainer.Filter(pico);
     }
 
     public void testGetComponents() {
@@ -48,7 +48,7 @@ public class CompositePicoContainerTestCase extends TestCase {
 
     public void testNullContainer() {
         try {
-            new AggregatedContainersContainer.Filter(null);
+            new CompositePicoContainer.Filter(null);
             fail("Should have failed with an NPE");
         } catch (NullPointerException e) {
             // fine

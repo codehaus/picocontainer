@@ -12,7 +12,7 @@ package picocontainer;
 
 import picocontainer.defaults.Parameter;
 
-public interface ClassRegistrationPicoContainer extends PicoContainer {
+public interface ComponentRegistrar {
 
     /**
      * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}

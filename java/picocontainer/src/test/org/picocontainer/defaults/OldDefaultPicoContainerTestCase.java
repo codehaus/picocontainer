@@ -451,7 +451,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-//    public void testPeelableAndWashableContainer() throws NoPicoSuitableConstructorException, PicoRegistrationException, PicoStartException {
+//    public void testPeelableAndWashableContainer() throws CannotDecideWhatConstructorToUseException, PicoRegistrationException, PicoStartException {
 //
 //        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
 //                new MorphingHierarchicalPicoContainer(
@@ -723,7 +723,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         try {
             pico.registerComponentByClass(Vector.class);
             fail("Should fail because there are more than one constructors");
-        } catch (NoPicoSuitableConstructorException e) {
+        } catch (CannotDecideWhatConstructorToUseException e) {
             // expected;
             assertEquals("Should be right class", Vector.class, e.getForImplementationClass());
         }

@@ -106,13 +106,6 @@
         </dependency>
 
         <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>1.0-beta-2-SNAPSHOT</version>
-            <url>http://picocontainer.codehaus.org/</url>
-        </dependency>
-
-        <dependency>
             <id>commons-collections</id>
             <version>2.1</version>
             <url>http://jakarta.apache.org/</url>

@@ -12,16 +12,20 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
 
-public class NoPicoSuitableConstructorException extends PicoIntrospectionException {
+public class CannotDecideWhatConstructorToUseException extends PicoIntrospectionException {
 
     private Class forClass;
 
-    public NoPicoSuitableConstructorException(Class forClass) {
+    public CannotDecideWhatConstructorToUseException(Class forClass) {
         this.forClass = forClass;
     }
 
     public Class getForImplementationClass() {
         return forClass;
+    }
+
+    public String getMessage() {
+        return "No suitable constructor for " + forClass.getName();
     }
 
 }

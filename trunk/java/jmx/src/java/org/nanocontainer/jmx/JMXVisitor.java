@@ -37,6 +37,16 @@ public class JMXVisitor extends AbstractPicoVisitor {
     private PicoContainer picoContainer;
 
     /**
+     * Construct a JMXVisitor. This instance will register by default any component in the {@link MBeanServer}, that is already
+     * a {@link DynamicMBean}. The {@link ObjectName}will use the default domain of the MBeanServer and has a
+     * <code>type</code> key with the class name (without package name) as value.
+     * @param server The {@link MBeanServer}to use for registering the MBeans.
+     */
+    public JMXVisitor(final MBeanServer server) {
+        this(server, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
+    }
+
+    /**
      * Construct a JMXVisitor.
      * @param server The {@link MBeanServer}to use for registering the MBeans.
      * @param providers The providers to deliver the DynamicMBeans.

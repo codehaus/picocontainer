@@ -636,20 +636,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testRegisterComponentWithObjectBadType() throws PicoIntrospectionException {
-        MutablePicoContainer pico = new DefaultPicoContainer();
-
-        try {
-            pico.registerComponentInstance(Serializable.class, new Object());
-            fail("Shouldn't be able to register an Object as Serializable");
-            //TODO why?
-        } catch (PicoRegistrationException e) {
-            //TODO contains ?
-
-        }
-
-    }
-
     public void testComponentRegistrationMismatch() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 

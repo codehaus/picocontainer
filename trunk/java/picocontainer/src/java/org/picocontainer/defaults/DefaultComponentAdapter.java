@@ -70,9 +70,9 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         Set conflicts = new HashSet();
         for (int i = 0; i < satisfiableConstructors.size(); i++) {
             Constructor currentConstructor = (Constructor) satisfiableConstructors.get(i);
-            if(biggestConstructor == null) {
+            if (biggestConstructor == null) {
                 biggestConstructor = currentConstructor;
-            } else if(biggestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
+            } else if (biggestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
                 conflicts.clear();
                 biggestConstructor = currentConstructor;
             } else if (biggestConstructor.getParameterTypes().length == currentConstructor.getParameterTypes().length) {
@@ -80,7 +80,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                 conflicts.add(currentConstructor);
             }
         }
-        if(!conflicts.isEmpty()) {
+        if (!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         }
         return biggestConstructor;
@@ -103,12 +103,12 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                     break;
                 } else {
                     // we can't depend on ourself
-                    if(adapter.equals(this)) {
+                    if (adapter.equals(this)) {
                         failedDependency = true;
                         failedDependencies.add(parameterTypes[i]);
                         break;
                     }
-                    if(getComponentKey().equals(adapter.getComponentKey())) {
+                    if (getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
                         failedDependencies.add(parameterTypes[i]);
                         break;
@@ -119,7 +119,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                 result.add(constructor);
             }
         }
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             throw new NoSatisfiableConstructorsException(getComponentImplementation(), failedDependencies);
         }
 
@@ -134,7 +134,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
 
             final Parameter[] componentParameters = getParameters(mutablePicoContainer);
 
-            if(componentParameters.length != adapterDependencies.length) {
+            if (componentParameters.length != adapterDependencies.length) {
                 throw new PicoInitializationException() {
                     public String getMessage() {
                         return "The number of specified parameters (" +
@@ -193,9 +193,12 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
     }
 
     public boolean equals(Object object) {
-       ComponentAdapter other = (ComponentAdapter) object;
+        if (!(object instanceof ComponentAdapter)) {
+            return false;
+        }
+        ComponentAdapter other = (ComponentAdapter) object;
 
-       return getComponentKey().equals(other.getComponentKey()) &&
+        return getComponentKey().equals(other.getComponentKey()) &&
                 getComponentImplementation().equals(other.getComponentImplementation());
     }
 
@@ -206,5 +209,4 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         }
         return componentParameters;
     }
-
 }

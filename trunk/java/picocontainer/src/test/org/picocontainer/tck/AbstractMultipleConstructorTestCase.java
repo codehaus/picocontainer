@@ -43,6 +43,8 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
     public static class Two {}
     public static class Three {}
 
+    
+
     public void testStringWorks() throws PicoException, PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer();
         pico.registerComponentImplementation(String.class);

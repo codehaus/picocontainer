@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components>
-      <component class="nanocontainer.testmodel.DefaultWebServerConfig"/>
-      <component type="nanocontainer.testmodel.WebServer" class="nanocontainer.testmodel.WebServerImpl"/>
+      <component class="org.nanocontainer.testmodel.DefaultWebServerConfig"/>
+      <component type="org.nanocontainer.testmodel.WebServer" class="org.nanocontainer.testmodel.WebServerImpl"/>
 </components>

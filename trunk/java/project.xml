@@ -17,7 +17,7 @@
         <logo>http://images.werken.com/codehaus-plain.gif</logo>
     </organization>
     <inceptionYear>2003</inceptionYear>
-    <package>nanocontainer</package>
+    <package>org.nanocontainer</package>
     <logo>/images/nanocontainer.jpg</logo>
     <description>Extension of PicoContainer</description>
     <shortDescription>Extension of PicoContainer</shortDescription>

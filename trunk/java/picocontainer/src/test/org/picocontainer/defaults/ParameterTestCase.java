@@ -40,4 +40,18 @@ public class ParameterTestCase extends TestCase {
         assertTrue(touchable.wasTouched);
     }
 
+    public void testComponentParameterRespectsExpectedType() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+        Parameter parameter = new ComponentParameter(Touchable.class);
+        picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
+        assertNull(parameter.resolveAdapter(picoContainer, TestCase.class));
+    }
+
+    public void testConstantParameterRespectsExpectedType() {
+        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+        Parameter parameter = new ConstantParameter(new SimpleTouchable());
+        picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
+        assertNull(parameter.resolveAdapter(picoContainer, TestCase.class));
+    }
+
 }

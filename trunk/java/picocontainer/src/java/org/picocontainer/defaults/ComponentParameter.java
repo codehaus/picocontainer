@@ -41,6 +41,10 @@ public class ComponentParameter implements Parameter, Serializable {
         } else {
             result = picoContainer.getComponentAdapterOfType(expectedType);
 		}
+        if(result != null && !expectedType.isAssignableFrom(result.getComponentImplementation())) {
+            // found one, but it wasn't of the expected type
+            return null;
+        }
         return result;
     }
 

@@ -20,7 +20,6 @@ import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;

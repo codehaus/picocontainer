@@ -13,6 +13,7 @@ package picocontainer.extras;
 import junit.framework.TestCase;
 import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.ComponentSpecification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 
     public void testBasic() throws NoSuchMethodException, PicoInitializationException {
         ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory(new DefaultComponentFactory());
-        Object o = cf.createComponent(List.class, OneConstructorArrayList.class, null, null);
+        Object o = cf.createComponent(new ComponentSpecification(cf, List.class, OneConstructorArrayList.class), null);
         assertTrue(o instanceof List);
         assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");

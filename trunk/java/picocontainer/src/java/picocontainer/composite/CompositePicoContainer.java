@@ -78,12 +78,12 @@ public class CompositePicoContainer extends DefaultPicoContainer {
         return answer;
     }
 
-    public Class[] getComponentTypes() {
+    public Object[] getComponentKeys() {
         Set componentTypes = new HashSet();
-        componentTypes.addAll(Arrays.asList(super.getComponentTypes()));
+        componentTypes.addAll(Arrays.asList(super.getComponentKeys()));
         for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
             PicoContainer container = (PicoContainer) iter.next();
-            componentTypes.addAll(Arrays.asList(container.getComponentTypes()));
+            componentTypes.addAll(Arrays.asList(container.getComponentKeys()));
         }
         return (Class[]) componentTypes.toArray(new Class[containers.size()]);
     }

@@ -3,6 +3,7 @@ package picocontainer.extras;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.defaults.ComponentSpecification;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,19 +26,13 @@ import java.util.List;
  * @version $Revision$
  */
 public class BeanStyleComponentFactory implements ComponentFactory {
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException {
+    public Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInitializationException {
         // We'll assume there is an empty constructor
         Object result = null;
-        try {
-            result = componentImplementation.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("#3 Can we have a concerted effort to try to force these excptions?");
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("#4 Can we have a concerted effort to try to force these excptions?");
-        }
+        result = componentSpec.newInstance();
 
         // Now set the dependencies by calling appropriate methods taking the dependencies as arguments.
-        Method[] setters = getSetters(componentImplementation);
+        Method[] setters = getSetters(componentSpec.getComponentImplementation());
         if (setters.length != instanceDependencies.length) {
             throw new IllegalStateException("Unmatching number of dependencies: " + setters.length + " vs " + instanceDependencies.length);
         }

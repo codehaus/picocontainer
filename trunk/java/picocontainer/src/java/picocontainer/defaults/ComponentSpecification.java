@@ -16,21 +16,36 @@ import picocontainer.PicoIntrospectionException;
 
 import java.util.Arrays;
 
-class ComponentSpecification {
+public class ComponentSpecification {
     private ComponentFactory componentFactory;
-    private final Class compType;
+    private final Object componentKey;
     private final Class comp;
     private Parameter[] parameters;
 
-    public ComponentSpecification(ComponentFactory componentFactory, final Class compType, final Class comp, Parameter[] parameters) {
+    public ComponentSpecification(ComponentFactory componentFactory, final Object componentKey, final Class comp, Parameter[] parameters) {
         this.componentFactory = componentFactory;
-        this.compType = compType;
+        this.componentKey = componentKey;
         this.comp = comp;
         this.parameters = parameters;
     }
 
-    public Class getComponentType() {
-        return compType;
+    public ComponentSpecification(ComponentFactory componentFactory, Object componentKey, Class comp) throws PicoIntrospectionException {
+        this.componentFactory = componentFactory;
+        this.componentKey = componentKey;
+        this.comp = comp;
+
+        parameters = new Parameter[componentFactory.getDependencies(comp).length];
+        for (int i = 0; i < parameters.length; i++) {
+            parameters[i] = createDefaultParameter();
+        }
+    }
+
+    protected Parameter createDefaultParameter() {
+        return new ComponentParameter();
+    }
+
+    public Object getComponentKey() {
+        return componentKey;
     }
 
     public Class getComponentImplementation() {
@@ -44,7 +59,7 @@ class ComponentSpecification {
         for (int i = 0; i < dependencies.length; i++) {
             dependencies[i] = parameters[i].resolve(picoContainer, this, dependencyTypes[i]);
         }
-        return componentFactory.createComponent(compType, comp, dependencyTypes, dependencies);
+        return componentFactory.createComponent(this, dependencies);
     }
 
     static boolean isAssignableFrom(Class actual, Class requested) {
@@ -57,7 +72,7 @@ class ComponentSpecification {
         return actual.isAssignableFrom(requested);
     }
 
-    public void addConstantParameterBasedOnType(Class componentType, Class parameter, Object arg) throws PicoIntrospectionException {
+    public void addConstantParameterBasedOnType(Class parameter, Object arg) throws PicoIntrospectionException {
         // TODO this is an ugly hack and the feature should simply be removed
         Class[] dependencies = componentFactory.getDependencies(comp);
         for (int i = 0; i < dependencies.length; i++) {
@@ -69,5 +84,19 @@ class ComponentSpecification {
         }
 
         throw new RuntimeException("No such parameter " + parameter + " in " + Arrays.asList(dependencies));
+    }
+
+    public Object newInstance() {
+        try {
+            return getComponentImplementation().newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException("#3 Can we have a concerted effort to try to force these excptions?");
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("#4 Can we have a concerted effort to try to force these excptions?");
+        }
+    }
+
+    public Parameter[] getParameters() {
+        return parameters;
     }
 }

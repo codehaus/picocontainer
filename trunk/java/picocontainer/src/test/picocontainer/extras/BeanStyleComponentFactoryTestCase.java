@@ -2,10 +2,7 @@ package picocontainer.extras;
 
 import junit.framework.TestCase;
 import picocontainer.PicoInitializationException;
-import picocontainer.defaults.AssignabilityRegistrationException;
-import picocontainer.defaults.DefaultPicoContainer;
-import picocontainer.defaults.DuplicateComponentTypeRegistrationException;
-import picocontainer.defaults.NotConcreteRegistrationException;
+import picocontainer.defaults.*;
 
 public class BeanStyleComponentFactoryTestCase extends TestCase {
 
@@ -35,12 +32,12 @@ public class BeanStyleComponentFactoryTestCase extends TestCase {
         BeanStyleComponentFactory cf = new BeanStyleComponentFactory();
 
         Man man = new ManImpl();
-        Dog dog = (Dog) cf.createComponent(Dog.class, DogImpl.class, new Class[]{Man.class}, new Object[]{man});
+        Dog dog = (Dog) cf.createComponent(new ComponentSpecification(cf, Dog.class, DogImpl.class), new Object[]{man});
         assertSame(man, dog.getOwner());
     }
 
     public void testWithContainer() throws AssignabilityRegistrationException,
-            DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
+            DuplicateComponentKeyRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer(new BeanStyleComponentFactory());
 
         pico.registerComponent(Dog.class, DogImpl.class);

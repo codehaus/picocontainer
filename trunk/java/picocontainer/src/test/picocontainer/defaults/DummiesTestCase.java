@@ -11,8 +11,9 @@
 package picocontainer.defaults;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInstantiationException;
 import picocontainer.PicoContainer;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoInitializationException;
 import picocontainer.composite.CompositePicoContainer;
@@ -31,9 +32,9 @@ public class DummiesTestCase extends TestCase {
     public void testDefaultComponentFactory() throws PicoInstantiationException,
             NoSuchMethodException,
             InvocationTargetException,
-            IllegalAccessException, WrongNumberOfConstructorsException {
+            IllegalAccessException, PicoIntrospectionException {
         DefaultComponentFactory dcd = new DefaultComponentFactory();
-        Object decorated = dcd.createComponent(Object.class, Object.class, null, null);
+        Object decorated = dcd.createComponent(new ComponentSpecification(dcd, Object.class, Object.class), null);
         assertNotNull(decorated);
     }
 

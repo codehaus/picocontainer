@@ -12,7 +12,7 @@ package nanocontainer.testmodel;
 
 /**
  * For a two parameter confiuration, you might prefer to use
- * addParameterForComponent on ClassRegistrationPicoContainer. This example
+ * addParameterForComponent on RegistrationPicoContainer. This example
  * that uses a separate configuration object would be better
  * for cases where there were say fifty configurable things
  * about a particilar component.

@@ -15,11 +15,11 @@ import java.util.Arrays;
 
 public class AmbiguousComponentResolutionException extends PicoInstantiationException {
     private Class ambiguousClass;
-    private final Class[] resultingClasses;
+    private final Object[] foundKeys;
 
-    public AmbiguousComponentResolutionException(Class ambiguousClass, Class[] resultingClasses) {
+    public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] foundKeys) {
         this.ambiguousClass = ambiguousClass;
-        this.resultingClasses = resultingClasses;
+        this.foundKeys = foundKeys;
     }
 
     public String getMessage() {
@@ -27,12 +27,12 @@ public class AmbiguousComponentResolutionException extends PicoInstantiationExce
         msg.append("Ambigious class ");
         msg.append(ambiguousClass);
         msg.append(", ");
-        msg.append("resolves to ");
-        msg.append(Arrays.asList(resultingClasses));
+        msg.append("resolves to multiple keys ");
+        msg.append(Arrays.asList(foundKeys));
         return msg.toString();
     }
 
-    public Class[] getResultingClasses() {
-        return resultingClasses;
+    public Object[] getResultingKeys() {
+        return foundKeys;
     }
 }

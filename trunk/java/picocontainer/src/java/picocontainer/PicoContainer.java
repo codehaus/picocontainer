@@ -21,17 +21,17 @@ public interface PicoContainer {
 
     /**
      * Does the container have a partilcilar component type?
-     * @param componentType The component type to look for.
+     * @param componentKey The component type to look for.
      * @return true if it does have the component type
      */
-    boolean hasComponent(Class componentType);
+    boolean hasComponent(Object componentKey);
 
     /**
      * Get a component for a component type.
-     * @param componentType The component type to look for.
+     * @param componentKey The component type to look for.
      * @return the component, or null of no such component.
      */
-    Object getComponent(Class componentType);
+    Object getComponent(Object componentKey);
 
     /**
      * Get all components (random order).
@@ -43,7 +43,7 @@ public interface PicoContainer {
      * Get all component types (random order).
      * @return an array of component types.
      */
-    Class[] getComponentTypes();
+    Object[] getComponentKeys();
 
     /**
      * Initialize the container.

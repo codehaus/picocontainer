@@ -10,6 +10,8 @@
 
 package picocontainer;
 
+import picocontainer.defaults.ComponentSpecification;
+
 public interface ComponentFactory {
 
     /**
@@ -22,7 +24,7 @@ public interface ComponentFactory {
      * @throws PicoInitializationException
      * @throws PicoIntrospectionException
      */
-    Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInitializationException, PicoIntrospectionException;
+    Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Return the types the componentImplementation component depends on.

@@ -66,7 +66,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
     public ObjectInstantiator buildInstantiator(final PicoContainer parentContainer) {
         return new ObjectInstantiator() {
             public Object newInstance(Class cls) {
-                ClassRegistrationPicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
+                RegistrationPicoContainer container = new HierarchicalPicoContainer.WithParentContainer(parentContainer);
                 try {
                     container.registerComponentByClass(cls);
                 } catch (PicoRegistrationException e) {

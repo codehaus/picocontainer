@@ -11,7 +11,7 @@
 package nanocontainer;
 
 import nanocontainer.reflection.StringToObjectConverter;
-import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.RegistrationPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
-    private final ClassRegistrationPicoContainer picoContainer;
+    private final RegistrationPicoContainer picoContainer;
     private ArrayList classLoaders = new ArrayList();
     private StringToObjectConverter converter;
 
@@ -35,7 +35,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         this.converter = converter;
     }
 
-    protected ClassRegistrationPicoContainer makePicoContainer(PicoContainer parentContainer) {
+    protected RegistrationPicoContainer makePicoContainer(PicoContainer parentContainer) {
         return new HierarchicalPicoContainer.WithParentContainer(parentContainer);
     }
 
@@ -103,8 +103,8 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
     }
 
-    public Class[] getComponentTypes() {
-        return picoContainer.getComponentTypes();
+    public Object[] getComponentKeys() {
+        return picoContainer.getComponentKeys();
     }
 
     public void addComponentClassLoader(ClassLoader classLoader) {

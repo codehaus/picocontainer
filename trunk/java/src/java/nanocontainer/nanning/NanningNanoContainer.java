@@ -2,7 +2,7 @@ package nanocontainer.nanning;
 
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
-import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.RegistrationPicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
@@ -17,9 +17,9 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 public class NanningNanoContainer extends HierarchicalPicoContainer {
     private final AspectSystem aspectSystem;
 
-    private ClassRegistrationPicoContainer serviceAndAspectContainer;
+    private RegistrationPicoContainer serviceAndAspectContainer;
 
-    public NanningNanoContainer(ComponentFactory componentFactory, ClassRegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
+    public NanningNanoContainer(ComponentFactory componentFactory, RegistrationPicoContainer serviceAndAspectContainer, AspectSystem aspectSystem) {
         super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.aspectSystem = aspectSystem;

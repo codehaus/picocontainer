@@ -142,6 +142,15 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Dan North</name>
+            <id>tastapod</id>
+            <email>tastapod@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <contributors>
@@ -150,6 +159,9 @@
         </contributor>
         <contributor>
             <name>Stacy Curl</name>
+        </contributor>
+        <contributor>
+            <name>Leo Simons</name>
         </contributor>
         <contributor>
             <name>Zohar Melamed</name>

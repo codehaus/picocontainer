@@ -14,12 +14,14 @@ import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
+import java.io.Serializable;
+
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
  * @version $Revision$
  */
-public class DecoratingComponentAdapter implements ComponentAdapter {
+public class DecoratingComponentAdapter implements ComponentAdapter, Serializable {
 
     private final ComponentAdapter delegate;
 

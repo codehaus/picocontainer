@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  */
-public interface ComponentAdapter extends Serializable {
+public interface ComponentAdapter {
     /**
      * The component's key.
      * @return

@@ -11,8 +11,20 @@
         </dependency>
 
         <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
             <id>mx4j</id>
             <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
         </dependency>
 
 		<dependency>
@@ -23,6 +35,12 @@
 		<dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+		<dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-proxytoys</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

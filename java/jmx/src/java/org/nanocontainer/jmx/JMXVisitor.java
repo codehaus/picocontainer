@@ -10,29 +10,31 @@
 
 package org.nanocontainer.jmx;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.AbstractPicoVisitor;
-import org.nanocontainer.jmx.mx4j.MX4JDynamicMBeanFactory;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
+import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 import javax.management.StandardMBean;
-import javax.management.DynamicMBean;
-import java.util.Map;
-import java.util.HashMap;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.AbstractPicoVisitor;
 
 /**
  * @author Michael Ward
+ * @author J&ouml,rg Schaible
  * @version $Revision$
  */
 public class JMXVisitor extends AbstractPicoVisitor {
 	private Map map = new HashMap(20);
 	private PicoContainer picoContainer;
+    private DynamicMBeanFactory factory;
 
 	/**
 	 * Register for a DynamicMBean which maps an MBeanInfo to an ObjectName
@@ -88,37 +90,37 @@ public class JMXVisitor extends AbstractPicoVisitor {
 		MBeanInfo mBeanInfo = mBeanInfoWrapper.getmBeanInfo();
 		ObjectName objectName = mBeanInfoWrapper.getObjectName();
 		Object instance = componentAdapter.getComponentInstance(picoContainer);
-		DynamicMBean mbean = getDynamicMBeanFactory().create(instance, mBeanInfo);
-
+		DynamicMBean mbean = getDynamicMBeanFactory(picoContainer).create(instance, mBeanInfo);
 		registerWithMBeanServer(mbean, objectName);
 	}
 
-	protected DynamicMBeanFactory getDynamicMBeanFactory() {
-		DynamicMBeanFactory factory = (DynamicMBeanFactory)picoContainer.
-				getComponentInstance(DynamicMBeanFactory.class);
-
-		if(factory == null) {
-			// no factory registered lets default to MX4J implementation
-			factory = new MX4JDynamicMBeanFactory();
-			((MutablePicoContainer)picoContainer).registerComponentInstance(DynamicMBeanFactory.class, factory);
-		}
-
-		return factory;
+	protected DynamicMBeanFactory getDynamicMBeanFactory(PicoContainer picoContainer) {
+        if (factory == null) {
+            factory = (DynamicMBeanFactory)picoContainer.getComponentInstanceOfType(DynamicMBeanFactory.class);
+            if (factory == null) {
+                factory = new StandardMBeanFactory();
+            }
+        }
+        return factory;
 	}
 
 	/**
 	 * Create a StandardMBean and register it to the MBeanServer
 	 */
 	protected void handleStandardMBean(ComponentAdapter componentAdapter, ObjectName objectName) {
-		StandardMBean standardMBean = (StandardMBean) componentAdapter.getComponentInstance(picoContainer);
-		registerWithMBeanServer(standardMBean, objectName);
-	}
+        Object key = componentAdapter.getComponentKey();
+        if (key instanceof Class) {
+            Object instance = componentAdapter.getComponentInstance(picoContainer);
+            DynamicMBean mbean = getDynamicMBeanFactory(picoContainer).create(instance, (Class)key);
+            registerWithMBeanServer(mbean, objectName);
+        }
+    }
 
 	protected void registerWithMBeanServer(DynamicMBean dynamicMBean, ObjectName objectName) {
 		MBeanServer mBeanServer = (MBeanServer) picoContainer.getComponentInstanceOfType(MBeanServer.class);
 
 		if (mBeanServer == null) {
-			throw new JMXRegistrationException("An MBeanServer instance MUST be registered with the container");
+			throw new JMXRegistrationException("A MBeanServer instance MUST be registered with the container");
 		}
 		// Can only register an ObjectName to the MBeanServer once
 		if (mBeanServer.isRegistered(objectName) == false) {

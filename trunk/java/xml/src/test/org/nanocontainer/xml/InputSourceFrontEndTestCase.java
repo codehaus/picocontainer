@@ -40,7 +40,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
         PicoContainer rootContainer = inputSourceContainerFactory.createPicoContainer(inputSource);
         assertNotNull(rootContainer.getComponentInstance(DefaultWebServerConfig.class));
 
-        PicoContainer childContainer = (PicoContainer) rootContainer.getChildren().iterator().next();
+        PicoContainer childContainer = (PicoContainer) rootContainer.getChildContainers().iterator().next();
         assertNotNull(childContainer.getComponentInstance("org.nanocontainer.testmodel.WebServer"));
     }
 }

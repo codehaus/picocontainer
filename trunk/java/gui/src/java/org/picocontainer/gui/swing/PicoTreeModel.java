@@ -28,7 +28,7 @@ public class PicoTreeModel implements TreeModel {
     public int getChildCount(Object parent) {
         if (parent instanceof PicoContainer) {
             PicoContainer pico = (PicoContainer) parent;
-            return pico.getChildren().size() + picoContainer.getComponentKeys().size();
+            return pico.getChildContainers().size() + picoContainer.getComponentKeys().size();
         } else {
             return 0;
         }
@@ -48,7 +48,7 @@ public class PicoTreeModel implements TreeModel {
 
     public Object getChild(Object parent, int index) {
         PicoContainer pico = (PicoContainer) parent;
-        List children = new ArrayList(pico.getChildren());
+        List children = new ArrayList(pico.getChildContainers());
         List componentKeys = new ArrayList(pico.getComponentKeys());
 
         if (index < children.size()) {
@@ -61,7 +61,7 @@ public class PicoTreeModel implements TreeModel {
 
     public int getIndexOfChild(Object parent, Object child) {
         PicoContainer pico = (PicoContainer) parent;
-        List children = new ArrayList(pico.getChildren());
+        List children = new ArrayList(pico.getChildContainers());
         List componentKeys = new ArrayList(pico.getComponentKeys());
 
         if (child instanceof PicoContainer) {

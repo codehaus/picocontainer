@@ -61,7 +61,7 @@ public class InputSourceFrontEnd {
     private void registerComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException {
         String className = componentElement.getAttribute("classname");
         String key = componentElement.getAttribute("key");
-        if(key == null) {
+        if(key == null || key.equals("")) {
             key = className;
         }
         pico.registerComponent(key, className);

@@ -23,7 +23,7 @@ public class GroovyDeploymentScriptHandler {
 
 	public GroovyDeploymentScriptHandler(McaDeployer mcaDeployer) {
 		// todo picotize
-		classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
+		this.classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
 		this.mcaDeployer = mcaDeployer;
 	}
 

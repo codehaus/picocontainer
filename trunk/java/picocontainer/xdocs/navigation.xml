@@ -31,6 +31,9 @@
       <item name="Blogs"                 href="/blogs.html"/>
       <item name="Download"              href="/download.html"/>
     </menu>
+    
+    <!-- Google Search -->
+    <search/>
   </body>
 
 </project>

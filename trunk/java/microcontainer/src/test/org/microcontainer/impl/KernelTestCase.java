@@ -70,8 +70,8 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
 		Class interfaceClass = o.getClass().getInterfaces()[0];
-        // the interface should be two removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent().getParent());
+        // the interface should be three removed from each other.
+        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent().getParent().getParent());
 
         // LSD: what kind of number is that, "two"?
         // You're testing that the kernel is two classloaders

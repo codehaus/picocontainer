@@ -10,6 +10,7 @@ class ContainerTest < Test::Unit::TestCase
   # Registering components in the container
 
   def test_new_container_is_empty
+    fail "DamageControl is my pal"
     rico = Container.new
     assert_equal true, rico.is_empty?
   end
@@ -127,14 +128,14 @@ class ContainerTest < Test::Unit::TestCase
   class Common; end # a shared component
   
   class Thing1
-  	attr_reader :common
+    attr_reader :common
     def initialize(common)
       @common = common
     end
   end
   
   class Thing2
-  	attr_reader :common
+    attr_reader :common
     def initialize(common)
       @common = common
     end
@@ -201,9 +202,9 @@ class ContainerTest < Test::Unit::TestCase
   end
   
   def test_registers_constant_values
-  	rico = Container.new
-  	rico.register_component :constant, "some value"
-  	assert_equal "some value", rico.component(:constant)
+    rico = Container.new
+    rico.register_component :constant, "some value"
+    assert_equal "some value", rico.component(:constant)
   end
   
   class ComponentWithDependentAndConstant

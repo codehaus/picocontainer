@@ -12,11 +12,10 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.AbstractList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -64,12 +63,11 @@ public class ClassHierarchyIntrospectorTestCase extends TestCase {
     }
 
     public void testAllInterfacesOfListShouldBeFound() {
-        Class[] interfaces = ClassHierarchyIntrospector.getAllInterfaces(BeanContextServices.class);
-        List interfaceList = Arrays.asList(interfaces);
-        assertTrue(interfaceList.contains(BeanContextServices.class));
-        assertTrue(interfaceList.contains(BeanContext.class));
-        assertTrue(interfaceList.contains(Collection.class));
-        assertTrue(interfaceList.contains(BeanContextServicesListener.class));
-        assertTrue(interfaceList.contains(EventListener.class));
+        Set interfaces = ClassHierarchyIntrospector.getAllInterfaces(BeanContextServices.class);
+        assertTrue(interfaces.contains(BeanContextServices.class));
+        assertTrue(interfaces.contains(BeanContext.class));
+        assertTrue(interfaces.contains(Collection.class));
+        assertTrue(interfaces.contains(BeanContextServicesListener.class));
+        assertTrue(interfaces.contains(EventListener.class));
     }
 }

@@ -16,6 +16,8 @@ import org.picocontainer.PicoIntrospectionException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -72,26 +74,24 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
-        Class[] interfaces;
+        List interfaces = new ArrayList();
         if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
-            interfaces = new Class[] {(Class) getDelegate().getComponentKey()};
+            interfaces.add(getDelegate().getComponentKey());
         } else {
-            interfaces = ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation());
+            interfaces.addAll(ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation()));
         }
-        if (interfaces.length == 0) {
+        if (interfaces.size() == 0) {
             if(strict) {
                 throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
             } else {
                 return getDelegate().getComponentInstance();
             }
         }
-        Class[] swappableAugmentedInterfaces = new Class[interfaces.length + 1];
-        swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
-        System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);
+        interfaces.add(Swappable.class);
         final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
-                swappableAugmentedInterfaces,
+                (Class[]) interfaces.toArray(new Class[interfaces.size()]),
                 delegatingInvocationHandler);
     }
 

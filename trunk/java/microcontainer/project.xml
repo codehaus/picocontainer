@@ -45,6 +45,13 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Mike Ward</name>
+            <id>mward</id>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencies>
@@ -75,19 +82,19 @@
             <version>1.0-beta-4</version>
         </dependency>
 
-		<dependency>
+        <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-jmx</artifactId>
             <version>1.0-beta-4</version>
         </dependency>
 
-		<dependency>
+        <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
             <version>1.0-beta-4</version>
         </dependency>
 
-		<dependency>
+        <dependency>
             <id>mx4j</id>
             <version>2.0.1</version>
         </dependency>
@@ -112,7 +119,7 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
@@ -126,7 +133,7 @@
         </unitTest>
     </build>
 
-    
+
     <reports>
         <report>maven-license-plugin</report>
         <report>maven-javadoc-plugin</report>

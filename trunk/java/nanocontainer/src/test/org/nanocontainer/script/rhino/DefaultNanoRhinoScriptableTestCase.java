@@ -1,7 +1,7 @@
 package org.picoextras.script.rhino;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;

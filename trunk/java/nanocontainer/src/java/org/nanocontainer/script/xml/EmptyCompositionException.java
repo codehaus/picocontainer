@@ -9,10 +9,7 @@
 
 package org.picoextras.script.xml;
 
-public class EmptyXmlCompositionException extends XmlFrontEndException {
-    public EmptyXmlCompositionException() {
-    }
-
+public class EmptyCompositionException extends XmlFrontEndException {
     public String getMessage() {
         return "No components in the XML composition";
     }

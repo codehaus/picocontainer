@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
@@ -166,8 +166,8 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
                     "<container xmlfrontend='YeeeeeHaaaaa'>" +
                     "      <component classname='org.nanocontainer.Xxx$A'/>" +
                     "</container>"), new MockMonitor());
-            fail("Should have barfed with ClassNotFoundException");
-        } catch (ClassNotFoundException e) {
+            fail("Should have barfed with PicoCompositionException");
+        } catch (PicoCompositionException e) {
         }
 
     }
@@ -195,8 +195,8 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
                     "<container container='YeeeHaaaaa'>" +
                     "      <component classname='org.nanocontainer.Xxx$A'/>" +
                     "</container>"), new MockMonitor());
-            fail("Should have barfed with ClassNotFoundException");
-        } catch (ClassNotFoundException e) {
+            fail("Should have barfed with PicoCompositionException");
+        } catch (PicoCompositionException e) {
         }
 
     }

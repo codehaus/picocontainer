@@ -16,10 +16,10 @@ import java.util.List;
 
 import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
-import org.picoextras.script.xml.EmptyXmlCompositionException;
+import org.picoextras.script.xml.EmptyCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -69,7 +69,7 @@ public class ParameterXmlFrontEnd implements XmlFrontEnd {
 		componentCount = 0;
 		PicoContainer container = registerContainer(null, rootElement);
 		if (componentCount == 0) {
-			throw new EmptyXmlCompositionException();
+			throw new EmptyCompositionException();
 		}
 		return container;
 	}

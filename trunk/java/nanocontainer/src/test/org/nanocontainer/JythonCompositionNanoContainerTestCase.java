@@ -11,7 +11,7 @@ package org.nanocontainer;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 import org.picoextras.testmodel.WebServerConfig;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 import java.io.IOException;

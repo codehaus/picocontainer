@@ -8,14 +8,17 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.script.xml.EmptyXmlCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.*;
+import org.picoextras.script.PicoCompositionException;
+import org.picoextras.script.xml.EmptyCompositionException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -28,17 +31,25 @@ public abstract class NanoContainer {
 
     private final List lifecycleAdapters = new ArrayList();
     private final NanoContainerMonitor monitor;
-    protected PicoContainer rootContainer;
+    private PicoContainer rootContainer;
 
-    public NanoContainer(NanoContainerMonitor monitor) {
+    public NanoContainer(NanoContainerMonitor monitor) throws EmptyCompositionException {
         this.monitor = monitor;
+    }
+
+    protected abstract PicoContainer createPicoContainer() throws PicoCompositionException;
+
+    protected void init() throws PicoCompositionException {
+        rootContainer = createPicoContainer();
+        instantiateComponentsBreadthFirst(rootContainer);
+        startComponentsBreadthFirst();
     }
 
     public PicoContainer getRootContainer() {
         return rootContainer;
     }
 
-    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlCompositionException {
+    private void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyCompositionException {
         if (picoContainer instanceof LifecyclePicoAdapter) {
             lifecycleAdapters.add(picoContainer);
         } else {
@@ -46,7 +57,7 @@ public abstract class NanoContainer {
         }
         List comps = picoContainer.getComponentInstances();
         if (comps.size() == 0) {
-            throw new EmptyXmlCompositionException();
+            throw new EmptyCompositionException();
         }
         monitor.componentsInstantiated(picoContainer);
         Collection childContainers = picoContainer.getChildContainers();
@@ -56,7 +67,7 @@ public abstract class NanoContainer {
         }
     }
 
-    protected void startComponentsBreadthFirst() {
+    public void startComponentsBreadthFirst() {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
             LifecyclePicoAdapter lpa= (LifecyclePicoAdapter) iterator.next();
             lpa.start();
@@ -81,17 +92,15 @@ public abstract class NanoContainer {
         }
     }
 
-
-
-    protected static void addShutdownHook(final NanoContainer nano) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                nano.stopComponentsDepthFirst();
-                nano.disposeComponentsDepthFirst();
-            }
-        });
+    public void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));
     }
 
-    protected abstract void compose(Reader composition)
-            throws IOException, ClassNotFoundException, PicoCompositionException;
+    private Runnable shutdownHook = new Runnable() {
+        public void run() {
+            stopComponentsDepthFirst();
+            disposeComponentsDepthFirst();
+
+        }
+    };
 }

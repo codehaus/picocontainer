@@ -91,6 +91,8 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         nano.disposeComponentsDepthFirst();
 
         assertTrue("Bespoke Container (a test class) should have been used",OverriddenDefaultLifecyclePicoContainer.used);
+        assertEquals("Should match the expression", "*A+A_started+A_stopped+A_disposed", MockMonitor.monitorRecorder);
+
     }
 
     public void testInstantiateWithBogusContainer() throws Exception, SAXException, ParserConfigurationException, IOException {

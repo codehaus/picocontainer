@@ -28,3 +28,22 @@ Fix checkstyle
 Refactor/fix what Simian and PMD say
 Set up a cron job at codehaus (damagecontrol) - Aslak
 Write Javadocs and use @author
+
+++ Containers
+
+Big Mainable container using Nano - ? 
+EOB migration from Avalon - Paul++
+AltRMI compatability - Paul
+CGLIB fun - ?
+Jetty/Servlet componentization advocacy - ?
+
+++ Components
+
+OpenSymphony components coversion/adaption - ?
+Avalon component conversion - ?
+JBoss component analysis - ?
+Plexus component anaylsys - ? 
+Carbon component analysis - ?
+Hibernate componentization advocacy - ?
+HypersonicSQL componentization advocacy - ? 
+

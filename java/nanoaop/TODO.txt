@@ -1,6 +1,5 @@
 TODO list for nanoaop:
 
-5.  Create NanoaopGroovyBuilder
 6.  Create NanoaopXMLBuilder
 7.  BeanShell, Python, etc. support
 8.  Consider alternate Nanning implementation (org.nanocontainer.nanoaop.nanning)

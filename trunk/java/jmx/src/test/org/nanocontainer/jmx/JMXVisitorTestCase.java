@@ -10,10 +10,13 @@
 
 package org.nanocontainer.jmx;
 
+import java.util.Set;
+
 import javax.management.DynamicMBean;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
+import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
 import org.nanocontainer.jmx.testmodel.Person;
@@ -66,8 +69,9 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
      */
     public void testVisitWithRegistration() throws MalformedObjectNameException {
         final JMXVisitor jmxVisitor = createVisitor(1);
-        final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(
-                new ObjectName(":type=JUnit"), (DynamicMBean)dynamicMBeanMock.proxy());
+        final ObjectName objectName = new ObjectName(":type=JUnit");
+        final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(objectName, (DynamicMBean)dynamicMBeanMock.proxy());
+        final ObjectInstance objectInstance = new ObjectInstance(objectName, Person.class.getName());
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.registerComponentImplementation(
@@ -76,9 +80,11 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter)).will(
                 returnValue(registrationInfo));
         mBeanServerMock.expects(once()).method("registerMBean").with(
-                same(registrationInfo.getMBean()), same(registrationInfo.getObjectName()));
+                same(registrationInfo.getMBean()), same(registrationInfo.getObjectName())).will(returnValue(objectInstance));
 
-        picoContainer.accept(jmxVisitor);
+        final Set set = (Set)jmxVisitor.traverse(picoContainer);
+        assertEquals(1, set.size());
+        assertSame(objectInstance, set.iterator().next());
     }
 
     /**
@@ -102,7 +108,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         mBeanServerMock.expects(once()).method("registerMBean").with(
                 same(registrationInfo.getMBean()), same(registrationInfo.getObjectName()));
 
-        picoContainer.accept(jmxVisitor);
+        jmxVisitor.traverse(picoContainer);
     }
 
     /**
@@ -118,7 +124,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(child), same(componentAdapter))
                 .will(returnValue(null));
 
-        picoContainer.accept(jmxVisitor);
+        jmxVisitor.traverse(picoContainer);
     }
 
     /**
@@ -152,7 +158,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final JMXVisitor jmxVisitor = createVisitor(1);
         final ComponentAdapter componentAdapter = new InstanceComponentAdapter(this, this);
         try {
-            componentAdapter.accept(jmxVisitor);
+            jmxVisitor.traverse(componentAdapter);
             fail("JMXRegistrationException expected");
         } catch (final JMXRegistrationException e) {
             // fine
@@ -178,7 +184,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
                 same(registrationInfo.getMBean()), same(registrationInfo.getObjectName())).will(throwException(exception));
 
         try {
-            picoContainer.accept(jmxVisitor);
+            jmxVisitor.traverse(picoContainer);
             fail("JMXRegistrationException expected");
         } catch (final JMXRegistrationException e) {
             assertSame(exception, e.getCause());

@@ -16,8 +16,8 @@ import javax.management.ObjectName;
 
 
 /**
- * An ObjectNameFactory, that uses the type of the DynamicMBean implementation to register. The value of the type is the name of
- * the implementation class without the package name.
+ * An ObjectNameFactory, that uses the type of the {@link DynamicMBean} implementation to register. The value of the type is the
+ * name of the implementation class without the package name.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -40,7 +40,7 @@ public class TypedObjectNameFactory extends AbstractObjectNameFactory {
     }
 
     /**
-     * Create an ObjectName with the class name of the MBean implementation as key <code>type</code>.
+     * Create an {@link ObjectName} with the class name of the MBean implementation as key <em>type</em>.
      * @see org.nanocontainer.jmx.ObjectNameFactory#create(java.lang.Object, javax.management.DynamicMBean)
      */
     public ObjectName create(final Object key, final DynamicMBean mBean) throws MalformedObjectNameException {

@@ -75,8 +75,7 @@ public class StandardMBeanTestCase extends TestCase {
 		try {
 			new StandardMBeanComponentAdapter(objectName, fooBar, ObjectName.class);
 			fail("NotCompliantMBeanException should have been thrown");
-		} catch (NotCompliantMBeanException e) {
-			e.printStackTrace();
+		} catch (NotCompliantMBeanException ignore) {
 		}
 	}
 }

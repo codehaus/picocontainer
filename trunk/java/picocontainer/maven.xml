@@ -20,7 +20,7 @@
     </echo>    
   </goal>
 
-  <!-- C O N T I N U O S   I N T E G R A T I O N -->
+  <!-- C O N T I N U O U S   I N T E G R A T I O N -->
 
   <!--
    ! Maven doesn't tell us whether compile was ok.

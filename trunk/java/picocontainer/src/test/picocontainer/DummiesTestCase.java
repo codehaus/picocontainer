@@ -12,14 +12,15 @@ package picocontainer;
 
 import junit.framework.TestCase;
 
-public class DummiesTestCase extends TestCase
- {
+import java.lang.reflect.InvocationTargetException;
+
+public class DummiesTestCase extends TestCase {
 
     public void testDummyContainer() {
         DummyContainer dc = new DummyContainer();
         assertFalse(dc.hasComponent(String.class));
         assertNull(dc.getComponent(String.class));
-        assertEquals(0,dc.getComponents().length);
+        assertEquals(0, dc.getComponents().length);
     }
 
     public void testDummyStartableLifecycleManager() throws PicoStartException, PicoStopException {
@@ -30,16 +31,18 @@ public class DummiesTestCase extends TestCase
         //TODO check no methods were called, via proxy ?
     }
 
-    public void testDummyComponentDecorator() throws PicoStartException, PicoStopException {
-        DummyComponentDecorator dcd = new DummyComponentDecorator();
-        Object o = new Object();
-        Object decorated = dcd.decorateComponent(Object.class, o);
-        assertEquals(o, decorated);
+    public void testDefaultComponentFactory() throws PicoStartException,
+                                                     PicoStopException,
+                                                     NoSuchMethodException,
+                                                     InvocationTargetException,
+                                                     IllegalAccessException,
+                                                     InstantiationException {
+        DefaultComponentFactory dcd = new DefaultComponentFactory();
+        Object decorated = dcd.createComponent(Object.class, Object.class.getConstructor(null), null);
+        assertNotNull(decorated);
         //TODO check no methods were called, via proxy ?
 
     }
-
-
 
 
 }

@@ -9,6 +9,9 @@ import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Jon Tirsen
  * @version $Revision$
@@ -21,8 +24,11 @@ public class NanningNanoContainerTestCase extends TestCase {
      */
     public static class NanningPicoContainer extends PicoContainerImpl {
         public NanningPicoContainer(final AspectSystem aspectSystem) {
-            super(new DummyContainer(), new DummyStartableLifecycleManager(), new ComponentDecorator() {
-                public Object decorateComponent(Class compType, Object instance) {
+            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DefaultComponentFactory() {
+                public Object createComponent(Class compType, Constructor constructor, Object[] args)
+                        throws InvocationTargetException, IllegalAccessException, InstantiationException
+                {
+                    Object component = super.createComponent(compType, constructor, args);
                     Class[] interfaces = compType.getInterfaces();
 
                     // Nanning will only aspectify stuff that has one and only one interface
@@ -31,15 +37,15 @@ public class NanningNanoContainerTestCase extends TestCase {
 
                         // the trick: set up first mixin manually with the component as target
                         AspectInstance aspectInstance = new AspectInstance();
-                        MixinInstance mixin = new MixinInstance(interfaze, instance);
+                        MixinInstance mixin = new MixinInstance(interfaze, component);
                         aspectInstance.addMixin(mixin);
 
                         // let the aspects do it's work
                         aspectSystem.initialize(aspectInstance);
-                        instance = aspectInstance.getProxy();
+                        component = aspectInstance.getProxy();
                     }
 
-                    return instance;
+                    return component;
                 }
             });
         }

@@ -26,13 +26,13 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new PicoContainerImpl(null, new DummyStartableLifecycleManager(), new DummyComponentDecorator());
+            new PicoContainerImpl(null, new DummyStartableLifecycleManager(), new DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new PicoContainerImpl(new DummyContainer(), null, new DummyComponentDecorator());
+            new PicoContainerImpl(new DummyContainer(), null, new DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected

@@ -17,14 +17,14 @@ public class PicoContainerImpl implements PicoContainer {
 
     private final Container parentContainer;
     private final StartableLifecycleManager startableLifecycleManager;
-    private final ComponentDecorator proxyFactory;
+    private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
     private List orderedComponents = new ArrayList();
 
     public PicoContainerImpl(Container parentContainer,
             StartableLifecycleManager startableLifecycleManager,
-            ComponentDecorator proxyFactory) {
+            ComponentFactory proxyFactory) {
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
         }
@@ -32,29 +32,29 @@ public class PicoContainerImpl implements PicoContainer {
             throw new NullPointerException("startableLifecycleManager cannot be null");
         }
         if (proxyFactory == null) {
-            throw new NullPointerException("proxyFactory cannot be null");
+            throw new NullPointerException("componentFactory cannot be null");
         }
         this.parentContainer = parentContainer;
         this.startableLifecycleManager = startableLifecycleManager;
-        this.proxyFactory = proxyFactory;
+        this.componentFactory = proxyFactory;
     }
 
     public static class Default extends PicoContainerImpl {
         public Default() {
-            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DummyComponentDecorator());
+            super(new DummyContainer(), new DummyStartableLifecycleManager(), new DefaultComponentFactory());
         }
 
     }
 
     public static class WithParentContainer extends PicoContainerImpl {
         public WithParentContainer(Container parentContainer) {
-            super(parentContainer, new DummyStartableLifecycleManager(), new DummyComponentDecorator());
+            super(parentContainer, new DummyStartableLifecycleManager(), new DefaultComponentFactory());
         }
     }
 
     public static class WithStartableLifecycleManager extends PicoContainerImpl {
         public WithStartableLifecycleManager(StartableLifecycleManager startableLifecycleManager) {
-            super(new DummyContainer(), startableLifecycleManager, new DummyComponentDecorator());
+            super(new DummyContainer(), startableLifecycleManager, new DefaultComponentFactory());
         }
     }
 
@@ -203,8 +203,9 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
-    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        return proxyFactory.decorateComponent(type, constructor.newInstance(args));
+    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        return componentFactory.createComponent(type, constructor, args);
     }
 
     private Object getComponentForParam(Class parameter) throws AmbiguousComponentResolutionException {

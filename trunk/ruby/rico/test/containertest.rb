@@ -2,6 +2,7 @@ require 'test/unit'
 
 require 'rico/container'
 require 'rico/exceptions'
+require 'rico/test/model'
 
 =begin
   Author: Dan North

@@ -1,5 +1,7 @@
 # Make Class YAMLable
 # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/95432
+require 'yaml'
+
 class Class
   def to_yaml( opts = {} )
     YAML::quick_emit( nil, opts ) { |out|

@@ -48,7 +48,7 @@
     </goal>
 
     <goal name="site-deploy">
-        <attainGoal name="multiproject"/>
+        <attainGoal name="multiproject:site"/>
         <attainGoal name="site:deploy"/>
     </goal>
 
@@ -82,7 +82,8 @@
     
     <goal name="nano:site-directory">
         <util:available file="${basedir}/xdocs/navigation.xml">
-            ${pom.setSiteDirectory("/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}")}
+            <j:set var="globalSiteDirectory">/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}</j:set> 
+            ${pom.setSiteDirectory(globalSiteDirectory)}
         </util:available>
     </goal>
 

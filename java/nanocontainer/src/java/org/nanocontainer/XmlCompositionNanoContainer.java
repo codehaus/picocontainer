@@ -8,16 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picoextras.script.xml.XMLContainerAssembler;
+import org.picoextras.script.xml.XMLContainerBuilder;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Ward Cunningham
  * @version $Revision$
- *
  * @deprecated To replace with a NanoContainer instance that is given a
- * {@link XMLContainerAssembler} instance in its ctor.
+ *             {@link XMLContainerBuilder} instance in its ctor.
  */
 public class XmlCompositionNanoContainer /*extends NanoContainer*/ {
 
@@ -57,7 +56,7 @@ public class XmlCompositionNanoContainer /*extends NanoContainer*/ {
 //            if (xmlFrontEndClassName != null && !xmlFrontEndClassName.equals("")) {
 //                xmlFrontEnd = createXmlFrontEnd(xmlFrontEndClassName);
 //            } else {
-//                xmlFrontEnd = new XMLContainerAssembler();
+//                xmlFrontEnd = new XMLContainerBuilder();
 //            }
 //            return xmlFrontEnd.createPicoContainer(rootElement);
 //        } catch (SAXException e) {

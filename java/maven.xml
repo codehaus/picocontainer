@@ -23,9 +23,9 @@
         <available file="${basedir}/picoidea/lib/openapi.jar" property="idea" value="dummy/*"/>
         <property name="idea" value="picoidea/*"/>
 
-        <property name="excludes" value="groovypico/*,${swt},${idea}"/>
+        <property name="excludes" value="pool/*,groovypico/*,${swt},${idea}"/>
         <echo>Excluded from build: ${excludes}</echo>
-        
+
 
         <maven:reactor
             basedir="${basedir}"

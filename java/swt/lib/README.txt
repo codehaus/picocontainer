@@ -1,7 +1,0 @@
-Put the following files here:
-
-boot.jar
-jface.jar
-runtime.jar
-swt.jar
-swt-win32-*.dll

@@ -13,11 +13,13 @@ package org.picoextras.script.xml;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;
+import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
+import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerConfigComp;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -36,14 +38,15 @@ import java.io.StringReader;
  * @version $Revision$
  */
 public class DefaultXmlFrontEndTestCase extends TestCase {
+    private SimpleReference parentContainerRef;
+    private SimpleReference containerRef;
 
     private Element getRootElement(InputSource is) throws ParserConfigurationException, IOException, SAXException {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is).getDocumentElement();
     }
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "    <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "</container>"));
@@ -54,15 +57,15 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     private MutablePicoContainer createPicoContainer(InputSource inputSource) throws ParserConfigurationException, IOException, SAXException {
-        ContainerAssembler assembler = new XMLContainerAssembler(getRootElement(inputSource));
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        assembler.assembleContainer(pico, null);
-        return pico;
+        ContainerBuilder builder = new XMLContainerBuilder(getRootElement(inputSource));
+        containerRef = new SimpleReference();
+        parentContainerRef = new SimpleReference();
+        builder.buildContainer(containerRef, parentContainerRef, null);
+        return (MutablePicoContainer) containerRef.get();
     }
 
-    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<component class='org.picocontainer.defaults.DefaultPicoContainer'>" +
+    public void testAPicocontainerCanHostItself() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
+        InputSource inputSource = new InputSource(new StringReader("<component class='org.picocontainer.defaults.DefaultPicoContainer'>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "    <component key='child1' class='org.picocontainer.defaults.DefaultPicoContainer'>" +
                 "        <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
@@ -88,8 +91,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertTrue(testCompJar.isFile());
         assertTrue(testCompJar2.isFile());
 
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <classpath>" +
                 "        <element file='" + testCompJar.getCanonicalPath() + "'/>" +
                 "    </classpath>" +
@@ -111,16 +113,17 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         Object barTestComp = childContainer.getComponentInstance("bar");
         assertNotNull("Container should have a 'bar' component", barTestComp);
 
-        assertEquals("foo classloader should be parent of bar", fooTestComp.getClass().getClassLoader(),
-                barTestComp.getClass().getClassLoader().getParent());
+        ClassLoader fooLoader = fooTestComp.getClass().getClassLoader();
+        ClassLoader barLoader = barTestComp.getClass().getClassLoader();
+        assertSame("foo classloader should be parent of bar", fooLoader,
+                barLoader.getParent());
 
     }
 
     public void testUnknownComponentClassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
-            InputSource inputSource = new InputSource(new StringReader(
-                    "<container>" +
+            InputSource inputSource = new InputSource(new StringReader("<container>" +
                     "      <component class='Foo'/>" +
                     "</container>"));
             createPicoContainer(inputSource);
@@ -132,8 +135,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testUnknownComponentClassThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
-            InputSource inputSource = new InputSource(new StringReader(
-                    "<container>" +
+            InputSource inputSource = new InputSource(new StringReader("<container>" +
                     "</container>"));
             createPicoContainer(inputSource);
         } catch (EmptyCompositionException cnfe) {
@@ -141,8 +143,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <pseudocomponent factory='org.picoextras.script.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
                 "      <config-or-whatever/>" +
                 "    </pseudocomponent>" +
@@ -162,8 +163,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     public void testInstantiationOfComponentsWithParams() throws XmlFrontEndException, IOException, SAXException, ClassNotFoundException, ParserConfigurationException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "  <component class='org.picoextras.testmodel.WebServerConfigComp'>" +
                 "    <parameter class='java.lang.String'>localhost</parameter>" +
                 "    <parameter class='int'>8080</parameter>" +
@@ -172,8 +172,22 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
                 "</container>"));
         MutablePicoContainer pico = createPicoContainer(inputSource);
         assertNotNull(pico.getComponentInstance(WebServerConfigComp.class));
-        WebServerConfigComp config = (WebServerConfigComp) pico.getComponentInstance(WebServerConfigComp.class);
+        WebServerConfigComp config = (WebServerConfigComp) pico.getComponentInstanceOfType(WebServerConfigComp.class);
         assertEquals("localhost", config.getHost());
         assertEquals(8080, config.getPort());
+    }
+
+    public void testComponentAdapterClassCanBeSpecifiedInContainerElement() throws IOException, ParserConfigurationException, SAXException {
+
+        InputSource inputSource = new InputSource(new StringReader("<container componentadapterfactory='" + ImplementationHidingComponentAdapterFactory.class.getName() + "'>" +
+                "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
+                "</container>"));
+
+        MutablePicoContainer pico = createPicoContainer(inputSource);
+        Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
+
+        assertTrue(wsc instanceof WebServerConfig);
+        assertFalse(wsc instanceof DefaultWebServerConfig);
+
     }
 }

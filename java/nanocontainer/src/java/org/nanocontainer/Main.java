@@ -15,7 +15,7 @@ import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.script.jython.JythonContainerAssembler;
 import org.picoextras.script.rhino.JavascriptContainerAssembler;
-import org.picoextras.script.xml.XMLContainerAssembler;
+import org.picoextras.script.xml.XMLContainerBuilder;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
@@ -34,9 +34,10 @@ public class Main {
     private static final int COMPOSITION_OPT = 'c';
 
     private static final Map extensionToAssemblerMap = new HashMap();
+
     static {
         extensionToAssemblerMap.put(".js", JavascriptContainerAssembler.class);
-        extensionToAssemblerMap.put(".xml", XMLContainerAssembler.class);
+        extensionToAssemblerMap.put(".xml", XMLContainerBuilder.class);
         extensionToAssemblerMap.put(".py", JythonContainerAssembler.class);
     }
 
@@ -128,12 +129,12 @@ public class Main {
 
         // This won't work. They all need different ctor parameters. We should use pico itself to assemble this!!
         ContainerAssembler ca = (ContainerAssembler) containerAssemblerClass.newInstance();
-        final ContainerBuilder cb = new org.picoextras.integrationkit.LifecycleContainerBuilder();
+        final ContainerBuilder cb = new org.picoextras.integrationkit.DefaultLifecycleContainerBuilder(ca);
 
         final ObjectReference containerRef = new SimpleReference();
 
         // build and start the container
-        cb.buildContainer(containerRef, null, ca, null);
+        cb.buildContainer(containerRef, null, null);
 
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {

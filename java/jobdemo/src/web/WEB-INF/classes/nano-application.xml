@@ -36,7 +36,7 @@
     <!--
         proeprties for rendering of search documents
     -->
-    <implementation key="renderProperties" class="org.nanocontainer.util.ClasspathProperties">  
+    <implementation key="renderProperties" class="org.nanocontainer.util.ConstructableProperties">  
         <constant>
             <string>search.properties</string>
         </constant>

@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 import java.io.Serializable;
 
 /**
@@ -70,17 +72,27 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.containsKey(componentKey);
     }
 
-    public Iterator getInstanceMapIterator() {
-        return componentKeyToInstanceMap.entrySet().iterator();
-    }
+    //RMV public Iterator getInstanceMapIterator() {
+    //    return componentKeyToInstanceMap.entrySet().iterator();
+    //}
 
     public Object getComponentInstance(Object componentKey) {
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Object[] getInstanceMapKeyArray() {
+    public Collection getComponentInstanceKeys() {
         Set types = componentKeyToInstanceMap.keySet();
-        return types.toArray();
+        return Collections.unmodifiableCollection(types);
+    }
+
+    public Collection getComponentInstances() {
+        ArrayList list = new ArrayList();
+        Set types = componentKeyToInstanceMap.entrySet();
+        for (Iterator iterator = types.iterator(); iterator.hasNext();) {
+            Map.Entry e = (Map.Entry) iterator.next();
+            list.add(e.getValue());
+        }
+        return Collections.unmodifiableCollection(list);
     }
 
     public ComponentSpecification getComponentSpec(Object componentKey) {

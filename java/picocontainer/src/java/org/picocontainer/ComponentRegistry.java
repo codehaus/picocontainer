@@ -14,6 +14,7 @@ import org.picocontainer.defaults.ComponentSpecification;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collection;
 
 public interface ComponentRegistry {
 
@@ -33,9 +34,10 @@ public interface ComponentRegistry {
 
     Object getComponentInstance(Object componentKey);
 
-    Iterator getInstanceMapIterator();
+    Collection getComponentInstanceKeys();
 
-    Object[] getInstanceMapKeyArray();
+    Collection getComponentInstances();
+
 
     ComponentSpecification getComponentSpec(Object componentKey);
 

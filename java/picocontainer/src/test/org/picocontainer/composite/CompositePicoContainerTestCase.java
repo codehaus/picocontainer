@@ -16,6 +16,10 @@ import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 import org.picocontainer.testmodel.WilmaImpl;
 import org.picocontainer.*;
 
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompositePicoContainerTestCase extends TestCase {
     private RegistrationPicoContainer pico;
     private CompositePicoContainer.Filter filter;
@@ -78,12 +82,16 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == String.class ? acomp : null;
             }
 
-            public Object[] getComponents() {
-                return new Object[]{acomp};
+            public Collection getComponents() {
+                List list = new ArrayList();
+                list.add(acomp);
+                return list;
             }
 
-            public Object[] getComponentKeys() {
-                return new Class[]{String.class};
+            public Collection getComponentKeys() {
+                List list = new ArrayList();
+                list.add(String.class);
+                return list;
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
@@ -109,12 +117,17 @@ public class CompositePicoContainerTestCase extends TestCase {
                 return compKey == Integer.class ? bcomp : null;
             }
 
-            public Object[] getComponents() {
-                return new Object[]{bcomp};
+            public Collection getComponents() {
+                List list = new ArrayList();
+                list.add(bcomp);
+                return list;
             }
 
-            public Object[] getComponentKeys() {
-                return new Class[]{Integer.class};
+            public Collection getComponentKeys() {
+                List list = new ArrayList();
+                list.add(Integer.class);
+                return list;
+
             }
 
             public void instantiateComponents() throws PicoInstantiationException {
@@ -137,7 +150,7 @@ public class CompositePicoContainerTestCase extends TestCase {
         assertTrue(acc.hasComponent(Integer.class));
         assertTrue(acc.getComponent(String.class) == acomp);
         assertTrue(acc.getComponent(Integer.class) == bcomp);
-        assertTrue(acc.getComponents().length == 2);
+        assertTrue(acc.getComponents().size() == 2);
 
     }
 
@@ -146,7 +159,7 @@ public class CompositePicoContainerTestCase extends TestCase {
         CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[0]);
         assertTrue(acc.hasComponent(String.class) == false);
         assertTrue(acc.getComponent(String.class) == null);
-        assertTrue(acc.getComponents().length == 0);
+        assertTrue(acc.getComponents().size() == 0);
 
     }
 

@@ -21,6 +21,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * @version $Revision: 1.10 $
  */
 public class NanningNanoContainerTestCase extends TestCase {
+
     private NanningNanoContainer container;
 
     /**

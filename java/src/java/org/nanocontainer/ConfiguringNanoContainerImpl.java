@@ -108,9 +108,9 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
 
     public void instantiateComponents() throws PicoInitializationException {
         super.instantiateComponents();
-        final Object[] components = getComponents();
-        for (int i = 0; i < components.length; i++) {
-            final Object configuree = components[i];
+        final Collection components = getComponents();
+        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+            Object configuree = (Object) iterator.next();
             final Collection configurationItems = (Collection) implConfigurationMap.get(configuree.getClass().getName());
             if (configurationItems != null) {
                 try {

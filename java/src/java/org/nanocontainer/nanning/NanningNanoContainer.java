@@ -22,6 +22,9 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
@@ -65,9 +68,9 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
 
     public void instantiateComponents() throws PicoInitializationException {
         serviceAndAspectContainer.instantiateComponents();
-        Object[] components = serviceAndAspectContainer.getComponents();
-        for (int i = 0; i < components.length; i++) {
-            Object component = components[i];
+        Collection components = serviceAndAspectContainer.getComponents();
+        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+            Object component = (Object) iterator.next();
             if (component instanceof Aspect) {
                 Aspect aspect = (Aspect) component;
                 aspectSystem.addAspect(aspect);

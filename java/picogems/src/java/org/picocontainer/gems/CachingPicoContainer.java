@@ -158,12 +158,12 @@ public class CachingPicoContainer implements MutablePicoContainer, Serializable 
 
     }
 
-    public void addChildContainer(PicoContainer child) {
-        delegate.addChildContainer(child);
+    public boolean addChildContainer(PicoContainer child) {
+        return delegate.addChildContainer(child);
     }
 
-    public void removeChildContainer(PicoContainer child) {
-        delegate.removeChildContainer(child);
+    public boolean removeChildContainer(PicoContainer child) {
+        return delegate.removeChildContainer(child);
     }
 
     public void accept(PicoVisitor visitor) {

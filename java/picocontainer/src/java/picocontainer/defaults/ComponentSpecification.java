@@ -21,14 +21,11 @@ class ComponentSpecification {
     private final Class comp;
     private Parameter[] parameters;
 
-    public ComponentSpecification(ComponentFactory componentFactory, final Class compType, final Class comp) {
+    public ComponentSpecification(ComponentFactory componentFactory, final Class compType, final Class comp, Parameter[] parameters) {
         this.componentFactory = componentFactory;
         this.compType = compType;
         this.comp = comp;
-        parameters = new Parameter[componentFactory.getDependencies(comp).length];
-        for (int i = 0; i < parameters.length; i++) {
-            parameters[i] = new ComponentParameter();
-        }
+        this.parameters = parameters;
     }
 
     public Class getComponentType() {

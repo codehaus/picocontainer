@@ -10,7 +10,7 @@
 
 package picocontainer;
 
-import picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
+import picocontainer.defaults.*;
 
 /**
  * PicoContainer - guaranteed to resolve the needs of components

@@ -8,12 +8,7 @@
 A component will be instantiated via a instance of
 ComponentFactory.&nbsp; There is no NullObject implementation of this.
 This is pluggable of course.<br>
-<pre>public interface ComponentFactory {</pre>
-<pre>&nbsp;&nbsp;&nbsp; Object createComponent(</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ComponentSpecification componentSpec, </pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Object[] instanceDependencies) </pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws PicoInvocationTargetInitializationException;</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public interface ComponentFactory {<br>&nbsp;&nbsp;&nbsp; Object createComponent(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ComponentSpecification componentSpec,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Object[] instanceDependencies)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws PicoInvocationTargetInitializationException;<br>}</pre>
 <h2>DefaultComponentFactory</h2>
 This component factory uses basic reflection to instantiate a component.<br>
 <h2>ImplementationHidingComponentFactory</h2>

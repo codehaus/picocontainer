@@ -28,19 +28,28 @@ writers), would be relaxed too, allowing classes not supplied in the
 WAR file to be compiled against and delivered by the containing
 environment.<br>
 <br>
-<pre>public class PicoServletExample extends HttpServlet {</pre>
-<pre>&nbsp;&nbsp;&nbsp; private StockQuoteService stockQuoteService;</pre>
-<pre>&nbsp;&nbsp;&nbsp; public PicoServletExample(StockQuoteService sqs) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockQuoteService = sqs</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; response.setContentType("text/html");</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintWriter out = response.getWriter();</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.println("&lt;html&gt;&lt;body&gt;");</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.println("Microsoft's Current Price =" + stockQuoteService.getQuote("MSFT"));</pre>
-<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; out.println("&lt;/body&gt;&lt;/html&gt;");</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>}<br><br></pre>
+<div style="margin-left: 40px;">public class PicoServletExample extends
+HttpServlet {<br>
+&nbsp;&nbsp;&nbsp; private StockQuoteService stockQuoteService;<br>
+&nbsp;&nbsp;&nbsp; public PicoServletExample(StockQuoteService sqs) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockQuoteService = sqs<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; public void doGet(HttpServletRequest request,
+HttpServletResponse response) <br>
+throws IOException, ServletException {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+response.setContentType("text/html");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintWriter out =
+response.getWriter();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+out.println("&lt;html&gt;&lt;body&gt;");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out.println("Microsoft's
+Current Price =" + stockQuoteService.getQuote("MSFT"));<br>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+out.println("&lt;/body&gt;&lt;/html&gt;");<br>
+&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+</div>
 This may seem far fetched, but it is entirely possible given the number
 of Open Source Servlet containers.<br>
 <h2>Applet</h2>
@@ -56,55 +65,15 @@ http://quotes.nasdaq.com for display in the applet, c) some
 centralized/proxied version of (b), d) a MockStockQuteService for Unit
 testing (not withstanding the fact that AppletUnit has not been written
 yet).<br>
-<br>
-<pre>public class PicoAppletExample extends Applet {</pre>
-<pre>&nbsp;&nbsp;&nbsp; private StockQuoteService stockQuoteService;</pre>
-<pre>&nbsp;&nbsp;&nbsp; public PicoAppletExample(StockQuteService sqs) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockQuoteServic = sqs; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void init() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // lay out trading GUI etc.</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void start() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //whatever</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; </pre>
-<pre>&nbsp;&nbsp;&nbsp; public void stop() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // whatever</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public String getAppletInfo() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "Hello";</pre>
-<pre>&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;  </pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class PicoAppletExample extends Applet {<br>&nbsp;&nbsp;&nbsp; private StockQuoteService stockQuoteService;<br>&nbsp;&nbsp;&nbsp; public PicoAppletExample(StockQuteService sqs) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockQuoteServic = sqs; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void init() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // lay out trading GUI etc.<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //whatever<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // whatever<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public String getAppletInfo() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "Hello";<br>&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;<br>}</pre>
 Sadly, this remains far fetched, due to a dearth of Open Source Servlet
 containers.<br>
 <h2>Enterprise Bean</h2>
 Same story :<br>
-<br>
-<pre>public interface StockQuoteService {</pre>
-<pre>&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);</pre>
-<pre>}</pre>
-<pre>public class DefaultStockQuoteService implements StockQuoteService {</pre>
-<pre>&nbsp;&nbsp;&nbsp; QuoteRecorder quoteRecorder;</pre>
-<pre>&nbsp;&nbsp;&nbsp; public DefaultStockQuoteService(QuoteRecorderquoteRecorder) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.quoteRecorder =quoteRecorder;</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void BigDecimal getQuote(String stockTicker) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; quoteRecorder.recordQuote(stockTicker);</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new BigDecimal()// TODO - makereal</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public interface StockQuoteService {<br>&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);<br>}<br>public class DefaultStockQuoteService implements StockQuoteService {<br>&nbsp;&nbsp;&nbsp; QuoteRecorder quoteRecorder;<br>&nbsp;&nbsp;&nbsp; public DefaultStockQuoteService(QuoteRecorderquoteRecorder) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.quoteRecorder =quoteRecorder;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void BigDecimal getQuote(String stockTicker) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; quoteRecorder.recordQuote(stockTicker);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new BigDecimal()// TODO - makereal<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
 <h2>Desktop Operating System</h2>
 Getting boring now :<br>
-<br>
-<pre>public class QuotePanel extends JPanel implements {</pre>
-<pre>&nbsp;&nbsp;&nbsp; StockQuoteService stockQuoteService;</pre>
-<pre>&nbsp;&nbsp;&nbsp; public QuotePanel(StockQuoteService sqs) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockQuoteService = sqs;</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.add(new JTextField(""),BorderLayout.CENTER);</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //etc</pre>
-<pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class QuotePanel extends JPanel implements {<br>&nbsp;&nbsp;&nbsp; StockQuoteService stockQuoteService;<br>&nbsp;&nbsp;&nbsp; public QuotePanel(StockQuoteService sqs) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockQuoteService = sqs;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.add(new JTextField(""),BorderLayout.CENTER);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //etc<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
 <br>
 </body>
 </html>

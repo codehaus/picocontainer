@@ -35,29 +35,11 @@ outside.<br>
 <h2>Examples</h2>
 Without worrying about the generations of IoC that let us arrive at
 the PicoContainer design, here is the simplest possible IoC component :<br>
-<pre>public interface Bookmaker {</pre>
-<pre>   void bet();<br></pre>
-<pre>}</pre>
-<pre><br>public interface Orange {</pre>
-<pre>&nbsp; // methods</pre>
-<pre>}</pre>
-<pre><br>public class AppleImpl implements Apple {</pre>
-<pre>&nbsp; private Orange orange;</pre>
-<pre>&nbsp; public AppleImpl(Orange orange) {</pre>
-<pre>&nbsp;&nbsp;&nbsp; this.orange = orange;</pre>
-<pre>&nbsp; }</pre>
-<pre>&nbsp; // other methods</pre>
-<pre>}</pre>
-<br>
+<pre style="margin-left: 40px;">public interface Bookmaker {<br>   void bet();<br>
+}
+<br>public interface Orange {<br>&nbsp; // methods<br>}<br><br>public class AppleImpl implements Apple {<br>&nbsp; private Orange orange;<br>&nbsp; public AppleImpl(Orange orange) {<br>&nbsp;&nbsp;&nbsp; this.orange = orange;<br>&nbsp; }<br>&nbsp; // other methods<br>}</pre>
 Here are some common smells that should lead you to refactor to IoC :<br>
-<br>
-<pre>public class AppleImpl implements Apple{</pre>
-<pre>&nbsp; private Orange orange;</pre>
-<pre>&nbsp; public Apple() {</pre>
-<pre>&nbsp;&nbsp;&nbsp; this.orange = new OrangeImpl();</pre>
-<pre>&nbsp; }</pre>
-<pre>&nbsp; // other methods</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class AppleImpl implements Apple{<br>&nbsp; private Orange orange;<br>&nbsp; public Apple() {<br>&nbsp;&nbsp;&nbsp; this.orange = new OrangeImpl();<br>&nbsp; }<br>&nbsp; // other methods<br>}</pre>
 <br>
 The problem is that you are tied to the OrangleImpl <em>implementation</em>
 for provision of Orange
@@ -68,50 +50,15 @@ difficult to have multiple instances in the same classloader with
 different assembly.<br>
 <br>
 Here are some other smells along the same line :<br>
-<br>
-<pre>public class AppleImpl implements Apple {</pre>
-<pre>  private static Orange orange = OrangeFactory.getOrange();</pre>
-<pre>&nbsp; public Apple() {</pre>
-<pre>&nbsp; }</pre>
-<pre>&nbsp; // other methods</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class AppleImpl implements Apple {<br>  private static Orange orange = OrangeFactory.getOrange();<br>&nbsp; public Apple() {<br>&nbsp; }<br>&nbsp; // other methods<br>}</pre>
 <h2>Configuration</h2>
 Sometimes we see configuration like so ...<br>
-<pre>public class BigFatComponent {</pre>
-<pre>&nbsp;&nbsp;String config01;</pre>
-<pre>&nbsp;&nbsp;String config02;</pre>
-<pre>&nbsp;&nbsp;public BigFatComponent() {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;ResourceFactory resources = new ResourceFactory(new File("mycomp.properties"));</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;config01 = resources.get("config01");</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;config02 = resources.get("config02");</pre>
-<pre>&nbsp;&nbsp;}</pre>
-<pre>&nbsp; // other methods</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class BigFatComponent {<br>&nbsp;&nbsp;String config01;<br>&nbsp;&nbsp;String config02;<br>&nbsp;&nbsp;public BigFatComponent() {<br>&nbsp;&nbsp;&nbsp;&nbsp;ResourceFactory resources = new ResourceFactory(new File("mycomp.properties"));<br>&nbsp;&nbsp;&nbsp;&nbsp;config01 = resources.get("config01");<br>&nbsp;&nbsp;&nbsp;&nbsp;config02 = resources.get("config02");<br>&nbsp;&nbsp;}<br>&nbsp; // other methods<br>}</pre>
 In the IoC world, it might be better to see the following for simple
 designs :<br>
-<pre>public class BigFatComponent {</pre>
-<pre>&nbsp;&nbsp;String config01;<br>  String config02;</pre>
-<pre>&nbsp;&nbsp;public BigFatComponent(String config01, String config02) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config01;</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config02;</pre>
-<pre>&nbsp;&nbsp;}</pre>
-<pre>&nbsp; // other methods</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public class BigFatComponent {<br>&nbsp;&nbsp;String config01;<br>  String config02;<br>&nbsp;&nbsp;public BigFatComponent(String config01, String config02) {<br>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config01;<br>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config02;<br>&nbsp;&nbsp;}<br>&nbsp; // other methods<br>}</pre>
 Or this for more complex ones ..<br>
-<pre>public interface BigFatComponentConfig {</pre>
-<pre>&nbsp;&nbsp;String getConfig01();</pre>
-<pre>&nbsp;&nbsp;String getConfig02();</pre>
-<pre>}</pre>
-<pre></pre>
-<pre>public class BigFatComponent {</pre>
-<pre>&nbsp;&nbsp;String config01;</pre>
-<pre>&nbsp;&nbsp;String config02;</pre>
-<pre>&nbsp;&nbsp;public BigFatComponent(BigFatComponentConfig config) {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config.getConfig01();</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config.getConfig02();</pre>
-<pre>&nbsp;&nbsp;}</pre>
-<pre>&nbsp;&nbsp;// other methods</pre>
-<pre>}</pre>
+<pre style="margin-left: 40px;">public interface BigFatComponentConfig {<br>&nbsp;&nbsp;String getConfig01();<br>&nbsp;&nbsp;String getConfig02();<br>}<br><br>public class BigFatComponent {<br>&nbsp;&nbsp;String config01;<br>&nbsp;&nbsp;String config02;<br>&nbsp;&nbsp;public BigFatComponent(BigFatComponentConfig config) {<br>&nbsp;&nbsp;&nbsp;&nbsp;this.config01 = config.getConfig01();<br>&nbsp;&nbsp;&nbsp;&nbsp;this.config02 = config.getConfig02();<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;// other methods<br>}</pre>
 Where there could be many different implementations of
 BigFatComponentConfig:<br>
 <ul>

@@ -5,13 +5,18 @@ import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.io.Serializable;
 import java.util.*;
+import java.lang.ref.WeakReference;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
-    private final List parents = new ArrayList();
+
+    // WeakReferences to aid GC and avoid circular references.
+    private final List parentWeakReferences = new ArrayList();
+
+    // Child containers.
     private final Collection children = new ArrayList();
 
     // Keeps track of unmanaged components - components instantiated outside the container
@@ -35,9 +40,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public final Collection getComponentKeys() {
         Set result = new HashSet();
         result.addAll(componentKeyToAdapterMap.keySet());
-        for (Iterator iterator = parents.iterator(); iterator.hasNext();) {
-            MutablePicoContainer delegate = (DefaultPicoContainer) iterator.next();
-            result.addAll(delegate.getComponentKeys());
+        synchronized (parentWeakReferences) {
+            for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
+                WeakReference wr = (WeakReference) iterator.next();
+                if (wr.get() == null) {
+                    parentWeakReferences.remove(wr);
+                } else {
+                    MutablePicoContainer delegate = (DefaultPicoContainer) wr.get();
+                    result.addAll(delegate.getComponentKeys());
+                }
+            }
         }
         return result;
     }
@@ -64,14 +76,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (result != null) {
             return result;
         } else {
-            for (Iterator iterator = parents.iterator(); iterator.hasNext();) {
-                MutablePicoContainer delegate = (MutablePicoContainer) iterator.next();
-                ComponentAdapter componentAdapter = delegate.findComponentAdapter(componentKey);
-                if (componentAdapter != null) {
-                    return componentAdapter;
+            synchronized (parentWeakReferences) {
+                for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
+                    WeakReference wr = (WeakReference) iterator.next();
+                    if (wr.get() == null) {
+                        parentWeakReferences.remove(wr);
+                    } else {
+                        MutablePicoContainer delegate = (MutablePicoContainer) wr.get();
+                        ComponentAdapter componentAdapter = delegate.findComponentAdapter(componentKey);
+                        if (componentAdapter != null) {
+                            return componentAdapter;
+                        }
+                    }
                 }
+                return null;
             }
-            return null;
         }
     }
 
@@ -223,7 +242,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getParentContainers() {
-        return Collections.unmodifiableList(parents);
+        ArrayList retval = new ArrayList();
+        synchronized (parentWeakReferences) {
+            for (int i = 0; i < parentWeakReferences.size(); i++) {
+                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
+                if (wr.get() == null) {
+                    parentWeakReferences.remove(wr);
+                } else {
+                    MutablePicoContainer mutablePicoContainer = (MutablePicoContainer) wr.get();
+                    retval.add(mutablePicoContainer);
+                }
+
+            }
+        }
+        return Collections.unmodifiableList(retval);
     }
 
     public boolean addChild(MutablePicoContainer child) {
@@ -239,8 +271,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public boolean addParent(MutablePicoContainer parent) {
         boolean result = false;
-        if (!parents.contains(parent)) {
-            result = parents.add(parent);
+        boolean found = false;
+        synchronized (parentWeakReferences) {
+            for (int i = 0; i < parentWeakReferences.size(); i++) {
+                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
+                if (wr.get() != null && wr.get().equals(parent)) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                result = parentWeakReferences.add(new WeakReference(parent));
+            }
         }
         if (!parent.getChildContainers().contains(this)) {
             parent.addChild(this);
@@ -257,7 +298,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public boolean removeParent(MutablePicoContainer parent) {
-        boolean removed = parents.remove(parent);
+        boolean removed = false;
+        synchronized (parentWeakReferences) {
+            for (int i = 0; i < parentWeakReferences.size(); i++) {
+                WeakReference wr = (WeakReference) parentWeakReferences.get(i);
+                if (wr.get() != null && wr.get().equals(parent)) {
+                    removed = parentWeakReferences.remove(wr);
+                }
+            }
+        }
         if (parent.getChildContainers().contains(this)) {
             parent.removeChild(this);
         }

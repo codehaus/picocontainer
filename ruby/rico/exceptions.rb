@@ -15,4 +15,6 @@ module Rico
       @duplicate_key = duplicate_key
     end
   end
+  
+  class CyclicDependencyError < StandardError; end
 end

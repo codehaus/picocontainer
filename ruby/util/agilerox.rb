@@ -1,6 +1,10 @@
 require 'test/unit'
 
-# Print each TestCase and test method as it is loaded by the interpreter
+=begin
+  Print each TestCase and test method as it is loaded by the interpreter
+  Author: Dan North
+=end
+
 module Test
   module Unit
     class TestCase

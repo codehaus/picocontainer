@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) MegaContainer Organization. All rights reserved.            *
+ * Copyright (C) MicroContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -7,10 +7,10 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.megacontainer.impl;
+package org.microcontainer.impl;
 
 import junit.framework.TestCase;
-import org.megacontainer.Kernel;
+import org.microcontainer.Kernel;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -36,15 +36,15 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testDeploymentOfMarFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
     public void testDeploymentOfMarFileFromURL() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, MalformedURLException {
-        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/megacontainer/src/remotecomp.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
@@ -52,10 +52,10 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testDeferredDeplymentOfMarFile() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         kernel.deferredDeploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNull(o);
-        kernel.start("test/org.megacontainer.test.TestComp");
-        o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        kernel.start("test/org.microcontainer.test.TestComp");
+        o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
@@ -63,7 +63,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         // these should be two removed from each other.
         assertEquals(kernel.getClass().getClassLoader(), o.getClass().getClassLoader().getParent().getParent());
@@ -76,7 +76,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.testapi.TestPromotable");
+        Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
         // these should be one removed from each other.
         assertEquals(kernel.getClass().getClassLoader(), o.getClass().getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
@@ -89,9 +89,9 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         kernel.deploy(new File("test2.mar"));
-        Object o2 = kernel.getComponent("test2/org.megacontainer.test2.Test2Comp");
+        Object o2 = kernel.getComponent("test2/org.microcontainer.test2.Test2Comp");
         assertNotNull(o);
         assertNotNull(o2);
         // LSD: this, I like...
@@ -100,10 +100,10 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         kernel.deploy(new File("test2.mar"));
-        Object o2 = kernel.getComponent("test2/org.megacontainer.test2.Test2Comp");
+        Object o2 = kernel.getComponent("test2/org.microcontainer.test2.Test2Comp");
 
         // unHideImplClassLoader allows us to cater for the fact that the default behavior of Mega
         // is to hide implementations. The method would amount to a logical security flaw if
@@ -135,7 +135,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
     }
 
     public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException {
-        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/megacontainer/src/remotecomp.mar.badurl"));
+        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
     }
 
     public void testMarWithGroovyScriptErrorResultsInException() {
@@ -144,7 +144,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testMarFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("isRunning", new Class[0]);
         assertFalse(((Boolean) m.invoke(o, new Object[0])).booleanValue());
         kernel.stop("test");
@@ -157,7 +157,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // might not work as IDE is going to fight to keep these at VM classpath level
 
         kernel.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("testKernelImplIsInvisibleFromMarsSandbox", new Class[0]);
         m.invoke(o, new Object[0]); // asserts using Junit that certain classes do not exist in classpath
     }
@@ -196,7 +196,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         testDeploymentOfMarFile();
 
         kernel2.deploy(new File("test.mar"));
-        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));

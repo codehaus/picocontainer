@@ -1,4 +1,4 @@
-package org.megacontainer.test;
+package org.microcontainer.test;
 
 /**
  * @author Paul Hammant

@@ -1,4 +1,4 @@
-package org.megacontainer.impl;
+package org.microcontainer.impl;
 
 import junit.framework.TestCase;
 
@@ -13,12 +13,12 @@ public class ClassLoaderFactoryTestCase extends TestCase {
 		assertNotNull(classLoader);
 
 		// from Components
-		Class testCompClass = classLoader.loadClass("org.megacontainer.test.TestComp");
-		assertEquals("org.megacontainer.test.TestComp", testCompClass.getName());
+		Class testCompClass = classLoader.loadClass("org.microcontainer.test.TestComp");
+		assertEquals("org.microcontainer.test.TestComp", testCompClass.getName());
 
 		// from Hidden
-		Class testCompImplClass = classLoader.loadClass("org.megacontainer.test.hopefullyhidden.TestCompImpl");
-		assertEquals("org.megacontainer.test.hopefullyhidden.TestCompImpl", testCompImplClass.getName());
+		Class testCompImplClass = classLoader.loadClass("org.microcontainer.test.hopefullyhidden.TestCompImpl");
+		assertEquals("org.microcontainer.test.hopefullyhidden.TestCompImpl", testCompImplClass.getName());
 		testCompImplClass.newInstance();
 
 		// Ensure we can access classes from parent class loader

@@ -1,6 +1,6 @@
-package org.megacontainer.test2.hopefullyhidden;
+package org.microcontainer.test2.hopefullyhidden;
 
-import org.megacontainer.test2.Test2Comp;
+import org.microcontainer.test2.Test2Comp;
 
 /**
  * @author Paul Hammant

@@ -1,6 +1,6 @@
-package org.megacontainer.test.hopefullyhidden;
+package org.microcontainer.test.hopefullyhidden;
 
-import org.megacontainer.testapi.TestPromotable;
+import org.microcontainer.testapi.TestPromotable;
 
 /**
  * @author Paul Hammant

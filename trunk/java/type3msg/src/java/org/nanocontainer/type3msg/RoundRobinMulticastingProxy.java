@@ -27,7 +27,11 @@ public class RoundRobinMulticastingProxy extends MulticastingProxy {
     }
 
     public Object invoke(Object object, Method method, Object[] args) throws Throwable {
-        Object item = getItem(next % getItemCount());
+        int itemCount = getItemCount();
+        if(itemCount == 0) {
+            throw new RuntimeException("No items have been added. Don't know where to forward the invocation of " + method.getName());
+        }
+        Object item = getItem(next % itemCount);
         next++;
         return method.invoke(item, args);
     }

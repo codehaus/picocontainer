@@ -49,13 +49,9 @@ Let us hope this is not necessary:
 
 {snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/HelloWorld.java|lineNumbers=true}
 
-TODO Aslak - these do not work ?
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/defaults/DefaultHelloWorld.java|lineNumbers=true}
 
-{--snippet:id=class3|url=
-@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/defaults/DefaultHelloWorld.java|lineNumbers=true}
-
-{--snippet:id=class|url=
-@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/remote/RemoteHelloWorld.java|lineNumbers=true}
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/patterns/helloworld/impl/remote/RemoteHelloWorld.java|lineNumbers=true}
 
 We are referring to this pattern at <strong>interface/impl separation</strong>.
 Wiley's Patterns in Java book refers to it simply as 'Interface', but we feel

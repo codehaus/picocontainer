@@ -1,4 +1,4 @@
-package org.picoextras.integrationkit;
+package org.nanocontainer.integrationkit;
 
 import junit.framework.TestCase;
 import org.jmock.Mock;

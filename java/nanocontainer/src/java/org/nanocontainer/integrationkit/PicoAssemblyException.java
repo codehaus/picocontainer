@@ -1,4 +1,4 @@
-package org.picoextras.integrationkit;
+package org.nanocontainer.integrationkit;
 
 import org.picocontainer.PicoException;
 

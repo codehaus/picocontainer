@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.integrationkit;
+package org.nanocontainer.integrationkit;
 
 import org.picocontainer.defaults.ObjectReference;
 

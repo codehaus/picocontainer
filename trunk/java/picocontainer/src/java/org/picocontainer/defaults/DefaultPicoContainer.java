@@ -28,8 +28,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * <p/>
@@ -68,8 +66,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private List orderedComponentAdapters = new ArrayList();
     private boolean started = false;
     private boolean disposed = false;
-    private Set childContainers = new HashSet();
-    private int containerCount;
+
     protected Map namedChildContainers = new HashMap();
 
     /**
@@ -349,7 +346,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             Startable startable = ((Startable) iterator.next());
             startable.start();
         }
-        Iterator it = childContainers.iterator();
+        Iterator it = namedChildContainers.values().iterator();
         while (it.hasNext()) {
             PicoContainer pc = (PicoContainer) it.next();
             pc.getComponentInstances();
@@ -361,7 +358,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
-        Iterator it = childContainers.iterator();
+        Iterator it = namedChildContainers.values().iterator();
         while (it.hasNext()) {
             PicoContainer pc = (PicoContainer) it.next();
             pc.stop();
@@ -376,7 +373,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
-        Iterator it = childContainers.iterator();
+        Iterator it = namedChildContainers.values().iterator();
         while (it.hasNext()) {
             PicoContainer pc = (PicoContainer) it.next();
             pc.dispose();
@@ -390,7 +387,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             ((MutablePicoContainer) parent).removeChildContainer(this);
         }
         parent = null;
-        childContainers = null;
+        namedChildContainers = null;
         disposed = true;
 
     }
@@ -403,7 +400,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer() {
-        return makeChildContainer("containers" + containerCount);
+        return makeChildContainer("containers" + namedChildContainers.values().size());
     }
 
     public MutablePicoContainer makeChildContainer(String name) {
@@ -418,15 +415,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public void addChildContainer(String name, PicoContainer child) {
         if (name == null) {
-            name = "containers" + containerCount;
+            name = "containers" + namedChildContainers.values().size();
         }
-        childContainers.add(child);
         namedChildContainers.put(name, child);
-        containerCount++;
     }
 
     public void removeChildContainer(MutablePicoContainer child) {
-        childContainers.remove(child);
         Iterator children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
             Map.Entry e = (Map.Entry) children.next();

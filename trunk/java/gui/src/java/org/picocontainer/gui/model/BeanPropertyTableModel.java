@@ -12,10 +12,10 @@ public class BeanPropertyTableModel implements TableModel {
     private static final String[] TABLE_HEADER = new String[]{"Property", "Value"};
     public static final TableModel EMPTY_MODEL = new DefaultTableModel(BeanPropertyTableModel.TABLE_HEADER, 0);
 
-    private final BeanPropertyModel model;
+    private final BeanPropertyModel beanPropertyModel;
 
     public BeanPropertyTableModel(BeanPropertyModel model) {
-        this.model = model;
+        this.beanPropertyModel = model;
     }
 
     public int getColumnCount() {
@@ -23,11 +23,11 @@ public class BeanPropertyTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return model.getSize();
+        return beanPropertyModel.getSize();
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        boolean hasWriteMethod = model.getPropertyDescriptor(rowIndex).getWriteMethod() != null;
+        boolean hasWriteMethod = beanPropertyModel.getPropertyDescriptor(rowIndex).getWriteMethod() != null;
         return columnIndex == 1 && hasWriteMethod;
     }
 
@@ -37,14 +37,14 @@ public class BeanPropertyTableModel implements TableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (columnIndex == 0) {
-            return model.getPropertyDescriptor(rowIndex).getDisplayName();
+            return beanPropertyModel.getPropertyDescriptor(rowIndex).getDisplayName();
         } else {
-            return model.getPropertyValue(rowIndex);
+            return beanPropertyModel.getPropertyValue(rowIndex);
         }
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        model.setPropertyValue(aValue, rowIndex);
+        beanPropertyModel.setPropertyValue(aValue, rowIndex);
     }
 
     public String getColumnName(int columnIndex) {
@@ -57,5 +57,9 @@ public class BeanPropertyTableModel implements TableModel {
 
     public void removeTableModelListener(TableModelListener l) {
 
+    }
+
+    public Object getBeanPropertyModel() {
+        return beanPropertyModel;
     }
 }

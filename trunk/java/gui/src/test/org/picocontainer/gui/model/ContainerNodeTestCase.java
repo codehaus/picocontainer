@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
 
 import java.util.ArrayList;
+import java.beans.IntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -17,11 +18,11 @@ public class ContainerNodeTestCase extends TestCase {
         assertEquals(0, container.getComponentKeys().size());
     }
 
-    public void testContainerNodeWithChildrenCreatesContainerWithComponents() {
+    public void testContainerNodeWithChildrenCreatesContainerWithComponents() throws IntrospectionException {
         ContainerNode containerNode = new ContainerNode();
 
-        ComponentNode stringNode = new ComponentNode(String.class);
-        ComponentNode listNode = new ComponentNode(ArrayList.class);
+        ComponentNode stringNode = new ComponentNode(new BeanPropertyModel(String.class));
+        ComponentNode listNode = new ComponentNode(new BeanPropertyModel(ArrayList.class));
 
         containerNode.add(stringNode);
         containerNode.add(listNode);
@@ -31,13 +32,13 @@ public class ContainerNodeTestCase extends TestCase {
         assertEquals(new ArrayList(), container.getComponentInstance(ArrayList.class));
     }
 
-    public void testChildContainerNodeCreatesHierarchicalContainer() {
+    public void testChildContainerNodeCreatesHierarchicalContainer() throws IntrospectionException {
         ContainerNode parentContainerNode = new ContainerNode();
         ContainerNode childContainerNode = new ContainerNode();
         parentContainerNode.add(childContainerNode);
 
-        ComponentNode fooNode = new ComponentNode(Foo.class);
-        ComponentNode needsFooNode = new ComponentNode(NeedsFoo.class);
+        ComponentNode fooNode = new ComponentNode(new BeanPropertyModel(Foo.class));
+        ComponentNode needsFooNode = new ComponentNode(new BeanPropertyModel(NeedsFoo.class));
 
         parentContainerNode.add(fooNode);
         childContainerNode.add(needsFooNode);
@@ -46,9 +47,9 @@ public class ContainerNodeTestCase extends TestCase {
         assertNotNull(container.getComponentInstance(NeedsFoo.class));
     }
 
-    public void testPropertiesAreSetOnComponents() {
+    public void testPropertiesAreSetOnComponents() throws IntrospectionException {
         ContainerNode containerNode = new ContainerNode();
-        ComponentNode fooNode = new ComponentNode(Foo.class);
+        ComponentNode fooNode = new ComponentNode(new BeanPropertyModel(Foo.class));
         containerNode.add(fooNode);
 
         PicoContainer container = containerNode.createPicoContainer();

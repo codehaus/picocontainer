@@ -16,14 +16,10 @@ import java.util.HashMap;
  */
 public class PropertyTableCommander implements TreeSelectionListener {
 
-    private final JTree tree;
-    private final JTable table;
-    private Map models = new HashMap();
+    private final ComponentRegistrar componentRegistrar;
 
-    public PropertyTableCommander(JTree tree, JTable table){
-        this.tree = tree;
-        this.table = table;
-
+    public PropertyTableCommander(JTree tree, ComponentRegistrar componentRegistrar){
+        this.componentRegistrar = componentRegistrar;
         tree.addTreeSelectionListener(this);
     }
 
@@ -31,22 +27,8 @@ public class PropertyTableCommander implements TreeSelectionListener {
         Object selected = evt.getPath().getLastPathComponent();
         if(selected instanceof ComponentNode) {
             ComponentNode componentTreeNode = (ComponentNode) selected;
-            Object nodeValue = componentTreeNode.getUserObject();
-            try {
-                BeanPropertyTableModel model = (BeanPropertyTableModel) models.get(nodeValue);
-                if(model==null){
-                    Class componentImplementation = (Class) nodeValue;
-                    BeanPropertyModel beanPropertyModel = new BeanPropertyModel(componentImplementation);
-                    model = new BeanPropertyTableModel(beanPropertyModel);
-                    models.put(nodeValue,model);
-                }
-                table.setModel(model);
-            } catch (Exception e) {
-                Throwable t = e.getCause() != null ?  e.getCause() : e;
-                JOptionPane.showMessageDialog(tree, t.getStackTrace(), t.getClass().getName() + " " + t.getMessage(), JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            table.setModel(BeanPropertyTableModel.EMPTY_MODEL);
+            BeanPropertyModel beanPropertyModel = (BeanPropertyModel) componentTreeNode.getUserObject();
+            componentRegistrar.displayInPropertyTable(beanPropertyModel);
         }
     }
 }

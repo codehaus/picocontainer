@@ -7,6 +7,7 @@ import org.picocontainer.defaults.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import java.util.Map;
 
 /**
  * Usage pattern:
@@ -43,8 +44,8 @@ public class ContainerNode extends DefaultMutableTreeNode {
 
                 Class componentImplementation = beanPropertyModel.getBeanClass();
 
-                propertyFactory.setProperties(componentImplementation, beanPropertyModel.getPropertyMap());
-
+                Map propertyMap = beanPropertyModel.getPropertyMap();
+                propertyFactory.setProperties(componentImplementation, propertyMap);
 
                 result.registerComponentImplementation(componentImplementation);
             }

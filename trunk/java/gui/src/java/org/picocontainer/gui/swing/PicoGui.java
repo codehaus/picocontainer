@@ -3,7 +3,8 @@ package org.picocontainer.gui.swing;
 import org.picocontainer.gui.model.*;
 
 import javax.swing.*;
-import javax.swing.tree.TreeModel;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
@@ -19,18 +20,37 @@ public class PicoGui extends JPanel {
         JSplitPane split = new JSplitPane();
         JPanel left = new JPanel(new BorderLayout());
 
-        TreeModel treeModel = new DefaultTreeModel(rootNode);
+        DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
         JTree tree = new JTree(treeModel);
         tree.setCellRenderer(new PicoTreeCellRenderer());
         left.add(new JScrollPane(tree), BorderLayout.CENTER);
 
-        EditContainerPanel editContainerPanel = new EditContainerPanel(tree);
+        JTable table = new JTable(BeanPropertyTableModel.EMPTY_MODEL);
+
+        // Set up a ComponentRegistrar
+        ComponentRegistrar componentRegistrar = new ComponentRegistrar(treeModel, table);
+
+        // Set up a PropertyTableCommander
+        PropertyTableCommander propertyTableCommander = new PropertyTableCommander(tree, componentRegistrar);
+
+        // Set up an AddPicoComponentAction
+        Document componentImplementationDocument = new PlainDocument();
+        AddPicoComponentAction addPicoComponentAction = new AddPicoComponentAction(
+                componentRegistrar,
+                tree,
+                tree,
+                componentImplementationDocument);
+
+        ExecuteContainerAction executeContainerAction = new ExecuteContainerAction(tree);
+
+        EditContainerPanel editContainerPanel = new EditContainerPanel(
+                addPicoComponentAction,
+                executeContainerAction,
+                componentImplementationDocument
+        );
         left.add(editContainerPanel, BorderLayout.NORTH);
 
         JPanel right = new JPanel(new BorderLayout());
-        JTable table = new JTable(BeanPropertyTableModel.EMPTY_MODEL);
-
-        new PropertyTableCommander(tree, table);
 
         right.add(new JScrollPane(table),  BorderLayout.CENTER);
 
@@ -39,6 +59,17 @@ public class PicoGui extends JPanel {
         split.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
         add(split, BorderLayout.CENTER);
+    }
+
+    public static void main(String[] args) {
+        ContainerNode parentNode = new ContainerNode();
+        PicoGui gui = new PicoGui(parentNode);
+
+        JFrame f = new JFrame();
+        f.getContentPane().add(gui);
+
+        f.setVisible(true);
+        f.pack();
     }
 
     public static class A {
@@ -56,16 +87,9 @@ public class PicoGui extends JPanel {
             this.message = message;
             System.out.println("SET:" + message);
         }
-    }
 
-    public static void main(String[] args) {
-        ContainerNode parentNode = new ContainerNode();
-        PicoGui gui = new PicoGui(parentNode);
-
-        JFrame f = new JFrame();
-        f.getContentPane().add(gui);
-
-        f.setVisible(true);
-        f.pack();
+        public String getMessage() {
+            return message;
+        }
     }
 }

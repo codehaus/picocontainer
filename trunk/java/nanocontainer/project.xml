@@ -83,13 +83,13 @@
 
     <dependency>
       <groupId>picocontainer</groupId>
-      <artifactId>picoextras-reflection</artifactId>
+      <artifactId>nanocontainer-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>  
         
     <dependency>
       <groupId>picocontainer</groupId>
-      <artifactId>picoextras-integrationkit</artifactId>
+      <artifactId>nanocontainer-integrationkit</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>    
         
@@ -148,7 +148,7 @@
         
         <dependency>
             <groupId>picocontainer</groupId>
-            <artifactId>picoextras-testmodel</artifactId>
+            <artifactId>nanocontainer-testmodel</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

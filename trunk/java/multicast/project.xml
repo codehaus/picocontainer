@@ -2,8 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>picoextras-multicast</id>
-    <name>picoextras-multicast</name>
+    <id>nanocontainer-multicast</id>
+    <name>nanocontainer-multicast</name>
 
     <dependencies>
 

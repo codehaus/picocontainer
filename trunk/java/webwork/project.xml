@@ -2,8 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>picoextras-webwork</id>
-    <name>picoextras-webwork</name>
+    <id>nanocontainer-webwork</id>
+    <name>nanocontainer-webwork</name>
 
     <dependencies>
 
@@ -19,19 +19,19 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-integrationkit</artifactId>
+            <artifactId>nanocontainer-integrationkit</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-servlet</artifactId>
+            <artifactId>nanocontainer-servlet</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-script</artifactId>
+            <artifactId>nanocontainer-script</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

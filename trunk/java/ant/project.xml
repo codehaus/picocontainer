@@ -2,18 +2,18 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>picoextras-ant</id>
-    <name>picoextras-ant</name>
+    <id>nanocontainer-ant</id>
+    <name>nanocontainer-ant</name>
 
     <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-reflection</artifactId>
+            <artifactId>nanocontainer-reflection</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-integrationkit</artifactId>
+            <artifactId>nanocontainer-integrationkit</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
         <dependency>

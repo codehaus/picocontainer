@@ -2,13 +2,13 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-swt</id>
-  <name>picoextras-swt</name>
+  <id>nanocontainer-swt</id>
+  <name>nanocontainer-swt</name>
 
   <dependencies>
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-swing</artifactId>
+            <artifactId>nanocontainer-swing</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 
@@ -34,7 +34,7 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>picoextras-testmodel</artifactId>
+            <artifactId>nanocontainer-testmodel</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

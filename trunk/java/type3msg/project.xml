@@ -2,8 +2,8 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-type3msg</id>
-  <name>picoextras-type3msg</name>
+  <id>nanocontainer-type3msg</id>
+  <name>nanocontainer-type3msg</name>
 
   <dependencies>
   </dependencies>

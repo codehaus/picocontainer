@@ -12,7 +12,13 @@ package org.nanocontainer.nanoaop;
 import org.picocontainer.MutablePicoContainer;
 
 /**
+ * A <code>org.picocontainer.MutablePicoContainer</code> that supports the
+ * application of aspects to components in the container.
+ * 
  * @author Stephen Molitor
+ * @see <a href='package-summary.html#package_description'>The package
+ *      description </a> has a basic overview of how to use the nanoaop package.
+ * @version $Revision$
  */
 public interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer {
 

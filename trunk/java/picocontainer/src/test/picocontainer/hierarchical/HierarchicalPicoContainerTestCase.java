@@ -396,7 +396,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
     public void testWithComponentFactory() throws PicoRegistrationException, PicoStartException {
         final WilmaImpl wilma = new WilmaImpl();
         ClassRegistrationPicoContainer pc = new HierarchicalPicoContainer.WithComponentFactory(new ComponentFactory() {
-            public Object createComponent(Class componentType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+            public Object createComponent(Class componentType, Constructor constructor, Object[] args) {
                 return wilma;
             }
         });

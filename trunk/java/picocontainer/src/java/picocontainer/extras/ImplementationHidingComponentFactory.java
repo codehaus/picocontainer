@@ -1,4 +1,4 @@
-package picocontainer.hierarchical;
+package picocontainer.extras;
 
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;

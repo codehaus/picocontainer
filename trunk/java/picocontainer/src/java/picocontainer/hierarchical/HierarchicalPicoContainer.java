@@ -33,6 +33,7 @@ import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.AmbiguousComponentResolutionException;
 
 import java.util.List;
 import java.util.Arrays;

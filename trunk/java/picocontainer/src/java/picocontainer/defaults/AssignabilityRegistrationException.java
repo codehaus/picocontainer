@@ -8,26 +8,23 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoRegistrationException;
 
-public class UnsatisfiedDependencyStartupException extends PicoInitializationException
+public class AssignabilityRegistrationException extends PicoRegistrationException
 {
-    private Class classThatNeedsDeps;
+    private final Class type;
+    private final Class clazz;
 
-    public UnsatisfiedDependencyStartupException(Class classThatNeedsDeps)
+    public AssignabilityRegistrationException(Class type, Class clazz)
     {
-        this.classThatNeedsDeps = classThatNeedsDeps;
+        this.type = type;
+        this.clazz = clazz;
     }
 
     public String getMessage()
     {
-        return "Class " + classThatNeedsDeps.getName() + " needs unnamed dependencies";
-    }
-
-    public Class getClassThatNeedsDeps()
-    {
-        return classThatNeedsDeps;
+        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
     }
 }

@@ -34,6 +34,12 @@ import picocontainer.ComponentFactory;
 import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.DuplicateComponentTypeRegistrationException;
+import picocontainer.defaults.AssignabilityRegistrationException;
+import picocontainer.defaults.NotConcreteRegistrationException;
+import picocontainer.defaults.WrongNumberOfConstructorsRegistrationException;
+import picocontainer.defaults.AmbiguousComponentResolutionException;
+import picocontainer.defaults.UnsatisfiedDependencyStartupException;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 

@@ -8,29 +8,26 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
-import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
-import picocontainer.testmodel.FredImpl;
-import picocontainer.testmodel.WilmaImpl;
 
-public class ComponentInteroperationTestCase extends TestCase {
+public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException
+{
+    private Class clazz;
 
-    public void testBasic() throws PicoInitializationException, PicoRegistrationException
+    public DuplicateComponentTypeRegistrationException(Class clazz)
     {
-
-        WilmaImpl wilma = new WilmaImpl();
-        OverriddenPicoTestContainer pico = new OverriddenPicoTestContainer(wilma);
-
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
-
-        pico.instantiateComponents();
-
-        assertTrue("hello should have been called in wilma", wilma.helloCalled());
+        this.clazz = clazz;
     }
 
+    public Class getDuplicateClass()
+    {
+        return clazz;
+    }
 
+    public String getMessage()
+    {
+        return "Class " + clazz.getName() + " duplicated";
+    }
 }

@@ -36,6 +36,7 @@ import java.util.Enumeration;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Aslak Helles&oslash;y
+ * @author Philipp Meier
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
     public static final String KILLER_HELPER = "KILLER_HELPER";

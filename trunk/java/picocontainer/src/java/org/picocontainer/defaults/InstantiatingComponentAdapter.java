@@ -42,9 +42,9 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected boolean allowNonPublicClasses;
     
     protected static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
-        protected PicoContainer container;
+        protected PicoContainer guardedContainer;
         protected void setArguments(PicoContainer container) {
-            this.container = container;
+            this.guardedContainer = container;
         }
     }
 
@@ -95,7 +95,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             if (verifyingGuard == null) {
                 verifyingGuard = new Guard() {
                     public Object run() {
-                        final Constructor constructor = getGreediestSatisfiableConstructor(container);
+                        final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
                         final Class[] parameterTypes = constructor.getParameterTypes();
                         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                         for (int i = 0; i < currentParameters.length; i++) {

@@ -149,7 +149,7 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param child the child container
      * @since 1.1
      */
-    void addChildContainer(PicoContainer child);
+    boolean addChildContainer(PicoContainer child);
 
     /**
      * Remove a child container from this container. It will not change the child's view of a parent.
@@ -158,5 +158,5 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param child the child container
      * @since 1.1
      */
-    void removeChildContainer(PicoContainer child);
+    boolean removeChildContainer(PicoContainer child);
 }

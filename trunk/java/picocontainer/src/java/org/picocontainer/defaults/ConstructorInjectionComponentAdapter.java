@@ -45,9 +45,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     private transient Guard instantiationGuard;
     
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
-        protected PicoContainer container;
+        protected PicoContainer guardedContainer;
         private void setArguments(PicoContainer container) {
-            this.container = container;
+            this.guardedContainer = container;
         }
     }
 
@@ -136,9 +136,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (instantiationGuard == null) {
             instantiationGuard = new Guard() {
                 public Object run() {
-                    final Constructor constructor = getGreediestSatisfiableConstructor(container);
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
                     try {
-                        Object[] parameters = getConstructorArguments(container, constructor);
+                        Object[] parameters = getConstructorArguments(guardedContainer, constructor);
                         return newInstance(constructor, parameters);
                     } catch (InvocationTargetException e) {
                         if (e.getTargetException() instanceof RuntimeException) {

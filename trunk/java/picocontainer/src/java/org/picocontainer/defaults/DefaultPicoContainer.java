@@ -404,12 +404,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return pc;
     }
 
-    public void addChildContainer(PicoContainer child) {
-        children.add(child);
+    public boolean addChildContainer(PicoContainer child) {
+        return children.add(child);
     }
 
-    public void removeChildContainer(PicoContainer child) {
-        children.remove(child);
+    public boolean removeChildContainer(PicoContainer child) {
+        final boolean result = children.remove(child);
+        return result;
+    }
+
+    public boolean equals(Object obj) {
+        return super.equals(obj);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public void accept(PicoVisitor visitor) {

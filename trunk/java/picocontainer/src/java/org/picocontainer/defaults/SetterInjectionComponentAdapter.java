@@ -130,12 +130,12 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         if (instantiationGuard == null) {
             instantiationGuard = new Guard() {
                 public Object run() {
-                    final Parameter[] matchingParameters = getMatchingParameterListForSetters(container);
+                    final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     try {
                         final Object componentInstance = newInstance(constructor, null);
                         for (int i = 0; i < setters.size(); i++) {
                             final Method setter = (Method) setters.get(i);
-                            setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, SetterInjectionComponentAdapter.this, setterTypes[i])});
+                            setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i])});
                         }
                         return componentInstance;
                     } catch (InvocationTargetException e) {
@@ -166,7 +166,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             if (verifyingGuard == null) {
                 verifyingGuard = new Guard() {
                     public Object run() {
-                        final Parameter[] currentParameters = getMatchingParameterListForSetters(container);
+                        final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                         for (int i = 0; i < currentParameters.length; i++) {
                             currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
                         }

@@ -29,8 +29,9 @@ public class ClassLoaderFactory {
 	}
 
 	public ClassLoader build(String contextName) {
-		ClassLoader promotedClassLoader = new URLClassLoader(getURLs(contextName, PROMOTED_PATH), this.getClass().getClassLoader());
-		return new URLClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
+        HiddenPromotedClassLoader hiddenPromotedClassLoader = new HiddenPromotedClassLoader(getURLs(contextName, PROMOTED_PATH), this.getClass().getClassLoader());
+		ClassLoader promotedClassLoader = new PromotedClassLoader(hiddenPromotedClassLoader, this.getClass().getClassLoader());
+		return new StandardMicroClassLoader(getStandardApiURLs(contextName), promotedClassLoader);
 	}
 
 	protected URL[] getStandardApiURLs(String context) {
@@ -73,6 +74,7 @@ public class ClassLoaderFactory {
 
 		return urls;
 	}
+
 }
 
 

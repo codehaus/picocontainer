@@ -93,7 +93,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // testDeployedMcasComponentsAreInDiffClassloaderToKernel()
     }
 
-    public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
+    public void testAPIisPromotedToDifferentClassLoaderHierachy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
         kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/*org.microcontainer.testapi.TestPromotable");
 		Class interfaceClass =  o.getClass().getInterfaces()[0];
@@ -108,7 +108,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // to the client...that'll make it difficult to change...
     }
 
-    public void testTwoDeployedMcaComponentAPIsAreInDifferentClassloader() throws Exception {
+    public void testTwoDeployedMcaComponentAPIsAreInDifferentClassloadersButSharePromotedClassLoader() throws Exception {
 		URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
         Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
@@ -118,6 +118,32 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertNotNull(o2);
         // LSD: this, I like...
         assertNotSame(o.getClass().getClassLoader(), o2.getClass().getClassLoader());
+        assertNotSame(o.getClass(),o2.getClass());
+        assertSame(o.getClass().getName(),o2.getClass().getName()); // this does not contradict the test above :-)
+        System.out.println("--> 0 1" + this.getClass().getClassLoader());
+        System.out.println("--> 0 2" + DefaultKernel.class.getClassLoader());
+        System.out.println("--> 1 1 " + o.getClass().getClassLoader());
+        System.out.println("--> 1 2 " + o.getClass().getClassLoader().getParent());
+        System.out.println("--> 1 3 " + o.getClass().getClassLoader().getParent().getParent());
+        System.out.println("--> 1 4 " + o.getClass().getClassLoader().getParent().getParent().getParent());
+        System.out.println("--> 1 5 " + o.getClass().getClassLoader().getParent().getParent().getParent().getParent());
+        System.out.println("--> 2 1 " + o2.getClass().getClassLoader());
+        System.out.println("--> 2 2 " + o2.getClass().getClassLoader().getParent());
+        System.out.println("--> 2 3 " + o2.getClass().getClassLoader().getParent().getParent());
+        System.out.println("--> 2 4 " + o2.getClass().getClassLoader().getParent().getParent().getParent());
+        System.out.println("--> 2 5 " + o2.getClass().getClassLoader().getParent().getParent().getParent().getParent());
+
+        ClassLoader cl1 = o.getClass().getClassLoader();
+        while (!(cl1 instanceof PromotedClassLoader)) {
+            cl1 = cl1.getParent();
+        }
+
+        ClassLoader cl2 = o2.getClass().getClassLoader();
+        while (!(cl2 instanceof PromotedClassLoader)) {
+            cl2 = cl2.getParent();
+        }
+        
+        assertSame(cl1, cl2);
     }
 
     public void testTwoDeployedMcaComponentImplementationsAreInDifferentClassloader() throws Exception {

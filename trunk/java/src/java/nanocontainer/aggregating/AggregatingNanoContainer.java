@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-package nanocontainer;
+package nanocontainer.aggregating;
 
 import picocontainer.Container;
 

@@ -1,4 +1,4 @@
-package nanocontainer.reflect;
+package nanocontainer.aggregating.reflect;
 
 /*****************************************************************************
  * Copyright (C) NanoContainer Organization. All rights reserved.            *
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * method in the container's components.
  *
  * @author Aslak Hellesoy
- * @version $Revision$
+ * @version $Revision: 1.5 $
  */
 public class SequentialInvocationHandler extends ContainerInvocationHandler {
 

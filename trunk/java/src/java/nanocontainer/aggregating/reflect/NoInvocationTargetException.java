@@ -8,35 +8,36 @@
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-package nanocontainer.reflect;
+package nanocontainer.aggregating.reflect;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  *
  * @author Aslak Hellesoy
- * @version $Revision$
+ * @version $Revision: 1.4 $
  */
-public class AmbiguousInvocationException extends Exception {
-    private final Object firstComponent;
-    private final Object secondComponent;
+public class NoInvocationTargetException extends Exception {
+    private final Object proxy;
     private final Method method;
 
-    public AmbiguousInvocationException(Object firstComponent, Object secondComponent, Method method) {
-        this.firstComponent = firstComponent ;
-        this.secondComponent = secondComponent;
+    public NoInvocationTargetException(Object proxy, Method method) {
+        this.proxy = proxy;
         this.method = method;
     }
 
-    public Object getFirstComponent() {
-        return firstComponent;
+    public Object getProxy() {
+        return proxy;
     }
 
-    public Object getSecondComponent() {
-        return secondComponent;
+    public Method getMethod() {
+        return method;
     }
 
     public String getMessage() {
-        return "Ambiguous invocation of" + method + ": " + firstComponent.getClass().getName() + ", " + secondComponent.getClass().getName();
+        List interfaces = Arrays.asList(proxy.getClass().getInterfaces());
+        return method.toString() + " doesn't exist in any of the proxy's interfaces: " + interfaces;
     }
 }

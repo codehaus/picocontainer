@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-package nanocontainer.reflect;
+package nanocontainer.aggregating.reflect;
 
 import picocontainer.PicoContainer;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * method in the container's components.
  *
  * @author Aslak Hellesoy
- * @version $Revision$
+ * @version $Revision: 1.4 $
  */
 public class MultipleReturnTypeInvocationHandler extends ContainerInvocationHandler {
 

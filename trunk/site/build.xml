@@ -2,27 +2,26 @@
 
 <project name="PicoSite" default="make-site" basedir=".">  
 
-  <path id="staticmesh.classpath">
-    <pathelement location="lib/staticmesh.jar"/>
-    <pathelement location="lib/servlet.jar"/>
-    <pathelement location="docs/WEB-INF/classes/"/>
-    <pathelement location="docs/WEB-INF/lib/sitemesh.jar"/>
-    <pathelement location="docs/WEB-INF/lib/velocity-dep-1.3-dev.jar"/>
-  </path>
-
   <target name="make-site">
+    <get dest="lib/servlet.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.3.jar"/>
 
     <taskdef name="sitemesh"
-        classname="com.opensymphony.module.sitemesh.staticmesh.ant.StaticMeshTask">
-        <classpath refid="staticmesh.classpath"/>
+      classname="com.opensymphony.module.sitemesh.staticmesh.ant.StaticMeshTask">
+      <classpath>
+        <pathelement location="lib/staticmesh.jar"/>
+        <pathelement location="lib/servlet.jar"/>
+        <pathelement location="docs/WEB-INF/classes/"/>
+        <pathelement location="docs/WEB-INF/lib/sitemesh.jar"/>
+        <pathelement location="docs/WEB-INF/lib/velocity-dep-1.3-dev.jar"/>
+      </classpath>
     </taskdef>
 
     <mkdir dir="build"/>
 
     <sitemesh dest="build" base="docs" decorator="docs/decorators/decorator.html">
-       <fileset dir="docs">
-          <include name="*.html"/>
-       </fileset>
+      <fileset dir="docs">
+        <include name="*.html"/>
+      </fileset>
     </sitemesh>
 
     <sitemesh dest="build" base="docs" decorator="docs/decorators/rico-decorator.html">
@@ -32,13 +31,12 @@
     </sitemesh>
     
     <copy todir="build">
-       <fileset dir="docs">
-          <include name="*.jpg"/>
-          <include name="*.png"/>
-          <include name="*.gif"/>
-          <include name="*.css"/>
-          
-       </fileset>
+      <fileset dir="docs">
+        <include name="*.jpg"/>
+        <include name="*.png"/>
+        <include name="*.gif"/>
+        <include name="*.css"/>
+      </fileset>
     </copy>
 
   </target>

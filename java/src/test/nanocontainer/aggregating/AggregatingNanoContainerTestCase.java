@@ -13,7 +13,7 @@ package nanocontainer.aggregating;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoContainer;
-import picocontainer.PicoContainerImpl;
+import picocontainer.HierarchicalPicoContainer;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
 
     public void testGetProxy() throws PicoRegistrationException, PicoStartException {
 
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         Collection list = new ArrayList();
         pico.registerComponent(list);
@@ -75,7 +75,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
 
     public void testNoInvocationHandler() throws PicoRegistrationException, PicoStartException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         Collection list = new ArrayList();
         pico.registerComponent(list);

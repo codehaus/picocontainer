@@ -60,6 +60,10 @@ public class AggregatingNanoContainer implements Container {
         return new Object[]{proxy};
     }
 
+    public Class[] getComponentTypes() {
+        return new Class[0]; //TODO ? 
+    }
+
     public Object getProxy() {
 
         if (proxy == null) {

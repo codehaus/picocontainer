@@ -26,5 +26,8 @@ public class WebContainer implements Container {
         return container.getComponents();
     }
 
+    public Class[] getComponentTypes() {
+        return container.getComponentTypes();
+    }
 }
 

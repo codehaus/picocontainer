@@ -19,7 +19,7 @@ import picocontainer.DuplicateComponentClassRegistrationException;
 import picocontainer.DuplicateComponentTypeRegistrationException;
 import picocontainer.NotConcreteRegistrationException;
 import picocontainer.PicoContainer;
-import picocontainer.PicoContainerImpl;
+import picocontainer.HierarchicalPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.WrongNumberOfConstructorsRegistrationException;
@@ -64,7 +64,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
         }));
 
         NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem);
-        PicoContainer nanningEnabledPicoContainer = new PicoContainerImpl.WithComponentFactory(componentFactory);
+        PicoContainer nanningEnabledPicoContainer = new HierarchicalPicoContainer.WithComponentFactory(componentFactory);
         nanningEnabledPicoContainer.registerComponent(WilmaImpl.class);
         nanningEnabledPicoContainer.registerComponent(FredImpl.class);
 

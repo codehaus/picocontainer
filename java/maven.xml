@@ -1,12 +1,12 @@
 <project default="jar:install">
 
-  <preGoal name="xdoc:jelly-transform">
-    <attainGoal name="html2xdoc"/>
-  </preGoal>
+    <preGoal name="xdoc:jelly-transform">
+        <attainGoal name="html2xdoc"/>
+    </preGoal>
 
-  <goal name="cvs:make-patch" description="Creates a patch of *your* changes">
-    <cvs command="-q diff -b -u -N" output="patch.txt"/>
-    <echo>
+    <goal name="cvs:make-patch" description="Creates a patch of *your* changes">
+        <cvs command="-q diff -b -u -N" output="patch.txt"/>
+        <echo>
       Please create a new issue in NanoContainer's JIRA: 
       http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121
       Then attach the patch.txt file.
@@ -16,28 +16,31 @@
       If your patch includes JUnit tests and a decent description,
       you increase the chance of having the patch applied by some
       of the committers.
-    </echo>    
-  </goal>
+        </echo>
+    </goal>
+
+    <postGoal name="test:compile">
+        <!-- Acceptance test for the pico task -->
+        <attainGoal name="picotask"/>
+    </postGoal>
 
     <goal name="picotask">
+        <!-- Does the same as SimplePicoContainerTaskTestCase -->
         <path id="pico.task.classpath">
             <path refid="maven.dependency.classpath"/>
             <pathelement location="${maven.build.dest}"/>
             <pathelement location="${basedir}/target/test-classes"/>
         </path>
 
-        <property name="CP" refid="pico.task.classpath"/>
-        <echo>CLASSPATH: ${CP}</echo>
-
         <taskdef
             name="pico"
             classname="org.nanocontainer.ant.PicoContainerTask"
             classpathref="pico.task.classpath"
-        />
+            />
 
         <pico>
-            <component class="org.nanocontainer.ant.OneConstructorArrayList"/>
-            <component class="org.picocontainer.testmodel.Webster"/>
+            <component classname="org.nanocontainer.ant.Ping" someprop="HELLO"/>
+            <component classname="org.nanocontainer.ant.Pong"/>
         </pico>
     </goal>
 </project>

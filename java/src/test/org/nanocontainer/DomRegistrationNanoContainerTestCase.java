@@ -117,8 +117,12 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
             PicoRegistrationException, PicoInitializationException
     {
 
-        DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.WithClassLoader(new URLClassLoader(new URL[0]));
-        registerInstantiateAndCheckComponent(nc);
+        DomRegistrationNanoContainer nc = new DomRegistrationNanoContainer.WithClassLoader(new URLClassLoader(new URL[0], null));
+        try {
+            registerInstantiateAndCheckComponent(nc);
+            fail();
+        } catch (ClassNotFoundException e) {
+        }
 
     }
 

@@ -28,7 +28,7 @@ public class DigesterWebServerConfig implements WebServerConfig {
         // In a real example, this would be an FileReader (thus external).
         dig.parse(new InputSource(new StringReader(
                 "<webserver>" +
-                "      <host>Foo</host>" +
+                "      <host>Ping</host>" +
                 "      <port>123</port>" +
                 "</webserver>")));
     }

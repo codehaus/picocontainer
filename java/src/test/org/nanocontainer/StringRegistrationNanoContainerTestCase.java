@@ -45,7 +45,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         try {
-            nc.registerComponent("Foo");
+            nc.registerComponent("Ping");
             fail("should have failed");
         } catch (ClassNotFoundException e) {
             // expected

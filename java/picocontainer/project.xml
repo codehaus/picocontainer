@@ -47,11 +47,11 @@
     <siteDirectory>/www/picocontainer.codehaus.org/picocontainer</siteDirectory>
     <distributionDirectory>/www/picocontainer.codehaus.org/builds/</distributionDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:pico</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/pico</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
+        <url>http://cvs.picocontainer.codehaus.org/java</url>
         <!-- statcvs only works with this one: -->
-        <!--url>http://cvs.codehaus.org/viewcvs.cgi/pico/?cvsroot=picocontainer</url-->
+        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url-->
     </repository>
 
     <versions>

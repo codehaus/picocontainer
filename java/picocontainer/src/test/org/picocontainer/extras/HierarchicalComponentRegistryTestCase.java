@@ -60,11 +60,11 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         dpc.instantiateComponents();
         dpc2.instantiateComponents();
 
-        Set set = hcr.getComponentInstanceKeys();
-        assertTrue(set.contains(DependsOnTouchable.class));
-        assertTrue(set.contains(SimpleTouchable.class));
-        assertTrue(set.contains(Map.class));
-        assertTrue(set.contains(Set.class));
+        Collection keys = hcr.getComponentInstanceKeys();
+        assertTrue(keys.contains(DependsOnTouchable.class));
+        assertTrue(keys.contains(SimpleTouchable.class));
+        assertTrue(keys.contains(Map.class));
+        assertTrue(keys.contains(Set.class));
 
         List list = hcr.getOrderedComponents();
         assertTrue(list.contains(hashMap));

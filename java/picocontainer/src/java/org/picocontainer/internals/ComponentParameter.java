@@ -1,11 +1,7 @@
 package org.picocontainer.internals;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-import org.picocontainer.internals.Parameter;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;
 

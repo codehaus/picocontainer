@@ -15,11 +15,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Collections;
+import java.util.Collection;
 import java.io.Serializable;
 
 /**
@@ -79,14 +78,14 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         return answer;
     }
 
-    public Set getComponentKeys() {
-        Set componentTypes = new HashSet();
+    public Collection getComponentKeys() {
+        List componentTypes = new ArrayList();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        return Collections.unmodifiableSet(componentTypes);
+        return Collections.unmodifiableList(componentTypes);
     }
 
     public void instantiateComponents() {
@@ -107,19 +106,19 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         }
     }
 
-    public Set getComponents() {
-        Set componentTypes = new HashSet();
+    public Collection getComponents() {
+        List componentTypes = new ArrayList();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        Set set = new HashSet();
+        List components = new ArrayList();
         for (Iterator iterator = componentTypes.iterator(); iterator.hasNext();) {
             Object key = (Object) iterator.next();
-            set.add(getComponent(key));
+            components.add(getComponent(key));
         }
-        return Collections.unmodifiableSet(set);
+        return Collections.unmodifiableList(components);
     }
 
     public Object getCompositeComponent() {

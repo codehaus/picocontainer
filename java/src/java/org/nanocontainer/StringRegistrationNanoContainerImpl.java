@@ -22,6 +22,8 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.List;
+import java.util.Collection;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
 
@@ -100,7 +102,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getComponent(clazz);
     }
 
-    public Set getComponents() {
+    public Collection getComponents() {
         return picoContainer.getComponents();
     }
 
@@ -114,7 +116,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
     }
 
-    public Set getComponentKeys() {
+    public Collection getComponentKeys() {
         return picoContainer.getComponentKeys();
     }
 

@@ -25,7 +25,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 
 /**
@@ -188,7 +188,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         return componentRegistry.getComponentInstance(componentKey);
     }
 
-    public Set getComponents() {
+    public Collection getComponents() {
         /* <ASLAK>
          * TODO: make final again
          *
@@ -224,9 +224,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         return componentRegistry.getComponentInstances();
     }
 
-    //TODO - remove from PicoContainer interface?
-    //TODO - maybe not ?
-    public Set getComponentKeys() {
+    public Collection getComponentKeys() {
         return componentRegistry.getComponentInstanceKeys();
     }
 

@@ -26,7 +26,7 @@
       </action>
 
       <action dev="paul" type="update">
-        - Changed nethod signatures from Object[] to java.util.Set.
+        - Changed nethod signatures from Object[] to java.util.Collection.
       </action>
 
       <action dev="rinkrank" type="update">
@@ -49,7 +49,7 @@
       </action>
 
       <action dev="paul" type="fix">
-        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-23">PICO-21</a>
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-23">PICO-23</a>
         - Nuke BeanStyleComponentFactory.
       </action>
 

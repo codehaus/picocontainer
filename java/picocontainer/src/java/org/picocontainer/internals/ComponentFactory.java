@@ -10,7 +10,6 @@
 
 package org.picocontainer.internals;
 
-import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 

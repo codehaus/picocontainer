@@ -9,31 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop;
 
-import java.io.Serializable;
-
 /**
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class IdentifiableMixin implements Identifiable, AnotherInterface {
+public interface IdGenerator {
 
-    private final IdGenerator generator;
-    private Serializable id;
-
-    public IdentifiableMixin(IdGenerator generator) {
-        this.generator = generator;
-        this.id = generator.nextId();
-    }
-
-    public IdentifiableMixin() {
-        this(new IdGeneratorImpl());
-    }
-
-    public Serializable getId() {
-        return id;
-    }
-
-    public void setId(Serializable id) {
-        this.id = id;
-    }
-
+    Integer nextId();
+    
 }

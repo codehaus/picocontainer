@@ -25,35 +25,7 @@ import dynaop.Pointcuts;
 class MixinComponentAspect extends ComponentAspect {
 
     private Class[] mixinInterfaces;
-    private Class mixinClass;
-    private MixinFactory mixinFactory;
-
-    /**
-     * Creates a new <code>MixinComponentAspect</code> from the given
-     * component pointcut and mixin class.
-     * 
-     * @param componentPointcut the components to introduce the mixin to.
-     * @param mixinClass the mixin class.
-     */
-    MixinComponentAspect(ComponentPointcut componentPointcut, Class mixinClass) {
-        super(componentPointcut);
-        this.mixinClass = mixinClass;
-    }
-
-    /**
-     * Creates a new <code>MixinComponentAspect</code> from the given
-     * component pointcut and mixin class. The aspected component will implement
-     * the provided set of mixin interfaces.
-     * 
-     * @param componentPointcut the components to introduce the mixin to.
-     * @param mixinInterfaces the mixin interfaces the aspected component will
-     *        implement.
-     * @param mixinClass the mixin class.
-     */
-    MixinComponentAspect(ComponentPointcut componentPointcut, Class[] mixinInterfaces, Class mixinClass) {
-        this(componentPointcut, mixinClass);
-        this.mixinInterfaces = mixinInterfaces;
-    }
+    private final MixinFactory mixinFactory;
 
     /**
      * Creates a new <code>MixinComponentAspect</code> from the given
@@ -72,19 +44,7 @@ class MixinComponentAspect extends ComponentAspect {
     }
 
     void doRegisterAspect(Object componentKey, Aspects aspects) {
-        if (mixinClass != null) {
-            mixinClass(aspects);
-        } else {
-            aspects.mixin(Pointcuts.ALL_CLASSES, mixinInterfaces, mixinFactory);
-        }
-    }
-
-    private void mixinClass(Aspects aspects) {
-        if (mixinInterfaces != null) {
-            aspects.mixin(Pointcuts.ALL_CLASSES, mixinInterfaces, mixinClass, null);
-        } else {
-            aspects.mixin(Pointcuts.ALL_CLASSES, mixinClass, null);
-        }
+        aspects.mixin(Pointcuts.ALL_CLASSES, mixinInterfaces, mixinFactory);
     }
 
 }

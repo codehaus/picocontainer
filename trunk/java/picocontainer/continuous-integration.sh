@@ -38,9 +38,8 @@ cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P
 rm -Rf target
 mkdir target
 
-# clover requiring it to run twice to get proper coverage.
-# The 2nd time happens during site:deploy
-maven clover &> target/cleanbuild.log
+# Compile and test
+maven test:test &> target/cleanbuild.log
 
 # See if the "compiling" file is there. If it is, compilation
 # failed.
@@ -52,9 +51,6 @@ else
   if [ -e "target/testfailure" ] ; then
     # Mail Maven's output to the dev list.
     cat target/cleanbuild.log | mutt -s "[BUILD] Test failure - see http://www.picocontainer.org/junit-report.html" picocontainer-dev@lists.codehaus.org
-
-    # We'll deploy the site even if the tests fail. Log currently not used.
-    maven site:deploy &> target/sitedeploy.log
   else
     # Deploy site only if compile and tests pass. Logs currently not used.
     # Must be run separately to get the files uploaded in the proper dir

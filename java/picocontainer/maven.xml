@@ -1,6 +1,16 @@
-<project default="binary:install">
+<project default="binary:install"
+    xmlns:j="jelly:core">
+
     <goal name="binary:install" prereqs="jar:install"/>
-    <goal name="binary:deploy" prereqs="jar:deploy,site:deploy"/>
+    <goal name="binary:deploy">
+         <attainGoal name="jar:deploy"/>
+         <attainGoal name="site:deploy"/>
+         
+         <j:if test="${!pom.currentVersion.endsWith('SNAPSHOT')}">
+           <!-- IT IS A RELEASE -->
+           <attainGoal name="dist:deploy"/>
+         </j:if>
+    </goal>
 
     <goal name="pico:tck-jar">
         <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">

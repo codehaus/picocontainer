@@ -28,6 +28,10 @@
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
     <siteAddress>beaver.codehaus.org</siteAddress>
     <siteDirectory>/home/projects/picocontainer/public_html/reports</siteDirectory>
+
+    <distributionSite>picocontainer.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>

@@ -106,4 +106,15 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     public void dispose() {
         throw new UnsupportedOperationException("This container is immutable, dispose() is not allowed");
     }
+
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof ImmutablePicoContainer) {
+            return obj.hashCode() == delegate.hashCode();
+        }
+        return false;
+    }
 }

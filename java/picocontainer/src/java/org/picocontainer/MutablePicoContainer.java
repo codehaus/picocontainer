@@ -10,6 +10,7 @@
 
 package org.picocontainer;
 
+
 /**
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -88,4 +89,15 @@ public interface MutablePicoContainer extends PicoContainer {
      * @param componentAdapter key of the component.
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
+
+    /**
+     * Adds a child container. <b>Don't call this method explicitly.</b>
+     * In order to create connected graphs and hierarchies of containers,
+     * use the {@link DelegatingPicoContainer#addParent(MutablePicoContainer)
+     * method.
+     *
+     * @param child child container to add
+     */
+    void addChild(PicoContainer child);
+    void addParent(PicoContainer parent);
 }

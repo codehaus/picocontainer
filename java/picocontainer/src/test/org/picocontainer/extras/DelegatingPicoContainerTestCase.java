@@ -21,11 +21,12 @@ import java.io.Serializable;
 
 public class DelegatingPicoContainerTestCase extends TestCase {
     private MutablePicoContainer parent;
-    private DelegatingPicoContainer child;
+    private DefaultPicoContainer child;
 
     public void setUp() throws PicoRegistrationException, PicoInitializationException {
         parent = new DefaultPicoContainer();
-        child = new DelegatingPicoContainer(parent);
+        child = new DefaultPicoContainer();
+        child.addParent(parent);
     }
 
     public void testChildGetsFromParent() {

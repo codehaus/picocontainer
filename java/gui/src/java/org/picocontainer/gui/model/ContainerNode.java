@@ -1,7 +1,6 @@
 package org.picocontainer.gui.model;
 
 import org.picocontainer.*;
-import org.picocontainer.extras.DelegatingPicoContainer;
 import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.defaults.*;
 
@@ -30,7 +29,8 @@ public class ContainerNode extends DefaultMutableTreeNode {
         if(getParent() != null) {
             ContainerNode parent = (ContainerNode) getParent();
             MutablePicoContainer parentContainer = parent.createPicoContainer();
-            result = new DelegatingPicoContainer(propertyFactory, parentContainer);
+            result = new DefaultPicoContainer(propertyFactory);
+            result.addParent(parentContainer);
         } else {
             result = new DefaultPicoContainer(propertyFactory);
         }

@@ -11,13 +11,13 @@
 package org.picocontainer.extras;
 
 import junit.framework.TestCase;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Disposable;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.ArrayList;
 import java.util.List;

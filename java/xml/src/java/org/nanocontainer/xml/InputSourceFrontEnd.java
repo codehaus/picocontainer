@@ -3,7 +3,6 @@ package org.nanocontainer.xml;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.extras.DelegatingPicoContainer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
@@ -18,6 +17,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
@@ -69,7 +69,8 @@ public class InputSourceFrontEnd {
 
     private void registerContainer(ReflectionFrontEnd reflectionFrontEnd, Element element) throws ClassNotFoundException {
         MutablePicoContainer parent = reflectionFrontEnd.getPicoContainer();
-        DelegatingPicoContainer delegatingPicoContainer = new DelegatingPicoContainer(parent);
+        DefaultPicoContainer delegatingPicoContainer = new DefaultPicoContainer();
+        delegatingPicoContainer.addParent(parent);
         ReflectionFrontEnd childFrontEnd = new ReflectionFrontEnd(delegatingPicoContainer);
         registerComponentsAndChildContainers(childFrontEnd, element);
     }

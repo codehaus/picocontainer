@@ -77,4 +77,14 @@ public interface PicoContainer {
      * @return all the component keys.
      */
     Collection getComponentKeys();
+
+    /**
+     * Get the children of this container. Any given container instance should not use
+     * the child containers to resolve components, but rahter their parents. This method
+     * is available merely to be able to serialize trees of containers into e.g. XML
+     * or some other persistent format.
+     * @return a Collection of {@link PicoContainer}.
+     * @see #getParents()
+     */
+    Collection getChildren();
 }

@@ -17,7 +17,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentRegistryTestCase extends TestCase {
-	private AbstractPicoContainer componentRegistry;
+	private DefaultPicoContainer componentRegistry;
 
 	protected void setUp() throws Exception {
 		componentRegistry = new DefaultPicoContainer();

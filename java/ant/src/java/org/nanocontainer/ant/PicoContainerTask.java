@@ -9,26 +9,24 @@
  *****************************************************************************/
 package org.nanocontainer.ant;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.io.IOException;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -58,7 +56,7 @@ public class PicoContainerTask extends Task {
     protected ContainerComposer extraContainerComposer = null;
 
     private ContainerComposer containerComposer = new ContainerComposer() {
-        public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
+        public void composeContainer(SoftCompositionPicoContainer picoContainer, Object assemblyScope) {
             if (extraContainerComposer != null) {
                 extraContainerComposer.composeContainer(picoContainer, assemblyScope);
             }
@@ -88,8 +86,8 @@ public class PicoContainerTask extends Task {
             BeanPropertyComponentAdapterFactory propertyFactory =
                     new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
-            protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-                return new DefaultPicoContainer(propertyFactory);
+            protected SoftCompositionPicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+                return new DefaultSoftCompositionPicoContainer(propertyFactory);
             }
         };
         try {

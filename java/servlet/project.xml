@@ -40,6 +40,11 @@
             <id>jmock</id>
             <version>SNAPSHOT</version>
         </dependency>
+        
+        <dependency>
+            <id>xstream</id>
+            <version>0.3</version>
+        </dependency>
 
     </dependencies>
 

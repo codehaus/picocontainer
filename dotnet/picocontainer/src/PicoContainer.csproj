@@ -94,6 +94,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ILifecycleManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IMutablePicoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -219,6 +224,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\DefaultLifecycleManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\DefaultPicoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -230,6 +240,11 @@
                 />
                 <File
                     RelPath = "Defaults\IComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\IComponentMonitor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -270,6 +285,11 @@
                 />
                 <File
                     RelPath = "Defaults\NotConcreteRegistrationException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\NullComponentMonitor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

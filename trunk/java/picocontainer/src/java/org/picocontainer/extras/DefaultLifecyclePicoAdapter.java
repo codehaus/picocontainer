@@ -11,11 +11,7 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultComponentMulticasterPicoAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.lifecycle.Disposable;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.lifecycle.Startable;
@@ -24,30 +20,24 @@ import org.picocontainer.lifecycle.Stoppable;
 /**
  * @author Paul Hammant
  * @author Ward Cunningham
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
 
-    private Startable startableAggregatedComponent;
-    private Stoppable stoppableAggregatedComponent;
-    private Disposable disposableAggregatedComponent;
     private boolean started;
     private boolean disposed;
     private final PicoContainer picoContainer;
     private final ComponentMulticasterPicoAdapter multicasterAdapter;
 
     public DefaultLifecyclePicoAdapter(PicoContainer picoContainer, ComponentMulticasterPicoAdapter multicasterAdapter) {
-         this.picoContainer = picoContainer;
-         this.multicasterAdapter = multicasterAdapter;
+        this.picoContainer = picoContainer;
+        this.multicasterAdapter = multicasterAdapter;
     }
 
     public DefaultLifecyclePicoAdapter(PicoContainer picoContainer) {
         this.picoContainer = picoContainer;
-        if(picoContainer instanceof ComponentMulticasterPicoAdapter) {
-            multicasterAdapter = (ComponentMulticasterPicoAdapter)picoContainer;
-        } else {
-            multicasterAdapter = new DefaultComponentMulticasterPicoAdapter(picoContainer);
-        }
+        multicasterAdapter = new DefaultComponentMulticasterPicoAdapter(picoContainer);
     }
 
     public boolean isStarted() {
@@ -66,60 +56,37 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
         return picoContainer;
     }
 
-    private void initializeIfNotInitialized() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (startableAggregatedComponent == null) {
-            try {
-                startableAggregatedComponent = (Startable) multicasterAdapter.getComponentMulticaster(true, false);
-            } catch (ClassCastException e) {
-            }
-        }
-        if (stoppableAggregatedComponent == null) {
-            try {
-                stoppableAggregatedComponent = (Stoppable) multicasterAdapter.getComponentMulticaster(false, false);
-            } catch (ClassCastException e) {
-            }
-        }
-        if (disposableAggregatedComponent == null) {
-            try {
-                Object o = multicasterAdapter.getComponentMulticaster(false, false);
-                disposableAggregatedComponent = (Disposable) o;
-            } catch (ClassCastException e) {
-            }
-        }
-
-    }
-
     public void start() {
         checkDisposed();
-        initializeIfNotInitialized();
         if (started) {
             throw new IllegalStateException("Already started.");
         }
-        started = true;
-        if (startableAggregatedComponent != null) {
-            startableAggregatedComponent.start();
+        try {
+            ((Startable) multicasterAdapter.getComponentMulticaster(true, false)).start();
+        } catch (ClassCastException ignore) {
         }
+        started = true;
     }
 
     public void stop() {
         checkDisposed();
-        initializeIfNotInitialized();
-        if (started == false) {
+        if (!started) {
             throw new IllegalStateException("Already stopped (or maybe never started).");
         }
-        started = false;
-        if (stoppableAggregatedComponent != null) {
-            stoppableAggregatedComponent.stop();
+        try {
+            ((Stoppable) multicasterAdapter.getComponentMulticaster(false, false)).stop();
+        } catch (ClassCastException ignore) {
         }
+        started = false;
     }
 
     public void dispose() {
         checkDisposed();
-        initializeIfNotInitialized();
-        disposed = true;
-        if (disposableAggregatedComponent != null) {
-            disposableAggregatedComponent.dispose();
+        try {
+            ((Disposable) multicasterAdapter.getComponentMulticaster(false, false)).dispose();
+        } catch (ClassCastException ignore) {
         }
+        disposed = true;
     }
 
     private void checkDisposed() {

@@ -7,12 +7,15 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @deprecated Use {@link DefaultLifecyclePicoAdapter} instead.
+ */
 public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, MutablePicoContainer {
 
-    private final DefaultPicoContainer mutablePicoContainer;
+    private final MutablePicoContainer mutablePicoContainer;
     private final LifecyclePicoAdapter lifecyclePicoAdapter;
 
-    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, DefaultPicoContainer mutablePicoContainer) {
+    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, MutablePicoContainer mutablePicoContainer) {
         this.lifecyclePicoAdapter = lifecyclePicoAdapter;
         this.mutablePicoContainer = mutablePicoContainer;
     }
@@ -62,10 +65,6 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return lifecyclePicoAdapter.isDisposed();
     }
 
-    public Object getComponentMulticaster() throws PicoException {
-        return mutablePicoContainer.getComponentMulticaster();
-    }
-
     public Collection getComponentKeys() {
         return mutablePicoContainer.getComponentKeys();
     }
@@ -84,10 +83,6 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
 
     public List getUnmanagedComponentInstances() throws PicoException {
         return mutablePicoContainer.getUnmanagedComponentInstances();
-    }
-
-    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException {
-        return mutablePicoContainer.getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 
     public List getParentContainers() {

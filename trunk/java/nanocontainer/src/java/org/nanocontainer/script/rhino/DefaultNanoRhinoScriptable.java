@@ -8,16 +8,19 @@
  *****************************************************************************/
 package org.picoextras.script.rhino;
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
 import org.picoextras.reflection.ReflectionFrontEnd;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class DefaultNanoRhinoScriptable extends ScriptableObject implements NanoRhinoScriptable {
 
@@ -77,7 +80,7 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
         DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];
         MutablePicoContainer childContainer = child.reflectionFrontEnd.getPicoContainer();
         MutablePicoContainer parentContainer = parent.reflectionFrontEnd.getPicoContainer();
-        parentContainer.addChild(childContainer);
+        childContainer.addParent(parentContainer);
     }
 
     public static void jsFunction_addFileClassPathJar(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws IOException {

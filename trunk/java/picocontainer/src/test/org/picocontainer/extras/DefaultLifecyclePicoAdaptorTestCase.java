@@ -236,7 +236,6 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         LifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(pico);
 
-
         pico.registerComponentImplementation(DependsOnTouchable.class);
         pico.registerComponentImplementation(SimpleTouchable.class);
 

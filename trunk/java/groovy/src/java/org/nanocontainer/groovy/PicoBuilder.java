@@ -38,7 +38,7 @@ public class PicoBuilder extends BuilderSupport {
             MutablePicoContainer parentContainer = (MutablePicoContainer) parent;
             if (child instanceof MutablePicoContainer) {
                 MutablePicoContainer childContainer = (MutablePicoContainer) child;
-                parentContainer.addChild(childContainer);
+                childContainer.addParent(parentContainer);
             }
         }
     }

@@ -11,8 +11,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {

@@ -162,4 +162,25 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(l.contains("something"));
     }
 
+    public static class A {
+        public A(B b, C c){}
+    };
+    public static class B {};
+    public static class C {};
+
+    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(A.class);
+        pico.registerComponentImplementation(B.class);
+
+        try {
+            pico.getComponentInstance(A.class);
+        } catch (NoSatisfiableConstructorsException e) {
+            assertEquals( A.class.getName() + " doesn't have any satisfiable constructors. Usatisfiable dependencies: [class " + C.class.getName() + "]", e.getMessage() );
+            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            assertEquals(1, unsatisfiableDependencies.size());
+            assertTrue(unsatisfiableDependencies.contains(C.class));
+        }
+    }
 }
+

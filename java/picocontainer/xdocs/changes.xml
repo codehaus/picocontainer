@@ -9,15 +9,15 @@
     <body>
         <release version="1.0-beta-3" date="In CVS">
 
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-44">PICO-44</a>
+                - Lack of information when pico is unable to satisfy dependencies..
+            </action>
+
         </release>
 
         <release version="1.0-beta-2" date="2003-09-10">
-
-            <action dev="rinkrank" type="fix">
-                Fixed 
-                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-41">PICO-41</a>
-                - Removed static "constructor" subclasses.
-            </action>
 
             <action dev="rinkrank" type="update">
                 Big refactoring making the API simpler. This was needed because
@@ -44,14 +44,20 @@
                 is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
             </action>
 
+            <action dev="rinkrank" type="add">
+                Added an Ant task for PicoContainer (It currently lives in the NanoContainer codebase).
+            </action>
+
             <action dev="rinkrank" type="update">
                 Fixed
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-39</a>
                 - Support multiple constructors.
             </action>
 
-            <action dev="rinkrank" type="add">
-                Added an Ant task for PicoContainer (It currently lives in the NanoContainer codebase).
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-41">PICO-41</a>
+                - Removed static "constructor" subclasses.
             </action>
 
         </release>

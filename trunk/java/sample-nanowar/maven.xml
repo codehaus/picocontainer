@@ -12,7 +12,7 @@
             artifact="${maven.build.dir}/${pom.artifactId}.war"
             type="war"
             assureDirectoryCommand="mkdir -p"
-            siteCommand="cd @deployDirectory@; chmod g+w ${maven.final.name}.war"
+            siteCommand="cd @deployDirectory@; chmod g+w ${pom.artifactId}.war"
             />
     </goal>
 

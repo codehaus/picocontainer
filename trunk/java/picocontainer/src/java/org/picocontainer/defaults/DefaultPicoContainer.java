@@ -1,7 +1,7 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.extras.ComponentMulticasterFactory;
 import org.picocontainer.*;
+import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.io.Serializable;
 import java.util.*;
@@ -49,7 +49,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
         Object componentKey = componentAdapter.getComponentKey();
-        if(componentKeyToAdapterMap.keySet().contains(componentKey)) {
+        if (componentKeyToAdapterMap.keySet().contains(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
         componentKeyToAdapterMap.put(componentKey, componentAdapter);
@@ -61,13 +61,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public final ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
         ComponentAdapter result = findComponentAdapterImpl(componentKey);
-        if(result != null) {
+        if (result != null) {
             return result;
         } else {
             for (Iterator iterator = parents.iterator(); iterator.hasNext();) {
-                MutablePicoContainer delegate = (DefaultPicoContainer) iterator.next();
+                MutablePicoContainer delegate = (MutablePicoContainer) iterator.next();
                 ComponentAdapter componentAdapter = delegate.findComponentAdapter(componentKey);
-                if(componentAdapter != null) {
+                if (componentAdapter != null) {
                     return componentAdapter;
                 }
             }
@@ -82,7 +82,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 //            Class classKey = (Class) componentKey;
 //            result = findImplementingComponentAdapter(classKey);
 //        }
-        if(result == null && componentKey instanceof Class) {
+        if (result == null && componentKey instanceof Class) {
             // see if we find a matching one if the key is a class
             Class classKey = (Class) componentKey;
             result = findImplementingComponentAdapter(classKey);
@@ -90,7 +90,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    public void registerComponentInstance(Object component) throws PicoRegistrationException{
+    public void registerComponentInstance(Object component) throws PicoRegistrationException {
         registerComponentInstance(component.getClass(), component);
     }
 
@@ -159,7 +159,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = findComponentAdapter(componentKey);
-        if(componentAdapter != null) {
+        if (componentAdapter != null) {
             return componentAdapter.getComponentInstance(this);
         } else {
             return null;
@@ -180,7 +180,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
         if (foundKeys.size() == 0) {
             return null;
-        } else if(foundKeys.size() > 1) {
+        } else if (foundKeys.size() > 1) {
             throw new AmbiguousComponentResolutionException(componentType, foundKeys.toArray());
         }
 
@@ -225,19 +225,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void addChild(MutablePicoContainer child) {
-        if(!children.contains(child)) {
+        if (!children.contains(child)) {
             children.add(child);
         }
-        if(!child.getParentContainers().contains(this)) {
+        if (!child.getParentContainers().contains(this)) {
             child.addParent(this);
         }
     }
 
     public void addParent(MutablePicoContainer parent) {
-        if(!parents.contains(parent)) {
+        if (!parents.contains(parent)) {
             parents.add(parent);
         }
-        if(!parent.getChildContainers().contains(this)) {
+        if (!parent.getChildContainers().contains(this)) {
             parent.addChild(this);
         }
     }

@@ -16,11 +16,7 @@ import org.picocontainer.defaults.ComponentSpecification;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HierarchicalComponentRegistry implements ComponentRegistry, Serializable {
 
@@ -56,8 +52,8 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         componentRegistry.registerComponent(compSpec);
     }
 
-    public Iterator getRegisteredComponentIterator() {
-        return componentRegistry.getRegisteredComponentIterator();
+    public Collection getComponentSpecifications() {
+        return componentRegistry.getComponentSpecifications();
     }
 
     public List getOrderedComponents() {

@@ -15,12 +15,13 @@ import org.picocontainer.defaults.ComponentSpecification;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
 
 public interface ComponentRegistry {
 
     void registerComponent(ComponentSpecification compSpec);
 
-    Iterator getRegisteredComponentIterator();
+    Collection getComponentSpecifications();
 
     List getOrderedComponents();
 

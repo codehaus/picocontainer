@@ -15,7 +15,7 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public interface PicoContainer extends Lifecycle {
+public interface PicoContainer {
     /**
      * Gets a component instance.
      *
@@ -39,7 +39,7 @@ public interface PicoContainer extends Lifecycle {
 
     /**
      * Gets component instances that are registered, but not managed by the container.
-     * 
+     *
      * @return unmanaged components.
      */
     List getUnmanagedComponentInstances() throws PicoException;
@@ -87,7 +87,7 @@ public interface PicoContainer extends Lifecycle {
     /**
      * Verifies that the dependencies for all the registered components can be satisfied
      * None of the components are instantiated during the verification process.
-     * 
+     *
      * @throws PicoVerificationException if there are unsatisifiable dependencies.
      */
     void verify() throws PicoVerificationException;

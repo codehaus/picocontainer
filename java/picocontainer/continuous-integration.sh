@@ -19,7 +19,7 @@
 #
 
 JAVA_HOME=/usr/local/j2sdk1.4.1
-MAVEN_HOME=$HOME/maven
+MAVEN_HOME=~bwalding/maven
 ANT_HOME=$HOME/cvs/ant/dist
 PATH=$HOME/bin:$JAVA_HOME/bin:$MAVEN_HOME/bin:$ANT_HOME/bin:$PATH
 CVS_RSH=$HOME/ssh1.sh

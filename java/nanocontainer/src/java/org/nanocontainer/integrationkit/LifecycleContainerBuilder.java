@@ -26,7 +26,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         // register the child in the parent so that lifecycle can be propagated down the hierarchy
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableContainer = (MutablePicoContainer) parentContainer;
-            mutableContainer.unregisterComponentByInstance(container);
             mutableContainer.registerComponentInstance(containerRef, container);
         }
 

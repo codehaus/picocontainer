@@ -206,33 +206,4 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         assertEquals("a3b org.picocontainer.testmodel.SimpleTouchable", animal.getFood());
     }
 
-    public static interface I {
-    }
-
-    public static class AA implements I {
-        public AA(I i) {
-        }
-    }
-
-    public static class BB implements I {
-        public BB(I i) {
-        }
-    }
-    // this test is meaningless, since  this is no longer illegal...
-    public void testExtendAndDependOnSameType() throws PicoRegistrationException, PicoInitializationException {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        pico.registerComponentImplementation(AA.class);
-        pico.registerComponentImplementation(BB.class);
-
-        try {
-            pico.getComponentInstance(BB.class);
-            // should be cyclic dependecy, really...
-            // see pico-222
-            fail("Should have barfed");
-        } catch (CyclicDependencyException e) {
-            // Neither can be instantiated without the other.
-        }
-    }
-
 }

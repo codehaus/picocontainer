@@ -87,8 +87,9 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     Pico should be smart enough to figure out that it shouldn't consider a component as a candidate parameter for
     its own instantiation. This may be fixed by adding an additional parameter to ComponentParameter.resolveAdapter -
     namely the ComponentAdapter instance that should be excluded.
-
     AH
+    Pico-222 is fixed, but activating this will lead to cyclic dependency...
+    KP
      */
     public void TODOtestComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
         MutablePicoContainer pico = createPicoContainer(null);
@@ -102,8 +103,10 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
      Problem is basically the same as above. Pico should not consider self as solution.
      
      JS
+     fixed it ( PICO-222 )
+     KP
      */
-    public void TODOtestUnambiguouSelfDependency() {
+    public void testUnambiguouSelfDependency() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponentImplementation(SimpleTouchable.class);
         pico.registerComponentImplementation(DecoratedTouchable.class);

@@ -15,6 +15,15 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface ComponentFactory {
 
+    /**
+     * Create a component. Used by the internals of applicable PicoContainers
+     * to instantiate a component.
+     * @param compType The component type to instantiate
+     * @param constructor The constructor to use to create the component.
+     * @param args The arguments to pass in to the constructor
+     * @return The component
+     * @throws PicoInvocationTargetStartException If a problem creating the component.
+     */
     Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException;
 
 }

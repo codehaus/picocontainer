@@ -12,11 +12,29 @@ package picocontainer;
 
 public interface PicoContainer {
 
+    /**
+     * Does the container have a partilcilar component type?
+     * @param componentType The component type to look for.
+     * @return true if it does have the component type
+     */
     boolean hasComponent(Class componentType);
 
+    /**
+     * Get a component for a component type.
+     * @param componentType The component type to look for.
+     * @return the component, or null of no such component.
+     */
     Object getComponent(Class componentType);
 
+    /**
+     * Get all components (random order).
+     * @return An array of components.
+     */
     Object[] getComponents();
 
+    /**
+     * Get all component types (random order).
+     * @return An Array of component types.
+     */
     Class[] getComponentTypes();
 }

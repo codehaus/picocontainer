@@ -45,9 +45,23 @@ public interface ClassRegistrationPicoContainer extends LifecycleContainer {
     void registerComponent(Class componentType, Object component)
             throws PicoRegistrationException;
 
+    /**
+     * Registers an instantiated component.  This might be because you are
+     * creating trees of Pico containers or if you have a class that you want treated
+     * as a component, but is not Pico component compatible.
+     * @param component The pre instantiated component to register
+     * @throws PicoRegistrationException
+     */
     void registerComponent(Object component)
             throws PicoRegistrationException;
 
+    /**
+     * Add a parameter to a component. Used for configuring them.
+     * Very liekly to change before release.
+     * @param componentType The component type
+     * @param parameter The parameter it pertains to
+     * @param arg The argukemt to pass in.
+     */
     void addParameterToComponent(Class componentType, Class parameter, Object arg);
 
 }

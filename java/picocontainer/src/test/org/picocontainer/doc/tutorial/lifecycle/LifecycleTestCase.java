@@ -16,10 +16,10 @@ public class LifecycleTestCase extends TestCase {
         pico.start();
 // END SNIPPET: start
 
-// START SNIPPET: stop-dispose
+// START SNIPPET: stopdispose
         pico.stop();
         pico.dispose();
-// END SNIPPET: stop-dispose
+// END SNIPPET: stopdispose
     }
 
 

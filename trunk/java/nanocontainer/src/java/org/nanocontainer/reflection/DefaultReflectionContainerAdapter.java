@@ -126,26 +126,11 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
     }
 
     /**
-     * Sets what classloader to use. This will reset all previously set URLs.
-     * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
-     *
-     * @param classLoader
-     * @see #addClassLoaderURL
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-//        this.classLoader = classLoader;
-        throw new UnsupportedOperationException("argggh");
-//        urls.clear();
-    }
-
-    /**
-     * Adds a new URL.
-     * This overrides the ClassLoader that may have been set by setClassLoader(..)
+     * Adds a new URL that will be used in classloading
      *
      * @param url
      */
     public void addClassLoaderURL(URL url) {
-    //    classLoader = null;
         if (clLocked) throw new IllegalStateException("Foo!!!!");
         urls.add(url);
     }

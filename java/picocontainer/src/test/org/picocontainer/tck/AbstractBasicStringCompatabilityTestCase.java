@@ -12,6 +12,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase {
 
@@ -37,5 +39,18 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
                 picoContainer.getComponent("dependsOnTouchable") instanceof DependsOnTouchable);
         assertTrue("should not have non existent component", !picoContainer.hasComponent("doesNotExist"));
     }
+
+    protected abstract void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
+
+    public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        addAHashMapByInstance(picoContainer);
+        picoContainer.instantiateComponents();
+        assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());
+        assertEquals("Key - 'map', Impl - HashMap should be in container",HashMap.class, picoContainer.getComponent("map").getClass());
+        //TODO - some way to test hashmap was passed in as an instance ?
+        // should unmanaged side of DefaultPicoContainer be more exposed thru interface?
+    }
+
 
 }

@@ -6,6 +6,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Startable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Disposable;
+import org.picocontainer.ComponentAdapter;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -20,9 +21,9 @@ public class LifecycleVisitor implements PicoVisitor {
     public static final PicoVisitor DISPOSER;
     static {
         try {
-            STARTER = new LifecycleVisitor(Startable.class.getMethod("start", null), true);
-            STOPPER = new LifecycleVisitor(Startable.class.getMethod("stop", null), false);
-            DISPOSER = new LifecycleVisitor(Disposable.class.getMethod("dispose", null), false) {
+            STARTER = new LifecycleVisitor(Startable.class.getMethod("start", null));
+            STOPPER = new LifecycleVisitor(Startable.class.getMethod("stop", null));
+            DISPOSER = new LifecycleVisitor(Disposable.class.getMethod("dispose", null)) {
                 public void visitContainer(PicoContainer pico) {
                     super.visitContainer(pico);
                     if (pico.getParent() instanceof MutablePicoContainer) {
@@ -36,15 +37,15 @@ public class LifecycleVisitor implements PicoVisitor {
     }
 
     private final Method method;
-    private final boolean visitInInstantiationOrder;
 
-    public LifecycleVisitor(Method method, boolean visitInInstantiationOrder) {
+    public LifecycleVisitor(Method method) {
         this.method = method;
-        this.visitInInstantiationOrder = visitInInstantiationOrder;
     }
 
     public void visitContainer(PicoContainer pico) {
-        pico.accept(this, method.getDeclaringClass(), visitInInstantiationOrder);
+    }
+
+    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
     }
 
     public void visitComponentInstance(Object o) {

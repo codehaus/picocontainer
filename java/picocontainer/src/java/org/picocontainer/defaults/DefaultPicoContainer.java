@@ -17,6 +17,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -150,6 +152,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getComponentAdaptersOfType(Class componentType) {
+        if(componentType == null) {
+            return Collections.EMPTY_LIST;
+        }
         List found = new ArrayList();
         for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
@@ -265,14 +270,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public List getComponentInstances() throws PicoException {
-        return getComponentInstancesOfType(null);
+        return getComponentInstancesOfType(Object.class);
     }
 
-    public List getComponentInstancesOfType(Class type) throws PicoException {
+    public List getComponentInstancesOfType(Class componentType) throws PicoException {
+        if(componentType == null) {
+            return Collections.EMPTY_LIST;
+        }
+
         Map adapterToInstanceMap = new HashMap();
         for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-            if (type == null || type.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
                 Object componentInstance = componentAdapter.getComponentInstance();
                 adapterToInstanceMap.put(componentAdapter, componentInstance);
 
@@ -340,31 +349,31 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated Use {@link LifecycleVisitor}.STARTER.visitContainer(this)
+     * @deprecated Use accept(LifecycleVisitor.STARTER, Startable.class, true)
      */
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
-        LifecycleVisitor.STARTER.visitContainer(this);
+        accept(LifecycleVisitor.STARTER, Startable.class, true);
         started = true;
     }
 
     /**
-     * @deprecated Use {@link LifecycleVisitor}.STOPPER.visitContainer(this)
+     * @deprecated Use accept(LifecycleVisitor.STOPPER, Startable.class, false)
      */
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
-        LifecycleVisitor.STOPPER.visitContainer(this);
+        accept(LifecycleVisitor.STOPPER, Startable.class, false);
         started = false;
     }
 
     /**
-     * @deprecated Use {@link LifecycleVisitor}.DISPOSER.visitContainer(this)
+     * @deprecated Use accept(LifecycleVisitor.DISPOSER, Disposable.class, false)
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
-        LifecycleVisitor.DISPOSER.visitContainer(this);
+        accept(LifecycleVisitor.DISPOSER, Disposable.class, false);
         disposed = true;
     }
 
@@ -401,22 +410,32 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void accept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
+        visitor.visitContainer(this);
         List componentInstances = getComponentInstancesOfType(ofType);
         if(visitInInstantiationOrder) {
+            componentAdaptersAccept(visitor, ofType);
             visitComponentInstances(componentInstances, visitor);
-            visitChildContainers(visitor);
+            childContainersAccept(visitor, ofType, visitInInstantiationOrder);
         } else {
+            componentAdaptersAccept(visitor, ofType);
             Collections.reverse(componentInstances);
-            visitChildContainers(visitor);
+            childContainersAccept(visitor, ofType, visitInInstantiationOrder);
             visitComponentInstances(componentInstances, visitor);
         }
     }
 
-    private void visitChildContainers(PicoVisitor visitor) {
+    private void childContainersAccept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
         Collection childContainers = namedChildContainers.values();
         for (Iterator iterator = childContainers.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            visitor.visitContainer(child);
+            child.accept(visitor, ofType, visitInInstantiationOrder);
+        }
+    }
+
+    private void componentAdaptersAccept(PicoVisitor visitor, Class type) {
+        for (Iterator iterator = getComponentAdaptersOfType(type).iterator(); iterator.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            componentAdapter.accept(visitor);
         }
     }
 

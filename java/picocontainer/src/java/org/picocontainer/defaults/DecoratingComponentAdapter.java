@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 
@@ -56,5 +57,10 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
 
     public void setContainer(PicoContainer picoContainer) {
         delegate.setContainer(picoContainer);
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
+        delegate.accept(visitor);
     }
 }

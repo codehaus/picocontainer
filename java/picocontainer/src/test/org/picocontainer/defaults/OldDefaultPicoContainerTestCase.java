@@ -19,6 +19,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -193,6 +194,8 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
                     public void setContainer(PicoContainer picoContainer) {
 
+                    }
+                    public void accept(PicoVisitor visitor) {
                     }
                 };
             }

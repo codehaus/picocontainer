@@ -6,5 +6,6 @@ package org.picocontainer;
  */
 public interface PicoVisitor {
     void visitContainer(PicoContainer pico);
+    void visitComponentAdapter(ComponentAdapter componentAdapter);
     void visitComponentInstance(Object o);
 }

@@ -117,6 +117,9 @@ public class PicoContainerBasedServiceManagerTestCase extends TestCase {
 
             public void verify() throws UnsatisfiableDependenciesException {
             }
+
+            public void accept(PicoVisitor visitor) {
+            }
         };
         
         mock.getComponentAdapter("blah");

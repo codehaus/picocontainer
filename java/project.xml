@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>nanocontainer</id>
   <name>NanoContainer</name>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
 
   <organization>
     <name>Codehaus</name>
@@ -23,18 +23,31 @@
   <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/nanocontainer:nano</connection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/nano/</url>
+    <url>http://nanocontainer.cvs.codehaus.org/nano/</url>
   </repository>
+
+  <versions>
+    <version>
+      <id>1.0-alpha-1</id>
+      <name>1.0-alpha-1</name>
+      <tag>NANOCONTAINER_1_0_ALPHA_1</tag>
+    </version>
+    <version>
+      <id>1.0-alpha-2</id>
+      <name>1.0-alpha-2</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
 
   <mailingLists>
     <mailingList>
-      <name>Nanocontainer Developers</name>
+      <name>NanoContainer Developers</name>
       <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</subscribe>
       <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-dev</unsubscribe>
       <archive>http://lists.codehaus.org/pipermail/nanocontainer-dev/</archive>
     </mailingList>
     <mailingList>
-      <name>Nanocontainer CVS Commits</name>
+      <name>NanoContainer CVS Commits (CVSSpam)</name>
       <subscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</subscribe>
       <unsubscribe>http://lists.codehaus.org/mailman/listinfo/nanocontainer-commits</unsubscribe>
       <archive>http://lists.codehaus.org/pipermail/nanocontainer-commits/</archive>
@@ -83,7 +96,7 @@
   <dependencies>
     <dependency>
       <id>picocontainer</id>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0-alpha-2-SNAPSHOT</version>
       <url>http://picocontainer.codehaus.org/</url>
     </dependency>
 

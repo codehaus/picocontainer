@@ -59,7 +59,7 @@ public class CollectionsTestCase
 
     // END SNIPPET: classes
 
-    public void XXXtestShouldCreateBowlWithFishCollection() {
+    public void testShouldCreateBowlWithFishCollection() {
 
         //      START SNIPPET: usage
 
@@ -73,6 +73,7 @@ public class CollectionsTestCase
 
         shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
         cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
+        bowl = (Bowl) pico.getComponentInstanceOfType(Bowl.class);
         
         Collection fishes = bowl.getFishes();
         assertEquals(2, fishes.size());

@@ -14,6 +14,4 @@ package org.nanocontainer.nanoaop;
  */
 public interface ClassPointcut {
 
-    boolean picks(Class clazz);
-    
 }

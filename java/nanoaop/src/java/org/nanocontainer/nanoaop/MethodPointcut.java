@@ -9,13 +9,9 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop;
 
-import java.lang.reflect.Method;
-
 /**
  * @author Stephen Molitor
  */
 public interface MethodPointcut {
 
-    boolean picks(Method method);
-    
 }

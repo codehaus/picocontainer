@@ -28,13 +28,13 @@
         </dependency>
 
         <dependency>
-            <id>bsh</id>
-            <version>2.0b1</version>
+          <id>dynaop</id>
+          <version>1.0-beta</version>
         </dependency>
 
         <dependency>
-          <id>dynaop</id>
-          <version>1.0-beta</version>
+          <id>aopalliance</id>
+          <version>1.0</version>
         </dependency>
 
         <!-- test time only -->

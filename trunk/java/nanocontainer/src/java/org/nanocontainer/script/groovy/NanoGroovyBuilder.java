@@ -149,6 +149,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
     protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         Class containerImpl = (Class) attributes.remove("class");
+        String name = (String) attributes.remove("name");
         SoftCompositionPicoContainer softPico = null;
 
         if (containerImpl != null) {
@@ -186,7 +187,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
                 } else {
                     softPico = new DefaultSoftCompositionPicoContainer(cl, parent);
                 }
-                parent.addChildContainer(softPico);
+                parent.addChildContainer(name, softPico);
 
             } else {
                 if (adapterFactory != null) {

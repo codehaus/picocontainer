@@ -19,7 +19,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        pico = builder.container() {
             component(Xxx$A)
         }
 
@@ -183,6 +183,27 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         startAndStop(pico)
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
+    }
+
+    void testInstantiateBasicComponentWithDeepNamedTree() {
+
+       Xxx.reset()
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            container(name:"huey") {
+                container(name:"duey") {
+                    component(key:"Luis", class:Xxx$A)
+                }
+            }
+            component(HashMap.class)
+        }
+
+        startAndStop(pico)
+
+        assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
+        Object o = pico.getComponentInstance("huey/duey/Luis")
+        assertNotNull(o)
     }
 
 

@@ -1,7 +1,0 @@
-*.suo
-PicoContainer.resharper
-PicoContainer.resharperoptions
-bin
-obj
-*.user
-Extras

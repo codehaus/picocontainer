@@ -1,11 +1,8 @@
 package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.*;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.AbstractPicoContainer;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
@@ -15,7 +12,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -133,7 +129,11 @@ public class EditContainerPanel extends JPanel {
                 DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
                 String className = componentField.getText();
                 Class componentImplementation = getClass().getClassLoader().loadClass(className);
-                ComponentNode componentNode = new ComponentNode(componentImplementation);
+
+                // This model will be used by the node (which will set the props)
+                // and also by the table, which lets the props be edited
+                BeanPropertyModel beanPropertyModel = new BeanPropertyModel(componentImplementation);
+                ComponentNode componentNode = new ComponentNode(beanPropertyModel);
                 ContainerNode containerNode = (ContainerNode) getSelectedNode();
                 treeModel.insertNodeInto(componentNode, containerNode, 0);
             } catch (Exception e) {

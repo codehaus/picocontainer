@@ -3,10 +3,6 @@ package org.picocontainer.gui.model;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelListener;
-import java.beans.PropertyDescriptor;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.IntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -16,15 +12,10 @@ public class BeanPropertyTableModel implements TableModel {
     private static final String[] TABLE_HEADER = new String[]{"Property", "Value"};
     public static final TableModel EMPTY_MODEL = new DefaultTableModel(BeanPropertyTableModel.TABLE_HEADER, 0);
 
-    private final Class clazz;
-    private final PropertyDescriptor[] propertyDescriptors;
-    private final Object[] propertyValues;
+    private final BeanPropertyModel model;
 
-    public BeanPropertyTableModel(Class clazz) throws IntrospectionException {
-        this.clazz = clazz;
-        BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-        propertyDescriptors = beanInfo.getPropertyDescriptors();
-        propertyValues = new Object[propertyDescriptors.length];
+    public BeanPropertyTableModel(BeanPropertyModel model) {
+        this.model = model;
     }
 
     public int getColumnCount() {
@@ -32,11 +23,11 @@ public class BeanPropertyTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return propertyDescriptors.length;
+        return model.getSize();
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        boolean hasWriteMethod = propertyDescriptors[rowIndex].getWriteMethod() != null;
+        boolean hasWriteMethod = model.getPropertyDescriptor(rowIndex).getWriteMethod() != null;
         return columnIndex == 1 && hasWriteMethod;
     }
 
@@ -46,15 +37,14 @@ public class BeanPropertyTableModel implements TableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (columnIndex == 0) {
-            return propertyDescriptors[rowIndex].getDisplayName();
+            return model.getPropertyDescriptor(rowIndex).getDisplayName();
         } else {
-            return propertyValues[rowIndex];
+            return model.getPropertyValue(rowIndex);
         }
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // columnIndex is always 1 (never 0)
-        propertyValues[rowIndex] = aValue;
+        model.setPropertyValue(aValue, rowIndex);
     }
 
     public String getColumnName(int columnIndex) {

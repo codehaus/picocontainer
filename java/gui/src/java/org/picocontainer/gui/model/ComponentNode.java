@@ -9,7 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @version $Revision$
  */
 public class ComponentNode extends DefaultMutableTreeNode {
-    public ComponentNode(Class componentImplementation) {
-        super(componentImplementation);
+    public ComponentNode(BeanPropertyModel beanPropertyModel) {
+        super(beanPropertyModel);
     }
 }

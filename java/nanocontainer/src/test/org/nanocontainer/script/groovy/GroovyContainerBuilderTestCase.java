@@ -21,7 +21,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedComposingLif
         // * imports are not supported by groovy yet, so the GroovyContainerBuilder won't either.
         Reader script = new StringReader("" +
                 "class MyContainerBuilder {\n" +
-                "    buildContainer(parent) {\n" +
+                "    buildContainer(parent, assemblyScope) {\n" +
                 "        pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
                 "        pico.registerComponentInstance(\"hello\", \"Groovy\")\n" +
                 "        return pico\n" +

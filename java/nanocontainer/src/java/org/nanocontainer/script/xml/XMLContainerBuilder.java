@@ -64,7 +64,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
         PicoContainer parentContainer = (PicoContainer) parentContainerRef.get();
-        MutablePicoContainer container = createContainer(parentContainer);
+        MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
         try {
             ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(classLoader, container);
             containerRef.set(container);
@@ -78,7 +78,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
         }
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {

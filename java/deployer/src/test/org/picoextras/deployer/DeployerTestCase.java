@@ -26,6 +26,13 @@ public class DeployerTestCase extends TestCase {
         assertEquals("Groovy Started", zap.toString());
     }
 
+    public void testZapClassCanBeLoadedByVFSClassLoader() throws FileSystemException, MalformedURLException, ClassNotFoundException {
+        DefaultFileSystemManager manager = new DefaultFileSystemManager();
+        FileObject applicationFolder = getApplicationFolder(manager);
+        ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, manager, getClass().getClassLoader());
+        applicationClassLoader.loadClass("foo.bar.Zap");
+    }
+
     private FileObject getApplicationFolder(DefaultFileSystemManager manager) throws FileSystemException, MalformedURLException {
         manager.setDefaultProvider(new DefaultLocalFileProvider());
         manager.init();
@@ -36,19 +43,6 @@ public class DeployerTestCase extends TestCase {
         }
         FileObject applicationFolder = manager.resolveFile(url);
         return applicationFolder;
-    }
-
-    public void testZapClassCanBeLoadedByVFSClassLoader() throws FileSystemException, MalformedURLException, ClassNotFoundException {
-        DefaultFileSystemManager manager = new DefaultFileSystemManager();
-        FileObject applicationFolder = getApplicationFolder(manager);
-
-        ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, manager, getClass().getClassLoader());
-
-        System.out.println("applicationFolder = " + applicationFolder.getName().getPath());
-        System.out.println("classLoader = " + applicationClassLoader);
-        Class c = applicationClassLoader.loadClass("foo.bar.Zap");
-        System.out.println("c.getClassLoader() = " + c.getClassLoader());
-
     }
 
 }

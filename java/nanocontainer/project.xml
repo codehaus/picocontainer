@@ -136,11 +136,6 @@
         </dependency>
 
         <dependency>
-            <id>commons-vfs</id>
-            <version>20030518103800</version>
-        </dependency>
-
-        <dependency>
             <id>bsh</id>
             <version>1.2b7</version>
         </dependency>

@@ -8,7 +8,7 @@ import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
 import org.apache.commons.vfs.provider.zip.ZipFileProvider;
-import org.picocontainer.PicoContainer;
+import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class NanoContainerDeployerTestCase extends TestCase {
 
         Deployer deployer = new NanoContainerDeployer(manager);
         ObjectReference containerRef = deployer.deploy(applicationFolder, getClass().getClassLoader(), null);
-        PicoContainer pico = (PicoContainer) containerRef.get();
+        SoftCompositionPicoContainer pico = (SoftCompositionPicoContainer) containerRef.get();
         Object zap = pico.getComponentInstance("zap");
         assertEquals("Groovy Started", zap.toString());
     }
@@ -38,7 +38,7 @@ public class NanoContainerDeployerTestCase extends TestCase {
 
         Deployer deployer = new NanoContainerDeployer(manager);
         ObjectReference containerRef = deployer.deploy(applicationFolder, getClass().getClassLoader(), null);
-        PicoContainer pico = (PicoContainer) containerRef.get();
+        SoftCompositionPicoContainer pico = (SoftCompositionPicoContainer) containerRef.get();
         Object zap = pico.getComponentInstance("zap");
         assertEquals("Groovy Started", zap.toString());
     }

@@ -69,6 +69,15 @@
         <role>Java Developer</role> 
       </roles> 
     </developer> 
+    <developer> 
+      <name>Joe Walnes</name> 
+      <id>joe</id> 
+      <email>joe@codehaus.org</email> 
+      <organization></organization> 
+      <roles> 
+        <role>Java Developer</role> 
+      </roles> 
+    </developer>     
   </developers>
 
   <dependencies/>

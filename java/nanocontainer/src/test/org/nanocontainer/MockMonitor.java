@@ -8,12 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+
+import java.util.ArrayList;
 
 public class MockMonitor implements NanoContainerMonitor {
 
-    public static String monitorRecorder = "";
+    public static String monitorRecorder;
+    public static ArrayList allComps;
 
     private String code(Object inst) {
         String name = inst.getClass().getName();
@@ -26,5 +29,6 @@ public class MockMonitor implements NanoContainerMonitor {
 
     public void componentsInstantiated(PicoContainer picoContainer) {
         monitorRecorder += "*" + code(picoContainer.getComponentInstances().get(0));
+        allComps.addAll(picoContainer.getComponentInstances());
     }
 }

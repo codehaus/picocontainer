@@ -100,5 +100,31 @@ namespace PicoContainer
 		/// <param name="componentInstance">instance of the component to unregister.</param>
 		/// <returns>the associated ComponentAdapter.</returns>
 		IComponentAdapter UnregisterComponentByInstance(object componentInstance);
+
+		/// <summary>
+		/// Make a child container, using the same implementation of MutablePicoContainer as the parent.
+		/// It will have a reference to this as parent.  This will list the resulting MPC as a child.
+		/// Lifecycle events will be cascaded from parent to child
+		/// </summary>
+		/// <returns>the new child container.</returns>
+        IMutablePicoContainer MakeChildContainer();
+
+		/// <summary>
+		/// Add a child container. This action will list the the 'child' as exactly that in the parents scope.
+		/// It will not change the child's view of a parent.  That is determined by the constructor arguments of the child
+		/// itself. Lifecycle events will be cascaded from parent to child
+		/// as a consequence of calling this method.
+		/// </summary>
+		/// <param name="child">the child container</param>
+		/// <returns>true if the child container was not already in.</returns>
+		bool AddChildContainer(IPicoContainer child);
+
+		/// <summary>
+		/// Remove a child container from this container. It will not change the child's view of a parent.
+		/// Lifecycle event will no longer be cascaded from the parent to the child.
+		/// </summary>
+		/// <param name="child">the child container</param>
+		/// <returns>true if the child container has been removed.</returns>
+		bool RemoveChildContainer(IPicoContainer child);
 	}
 }

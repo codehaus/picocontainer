@@ -13,15 +13,20 @@ namespace Test.Defaults
 	[TestFixture]
 	public class DefaultPicoContainerTestCase : AbstractPicoContainerTestCase
 	{
-		protected override IMutablePicoContainer createPicoContainer(IPicoContainer parent)
+		protected override IMutablePicoContainer CreatePicoContainer(IPicoContainer parent)
 		{
 			return new DefaultPicoContainer(parent);
+		}
+
+		protected override IMutablePicoContainer CreatePicoContainer(IPicoContainer parent, ILifecycleManager lifecycleManager)
+		{
+			return new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager);
 		}
 
 		[Test]
 		public void TestBasicInstantiationAndContainment()
 		{
-			DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependsOnTouchable();
+			DefaultPicoContainer pico = (DefaultPicoContainer) CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
 			Assert.IsTrue(typeof (Touchable).IsAssignableFrom(
 				pico.GetComponentAdapterOfType(typeof (Touchable)).ComponentImplementation));
@@ -50,8 +55,8 @@ namespace Test.Defaults
 		[Test]
 		public void TestUpDownDependenciesCannotBeFollowed()
 		{
-			IMutablePicoContainer parent = createPicoContainer();
-			IMutablePicoContainer child = createPicoContainer(parent);
+			IMutablePicoContainer parent = CreatePicoContainer();
+			IMutablePicoContainer child = CreatePicoContainer(parent);
 
 			// ComponentF -> ComponentA -> ComponentB+ComponentC
 			child.RegisterComponentImplementation(typeof (ComponentF));
@@ -72,7 +77,7 @@ namespace Test.Defaults
 		[Test]
 		public void TestComponentsCanBeRemovedByInstance()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ArrayList));
 			IList list = (IList) pico.GetComponentInstanceOfType(typeof (IList));
 			pico.UnregisterComponentByInstance(list);
@@ -80,5 +85,7 @@ namespace Test.Defaults
 			Assert.AreEqual(0, pico.ComponentInstances.Count);
 			Assert.IsNull(pico.GetComponentInstanceOfType(typeof (IList)));
 		}
+
+
 	}
 }

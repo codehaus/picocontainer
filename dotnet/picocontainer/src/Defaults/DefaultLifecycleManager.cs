@@ -34,7 +34,7 @@ namespace PicoContainer.Defaults
 			this.componentMonitor = componentMonitor;
 		}
 
-		public void Start(IPicoContainer node)
+		public virtual void Start(IPicoContainer node)
 		{
 			IList startables = node.GetComponentInstancesOfType(typeof (IStartable));
 
@@ -44,7 +44,7 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-		public void Stop(IPicoContainer node)
+		public virtual void Stop(IPicoContainer node)
 		{
 			IList startables = node.GetComponentInstancesOfType(typeof (IStartable));
 
@@ -54,7 +54,7 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-		public void Dispose(IPicoContainer node)
+		public virtual void Dispose(IPicoContainer node)
 		{
 			IList disposables = node.GetComponentInstancesOfType(typeof (IDisposable));
 			for (int i = disposables.Count - 1; 0 <= i; i--)
@@ -63,7 +63,7 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-		protected void DoMethod(MethodInfo method, Object instance)
+		protected virtual void DoMethod(MethodInfo method, Object instance)
 		{
 			componentMonitor.Invoking(method, instance);
 			try
@@ -78,7 +78,7 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-		protected void InvocationFailed(MethodInfo method, Object instance, Exception e)
+		protected virtual void InvocationFailed(MethodInfo method, Object instance, Exception e)
 		{
 			componentMonitor.InvocationFailed(method, instance, e);
 			string message = string.Format("Method '{0}' failed on instance '{1}' for reason '{2}'",
@@ -88,6 +88,5 @@ namespace PicoContainer.Defaults
 
 			throw new PicoInitializationException(message, e);
 		}
-
 	}
 }

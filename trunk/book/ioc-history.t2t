@@ -43,11 +43,11 @@ It is also important to point out that The Open Services Gateway initiative was 
 
 Here is the simplest, two dependency, Avalon-style component:
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/Type1Component.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/Type1Component.java|lineNumbers=false}
 
 And here is an example of the manifest that may accompany it:
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/Type1Component.xml|lineNumbers=false}
+{snippet:id=xml|url=@BOOK_MODULE_URL@/java/cdibook/ioc/Type1Component.xml|lineNumbers=false}
 
 Latterly this type of IoC has been given a new name. Contextulaized Dependency Lookup is that name.
 
@@ -63,18 +63,18 @@ Paul who worked with Joe at an Energy Trading Company in London, suggested this 
 
 Here is the simplest, two dependency, SDI component:
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/SDIComponent.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDIComponent.java|lineNumbers=false}
 
 The manifest that would accompamy an SDI component would look the same as that for Avalon-style ones.:
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/SDIComponent.xml|lineNumbers=false}
+{snippet:id=xml|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDIComponent.xml|lineNumbers=false}
 
 Martin Fowler has suggested that it may be better to have such depenendency resolving methods prefixed with init rather than setter.
 With init or set prefixes to dependency recieving methods, a container could automatically assemble SDI components without the
 manifest. SDI, under container control, works best with the manifest though.  Without a container, SDI Components are very much like
 simple Java beans to use:
 
-{snippet:id=block|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/SDINoContainer.java|lineNumbers=false}
+{snippet:id=block|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDINoContainer.java|lineNumbers=false}
 
 A downside of direct bean user of an SDI component is that it is possible to instantiate a component without setting all the
 dependencies.  As mistakes, these should be quite quick to catch post-compile with a simple test of that application.  Months later
@@ -91,11 +91,11 @@ Constructor Dependency Injection (CDI)
 
 A CDI component, in its simplest form for two dependencies looks like:
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/CDIComponent.java|lineNumbers=false}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/CDIComponent.java|lineNumbers=false}
 
 As with SDI Components, CDI ones are very simple to use:
 
-{snippet:id=block|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/ioc/CDINoContainer.java|lineNumbers=false}
+{snippet:id=block|url=@BOOK_MODULE_URL@/java/cdibook/ioc/CDINoContainer.java|lineNumbers=false}
 
 The added advantage is that CDI Components cannot be instantiated with missing dependencies. Thus the compiler or IDE will catch
 mismatches between any contstructor and the parameters passed into the class on instantiation.

@@ -14,7 +14,7 @@ object accessible to the rest of your code guarantees that, right?
 Unfortunately, Singleton tends to be implemented incorrectly, and for the wrong reasons.
 First off let's examine correctness. If a piece of code is doing anything other than this:
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/antipatterns/MySingleton.java|lineNumbers=true}
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/antipatterns/MySingleton.java|lineNumbers=true}
 
 then it's probably not thread-safe. Adding extra synchronization, double checked
 locking, or anything else, won't actually protect you from threading issues given Java's

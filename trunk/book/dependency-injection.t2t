@@ -1,17 +1,25 @@
-Constructor Dependency Injection, with PicoContainer 
+Constructor Dependency Injection, with PicoContainer
 Dependency Injection
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
 
 = Constructor Dependency Injection =
 
-= Other types of Dependency Injection =
+As introduced in the 'Inversion of Control History' chapter, CDI components take their dependencies in their constructors on
+instantiation.
 
-== Setter Dependency Injection ==
+Here is a simple component..
 
-== Getter Injection ==
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/Simple.java|lineNumbers=false}
 
-== Field Injection ==
+Here is one that is not so simple..
 
-= Non-Injection types of IoC =
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/NotSoSimple.java|lineNumbers=false}
 
-== Contextualized Dependency Lookup ==
+Here is one that is one with defaults..
+
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/AnotherSimple.java|lineNumbers=false}
+
+Better still would be one that chained constructors..
+
+{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/cdibook/cdicomps/BetterSimple.java|lineNumbers=false}
+

@@ -34,14 +34,16 @@
             <arg line="--target"/>
             <arg line="${format}"/>
             <arg line="--outfile"/>
-            <arg line="target/book.${format}"/>
+            <arg line="target/cdi-book.${format}"/>
             <arg line="--toc"/>
+            <arg line="--toc-level"/>
+            <arg line="2"/>
             <arg line="--enum-title"/>
             <arg line="target/slurped/book.t2t"/>
         </exec>
     </target>
     
     <target name="deploy" depends="txt2tags">
-        <copy file="target/book.html" todir="/home/projects/picocontainer/public_html"/>
+        <copy file="target/cdi-book.html" todir="/home/projects/picocontainer/public_html"/>
     </target>
 </project>

@@ -7,7 +7,7 @@
 == Continuous Integration of the Book ==
 
 The book is DamageControlled and lands here upon checkin:
-http://www.picocontainer.org/book.html
+http://www.picocontainer.org/cdi-book.html
 
 == Including source code in the book ==
 You should *never* put any code in the text itself, since
@@ -19,11 +19,11 @@ Instead, use a {snippet} in your code, such as here:
 http://cvs.picocontainer.codehaus.org/viewrep/picocontainer/book/nanowar-basics.t2t?r=1.3
 
 It will be sucked in and end up looking like this:
-http://www.picocontainer.org/book.html#toc34
+http://www.picocontainer.org/cdi-book.html#toc34
 
 Never use absolute URLs in the {snippet}s, as we want both 
 offline people and DC to be able to build the book. Use 
-@JAVA_MODULE_URL@ in the beginning of the URL instead. 
+@CVS_MODULE_URL@ in the beginning of the URL instead. 
 The ant script will take care of replacing the tokens.
 
 == Where to put new source code for the book ==

@@ -10,7 +10,7 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.extras.CompositeProxyFactory;
+import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ import java.io.Serializable;
 /**
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.1 $
+ * @version $Revision$
  */
-public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Serializable {
+public class DefaultComponentMulticasterFactory implements ComponentMulticasterFactory, Serializable {
 
     private static Method equals;
     private static Method hashCode;
@@ -93,8 +93,7 @@ public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Seri
                 if (method.equals(equals)) {
                     return new Boolean(proxy == args[0]);
                 }
-                // If the method is defined by Object (like hashCode or equals), call
-                // on ourself. This is a bit of a hack, but actually ok in most cases.
+                // If it's any other method defined by Object, call on ourself.
                 return method.invoke(AggregatingInvocationHandler.this, args);
             } else {
                 return invokeOnTargetsOfSameTypeAsDeclaringClass(declaringClass, children, method, args);
@@ -149,14 +148,14 @@ public class DefaultCompositeProxyFactory implements CompositeProxyFactory, Seri
         Set interfaces = new HashSet();
         for (Iterator iterator = objects.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
-            Class componentClass = o.getClass();
+            Class clazz = o.getClass();
             // Strangely enough Class.getInterfaces() does not include the interfaces
             // implemented by superclasses. So we must loop up the hierarchy.
-            while (componentClass != null) {
-                Class[] implemeted = componentClass.getInterfaces();
+            while (clazz != null) {
+                Class[] implemeted = clazz.getInterfaces();
                 List implementedList = Arrays.asList(implemeted);
                 interfaces.addAll(implementedList);
-                componentClass = componentClass.getSuperclass();
+                clazz = clazz.getSuperclass();
             }
         }
 

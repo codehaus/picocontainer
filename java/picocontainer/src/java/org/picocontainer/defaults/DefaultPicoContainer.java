@@ -14,7 +14,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.extras.CompositeProxyFactory;
+import org.picocontainer.extras.ComponentMulticasterFactory;
 import org.picocontainer.internals.*;
 
 import java.io.Serializable;
@@ -36,8 +36,6 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
 
     // Keeps track of unmanaged components - components instantiated outside this internals
     protected List unmanagedComponents = new ArrayList();
-
-    private CompositeProxyFactory compositeProxyFactory = new DefaultCompositeProxyFactory();
 
     public static class Default extends DefaultPicoContainer {
         public Default() {
@@ -64,16 +62,17 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         this.componentRegistry = componentRegistry;
     }
 
-    // TODO: take a MultiCasterFactory as argument. That way we can support
-    // multicasters based on reflection (e.g. look for execute() methods) too.
-    // Nice for ppl who want lifecycle by following naming conventions
-    // on methods instead of implementing interfaces. --Aslak
-
     public final Object getComponentMulticaster() throws PicoInitializationException {
         return getComponentMulticaster(true, false);
     }
 
     public final Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException {
+        // TODO: take a MultiCasterFactory as argument. That way we can support
+        // multicasters based on reflection (e.g. look for execute() methods) too.
+        // Nice for ppl who want lifecycle by following naming conventions
+        // on methods instead of implementing interfaces. --Aslak
+        ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
+
         getComponents();
         List componentsToMulticast = componentRegistry.getOrderedComponents();
         if (!callUnmanagedComponents) {
@@ -81,7 +80,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
                 componentsToMulticast.remove(iterator.next());
             }
         }
-        return compositeProxyFactory.createComponentMulticaster(
+        return componentMulticasterFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
                 componentsToMulticast,
                 callInInstantiationOrder

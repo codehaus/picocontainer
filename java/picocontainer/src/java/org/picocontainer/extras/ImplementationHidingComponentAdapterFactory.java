@@ -39,7 +39,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
                 throws PicoInitializationException {
             Object component = super.instantiateComponent(componentRegistry);
             // TODO: search for all interfaces for component-implementation instead
-            // There is code for this in DefaultCompositeProxyFactory. Reuse that. (Static? Util class?)
+            // There is code for this in DefaultComponentMulticasterFactory. Reuse that. (Static? Util class?)
             Class[] interfaces = new Class[]{(Class) getComponentKey()};
             return Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
                     interfaces, new ImplementationHidingProxy(component));

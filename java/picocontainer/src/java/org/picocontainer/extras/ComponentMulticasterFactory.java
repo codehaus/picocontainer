@@ -17,7 +17,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public interface CompositeProxyFactory {
+public interface ComponentMulticasterFactory {
     Object createComponentMulticaster(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,

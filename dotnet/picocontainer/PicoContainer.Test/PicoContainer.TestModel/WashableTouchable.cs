@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Core.Tests.TestModel
+namespace PicoContainer.TestModel
 {
 	[Serializable]
 	public class WashableTouchable : ITouchable, IWashable

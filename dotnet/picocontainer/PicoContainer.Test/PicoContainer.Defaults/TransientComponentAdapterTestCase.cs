@@ -1,8 +1,8 @@
 using NUnit.Framework;
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Summary description for TransientIComponentAdapterTestCase.

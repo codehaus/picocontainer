@@ -11,9 +11,9 @@
 
 using System;
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 
-namespace PicoContainer.Core.Alternatives
+namespace PicoContainer.Alternatives
 {
 	/// <summary>
 	/// Summary description for ImplementationHidingComponentAdapterFactory.

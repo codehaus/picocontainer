@@ -1,7 +1,8 @@
 using System;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Core;
+using PicoContainer.Defaults;
 
-namespace PicoContainer.Core.Alternatives
+namespace PicoContainer.Alternatives
 {
 	[Serializable]
 	public class ImplementationHidingPicoContainer : AbstractDelegatingMutablePicoContainer

@@ -12,7 +12,7 @@
 using System;
 using NUnit.Framework;
 
-namespace PicoContainer.Core.Tests.TestModel
+namespace PicoContainer.TestModel
 {
 	[Serializable]
 	public class DependsOnTouchable

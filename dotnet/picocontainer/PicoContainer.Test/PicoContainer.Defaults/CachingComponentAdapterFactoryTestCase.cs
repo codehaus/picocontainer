@@ -1,9 +1,9 @@
-using PicoContainer.Core.Defaults;
-using PicoContainer.Core.Tests.Tck;
-using PicoContainer.Core.Tests.TestModel;
+using PicoContainer.Defaults;
+using PicoContainer.Tck;
+using PicoContainer.TestModel;
 using NUnit.Framework;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class CachingComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase

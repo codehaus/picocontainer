@@ -1,4 +1,5 @@
 using System;
+using PicoContainer.Core;
 /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
@@ -10,7 +11,7 @@ using System;
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class InstanceComponentAdapter : AbstractComponentAdapter

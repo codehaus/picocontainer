@@ -1,9 +1,9 @@
 using System;
-using PicoContainer.Core.Tests.Tck;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Tck;
+using PicoContainer.Defaults;
 using NUnit.Framework;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class SetterInjectionComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase

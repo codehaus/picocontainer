@@ -1,10 +1,10 @@
 using System.Collections;
 using NUnit.Framework;
 using PicoContainer.Core;
-using PicoContainer.Core.Alternatives;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Alternatives;
+using PicoContainer.Defaults;
 
-namespace Test.Alternatives
+namespace PicoContainer.Alternatives
 {
 	/// <summary>
 	/// Summary description for ImplementationHidingCachingPicoContainerTestCase.

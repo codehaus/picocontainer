@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using PicoContainer.Core.Defaults;
-using PicoContainer.Core.Tests.TestModel;
+using PicoContainer.Defaults;
+using PicoContainer.TestModel;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class DefaultPicoContainerUnregisterComponentTestCase

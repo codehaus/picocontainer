@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using PicoContainer.Core.Monitors;
+using PicoContainer.Monitors;
 
-namespace Test.Monitors
+namespace PicoContainer.Monitors
 {
 	[TestFixture]
 	public class ConsoleComponentMonitorTestCase
@@ -34,42 +34,42 @@ namespace Test.Monitors
 		public void ShouldTraceInstantiating()
 		{
 			componentMonitor.Instantiating(constructor);
-			Assert.AreEqual("PicoContainer: instantiating Test.Monitors.ConsoleComponentMonitorTestCase\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: instantiating PicoContainer.Monitors.ConsoleComponentMonitorTestCase\r\n", writer.ToString());
 		}
 
 		[Test]
 		public void ShouldTraceInstantiated()
 		{
 			componentMonitor.Instantiated(constructor, 1234, 543);
-			Assert.AreEqual("PicoContainer: instantiated Test.Monitors.ConsoleComponentMonitorTestCase [543ms]\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: instantiated PicoContainer.Monitors.ConsoleComponentMonitorTestCase [543ms]\r\n", writer.ToString());
 		}
 
 		[Test]
 		public void ShouldTraceInstantiationFailed()
 		{
 			componentMonitor.InstantiationFailed(constructor, new SystemException("doh"));
-			Assert.AreEqual("PicoContainer: instantiation failed: Test.Monitors.ConsoleComponentMonitorTestCase, reason: 'doh'\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: instantiation failed: PicoContainer.Monitors.ConsoleComponentMonitorTestCase, reason: 'doh'\r\n", writer.ToString());
 		}
 
 		[Test]
 		public void ShouldTraceInvoking()
 		{
 			componentMonitor.Invoking(method, this);
-			Assert.AreEqual("PicoContainer: invoking Test.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: invoking PicoContainer.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah\r\n", writer.ToString());
 		}
 
 		[Test]
 		public void ShouldTraceInvoked()
 		{
 			componentMonitor.Invoked(method, this, 543);
-			Assert.AreEqual("PicoContainer: invoked Test.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah [543ms]\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: invoked PicoContainer.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah [543ms]\r\n", writer.ToString());
 		}
 
 		[Test]
 		public void ShouldTraceInvocatiationFailed()
 		{
 			componentMonitor.InvocationFailed(method, this, new SystemException("doh"));
-			Assert.AreEqual("PicoContainer: invocation failed: Test.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah, reason: 'doh'\r\n", writer.ToString());
+			Assert.AreEqual("PicoContainer: invocation failed: PicoContainer.Monitors.ConsoleComponentMonitorTestCase.ToString on Blah, reason: 'doh'\r\n", writer.ToString());
 		}
 	}
 }

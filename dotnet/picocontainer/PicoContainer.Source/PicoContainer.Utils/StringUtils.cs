@@ -1,6 +1,6 @@
 using System;
 
-namespace PicoContainer.Core.Utils
+namespace PicoContainer.Utils
 {
 	/// <summary>
 	/// Summary description for StringUtils.

@@ -1,9 +1,9 @@
 using PicoContainer.Core;
-using PicoContainer.Core.Defaults;
+using PicoContainer.Defaults;
 using NUnit.Framework;
-using PicoContainer.Core.Tests.TestModel;
+using PicoContainer.TestModel;
 
-namespace Test.Defaults
+namespace PicoContainer.Defaults
 {
 	[TestFixture]
 	public class ChildContainerTestCase

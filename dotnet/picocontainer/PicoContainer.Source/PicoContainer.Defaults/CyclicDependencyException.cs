@@ -12,9 +12,9 @@
 using System;
 using System.Collections;
 using PicoContainer.Core;
-using PicoContainer.Core.Utils;
+using PicoContainer.Utils;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class CyclicDependencyException : PicoInitializationException

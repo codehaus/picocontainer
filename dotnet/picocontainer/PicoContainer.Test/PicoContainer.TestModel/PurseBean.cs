@@ -1,6 +1,6 @@
 
 
-namespace Test.TestModel
+namespace PicoContainer.TestModel
 {
 	public class PurseBean
 	{

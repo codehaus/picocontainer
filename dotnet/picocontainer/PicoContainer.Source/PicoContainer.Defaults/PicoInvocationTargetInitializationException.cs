@@ -10,8 +10,9 @@
  *****************************************************************************/
 
 using System;
+using PicoContainer.Core;
 
-namespace PicoContainer.Core.Defaults
+namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// The PicoInvocationTargetInitializationException is thrown when an error occurs while creating an 

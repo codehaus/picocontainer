@@ -10,7 +10,6 @@ package nanocontainer.reflect;
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-import picocontainer.PicoContainer;
 import picocontainer.Container;
 
 import java.lang.reflect.Method;

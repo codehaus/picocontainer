@@ -11,8 +11,9 @@
 
 using System;
 using Castle.DynamicProxy;
+using PicoContainer.Defaults;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Alternatives
 {
 	[Serializable]
 	public class ImplementationHidingComponentAdapter : DecoratingComponentAdapter

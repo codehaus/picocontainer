@@ -11,8 +11,11 @@
 
 using System;
 using PicoContainer;
+using PicoContainer.Defaults;
 
-namespace PicoContainer.Defaults
+
+// TODO mward move to Alternative namespace to be in synch with Java version?
+namespace PicoContainer.Alternatives
 {
 	/// <summary>
 	/// Summary description for ImplementationHidingComponentAdapterFactory.

@@ -1,9 +1,10 @@
 using System;
 using NUnit.Framework;
 using PicoContainer;
+using PicoContainer.Alternatives;
 using PicoContainer.Defaults;
 
-namespace Test.Defaults
+namespace Test.Alternatives
 {
 	[TestFixture]
 	public class ImplementationHidingComponentAdapterTestCase

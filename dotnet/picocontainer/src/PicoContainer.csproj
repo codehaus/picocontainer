@@ -169,6 +169,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Alternatives\ImplementationHidingComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingComponentAdapterFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Alternatives\ImplementationHidingPicoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -279,27 +289,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\ImplementationHidingComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\ImplementationHidingComponentAdapterFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Defaults\InstanceComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Defaults\InstantiatingComponentAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\InterfaceFinder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

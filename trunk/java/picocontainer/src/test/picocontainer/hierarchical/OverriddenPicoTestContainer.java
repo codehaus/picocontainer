@@ -12,7 +12,7 @@ package picocontainer.hierarchical;
 
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.StartableLifecycleManager;
+import picocontainer.LifecycleManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +23,7 @@ public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.WithS
 {
     private Wilma wilma;
 
-    public OverriddenPicoTestContainer(Wilma wilma, StartableLifecycleManager slm)
+    public OverriddenPicoTestContainer(Wilma wilma, LifecycleManager slm)
     {
         super(slm);
         this.wilma = wilma;

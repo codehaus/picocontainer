@@ -10,7 +10,7 @@
 
 package picocontainer;
 
-public interface StartableLifecycleManager {
+public interface LifecycleManager {
 
     void startComponent(Object component) throws PicoStartException;
 

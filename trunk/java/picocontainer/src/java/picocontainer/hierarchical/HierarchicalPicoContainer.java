@@ -30,7 +30,7 @@ package picocontainer.hierarchical;
 import picocontainer.AbstractContainer;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.StartableLifecycleManager;
+import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
@@ -56,7 +56,7 @@ import java.util.Arrays;
 public class HierarchicalPicoContainer extends AbstractContainer implements ClassRegistrationPicoContainer {
 
     private final PicoContainer parentContainer;
-    private final StartableLifecycleManager startableLifecycleManager;
+    private final LifecycleManager startableLifecycleManager;
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
@@ -69,7 +69,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     private boolean started;
 
     public HierarchicalPicoContainer(PicoContainer parentContainer,
-                                     StartableLifecycleManager startableLifecycleManager,
+                                     LifecycleManager startableLifecycleManager,
                                      ComponentFactory componentFactory) {
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
@@ -99,7 +99,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     }
 
     public static class WithStartableLifecycleManager extends HierarchicalPicoContainer {
-        public WithStartableLifecycleManager(StartableLifecycleManager startableLifecycleManager) {
+        public WithStartableLifecycleManager(LifecycleManager startableLifecycleManager) {
             super(new NullContainer(), startableLifecycleManager, new DefaultComponentFactory());
         }
     }

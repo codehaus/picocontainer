@@ -20,6 +20,10 @@ import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class HierarchicalComponentRegistryTestCase extends TestCase {
 
@@ -46,13 +50,24 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         dpc.registerComponentByClass(FredImpl.class);
         dpc.registerComponentByClass(WilmaImpl.class);
+        HashMap component = new HashMap();
+        dpc.registerComponent(Map.class, component);
 
         dpc.instantiateComponents();
 
-        assertEquals("There should be two comps in the container", 2, hcr.getComponentInstances().size());
+        Set set = hcr.getComponentInstanceKeys();
+        assertTrue(set.contains(FredImpl.class));
+        assertTrue(set.contains(WilmaImpl.class));
+        assertTrue(set.contains(Map.class));
+
+        List list = hcr.getOrderedComponents();
+        assertTrue(list.contains(component));
+
+        assertEquals("There should be two comps in the container", 3, hcr.getComponentInstances().size());
 
         assertTrue("There should have been a Fred in the container", hcr.hasComponentInstance(FredImpl.class));
         assertTrue("There should have been a Wilma in the container", hcr.hasComponentInstance(WilmaImpl.class));
+        assertTrue("There should have been a Map in the container", hcr.hasComponentInstance(Map.class));
     }
 
     public static class DerivedWilma extends WilmaImpl {

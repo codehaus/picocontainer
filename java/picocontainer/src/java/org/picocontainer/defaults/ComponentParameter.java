@@ -12,8 +12,10 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -53,7 +55,7 @@ public class ComponentParameter implements Parameter, Serializable {
     public ComponentParameter() {
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoInstantiationException {
         // type check is done in isResolvable
         Object result = null;
         if (componentKey != null) {
@@ -121,6 +123,14 @@ public class ComponentParameter implements Parameter, Serializable {
         result.verify(container);
     }
     
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
+     */
+    public void accept(PicoVisitor visitor) {
+        visitor.visitParameter(this);
+    }
+
     private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType) {
         if (componentKey != null) {
             // key tells us where to look so we follow

@@ -13,9 +13,8 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -54,7 +53,7 @@ public class ConstantParameter implements Parameter, Serializable {
         return expectedType.isInstance(value);
     }
     
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         return value;
     }
     
@@ -78,9 +77,19 @@ public class ConstantParameter implements Parameter, Serializable {
         }
     }
     
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
+     */
+    public void accept(PicoVisitor visitor) {
+        visitor.visitParameter(this);
+    }
+    
     private boolean checkPrimitive(Class expectedType) throws NoSuchFieldException, IllegalAccessException {
         final Field field = value.getClass().getField("TYPE");
         final Class type = (Class)field.get(value);
         return expectedType.isAssignableFrom(type);
     }
+
+
 }

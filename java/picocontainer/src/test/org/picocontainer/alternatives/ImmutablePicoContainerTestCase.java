@@ -271,7 +271,6 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         ComponentAdapter componentAdapter = pico.registerComponentInstance(foo);
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
-        fooVisitor.expects(atLeastOnce()).method("isBreadthFirstTraversal").withNoArguments().will(returnValue(true));
         fooVisitor.expects(atLeastOnce()).method("isReverseTraversal").withNoArguments().will(returnValue(false));
         fooVisitor.expects(once()).method("visitContainer").with(eq(pico));
         fooVisitor.expects(once()).method("visitComponentAdapter").with(eq(componentAdapter));

@@ -33,9 +33,10 @@ public interface Parameter {
      * @param adapter the ComponentAdapter that is asking for the instance
      * @param expectedType  the type that the returned instance needs to match.
      * @return the instance or <code>null</code> if no suitable instance can be found.
+     * @throws PicoInitializationException if a referenced component could not be instantiated.
      * @since 1.1
      */
-    Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType);
+    Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoInitializationException;
 
     /**
      * Check wether the given Parameter can be statisfied by the container
@@ -58,4 +59,13 @@ public interface Parameter {
      * @since 1.1
      */
     void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoVerificationException;
+
+    /**
+     * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that 
+     * cascades the visitor also down to all its Parameters.
+     * 
+     * @param visitor the visitor.
+     * @since 1.1
+     */
+    void accept(PicoVisitor visitor);
 }

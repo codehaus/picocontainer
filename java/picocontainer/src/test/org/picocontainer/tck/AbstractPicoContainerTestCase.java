@@ -26,11 +26,13 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -586,12 +588,10 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public static class RecordingStrategyVisitor implements PicoVisitor {
         
         private final List list;
-        private final boolean breadthSearch;
         private final boolean reverse;
 
-        public RecordingStrategyVisitor(List list, boolean breadthSearch, boolean reverse) {
+        public RecordingStrategyVisitor(List list, boolean reverse) {
             this.list = list;
-            this.breadthSearch = breadthSearch;
             this.reverse = reverse;
         }
 
@@ -602,9 +602,9 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
             list.add(componentAdapter);
         }
-
-        public boolean isBreadthFirstTraversal() {
-            return breadthSearch;
+        
+        public void visitParameter(Parameter parameter) {
+            list.add(parameter);
         }
 
         public boolean isReverseTraversal() {
@@ -618,30 +618,24 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashMap.class, HashMap.class));
         ComponentAdapter hashSetAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashSet.class, HashSet.class));
+        ComponentAdapter stringAdapter = parent.registerComponent(new InstanceComponentAdapter(String.class, "foo"));
         ComponentAdapter arrayListAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class));
-        ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class));
+        Parameter componentParameter = new ComponentParameter();
+        Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
+        ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class, new Parameter[] {
+                    componentParameter,
+                    throwableParameter
+                }));
 
-        List expectedList = Arrays.asList(new Object[] {parent, hashMapAdapter, hashSetAdapter, child, arrayListAdapter, exceptionAdapter});
+        List expectedList = Arrays.asList(new Object[] {parent, hashMapAdapter, hashSetAdapter, stringAdapter, child, arrayListAdapter, exceptionAdapter, componentParameter, throwableParameter});
         List visitedList = new LinkedList();
-        PicoVisitor visitor = new RecordingStrategyVisitor(visitedList, true, false);
+        PicoVisitor visitor = new RecordingStrategyVisitor(visitedList, false);
         parent.accept(visitor);
         assertEquals(expectedList, visitedList);
 
         Collections.reverse(expectedList);
         visitedList.clear();
-        visitor = new RecordingStrategyVisitor(visitedList, true, true);
-        parent.accept(visitor);
-        assertEquals(expectedList, visitedList);
-        
-        expectedList = Arrays.asList(new Object[] {child, arrayListAdapter, exceptionAdapter, parent, hashMapAdapter, hashSetAdapter});
-        visitedList.clear();
-        visitor = new RecordingStrategyVisitor(visitedList, false, false);
-        parent.accept(visitor);
-        assertEquals(expectedList, visitedList);
-        
-        Collections.reverse(expectedList);
-        visitedList.clear();
-        visitor = new RecordingStrategyVisitor(visitedList, false, true);
+        visitor = new RecordingStrategyVisitor(visitedList, true);
         parent.accept(visitor);
         assertEquals(expectedList, visitedList);
     }

@@ -410,14 +410,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void accept(PicoVisitor visitor) {
-        boolean widthFirstTraversal = visitor.isBreadthFirstTraversal();
         boolean reverseTraversal = visitor.isReverseTraversal();
-        if (widthFirstTraversal && !reverseTraversal) {
+        if (!reverseTraversal) {
             visitor.visitContainer(this);
             componentAdaptersAccept(visitor);
-        } else if (!widthFirstTraversal && reverseTraversal) {
-            componentAdaptersAccept(visitor);
-            visitor.visitContainer(this);
         }
         final List allChildren = new LinkedList(children);
         if (reverseTraversal) {
@@ -427,10 +423,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             PicoContainer child = (PicoContainer) iterator.next();
             child.accept(visitor);
         }
-        if (!widthFirstTraversal && !reverseTraversal) {
-            visitor.visitContainer(this);
-            componentAdaptersAccept(visitor);
-        } else if (widthFirstTraversal && reverseTraversal) {
+        if (reverseTraversal) {
             componentAdaptersAccept(visitor);
             visitor.visitContainer(this);
         }

@@ -43,112 +43,39 @@ public class InstanceComponentAdapterTestCase
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
      */
     protected int getComponentAdapterNature() {
-        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING | PARAMETRIZABLE);
+        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING );
     }
     
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepareTestVerifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("foo", "bar");
     }
     
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepareTestVerifyDoesNotInstantiate(
+    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
             MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("Key", new Integer(4711));
     }
     
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVisitable()
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
-    protected ComponentAdapter prepareTestVisitable() {
+    protected ComponentAdapter prepDEF_visitable() {
         return new InstanceComponentAdapter("Key", new Integer(4711));
     }
     
     /**
      * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestSerializable(org.picocontainer.MutablePicoContainer)
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
-    protected ComponentAdapter prepareTestSerializable(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("Key", new Integer(4711));
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestShouldBeAbleToTakeParameters(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestShouldBeAbleToTakeParameters(MutablePicoContainer picoContainer) {
-        return null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithUnsatisfiedDependency(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestFailingVerificationWithUnsatisfiedDependency(MutablePicoContainer picoContainer) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestComponentAdapterCreatesNewInstances(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestComponentAdapterCreatesNewInstances(
-            MutablePicoContainer picoContainer) {
-        return null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestErrorIsRethrown(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestErrorIsRethrown(MutablePicoContainer picoContainer) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestRuntimeExceptionIsRethrown(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestRuntimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(MutablePicoContainer picoContainer) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestDependenciesAreResolved(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestDependenciesAreResolved(MutablePicoContainer picoContainer) {
-        return null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestFailingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingInstantiationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
-     */
-    protected ComponentAdapter prepareTestFailingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
-        return null;
     }
 }

@@ -24,9 +24,11 @@ public class Type3MsgPicoContainer extends DefaultPicoContainer {
         if (proxy == null) {
             proxy = new MulticastingProxy(theInterface);
             impls.put(theInterface, proxy);
+            proxy.add(theImpl);
             registerComponentInstance(theInterface, proxy.getProxy());
+        } else {
+            proxy.add(theImpl);
         }
-        proxy.add(theImpl);
     }
 
     public void registerRoundRobin(Class theInterface, Object theImpl) {
@@ -34,9 +36,11 @@ public class Type3MsgPicoContainer extends DefaultPicoContainer {
         if (proxy == null) {
             proxy = new RoundRobinMulticastingProxy(theInterface);
             impls.put(theInterface, proxy);
+            proxy.add(theImpl);
             registerComponentInstance(theInterface, proxy.getProxy());
+        } else {
+            proxy.add(theImpl);
         }
-        proxy.add(theImpl);
     }
 
 

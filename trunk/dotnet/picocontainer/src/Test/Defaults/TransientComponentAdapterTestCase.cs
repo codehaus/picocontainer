@@ -22,7 +22,7 @@ namespace Test.Defaults
 
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() 
     {
-      ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter("blah", typeof(object));
+      ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", typeof(object));
       object o1 = componentAdapter.ComponentInstance;
       object o2 = componentAdapter.ComponentInstance;
       Assert.IsNotNull(o1);
@@ -49,7 +49,7 @@ namespace Test.Defaults
     {
       DefaultPicoContainer picoContainer = new DefaultPicoContainer();
       picoContainer.RegisterComponentImplementation(typeof(Service));
-      picoContainer.RegisterComponent(new ConstructorComponentAdapter(typeof(TransientComponent), typeof(TransientComponent)));
+      picoContainer.RegisterComponent(new ConstructorInjectionComponentAdapter(typeof(TransientComponent), typeof(TransientComponent)));
       TransientComponent c1 = (TransientComponent) picoContainer.GetComponentInstance(typeof(TransientComponent));
       TransientComponent c2 = (TransientComponent) picoContainer.GetComponentInstance(typeof(TransientComponent));
       Assert.IsFalse(c1.Equals(c2));
@@ -74,14 +74,14 @@ namespace Test.Defaults
 
     [Test]public void testSuccessfulVerificationWithNoDependencies() 
     {
-      InstantiatingComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", typeof(A));
+      InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof(A));
       componentAdapter.Verify();
     }
 
     [Test]
     public void testFailingVerificationWithUnsatisfiedDependencies() 
     {
-      IComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", typeof(B));
+      IComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof(B));
       componentAdapter.Container = new DefaultPicoContainer();
       try 
       {

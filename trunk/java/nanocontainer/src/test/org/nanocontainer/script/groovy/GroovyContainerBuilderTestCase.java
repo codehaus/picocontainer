@@ -20,6 +20,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.Reader;
 import java.io.StringReader;
 
+import groovy.lang.Binding;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
@@ -39,5 +41,35 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         assertNotSame(parent, pico.getParent());
         assertEquals(StringBuffer.class, pico.getComponentInstance(StringBuffer.class).getClass());
     }
+
+	public void testAdditionalBindingViaSubClassing() {
+		// NOTE script does NOT define a "builder"
+		Reader script = new StringReader("" +
+                "pico = builder.container(parent:parent) { \n" +
+                "  component(StringBuffer)\n" +
+                "}");   		
+
+        PicoContainer parent = new DefaultPicoContainer();
+        PicoContainer pico = buildContainer(new ChildGroovyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+
+		assertNotSame(parent, pico.getParent());
+        assertEquals(StringBuffer.class, pico.getComponentInstance(StringBuffer.class).getClass());
+	}
+
+	/**
+	 * Child GroovyContainerBuilder which adds additional bindings
+	 */
+	private class ChildGroovyContainerBuilder extends GroovyContainerBuilder {
+		public ChildGroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
+			super(script, classLoader);
+		}
+
+		protected void handleBinding(Binding binding) {
+			super.handleBinding(binding);
+
+			binding.setVariable("builder", new NanoContainerBuilder());
+		}
+
+	}
 
 }

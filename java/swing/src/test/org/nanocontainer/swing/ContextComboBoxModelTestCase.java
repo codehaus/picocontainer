@@ -26,10 +26,11 @@ public class ContextComboBoxModelTestCase extends TestCase {
         "foo.bar.Application"
     };
 
-    public void testModelWithoutFilterHasAll() {
+    public void testModelWithEmptyFilterHasNone() {
         ContextComboBoxModel model = new ContextComboBoxModel();
         model.setValues(values);
-        assertEquals(4, model.getSize());
+        model.setFilter("");
+        assertEquals(0, model.getSize());
     }
 
     public void testModelWithFilterHasSome() {
@@ -53,7 +54,7 @@ public class ContextComboBoxModelTestCase extends TestCase {
         assertEquals(2, model.getSize());
     }
 
-    public void XestGui() throws InterruptedException {
+    public void XtestGui() throws InterruptedException {
         ContextComboBoxModel model = new ContextComboBoxModel();
         model.setValues(values);
         JComboBox box = new ContextComboBox(model);

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class ContextComboBoxModel extends AbstractListModel implements ComboBoxModel{
     private String[] values;
     private List filteredValues = new ArrayList();
-    private String regexp = ".*";
+    private String regexp = null;
     private Object selected;
 
     public int getSize() {
@@ -47,19 +47,25 @@ public class ContextComboBoxModel extends AbstractListModel implements ComboBoxM
     }
 
     public void setFilter(String pseudoRegex) {
-        pseudoRegex = pseudoRegex.toLowerCase();
-        if(pseudoRegex.startsWith("*")) {
-            pseudoRegex = "." + pseudoRegex;
+        if (!"".equals(pseudoRegex)) {
+            pseudoRegex = pseudoRegex.toLowerCase();
+            if(pseudoRegex.startsWith("*")) {
+                pseudoRegex = "." + pseudoRegex;
+            }
+            regexp = ".*" + pseudoRegex + ".*";
+        } else {
+            regexp = null;
         }
-        regexp = ".*" + pseudoRegex + ".*";
         computeSelectedValues();
     }
 
     private void computeSelectedValues() {
         filteredValues.clear();
-        for (int i = 0; i < values.length; i++) {
-            if(Pattern.matches(regexp, values[i].toLowerCase())) {
-                filteredValues.add(values[i]);
+        if (regexp != null) {
+            for (int i = 0; i < values.length; i++) {
+                if(Pattern.matches(regexp, values[i].toLowerCase())) {
+                    filteredValues.add(values[i]);
+                }
             }
         }
         fireContentsChanged(this, 0, getSize());

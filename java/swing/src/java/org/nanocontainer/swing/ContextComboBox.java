@@ -16,6 +16,7 @@ package org.nanocontainer.swing;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -55,7 +56,9 @@ public class ContextComboBox extends JComboBox {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("item = " + item);
                         setSelectedItem(item);
+                        updateField=false;
                         textField.setText(item.toString());
+                        updateField=true;
                     }
                 });
             }
@@ -78,7 +81,12 @@ public class ContextComboBox extends JComboBox {
                 public void run() {
                     model.setFilter(text);
                     hidePopup();
-                    showPopup();
+                    if(model.getSize() > 0) {
+                        showPopup();
+                        setSelectedIndex(0);
+                        repaint();
+                    }
+
                     textField.setText(text);
                     updateField = true;
                 }

@@ -13,7 +13,6 @@ package picocontainer.defaults;
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInstantiationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
@@ -493,19 +492,20 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue(comp instanceof WilmaImpl);
     }
 
-//    public void testComponentSpecInstantiateComponentWithOneDependency() throws PicoInvocationTargetInitailizationException {
-//        ComponentSpecification componentSpec = new ComponentSpecification(FredImpl.class, FredImpl.class);
-//
-//        Mock mockPicoContainer = new OrderedMock(PicoContainer.class);
-//        mockPicoContainer.expectAndReturn("getComponent", C.args(C.eq(Wilma.class)), new WilmaImpl());
-//
-//        Object comp = componentSpec.instantiateComponent((PicoContainer) mockPicoContainer.proxy(),
-//                new DefaultComponentFactory());
-//
-//        assertNotNull(comp);
-//        assertTrue(comp instanceof FredImpl);
-//        mockPicoContainer.verify();
-//    }
+    public void testDoubleInstantiation() throws PicoInstantiationException, PicoIntrospectionException
+    {
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.instantiateComponents();
+        try
+        {
+            pico.instantiateComponents();
+            fail("should have barfed");
+        }
+        catch (IllegalStateException e)
+        {
+            // expected
+        }
+    }
 
     public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
@@ -517,4 +517,5 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertNotNull(wilma);
     }
+
 }

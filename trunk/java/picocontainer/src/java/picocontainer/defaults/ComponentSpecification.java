@@ -47,10 +47,6 @@ class ComponentSpecification {
         return componentFactory.createComponent(compType, comp, dependencyTypes, dependencies);
     }
 
-    public void setParameter(int index, Parameter parameterSpec) {
-        parameters[index] = parameterSpec;
-    }
-
     static boolean isAssignableFrom(Class actual, Class requested) {
         if (actual == Integer.TYPE || actual == Integer.class) {
             return requested == Integer.TYPE || requested == Integer.class;

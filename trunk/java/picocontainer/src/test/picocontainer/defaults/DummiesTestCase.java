@@ -12,6 +12,8 @@ package picocontainer.defaults;
 
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoContainer;
+import picocontainer.aggregated.AggregatedContainersContainer;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -31,5 +33,12 @@ public class DummiesTestCase extends TestCase {
         DefaultComponentFactory dcd = new DefaultComponentFactory();
         Object decorated = dcd.createComponent(Object.class, Object.class, null, null);
         assertNotNull(decorated);
+    }
+
+    public void testInstantiation() throws PicoInstantiationException
+    {
+        AggregatedContainersContainer acc = new AggregatedContainersContainer(new PicoContainer[0]);
+        // Should not barf. Should no nothing, but that hard to test.
+        acc.instantiateComponents();
     }
 }

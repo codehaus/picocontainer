@@ -2,10 +2,6 @@ package picocontainer.lifecycle;
 
 import junit.framework.TestCase;
 import picocontainer.defaults.DefaultPicoContainer;
-import picocontainer.lifecycle.Disposable;
-import picocontainer.lifecycle.LifecyclePicoContainer;
-import picocontainer.lifecycle.Startable;
-import picocontainer.lifecycle.Stoppable;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 
@@ -175,7 +171,39 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", "Three", one.getInstantiating().get(2));
         assertEquals("Incorrect Order of Instantiation", "Four", one.getInstantiating().get(3));
 
-        startup.start();
+        startStopDisposeLifecycleComps(startup, shutdown, disposal, one);
+
+    }
+
+
+
+    public void testStartStopStartStopAndDispose() throws Exception {
+
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+
+        pico.registerComponent(One.class);
+        pico.registerComponent(Two.class);
+        pico.registerComponent(Three.class);
+        pico.registerComponent(Four.class);
+
+        pico.instantiateComponents();
+
+        One one = (One) pico.getComponent(One.class);
+
+        // instantiation - would be difficult to do these in the wrong order!!
+        assertEquals("Should be four elems", 4, one.getInstantiating().size());
+        assertEquals("Incorrect Order of Instantiation", "One", one.getInstantiating().get(0));
+        assertEquals("Incorrect Order of Instantiation", "Two", one.getInstantiating().get(1));
+        assertEquals("Incorrect Order of Instantiation", "Three", one.getInstantiating().get(2));
+        assertEquals("Incorrect Order of Instantiation", "Four", one.getInstantiating().get(3));
+
+        startStopDisposeLifecycleComps(pico, pico, pico, one);
+
+    }
+
+    private void startStopDisposeLifecycleComps(Startable start, Stoppable stop, Disposable disp, One one) throws Exception
+    {
+        start.start();
 
         // post instantiation startup
         assertEquals("Should be four elems", 4, one.getStarting().size());
@@ -184,7 +212,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Starting", "Three", one.getStarting().get(2));
         assertEquals("Incorrect Order of Starting", "Four", one.getStarting().get(3));
 
-        shutdown.stop();
+        stop.stop();
 
         // post instantiation shutdown - REVERSE order.
         assertEquals("Should be four elems", 4, one.getStopping().size());
@@ -193,7 +221,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Stopping", "Two", one.getStopping().get(2));
         assertEquals("Incorrect Order of Stopping", "One", one.getStopping().get(3));
 
-        disposal.dispose();
+        disp.dispose();
 
         // post instantiation shutdown - REVERSE order.
         assertEquals("Should be four elems", 4, one.getDisposing().size());
@@ -201,28 +229,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Stopping", "Three", one.getDisposing().get(1));
         assertEquals("Incorrect Order of Stopping", "Two", one.getDisposing().get(2));
         assertEquals("Incorrect Order of Stopping", "One", one.getDisposing().get(3));
-
     }
 
-
-    public void testStartStopStartStopAndDispose() throws Exception {
-
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
-
-        pico.registerComponent(FredImpl.class);
-        pico.registerComponent(WilmaImpl.class);
-
-        pico.instantiateComponents();
-
-        pico.start();
-        pico.stop();
-
-        pico.start();
-        pico.stop();
-
-        pico.dispose();
-
-    }
 
     public void testStartStartCausingBarf() throws Exception {
 

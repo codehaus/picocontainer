@@ -19,7 +19,7 @@ public interface ComponentFactory {
      * @param componentImplementation concrete component class.
      * @param instanceDependencies The component instances the created component will depend on.
      * @return The component
-     * @throws picocontainer.defaults.PicoInvocationTargetInitailizationException If a problem creating the component.
+     * @throws picocontainer.defaults.PicoInvocationTargetInitializationException If a problem creating the component.
      */
     Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInstantiationException, PicoIntrospectionException;
 

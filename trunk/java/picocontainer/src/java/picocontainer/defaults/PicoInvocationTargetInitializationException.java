@@ -12,10 +12,10 @@ package picocontainer.defaults;
 
 import picocontainer.PicoInstantiationException;
 
-public class PicoInvocationTargetInitailizationException extends PicoInstantiationException {
+public class PicoInvocationTargetInitializationException extends PicoInstantiationException {
     private final Throwable cause;
 
-    public PicoInvocationTargetInitailizationException(Throwable cause) {
+    public PicoInvocationTargetInitializationException(Throwable cause) {
         if (cause == null) {
             throw new IllegalArgumentException("Cause must not be null");
         }

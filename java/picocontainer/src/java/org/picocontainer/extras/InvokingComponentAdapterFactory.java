@@ -34,6 +34,7 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
 
     public class Adapter extends DecoratingComponentAdapter {
         private Method method;
+        private Object componentInstance = null;
 
         public Object getInvocationResult() {
             return invocationResult;
@@ -55,25 +56,26 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
         }
     
         public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Object result = super.getComponentInstance(picoContainer);
+            if (componentInstance == null) {
+                componentInstance = super.getComponentInstance(picoContainer);
 
-            if( method != null ) {
-                try {
-                    invocationResult = method.invoke(result, arguments);
-                } catch (IllegalAccessException e) {
-                    throw new PicoInvocationTargetInitializationException(e);
-                } catch (final IllegalArgumentException e) {
-                    throw new PicoInitializationException() {
-                        public String getMessage() {
-                            return "Illegal argument:" + e.getMessage();
-                        }
-                    };
-                } catch (InvocationTargetException e) {
-                    throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                if( method != null ) {
+                    try {
+                        invocationResult = method.invoke(componentInstance, arguments);
+                    } catch (IllegalAccessException e) {
+                        throw new PicoInvocationTargetInitializationException(e);
+                    } catch (final IllegalArgumentException e) {
+                        throw new PicoInitializationException() {
+                            public String getMessage() {
+                                return "Illegal argument:" + e.getMessage();
+                            }
+                        };
+                    } catch (InvocationTargetException e) {
+                        throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                    }
                 }
             }
-
-            return result;
+            return componentInstance;
         }
     }
 }

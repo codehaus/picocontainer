@@ -25,7 +25,7 @@ public class NotConcreteRegistrationException extends PicoRegistrationException 
     }
 
     public String getMessage() {
-        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
+        return "Bad Access: '" + componentImplementation.getName() + "' is not instantiable";
     }
 
     public Class getComponentImplementation() {

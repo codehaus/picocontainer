@@ -5,6 +5,8 @@ import org.picocontainer.*;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -13,19 +15,29 @@ import java.lang.reflect.Method;
 
 /**
  * A generic ComponentAdapter that will set bean properties on the instantiated
- * component. These properties can be registered on beforehand via the
- * {@link Adapter#setPropertyValue(PropertyDescriptor, Object)} method.
+ * component. Properties can be set on beforehand via the {@link #setProperties}
+ * method.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+    private Map componentProperties = new HashMap();
+
     public BeanPropertyComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
+        ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
+
+        Map propertyMap = (Map) componentProperties.get(componentKey);
+        Adapter propertyAdapter = new Adapter(decoratedAdapter, propertyMap);
+        return propertyAdapter;
+    }
+
+    public void setProperties(Object componentKey, Map properies) {
+        componentProperties.put(componentKey, properies);
     }
 
     public static class PicoBeanInfoInitializationException extends PicoIntrospectionException {
@@ -40,13 +52,15 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         }
     }
 
-    public static class Adapter extends DecoratingComponentAdapter {
-        private final Map propertyValues = new HashMap();
+    private class Adapter extends DecoratingComponentAdapter {
+        private final Map propertyValues;
         private PropertyDescriptor[] propertyDescriptors;
         private Map propertyDescriptorMap = new HashMap();
+        private Object componentInstance = null;
 
-        public Adapter(ComponentAdapter delegate) throws PicoBeanInfoInitializationException {
+        public Adapter(ComponentAdapter delegate, Map propertyValues) throws PicoBeanInfoInitializationException {
             super(delegate);
+            this.propertyValues = propertyValues;
 
             try {
                 BeanInfo beanInfo = Introspector.getBeanInfo(delegate.getComponentImplementation());
@@ -64,53 +78,27 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         }
 
         public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            Object result = super.getComponentInstance(picoContainer);
+            if (componentInstance == null) {
+                componentInstance = super.getComponentInstance(picoContainer);
 
-            try {
-                BeanInfo beanInfo = Introspector.getBeanInfo(getComponentImplementation());
-                PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-                for (int i = 0; i < descriptors.length; i++) {
-                    PropertyDescriptor descriptor = descriptors[i];
-                    Method setter = descriptor.getWriteMethod();
-                    if(setter != null) {
-                        Object value = propertyValues.get(descriptor);
-                        setter.invoke(result, new Object[]{value});
+                Set propertyNames = propertyValues.keySet();
+                for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
+                    final String propertyName = (String) iterator.next();
+                    final Object propertyValue = propertyValues.get(propertyName);
+                    PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+                    Method setter = propertyDescriptor.getWriteMethod();
+                    try {
+                        setter.invoke(componentInstance, new Object[]{propertyValue});
+                    } catch (final Exception e) {
+                        throw new PicoInitializationException() {
+                            public String getMessage() {
+                                return "Failed to set property " + propertyName + " to " + propertyValue + ". " + e.getMessage();
+                            }
+                        };
                     }
                 }
-            } catch (Exception e) {
-                throw new PicoInitializationException() {
-                    public String getMessage() {
-                        return "Failed to set properties";
-                    }
-                };
             }
-
-            return result;
-        }
-
-        public void setPropertyValue(String propertyName, Object value) throws NoSuchPropertyException {
-            propertyValues.put(getPropertyDescriptor(propertyName), value);
-        }
-
-        private PropertyDescriptor getPropertyDescriptor(String propertyName) throws NoSuchPropertyException {
-            PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
-            if( propertyDescriptor == null ) {
-                throw new NoSuchPropertyException( getDelegate().getComponentImplementation().getName() +
-                        " does not have a settable property named " + propertyName);
-            }
-            return propertyDescriptor;
-        }
-
-        public void setPropertyValue(PropertyDescriptor propertyDescriptor, Object value) {
-            propertyValues.put(propertyDescriptor, value);
-        }
-
-        public Object getPropertValue(PropertyDescriptor propertyDescriptor) {
-            return propertyValues.get(propertyDescriptor);
-        }
-
-        public PropertyDescriptor[] getPropertyDescriptors() {
-            return propertyDescriptors;
+            return componentInstance;
         }
     }
 }

@@ -98,10 +98,7 @@ public class Main {
             }
         }
 
-        // Monitor
-        NanoContainerMonitor nanoContainerMonitor = createMonitor(args, monitor);
-
-        buildAndStartContainer(composition, nanoContainerMonitor);
+        buildAndStartContainer(composition);
     }
 
     /*
@@ -124,7 +121,7 @@ public class Main {
 
     AH
     */
-    private static void buildAndStartContainer(String composition, NanoContainerMonitor nanoContainerMonitor) throws Exception, InstantiationException {
+    private static void buildAndStartContainer(String composition) throws Exception, InstantiationException {
         final String extension = composition.substring(composition.indexOf("."));
         String containerAssemblerClassName = (String) extensionToAssemblerMap.get(extension);
 
@@ -155,21 +152,6 @@ public class Main {
         };
         Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));
 
-    }
-
-
-    private static NanoContainerMonitor createMonitor(String[] args, String monitor) {
-        NanoContainerMonitor nanoContainerMonitor = new NullNanoContainerMonitor();
-        if (args.length == 2) {
-            if (monitor.equals("CommonsLogging")) {
-                nanoContainerMonitor = new CommonsLoggingNanoContainerMonitor();
-            } else if (monitor.equals("Log4J")) {
-                nanoContainerMonitor = new Log4JNanoContainerMonitor();
-            } else if (monitor.equals("Console")) {
-                nanoContainerMonitor = new ConsoleNanoContainerMonitor();
-            }
-        }
-        return nanoContainerMonitor;
     }
 
     private static List getOptions(String[] args) {

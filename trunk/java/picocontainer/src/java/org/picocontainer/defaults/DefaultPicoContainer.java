@@ -52,7 +52,7 @@ public class DefaultPicoContainer extends AbstractPicoContainer {
     }
 
     public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
-        if(getComponentKeys().contains(componentAdapter.getComponentKey())) {
+        if(componentKeyToAdapterMap.keySet().contains(componentAdapter.getComponentKey())) {
             throw new DuplicateComponentKeyRegistrationException(componentAdapter.getComponentKey());
         }
         componentKeyToAdapterMap.put(componentAdapter.getComponentKey(), componentAdapter);

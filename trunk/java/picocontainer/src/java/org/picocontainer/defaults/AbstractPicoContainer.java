@@ -15,13 +15,14 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
     private final List unmanagedComponents = new ArrayList();
 
     // Keeps track of the instantiation order
-    private final List orderedComponents = new ArrayList();
+    private final List instantiantionOrderedComponentAdapters = new ArrayList();
 
     private final ComponentAdapterFactory componentAdapterFactory;
 
     public abstract Collection getComponentKeys();
+    // TODO doesn't have to be a public method.
     public abstract List getComponentAdapters();
-    public abstract void registerComponent(ComponentAdapter compSpec) throws PicoRegistrationException;
+    public abstract void registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException;
     public abstract ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException;
 
     protected AbstractPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
@@ -36,7 +37,7 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
 
-        addOrderedComponentInstance(componentInstance);
+        addOrderedComponentAdapter(componentAdapter);
         unmanagedComponents.add(componentInstance);
     }
 
@@ -51,8 +52,7 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         // on methods instead of implementing interfaces. --Aslak
         ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
 
-        getComponentInstances();
-        List componentsToMulticast = getOrderedComponents();
+        List componentsToMulticast = getComponentInstances();
         if (!callUnmanagedComponents) {
             for (Iterator iterator = unmanagedComponents.iterator(); iterator.hasNext();) {
                 componentsToMulticast.remove(iterator.next());
@@ -78,21 +78,21 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
         registerComponent(componentAdapter);
     }
 
-    public List getOrderedComponents() {
-        return new ArrayList(orderedComponents);
+    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
+        instantiantionOrderedComponentAdapters.add(componentAdapter);
     }
 
-    public void addOrderedComponentInstance(Object componentInstance) {
-        orderedComponents.add(componentInstance);
-    }
-
-    public Collection getComponentInstances() throws PicoException {
-        Collection componentInstances = new ArrayList(getComponentKeys().size());
+    public List getComponentInstances() throws PicoException {
         for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
-            Object componentInstance = getComponentInstance(iterator.next());
-            componentInstances.add(componentInstance);
+            // This will result in the list of ComponentAdapters being populated
+            getComponentInstance(iterator.next());
         }
-        return Collections.unmodifiableCollection(componentInstances);
+        List result = new ArrayList();
+        for (Iterator componentAdapters = instantiantionOrderedComponentAdapters.iterator(); componentAdapters.hasNext();) {
+            ComponentAdapter componentAdapter = (ComponentAdapter) componentAdapters.next();
+            result.add(componentAdapter.getComponentInstance(this));
+        }
+        return result;
     }
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
@@ -149,14 +149,6 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
                 ComponentAdapter componentAdapter = (ComponentAdapter) found.get(i);
                 foundClasses[i] = componentAdapter.getComponentImplementation();
             }
-
-//            ComponentMulticasterFactory componentMulticasterFactory = new DefaultComponentMulticasterFactory();
-//            Object result = componentMulticasterFactory.createComponentMulticaster(
-//                    getClass().getClassLoader(),
-//                    found,
-//                    false
-//            );
-//            return (ComponentAdapter) result;
 
             throw new AmbiguousComponentResolutionException(componentType, foundClasses);
         }

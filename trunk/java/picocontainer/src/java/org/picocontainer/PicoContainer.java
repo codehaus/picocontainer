@@ -1,6 +1,7 @@
 package org.picocontainer;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This is the core interface for PicoContainer. It only has accessor methods.
@@ -24,13 +25,15 @@ public interface PicoContainer {
     Object getComponentInstance(Object componentKey) throws PicoException;
 
     /**
-     * Gets all the registered compoents in the container.
+     * Gets all the registered component instances in the container.
+     * The components are returned in their order of instantiation, which
+     * depends on the dependency order between components.
      *
      * @return all the components.
      * @throws PicoException if one of the components could not be instantiated or dependencies
      *    could not be properly resolved.
      */
-    Collection getComponentInstances() throws PicoException;
+    List getComponentInstances() throws PicoException;
 
     /**
      * Checks for the presence of a particular component.

@@ -145,7 +145,7 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
     }
 
 
-    public void testOrderOfInstantiationWithoutAdaptor() throws Exception {
+    public void testOrderOfInstantiationWithoutAdapter() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
 

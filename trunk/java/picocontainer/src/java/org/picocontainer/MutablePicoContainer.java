@@ -85,7 +85,7 @@ public interface MutablePicoContainer extends PicoContainer {
      * explicitly. It is used by the internals. Use {@link #registerComponentInstance}
      * instead if you wish to register externally instantiated objects.
      *
-     * @param componentInstance key of the component.
+     * @param componentAdapter key of the component.
      */
-    void addOrderedComponentInstance(Object componentInstance);
+    void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 }

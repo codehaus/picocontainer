@@ -133,7 +133,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
             }
             componentInstance = createComponent(adapterDependencies, mutablePicoContainer);
 
-            mutablePicoContainer.addOrderedComponentInstance(componentInstance);
+            mutablePicoContainer.addOrderedComponentAdapter(this);
 
         }
         return componentInstance;

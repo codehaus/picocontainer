@@ -9,7 +9,7 @@
     <dependencies>
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-servlet</artifactId>
+            <artifactId>nanocontainer-nanowar</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

@@ -3,7 +3,7 @@ Usage (steps 1 and 2 as per the servlet/webwork integration):
 1. Register the servlet container listener in web.xml:
 
 <listener>
-  <listener-class>org.nanocontainer.servlet.ServletContainerListener</listener-class>
+  <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
 </listener>
 
 2. Register a container composer in web.xml to handle your component registrations:

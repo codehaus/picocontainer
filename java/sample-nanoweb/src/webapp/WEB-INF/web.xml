@@ -21,18 +21,18 @@
     </context-param>
 
     <listener>
-        <listener-class>org.nanocontainer.servlet.ServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
     </listener>
 
     <servlet>
         <servlet-name>NanoWeb</servlet-name>
-        <servlet-class>org.nanocontainer.nanoweb.NanoWebServlet</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.nanoweb.NanoWebServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>NanoVelocity</servlet-name>
-        <servlet-class>org.nanocontainer.nanoweb.NanoWebVelocityServlet</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.nanoweb.NanoWebVelocityServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

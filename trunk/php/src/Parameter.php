@@ -32,7 +32,8 @@ class BasicComponentParameter implements Parameter
     
     public function resolveInstance(PicoContainer $container, ComponentAdapter $adapter, $expectedType)
     {                        
-        $adapter = $container->getComponentAdapterOfType($expectedType);
+    	    	    	    	       
+        $adapter = $this->getTargetAdapter($container, $expectedType);
                         
         if ($adapter!=null)
         {                    

@@ -39,6 +39,7 @@ public class Main {
         extensionToAssemblerMap.put(".js", "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
         extensionToAssemblerMap.put(".xml", "org.nanocontainer.script.xml.XMLContainerBuilder");
         extensionToAssemblerMap.put(".py", "org.nanocontainer.script.jython.JythonContainerBuilder");
+        extensionToAssemblerMap.put(".groovy", "org.nanocontainer.script.groovy.GroovyContainerBuilder");
     }
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]

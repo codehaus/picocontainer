@@ -76,8 +76,8 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     }
 
-    public void initializeContainer() throws PicoInitializationException {
-        picoContainer.initializeContainer();
+    public void instantiateComponents() throws PicoInitializationException {
+        picoContainer.instantiateComponents();
     }
 
     public boolean hasComponent(Class clazz) {

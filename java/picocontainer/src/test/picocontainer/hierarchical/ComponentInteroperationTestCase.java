@@ -27,7 +27,7 @@ public class ComponentInteroperationTestCase extends TestCase {
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }

@@ -105,8 +105,8 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void initializeContainer() throws PicoInitializationException {
-        super.initializeContainer();
+    public void instantiateComponents() throws PicoInitializationException {
+        super.instantiateComponents();
         final Object[] components = getComponents();
         for (int i = 0; i < components.length; i++) {
             final Object configuree = components[i];

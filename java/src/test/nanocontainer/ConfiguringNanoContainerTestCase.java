@@ -109,7 +109,7 @@ public class ConfiguringNanoContainerTestCase extends TestCase {
         final InputSourceRegistrationNanoContainer container = new ConfiguringNanoContainerImpl.Default();
         container.registerComponents(new InputSource(new StringReader(
                 xml)));
-        container.initializeContainer();
+        container.instantiateComponents();
         return container;
     }
 

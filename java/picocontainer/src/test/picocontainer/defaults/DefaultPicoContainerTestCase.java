@@ -126,7 +126,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(PeelableComponent.class);
         pico.registerComponent(NotReallyPeelableComponent.class);
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertEquals(2, pico.getComponents().length);
 
@@ -151,7 +151,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(NotReallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
 
@@ -189,7 +189,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(NotReallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
 
@@ -223,7 +223,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(B.class, B.class);
         pico.registerComponent(C.class, C.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertEquals("instantiated A", recorder.getWhatHappened(0));
         assertEquals("instantiated B", recorder.getWhatHappened(1));
@@ -232,7 +232,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getMultipleInheritanceProxy(false,true);
+                pico.getAggregateComponentProxy(false,true);
 
         ((Washable) washableContainer).wash();
 
@@ -257,7 +257,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(B.class);
         pico.registerComponent(C.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertEquals("instantiated B", recorder.getWhatHappened(0));
         assertEquals("instantiated C", recorder.getWhatHappened(1));
@@ -265,7 +265,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.getMultipleInheritanceProxy(false,false);
+                pico.getAggregateComponentProxy(false,false);
 
         ((Washable) washableContainer).wash();
 
@@ -283,7 +283,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         pico.registerComponent(PeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Object proxy = pico.getMultipleInheritanceProxy();
 
@@ -317,7 +317,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //        pawContainer.registerComponent(PeelableComponent.class);
 //        pawContainer.registerComponent(PeelableAndWashableComponent.class);
 //
-//        pawContainer.initializeContainer();
+//        pawContainer.instantiateComponents();
 //
 //        pawContainer.wash();
 //        pawContainer.peel();

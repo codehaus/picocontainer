@@ -22,14 +22,14 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
-        nc.initializeContainer();
+        nc.instantiateComponents();
     }
 
     public void testProvision() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
-        nc.initializeContainer();
+        nc.instantiateComponents();
         assertTrue("WebServerImpl should exist", nc.hasComponent(WebServerImpl.class));
         assertNotNull("WebServerImpl should exist", nc.getComponent(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", nc.getComponent(WebServerImpl.class) instanceof WebServerImpl);
@@ -53,7 +53,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         nc.addParameterToComponent(className, "java.lang.String", "hello");
         nc.addParameterToComponent(className, "java.lang.Integer", "22");
 
-        nc.initializeContainer();
+        nc.instantiateComponents();
 
         ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
         assertNotNull("component not present", thing);

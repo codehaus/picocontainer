@@ -31,7 +31,7 @@ public class NanoNanoTestCase extends TestCase {
         nc.registerComponent("picocontainer.hierarchical.HierarchicalPicoContainer$Default");
         nc.registerComponent("nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
 
-        nc.initializeContainer();
+        nc.instantiateComponents();
 
         assertTrue("Should have a StringRegistrationNanoContainerImpl", nc.hasComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
 
@@ -43,7 +43,7 @@ public class NanoNanoTestCase extends TestCase {
 
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
-        nc.initializeContainer();
+        nc.instantiateComponents();
     }
 
     public void testDomRegistrationNanoContainerImpl()
@@ -57,7 +57,7 @@ public class NanoNanoTestCase extends TestCase {
                 "      <component class=\"nanocontainer.DomRegistrationNanoContainer$WithParentContainer\"/>" +
                 "</conponents>")));
 
-        nc.initializeContainer();
+        nc.instantiateComponents();
 
         assertTrue("Should have a DomRegistrationNanoContainer.WithParentContainer", nc.hasComponent(DomRegistrationNanoContainer.WithParentContainer.class));
 
@@ -72,7 +72,7 @@ public class NanoNanoTestCase extends TestCase {
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</conponents>")));
 
-        nc2.initializeContainer();
+        nc2.instantiateComponents();
     }
 
 }

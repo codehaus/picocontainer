@@ -14,19 +14,39 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoStartException;
+import picocontainer.PicoStopException;
+import picocontainer.PicoDisposalException;
 
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.InvocationHandler;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.HashSet;
+
+import nanocontainer.servlet.ObjectHolder;
 
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
 
     public static final int REVERSE_INSTANTIATION_ORDER = 11;
     public static final int INSTANTIATION_ORDER = 22;
+    private Map picoMethodMap = new HashMap();
 
     public MorphingHierarchicalPicoContainer(PicoContainer parentContainer, LifecycleManager startableLifecycleManager, ComponentFactory componentFactory) {
         super(parentContainer, startableLifecycleManager, componentFactory);
+
+        // Experiment - see PeelableAndWashableContainer in test case.
+        Method[] picoMethods = ClassRegistrationPicoContainer.class.getMethods();
+        for (int i = 0; i < picoMethods.length; i++) {
+            Method picoMethod = picoMethods[i];
+            picoMethodMap.put(picoMethod, null);
+        }
     }
 
     /**
@@ -82,6 +102,10 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+            if (picoMethodMap.containsKey(method) && proxy instanceof ClassRegistrationPicoContainer) {
+                // how to do super.invoke() ????
+            }
 
             switch (direction) {
                 case MorphingHierarchicalPicoContainer.INSTANTIATION_ORDER:

@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Interface for composing a container.
@@ -25,9 +25,8 @@ public interface ContainerComposer {
      * and configuration (setting primitive arguments) of components.
      *
      * @param container        container to compose
-     * @param compositionScope scope of the container. This variable can be used as a hint to determine
-     *                         exactly what components should be registered.
+     @param compositionScope scope of the container. This variable can be used as a hint to determine
      */
-    void composeContainer(SoftCompositionPicoContainer container, Object compositionScope);
+    void composeContainer(MutablePicoContainer container, Object compositionScope);
 
 }

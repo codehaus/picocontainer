@@ -10,12 +10,10 @@
 
 package org.nanocontainer.reflection;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
-
-import java.util.Collection;
 
 /**
  * @author Paul Hammant
@@ -24,15 +22,15 @@ import java.util.Collection;
 public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultSoftCompositionPicoContainer(this.getClass().getClassLoader(), parent);
+        return new DefaultNanoPicoContainer(this.getClass().getClassLoader(), parent);
     }
 
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessible() {
         StringBuffer sb = new StringBuffer();
-        final SoftCompositionPicoContainer parent = (SoftCompositionPicoContainer) createPicoContainer(null);
+        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponentInstance(sb);
-        final SoftCompositionPicoContainer child = (SoftCompositionPicoContainer) parent.makeChildContainer("foo");
+        final NanoPicoContainer child = (NanoPicoContainer) parent.makeChildContainer("foo");
         child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
         assertNotNull(o);
@@ -41,7 +39,7 @@ public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoCon
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
-        final SoftCompositionPicoContainer parent = (SoftCompositionPicoContainer) createPicoContainer(null);
+        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponentInstance(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponentImplementation("lcm",LifeCycleMonitoring.class);
@@ -53,7 +51,7 @@ public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoCon
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
-        final SoftCompositionPicoContainer parent = (SoftCompositionPicoContainer) createPicoContainer(null);
+        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponentInstance(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);

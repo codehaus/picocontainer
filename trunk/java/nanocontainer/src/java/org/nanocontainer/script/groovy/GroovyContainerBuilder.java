@@ -7,32 +7,31 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.script.groovy;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.NanoContainer;
+import org.picocontainer.PicoContainer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.PicoContainer;
 
 /**
  * {@inheritDoc}
- * The groovyScript has to return an instance of {@link SoftCompositionPicoContainer}.
+ * The groovy script has to return an instance of {@link NanoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
- * SoftCompositionPicoContainer.
+ * NanoPicoContainer.
  *
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  * @version $Revision$
@@ -44,8 +43,9 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
+    // TODO: This should really return NanoContainer using a nano variable in the script. --Aslak
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
-        if(groovyScript == null) {
+        if (groovyScript == null) {
             createGroovyScript();
         }
         Binding binding = new Binding();
@@ -55,25 +55,31 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         // both returning something or defining the variable is ok.
         Object result = groovyScript.run();
-        Object pico = binding.getVariable("pico");
-        if(pico == null) {
-            pico = result;
+        Object picoVariable = binding.getVariable("pico");
+        if (picoVariable == null) {
+            picoVariable = result;
         }
-        return (SoftCompositionPicoContainer) pico;
+        if (picoVariable instanceof PicoContainer) {
+            return (PicoContainer) picoVariable;
+        } else if (picoVariable instanceof NanoContainer) {
+            return ((NanoContainer) picoVariable).getPico();
+        } else {
+            throw new PicoCompositionException("Bad type for pico:" + picoVariable.getClass().getName());
+        }
     }
 
     private void createGroovyScript() {
         try {
             GroovyClassLoader loader = new GroovyClassLoader(classLoader);
             InputStream scriptIs = new InputStream() {
-                                public int read() throws IOException {
-                                    return script.read();
-                                }
-                            };
+                public int read() throws IOException {
+                    return script.read();
+                }
+            };
             Class scriptClass = loader.parseClass(scriptIs, "nanocontainer.groovy");
             groovyScript = InvokerHelper.createScript(scriptClass, null);
         } catch (CompilationFailedException e) {
-            throw new NanoGroovyCompositionException("Compilation Failed '" + e.getMessage() +"'",e);
+            throw new NanoGroovyCompositionException("Compilation Failed '" + e.getMessage() + "'", e);
         } catch (IOException e) {
             throw new PicoCompositionException(e);
         }

@@ -1,7 +1,6 @@
 package org.nanocontainer.nanowar.nanoweb;
 
 import junit.framework.TestCase;
-import org.nanocontainer.nanowar.nanoweb.ChainingDispatcher;
 
 /**
  * @author Aslak Helles&oslash;y

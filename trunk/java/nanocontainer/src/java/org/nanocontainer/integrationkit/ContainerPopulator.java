@@ -9,11 +9,11 @@
  */
 package org.nanocontainer.integrationkit;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Mauro Talevi
  */
 public interface ContainerPopulator {
-	public void populateContainer(SoftCompositionPicoContainer container);
+	public void populateContainer(MutablePicoContainer container);
 }

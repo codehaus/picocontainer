@@ -9,27 +9,28 @@
  *****************************************************************************/
 package org.nanocontainer.script.rhino;
 
+import org.mozilla.javascript.JavaScriptException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServerConfig;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import org.mozilla.javascript.JavaScriptException;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerConfig;
 
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-                "var pico = new DefaultSoftCompositionPicoContainer()\n" +
+                "var pico = new DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
 
-        SoftCompositionPicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         assertNotNull(pico.getComponentInstanceOfType(WebServerConfig.class).getClass());
     }
@@ -37,11 +38,11 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-                "var pico = new DefaultSoftCompositionPicoContainer(new ConstructorInjectionComponentAdapterFactory())\n" +
+                "var pico = new DefaultNanoPicoContainer(new ConstructorInjectionComponentAdapterFactory())\n" +
                 "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
                 "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
 
-        SoftCompositionPicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
         Object ws1 = pico.getComponentInstanceOfType(WebServer.class);
@@ -64,16 +65,16 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
         final String testCompJarPath = testCompJar.getCanonicalPath().replace('\\', '/');
         Reader script = new StringReader(
-                "var pico = new DefaultSoftCompositionPicoContainer()\n" +
+                "var pico = new DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentImplementation('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
-                "child = new DefaultSoftCompositionPicoContainer(pico)\n" +
+                "child = new DefaultNanoPicoContainer(pico)\n" +
                 "pico.addChildContainer(child)\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
                 "child.registerComponentImplementation('childComponent','TestComp')\n" +
                 "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance('childComponent'))"); // ugly hack for testing
         JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, getClass().getClassLoader());
-        SoftCompositionPicoContainer pico = buildContainer(builder, null);
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
 
         Object parentComponent = pico.getComponentInstance("parentComponent");
 
@@ -90,11 +91,11 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
-                "var pico = new DefaultSoftCompositionPicoContainer()\n" +
+                "var pico = new DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentInstance( new Packages." + FooTestComp.class.getName() + "())\n" +
                 "pico.registerComponentInstance( 'foo', new Packages." + FooTestComp.class.getName() + "())\n");
 
-        SoftCompositionPicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(0).getClass());
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(1).getClass());
@@ -106,9 +107,9 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "var pico = new DefaultSoftCompositionPicoContainer(parent)\n");
-        SoftCompositionPicoContainer parent = new DefaultSoftCompositionPicoContainer();
-        SoftCompositionPicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent);
+                "var pico = new DefaultNanoPicoContainer(parent)\n");
+        PicoContainer parent = new DefaultPicoContainer();
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
     }

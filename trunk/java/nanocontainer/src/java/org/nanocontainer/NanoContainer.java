@@ -5,108 +5,65 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
+ * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
 package org.nanocontainer;
 
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URL;
 
 /**
- * The main class for configuration of PicoContainer with various scripting languages.
- * When using the constructors taking a file, the extensions must be one of the following:
- * <ul>
- * <li>.groovy</li>
- * <li>.bsh</li>
- * <li>.js</li>
- * <li>.py</li>
- * <li>.xml</li>
- * </ul>
- * -And the content of the file likewise. See <a href="http://docs.codehaus.org/display/NANO/NanoContainer">NanoContainer documentation</a>
- * for details.
+ * This class adapts a {@link MutablePicoContainer} through a similar API that
+ * is based only on Strings. (It uses reflection to look up classes before registering them
+ * with the adapted container). This adapter API is used primarily by the various scripting
+ * based {@link org.nanocontainer.integrationkit.ContainerComposer}s in the org.nanocontainer.script
+ * package.
  *
  * @author Paul Hammant
- * @author Aslak Helles&oslah;y
+ * @author Aslak Helles&oslash;y
  */
-public class NanoContainer {
+public interface NanoContainer {
 
-    public static final String GROOVY = ".groovy";
-    public static final String BEANSHELL = ".bsh";
-    public static final String JAVASCRIPT = ".js";
-    public static final String JYTHON = ".py";
-    public static final String XML = ".xml";
+    ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    private static final Map extensionToBuilders = new HashMap();
+    ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
+    
+    ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException;
+    
 
-    static {
-        extensionToBuilders.put(GROOVY, "org.nanocontainer.script.groovy.GroovyContainerBuilder");
-        extensionToBuilders.put(BEANSHELL, "org.nanocontainer.script.bsh.BeanShellContainerBuilder");
-        extensionToBuilders.put(JAVASCRIPT, "org.nanocontainer.script.rhino.JavascriptContainerBuilder");
-        extensionToBuilders.put(XML, "org.nanocontainer.script.xml.XMLContainerBuilder");
-        extensionToBuilders.put(JYTHON, "org.nanocontainer.script.jython.JythonContainerBuilder");
-    }
+    ComponentAdapter registerComponentImplementation(Object key,
+                                                     String componentImplementationClassName,
+                                                     String[] parameterTypesAsString,
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    private ScriptedContainerBuilder containerBuilder;
+    ComponentAdapter registerComponentImplementation(String componentImplementationClassName,
+                                                     String[] parameterTypesAsString,
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
-    public NanoContainer(File compositionFile, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), classLoader);
-    }
+    void addClassLoaderURL(URL url);
 
-    public NanoContainer(File compositionFile) throws IOException, ClassNotFoundException {
-        this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), NanoContainer.class.getClassLoader());
-    }
+    /**
+     * Returns the wrapped PicoContainer instance (russian doll concept). The method name is short
+     * in order to favour the use of nano.pico from Groovy.
+     * @return the wrapped PicoContainer instance.
+     */
+    MutablePicoContainer getPico();
 
-    public NanoContainer(Reader composition, String builderClass) throws ClassNotFoundException {
-        this(composition, builderClass, NanoContainer.class.getClassLoader());
-    }
+    ClassLoader getComponentClassLoader();
 
-    public NanoContainer(Reader composition, String builderClass, ClassLoader classLoader) throws ClassNotFoundException {
+    /**
+     * Find a component instance matching the specified type.
+     *
+     * @param componentType the type of the component.
+     * @return the adapter matching the class.
+     */
+    Object getComponentInstanceOfType(String componentType);
 
-        DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
-        {
-            // disposable.
-            DefaultPicoContainer dpc = new DefaultPicoContainer(); // TODO parent?
-            dpc.registerComponentInstance(composition);
-            dpc.registerComponentInstance(classLoader);
-            defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
-        }
-        ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(builderClass);
-        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultReflectionContainerAdapter.getPicoContainer());
-
-    }
-    private static File fileExists(File file) {
-        if (file.exists()) {
-            return file;
-        } else {
-            //todo a proper exception.
-            throw new RuntimeException("File " + file.getName() + " does not exist.");
-        }
-    }
-
-    private static String getBuilderClassName(File compositionFile) throws IOException {
-        String language = getExtension(compositionFile);
-        return getBuilderClassName(language);
-    }
-
-    public static String getBuilderClassName(String extension) {
-        return (String) extensionToBuilders.get(extension);
-    }
-
-    private static String getExtension(File file) throws IOException {
-        return file.getCanonicalPath().substring(file.getCanonicalPath().lastIndexOf("."));
-    }
-
-    public ScriptedContainerBuilder getContainerBuilder() {
-        return containerBuilder;
-    }
 
 }

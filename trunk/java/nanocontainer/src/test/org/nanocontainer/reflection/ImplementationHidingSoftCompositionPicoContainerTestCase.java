@@ -3,8 +3,6 @@ package org.nanocontainer.reflection;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
-import org.nanocontainer.script.groovy.TestComponentAdapterFactory;
 
 /**
  * @author Paul Hammant
@@ -14,11 +12,11 @@ import org.nanocontainer.script.groovy.TestComponentAdapterFactory;
 public class ImplementationHidingSoftCompositionPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
-        return new ImplementationHidingSoftCompositionPicoContainer();
+        return new ImplementationHidingNanoPicoContainer();
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new ImplementationHidingSoftCompositionPicoContainer(this.getClass().getClassLoader(), parent);
+        return new ImplementationHidingNanoPicoContainer(this.getClass().getClassLoader(), parent);
     }
 
     public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {

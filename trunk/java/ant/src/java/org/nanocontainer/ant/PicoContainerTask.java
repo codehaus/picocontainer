@@ -9,24 +9,25 @@
  *****************************************************************************/
 package org.nanocontainer.ant;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -56,17 +57,17 @@ public class PicoContainerTask extends Task {
     protected ContainerComposer extraContainerComposer = null;
 
     private ContainerComposer containerComposer = new ContainerComposer() {
-        public void composeContainer(SoftCompositionPicoContainer picoContainer, Object assemblyScope) {
+        public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
             if (extraContainerComposer != null) {
                 extraContainerComposer.composeContainer(picoContainer, assemblyScope);
             }
 
             // register components specified in Ant
-            ReflectionContainerAdapter containerAdapter = new DefaultReflectionContainerAdapter(getClass().getClassLoader(), picoContainer);
+            NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
                 Component component = (Component) iterator.next();
                 try {
-                    BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) containerAdapter.registerComponentImplementation(component.getKey(), component.getClassname());
+                    BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.registerComponentImplementation(component.getKey(), component.getClassname());
                     adapter.setProperties(component.getProperties());
                 } catch (ClassNotFoundException e) {
                     throw new BuildException("Class Not Found: " + e.getMessage(), e);
@@ -87,7 +88,7 @@ public class PicoContainerTask extends Task {
                     new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-                return new DefaultSoftCompositionPicoContainer(propertyFactory);
+                return new DefaultPicoContainer(propertyFactory);
             }
         };
         try {

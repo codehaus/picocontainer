@@ -8,8 +8,9 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
+import org.nanocontainer.reflection.StringToObjectConverter;
 import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -30,8 +31,7 @@ import java.util.Map;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-
-public class DefaultReflectionContainerAdapter implements ReflectionContainerAdapter {
+public class DefaultNanoContainer implements NanoContainer {
     private static final Map primitiveNameToBoxedName = new HashMap();
     private boolean componentClassLoaderLocked;
     private ClassLoader componentClassLoader;
@@ -57,31 +57,31 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
 
     private final ClassLoader parentClassLoader;
 
-    public DefaultReflectionContainerAdapter(ClassLoader classLoader, MutablePicoContainer picoContainer) {
-        this.parentClassLoader = classLoader;
+    public DefaultNanoContainer(ClassLoader parentClassLoader, MutablePicoContainer picoContainer) {
+        this.parentClassLoader = parentClassLoader;
+        if(picoContainer == null) {
+            throw new NullPointerException("picoContainer");
+        }
         this.picoContainer = picoContainer;
     }
 
-    public DefaultReflectionContainerAdapter(ClassLoader classLoader) {
+    public DefaultNanoContainer(ClassLoader classLoader) {
         this(classLoader, new DefaultPicoContainer());
     }
 
-    public DefaultReflectionContainerAdapter(MutablePicoContainer picoContainer) {
-        parentClassLoader = DefaultReflectionContainerAdapter.class.getClassLoader();
-        this.picoContainer = picoContainer;
+    public DefaultNanoContainer(MutablePicoContainer picoContainer) {
+        this(DefaultNanoContainer.class.getClassLoader(), picoContainer);
     }
 
-    public DefaultReflectionContainerAdapter(ReflectionContainerAdapter parent) {
-        parentClassLoader = parent.getComponentClassLoader();
-        picoContainer = new DefaultPicoContainer(parent.getPicoContainer());
-        parent.getPicoContainer().addChildContainer(picoContainer);
+    public DefaultNanoContainer(NanoContainer parent) {
+        this(parent.getComponentClassLoader(), new DefaultPicoContainer(parent.getPico()));
     }
 
     /**
      * Beware - no parent container and no parent classloader.
      */
-    public DefaultReflectionContainerAdapter() {
-        this(DefaultReflectionContainerAdapter.class.getClassLoader(), new DefaultPicoContainer());
+    public DefaultNanoContainer() {
+        this(DefaultNanoContainer.class.getClassLoader(), new DefaultPicoContainer());
     }
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
@@ -149,7 +149,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         return componentClassLoader;
     }
 
-    public MutablePicoContainer getPicoContainer() {
+    public MutablePicoContainer getPico() {
         return picoContainer;
     }
 

@@ -8,15 +8,14 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.nanocontainer.ScriptedContainerBuilderFactory;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
@@ -51,25 +50,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public static final String KILLER_HELPER = "KILLER_HELPER";
-    private final PicoContainer parentContainer;
-
-    /**
-     * With an enahanced Servlet container like Jervlet (http://spice.codehaus.org/sandbox.html)
-     * it is possible for all WAR file instantiables to have a constructor.  This breaks the
-     * current Servlet spec, but hopefully not future ones - Paul
-     * Used by Nanoweb, Nanostruts and other specialist containers, it is OK to have a reference
-     * to a PicoContainer. A PicoContainer perhaps - one specialy constructed for forwarding into
-     * the servlet realm.
-     *
-     * @param parentContainer
-     */
-    public ServletContainerListener(PicoContainer parentContainer) {
-        this.parentContainer = new ImmutablePicoContainer(parentContainer);
-    }
-
-    public ServletContainerListener() {
-        this.parentContainer = null;
-    }
 
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
@@ -94,7 +74,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             String initParameter = (String) initParameters.nextElement();
             if (initParameter.startsWith("nanocontainer")) {
                 String extension = initParameter.substring(initParameter.lastIndexOf('.'));
-                String builderClassName = NanoContainer.getBuilderClassName(extension);
+                String builderClassName = ScriptedContainerBuilderFactory.getBuilderClassName(extension);
                 String script = context.getInitParameter(initParameter);
                 Reader scriptReader;
                 if (script.trim().startsWith("/") && !(script.trim().startsWith("//") || script.trim().startsWith("/*"))) {
@@ -103,14 +83,14 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 } else {
                     scriptReader = new StringReader(script);
                 }
-                NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
-                return nanoContainer.getContainerBuilder();
+                ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
+                return scriptedContainerBuilderFactory.getContainerBuilder();
             }
             if (initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
                 // disposable
-                SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer(Thread.currentThread().getContextClassLoader());
-                ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance(softPico);
+                NanoContainer nanoContainer = new DefaultNanoContainer(Thread.currentThread().getContextClassLoader());
+                ContainerComposer containerComposer = (ContainerComposer) nanoContainer.registerComponentImplementation(containerComposerClassName).getComponentInstance(nanoContainer.getPico());
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }

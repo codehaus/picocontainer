@@ -6,4 +6,5 @@ distributions.*
 .classpath
 .project
 target
+junit*
 cachedir

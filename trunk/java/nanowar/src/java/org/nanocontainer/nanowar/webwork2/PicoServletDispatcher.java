@@ -11,13 +11,10 @@ package org.nanocontainer.nanowar.webwork2;
 import com.opensymphony.webwork.dispatcher.ServletDispatcher;
 import com.opensymphony.xwork.ActionProxyFactory;
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.nanocontainer.nanowar.webwork2.PicoActionProxyFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request

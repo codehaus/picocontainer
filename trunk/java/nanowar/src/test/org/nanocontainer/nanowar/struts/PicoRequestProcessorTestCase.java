@@ -8,16 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
-import org.apache.struts.action.ActionMapping;
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.nanowar.struts.PicoRequestProcessor;
-import org.nanocontainer.nanowar.struts.AbstractTestCase;
-import org.nanocontainer.nanowar.struts.MyAction;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**

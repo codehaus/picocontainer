@@ -2,7 +2,6 @@ package org.nanocontainer.script.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -12,7 +11,7 @@ import java.io.Reader;
 /**
  * {@inheritDoc}
  * The script has to assign a "pico" variable with an instance of 
- * {@link SoftCompositionPicoContainer}.
+ * {@link org.picocontainer.PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
@@ -31,7 +30,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
             i.set("parent", parentContainer);
             i.set("assemblyScope", assemblyScope);
             i.eval(script, i.getNameSpace(), "nanocontainer.bsh");
-            return (SoftCompositionPicoContainer) i.get("pico");
+            return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
             throw new PicoCompositionException(e);
         }

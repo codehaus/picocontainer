@@ -1,13 +1,17 @@
 package org.nanocontainer.script.groovy;
 
-import java.io.Reader;
-import java.io.StringReader;
-
+import org.jmock.Mock;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.groovy.Xxx.A;
 import org.nanocontainer.script.groovy.Xxx.B;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.InstanceComponentAdapter;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * @author Paul Hammant
@@ -21,11 +25,11 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
                 "import org.nanocontainer.script.groovy.Xxx$A\n" +
                 "Xxx.reset()\n" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(Xxx$A)\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         // LifecyleContainerBuilder starts the container
         pico.dispose();
 
@@ -36,45 +40,45 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         Reader script = new StringReader("" +
                 "import org.nanocontainer.script.groovy.Xxx$A\n" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'a', instance:'apple')\n" +
                 "    component(key:'b', instance:'banana')\n" +
                 "    component(instance:'noKeySpecified')\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertEquals("apple", pico.getComponentInstance("a"));
         assertEquals("banana", pico.getComponentInstance("b"));
         assertEquals("noKeySpecified", pico.getComponentInstance(String.class));
     }
 
-    public void testNeitherClassNorInstanceSpecified() {
+    public void testShouldFailWhenNeitherClassNorInstanceIsSpecifiedForComponent() {
         Reader script = new StringReader("" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'a')\n" +
                 "}");
 
         try {
-            buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+            buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             fail("PicoBuilderException should have been raised");
         } catch (PicoBuilderException e) {
             // expected
         }
     }
 
-    public void testConstantParameters() throws PicoCompositionException {
+    public void testShouldAcceptConstantParametersForComponent() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ConstantParameter\n" +
                 "import org.nanocontainer.script.groovy.HasParams\n" +
                 "" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'byClass', class:HasParams, parameters:[ 'a', 'b', new ConstantParameter('c') ])\n" +
                 "    component(key:'byClassString', class:'org.nanocontainer.script.groovy.HasParams', parameters:[ 'c', 'a', 't' ])\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         HasParams byClass = (HasParams) pico.getComponentInstance("byClass");
         assertEquals("abc", byClass.getParams());
@@ -83,21 +87,21 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         assertEquals("cat", byClassString.getParams());
     }
 
-    public void testComponentParameters() throws PicoCompositionException {
+    public void testShouldAcceptComponentParametersForComponent() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ComponentParameter\n" +
                 "import org.nanocontainer.script.groovy.Xxx$A\n" +
                 "import org.nanocontainer.script.groovy.Xxx$B\n" +
                 "" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'a1', class:Xxx$A)\n" +
                 "    component(key:'a2', class:Xxx$A)\n" +
                 "    component(key:'b1', class:Xxx$B, parameters:[ new ComponentParameter('a1') ])\n" +
                 "    component(key:'b2', class:Xxx$B, parameters:[ new ComponentParameter('a2') ])\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         Xxx.A a1 = (Xxx.A) pico.getComponentInstance("a1");
         Xxx.A a2 = (Xxx.A) pico.getComponentInstance("a2");
@@ -115,19 +119,19 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         assertNotSame(b1, b2);
     }
 
-    public void testComponentParameterWithClassNameKey() throws PicoCompositionException {
+    public void testShouldAcceptComponentParameterWithClassNameKey() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ComponentParameter\n" +
                 "import org.nanocontainer.script.groovy.Xxx$A\n" +
                 "import org.nanocontainer.script.groovy.Xxx$B\n" +
                 "" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(class:Xxx$A)\n" +
                 "    component(key:Xxx$B, class:Xxx$B, parameters:[ new ComponentParameter(Xxx$A) ])\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         Xxx.A a = (Xxx.A) pico.getComponentInstance(Xxx.A.class);
         Xxx.B b = (Xxx.B) pico.getComponentInstance(Xxx.B.class);
@@ -142,39 +146,91 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.picocontainer.defaults.ComponentParameter\n" +
                 "builder = new NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'a', class:Xxx$A)\n" +
                 "    component(key:'b', class:Xxx$B, parameters:[ new ComponentParameter('a') ])\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Xxx.A a = (A) pico.getComponentInstance("a");
         Xxx.B b = (B) pico.getComponentInstance("b");
         assertSame(a, b.a);
     }
 
-    public void testBuilderHandoff() {
+    public void testShouldBeAbleToHandOffToNestedBuilder() {
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new NanoGroovyBuilder()\n" +
-                "pico = builder.container {\n" +
+                "nano = builder.container {\n" +
                 "    component(key:'a', class:Xxx$A)\n" +
-                "    // this is how we'll AOP stuff.\n" +
                 "    newBuilder(class:'org.nanocontainer.script.groovy.SymbolicAOPTestBuilder') {\n" +
-//                "      foo()\n" +
-//                "      component(key:'b', class:Xxx$B)\n" +
+                "      component(key:'b', class:Xxx$B)\n" +
                 "    }\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
         Object a = pico.getComponentInstance("a");
         Object b = pico.getComponentInstance("b");
-        Object foo = pico.getComponentInstance("foo");
 
-//        assertNotNull(b);
-//        assertNotNull(foo);
+        assertNotNull(a);
+        assertNotNull(b);
     }
 
+    public void testInstantiateBasicComponentInDeeperTree() {
+
+        Xxx.reset();
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new NanoGroovyBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    container() {\n" +
+                "        component(Xxx$A)\n" +
+                "    }\n" +
+                "}");
+
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
+        pico.dispose();
+
+        assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder);
+    }
+
+    public void testShouldBeAbleToSpecifyCustomCompoentAdapterFactory() {
+
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new NanoGroovyBuilder()\n" +
+                "nano = builder.container(componentAdapterFactory:assemblyScope) {\n" +
+                "    component(Xxx$A)\n" +
+                "}");
+
+        A a = new A();
+        Mock cafMock = mock(ComponentAdapterFactory.class);
+        cafMock.expects(once()).method("createComponentAdapter").with(same(A.class),same(A.class),eq(null)).will(returnValue(new InstanceComponentAdapter(A.class,a)));
+        ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafMock.proxy();
+        PicoContainer picoContainer = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, componentAdapterFactory);
+        assertSame(a, picoContainer.getComponentInstanceOfType(A.class));
+    }
+
+    public void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() {
+
+        Xxx.reset();
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "            builder = new NanoGroovyBuilder()\n" +
+                "            nano = builder.container {\n" +
+                "                component(Xxx$B)\n" +
+                "                container() {\n" +
+                "                    component(Xxx$A)\n" +
+                "                }\n" +
+                "                component(Xxx$C)\n" +
+                "            }");
+
+        try {
+            buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
+            fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
+        } catch (UnsatisfiableDependenciesException expected) {
+        }
+    }
 }

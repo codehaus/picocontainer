@@ -10,9 +10,6 @@
 package org.nanocontainer.nanowar;
 
 import junit.framework.TestCase;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.TestContainerMocker;
-import org.nanocontainer.nanowar.XStreamContainerComposer;
 
 
 /**

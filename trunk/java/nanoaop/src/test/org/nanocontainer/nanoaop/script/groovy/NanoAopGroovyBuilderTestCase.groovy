@@ -23,25 +23,25 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
         log = new StringBuffer()
         logger = new LoggingInterceptor(log)
 
-        pico = builder.container() {
+        nano = builder.container() {
             aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
             component(key:Dao, class:DaoImpl)
         }
 
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyIntercepted(dao, log)
     }
 
     public void testContainerScopedContainerSuppliedInterceptor() {
-        pico = builder.container() {
+        nano = builder.container() {
             aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)
             component(key:'log', class:StringBuffer)
             component(LoggingInterceptor)
             component(key:Dao, class:DaoImpl)
         }
 
-        dao = pico.getComponentInstance(Dao.class)
-        log = pico.getComponentInstance('log')
+        dao = nano.pico.getComponentInstance(Dao.class)
+        log = nano.pico.getComponentInstance('log')
         verifyIntercepted(dao, log)
     }
 
@@ -49,22 +49,22 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
         log = new StringBuffer()
         logger = new LoggingInterceptor(log)
 
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:'intercepted', class:DaoImpl) {
                 aspect(methodCut:cuts.allMethods(), interceptor:logger)
             }
             component(key:'notIntercepted', class:DaoImpl)
         }
 
-        intercepted = pico.getComponentInstance('intercepted')
-        notIntercepted = pico.getComponentInstance('notIntercepted')
+        intercepted = nano.pico.getComponentInstance('intercepted')
+        notIntercepted = nano.pico.getComponentInstance('notIntercepted')
 
         verifyIntercepted(intercepted, log)
         verifyNotIntercepted(notIntercepted, log)
     }
 
     public void testComponentScopedContainerSuppliedInterceptor() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:'intercepted', class:DaoImpl) {
                 aspect(methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)
             }
@@ -73,43 +73,43 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
             component(LoggingInterceptor)
         }
 
-        intercepted = pico.getComponentInstance('intercepted')
-        notIntercepted = pico.getComponentInstance('notIntercepted')
-        log = pico.getComponentInstance('log')
+        intercepted = nano.pico.getComponentInstance('intercepted')
+        notIntercepted = nano.pico.getComponentInstance('notIntercepted')
+        log = nano.pico.getComponentInstance('log')
 
         verifyIntercepted(intercepted, log)
         verifyNotIntercepted(notIntercepted, log)
     }
 
     public void testContainerScopedMixin() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:Dao, class:DaoImpl) 
             aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)
         }
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
   
     public void testComponentScopedMixin() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(mixinClass:IdentifiableMixin)
             }
         }
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
     
     public void testContainerSuppliedMixin() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:'order1', class:OrderEntityImpl)
             component(key:'order2', class:OrderEntityImpl)
             component(key:IdGenerator, class:IdGeneratorImpl)
             aspect(classCut:cuts.instancesOf(OrderEntity), mixinClass:IdentifiableMixin)
         }
         
-        order1 = pico.getComponentInstance('order1')
-        order2 = pico.getComponentInstance('order2')
+        order1 = nano.pico.getComponentInstance('order1')
+        order2 = nano.pico.getComponentInstance('order2')
         
         assertTrue(order1 instanceof Identifiable)
         assertTrue(order2 instanceof Identifiable)
@@ -122,22 +122,22 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
     }
   
     public void testContainerScopedMixinExplicitInterfaces() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:Dao, class:DaoImpl) 
             aspect(classCut:cuts.instancesOf(Dao), mixinInterfaces:[ Identifiable ], mixinClass:IdentifiableMixin)
         }
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyMixin(dao)
         assertFalse(dao instanceof AnotherInterface)
     }
 
     public void testComponentScopedMixinExplicitInterfaces() {
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(mixinClass:IdentifiableMixin, mixinInterfaces:[ Identifiable ])
             }
         }
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyMixin(dao)
         assertFalse(dao instanceof AnotherInterface)
     }
@@ -184,18 +184,18 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
     
     public void testComponentInstance() {
         // Note:  aspecting of instances is not supported, but we just want to make sure we didn't mess anything up.
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:'foo', instance:'bar')
         }
-        assertEquals('bar', pico.getComponentInstance('foo'))
+        assertEquals('bar', nano.pico.getComponentInstance('foo'))
     }
     
     public void testBean() {
         // Note:  aspecting of beanClass instantiated beans isn't supported either, but again we just want to make sure we didn't mess anything up.
-        pico = builder.container() {
+        nano = builder.container() {
             bean(beanClass:StringBean, firstName:'tom', lastName:'jones')
         }
-        stringBean = pico.getComponentInstance(StringBean)
+        stringBean = nano.pico.getComponentInstance(StringBean)
         assertNotNull(stringBean)
         assertEquals('tom', stringBean.firstName)
         assertEquals('jones', stringBean.lastName)
@@ -207,7 +207,7 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
         builder = new NanoAopGroovyBuilder()
         cuts = builder.pointcuts()
 
-        pico = builder.container() {
+        nano = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(methodCut:cuts.allMethods(), interceptor:logger)
             }
@@ -218,9 +218,9 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
             aspect(classCut:cuts.packageName('org.nanocontainer.nanoaop'), methodCut:cuts.signature('save*'), interceptor:logger)
         }
         
-        dao = pico.getComponentInstance(Dao)
-        customer = pico.getComponentInstance(CustomerEntity)
-        order = pico.getComponentInstance(OrderEntity)
+        dao = nano.pico.getComponentInstance(Dao)
+        customer = nano.pico.getComponentInstance(CustomerEntity)
+        order = nano.pico.getComponentInstance(OrderEntity)
         
         verifyIntercepted(dao, log)
         verifyMixin(customer)
@@ -240,12 +240,12 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
         logger = new LoggingInterceptor(log)
         caf = new DefaultComponentAdapterFactory()
         
-        pico = builder.container(adapterFactory:caf) {
+        nano = builder.container(adapterFactory:caf) {
             aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
             component(key:Dao, class:DaoImpl)
         }
 
-        dao = pico.getComponentInstance(Dao)
+        dao = nano.pico.getComponentInstance(Dao)
         verifyIntercepted(dao, log)
     }
    

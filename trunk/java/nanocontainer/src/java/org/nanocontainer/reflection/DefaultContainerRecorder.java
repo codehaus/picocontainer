@@ -8,6 +8,10 @@
  *****************************************************************************/
 package org.nanocontainer.reflection;
 
+import org.nanocontainer.integrationkit.ContainerRecorder;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,9 +23,6 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.integrationkit.ContainerRecorder;
-import org.picocontainer.PicoException;
 
 /**
  * This class is serializable. The original container will not be serialized
@@ -35,28 +36,20 @@ import org.picocontainer.PicoException;
 public class DefaultContainerRecorder implements Serializable, ContainerRecorder {
 
     private final List invocations = new ArrayList();
-    private transient SoftCompositionPicoContainer container;
+    private transient MutablePicoContainer container;
 
     private final InvocationHandler invocationRecorder = new InvocationRecorder();
 
-    public DefaultContainerRecorder(SoftCompositionPicoContainer container) {
+    public DefaultContainerRecorder(MutablePicoContainer container) {
         this.container = container;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see ContainerRecorder#getContainerProxy()
-     */
-    public SoftCompositionPicoContainer getContainerProxy() {
-        return (SoftCompositionPicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(),
-                new Class[]{SoftCompositionPicoContainer.class}, invocationRecorder);
+    public MutablePicoContainer getContainerProxy() {
+        return (MutablePicoContainer) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class[]{MutablePicoContainer.class}, invocationRecorder);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see ContainerRecorder#replay(SoftCompositionPicoContainer)
-     */
-    public void replay(SoftCompositionPicoContainer target) {
+    public void replay(MutablePicoContainer target) {
         for (Iterator iter = invocations.iterator(); iter.hasNext();) {
             Invocation invocation = (Invocation) iter.next();
             try {

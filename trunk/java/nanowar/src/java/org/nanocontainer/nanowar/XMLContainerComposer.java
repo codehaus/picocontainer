@@ -9,14 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.reflection.DefaultContainerRecorder;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -75,21 +79,21 @@ public class XMLContainerComposer implements ContainerComposer {
 	        containerBuilderClassName = DEFAULT_CONTAINER_BUILDER;
 	    }
 	    
-        applicationRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
+        applicationRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         String[] applicationConfig = (String[])config.get(APPLICATION_CONFIG_KEY);
         if ( applicationConfig == null ){
             applicationConfig = DEFAULT_APPLICATION_CONFIG;
         }        
         populateContainer(applicationConfig, applicationRecorder);
 
-        sessionRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
+        sessionRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         String[] sessionConfig = (String[])config.get(SESSION_CONFIG_KEY);
         if ( sessionConfig == null ){
             sessionConfig = DEFAULT_SESSION_CONFIG;
         }
         populateContainer(sessionConfig, sessionRecorder);
         
-        requestRecorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
+        requestRecorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         String[] requestConfig = (String[])config.get(REQUEST_CONFIG_KEY);
         if ( requestConfig == null ){
             requestConfig = DEFAULT_REQUEST_CONFIG;
@@ -98,7 +102,7 @@ public class XMLContainerComposer implements ContainerComposer {
 	}    
     	
 	private void populateContainer(String[] resources, ContainerRecorder recorder) throws ClassNotFoundException {
-	    SoftCompositionPicoContainer container = recorder.getContainerProxy();
+	    MutablePicoContainer container = recorder.getContainerProxy();
 		for ( int i = 0; i < resources.length; i++ ){
 			ContainerPopulator populator = createContainerPopulator(getResource(resources[i]));
 			populator.populateContainer(container);
@@ -106,11 +110,11 @@ public class XMLContainerComposer implements ContainerComposer {
 	}
 
 	private ContainerPopulator createContainerPopulator(Reader reader) throws ClassNotFoundException {
-        SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer(getClassLoader());
+        NanoContainer nano = new DefaultNanoContainer(getClassLoader());
 		Parameter[] parameters = new Parameter[]{new ConstantParameter(reader), new ConstantParameter(getClassLoader())};
-		softPico.registerComponentImplementation(containerBuilderClassName, containerBuilderClassName,
+		nano.registerComponentImplementation(containerBuilderClassName, containerBuilderClassName,
 												 parameters);
-        return (ContainerPopulator)softPico.getComponentInstance(containerBuilderClassName);
+        return (ContainerPopulator)nano.getPico().getComponentInstance(containerBuilderClassName);
 	}
 
 
@@ -122,11 +126,7 @@ public class XMLContainerComposer implements ContainerComposer {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @see ContainerComposer#composeContainer(SoftCompositionPicoContainer, Object)
-	 */
-    public void composeContainer(SoftCompositionPicoContainer container, Object scope) {
+    public void composeContainer(MutablePicoContainer container, Object scope) {
         if (scope instanceof ServletContext) {
             applicationRecorder.replay(container);
         } else if (scope instanceof HttpSession) {

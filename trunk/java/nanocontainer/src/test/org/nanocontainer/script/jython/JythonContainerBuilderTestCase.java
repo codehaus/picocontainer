@@ -9,16 +9,17 @@
  *****************************************************************************/
 package org.nanocontainer.script.jython;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -28,11 +29,11 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
-                "pico = DefaultSoftCompositionPicoContainer()\n" +
+                "pico = DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentImplementation(WebServerImpl)\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n");
 
-        SoftCompositionPicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstanceOfType(WebServer.class));
     }
 
@@ -40,35 +41,35 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         try {
             Reader script = new StringReader("" +
                     "from org.nanocontainer.testmodel import *\n" +
-                    "pico = DefaultSoftCompositionPicoContainer()\n" +
+                    "pico = DefaultNanoPicoContainer()\n" +
                     "pico.registerComponentImplementation(WebServerImpl)\n" +
-                    "childContainer = DefaultSoftCompositionPicoContainer(pico)\n" +
+                    "childContainer = DefaultNanoPicoContainer(pico)\n" +
                     "childContainer.registerComponentImplementation(DefaultWebServerConfig)\n");
-            SoftCompositionPicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null);
+            PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             pico.getComponentInstanceOfType(WebServer.class);
             fail();
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (UnsatisfiableDependenciesException expected) {
         }
     }
 
     public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "from org.nanocontainer.testmodel import *\n" +
-                "pico = DefaultSoftCompositionPicoContainer()\n" +
+                "pico = DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentImplementation(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.registerComponentImplementation(WebServerImpl)\n" +
                 "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance(WebServerImpl))");
-        SoftCompositionPicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         WebServerImpl wsi = (WebServerImpl) pico.getComponentInstance("wayOfPassingSomethingToTestEnv");
         assertNotNull(wsi);
     }
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "pico = DefaultSoftCompositionPicoContainer(parent)\n");
-        SoftCompositionPicoContainer parent = new DefaultSoftCompositionPicoContainer();
-        SoftCompositionPicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent);
+                "pico = DefaultNanoPicoContainer(parent)\n");
+        PicoContainer parent = new DefaultPicoContainer();
+        PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //pico.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
     }

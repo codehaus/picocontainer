@@ -13,12 +13,12 @@
  */
 package org.nanocontainer.script.bsh;
 
-import java.io.Reader;
-import java.io.StringReader;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -28,10 +28,10 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "pico = new org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer(parent);\n" +
+                "pico = new org.nanocontainer.reflection.DefaultNanoPicoContainer(parent);\n" +
                 "pico.registerComponentInstance(\"hello\", \"BeanShell\");\n");
         PicoContainer parent = new DefaultPicoContainer();
-        SoftCompositionPicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent);
+        PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         assertEquals("BeanShell", pico.getComponentInstance("hello"));

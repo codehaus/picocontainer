@@ -12,9 +12,6 @@ package org.nanocontainer.nanowar;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.nanowar.ApplicationScopeObjectReference;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
-import org.nanocontainer.nanowar.SessionScopeObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;

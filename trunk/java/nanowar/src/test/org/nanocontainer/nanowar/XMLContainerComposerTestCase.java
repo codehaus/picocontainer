@@ -9,15 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Mauro Talevi
@@ -28,18 +29,18 @@ public class XMLContainerComposerTestCase extends MockObjectTestCase {
     public void testDefaultConfiguration() throws Exception {
         XMLContainerComposer composer = new XMLContainerComposer();
 
-        SoftCompositionPicoContainer application = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer application = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
         composer.composeContainer(application, servletContextMock.proxy());
         assertNotNull(application.getComponentInstance("applicationScopedInstance"));
 
-        SoftCompositionPicoContainer session = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer session = new DefaultPicoContainer();
         Mock httpSessionMock = mock(HttpSession.class);
         composer.composeContainer(session, httpSessionMock.proxy());
         assertNotNull(session.getComponentInstance("sessionScopedInstance"));
 
-        SoftCompositionPicoContainer request = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer request = new DefaultPicoContainer();
         Mock httpRequestMock = mock(HttpServletRequest.class);
         composer.composeContainer(request, httpRequestMock.proxy());
         assertNotNull(request.getComponentInstance("requestScopedInstance"));
@@ -55,20 +56,20 @@ public class XMLContainerComposerTestCase extends MockObjectTestCase {
                 new String[]{"nano-request.xml","nano-request-2.xml"});
         XMLContainerComposer composer = new XMLContainerComposer(config);
 
-        SoftCompositionPicoContainer application = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer application = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
         composer.composeContainer(application, servletContextMock.proxy());
         assertNotNull(application.getComponentInstance("applicationScopedInstance"));
         assertNotNull(application.getComponentInstance("applicationScopedInstance2"));
 
-        SoftCompositionPicoContainer session = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer session = new DefaultPicoContainer();
         Mock httpSessionMock = mock(HttpSession.class);
         composer.composeContainer(session, httpSessionMock.proxy());
         assertNotNull(session.getComponentInstance("sessionScopedInstance"));
         assertNotNull(session.getComponentInstance("sessionScopedInstance2"));
 
-        SoftCompositionPicoContainer request = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer request = new DefaultPicoContainer();
         Mock httpRequestMock = mock(HttpServletRequest.class);
         composer.composeContainer(request, httpRequestMock.proxy());
         assertNotNull(request.getComponentInstance("requestScopedInstance"));

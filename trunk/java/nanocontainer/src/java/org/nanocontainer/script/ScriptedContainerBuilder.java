@@ -8,11 +8,12 @@
  *****************************************************************************/
 package org.nanocontainer.script;
 
+import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+
 import java.io.IOException;
 import java.io.Reader;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
-import org.picocontainer.PicoContainer;
 
 /**
  * Baseclass for container builders based on scripting.
@@ -40,9 +41,10 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         }
     }
 
+    // TODO: This should really return NanoContainer using a nano variable in the script. --Aslak
     protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
-    protected void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope) {
+    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
         // do nothing. assume that this is done in createContainer().
     }
 }

@@ -95,12 +95,12 @@
                         <ant:include name="${dependency.artifact}"/>
                     </ant:zipfileset>
                 </j:if>
-                <j:if test="${dependency.artifactId.indexOf('spice-cli') != '-1'}">
+                <j:if test="${dependency.artifactId.indexOf('bsh') != '-1'}">
                     <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
                         <ant:include name="${dependency.artifact}"/>
                     </ant:zipfileset>
                 </j:if>
-                <j:if test="${dependency.artifactId.indexOf('bsh') != '-1'}">
+				<j:if test="${dependency.artifactId.indexOf('commons-cli') != '-1'}">
                     <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
                         <ant:include name="${dependency.artifact}"/>
                     </ant:zipfileset>

@@ -67,7 +67,8 @@ public class ParameterTestCase extends TestCase {
 		picoContainer.registerComponentInstance("glarch", new Integer(239));
 		Parameter parameter = new ComponentParameter("glarch");
 		assertNotNull(parameter.resolveAdapter(picoContainer,Integer.TYPE));
-		
+		assertEquals(239, ((Integer)parameter.resolveAdapter(picoContainer,Integer.TYPE).getComponentInstance()).intValue());
+
 	}
 
     public void testConstantParameterRespectsExpectedType() {

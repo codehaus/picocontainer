@@ -30,11 +30,15 @@ public class DefaultMcaDeployer implements McaDeployer {
 	protected File tempDir = null;
 
 	public DefaultMcaDeployer() {
-		// todo this should be configurable! Pico-tize?
-		workingDir = new File("work");
-		workingDir.mkdir();
-		tempDir = new File("temp");
-		tempDir.mkdir();
+		this(new File("work"), new File("temp"));
+	}
+
+	public DefaultMcaDeployer(File workingDir, File tempDir) {
+		this.workingDir = workingDir;
+		this.tempDir = tempDir;
+
+		this.workingDir.mkdir();
+		this.tempDir.mkdir();
 	}
 
 	public File getWorkingDir() {

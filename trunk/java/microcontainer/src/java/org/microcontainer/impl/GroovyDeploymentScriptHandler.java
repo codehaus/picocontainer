@@ -5,6 +5,7 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.microcontainer.DeploymentException;
 import org.microcontainer.McaDeployer;
+import org.microcontainer.DeploymentScriptHandler;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
@@ -16,8 +17,9 @@ import java.io.Reader;
 
 /**
  * @author Michael Ward
+ * @version $Revision$
  */
-public class GroovyDeploymentScriptHandler {
+public class GroovyDeploymentScriptHandler implements DeploymentScriptHandler {
 	protected ClassLoaderFactory classLoaderFactory = null;
 	protected McaDeployer mcaDeployer = null;
 

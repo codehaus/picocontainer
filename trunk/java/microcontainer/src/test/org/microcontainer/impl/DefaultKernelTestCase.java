@@ -138,12 +138,12 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         System.out.println("--> 2 5 " + o2.getClass().getClassLoader().getParent().getParent().getParent().getParent());
 
         ClassLoader cl1 = o.getClass().getClassLoader();
-        while (!(cl1 instanceof ClassLoaderDelegate)) {
+        while (!(cl1 instanceof DelegatingClassLoader)) {
             cl1 = cl1.getParent();
         }
 
         ClassLoader cl2 = o2.getClass().getClassLoader();
-        while (!(cl2 instanceof ClassLoaderDelegate)) {
+        while (!(cl2 instanceof DelegatingClassLoader)) {
             cl2 = cl2.getParent();
         }
         

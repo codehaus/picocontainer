@@ -17,11 +17,11 @@ import java.util.LinkedList;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class ClassLoaderDelegate extends ClassLoader {
+public class DelegatingClassLoader extends ClassLoader {
 
 	private List delegates = new LinkedList();
 
-	public ClassLoaderDelegate(ClassLoader parent) {
+	public DelegatingClassLoader(ClassLoader parent) {
 		super(parent);
 	}
 
@@ -102,7 +102,7 @@ public class ClassLoaderDelegate extends ClassLoader {
 	 * This class exists just to expose the loadClass(String, boolean) method as public
 	 *
 	 * TODO (from paul) I think this class needs to copy the functionality of URLClassLoader and somehow
-	 * supply classes to the promoted ClassLoader (now ClassLoaderDelegate) so that the
+	 * supply classes to the promoted ClassLoader (now DelegatingClassLoader) so that the
 	 * theClass.getClass.GetClassLoader() instanceof PromoitedClassLoader. (Not sure if this is possible?)
 	 */
 	private class ClassLoaderWrapper extends ClassLoader {

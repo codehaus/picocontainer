@@ -21,14 +21,10 @@
                 <include name="**/*.groovy"/>
             </fileset>
         </copy>
-        <!-- trying to get this working
-        <echo>hello 1</echo>
         <groovyc destdir="${basedir}/target/test-classes" 
                  srcdir="${basedir}/target/test-classes" listfiles="true">
-          <classpath refid="maven.dependency.classpath"/>
+          <classpath refid="test.classpath"/>
         </groovyc>
-        <echo>hello 2</echo>
-        -->
     </postGoal>
     
     

@@ -15,9 +15,9 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.tck.Touchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.Collection;
 import java.util.Set;

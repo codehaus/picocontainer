@@ -6,6 +6,9 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 

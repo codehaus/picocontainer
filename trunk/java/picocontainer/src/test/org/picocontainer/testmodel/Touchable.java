@@ -8,18 +8,11 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.tck;
-
-import junit.framework.Assert;
-import org.picocontainer.tck.DependsOnTouchable;
+package org.picocontainer.testmodel;
 
 /**
- * @author steve.freeman@m3p.co.uk
- * was FlintstoneImpl
+ * @author Steve.Freeman@m3p.co.uk
  */
-public class DependsOnTwoComponents {
-    public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred) {
-        Assert.assertNotNull("Touchable cannot be passed in as null", Touchable);
-        Assert.assertNotNull("DependsOnTouchable cannot be passed in as null", fred);
-    }
+public interface Touchable {
+    void wasTouched();
 }

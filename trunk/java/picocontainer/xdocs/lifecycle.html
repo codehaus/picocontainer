@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Lifecycle</h1>
+<h2>Initialization Component assembly and configuration.</h2>
+This happens lazily after registration. If you call start() (below) if
+will force the container to iterate thru the components and instantiate
+in order, resolving dependancies and configuration concerns as it
+goes.&nbsp; Some Pico containers maye choose a late strategy, others
+early.<br>
+<h2>StartableLifecycleManager</h2>
+This interface is implementable by a Pico container.&nbsp; It indicates
+that the container can handle lifecycling of components it contains.<br>
+<h2>Starting</h2>
+After Initialization a component may be started. In fact this happens
+after all of the components have been initialized.&nbsp; It is subject
+to the pluggable implementation, but it generally means that start()
+will be called if it is present on a component.&nbsp; It is entirely
+optional.&nbsp; It is likely to be used for the starting of threads or
+opening of socket listeners.&nbsp; Start() can be repeatedly called
+provided stop() has been called between start invocations.<br>
+<br>
+For PicoContainers that implement LifecycleContainer, if start() is
+called at the container level, it is percolated all the way thru to the
+components.<br>
+<h2>Stopping</h2>
+For PicoContainers that implement LifecycleContainer, if stop() is
+called at the containerlevel, it is percolated all the way thru to the
+components. In the reverse order of assembly, the components will be
+stopped.&nbsp; All the pluggability comments for Starting are true for
+stopping.<br>
+<h2>Disposal</h2>
+Again pluggable in implementation and enforced by LifecycleContainer,
+dispose() can be called on the container and percolated all the way
+thru to the contained components. Once called the container is
+effectively dead. Of course, different pico containers may choose to
+handle this differently.<br>
+<br>
+</body>
+</html>

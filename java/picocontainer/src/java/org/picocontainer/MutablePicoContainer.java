@@ -171,7 +171,7 @@ public interface MutablePicoContainer extends PicoContainer {
     // Shouldn't this take a PicoContainer? Or even if we keep only
     // addChildContainer(String name, PicoContainer child), it could take name.
     // (This is closer to a Map API which should be sufficient for most cases)
-    void removeChildContainer(MutablePicoContainer child);
+    void removeChildContainer(PicoContainer child);
 
     /**
      * Returns the LifecycleManager that can be used to manage this container's

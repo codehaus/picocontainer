@@ -190,7 +190,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.addChildContainer(name, child);
     }
 
-    public void removeChildContainer(MutablePicoContainer child) {
+    public void removeChildContainer(PicoContainer child) {
         delegate.removeChildContainer(child);
     }
 

@@ -12,34 +12,19 @@
 using System;
 
 namespace PicoContainer {
-  
   /// <summary>
-  /// A component adapter is responsible for instantiating and caching 
-  /// a specific component instance. It is used internally by PicoContainer,
-  /// and is not meant to be used directly by clients of the PicoContainer API.
+  /// Basic lifecycle interface for Pico components. 
+  /// support.
   /// </summary>
-  public interface ComponentAdapter {
-
+  /// <remarks>For more advanced and pluggable lifecycle</remarks>
+  public interface IStartable {
     /// <summary>
-    /// Returns the key of the adapter
+    /// Starts a component, called by the container
     /// </summary>
-    object ComponentKey {
-      get;
-    }
-
+    void Start();
     /// <summary>
-    /// Returns the implementing typ
+    /// Stops a component, called by the container
     /// </summary>
-    Type ComponentImplementation{
-      get;
-    }
-
-    /// <summary>
-    ///  Gets the component instance. 
-    /// </summary>
-    /// <param name="dependencyContainer">container where the adapter can look for dependent component instances</param>
-    /// <returns>the component instance</returns>
-    /// <exception cref="PicoInitializationException">if the component couldn't be instantiated</exception>
-    object GetComponentInstance(MutablePicoContainer dependencyContainer);
+    void Stop();
   }
 }

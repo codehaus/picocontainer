@@ -10,13 +10,14 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
     }
 
     protected Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        List allConstructors = Arrays.asList(getComponentImplementation().getConstructors());
+        Constructor[] allConstructors = getComponentImplementation().getConstructors();
         List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, dependencyContainer);
 
         // now we'll just take the biggest one
@@ -81,29 +82,29 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
         return greediestConstructor;
     }
 
-    private List getAllSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private List getAllSatisfiableConstructors(Constructor[] constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List satisfiableConstructors = new ArrayList();
         Set unsatisfiableDependencyTypes = new HashSet();
-        for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
+        for (int i = 0; i < constructors.length; i++) {
             boolean failedDependency = false;
-            Constructor constructor = (Constructor) iterator.next();
+            Constructor constructor = constructors[i];
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes, picoContainer);
 
-            for (int i = 0; i < currentParameters.length; i++) {
-                ComponentAdapter adapter = currentParameters[i].resolveAdapter(picoContainer, parameterTypes[i]);
+            for (int j = 0; j < currentParameters.length; j++) {
+                ComponentAdapter adapter = currentParameters[j].resolveAdapter(picoContainer, parameterTypes[j]);
                 if (adapter == null) {
                     failedDependency = true;
-                    unsatisfiableDependencyTypes.add(parameterTypes[i]);
+                    unsatisfiableDependencyTypes.add(parameterTypes[j]);
                 } else {
                     // we can't depend on ourself
                     if (adapter.equals(this)) {
                         failedDependency = true;
-                        unsatisfiableDependencyTypes.add(parameterTypes[i]);
+                        unsatisfiableDependencyTypes.add(parameterTypes[j]);
                     }
                     if (getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
-                        unsatisfiableDependencyTypes.add(parameterTypes[i]);
+                        unsatisfiableDependencyTypes.add(parameterTypes[j]);
                     }
                 }
             }

@@ -2,7 +2,7 @@ Constructor Dependency Injection, with PicoContainer
 NanoContainer
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
-= NanoContainer =
+= NanoWar Basics =
 
 Look at this nice Juicer. It was grabbed from CVS.
 
@@ -22,3 +22,7 @@ Nice, huh?
   - xwork/ww2
   - struts
   - nanowar
+
+
+
+

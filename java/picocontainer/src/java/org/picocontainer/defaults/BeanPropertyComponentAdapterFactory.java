@@ -1,8 +1,5 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -12,6 +9,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.io.File;
+import java.net.URL;
+import java.net.MalformedURLException;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * A generic ComponentAdapter that will set bean properties on the instantiated
@@ -42,8 +47,9 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
 
     /**
      * Set properties to set upon the component instance upon instantiation.
+     *
      * @param componentKey key of component instance where properties should be set.
-     * @param properties map of bean property name -> property value
+     * @param properties   map of bean property name -> property value
      */
     public void setProperties(Object componentKey, Map properties) {
         componentProperties.put(componentKey, properties);
@@ -76,8 +82,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                 }
             } catch (IntrospectionException e) {
                 ///CLOVER:OFF
-                throw new PicoBeanInfoInitializationException(
-                        "Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
+                throw new PicoBeanInfoInitializationException("Couldn't load BeanInfo for" + delegate.getComponentImplementation().getName(), e);
                 ///CLOVER:ON
             }
         }
@@ -109,7 +114,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                         };
                     }
                     try {
-                        setter.invoke(componentInstance, new Object[]{ convertType(setter, propertyValue)});
+                        setter.invoke(componentInstance, new Object[]{convertType(setter, propertyValue)});
                     } catch (final Exception e) {
                         throw new PicoInitializationException(e) {
                             public String getMessage() {
@@ -122,10 +127,42 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             return componentInstance;
         }
 
-        private Object convertType(Method setter, Object propertyValue) {
+        private Object convertType(Method setter, Object propertyValue) throws MalformedURLException {
+            if (propertyValue == null) {
+                return null;
+            }
             Class type = setter.getParameterTypes()[0];
-            if(type.equals(Boolean.class) || type.equals(boolean.class)) {
+            if (type.equals(Boolean.class) || type.equals(boolean.class)) {
                 return Boolean.valueOf(propertyValue.toString());
+            } else if (type.equals(Byte.class) || type.equals(byte.class)) {
+                return Byte.valueOf(propertyValue.toString());
+            } else if (type.equals(Short.class) || type.equals(short.class)) {
+                return Short.valueOf(propertyValue.toString());
+            } else if (type.equals(Integer.class) || type.equals(int.class)) {
+                return Integer.valueOf(propertyValue.toString());
+            } else if (type.equals(Long.class) || type.equals(long.class)) {
+                return Long.valueOf(propertyValue.toString());
+            } else if (type.equals(Float.class) || type.equals(float.class)) {
+                return Float.valueOf(propertyValue.toString());
+            } else if (type.equals(Double.class) || type.equals(double.class)) {
+                return Double.valueOf(propertyValue.toString());
+            } else if (type.equals(Character.class) || type.equals(char.class)) {
+                return new Character(propertyValue.toString().toCharArray()[0]);
+            } else if (File.class.isAssignableFrom(type)) {
+                return new File(propertyValue.toString());
+            } else if (URL.class.isAssignableFrom(type)) {
+                return new URL(propertyValue.toString());
+            } else {
+
+                // check if the propertyValue is a key of a component in the container
+                // if so, the type of the component and the setters parameter type
+                // have to be compatible
+                if (getContainer() != null) {
+                    Object component = getContainer().getComponentInstance(propertyValue);
+                    if (type.isAssignableFrom(component.getClass())) {
+                        return component;
+                    }
+                }
             }
             return propertyValue;
         }

@@ -5,9 +5,6 @@ using PicoContainer.TestModel;
 
 namespace PicoContainer.Defaults
 {
-	/// <summary>
-	/// Summary description for ComponentKeysTestCase.
-	/// </summary>
 	[TestFixture]
 	public class ComponentKeysTestCase
 	{

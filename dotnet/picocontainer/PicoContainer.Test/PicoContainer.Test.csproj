@@ -80,12 +80,6 @@
                     HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll"
-                    AssemblyFolderKey = "hklm\dn\nunit.framework"
-                />
-                <Reference
                     Name = "nmock"
                     AssemblyName = "nmock"
                     HintPath = "..\lib\nmock.dll"
@@ -94,6 +88,12 @@
                     Name = "PicoContainer.Source"
                     Project = "{FEA87CBA-1709-466E-8186-5FFD705DB8A0}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll"
+                    AssemblyFolderKey = "hklm\dn\nunit.framework"
                 />
             </References>
         </Build>
@@ -276,11 +276,6 @@
                 />
                 <File
                     RelPath = "PicoContainer.TestModel\AlternativeTouchable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PicoContainer.TestModel\Class1.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

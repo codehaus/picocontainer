@@ -33,9 +33,27 @@ import java.lang.reflect.Proxy;
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
     private final InterfaceFinder interfaceFinder = new InterfaceFinder();
+    private final boolean strict;
 
-    public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
+    /**
+     * Alternative constructor allowing to set interface-only strictness.
+     * @param delegate the delegate adapter
+     * @param strict true if the adapter should only accept classes that are hideable behind interfaces.
+     * If false, a non-implementation hidden instance will be created instead of throwing an exception.
+     */
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
         super(delegate);
+        this.strict = strict;
+    }
+
+
+    /**
+     * Creates a strict ImplementationHidingComponentAdapter that will throw an exception
+     * when trying to instantiate a class that doesn't implement any interfaces.
+     * @param delegate the delegate adapter
+     */
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
+        this(delegate, true);
     }
 
     public Object getComponentInstance()
@@ -51,7 +69,11 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
         System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);
         if (interfaces.length == 0) {
-            throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
+            if(strict) {
+                throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
+            } else {
+                return getDelegate().getComponentInstance();
+            }
         }
         final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
         return Proxy.newProxyInstance(getClass().getClassLoader(),

@@ -26,8 +26,6 @@ public class ComponentParameter implements Parameter, Serializable {
 
     public Object resolve(ComponentRegistry componentRegistry, ComponentSpecification compSpec, Class requestedType)
             throws PicoInitializationException {
-        // TODO figure out a way to remove this ugly cast?
-        //PicoContainer defaultPicoContainer = (DefaultPicoContainer) childRegistry;
 
         Object componentInstance;
         ComponentSpecification componentSpecification = null;

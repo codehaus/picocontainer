@@ -3,42 +3,44 @@
 <head>
 </head>
 <body>
-<h2>The CompositeComponent</h2>
+<h2>The ComponentMulticaster</h2>
 <p>Say you have an interface:</p>
 <pre>    public interface Peelable {<br>        void peel();<br>    }</pre>
 <p>If you have a container that is full of objects that are Peelable:</p>
 <pre>    pico.registerComponent(Apple.class);<br>    pico.registerComponent(Pear.class);<br>    pico.registerComponent(Grape.class);<br>    pico.registerComponent(Orange.class);<br>    pico.registerComponent(Potato.class);</pre>
-<p>It would be useful to just tell the container to </p>
-<pre>peel()</pre>
-them all
-for you:
-<pre>    pico.peel();</pre>
+<p>It would be useful to tell the container to<br>
+</p>
+<pre>    peel()</pre>
+them all for you.
 <p>What you would like to do here is treat the whole
 container like a Peelable, so that when you call peel() on the
 container it calls peel() on all the individual components for you.</p>
 <p>Pico <b>does</b> let you do this:</p>
-<pre>    Object composite= pico.getCompositeComponent();<br><br>    Peelable peelable = (Peelable) composite;<br>    peelable.peel();</pre>
+<pre>    Object multicaster = pico.getComponentMulticaster();<br><br>    Peelable peelable = (Peelable) multicaster;<br>    peelable.peel();</pre>
 <p>In fact Pico gives you even more than that, because the Object that
-getCompositeComponent() returns <b>implements all the interfaces that
+getComponentMulticaster() returns <b>implements all the interfaces
+that
 your
 components implement</b>.</p>
 <p>What this means is that if one of your components (say Potato.class)
 implements a different interface (say Mashable) then you can call that
 interface in the same way:</p>
-<pre>    Mashable mashable = (Mashable) composite;<br><br>    mashable.mash();</pre>
+<pre>    Mashable mashable = (Mashable) multicaster;<br><br>    mashable.mash();</pre>
 <p>Of course the mash() method is only applied to any components that
 implement the interface Mashable. So you can't accidentally mash() an
 Apple or an Orange.</p>
-<h2>Advantages of the CompositeComponent</h2>
-<p>Totally decoupled lifecycle methods are possible, because Pico will
+<h2>Advantages of the component multicaster </h2>
+<p>Totally decoupled lifecycle methods are possible, because
+PicoContainer will
 generate a proxy for <b>any</b> interface even if it is in a package
-that Pico knows nothing about.</p>
+that PicoContainer knows nothing about.</p>
 <p>Competing / complementary lifecycle patterns can be implemented
 without
-comprimising Pico's simplicity. In fact Pico can support multiple
+compromising PicoContainer's simplicity. In fact PicoContainer can
+support multiple
 lifecycle implementations at the same time.</p>
 <p>Interface methods can throw Exceptions that are checked and domain
-specific. Again, Pico doesn't need to know.</p>
+specific. Again, PicoContainer doesn't need to know.</p>
 <p>Interfaces are strongly typed, not breakable as in reflection.</p>
 </body>
 </html>

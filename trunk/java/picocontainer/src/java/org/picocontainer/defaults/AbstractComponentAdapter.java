@@ -37,9 +37,8 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
      */
-    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }

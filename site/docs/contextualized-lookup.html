@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>History of PicoContainer</title>
+</head>
+<body>
+<h2>Overview</h2>
+Contextualized Dependency Lookup is the type of dependency resolution
+that <a href="http://avalon.apache.org">Avalon</a>, <a
+ href="http://jcontainer.org/loom/">Loom</a>, <a
+ href="http://www.keelframework.org/">Keel </a>and alike do.&nbsp; It
+is where the container or embeddor hands
+dependencies after instantiation and via an interface/method that the
+component implements to indicate that it has dependencies.&nbsp; The
+mothod in question typically hands in an reference to the component
+that has a lookup mechanism. Only the component dependencies declared
+will be returned on lookup.&nbsp; Typically XML is used to describe the
+dependancies for a particular component.
+<h2>Example</h2>
+<pre style="margin-left: 40px;">import org.apache.avalon.framework.ServiceManager;<br>import org.apache.avalon.framework.Serviceable;<br>import org.apache.avalon.framework.ServiceException;<br><br>public class Shop implements Serviceable, Initializable {<br>&nbsp;&nbsp;&nbsp; StockManager stockManager;<br>&nbsp;&nbsp;&nbsp; String shopZipCode;<br>&nbsp;&nbsp;&nbsp; public void service(ServiceManager sm) throws ServiceException {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // all service()ing done.<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
+A component has to have service (component) declarations in an
+external file. The popular <a href="http://jcontainer.org/loom/">Loom</a>
+(Forked from <a href="http://avalon.apache.org/phoenix/">Phoenix)</a>
+container has .xinfo files for such
+needs.&nbsp; All Avalon container have some mechanism for storing
+configuration and assembly externally to the class.&nbsp; Cross
+referenced against the xinfo files, Loom's assembly.xml defines the
+implementations to be used for component types.&nbsp; This all Avalon
+components must be interface/implementation separated. This in itself
+is not a bad thing in my (Paul) opinion.<br>
+<br>
+<span style="font-weight: bold;">Using type 1 components without a type
+1 container.</span><br style="font-weight: bold;">
+<br>
+The downside of the this design is that components can only be used
+without the container with great difficulty. If at all.&nbsp; This a
+proper container is needed at all times, and you have to choose one for
+different purposes (that not withstanding the efforts of the Avalon
+team to make a single all-purpose container).&nbsp; If you do manage to
+instantiate components without a container, you might miss one of the
+essential service dependencies.&nbsp; The component-using class&nbsp;
+will continue to compile, but at run time it will be apparent that
+there are missing dependencies.<br>
+<br>
+<small>Authors: Paul Hammant</small><br>
+</body>
+</html>

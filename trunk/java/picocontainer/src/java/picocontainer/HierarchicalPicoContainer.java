@@ -8,6 +8,22 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
+/*
+TODO (Aslak):
+
+1) Factor out a DependencyAnalyzer:
+   public interface DependencyAnalyzer {
+	   InstantiationSpecification[] getOrderedInstantiationSpecifications();
+   }
+
+   ConstructorDependencyAnalyzer would emerge from refactoring this class.
+
+2) Refactor the ContainerFactory's createComponent method to take a
+   InstantiationSpecification argument. This class/intf should contain'
+   everything needed to instantiate a component.
+
+*/
+
 package picocontainer;
 
 import java.util.List;

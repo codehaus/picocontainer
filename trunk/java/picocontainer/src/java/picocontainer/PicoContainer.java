@@ -5,14 +5,14 @@
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
 package picocontainer;
 
 import java.lang.reflect.InvocationHandler;
 
-public interface PicoContainer extends Container {
+public interface PicoContainer extends LifecycleContainer {
 
     /**
      * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}
@@ -49,14 +49,5 @@ public interface PicoContainer extends Container {
 
     void registerComponent(Object component)
             throws PicoRegistrationException;
-
-    /**
-     * Instantiates all registered components.
-     *
-     * @throws PicoStartException if one or more components couldn't be instantiated.
-     */
-    void start() throws PicoStartException;
-
-    void stop() throws PicoStopException;
 
 }

@@ -16,9 +16,7 @@ import org.codehaus.nanning.Invocation;
 import org.codehaus.nanning.MethodInterceptor;
 import org.codehaus.nanning.config.AspectSystem;
 import org.codehaus.nanning.config.InterceptorAspect;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.*;
 import org.picocontainer.defaults.*;
 
 /**
@@ -45,20 +43,20 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     private StringBuffer log = new StringBuffer();
 
-    public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException {
+    public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         NanningComponentAdapter componentFactory =
                 new NanningComponentAdapter(new AspectSystem(), new DefaultComponentAdapter(Wilma.class, WilmaImpl.class));
-        Object component = componentFactory.instantiateComponent(new DefaultComponentRegistry());
+        Object component = componentFactory.getComponentInstance(new DefaultPicoContainer());
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
     }
 
-    public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException {
+    public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException, PicoRegistrationException {
         NanningComponentAdapter componentFactory = new NanningComponentAdapter(new AspectSystem(),
                 new DefaultComponentAdapter(FredImpl.class, FredImpl.class));
-        DefaultComponentRegistry registry = new DefaultComponentRegistry();
+        AbstractPicoContainer registry = new DefaultPicoContainer();
         registry.registerComponent(new InstanceComponentAdapter(Wilma.class, new WilmaImpl()));
-        Object component = componentFactory.instantiateComponent(registry);
+        Object component = componentFactory.getComponentInstance(registry);
         assertFalse(Aspects.isAspectObject(component));
     }
 
@@ -67,7 +65,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
     public void testSimpleLogOfMethodCall()
-            throws PicoRegistrationException, PicoInitializationException {
+            throws PicoException, PicoInitializationException {
 
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {
@@ -77,20 +75,19 @@ public class NanningComponentFactoryTestCase extends TestCase {
             }
         }));
 
-        RegistrationPicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(
-                new NanningComponentAdapterFactory(aspectSystem, new DefaultComponentAdapterFactory()),
-                new DefaultComponentRegistry());
-        nanningEnabledPicoContainer.registerComponent(Wilma.class, WilmaImpl.class);
-        nanningEnabledPicoContainer.registerComponentByClass(FredImpl.class);
+        MutablePicoContainer nanningEnabledPicoContainer = new DefaultPicoContainer(
+                new NanningComponentAdapterFactory(aspectSystem, new DefaultComponentAdapterFactory()));
+        nanningEnabledPicoContainer.registerComponentImplementation(Wilma.class, WilmaImpl.class);
+        nanningEnabledPicoContainer.registerComponentImplementation(FredImpl.class);
 
         assertEquals("", log.toString());
 
-        nanningEnabledPicoContainer.getComponents();
+        nanningEnabledPicoContainer.getComponentInstances();
 
         // fred says hello to wilma, even the interceptor knows
         assertEquals("hello ", log.toString());
 
-        Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponent(Wilma.class);
+        Wilma wilma = (Wilma) nanningEnabledPicoContainer.getComponentInstance(Wilma.class);
 
         assertNotNull(wilma);
 

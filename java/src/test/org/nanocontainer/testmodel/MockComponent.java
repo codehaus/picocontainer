@@ -5,17 +5,24 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Joe Walnes                                               *
+ * Original code by Mike Hogan                                               *
  *****************************************************************************/
 
 
-package org.nanocontainer.servlet;
+package org.nanocontainer.testmodel;
 
-public interface ObjectHolder {
+public interface MockComponent {
+    int getPort();
 
-    void put(Object item);
+    void setPort(int port);
 
-    Object get();
+    String getServer();
 
+    void setServer(String server);
+
+    void addRegister(Integer i);
+
+    int getNumRegisters();
+
+    boolean hasRegister(int i);
 }
-

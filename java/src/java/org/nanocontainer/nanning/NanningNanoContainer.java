@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -13,14 +13,14 @@ package org.nanocontainer.nanning;
 import org.codehaus.nanning.config.AspectSystem;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.internals.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
  * @version $Revision: 1.15 $
  */
-public class NanningNanoContainer extends DefaultPicoContainer.WithComponentAdapterFactory {
+public class NanningNanoContainer extends DefaultPicoContainer {
     public NanningNanoContainer(AspectSystem aspectSystem, ComponentAdapterFactory componentAdapterFactory) {
         super(new NanningComponentAdapterFactory(aspectSystem, componentAdapterFactory));
     }

@@ -4,18 +4,18 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.InvokingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.Parameter;
+import org.picocontainer.MutablePicoContainer;
 
 import java.util.*;
 
 /**
- * An Ant task that makes the use of PicoContainer possible from Ant.
+ * An Ant task that makes the use of OldPicoContainer possible from Ant.
  * When the task is executed, it will invoke <code>execute()</code>
  * on all components that have a public no-arg, non-static execute method.
  * The components's execute() method (if it exists) will be invoked
@@ -38,22 +38,26 @@ import java.util.*;
 public class PicoContainerTask extends Task {
     private final Map keyToComponentMap = new HashMap();
 
-    private RegistrationPicoContainer picoContainer;
     private Class delegateComponentAdapterFactoryClass = DefaultComponentAdapterFactory.class;
+    private MutablePicoContainer pico;
+
+    public PicoContainerTask() {
+        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory();
+        pico = new DefaultPicoContainer(componentAdapterFactory);
+    }
 
     public void setComponentAdapterFactoryClass(Class factoryClass) {
         this.delegateComponentAdapterFactoryClass = factoryClass;
     }
 
     private final ComponentAdapterFactory createComponentAdapterFactory() {
-        // We're nesting several component factories:
-        // - A default one that does instantiation
+        // We're nesting several component adapter factories:
+        // - A default one that does instantiation - pluggable from the outside
         // - A Bean property one that sets properties
         // - An invoking one that calls execute()
 
         try {
             ComponentAdapterFactory instantiator = (ComponentAdapterFactory) delegateComponentAdapterFactoryClass.newInstance();
-            log("using ComponentAdapterFactory " + delegateComponentAdapterFactoryClass.getName());
 
             AntPropertyComponentAdapterFactory propertySetter =
                     new AntPropertyComponentAdapterFactory(instantiator, this);
@@ -71,22 +75,6 @@ public class PicoContainerTask extends Task {
         }
     }
 
-    protected DefaultPicoContainer createPicoContainer(ComponentAdapterFactory componentAdapterFactory)
-            throws PicoRegistrationException, PicoIntrospectionException {
-        return new DefaultPicoContainer.WithComponentAdapterFactory(componentAdapterFactory);
-    }
-
-    /**
-     * Convenience method for subclasses and tests that wish to register components
-     * programatically.
-     */
-    protected Component registerComponent(Class componentClass) {
-        Component component = new Component();
-        component.setClassname(componentClass.getName());
-        addConfiguredComponent(component);
-        return component;
-    }
-
     public void addConfiguredComponent(Component component) {
         keyToComponentMap.put(component.getKey(), component);
     }
@@ -94,15 +82,13 @@ public class PicoContainerTask extends Task {
     public final void execute() {
         registerComponentsSpecifiedInAnt();
         try {
-            picoContainer.getComponents();
+            pico.getComponentInstances();
         } catch (Exception e) {
             throw new BuildException(e);
         }
     }
 
     private void registerComponentsSpecifiedInAnt() {
-        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory();
-        picoContainer = new DefaultPicoContainer.WithComponentAdapterFactory(componentAdapterFactory);
 
         for (Iterator iterator = keyToComponentMap.values().iterator(); iterator.hasNext();) {
             Component componentdef = (Component) iterator.next();
@@ -111,15 +97,15 @@ public class PicoContainerTask extends Task {
             try {
                 Class aClass = getClassLoader().loadClass(componentdef.getClassname());
                 if (parameters != null) {
-                    picoContainer.registerComponent(componentdef.getKey(), aClass, parameters);
+                    pico.registerComponentImplementation(componentdef.getKey(), aClass, parameters);
                 } else {
-                    picoContainer.registerComponent(componentdef.getKey(), aClass);
+                    pico.registerComponentImplementation(componentdef.getKey(), aClass);
                 }
+            } catch (PicoIntrospectionException e) {
+                throw new BuildException(e);
             } catch (PicoRegistrationException e) {
                 throw new BuildException(e);
             } catch (ClassNotFoundException e) {
-                throw new BuildException(e);
-            } catch (PicoIntrospectionException e) {
                 throw new BuildException(e);
             }
         }
@@ -134,7 +120,7 @@ public class PicoContainerTask extends Task {
     }
 
     public PicoContainer getPicoContainer() {
-        return picoContainer;
+        return pico;
     }
 
     // Callback from the AntPropertyComponentAdaptoerFactory

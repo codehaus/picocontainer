@@ -11,62 +11,40 @@
 package org.nanocontainer;
 
 import org.nanocontainer.reflection.StringToObjectConverter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.Parameter;
-import org.picocontainer.internals.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.*;
+import org.picocontainer.defaults.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
+public class DefaultStringRegistrationNanoContainer implements StringRegistrationNanoContainer, Serializable {
+    private final List classLoaders = new ArrayList();
+    private final StringToObjectConverter converter = new StringToObjectConverter();
 
-    private final RegistrationPicoContainer picoContainer;
-    private ArrayList classLoaders = new ArrayList();
-    private StringToObjectConverter converter;
-    private final ComponentRegistry componentRegistry;
+    private final MutablePicoContainer picoContainer;
 
-    public StringRegistrationNanoContainerImpl(ClassLoader classLoader, StringToObjectConverter converter,
-                                               ComponentRegistry componentRegistry) {
-        this.componentRegistry = componentRegistry;
-        this.picoContainer = makePicoContainer();
-        if (classLoader != null) {
-            classLoaders.add(classLoader);
-        }
-        this.converter = converter;
+    public DefaultStringRegistrationNanoContainer(ClassLoader classLoader, MutablePicoContainer picoContainer) {
+        this.picoContainer = picoContainer;
+        classLoaders.add(classLoader);
     }
 
-    protected RegistrationPicoContainer makePicoContainer() {
-        return new DefaultPicoContainer.WithComponentRegistry(componentRegistry);
-    }
-
-    public static class Default extends StringRegistrationNanoContainerImpl {
+    public static class Default extends DefaultStringRegistrationNanoContainer {
         public Default() {
-            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(), new DefaultComponentRegistry());
+            super(
+                    DefaultStringRegistrationNanoContainer.class.getClassLoader(),
+                    new DefaultPicoContainer()
+            );
         }
     }
 
-    public static class WithComponentRegistry extends StringRegistrationNanoContainerImpl {
-        public WithComponentRegistry(ComponentRegistry componentRegistry) {
-            super(StringRegistrationNanoContainerImpl.class.getClassLoader(), new StringToObjectConverter(), componentRegistry);
-        }
-    }
-
-    public static class WithClassLoader extends StringRegistrationNanoContainerImpl {
+    public static class WithClassLoader extends DefaultStringRegistrationNanoContainer {
         public WithClassLoader(ClassLoader classLoader) {
-            super(classLoader, new StringToObjectConverter(), new DefaultComponentRegistry());
-        }
-    }
-
-    public static class WithClassLoaderAndComponentRegistry extends StringRegistrationNanoContainerImpl {
-        public WithClassLoaderAndComponentRegistry(ClassLoader classLoader, ComponentRegistry componentRegistry) {
-            super(classLoader, new StringToObjectConverter(), componentRegistry);
+            super(
+                    classLoader,
+                    new DefaultPicoContainer()
+            );
         }
     }
 
@@ -74,13 +52,13 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         if (compClassName == null) {
             throw new NullPointerException("compClassName can't be null");
         }
-        picoContainer.registerComponentByClass(StringRegistrationNanoContainerImpl.class.getClassLoader().loadClass(compClassName));
+        picoContainer.registerComponentImplementation(DefaultStringRegistrationNanoContainer.class.getClassLoader().loadClass(compClassName));
     }
 
     public void registerComponent(String typeClassName, String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
         Class typeClass = loadClass(typeClassName);
         Class compClass = loadClass(compClassName);
-        picoContainer.registerComponent(typeClass, compClass);
+        picoContainer.registerComponentImplementation(typeClass, compClass);
     }
 
     public void registerComponent(
@@ -97,26 +75,26 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
             Object value = converter.convertTo(paramTypeClass, parameterValuesAsString[i]);
             parameters[i] = new ConstantParameter(value);
         }
-        picoContainer.registerComponent(typeClass, compClass, parameters);
+        picoContainer.registerComponentImplementation(typeClass, compClass, parameters);
     }
 
     public boolean hasComponent(Object clazz) {
         return picoContainer.hasComponent(clazz);
     }
 
-    public Object getComponent(Object clazz) throws PicoInitializationException {
-        return picoContainer.getComponent(clazz);
+    public Object getComponentInstance(Object clazz) throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return picoContainer.getComponentInstance(clazz);
     }
 
-    public Collection getComponents() throws PicoInitializationException {
-        return picoContainer.getComponents();
+    public Collection getComponentInstances() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return picoContainer.getComponentInstances();
     }
 
-    public Object getComponentMulticaster() throws PicoInitializationException {
+    public Object getComponentMulticaster() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return picoContainer.getComponentMulticaster();
     }
 
-    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException {
+    public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return picoContainer.getComponentMulticaster(callInInstantiationOrder, callUnmanagedComponents);
     }
 

@@ -11,8 +11,8 @@
 package org.nanocontainer;
 
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoContainer;
 
 public interface StringRegistrationNanoContainer extends PicoContainer {
 

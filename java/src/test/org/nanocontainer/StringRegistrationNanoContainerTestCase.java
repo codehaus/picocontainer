@@ -17,6 +17,7 @@ import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoException;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -26,24 +27,24 @@ import java.util.Vector;
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
 //        nc.instantiateComponents();
     }
 
-    public void testProvision() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
+    public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
+        DefaultStringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServerImpl");
 //        nc.instantiateComponents();
         assertTrue("WebServerImpl should exist", nc.hasComponent(WebServerImpl.class));
-        assertNotNull("WebServerImpl should exist", nc.getComponent(WebServerImpl.class));
-        assertTrue("WebServerImpl should exist", nc.getComponent(WebServerImpl.class) instanceof WebServerImpl);
+        assertNotNull("WebServerImpl should exist", nc.getComponentInstance(WebServerImpl.class));
+        assertTrue("WebServerImpl should exist", nc.getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
         try {
             nc.registerComponent("Ping");
             fail("should have failed");
@@ -52,8 +53,8 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInitializationException {
-        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
         nc.registerComponent(
@@ -71,14 +72,14 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
 //        nc.instantiateComponents();
 
-        ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
+        ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponentInstance(ThingThatTakesParamsInConstructor.class);
         assertNotNull("component not present", thing);
         assertEquals("hello22", thing.getValue());
     }
 
     public void testGetComponentTypes() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
 
-        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServerImpl");
@@ -90,9 +91,9 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         assertTrue("There should be a One type", types.contains(DefaultWebServerConfig.class));
     }
 
-    public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
+    public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoException, PicoRegistrationException {
 
-        StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.WithClassLoader(new URLClassLoader(new URL[0]));
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.WithClassLoader(new URLClassLoader(new URL[0]));
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
 
@@ -103,7 +104,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
         try
         {
-            nc.getComponent(Vector.class);
+            nc.getComponentInstance(Vector.class);
             //fail("should have barfed");
         }
         catch (ClassCastException e)

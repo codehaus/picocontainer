@@ -17,10 +17,10 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
     public void testClassAndKeyRegistration() throws Exception {
         NanoMXContainer pico = createNanoMXContainer();
 
-        pico.registerComponent("nano:name=one", WilmaImpl.class);
-        pico.registerComponent("nano:name=two", WilmaImpl.class);
+        pico.registerComponentImplementation("nano:name=one", WilmaImpl.class);
+        pico.registerComponentImplementation("nano:name=two", WilmaImpl.class);
 
-        assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 2, pico.getComponentInstances().size());
 
         assertExistsInJMX(pico, "nano:name=one");
         assertExistsInJMX(pico, "nano:name=two");
@@ -29,9 +29,9 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
     public void testClassOnlyRegistration() throws Exception {
         NanoMXContainer pico = createNanoMXContainer();
 
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentImplementation(WilmaImpl.class);
 
-        assertEquals("Wrong number of comps in the internals", 1, pico.getComponents().size());
+        assertEquals("Wrong number of comps in the internals", 1, pico.getComponentInstances().size());
 
         assertExistsInJMX(pico, "nanomx:type=" + WilmaImpl.class.getName());
     }
@@ -40,7 +40,7 @@ public class NanoMXComponentFactoryTestCase extends AbstractNanoMXTestCase {
         NanoMXContainer pico = createNanoMXContainer();
 
         try {
-            pico.registerComponent(null, new WilmaImpl());
+            pico.registerComponentInstance(null, new WilmaImpl());
             fail("should have thrown NullPointerException");
         }
         catch (NullPointerException e) {

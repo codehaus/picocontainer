@@ -2,9 +2,9 @@ package org.nanocontainer.ant;
 
 import org.apache.tools.ant.DynamicConfigurator;
 import org.apache.tools.ant.BuildException;
-import org.picocontainer.internals.ConstantParameter;
-import org.picocontainer.internals.Parameter;
-import org.picocontainer.internals.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.nanocontainer.reflection.StringToObjectConverter;
 

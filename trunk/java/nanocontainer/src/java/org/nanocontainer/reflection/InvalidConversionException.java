@@ -7,14 +7,10 @@
  *                                                                           *
  * Original code by Joe Walnes                                               *
  *****************************************************************************/
-
-
 package org.nanocontainer.reflection;
 
 public class InvalidConversionException extends RuntimeException {
-
     public InvalidConversionException(String message) {
         super(message);
     }
-
 }

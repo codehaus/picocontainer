@@ -60,7 +60,6 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
             pico = result;
         }
         return (MutablePicoContainer) pico;
-
     }
 
     private void createGroovyScript() {

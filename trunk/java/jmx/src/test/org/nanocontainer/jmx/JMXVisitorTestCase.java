@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 
 /**
  * @author Michael Ward
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class JMXVisitorTestCase extends TestCase {

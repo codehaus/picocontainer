@@ -96,6 +96,11 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testContainerIsSerializable() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {
 
+        getTouchableFromSerializedContainer();
+
+    }
+
+    private Touchable getTouchableFromSerializedContainer() throws IOException, ClassNotFoundException {
         MutablePicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         // Add a list too, using a constant parameter
         pico.registerComponentImplementation("list", ArrayList.class, new Parameter[] {new ConstantParameter(new Integer(10))});
@@ -110,10 +115,19 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
         DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
         assertNotNull(dependsOnTouchable);
-        SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
-
-        assertTrue(touchable.wasTouched);
+        return (Touchable) pico.getComponentInstance(Touchable.class);
     }
+
+    public void testSerializedContainerCanRetrieveImplementation() throws PicoException, PicoInitializationException,
+            IOException, ClassNotFoundException {
+
+        Touchable touchable = getTouchableFromSerializedContainer();
+
+        SimpleTouchable simpleTouchable = (SimpleTouchable) touchable;
+
+        assertTrue(simpleTouchable.wasTouched);
+    }
+
 
     public void testGettingComponentWithMissingDependencyFails() throws PicoException, PicoRegistrationException {
         PicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
@@ -235,6 +249,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
      * Important! Nanning really, really depends on this!
      */
     public void testComponentAdapterRegistrationOrderIsMaintained() {
+
         ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", Object.class);
         ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", String.class);
 
@@ -385,12 +400,16 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testImplicitPicoContainerInjection() {
-        MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponentImplementation(ContainerDependency.class);
-        ContainerDependency dep = (ContainerDependency) pico.getComponentInstance(ContainerDependency.class);
-        assertSame(pico, dep.pico);
-    }
+    // ImplicitPicoContainer injection is bad. It is an open door for hackers. Developers with
+    // special PicoContainer needs should specifically register() a comtainer they want components to
+    // be able to pick up on.
+
+//    public void testImplicitPicoContainerInjection() {
+//        MutablePicoContainer pico = createPicoContainer(null);
+//        pico.registerComponentImplementation(ContainerDependency.class);
+//        ContainerDependency dep = (ContainerDependency) pico.getComponentInstance(ContainerDependency.class);
+//        assertSame(pico, dep.pico);
+//    }
 
     public void testSelfRegistryThrowsIllegalArgument() {
         DefaultPicoContainer pico = new DefaultPicoContainer();

@@ -197,13 +197,18 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
     }
 
     // This is the basic functionality for starting of child containers
+    //
+    // Child containers should be registered by instance not by class. In making the
+    // instance, the parent should be passed in to the ctor.  Developers with special needs
+    // should be able to design trees of the components, and trees of containes. they may not
+    // necessarily overlap. A lot of the time you may want to hide containers from components.
 
-    public void testDefaultPicoContainerRegisteredAsComponentGetsHostingContainerAsParent() {
-        MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponentImplementation("child", DefaultPicoContainer.class);
-        PicoContainer child = (PicoContainer) parent.getComponentInstance("child");
-        assertSame(parent, child.getParent());
-    }
+//    public void testDefaultPicoContainerRegisteredAsComponentGetsHostingContainerAsParent() {
+//        MutablePicoContainer parent = new DefaultPicoContainer();
+//        parent.registerComponentImplementation("child", DefaultPicoContainer.class);
+//        PicoContainer child = (PicoContainer) parent.getComponentInstance("child");
+//        assertSame(parent, child.getParent());
+//    }
 
     public void testGetComponentInstancesOnParentContainerHostedChildContainerDoesntReturnParentAdapter() {
         MutablePicoContainer parent = new DefaultPicoContainer();
@@ -224,7 +229,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation(Two.class);
         parent.registerComponentImplementation("recording", StringBuffer.class);
         parent.registerComponentImplementation(One.class);
-        parent.registerComponentImplementation("child", DefaultPicoContainer.class);
+        parent.registerComponentInstance("child", new DefaultPicoContainer(parent));
         DefaultPicoContainer child = (DefaultPicoContainer) parent.getComponentInstance("child");
         child.registerComponentImplementation(Three.class);
         parent.start();

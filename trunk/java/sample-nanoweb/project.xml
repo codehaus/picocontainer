@@ -42,11 +42,11 @@
 
         <!--
         Groovy and ASM only needed if using Groovy to
-        assemble the contaqiner in web.xml
+        assemble the container in web.xml
         -->
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-4-snapshot</version>
+            <version>1.0-rc1-snapshot</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -69,6 +69,14 @@
         </dependency>
 
         <dependency>
+            <id>velocity-tools</id>
+            <version>view-1.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
             <id>commons-collections</id>
             <version>2.1</version>
             <properties>
@@ -84,14 +92,65 @@
             </properties>
         </dependency>
 
-<!-- Uncomment for Servlet containers that don't bundle commons-logging -->
-<!--        <dependency>-->
-<!--            <id>commons-logging</id>-->
-<!--            <version>1.0.2</version>-->
-<!--            <properties>-->
-<!--                <war.bundle>true</war.bundle>-->
-<!--            </properties>-->
-<!--        </dependency>-->
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.2</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- For acceptance test only -->
+
+        <dependency>
+            <id>xmlunit</id>
+            <version>1.0</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>jetty</id>
+            <version>4.2.9</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>servletapis</id>
+            <version>2.4-jetty</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>jasper-compiler</artifactId>
+            <version>5.0.18</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>jasper-runtime</artifactId>
+            <version>5.0.18</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
 
     </dependencies>
 

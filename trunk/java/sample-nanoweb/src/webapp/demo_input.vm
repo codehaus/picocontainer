@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+
 <html>
-Message from NanoWeb: ${action.magic}
+Guess the magic word: ${action.message}
 
 <form action="demo.nano">
-  <input name="message" type="text"/>
+  <input name="magic" type="text" value="${action.magic}"/>
   <input type="submit" value="Set new message"/>
 </form>
 </html>

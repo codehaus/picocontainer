@@ -1,5 +1,0 @@
-<container>
-    <instance key="requestScopedInstance2">
-        <string>foo bar</string>
-    </instance>
-</container>

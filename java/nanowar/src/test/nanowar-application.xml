@@ -1,0 +1,5 @@
+<container>
+    <component-instance key="applicationScopedInstance">
+        <string>foo bar</string>
+    </component-instance>
+</container>

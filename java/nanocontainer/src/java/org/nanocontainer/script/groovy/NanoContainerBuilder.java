@@ -94,6 +94,14 @@ public class NanoContainerBuilder extends BuilderSupport {
             return createChildBuilder(current, name, attributes);
         } else if (current == null || current instanceof NanoContainer) {
             NanoContainer parent = (NanoContainer) current;
+			Object parentAttribute = attributes.get("parent");
+			if(parent != null && parentAttribute != null) {
+				throw new NanoContainerMarkupException("You can't explicitly specify a parent in a child element.");
+			}
+			if(parent == null && (parentAttribute instanceof NanoContainer)) {
+				// we're not in an enclosing scope - look at parent attribute instead
+				parent = (NanoContainer)parentAttribute;
+			}
             if (name.equals("container")) {
                 return createChildContainer(attributes, parent);
             } else {
@@ -198,7 +206,6 @@ public class NanoContainerBuilder extends BuilderSupport {
 
         return name;
     }
-
 
     protected Object createNode(Object name, Map attributes, Object value) {
         return createNode(name, attributes);

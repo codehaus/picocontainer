@@ -11,6 +11,8 @@ package org.nanocontainer.hibernate;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.CachingComponentAdapter;
 
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.ComponentAdapter;
@@ -21,6 +23,7 @@ import net.sf.hibernate.cfg.Configuration;
 import junit.framework.TestCase;
 
 /**
+ * test case for session factory component adapter
  * @author Konstantin Pribluda
  * @version $Revision$
  */
@@ -38,14 +41,18 @@ public class SessionFactoryComponentAdapterTestCase extends TestCase {
 		
 	}
 	
-	
+	/**
+	* test that component adapter gets proper key. 
+	*/ 
 	public void testKeyAdapterContruction() throws Exception {
 		SessionFactoryComponentAdapter adapter =  new SessionFactoryComponentAdapter("blurge");
 		assertEquals("blurge",adapter.getComponentKey());
 	}
 	
-	
-	public void testSessionFactoryInstantiation() throws Exception {
+	/**
+	 * test that cinstantiation with constant parameter
+	 */
+	public void testConstantParameterInstantiation() throws Exception {
 		SessionFactoryComponentAdapter adapter =  
 			new SessionFactoryComponentAdapter(
 				"foo",
@@ -54,4 +61,51 @@ public class SessionFactoryComponentAdapterTestCase extends TestCase {
 		
 		assertNotNull(adapter.getComponentInstance());
 	}
+	
+	/**
+	 * test instantiation with default pramaters
+	 */
+	public void testInstantiationWithDefaultParams() throws Exception {
+		DefaultPicoContainer container = new DefaultPicoContainer();
+		
+		container.registerComponentImplementation(Configuration.class,ConstructableConfiguration.class);
+		container.registerComponent(new SessionFactoryComponentAdapter());
+		
+		SessionFactory factory = (SessionFactory)container.getComponentInstanceOfType(SessionFactory.class);
+		assertNotNull(factory);
+	}
+	
+	
+	/**
+	 *  test instantiation by key & by class
+	 */
+	public void testInstantiationWithKey() throws Exception {
+		
+		DefaultPicoContainer container = new DefaultPicoContainer();
+		container.registerComponentImplementation("blurge",ConstructableConfiguration.class);
+		container.registerComponent(new CachingComponentAdapter(new SessionFactoryComponentAdapter("glarch")));
+		
+		
+		SessionFactory factory = (SessionFactory)container.getComponentInstance("glarch");
+		assertNotNull(factory);
+		
+		SessionFactory anotherInstanceOfFactory = (SessionFactory)container.getComponentInstanceOfType(SessionFactory.class);
+		assertSame(factory,anotherInstanceOfFactory);
+	}
+	
+	
+	/**
+	 * test keyed dependency instantiation
+	 */
+	public void testKeyedDependency() throws Exception {
+		DefaultPicoContainer container = new DefaultPicoContainer();
+		container.registerComponentImplementation("blurge",ConstructableConfiguration.class);
+		container.registerComponent(new CachingComponentAdapter(new SessionFactoryComponentAdapter("glarch", new ComponentParameter("blurge"))));
+		
+		
+		SessionFactory factory = (SessionFactory)container.getComponentInstance("glarch");
+		assertNotNull(factory);
+		
+	}
+ 
 }

@@ -23,75 +23,63 @@ import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.AbstractComponentAdapter;
 
 import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.Session;
 import net.sf.hibernate.HibernateException;
 
-import java.util.Collections;
-import java.util.ArrayList;
 import java.util.HashSet;
 
-/**
- * component adapter providing  hibernate session factory.
- * @author konstantin pribluda
- * @version $Revision$
- */
-public class SessionFactoryComponentAdapter extends AbstractComponentAdapter {
+
+public class SessionComponentAdapter extends AbstractComponentAdapter {
 	
-	Parameter configurationParameter = null;
-	ComponentAdapter hibernateConfigurationAdapter = null;
+	Parameter sessionFactoryParameter = null;
+	ComponentAdapter sessionFactoryAdapter = null;
 	boolean verifying = false;
-	
+
 	/**
-	 * construct adapter with net.sf.hibernate.SessionFactory.class as key 
-	 * and dependecy to net.sf.hibernate.cfg.Configuration.class
+	 * construct adapter with net.sf.hibernate.Session.class as key 
+	 * and dependecy to net.sf.hibernate.SessionFactory.class
 	 */
-	public SessionFactoryComponentAdapter() {
-		this(SessionFactory.class,null);
+	public SessionComponentAdapter() {
+		this(Session.class,null);
 	}
 	
 	/**
 	 * construct component adapter with specified key and dependecy to 
-	 * net.sf.hibernate.cfg.Configuration.class
+	 * net.sf.hibernate.SessionFactory.class
 	 */
-	public SessionFactoryComponentAdapter(Object componentKey) {
+	public SessionComponentAdapter(Object componentKey) {
 		this(componentKey,null);
 	}
-	
 	/**
-	 * construct component adapter with given key and specified parameter.
-	 * in case null parameter is supplied use dependency to 
-	 * net.sf.hibernate.cfg.Configuration.class
+ 	 * register adapter with given key and parameter
 	 */
-	public SessionFactoryComponentAdapter(Object componentKey,Parameter parameter) {
-		super(componentKey,SessionFactory.class);
-		this.configurationParameter = parameter == null ? new ComponentParameter() : parameter;
+	public SessionComponentAdapter(Object componentKey,Parameter parameter) {
+		super(componentKey,Session.class);
+		this.sessionFactoryParameter = parameter == null ? new ComponentParameter(null) : parameter;
 	}
 	
-	
-	/** 
-	 * obtain session factory instance if possible
-	 */
 	public Object getComponentInstance() throws   PicoInitializationException, PicoIntrospectionException {
 		verify();
 		try {
-		return ((Configuration)hibernateConfigurationAdapter.getComponentInstance()).buildSessionFactory();
+			return ((SessionFactory)sessionFactoryAdapter.getComponentInstance()).openSession();
 		} catch(HibernateException he) {
 			throw new PicoInitializationException(he);
 		}
-	}
 
+	}
+	
 	public void verify() throws PicoVerificationException {
 		try {
 			if(verifying) {
-				throw new CyclicDependencyException(new Class[] { Configuration.class } );
+				throw new CyclicDependencyException(new Class[] { SessionFactory.class } );
 			}
 			verifying = true;
 			HashSet unsatisfiableDependencies = new HashSet();
-			unsatisfiableDependencies.add(Configuration.class);
+			unsatisfiableDependencies.add(SessionFactory.class);
 			
-			hibernateConfigurationAdapter = configurationParameter.resolveAdapter(getContainer(),Configuration.class);
+			sessionFactoryAdapter = sessionFactoryParameter.resolveAdapter(getContainer(),SessionFactory.class);
 			
-			if(hibernateConfigurationAdapter == null) {
+			if(sessionFactoryAdapter == null) {
 				throw new  UnsatisfiableDependenciesException(this,unsatisfiableDependencies);
 			}
 

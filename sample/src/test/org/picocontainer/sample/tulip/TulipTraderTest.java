@@ -1,6 +1,7 @@
 package org.picocontainer.sample.tulip;
 
 import junit.framework.TestCase;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collections;
 
@@ -10,45 +11,39 @@ import java.util.Collections;
  * @version $Revision$
  */
 public class TulipTraderTest extends TestCase {
-    private FlowerTickerStub ticker;
+    private FlowerPriceProviderStub ticker;
     private FlowerMarketStub market;
 
-    public static class TulipTrader implements FlowerPriceListener {
-        private final FlowerMarket market;
-
-        public TulipTrader(FlowerPriceProvider ticker, FlowerMarket market) {
-            this.market = market;
-            ticker.addFlowerPriceListener(this);
-        }
-
-        public void flowerPriceChanged(String flower, int price) {
-            if (price > 100) {
-                market.sellBid(flower);
-            }
-            if (price < 70) {
-                market.buyBid(flower);
-            }
-        }
-    }
-
     protected void setUp() throws Exception {
-        ticker = new FlowerTickerStub();
-        market = new FlowerMarketStub();
-        new TulipTrader(ticker, market);
+        DefaultPicoContainer container = new DefaultPicoContainer();
+        container.registerComponentImplementation(FlowerPriceProviderStub.class);
+        container.registerComponentImplementation(FlowerMarketStub.class);
+        container.registerComponentImplementation(TulipTrader.class);
+        container.start();
+
+        ticker = (FlowerPriceProviderStub) container.getComponentInstance(FlowerPriceProvider.class);
+        market = (FlowerMarketStub) container.getComponentInstance(FlowerMarketStub.class);
     }
 
     public void testSellTulipsWhenAboveHundred() {
-        ticker.changeFlowerPrice("TULIP", 101);
-        assertEquals(Collections.singletonList("TULIP"), market.currentSellBids());
+        ticker.changeFlowerPrice("Tulip", 101);
+        assertEquals(Collections.singletonList("Tulip"), market.currentSellBids());
     }
 
     public void testDontSellTulipsWhenBelowHundred() {
-        ticker.changeFlowerPrice("TULIP", 99);
+        ticker.changeFlowerPrice("Tulip", 99);
         assertEquals(Collections.EMPTY_LIST, market.currentSellBids());
     }
 
     public void testBuyTulipsWhenBelowSeventy() {
-        ticker.changeFlowerPrice("TULIP", 69);
-        assertEquals(Collections.singletonList("TULIP"), market.currentBuyBids());
+        ticker.changeFlowerPrice("Tulip", 69);
+        assertEquals(Collections.singletonList("Tulip"), market.currentBuyBids());
+    }
+
+    public void testDontBotherAboutOtherFlowers() {
+        ticker.changeFlowerPrice("Forgetmenot", 150);
+        ticker.changeFlowerPrice("Rose", 10);
+        assertEquals(Collections.EMPTY_LIST, market.currentSellBids());
+        assertEquals(Collections.EMPTY_LIST, market.currentBuyBids());
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class FlowerTickerStub implements FlowerPriceProvider {
+public class FlowerPriceProviderStub implements FlowerPriceProvider {
     private List listeners = new ArrayList();
 
     public void addFlowerPriceListener(FlowerPriceListener flowerPriceListener) {

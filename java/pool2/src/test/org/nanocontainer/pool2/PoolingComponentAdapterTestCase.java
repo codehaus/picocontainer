@@ -11,7 +11,7 @@ package org.nanocontainer.pool2;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -23,7 +23,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        componentAdapter = new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class));
+        componentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class));
         pico = new DefaultPicoContainer();
     }
 
@@ -82,7 +82,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
     }
 
     public void testBlocksWhenExhausted() throws InterruptedException {
-        final PoolingComponentAdapter componentAdapter2 = new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class), 2, 5000);
+        final PoolingComponentAdapter componentAdapter2 = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 5000);
 
         final Object[] borrowed = new Object[3];
         final Throwable[] threadException = new Throwable[2];
@@ -125,7 +125,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
 
     public void testFailsWhenExhausted() {
         final PoolingComponentAdapter componentAdapter2 =
-                new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class), 2, 0);
+                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 0);
         Object borrowed0 = componentAdapter2.getComponentInstance();
         Object borrowed1 = componentAdapter2.getComponentInstance();
         try {
@@ -136,7 +136,7 @@ public class PoolingComponentAdapterTestCase extends TestCase {
 
     public void testGrowsWhenExhausted() {
         final PoolingComponentAdapter componentAdapter2 =
-                new PoolingComponentAdapter(new ConstructorComponentAdapter("foo", Object.class), 5);
+                new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 5);
         assertEquals(0, componentAdapter2.getTotalSize());
         Object borrowed0 = componentAdapter2.getComponentInstance();
         assertEquals(1, componentAdapter2.getTotalSize());

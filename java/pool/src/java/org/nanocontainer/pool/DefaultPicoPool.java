@@ -13,7 +13,7 @@ package org.nanocontainer.pool;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -216,7 +216,7 @@ public class DefaultPicoPool implements PicoPool {
      */
     protected Object makeComponent() throws PicoPoolException {
         //Create new "uncached" component
-        ComponentAdapter componentAdapter = new ConstructorComponentAdapter(implementation, implementation);
+        ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(implementation, implementation);
         componentAdapter.setContainer(pico);
         Object object = componentAdapter.getComponentInstance();
         return object;

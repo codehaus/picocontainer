@@ -22,7 +22,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.InstanceComponentAdapter;
@@ -54,7 +54,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     public void testComponentsWithOneInterfaceAreAspected() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         NanningComponentAdapter componentAdapter =
-                new NanningComponentAdapter(new AspectSystem(), new ConstructorComponentAdapter(Wilma.class, WilmaImpl.class));
+                new NanningComponentAdapter(new AspectSystem(), new ConstructorInjectionComponentAdapter(Wilma.class, WilmaImpl.class));
         Object component = componentAdapter.getComponentInstance();
         assertTrue(Aspects.isAspectObject(component));
         assertEquals(Wilma.class, Aspects.getAspectInstance(component).getClassIdentifier());
@@ -63,7 +63,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     public void testComponentsWithoutInterfaceNotAspected() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         NanningComponentAdapter componentAdapter = new NanningComponentAdapter(new AspectSystem(),
-                new ConstructorComponentAdapter(FredImpl.class, FredImpl.class));
+                new ConstructorInjectionComponentAdapter(FredImpl.class, FredImpl.class));
         pico.registerComponent(new InstanceComponentAdapter(Wilma.class, new WilmaImpl()));
         pico.registerComponent(componentAdapter);
         Object component = componentAdapter.getComponentInstance();

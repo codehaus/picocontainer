@@ -6,10 +6,10 @@
 
 require 'ftools'
 
+temp="___tmp___.htm"
 Dir.entries(".").each do |orig|
-  if(orig=~/.*\.htm/)
+  if(orig=~/.*\.htm/ && orig != temp)
     puts "Massaging #{orig}"
-    temp="___tmp___.htm"
     f=File.new(orig)
     tmp = File.new(temp, "w")
 
@@ -23,10 +23,14 @@ Dir.entries(".").each do |orig|
         skip=false
       end
 
-      # Link to local reports (this is slooooow!?!?!?)
-      if(line=~/(.*)http:\/\/www.picocontainer.org\/reports(.*)/)
+      # Link to local reports
+      reports="http://www.picocontainer.org/reports/"
+      reports_index=line.index(reports)
+      if(reports_index)
         puts " Linking to local reports"
-        line = "#{$1}reports#{$2}"
+        before=line[0..reports_index-1]
+        after=line[reports_index+reports.length..-1]
+        line = "#{before}#{after}"
       end
       
       tmp.puts(line) unless skip

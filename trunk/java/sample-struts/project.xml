@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-    <extend>${basedir}/../../project.xml</extend>
-    <id>nanostruts-sample</id>
-    <name>nanostruts-sample</name>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-sample-struts</id>
+    <name>nanocontainer-sample-struts</name>
 
     <dependencies>
 
@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanostruts</artifactId>
+            <artifactId>nanocontainer-struts</artifactId>
             <version>${pom.currentVersion}</version>
             <properties>
                 <war.bundle>true</war.bundle>

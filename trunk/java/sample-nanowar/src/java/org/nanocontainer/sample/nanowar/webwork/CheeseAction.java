@@ -52,4 +52,16 @@ public class CheeseAction extends ActionSupport implements CommandDriven {
             return ERROR;
         }
     }
+    
+    
+    public String doRemove() throws Exception {
+        try {
+        cheeseService.remove(cheeseService.find(cheese));
+        return SUCCESS;
+        } catch(Exception e) {
+            e.printStackTrace();
+            addErrorMessage("Could'nt remove cheese " + cheese);
+            return ERROR;
+        }
+    }
 }

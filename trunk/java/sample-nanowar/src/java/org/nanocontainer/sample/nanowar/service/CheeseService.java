@@ -24,5 +24,7 @@ public interface CheeseService {
     public Cheese find(Cheese example);
 
     public void save(Cheese cheese);
+    
+    public void remove(Cheese cheese);
 
 }

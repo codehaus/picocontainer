@@ -21,6 +21,8 @@ public interface CheeseDao {
 
     void save(Cheese cheese);
 
+    void remove(Cheese cheese);
+    
     Cheese get(String name);
 
     Collection all();

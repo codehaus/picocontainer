@@ -83,7 +83,7 @@ public class BeanShellComponentAdapter extends AbstractComponentAdapter {
                 i.eval(sourceReader, i.getNameSpace(), scriptURL.toExternalForm());
 
                 instance = i.get("instance");
-                if (i == null) {
+                if (instance == null) {
                     throw new BeanShellScriptInitializationException("The 'instance' variable was not instantiated");
                 }
             } catch (EvalError e) {

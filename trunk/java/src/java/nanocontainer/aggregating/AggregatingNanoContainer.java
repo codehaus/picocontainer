@@ -20,6 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Arrays;
 
+
+/**
+ * This class
+ */
 public class AggregatingNanoContainer extends AggregatedContainersContainer.Filter {
 
     private InvocationHandler invocationHandler;

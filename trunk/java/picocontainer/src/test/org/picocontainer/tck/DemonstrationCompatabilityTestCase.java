@@ -12,6 +12,7 @@ public class DemonstrationCompatabilityTestCase extends AbstractBasicCompatabili
 
     public PicoContainer createPicoContainer() throws DuplicateComponentKeyRegistrationException,
         AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+
         DefaultPicoContainer defaultPico = new DefaultPicoContainer.Default();
         defaultPico.registerComponent(Touchable.class, SimpleTouchable.class);
         defaultPico.registerComponentByClass(DependsOnTouchable.class);

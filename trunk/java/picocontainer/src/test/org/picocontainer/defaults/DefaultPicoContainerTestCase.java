@@ -749,33 +749,6 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testSerializabilityOfContainer() throws NotConcreteRegistrationException,
-        AssignabilityRegistrationException, PicoInitializationException,
-        DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException,
-        IOException, ClassNotFoundException {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        pico.registerComponentByClass(DependsOnTouchable.class);
-        pico.registerComponentByClass(SimpleTouchable.class);
-
-        pico.instantiateComponents();
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-
-        oos.writeObject(pico);
-
-        pico = null;
-
-        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
-
-        PicoContainer deserializedPico = (PicoContainer) ois.readObject();
-
-        SimpleTouchable touchable = (SimpleTouchable) deserializedPico.getComponent(SimpleTouchable.class);
-
-        assertTrue("hello should have been called in Touchable", touchable.wasTouched);
-    }
-
     public void testTooFewComponents() throws PicoInitializationException, PicoRegistrationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();

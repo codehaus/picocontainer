@@ -1,1 +1,7 @@
-<project default="jar:install"/>
+<project default="jar:install">
+
+  <preGoal name="xdoc:jelly-transform">
+    <attainGoal name="html2xdoc"/>
+  </preGoal>
+
+</project>

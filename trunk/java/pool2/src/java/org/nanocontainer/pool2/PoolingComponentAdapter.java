@@ -29,11 +29,11 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
 
     /**
      * @param delegate The delegate adapter that provides the pooled instances.
-     * @param maxPoolSize maximum pool size.
+     * @param maxPoolSize maximum pool size. A size of -1 results in an ever growing pool.
      * @param waitMilliSeconds number of milliseconds to wait when {@link #getComponentInstance(MutablePicoContainer) }
      * is called. Three different values are possible here:
      * <ul>
-     * <li>-1 : Grow when exhausted.</li>
+     * <li>-1 : Wait when exhausted until a component is available.</li>
      * <li>0 : Fail immediately when exhausted.</li>
      * <li>n : Wait for max n milliseconds until a component is available. This will fail on timeout.</li>
      * </ul>
@@ -59,13 +59,16 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
             componentInstance = available.remove(0);
         } else {
             // none available. grow or wait.
-            if (getTotalSize() < maxPoolSize) {
+            if (maxPoolSize < 0 || getTotalSize() < maxPoolSize) {
                 componentInstance = super.getComponentInstance();
             } else {
                 // can't grow more. wait for one to become available.
                 try {
                     if(waitMilliSeconds > 0) {
                         wait(waitMilliSeconds);
+                    }
+                    if(waitMilliSeconds < 0) {
+                        wait();
                     }
                     componentInstance = available.remove(0);
                 } catch (IndexOutOfBoundsException e) {

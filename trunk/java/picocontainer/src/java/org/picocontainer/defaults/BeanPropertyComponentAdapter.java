@@ -64,7 +64,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
                 final Object propertyValue = properties.get(propertyName);
                 final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
                 if (propertyDescriptor == null) {
-                    throw new PicoIntrospectionException("Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName());
+                    throw new PicoIntrospectionException("Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName() + " Existing properties:" + propertyDescriptorMap);
                 }
                 Method setter = propertyDescriptor.getWriteMethod();
                 if (setter == null) {

@@ -24,7 +24,7 @@ import java.io.Serializable;
  */
 public class DecoratingComponentAdapter implements ComponentAdapter, Serializable {
 
-    private final ComponentAdapter delegate;
+    private ComponentAdapter delegate;
 
     public DecoratingComponentAdapter(ComponentAdapter delegate) {
         this.delegate = delegate;

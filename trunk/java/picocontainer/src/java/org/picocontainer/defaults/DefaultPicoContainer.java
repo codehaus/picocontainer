@@ -77,13 +77,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         });
     }
 
-    private final Map componentKeyToAdapterCache = new HashMap();
-    private final ComponentAdapterFactory componentAdapterFactory;
+    private Map componentKeyToAdapterCache = new HashMap();
+    private ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
-    private final List componentAdapters = new ArrayList();
+    private List componentAdapters = new ArrayList();
 
     // Keeps track of instantiation order.
-    private final List orderedComponentAdapters = new ArrayList();
+    private List orderedComponentAdapters = new ArrayList();
     private boolean started = false;
     private boolean disposed = false;
 

@@ -35,14 +35,14 @@ import java.util.List;
  * on all antSpecifiedComponents that have a public no-arg, non-static start method.
  * The antSpecifiedComponents's start() method (if it exists) will be invoked
  * in the order of instantiation.
- *
+ * <p/>
  * &lt;taskdef name="pico" classname="org.nanocontainer.ant.PicoContainerTask"/&gt;
- *
+ * <p/>
  * &lt;pico&gt;
- *    &lt;component classname="foo.Bar" someprop="somevalue"/&gt;
- *    &lt;component classname="ping.Pong"/&gt;
+ * &lt;component classname="foo.Bar" someprop="somevalue"/&gt;
+ * &lt;component classname="ping.Pong"/&gt;
  * &lt;/pico&gt;
- *
+ * <p/>
  * Also note that bean/ant style properties can be set too. The above
  * usage will call <code>setSomeprop("somevalue")</code> on the
  * <code>foo.Bar</code> instance.
@@ -58,7 +58,7 @@ public class PicoContainerTask extends Task {
 
     private ContainerComposer containerComposer = new ContainerComposer() {
         public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
-            if(extraContainerComposer != null) {
+            if (extraContainerComposer != null) {
                 extraContainerComposer.composeContainer(picoContainer, assemblyScope);
             }
 
@@ -83,25 +83,25 @@ public class PicoContainerTask extends Task {
     }
 
     public void execute() {
-		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
+        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
             BeanPropertyComponentAdapterFactory propertyFactory =
                     new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
 
-			protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-				return new DefaultPicoContainer(propertyFactory);
-			}
-		};
+            protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+                return new DefaultPicoContainer(propertyFactory);
+            }
+        };
         try {
             containerBuilder.buildContainer(containerRef, null, null);
-			containerBuilder.killContainer(containerRef);
+            containerBuilder.killContainer(containerRef);
         } catch (java.lang.reflect.UndeclaredThrowableException e) {
-			Throwable ex = e.getUndeclaredThrowable();
-			if(ex instanceof java.lang.reflect.InvocationTargetException) {
-				ex = ((java.lang.reflect.InvocationTargetException) ex).getTargetException();
-			}
+            Throwable ex = e.getUndeclaredThrowable();
+            if (ex instanceof java.lang.reflect.InvocationTargetException) {
+                ex = ((java.lang.reflect.InvocationTargetException) ex).getTargetException();
+            }
             throw new BuildException(ex);
         } catch (Exception e) {
             throw new BuildException(e);
-		}
+        }
     }
 }

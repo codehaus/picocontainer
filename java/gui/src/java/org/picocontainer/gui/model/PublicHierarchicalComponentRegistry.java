@@ -1,4 +1,4 @@
-package org.picocontainer.gui.tree;
+package org.picocontainer.gui.model;
 
 import org.picocontainer.extras.HierarchicalComponentRegistry;
 import org.picocontainer.internals.ComponentRegistry;

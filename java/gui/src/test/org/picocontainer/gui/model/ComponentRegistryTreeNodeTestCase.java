@@ -1,4 +1,4 @@
-package org.picocontainer.gui.tree;
+package org.picocontainer.gui.model;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -7,6 +7,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.gui.model.ComponentRegistryTreeNode;
+import org.picocontainer.gui.model.ComponentTreeNode;
 
 /**
  * @author Aslak Helles&oslash;y

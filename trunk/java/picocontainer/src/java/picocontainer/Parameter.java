@@ -1,7 +1,8 @@
-package picocontainer.defaults;
+package picocontainer;
 
 import picocontainer.PicoContainer;
 import picocontainer.PicoInitializationException;
+import picocontainer.defaults.ComponentSpecification;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

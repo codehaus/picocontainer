@@ -2,6 +2,7 @@ package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
 import picocontainer.PicoInitializationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
@@ -89,6 +90,9 @@ public class ClassicLifecycleTestCase extends TestCase {
         }
     }
 
+    // TODO-Chris - try to remove 'implements Startable, Stoppable, Disposable'
+    // Thus making this comp accidentally start()able.
+    // We should be able to get this to work.
     public static class Three implements Startable, Stoppable, Disposable {
         One one;
 
@@ -143,6 +147,10 @@ public class ClassicLifecycleTestCase extends TestCase {
     public static interface Disposable {
         void dispose() throws Exception;
     }
+
+    public static interface StartStopDisposable extends Startable, Stoppable, Disposable {
+    }
+
 
 
     public void testOrderOfInstantiation() throws Exception {
@@ -212,7 +220,21 @@ public class ClassicLifecycleTestCase extends TestCase {
         public ForgivingLifecyclePicoContainer() {
         }
 
+
         public void instantiateComponents() throws PicoInitializationException {
+            try {
+                // contrived StartStopDisposable to prevent ClassCastException on aggregation
+                super.registerComponent(new StartStopDisposable() {
+                    public void start() throws Exception {
+                    }
+                    public void stop() throws Exception {
+                    }
+                    public void dispose() throws Exception {
+                    }
+                });
+            } catch (PicoRegistrationException e) {
+                // won't happen.
+            }
             super.instantiateComponents();
             try {
                 startableAggregatedComponent = (Startable) getAggregateComponentProxy(true, false);
@@ -322,6 +344,25 @@ public class ClassicLifecycleTestCase extends TestCase {
         }
     }
 
+    public void testDisposeDisposeCausingBarf() throws Exception {
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+        pico.start();
+        pico.stop();
+        pico.dispose();
+        try {
+            pico.dispose();
+            fail("Should have barfed");
+        } catch (IllegalStateException e) {
+            // expected;
+        }
+    }
+
+
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
         ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
 
@@ -395,6 +436,20 @@ public class ClassicLifecycleTestCase extends TestCase {
         Thread.sleep(100);
         pico.stop();
         assertEquals(2, foo.runCount());
+
+    }
+
+    public void testForgivingNatureOfSoNamedContainer() throws Exception {
+
+        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+
+        // Wilma is not Startable (etc). This container should be able to handle the
+        // fact that none of the comps are Startable (etc).
+        pico.registerComponent(WilmaImpl.class);
+
+        pico.instantiateComponents();
+
+        pico.start();
 
     }
 

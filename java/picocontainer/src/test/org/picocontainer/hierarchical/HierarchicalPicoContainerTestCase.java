@@ -39,7 +39,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.Collection;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 
@@ -247,16 +248,16 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
                 return componentKey == Wilma.class ? wilma : null;
             }
 
-            public Collection getComponents() {
-                List list = new ArrayList();
-                list.add(wilma);
-                return list;
+            public Set getComponents() {
+                Set result = new HashSet();
+                result.add(wilma);
+                return result;
             }
 
-            public Collection getComponentKeys() {
-                List list = new ArrayList();
-                list.add(Wilma.class);
-                return list;
+            public Set getComponentKeys() {
+                Set result = new HashSet();
+                result.add(Wilma.class);
+                return result;
             }
 
             public void instantiateComponents() throws PicoInstantiationException {

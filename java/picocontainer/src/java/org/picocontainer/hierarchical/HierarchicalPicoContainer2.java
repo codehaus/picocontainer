@@ -17,7 +17,6 @@ import org.picocontainer.defaults.NullContainer;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Collection;
 import java.util.Collections;
 import java.io.Serializable;
 
@@ -67,28 +66,28 @@ public class HierarchicalPicoContainer2 implements PicoContainer, Serializable {
         return result;
     }
 
-    public Collection getComponentKeys() {
+    public Set getComponentKeys() {
         // Get child types
         Set types = new HashSet(childContainer.getComponentKeys());
 
         // Get those from parent.
         types.addAll(parentContainer.getComponentKeys());
 
-        return Collections.unmodifiableCollection(types);
+        return Collections.unmodifiableSet(types);
     }
 
     public boolean hasComponent(Object componentKey) {
         return getComponent(componentKey) != null;
     }
 
-    public Collection getComponents() {
+    public Set getComponents() {
         // Get child types
         Set types = new HashSet(childContainer.getComponents());
 
         // Get those from parent.
         types.addAll(parentContainer.getComponents());
 
-        return Collections.unmodifiableCollection(types);
+        return Collections.unmodifiableSet(types);
     }
 
     public void instantiateComponents() throws PicoInitializationException {

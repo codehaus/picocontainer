@@ -21,6 +21,7 @@ import org.picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import java.io.Serializable;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer, Serializable {
@@ -91,7 +92,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getComponent(clazz);
     }
 
-    public Collection getComponents() {
+    public Set getComponents() {
         return picoContainer.getComponents();
     }
 
@@ -105,7 +106,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
         return picoContainer.getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
     }
 
-    public Collection getComponentKeys() {
+    public Set getComponentKeys() {
         return picoContainer.getComponentKeys();
     }
 

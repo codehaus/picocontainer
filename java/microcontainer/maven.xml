@@ -23,21 +23,21 @@
 		<delete file="target/classes/promoted.jar"/>
   		<jar destfile="target/classes/promoted.jar"
 			  basedir="src/testcomp/target/classes"
-			  includes="org/megacontainer/testapi/TestPromotable.class"/>
+			  includes="org/microcontainer/testapi/TestPromotable.class"/>
   	</goal>
 
 	<goal name="test-components.jar">
 		<delete file="target/classes/components.jar"/>
   		<jar destfile="target/classes/components.jar"
 			  basedir="src/testcomp/target/classes"
-			  includes="org/megacontainer/test/TestComp.class"/>
+			  includes="org/microcontainer/test/TestComp.class"/>
   	</goal>
 
 	<goal name="test-hidden.jar">
 		<delete file="target/classes/hidden.jar"/>
   		<jar destfile="target/classes/hidden.jar"
 			  basedir="src/testcomp/target/classes"
-			  includes="org/megacontainer/test/hopefullyhidden/*.class"/>
+			  includes="org/microcontainer/test/hopefullyhidden/*.class"/>
   	</goal>
 
 	<goal name="compile-testcomp">

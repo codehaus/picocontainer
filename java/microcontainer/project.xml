@@ -8,8 +8,8 @@
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <pomVersion>3</pomVersion>
     <currentVersion>0.1-SNAPSHOT</currentVersion>
-    <name>MegaContainer</name>
-    <id>megacontainer</id>
+    <name>MicroContainer</name>
+    <id>microcontainer</id>
     <url>http://www.picocontainer.org/</url>
     <organization>
         <name>Codehaus</name>
@@ -17,8 +17,8 @@
         <logo>http://codehaus.org/codehaus-small.gif</logo>
     </organization>
     <inceptionYear>2004</inceptionYear>
-    <package>org.megacontainer</package>
-    <shortDescription>MegaContainer</shortDescription>
+    <package>org.microcontainer</package>
+    <shortDescription>MicroContainer</shortDescription>
 
     <!-- issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=TODO</issueTrackingUrl -->
 
@@ -29,9 +29,9 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/megacontainer/scm:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/megacontainer/scm:java</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/java/megacontainer/?viewcvs.cgi</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/microcontainer/scm:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/microcontainer/scm:java</developerConnection>
+        <url>http://cvs.picocontainer.codehaus.org/java/microcontainer/?viewcvs.cgi</url>
     </repository>
 
 

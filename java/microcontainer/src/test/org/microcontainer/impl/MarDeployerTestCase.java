@@ -1,4 +1,4 @@
-package org.megacontainer.impl;
+package org.microcontainer.impl;
 
 import junit.framework.TestCase;
 

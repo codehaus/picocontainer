@@ -1,6 +1,6 @@
-package org.megacontainer.test.hopefullyhidden;
+package org.microcontainer.test.hopefullyhidden;
 
-import org.megacontainer.test.TestComp;
+import org.microcontainer.test.TestComp;
 import org.picocontainer.Startable;
 
 /**

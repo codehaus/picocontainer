@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) MegaContainer Organization. All rights reserved.            *
+ * Copyright (C) MicroContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -8,7 +8,7 @@
  * Original code by Mike Ward                                                *
  *****************************************************************************/
 
-package org.megacontainer.impl;
+package org.microcontainer.impl;
 
 import java.io.File;
 import java.net.URLClassLoader;

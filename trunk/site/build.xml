@@ -24,6 +24,13 @@
           <include name="*.html"/>
        </fileset>
     </sitemesh>
+    
+    <copy todir="build">
+       <fileset dir="docs">
+          <include name="*.jpg"/>
+          <include name="*.png"/>
+       </fileset>
+    </copy>
 
   </target>
 

@@ -11,25 +11,25 @@
 package nanocontainer;
 
 import junit.framework.TestCase;
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServerImpl;
 import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoStartException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
-        nc.start();
+        nc.initializeContainer();
     }
 
-    public void testProvision() throws PicoRegistrationException, PicoStartException, ClassNotFoundException {
+    public void testProvision() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
         StringRegistrationNanoContainerImpl nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServerImpl");
-        nc.start();
+        nc.initializeContainer();
         assertTrue("WebServerImpl should exist", nc.hasComponent(WebServerImpl.class));
         assertNotNull("WebServerImpl should exist", nc.getComponent(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", nc.getComponent(WebServerImpl.class) instanceof WebServerImpl);
@@ -45,7 +45,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoStartException {
+    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoRegistrationException, PicoInitializationException {
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
@@ -53,7 +53,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
         nc.addParameterToComponent(className, "java.lang.String", "hello");
         nc.addParameterToComponent(className, "java.lang.Integer", "22");
 
-        nc.start();
+        nc.initializeContainer();
 
         ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
         assertNotNull("component not present", thing);

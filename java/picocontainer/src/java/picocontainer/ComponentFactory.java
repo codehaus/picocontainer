@@ -22,8 +22,8 @@ public interface ComponentFactory {
      * @param constructor The constructor to use to create the component.
      * @param args The arguments to pass in to the constructor
      * @return The component
-     * @throws PicoInvocationTargetStartException If a problem creating the component.
+     * @throws PicoInvocationTargetInitailizationException If a problem creating the component.
      */
-    Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException;
+    Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException;
 
 }

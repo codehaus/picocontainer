@@ -11,13 +11,10 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
+import picocontainer.PicoInitializationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
-import picocontainer.defaults.NullLifecycleManager;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.PicoContainer;
-import picocontainer.ClassRegistrationPicoContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,17 +119,17 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void setUp() throws PicoRegistrationException, PicoStartException {
+    public void setUp() throws PicoRegistrationException, PicoInitializationException {
 
 
     }
 
-    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoStartException {
+    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInitializationException {
 
-        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+        MorphingHierarchicalPicoContainer pico = new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
         pico.registerComponent(PeelableComponent.class);
         pico.registerComponent(NotReallyPeelableComponent.class);
-        pico.start();
+        pico.initializeContainer();
 
         assertEquals(2, pico.getComponents().length);
 
@@ -149,16 +146,16 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         assertFalse(notReallyPeelableComponent.wasPeeled);
     }
 
-    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoStartException {
+    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer pico =
-                new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+                new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         pico.registerComponent(PeelableComponent.class);
         pico.registerComponent(NotReallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         Object myPeelableAndWashableContainer = pico.as(new Class[]{Peelable.class, Washable.class});
 
@@ -184,10 +181,10 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoStartException {
+    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer pico =
-                new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+                new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         //an unmanaged component
         pico.registerComponent(PeelableComponent.class, new PeelableComponent());
@@ -196,7 +193,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(NotReallyPeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         Object myPeelableAndWashableContainer = pico.as(new Class[]{Peelable.class, Washable.class});
 
@@ -222,10 +219,10 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoStartException {
+    public void testLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer pico =
-                new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+                new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         Recorder recorder = new Recorder();
 
@@ -234,7 +231,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(B.class, B.class);
         pico.registerComponent(C.class, C.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         assertEquals("instantiated A", recorder.getWhatHappened(0));
         assertEquals("instantiated B", recorder.getWhatHappened(1));
@@ -253,10 +250,10 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsLifecycleOnlyCallsManagedComponents() throws PicoRegistrationException, PicoStartException {
+    public void testAsLifecycleOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer pico =
-                new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+                new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         Recorder recorder = new Recorder();
 
@@ -269,7 +266,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(B.class);
         pico.registerComponent(C.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         assertEquals("instantiated B", recorder.getWhatHappened(0));
         assertEquals("instantiated C", recorder.getWhatHappened(1));
@@ -292,15 +289,15 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
+    public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer pico =
-                new MorphingHierarchicalPicoContainer(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
+                new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         pico.registerComponent(PeelableComponent.class);
         pico.registerComponent(PeelableAndWashableComponent.class);
 
-        pico.start();
+        pico.initializeContainer();
 
         PeelableAndWashable paw = (PeelableAndWashable) pico.as(PeelableAndWashable.class);
 
@@ -315,24 +312,22 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsChildContainersRecursively() throws PicoRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoStartException {
+    public void testAsCallsChildContainersRecursively() throws PicoRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
 
         MorphingHierarchicalPicoContainer childContainer = new MorphingHierarchicalPicoContainer(
                             new NullContainer(),
-                            new NullLifecycleManager(),
                             new DefaultComponentFactory());
 
         childContainer.registerComponent(PeelableComponent.class);
         childContainer.registerComponent(PeelableAndWashableComponent.class);
-        childContainer.start();
+        childContainer.initializeContainer();
 
         MorphingHierarchicalPicoContainer parentContainer = new MorphingHierarchicalPicoContainer(
                             new NullContainer(),
-                            new NullLifecycleManager(),
                             new DefaultComponentFactory());
 
         parentContainer.registerComponent(MorphingHierarchicalPicoContainer.class, childContainer);
-        parentContainer.start();
+        parentContainer.initializeContainer();
 
         ((Washable)parentContainer.as(Washable.class)).wash();
         ((Peelable)parentContainer.as(Peelable.class)).peel();

@@ -11,7 +11,7 @@
 package nanocontainer.aggregating;
 
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
@@ -47,7 +47,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testGetProxy() throws PicoRegistrationException, PicoStartException {
+    public void testGetProxy() throws PicoRegistrationException, PicoInitializationException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
@@ -55,7 +55,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         pico.registerComponent(list);
 
         pico.registerComponent(Foo.class, FooImpl.class);
-        pico.start();
+        pico.initializeContainer();
 
         AggregatingNanoContainer aggContainer = new AggregatingNanoContainer(pico, new SequentialInvocationHandler(pico));
         Object proxy = aggContainer.getProxy();
@@ -73,7 +73,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         assertEquals("Zap", foo.getBar());
     }
 
-    public void testNoInvocationHandler() throws PicoRegistrationException, PicoStartException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testNoInvocationHandler() throws PicoRegistrationException, PicoInitializationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
 
@@ -81,7 +81,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         pico.registerComponent(list);
 
         pico.registerComponent(Foo.class, FooImpl.class);
-        pico.start();
+        pico.initializeContainer();
 
         AggregatingNanoContainer aggContainer = new AggregatingNanoContainer(pico, new SequentialInvocationHandler(pico));
         Object proxy = aggContainer.getProxy();

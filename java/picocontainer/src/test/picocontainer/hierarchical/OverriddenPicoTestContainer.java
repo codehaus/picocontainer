@@ -12,25 +12,23 @@ package picocontainer.hierarchical;
 
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.LifecycleManager;
-import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.PicoInvocationTargetInitailizationException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.WithStartableLifecycleManager
+public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.Default
 {
     private Wilma wilma;
 
-    public OverriddenPicoTestContainer(Wilma wilma, LifecycleManager slm)
+    public OverriddenPicoTestContainer(Wilma wilma)
     {
-        super(slm);
         this.wilma = wilma;
     }
 
-    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
+    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetInitailizationException {
 
         if (constructor.getDeclaringClass() == WilmaImpl.class) {
             return wilma;

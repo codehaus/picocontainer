@@ -10,14 +10,13 @@
 
 package picocontainer.hierarchical;
 
-import picocontainer.PicoContainer;
-import picocontainer.LifecycleManager;
 import picocontainer.ComponentFactory;
+import picocontainer.PicoContainer;
 
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
@@ -25,8 +24,8 @@ public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer
     public static final int REVERSE_INSTANTIATION_ORDER = 11;
     public static final int INSTANTIATION_ORDER = 22;
 
-    public MorphingHierarchicalPicoContainer(PicoContainer parentContainer, LifecycleManager startableLifecycleManager, ComponentFactory componentFactory) {
-        super(parentContainer, startableLifecycleManager, componentFactory);
+    public MorphingHierarchicalPicoContainer(PicoContainer parentContainer, ComponentFactory componentFactory) {
+        super(parentContainer, componentFactory);
     }
 
     /**

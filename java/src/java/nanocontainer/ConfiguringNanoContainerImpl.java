@@ -33,8 +33,8 @@ import java.util.Iterator;
 
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInvocationTargetStartException;
-import picocontainer.PicoStartException;
+import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.PicoInitializationException;
 import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
@@ -105,8 +105,8 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 node.getFirstChild().getNodeType() == Node.TEXT_NODE;
     }
 
-    public void start() throws PicoStartException {
-        super.start();
+    public void initializeContainer() throws PicoInitializationException {
+        super.initializeContainer();
         final Object[] components = getComponents();
         for (int i = 0; i < components.length; i++) {
             final Object configuree = components[i];
@@ -115,7 +115,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 try {
                     installConfiguration(configurationItems, configuree);
                 } catch (InvocationTargetException e) {
-                    throw new picocontainer.PicoInvocationTargetStartException(e);
+                    throw new picocontainer.PicoInvocationTargetInitailizationException(e);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

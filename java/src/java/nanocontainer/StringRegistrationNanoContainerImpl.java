@@ -10,18 +10,15 @@
 
 package nanocontainer;
 
+import nanocontainer.reflection.StringToObjectConverter;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoStartException;
-import picocontainer.hierarchical.HierarchicalPicoContainer;
-import picocontainer.PicoStopException;
+import picocontainer.PicoInitializationException;
+vimport picocontainer.PicoRegistrationException;
 import picocontainer.defaults.NullContainer;
-import picocontainer.PicoDisposalException;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.util.ArrayList;
-
-import nanocontainer.reflection.StringToObjectConverter;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
@@ -79,16 +76,8 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     }
 
-    public void start() throws PicoStartException {
-        picoContainer.start();
-    }
-
-    public void stop() throws PicoStopException {
-        picoContainer.stop();
-    }
-
-    public void dispose() throws PicoDisposalException {
-        // TODO: just implemented bacause I had to (?)
+    public void initializeContainer() throws PicoInitializationException {
+        picoContainer.initializeContainer();
     }
 
     public boolean hasComponent(Class clazz) {

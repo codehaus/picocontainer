@@ -10,7 +10,7 @@
 
 package picocontainer;
 
-public interface ClassRegistrationPicoContainer extends LifecycleContainer {
+public interface ClassRegistrationPicoContainer extends PicoContainer {
 
     /**
      * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}

@@ -18,20 +18,20 @@ import org.xml.sax.InputSource;
 
 import java.io.StringReader;
 
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
 
 public class NanoNanoTestCase extends TestCase {
 
     public void testStringRegistrationNanoContainerImpl()
-            throws PicoRegistrationException, PicoStartException,
+            throws PicoRegistrationException, PicoInitializationException,
             ClassNotFoundException {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("picocontainer.hierarchical.HierarchicalPicoContainer$Default");
         nc.registerComponent("nanocontainer.StringRegistrationNanoContainerImpl$WithParentContainer");
 
-        nc.start();
+        nc.initializeContainer();
 
         assertTrue("Should have a StringRegistrationNanoContainerImpl", nc.hasComponent(StringRegistrationNanoContainerImpl.WithParentContainer.class));
 
@@ -39,15 +39,15 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoStartException {
+    private void tryUsingStringRegistrationNanoContainer(StringRegistrationNanoContainer nc) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException {
 
         nc.registerComponent("nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("nanocontainer.testmodel.WebServer", "nanocontainer.testmodel.WebServerImpl");
-        nc.start();
+        nc.initializeContainer();
     }
 
     public void testDomRegistrationNanoContainerImpl()
-            throws PicoRegistrationException, PicoStartException,
+            throws PicoRegistrationException, PicoInitializationException,
             ParserConfigurationException, ClassNotFoundException {
 
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
@@ -57,7 +57,7 @@ public class NanoNanoTestCase extends TestCase {
                 "      <component class=\"nanocontainer.DomRegistrationNanoContainer$WithParentContainer\"/>" +
                 "</conponents>")));
 
-        nc.start();
+        nc.initializeContainer();
 
         assertTrue("Should have a DomRegistrationNanoContainer.WithParentContainer", nc.hasComponent(DomRegistrationNanoContainer.WithParentContainer.class));
 
@@ -65,14 +65,14 @@ public class NanoNanoTestCase extends TestCase {
 
     }
 
-    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws PicoRegistrationException, ClassNotFoundException, PicoStartException {
+    private void tryUsingInputSourceRegistrationNanoContainer(InputSourceRegistrationNanoContainer nc2) throws PicoRegistrationException, ClassNotFoundException, PicoInitializationException {
         nc2.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
                 "      <component class=\"nanocontainer.testmodel.DefaultWebServerConfig\"/>" +
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</conponents>")));
 
-        nc2.start();
+        nc2.initializeContainer();
     }
 
 }

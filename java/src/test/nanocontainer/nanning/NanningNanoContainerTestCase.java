@@ -9,7 +9,7 @@ import com.tirsen.nanning.Invocation;
 import com.tirsen.nanning.Aspects;
 import com.tirsen.nanning.MixinInstance;
 import junit.framework.TestCase;
-import picocontainer.PicoStartException;
+import picocontainer.PicoInitializationException;
 import picocontainer.PicoRegistrationException;
 
 /**
@@ -88,7 +88,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         public StringBuffer transactionLog = new StringBuffer();
 
         public Transaction startTransaction() {
-            transactionLog.append("start ");
+            transactionLog.append("initializeContainer ");
 
             return new Transaction() {
                 public void commit() {
@@ -107,14 +107,14 @@ public class NanningNanoContainerTestCase extends TestCase {
         container = new NanningNanoContainer();
     }
 
-    public void testStartService() throws PicoStartException, PicoRegistrationException {
+    public void testStartService() throws PicoInitializationException, PicoRegistrationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.start();
 
         assertNotNull(container.getComponent(TransactionManager.class));
     }
 
-    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoStartException {
+    public void testStartAspectDependingOnService() throws PicoRegistrationException, PicoInitializationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.start();
@@ -124,7 +124,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertNotNull(transactionAspect.transactionManager);
     }
 
-    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoStartException {
+    public void testStartAspectifiedComponent() throws PicoRegistrationException, PicoInitializationException {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
@@ -139,7 +139,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     /**
      * The 'acceptance-test' for the example.
      */
-    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoStartException, Exception {
+    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInitializationException, Exception {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, SucceedingComponent.class);
@@ -149,10 +149,10 @@ public class NanningNanoContainerTestCase extends TestCase {
         component.doSomethingRequiringATransaction();
 
         LoggingTransactionManager transactionManager = (LoggingTransactionManager) container.getComponent(TransactionManager.class);
-        assertEquals("start commit ", transactionManager.transactionLog.toString());
+        assertEquals("initializeContainer commit ", transactionManager.transactionLog.toString());
     }
 
-    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoStartException, Exception {
+    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInitializationException, Exception {
         container.registerServiceOrAspect(TransactionManager.class, LoggingTransactionManager.class);
         container.registerServiceOrAspect(TransactionAspect.class);
         container.registerComponent(Component.class, FailingComponent.class);
@@ -166,7 +166,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         }
 
         LoggingTransactionManager transactionManager = (LoggingTransactionManager) container.getComponent(TransactionManager.class);
-        assertEquals("start rollback ", transactionManager.transactionLog.toString());
+        assertEquals("initializeContainer rollback ", transactionManager.transactionLog.toString());
     }
 
 }

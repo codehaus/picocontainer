@@ -15,16 +15,15 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.Separator;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.openapi.roots.ModuleRootManager;
-import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.idea.action.AddContainer;
 import org.nanocontainer.idea.action.RegisterComponent;
 import org.nanocontainer.idea.action.StartContainer;
@@ -38,13 +37,15 @@ import org.nanocontainer.swing.action.RegisterComponentAction;
 import org.nanocontainer.swing.action.StartContainerAction;
 import org.nanocontainer.swing.action.StopContainerAction;
 import org.nanocontainer.swing.action.UnregisterComponentAction;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -68,6 +69,7 @@ public class PicoPlugin implements ProjectComponent {
     }
 
     public void projectOpened() {
+        createClassLoader();
         final ToolWindowManager manager = ToolWindowManager.getInstance(project);
         ContainerTreePanel picoGui = new ContainerTreePanel(tree, createToolBar().getComponent());
 
@@ -75,8 +77,6 @@ public class PicoPlugin implements ProjectComponent {
                 picoGui,
                 ToolWindowAnchor.RIGHT);
         toolWindow.setIcon(IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON, false));
-
-        createClassLoader();
     }
 
     private void createClassLoader() {
@@ -86,21 +86,31 @@ public class PicoPlugin implements ProjectComponent {
         for (int i = 0; i < modules.length; i++) {
             Module module = modules[i];
             final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-            final String compilerOutputPathUrl = moduleRootManager.getCompilerOutputPathUrl();
-            System.out.println("compilerOutputPathUrl = " + compilerOutputPathUrl);
             final VirtualFile[] files = moduleRootManager.getFiles(OrderRootType.CLASSES_AND_OUTPUT);
             for (int j = 0; j < files.length; j++) {
                 VirtualFile file = files[j];
-                String url = file.getUrl();
-                try {
-                    urls.add(new URL(url));
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                URL url = createURL(file);
+                if (url != null) {
+                    urls.add(url);
                 }
             }
         }
         URL[] urlArray = (URL[]) urls.toArray(new URL[urls.size()]);
         componentClassLoader = new URLClassLoader(urlArray, getClass().getClassLoader());
+    }
+
+    private URL createURL(VirtualFile file) {
+        try {
+            String path = file.getPath();
+            if(path.endsWith("!")) {
+                path = path.substring(0, path.length() - 1);
+            }
+            URL url = new File(path).toURL();
+            System.out.println("url = " + url);
+            return url;
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     private ActionToolbar createToolBar() {

@@ -262,5 +262,36 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals("something", jms.path);
     }
 
+    public void testChildContainerCanBeAddedAndRemoved() {
+        MutablePicoContainer parent = createPicoContainer();
+        MutablePicoContainer child = createPicoContainer();
+
+        assertTrue(parent.addChild(child));
+        assertFalse(parent.addChild(child));
+        assertTrue(child.getParentContainers().contains(parent));
+        assertTrue(parent.getChildContainers().contains(child));
+
+        assertTrue(parent.removeChild(child));
+        assertFalse(parent.removeChild(child));
+        assertFalse(child.getParentContainers().contains(parent));
+        assertFalse(parent.getChildContainers().contains(child));
+
+    }
+
+    public void testParentContainerCanBeAddedAndRemoved() {
+        MutablePicoContainer parent = createPicoContainer();
+        MutablePicoContainer child = createPicoContainer();
+
+        assertTrue(child.addParent(parent));
+        assertFalse(child.addParent(parent));
+        assertTrue(child.getParentContainers().contains(parent));
+        assertTrue(parent.getChildContainers().contains(child));
+
+        assertTrue(child.removeParent(parent));
+        assertFalse(child.removeParent(parent));
+        assertFalse(child.getParentContainers().contains(parent));
+        assertFalse(parent.getChildContainers().contains(child));
+
+    }
 }
 

@@ -93,14 +93,34 @@ public interface MutablePicoContainer extends PicoContainer {
      * so calling {@link #addParent} is not necessary.
      *
      * @param child child container.
+     * @return true if the child was actually added.
      */
-    void addChild(MutablePicoContainer child);
+    boolean addChild(MutablePicoContainer child);
 
     /**
      * Adds a Parent container. Will also add this instance as a child to parent,
      * so calling {@link #addChild} is not necessary.
      *
      * @param parent parent container.
+     * @return true if the parent was actually added.
      */
-    void addParent(MutablePicoContainer parent);
+    boolean addParent(MutablePicoContainer parent);
+
+    /**
+     * Adds a Child container. Will also remove this instance as a parent to child,
+     * so calling {@link #removeParent} is not necessary.
+     *
+     * @param child child container.
+     * @return true if the child was actually removed.
+     */
+    boolean removeChild(MutablePicoContainer child);
+
+    /**
+     * Adds a Parent container. Will also remove this instance as a child to parent,
+     * so calling {@link #removeChild} is not necessary.
+     *
+     * @param parent parent container.
+     * @return true if the parent was actually removed.
+     */
+    boolean removeParent(MutablePicoContainer parent);
 }

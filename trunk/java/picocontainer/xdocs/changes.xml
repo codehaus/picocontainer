@@ -7,6 +7,16 @@
 
     <!-- action types are add/update/fix/remove -->
     <body>
+        <release version="1.0" date="In CVS">
+
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-56">PICO-56</a>
+                - Removing child containers is impossible.
+            </action>
+
+        </release>
+
         <release version="1.0-beta-3" date="2003-11-03">
 
             <action dev="rinkrank" type="fix">
@@ -37,7 +47,7 @@
             <action dev="rinkrank" type="fix">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-50">PICO-50</a>
-                - Upgrade CVSSGrab.
+                - Upgrade CVSGrab.
             </action>
 
             <action dev="tirsen" type="add">
@@ -54,7 +64,7 @@
                 Big refactoring making the API simpler. This was needed because
                 there was no clear separation of concerns between the old
                 ComponentRegistry and PicoContainer interfaces (and the implementing
-                classes). This led to a lot of confusion and offered too many
+                classes). This lead to a lot of confusion and offered too many
                 ways to do things. The API is now less ambiguous, and there is no
                 "expert" or "normal" ways to use PicoContainer. One interface, one way.
             </action>

@@ -99,12 +99,20 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
         return mutablePicoContainer.registerComponentInstance(componentKey, componentInstance);
     }
 
-    public void addChild(MutablePicoContainer child) {
-        mutablePicoContainer.addChild(child);
+    public boolean addChild(MutablePicoContainer child) {
+        return mutablePicoContainer.addChild(child);
     }
 
-    public void addParent(MutablePicoContainer parent) {
-        mutablePicoContainer.addParent(parent);
+    public boolean addParent(MutablePicoContainer parent) {
+        return mutablePicoContainer.addParent(parent);
+    }
+
+    public boolean removeChild(MutablePicoContainer child) {
+        return mutablePicoContainer.removeChild(child);
+    }
+
+    public boolean removeParent(MutablePicoContainer parent) {
+        return removeParent(parent);
     }
 
     public Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {

@@ -3,9 +3,7 @@ package org.nanocontainer.ant;
 import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.extras.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.*;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.*;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -23,7 +21,7 @@ public class AntPropertyComponentAdapterFactory extends DecoratingComponentAdapt
                                                    Class componentImplementation,
                                                    Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new BeanPropertyComponentAdapterFactory.Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters)) {
-            public Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
                 // Ask the corresponding Ant Component object to set its properties
                 // (passed via Ant) on us. Super will then set them on the object.
                 String componentKey = (String) getComponentKey();

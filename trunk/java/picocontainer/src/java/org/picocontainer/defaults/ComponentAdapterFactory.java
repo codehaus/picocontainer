@@ -2,7 +2,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 
 /**
  * @author Jon Tirs&eacute;n

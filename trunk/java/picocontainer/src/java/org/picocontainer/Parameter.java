@@ -10,16 +10,11 @@
 
 package org.picocontainer;
 
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.ComponentAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-
 /**
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public interface Parameter {
-    ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistry) throws PicoIntrospectionException;
 }

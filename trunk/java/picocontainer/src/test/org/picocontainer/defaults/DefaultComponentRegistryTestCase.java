@@ -12,6 +12,7 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

@@ -11,6 +11,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

@@ -4,7 +4,7 @@ import org.picocontainer.gui.model.*;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AbstractPicoContainer;
 
 import javax.swing.*;

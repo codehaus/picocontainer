@@ -17,12 +17,16 @@ public abstract class AbstractPicoContainer implements MutablePicoContainer, Ser
     // Keeps track of the instantiation order
     private final List orderedComponents = new ArrayList();
 
-    protected ComponentAdapterFactory componentAdapterFactory;
+    private final ComponentAdapterFactory componentAdapterFactory;
 
     public abstract Collection getComponentKeys();
     public abstract List getComponentAdapters();
     public abstract void registerComponent(ComponentAdapter compSpec) throws PicoRegistrationException;
     public abstract ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException;
+
+    protected AbstractPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+        this.componentAdapterFactory = componentAdapterFactory;
+    }
 
     public void registerComponentInstance(Object component) throws PicoRegistrationException{
         registerComponentInstance(component.getClass(), component);

@@ -2,6 +2,7 @@ package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.defaults.*;

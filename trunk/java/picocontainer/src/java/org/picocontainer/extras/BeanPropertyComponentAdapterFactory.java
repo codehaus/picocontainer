@@ -1,9 +1,7 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.Parameter;
 import org.picocontainer.defaults.*;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -65,7 +63,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             }
         }
 
-        public Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             Object result = super.getComponentInstance(picoContainer);
 
             try {

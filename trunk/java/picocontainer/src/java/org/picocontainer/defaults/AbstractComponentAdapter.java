@@ -1,5 +1,7 @@
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
 

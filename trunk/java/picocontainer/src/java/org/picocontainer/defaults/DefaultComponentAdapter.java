@@ -10,10 +10,7 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
+import org.picocontainer.*;
 
 import java.util.*;
 import java.lang.reflect.Constructor;
@@ -120,7 +117,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         return result;
     }
 
-    public Object getComponentInstance(AbstractPicoContainer mutablePicoContainer)
+    public Object getComponentInstance(MutablePicoContainer mutablePicoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
             Class[] dependencyTypes = getDependencies(mutablePicoContainer);
@@ -138,7 +135,7 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         return componentInstance;
     }
 
-    private Object createComponent(ComponentAdapter[] adapterDependencies, AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private Object createComponent(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
             Constructor constructor = getConstructor(picoContainer);
             Object[] parameters = new Object[adapterDependencies.length];

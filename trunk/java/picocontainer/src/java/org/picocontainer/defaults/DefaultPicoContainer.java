@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+
 import java.util.*;
 
 /**
@@ -23,14 +25,13 @@ import java.util.*;
 public class DefaultPicoContainer extends AbstractPicoContainer {
     private final Map componentKeyToAdapterMap = new HashMap();
 
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+        super(componentAdapterFactory);
+    }
+
     public DefaultPicoContainer() {
         this(new DefaultComponentAdapterFactory());
     }
-
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
-        this.componentAdapterFactory = componentAdapterFactory;
-    }
-
 
     public Collection getComponentKeys() {
         return Collections.unmodifiableCollection(componentKeyToAdapterMap.keySet());

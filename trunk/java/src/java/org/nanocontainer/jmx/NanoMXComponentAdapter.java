@@ -10,12 +10,12 @@
 package org.nanocontainer.jmx;
 
 import org.picocontainer.extras.DecoratingComponentAdapter;
-import org.picocontainer.defaults.ComponentAdapter;
-import org.picocontainer.defaults.AbstractPicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.MutablePicoContainer;
 
 import javax.management.*;
 
@@ -36,7 +36,7 @@ public class NanoMXComponentAdapter extends DecoratingComponentAdapter {
         this.mbeanServer = mbeanServer;
     }
 
-    public Object getComponentInstance(AbstractPicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(MutablePicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Object component = super.getComponentInstance(componentRegistry);
 
         try {

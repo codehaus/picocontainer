@@ -1,9 +1,0 @@
-distributions.*
-target
-junit*
-*.log
-*.iws
-*.ipr
-*.iml
-.classpath
-.project

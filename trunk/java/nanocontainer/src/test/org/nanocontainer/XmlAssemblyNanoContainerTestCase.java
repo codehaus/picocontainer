@@ -9,11 +9,10 @@
 package org.nanocontainer;
 
 import junit.framework.TestCase;
-import org.xml.sax.SAXException;
-import org.picocontainer.extras.DefaultLifecyclePicoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoConfigurationException;
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.extras.DefaultLifecyclePicoContainer;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -29,30 +28,51 @@ import java.util.ArrayList;
 public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     protected void setUp() throws Exception {
-
         MockMonitor.monitorRecorder = "";
         MockMonitor.allComps = new ArrayList();
-
     }
 
-    public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateXml() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        // A and C have no no dependancies. B Depends on A.
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                 "<container>" +
                 "      <component classname='org.nanocontainer.Xxx$A'/>" +
                 "      <container>" +
-                "          <component classname='org.nanocontainer.Xxx$C'/>" +
+                "          <component classname='org.nanocontainer.Xxx$B'/>" +
                 "      </container>" +
-                "      <component classname='org.nanocontainer.Xxx$B'/>" +
+                "      <component classname='org.nanocontainer.Xxx$C'/>" +
                 "</container>"), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertEquals("Should match the expression", "<A<B<CC>B>A>!C!B!A", Xxx.componentRecorder);
-        assertEquals("Should match the expression", "*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", MockMonitor.monitorRecorder);
+        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
+        assertEquals("Should match the expression", "*A*B+A_started+B_started+B_stopped+A_stopped+B_disposed+A_disposed", MockMonitor.monitorRecorder);
     }
 
-    public void testInstantiateWithBespokeXmlFrontEnd() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateXmlWithImpossibleComponentDependanciesConsideringTheHierarchy()
+            throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        // A and C have no no dependancies. B Depends on A.
+
+        try {
+            new XmlAssemblyNanoContainer(new StringReader("" +
+                        "<container>" +
+                        "      <container>" +
+                        "          <component classname='org.nanocontainer.Xxx$A'/>" +
+                        "      </container>" +
+                        "      <component classname='org.nanocontainer.Xxx$B'/>" +
+                        "      <component classname='org.nanocontainer.Xxx$C'/>" +
+                        "</container>"), new MockMonitor());
+            fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
+        } catch (NoSatisfiableConstructorsException e) {
+            //expected
+        }
+    }
+
+
+    public void testInstantiateWithBespokeXmlFrontEnd() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         BespokeXmlFrontEnd.used = false;
 
@@ -66,10 +86,10 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertTrue("Bespoke Front End (a test class) should have been used",BespokeXmlFrontEnd.used);
     }
 
-    public void testInstantiateWithBogusXmlFrontEnd() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateWithBogusXmlFrontEnd() throws SAXException, ParserConfigurationException, IOException, PicoConfigurationException {
 
         try {
-            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+            new XmlAssemblyNanoContainer(new StringReader("" +
                     "<container xmlfrontend='YeeeeeHaaaaa'>" +
                     "      <component classname='org.nanocontainer.Xxx$A'/>" +
                     "</container>"), new MockMonitor());
@@ -79,7 +99,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testInstantiateWithBespokeContainer() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateWithBespokeContainer() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         OverriddenDefaultLifecyclePicoContainer.used = false;
 
@@ -95,10 +115,10 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testInstantiateWithBogusContainer() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testInstantiateWithBogusContainer() throws SAXException, ParserConfigurationException, IOException, PicoConfigurationException {
 
         try {
-            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+            new XmlAssemblyNanoContainer(new StringReader("" +
                     "<container container='YeeeHaaaaa'>" +
                     "      <component classname='org.nanocontainer.Xxx$A'/>" +
                     "</container>"), new MockMonitor());

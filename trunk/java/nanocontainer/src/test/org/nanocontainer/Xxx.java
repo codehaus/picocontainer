@@ -11,6 +11,9 @@ package org.nanocontainer;
 import org.picocontainer.lifecycle.Lifecycle;
 import junit.framework.Assert;
 
+/**
+ * An abstract component and three dependancies used for testing.
+ */
 public abstract class Xxx implements Lifecycle {
 
     public static String componentRecorder = "";
@@ -29,7 +32,7 @@ public abstract class Xxx implements Lifecycle {
 
     private String code() {
         String name = getClass().getName();
-        return name.substring(name.length() - 1);
+        return name.substring(name.indexOf('$')+1,name.length());
     }
 
     public static class A extends Xxx {}

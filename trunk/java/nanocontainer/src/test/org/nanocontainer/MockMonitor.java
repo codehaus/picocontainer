@@ -20,7 +20,7 @@ public class MockMonitor implements NanoContainerMonitor {
 
     private String code(Object inst) {
         String name = inst.getClass().getName();
-        return name.substring(name.length() - 1);
+        return name.substring(name.indexOf('$')+1,name.length());
     }
 
     public void componentsLifecycleEvent(String eventName, LifecyclePicoAdapter lpa) {

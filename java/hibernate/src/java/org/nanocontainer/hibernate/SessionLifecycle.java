@@ -15,7 +15,8 @@ import net.sf.hibernate.HibernateException;
 import org.picocontainer.Startable;
 
 /**
- * component providing session lifecycle
+ * component providing session lifecycle to be registered in container containing session 
+ * in question
  * @author Konstantin Pribluda
  * @version $Revision$ 
  */

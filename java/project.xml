@@ -104,6 +104,12 @@
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
     </dependency>
+
+    <dependency>
+      <id>webwork</id>
+      <version>1.3</version>
+      <url>http://www.opensymphony.com/webwork/</url>
+    </dependency>
   </dependencies>
 
   <build>

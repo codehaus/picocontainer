@@ -168,8 +168,27 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             picoContainer.getComponentInstance(IllegalAccessExceptionThrowing.class);
             fail();
         } catch (PicoInitializationException e) {
-            assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
+            assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
+    }
+
+    private static class Private {
+        private Private() {
+        }
+    }
+
+    private static class NotYourBusiness {
+        private NotYourBusiness(Private aPrivate) {
+            assertNotNull(aPrivate);
+        }
+    }
+
+    // http://jira.codehaus.org/browse/PICO-189
+    public void testShouldBeAbleToInstantiateNonPublicClassesWithNonPublicConstructors() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory(true));
+        pico.registerComponentImplementation(Private.class);
+        pico.registerComponentImplementation(NotYourBusiness.class);
+        assertNotNull(pico.getComponentInstance(NotYourBusiness.class));
     }
 
 }

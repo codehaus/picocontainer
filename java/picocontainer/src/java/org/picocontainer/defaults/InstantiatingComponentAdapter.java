@@ -16,6 +16,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,10 +34,12 @@ import java.util.List;
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
     private transient boolean verifying;
     protected Parameter[] parameters;
+    private final boolean allowNonPublicClasses;
 
-    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
         super(componentKey, componentImplementation);
         this.parameters = parameters;
+        this.allowNonPublicClasses = allowNonPublicClasses;
     }
 
     public Object getComponentInstance()
@@ -88,6 +91,13 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             result[i] = adapterDependency.getComponentImplementation();
         }
         return result;
+    }
+
+    protected Object newInstance(Constructor constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        if(allowNonPublicClasses) {
+            constructor.setAccessible(true);
+        }
+        return constructor.newInstance(parameters);
     }
 
     /**

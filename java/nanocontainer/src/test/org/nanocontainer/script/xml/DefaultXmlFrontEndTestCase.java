@@ -21,9 +21,9 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -36,8 +36,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "    <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
                 "</container>"));
@@ -48,8 +47,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <component class='org.picoextras.testmodel.DefaultWebServerConfig'/>" +
                 "    <container>" +
                 "        <component key='org.picoextras.testmodel.WebServer' class='org.picoextras.testmodel.WebServerImpl'/>" +
@@ -64,27 +62,25 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertNotNull(childContainer.getComponentInstance(WebServer.class));
     }
 
+    private URL findResource(String resourcePath) {
+        URL resource = getClass().getResource("/" + resourcePath);
+        assertNotNull("add " + resourcePath + " to the class-path", resource);
+        return resource;
+    }
+
     public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
 
-        String testcompJarFileName = System.getProperty("testcomp.jar");
-        // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/DEV/nano/reflection/src/test-comp/TestComp.jar";
+        URL testCompJar = findResource("TestComp.jar");
+        URL testCompJar2 = findResource("TestComp2.jar");
 
-        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
-        File testCompJar = new File(testcompJarFileName);
-        File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
-        assertTrue(testCompJar.isFile());
-        assertTrue(testCompJar2.isFile());
-
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <classpath>" +
-                "        <element file='" + testCompJar.getCanonicalPath() + "'/>" +
+                "        <element url='" + testCompJar.toExternalForm() + "'/>" +
                 "    </classpath>" +
                 "    <component key='foo' class='TestComp'/>" +
                 "    <container>" +
                 "        <classpath>" +
-                "            <element file='" + testCompJar2.getCanonicalPath() + "'/>" +
+                "            <element url='" + testCompJar2.toExternalForm() + "'/>" +
                 "        </classpath>" +
                 "        <component key='bar' class='TestComp2'/>" +
                 "    </container>" +
@@ -100,16 +96,15 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         Object barTestComp = childContainer.getComponentInstance("bar");
         assertNotNull("Container should have a 'bar' component", barTestComp);
 
-        assertEquals("foo classloader should be parent of bar", fooTestComp.getClass().getClassLoader(),
-                barTestComp.getClass().getClassLoader().getParent());
+        assertEquals("foo classloader should be parent of bar",
+                fooTestComp.getClass().getClassLoader(), barTestComp.getClass().getClassLoader().getParent());
 
     }
 
     public void testInstantiateXmlWithMissingComponent() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
-            InputSource inputSource = new InputSource(new StringReader(
-                    "<container>" +
+            InputSource inputSource = new InputSource(new StringReader("<container>" +
                     "      <component class='Foo'/>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
@@ -121,8 +116,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     public void testInstantiateEmptyXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
-            InputSource inputSource = new InputSource(new StringReader(
-                    "<container>" +
+            InputSource inputSource = new InputSource(new StringReader("<container>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
             fail("Should have thrown a EmptyCompositionException");
@@ -131,8 +125,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
-        InputSource inputSource = new InputSource(new StringReader(
-                "<container>" +
+        InputSource inputSource = new InputSource(new StringReader("<container>" +
                 "    <pseudocomponent factory='org.picoextras.script.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +
                 "      <config-or-whatever/>" +
                 "    </pseudocomponent>" +

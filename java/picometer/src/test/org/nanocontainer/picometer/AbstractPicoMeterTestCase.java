@@ -2,21 +2,14 @@ package org.picoextras.picometer;
 
 import junit.framework.TestCase;
 
-import java.io.File;
 import java.net.URL;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class AbstractPicoMeterTestCase extends TestCase {
+public abstract class AbstractPicoMeterTestCase extends TestCase {
     protected URL source;
-
-    protected void setUp() throws Exception {
-        String picometerHome = System.getProperty("picometer.home");
-        assertNotNull(picometerHome);
-        source = new File(picometerHome, "src/test/org/picoextras/picometer/AbstractPicoMeterTestCase.java").toURL();
-    }
 
     public static class Dummy {
     }
@@ -44,5 +37,17 @@ public class AbstractPicoMeterTestCase extends TestCase {
         public OneInjection(Dummy dummy) {
             this.dummy = dummy;
         }
+    }
+
+    // putting this at the end makes test less brittle -- jon
+
+    protected void setUp() throws Exception {
+        source = findResource("org/picoextras/picometer/AbstractPicoMeterTestCase.java");
+    }
+
+    private URL findResource(String resourcePath) {
+        URL resource = getClass().getResource("/" + resourcePath);
+        assertNotNull("add " + resourcePath + " to the class-path", resource);
+        return resource;
     }
 }

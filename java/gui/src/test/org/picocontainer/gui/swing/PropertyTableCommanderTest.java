@@ -9,7 +9,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.DefaultTreeModel;
 
-import org.picocontainer.gui.model.ComponentTreeNode;
+import org.picocontainer.gui.model.ComponentNode;
 import org.picocontainer.gui.model.BeanPropertyTableModel;
 
 /**
@@ -26,7 +26,7 @@ public class PropertyTableCommanderTest extends TestCase {
         PropertyTableCommander propertyTableCommander = new PropertyTableCommander(tree, table);
 
         DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-        treeModel.setRoot(new ComponentTreeNode(BeanPropertyTableModelTestCase.Man.class));
+        treeModel.setRoot(new ComponentNode(BeanPropertyTableModelTestCase.Man.class));
 
         tree.setSelectionPath(new TreePath(treeModel.getRoot()));
         BeanPropertyTableModel model = (BeanPropertyTableModel) table.getModel();

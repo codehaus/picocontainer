@@ -4,6 +4,7 @@ import org.picocontainer.gui.model.*;
 
 import javax.swing.*;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
 /**
@@ -12,13 +13,13 @@ import java.awt.*;
  */
 public class PicoGui extends JPanel {
 
-    public PicoGui(ComponentRegistryTreeNode rootNode) {
+    public PicoGui(ContainerNode rootNode) {
         super(new BorderLayout());
 
         JSplitPane split = new JSplitPane();
         JPanel left = new JPanel(new BorderLayout());
 
-        TreeModel treeModel = new PicoTreeModel(rootNode);
+        TreeModel treeModel = new DefaultTreeModel(rootNode);
         JTree tree = new JTree(treeModel);
         tree.setCellRenderer(new PicoTreeCellRenderer());
         left.add(new JScrollPane(tree), BorderLayout.CENTER);
@@ -58,7 +59,7 @@ public class PicoGui extends JPanel {
     }
 
     public static void main(String[] args) {
-        ComponentRegistryTreeNode parentNode = new ComponentRegistryTreeNode();
+        ContainerNode parentNode = new ContainerNode();
         PicoGui gui = new PicoGui(parentNode);
 
         JFrame f = new JFrame();

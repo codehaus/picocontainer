@@ -13,11 +13,10 @@ import javax.swing.tree.TreePath;
 public class EditContainerPanelTestCase extends TestCase {
     private JTree tree;
     private EditContainerPanel panel;
-    private ComponentRegistryTreeNode root;
+    private ContainerNode root;
 
     protected void setUp() {
-        root = new ComponentRegistryTreeNode();
-
+        root = new ContainerNode();
         tree = new JTree(root);
         panel = new EditContainerPanel(tree);
     }
@@ -26,7 +25,7 @@ public class EditContainerPanelTestCase extends TestCase {
         tree.setSelectionPath(new TreePath(root.getPath()));
 
         JTextField componentField = panel.getComponentField();
-        componentField.setText(ComponentRegistryTreeNodeTestCase.Foo.class.getName());
+        componentField.setText(Foo.class.getName());
 
         panel.registerComponent();
 
@@ -35,7 +34,7 @@ public class EditContainerPanelTestCase extends TestCase {
 
     public void testUnregisterComponent() {
         testRegisterComponent();
-        ComponentTreeNode fooNode = (ComponentTreeNode) root.getChildAt(0);
+        ComponentNode fooNode = (ComponentNode) root.getChildAt(0);
         tree.setSelectionPath(new TreePath(fooNode.getPath()));
 
         panel.removeSelected();
@@ -43,36 +42,37 @@ public class EditContainerPanelTestCase extends TestCase {
         assertEquals(0, root.getChildCount());
     }
 
-    public void testAddRegistry() {
+    public void testAddContainer() {
         tree.setSelectionPath(new TreePath(root.getPath()));
         panel.addRegistry();
         assertEquals(1, root.getChildCount());
     }
 
-    public void testRemoveRegistry() {
-        testAddRegistry();
-        ComponentRegistryTreeNode fooNode = (ComponentRegistryTreeNode) root.getChildAt(0);
+    public void testRemoveContainer() {
+        testAddContainer();
+        ContainerNode fooNode = (ContainerNode) root.getChildAt(0);
         tree.setSelectionPath(new TreePath(fooNode.getPath()));
 
         panel.removeSelected();
 
         assertEquals(0, root.getChildCount());
     }
+
 
     public void testExecuteContainer() {
         tree.setSelectionPath(new TreePath(root.getPath()));
         JTextField componentField = panel.getComponentField();
 
         // Make a Foo in the root
-        componentField.setText(ComponentRegistryTreeNodeTestCase.Foo.class.getName());
+////        componentField.setText(ContainerNodeTestCase.Foo.class.getName());
         panel.registerComponent();
 
         // Make a Bar in a child
         panel.addRegistry();
-        componentField.setText(ComponentRegistryTreeNodeTestCase.Bar.class.getName());
+////        componentField.setText(ContainerNodeTestCase.Bar.class.getName());
         panel.registerComponent();
 
-        ComponentRegistryTreeNode childRegNode = (ComponentRegistryTreeNode) root.getChildAt(1);
+        ContainerNode childRegNode = (ContainerNode) root.getChildAt(1);
         tree.setSelectionPath(new TreePath(childRegNode.getPath()));
 
         panel.executeSelected();

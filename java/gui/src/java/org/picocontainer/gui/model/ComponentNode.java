@@ -8,8 +8,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class ComponentTreeNode extends DefaultMutableTreeNode {
-    public ComponentTreeNode(ComponentAdapter componentAdapter) {
-        super(componentAdapter);
+public class ComponentNode extends DefaultMutableTreeNode {
+    public ComponentNode(Class componentImplementation) {
+        super(componentImplementation);
     }
 }

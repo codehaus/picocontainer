@@ -2,7 +2,8 @@ package org.picocontainer;
 
 /**
  * A component adapter is responsible for instantiating and caching
- * a specific component instance.
+ * a specific component instance. It is used internally by PicoContainer,
+ * and is not meant to be used directly by clients of the PicoContainer API.
  *
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n

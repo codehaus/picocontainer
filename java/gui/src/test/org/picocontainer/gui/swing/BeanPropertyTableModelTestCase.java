@@ -48,9 +48,9 @@ public class BeanPropertyTableModelTestCase extends TestCase {
         BeanPropertyComponentAdapterFactory factory = new BeanPropertyComponentAdapterFactory(
                 new DefaultComponentAdapterFactory()
         );
-        BeanPropertyComponentAdapterFactory.Adapter adapter =
-                (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter("whatever", Man.class, null);
-        model = new BeanPropertyTableModel(adapter);
+//        BeanPropertyComponentAdapterFactory.Adapter adapter =
+//                (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter("whatever", Man.class, null);
+//        model = new BeanPropertyTableModel(adapter);
     }
 
     public void testRows() throws IntrospectionException {

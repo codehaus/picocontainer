@@ -3,18 +3,5 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-testmodel</id>
-    <currentVersion>1.0-SNAPSHOT</currentVersion>
     <name>nanocontainer-testmodel</name>
-
-    <url>http://www.nanocontainer.org/</url>
-
-    <siteAddress>beaver.codehaus.org</siteAddress>
-    <siteDirectory>/home/projects/picocontainer/public_html/${pom.artifactId}/versions/${pom.currentVersion}</siteDirectory>
-
-    <distributionSite>beaver.codehaus.org</distributionSite>
-    <distributionDirectory>/dist</distributionDirectory>
-
-    <dependencies>
-    </dependencies>
-
 </project>

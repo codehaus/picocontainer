@@ -45,15 +45,6 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
-        <developer>
-            <name>Aslak Helles&oslash;y</name>
-            <id>rinkrank</id>
-            <email>rinkrank@codehaus.org</email>
-            <organization></organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
     </developers>
 
     <dependencies>

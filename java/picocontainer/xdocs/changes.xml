@@ -19,6 +19,13 @@
         Changed signatures on PicoContainer from registerComponent to more verbose
         method names.
       </action>
+      <action dev="paul" type="fix">
+        Fixed <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-31">PICO-31</a>
+        - Make getAggregateComponentProxy() an interface method on PicoContainer.
+      </action>
+      <action dev="rinkrank" type="update">
+        Renamed AggregateProxyFactory to CompositeProxyFactory.
+      </action>
     </release>
 
     <release version="1.0-alpha-2" date="2003-07-10">

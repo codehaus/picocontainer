@@ -18,8 +18,7 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
     }
 
     public DefaultLifecyclePicoContainer(DefaultPicoContainer mutablePicoContainer) {
-        this.mutablePicoContainer = mutablePicoContainer;
-        lifecyclePicoAdapter = new DefaultLifecyclePicoAdapter(mutablePicoContainer);
+        this(new DefaultLifecyclePicoAdapter(mutablePicoContainer), mutablePicoContainer);
     }
 
     public DefaultLifecyclePicoContainer() {
@@ -81,6 +80,10 @@ public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, Muta
 
     public List getComponentInstances() throws PicoException {
         return mutablePicoContainer.getComponentInstances();
+    }
+
+    public List getUnmanagedComponentInstances() throws PicoException {
+        return mutablePicoContainer.getUnmanagedComponentInstances();
     }
 
     public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException {

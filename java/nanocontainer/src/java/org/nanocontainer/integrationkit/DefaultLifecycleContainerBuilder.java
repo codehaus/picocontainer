@@ -9,20 +9,24 @@
 package org.picoextras.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.extras.DefaultLifecyclePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.LinkedList;
 
 /**
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @version $Revision$
  */
 public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, String assemblyName) {
 
-        DefaultLifecyclePicoContainer container = new DefaultLifecyclePicoContainer();
+        MutablePicoContainer container = new DefaultPicoContainer();
+        DefaultLifecyclePicoAdapter lifecycle = new DefaultLifecyclePicoAdapter(container);
 
         if (parentContainerRef != null) {
             MutablePicoContainer parent = (MutablePicoContainer) parentContainerRef.get();
@@ -31,7 +35,7 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
 
         try {
             assembler.assembleContainer(container, assemblyName);
-            container.start();
+            lifecycle.start();
         } catch (Exception e) {
             throw new RuntimeException(e); // TODO: What should I throw?
         }
@@ -43,15 +47,14 @@ public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
 
     public void killContainer(ObjectReference containerRef) {
         try {
-            DefaultLifecyclePicoContainer container = (DefaultLifecyclePicoContainer) containerRef.get();
-            container.stop();
-            container.dispose();
-            List parentsToRemove = new LinkedList(); // eww
-            for (Iterator iterator = container.getParentContainers().iterator(); iterator.hasNext();) {
-                parentsToRemove.add(iterator.next());
-            }
+            LifecyclePicoAdapter lifecycle = (LifecyclePicoAdapter) containerRef.get();
+            lifecycle.stop();
+            lifecycle.dispose();
+
+            MutablePicoContainer picoContainer = (MutablePicoContainer) lifecycle.getPicoContainer();
+            List parentsToRemove = new ArrayList(picoContainer.getParentContainers());
             for (Iterator iterator = parentsToRemove.iterator(); iterator.hasNext();) {
-                container.removeParent((MutablePicoContainer) iterator.next());
+                picoContainer.removeParent((MutablePicoContainer) iterator.next());
             }
         } catch (Exception e) {
             throw new RuntimeException("Cannot shutdown container", e); // todo: what should i throw?

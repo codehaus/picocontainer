@@ -16,6 +16,7 @@ package org.picocontainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
+ * @version $Revision$
  */
 public interface MutablePicoContainer extends PicoContainer {
 

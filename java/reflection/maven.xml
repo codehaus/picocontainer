@@ -1,3 +1,0 @@
-<project default="binary:install">
-    <goal name="binary:install" prereqs="jar:install"/>
-</project>

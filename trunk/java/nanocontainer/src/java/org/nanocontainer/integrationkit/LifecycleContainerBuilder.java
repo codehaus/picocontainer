@@ -17,7 +17,7 @@ import org.picocontainer.defaults.ObjectReference;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultLifecycleContainerBuilder implements ContainerBuilder {
+public class LifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope) {
 

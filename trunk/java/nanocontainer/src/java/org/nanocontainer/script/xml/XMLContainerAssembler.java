@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picoextras.integrationkit.ContainerAssembler;
-import org.picoextras.reflection.DefaultReflectionFrontEnd;
-import org.picoextras.reflection.ReflectionFrontEnd;
+import org.picoextras.reflection.DefaultReflectionContainerAdapter;
+import org.picoextras.reflection.ReflectionContainerAdapter;
 import org.picoextras.integrationkit.PicoAssemblyException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,15 +37,15 @@ import java.util.List;
  * @author Jeppe Cramon
  * @version $Revision$
  */
-public class DefaultXmlFrontEnd implements ContainerAssembler {
+public class XMLContainerAssembler implements ContainerAssembler {
     private Element rootElement;
 
-    public DefaultXmlFrontEnd(Element rootElement) {
+    public XMLContainerAssembler(Element rootElement) {
         this.rootElement = rootElement;
     }
 
     public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd(getClass().getClassLoader(),container);
+        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(getClass().getClassLoader(),container);
         try {
             registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
         } catch (ClassNotFoundException e) {
@@ -60,7 +60,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
+    private void registerComponentsAndChildContainers(ReflectionContainerAdapter reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
@@ -97,7 +97,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private void registerClasspathElement(ReflectionFrontEnd reflectionFrontEnd, Element classpathElement) throws IOException {
+    private void registerClasspathElement(ReflectionContainerAdapter reflectionFrontEnd, Element classpathElement) throws IOException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
@@ -123,7 +123,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private PicoContainer registerComponentImplementation(ReflectionFrontEnd reflectionFrontEnd, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
+    private PicoContainer registerComponentImplementation(ReflectionContainerAdapter reflectionFrontEnd, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
         String className = componentElement.getAttribute("class");
         if ("".equals(className)) {
             throw new SAXException("class attribute not specified for " + componentElement.getNodeName());
@@ -169,7 +169,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         if (PicoContainer.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
             // the component was actually a container. Recurse further down.
             MutablePicoContainer childContainer = (MutablePicoContainer) componentAdapter.getComponentInstance();
-            ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(reflectionFrontEnd, childContainer);
+            ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(reflectionFrontEnd, childContainer);
             registerComponentsAndChildContainers(childFrontEnd, componentElement);
             return childContainer;
         } else {
@@ -177,7 +177,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoAssemblyException {
+    private void registerPseudoComponent(ReflectionContainerAdapter pico, Element componentElement) throws ClassNotFoundException, PicoAssemblyException {
         String factoryClass = componentElement.getAttribute("factory");
 
         if (factoryClass == null || factoryClass.equals("")) {
@@ -185,7 +185,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
             // unless we provide a default.
         }
 
-        ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter tempContainer = new DefaultReflectionContainerAdapter();
         tempContainer.registerComponentImplementation(XmlPseudoComponentFactory.class.getName(), factoryClass);
         XmlPseudoComponentFactory factory = (XmlPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
 

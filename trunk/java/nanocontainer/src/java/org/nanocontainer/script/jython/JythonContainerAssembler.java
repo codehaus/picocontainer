@@ -1,8 +1,8 @@
 package org.picoextras.script.jython;
 
 import org.picoextras.integrationkit.ContainerAssembler;
-import org.picoextras.reflection.ReflectionFrontEnd;
-import org.picoextras.reflection.DefaultReflectionFrontEnd;
+import org.picoextras.reflection.ReflectionContainerAdapter;
+import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.python.util.PythonInterpreter;
 
@@ -25,9 +25,9 @@ public class JythonContainerAssembler implements ContainerAssembler {
 
     public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
         PythonInterpreter interpreter = new PythonInterpreter();
-        ReflectionFrontEnd reflectionAdapter = new DefaultReflectionFrontEnd(container);
+        ReflectionContainerAdapter reflectionAdapter = new DefaultReflectionContainerAdapter(container);
         interpreter.set("rootContainer", reflectionAdapter);
-        interpreter.exec("from org.picoextras.reflection import DefaultReflectionFrontEnd");
+        interpreter.exec("from org.picoextras.reflection import DefaultReflectionContainerAdapter");
         interpreter.execfile(new InputStream() {
             public int read() throws IOException {
                 return script.read();

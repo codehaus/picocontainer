@@ -54,7 +54,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
     }
 
     private MutablePicoContainer createPicoContainer(InputSource inputSource) throws ParserConfigurationException, IOException, SAXException {
-        ContainerAssembler assembler = new DefaultXmlFrontEnd(getRootElement(inputSource));
+        ContainerAssembler assembler = new XMLContainerAssembler(getRootElement(inputSource));
         MutablePicoContainer pico = new DefaultPicoContainer();
         assembler.assembleContainer(pico, null);
         return pico;

@@ -57,7 +57,7 @@ import org.picocontainer.defaults.UnsatisfiableDependenciesException;
  * </p>
  * <p>
  * If you want to cache the EJB with a {@link org.picocontainer.defaults.CachingComponentAdapter}, you have to use a
- * {@link org.nanocontainer.concurrent.ThreadLocalReference}, since you may not use an instance of the EJB in different
+ * {@link org.nanocontainer.proxytoys.ThreadLocalReference}, since you may not use an instance of the EJB in different
  * threads. Use an {@link EJBClientComponentAdapterFactory}for such a completely transparent {@link ThreadLocal}support.
  * </p>
  * @author J&ouml;rg Schaible

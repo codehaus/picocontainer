@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.concurrent;
+package org.nanocontainer.proxytoys;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +31,7 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
  * <p>
  * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
  * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
- * accessed from different threads. See {@link org.nanocontainer.concurrent.ThreadLocalComponentAdapterFactory}for details.
+ * accessed from different threads. See {@link org.nanocontainer.proxytoys.ThreadLocalComponentAdapterFactory}for details.
  * </p>
  * <p>
  * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented

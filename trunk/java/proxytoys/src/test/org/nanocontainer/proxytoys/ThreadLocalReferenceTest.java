@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.concurrent;
+package org.nanocontainer.proxytoys;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

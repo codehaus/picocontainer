@@ -18,7 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.nanocontainer.concurrent.ThreadLocalReference;
+import org.nanocontainer.proxytoys.ThreadLocalReference;
 import org.picocontainer.defaults.ObjectReference;
 
 import com.opensymphony.xwork.ObjectFactory;

@@ -17,7 +17,7 @@ import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -164,17 +164,17 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertEquals(8080, config.getPort());
     }
 
+    // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() throws IOException, ParserConfigurationException, SAXException {
         Reader script = new StringReader("" +
-                "<container componentadapterfactory='" + ImplementationHidingComponentAdapterFactory.class.getName() + "'>" +
+                "<container componentadapterfactory='" + ConstructorInjectionComponentAdapterFactory.class.getName() + "'>" +
                 "  <component class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
-        Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
+        Object wsc1 = pico.getComponentInstanceOfType(WebServerConfig.class);
+        Object wsc2 = pico.getComponentInstanceOfType(WebServerConfig.class);
 
-        assertTrue(wsc instanceof WebServerConfig);
-        assertFalse(wsc instanceof DefaultWebServerConfig);
-
+        assertNotSame(wsc1, wsc2);
     }
 }

@@ -27,14 +27,14 @@ import java.util.Vector;
 public class StringRegistrationNanoContainerTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
 //        nc.instantiateComponents();
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
-        DefaultStringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        DefaultStringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServerImpl");
 //        nc.instantiateComponents();
@@ -44,7 +44,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
         try {
             nc.registerComponent("Ping");
             fail("should have failed");
@@ -54,7 +54,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
     }
 
     public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
         nc.registerComponent(
@@ -79,7 +79,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
     public void testGetComponentTypes() throws ClassNotFoundException, PicoInitializationException, PicoRegistrationException {
 
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.Default();
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer();
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
         nc.registerComponent("org.nanocontainer.testmodel.WebServerImpl");
@@ -93,7 +93,7 @@ public class StringRegistrationNanoContainerTestCase extends TestCase {
 
     public void testStringContainerWithClassLoader() throws ClassNotFoundException, PicoException, PicoRegistrationException {
 
-        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer.WithClassLoader(new URLClassLoader(new URL[0]));
+        StringRegistrationNanoContainer nc = new DefaultStringRegistrationNanoContainer(new URLClassLoader(new URL[0]));
 
         nc.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
 

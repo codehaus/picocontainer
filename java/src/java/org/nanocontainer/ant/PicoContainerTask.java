@@ -41,9 +41,6 @@ public class PicoContainerTask extends Task {
     private Class delegateComponentAdapterFactoryClass = DefaultComponentAdapterFactory.class;
     private MutablePicoContainer pico;
 
-    public PicoContainerTask() {
-    }
-
     public void setComponentAdapterFactoryClass(Class factoryClass) {
         this.delegateComponentAdapterFactoryClass = factoryClass;
     }
@@ -94,10 +91,11 @@ public class PicoContainerTask extends Task {
 
             try {
                 Class aClass = getClassLoader().loadClass(componentdef.getClassname());
+                MutablePicoContainer picoContainer = (MutablePicoContainer) getPicoContainer();
                 if (parameters != null) {
-                    pico.registerComponentImplementation(componentdef.getKey(), aClass, parameters);
+                    picoContainer.registerComponentImplementation(componentdef.getKey(), aClass, parameters);
                 } else {
-                    pico.registerComponentImplementation(componentdef.getKey(), aClass);
+                    picoContainer.registerComponentImplementation(componentdef.getKey(), aClass);
                 }
             } catch (PicoIntrospectionException e) {
                 throw new BuildException(e);

@@ -30,22 +30,18 @@ public class DefaultStringRegistrationNanoContainer implements StringRegistratio
         classLoaders.add(classLoader);
     }
 
-    public static class Default extends DefaultStringRegistrationNanoContainer {
-        public Default() {
-            super(
-                    DefaultStringRegistrationNanoContainer.class.getClassLoader(),
-                    new DefaultPicoContainer()
-            );
-        }
+    public DefaultStringRegistrationNanoContainer() {
+        this(
+                DefaultStringRegistrationNanoContainer.class.getClassLoader(),
+                new DefaultPicoContainer()
+        );
     }
 
-    public static class WithClassLoader extends DefaultStringRegistrationNanoContainer {
-        public WithClassLoader(ClassLoader classLoader) {
-            super(
-                    classLoader,
-                    new DefaultPicoContainer()
-            );
-        }
+    public DefaultStringRegistrationNanoContainer(ClassLoader classLoader) {
+        this(
+                classLoader,
+                new DefaultPicoContainer()
+        );
     }
 
     public void registerComponent(String compClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {

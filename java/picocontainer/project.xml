@@ -21,11 +21,11 @@
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
     <description>
-            Please refer to the &lt;a href="http://picocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
+        Please refer to the &lt;a href="http://picocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
     </description>
     <shortDescription>Small footprint Dependency Injection container</shortDescription>
     <url>http://www.picocontainer.org/</url>
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/PICO</issueTrackingUrl>
     <siteAddress>beaver.codehaus.org</siteAddress>
     <siteDirectory>/home/projects/picocontainer/public_html/versions/${pom.currentVersion}</siteDirectory>
 
@@ -35,7 +35,7 @@
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/java/picocontainer/?viewcvs.cgi</url>
+        <url>http://cvs.picocontainer.codehaus.org/viewrep/picocontainer</url>
     </repository>
 
     <developers>

@@ -57,7 +57,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         pico.registerComponent(Foo.class, FooImpl.class);
         pico.start();
 
-        AggregatingNanoContainer aggContainer = new AggregatingNanoContainer.ComponentsFromContainer(pico, new SequentialInvocationHandler(pico));
+        AggregatingNanoContainer aggContainer = new AggregatingNanoContainer(pico, new SequentialInvocationHandler(pico));
         Object proxy = aggContainer.getProxy();
 
         Collection proxyCollection = (Collection) proxy;
@@ -83,7 +83,7 @@ public class AggregatingNanoContainerTestCase extends TestCase {
         pico.registerComponent(Foo.class, FooImpl.class);
         pico.start();
 
-        AggregatingNanoContainer aggContainer = new AggregatingNanoContainer.ComponentsFromContainer(pico, new SequentialInvocationHandler(pico));
+        AggregatingNanoContainer aggContainer = new AggregatingNanoContainer(pico, new SequentialInvocationHandler(pico));
         Object proxy = aggContainer.getProxy();
 
         Collection proxyCollection = (Collection) proxy;

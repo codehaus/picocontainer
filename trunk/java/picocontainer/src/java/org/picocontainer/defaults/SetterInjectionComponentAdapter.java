@@ -40,7 +40,7 @@ import java.util.Set;
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private transient ObjectReference instantiationGuard;
+    private transient Guard instantiationGuard;
     private transient List setters;
     private transient List setterNames;
     private transient Class[] setterTypes;
@@ -127,33 +127,34 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      */
     public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
-        final Parameter[] matchingParameters = getMatchingParameterListForSetters(container);
         if (instantiationGuard == null) {
-            instantiationGuard = new CyclicDependency.ThreadLocalGuard();
-        }
-        return CyclicDependency.observe(instantiationGuard, getComponentImplementation(), new CyclicDependency() {
-            public Object run() {
-                try {
-                    final Object componentInstance = newInstance(constructor, null);
-                    for (int i = 0; i < setters.size(); i++) {
-                        final Method setter = (Method) setters.get(i);
-                        setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, SetterInjectionComponentAdapter.this, setterTypes[i])});
+            instantiationGuard = new Guard() {
+                public Object run() {
+                    final Parameter[] matchingParameters = getMatchingParameterListForSetters(container);
+                    try {
+                        final Object componentInstance = newInstance(constructor, null);
+                        for (int i = 0; i < setters.size(); i++) {
+                            final Method setter = (Method) setters.get(i);
+                            setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(container, SetterInjectionComponentAdapter.this, setterTypes[i])});
+                        }
+                        return componentInstance;
+                    } catch (InvocationTargetException e) {
+                        if (e.getTargetException() instanceof RuntimeException) {
+                            throw (RuntimeException) e.getTargetException();
+                        } else if (e.getTargetException() instanceof Error) {
+                            throw (Error) e.getTargetException();
+                        }
+                        throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                    } catch (InstantiationException e) {
+                        throw new PicoInvocationTargetInitializationException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new PicoInvocationTargetInitializationException(e);
                     }
-                    return componentInstance;
-                } catch (InvocationTargetException e) {
-                    if (e.getTargetException() instanceof RuntimeException) {
-                        throw (RuntimeException) e.getTargetException();
-                    } else if (e.getTargetException() instanceof Error) {
-                        throw (Error) e.getTargetException();
-                    }
-                    throw new PicoInvocationTargetInitializationException(e.getTargetException());
-                } catch (InstantiationException e) {
-                    throw new PicoInvocationTargetInitializationException(e);
-                } catch (IllegalAccessException e) {
-                    throw new PicoInvocationTargetInitializationException(e);
                 }
-            }
-        });
+            };
+        }
+        instantiationGuard.setArguments(container);
+        return instantiationGuard.observe(getComponentImplementation());
     }
 
     /**
@@ -162,18 +163,19 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      */
     public void verify(final PicoContainer container) throws PicoVerificationException {
         try {
-            final Parameter[] currentParameters = getMatchingParameterListForSetters(container);
             if (verifyingGuard == null) {
-                verifyingGuard = new CyclicDependency.ThreadLocalGuard();
-            }
-            CyclicDependency.observe(verifyingGuard, getComponentImplementation(), new CyclicDependency() {
-                public Object run() {
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
+                verifyingGuard = new Guard() {
+                    public Object run() {
+                        final Parameter[] currentParameters = getMatchingParameterListForSetters(container);
+                        for (int i = 0; i < currentParameters.length; i++) {
+                            currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
+                        }
+                        return null;
                     }
-                    return null;
-                }
-            });
+                };
+            }
+            verifyingGuard.setArguments(container);
+            verifyingGuard.observe(getComponentImplementation());
         } catch (PicoVerificationException ex) {
             throw ex;
         } catch (Exception ex) {

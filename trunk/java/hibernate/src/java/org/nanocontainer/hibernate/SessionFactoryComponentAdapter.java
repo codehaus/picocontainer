@@ -21,8 +21,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.CyclicDependency;
-import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.util.HashSet;
@@ -37,7 +35,6 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
 
     private final Object componentKey;
     private Parameter configurationParameter = null;
-    private transient ObjectReference verifyingGuard;
 
     /**
      * construct adapter with net.sf.hibernate.SessionFactory.class as key
@@ -70,7 +67,6 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
      * obtain session factory instance if possible
      */
     public Object getComponentInstance(PicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException {
-        verify(picoContainer);
         try {
             return ((Configuration)configurationParameter.resolveInstance(picoContainer, this, Configuration.class)).buildSessionFactory();
         } catch (HibernateException he) {
@@ -79,21 +75,12 @@ public class SessionFactoryComponentAdapter implements ComponentAdapter {
     }
 
     public void verify(final PicoContainer picoContainer) throws PicoVerificationException {
-        if (verifyingGuard == null) {
-            // TODO: Konstantin, use another appropriate guard or create a SessionGuard
-            verifyingGuard = new CyclicDependency.SimpleGuard();
-        }
-        CyclicDependency.observe(verifyingGuard, getComponentImplementation(), new CyclicDependency() {
-            public Object run() {
-                HashSet unsatisfiableDependencies = new HashSet();
-                unsatisfiableDependencies.add(Configuration.class);
+        HashSet unsatisfiableDependencies = new HashSet();
+        unsatisfiableDependencies.add(Configuration.class);
 
-                if (!configurationParameter.isResolvable(picoContainer, SessionFactoryComponentAdapter.this, Configuration.class)) {
-                    throw new UnsatisfiableDependenciesException(SessionFactoryComponentAdapter.this, unsatisfiableDependencies);
-                }
-                return null;
-            }
-        });
+        if (!configurationParameter.isResolvable(picoContainer, SessionFactoryComponentAdapter.this, Configuration.class)) {
+            throw new UnsatisfiableDependenciesException(SessionFactoryComponentAdapter.this, unsatisfiableDependencies);
+        }
     }
 
     public void accept(PicoVisitor visitor) {

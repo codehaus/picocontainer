@@ -9,20 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import net.sf.hibernate.Session;
 import net.sf.hibernate.HibernateException;
-
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import net.sf.hibernate.Session;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 
 /** 

@@ -42,7 +42,14 @@ import java.util.Set;
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient List sortedMatchingConstructors;
-    private transient ObjectReference instantiationGuard;
+    private transient Guard instantiationGuard;
+    
+    private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
+        protected PicoContainer container;
+        private void setArguments(PicoContainer container) {
+            this.container = container;
+        }
+    }
 
     /**
      * Explicitly specifies parameters. If parameters are null, default parameters
@@ -125,33 +132,34 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        final Constructor constructor = getGreediestSatisfiableConstructor(container);
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
-            instantiationGuard = new CyclicDependency.ThreadLocalGuard();
-        }
-        return CyclicDependency.observe(instantiationGuard, getComponentImplementation(), new CyclicDependency() {
-            public Object run() {
-                try {
-                    Object[] parameters = getConstructorArguments(container, constructor);
-                    return newInstance(constructor, parameters);
-                } catch (InvocationTargetException e) {
-                    if (e.getTargetException() instanceof RuntimeException) {
-                        throw (RuntimeException) e.getTargetException();
-                    } else if (e.getTargetException() instanceof Error) {
-                        throw (Error) e.getTargetException();
+            instantiationGuard = new Guard() {
+                public Object run() {
+                    final Constructor constructor = getGreediestSatisfiableConstructor(container);
+                    try {
+                        Object[] parameters = getConstructorArguments(container, constructor);
+                        return newInstance(constructor, parameters);
+                    } catch (InvocationTargetException e) {
+                        if (e.getTargetException() instanceof RuntimeException) {
+                            throw (RuntimeException) e.getTargetException();
+                        } else if (e.getTargetException() instanceof Error) {
+                            throw (Error) e.getTargetException();
+                        }
+                        throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                    } catch (InstantiationException e) {
+                        // can't get her because checkConcrete() will catch it earlier, but see PICO-191
+                        ///CLOVER:OFF
+                        throw new PicoInitializationException("Should never get here");
+                        ///CLOVER:ON
+                    } catch (IllegalAccessException e) {
+                        throw new PicoInitializationException(e);
                     }
-                    throw new PicoInvocationTargetInitializationException(e.getTargetException());
-                } catch (InstantiationException e) {
-                    // can't get her because checkConcrete() will catch it earlier, but see PICO-191
-                    ///CLOVER:OFF
-                    throw new PicoInitializationException("Should never get here");
-                    ///CLOVER:ON
-                } catch (IllegalAccessException e) {
-                    throw new PicoInitializationException(e);
                 }
-            }
-        });
+            };
+        }
+        instantiationGuard.setArguments(container);
+        return instantiationGuard.observe(getComponentImplementation());
     }
 
     protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {

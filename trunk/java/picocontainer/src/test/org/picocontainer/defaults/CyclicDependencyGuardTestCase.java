@@ -14,31 +14,31 @@ import junit.framework.TestCase;
 /**
  * Test the CyclicDependecy.
  */
-public class CyclicDependencyTestCase
+public class CyclicDependencyGuardTestCase
         extends TestCase {
-    private Runner[] runner = new Runner[3];
-
-    class Runner implements Runnable {
+    private Runnable[] runner = new Runnable[3];
+    
+    class ThreadLocalRunner implements Runnable {
         public CyclicDependencyException exception;
         private final Blocker blocker;
-        private final ObjectReference guard;
+        private final CyclicDependencyGuard guard;
 
-        public Runner(Blocker blocker, ObjectReference guard) {
-            this.blocker = blocker;
-            this.guard = guard;
+        public ThreadLocalRunner() {
+            this.blocker = new Blocker();
+            this.guard = new ThreadLocalCyclicDependencyGuard() {
+                public Object run() {
+                    try {
+                        blocker.block();
+                    } catch (InterruptedException e) {
+                    }
+                    return null;
+                }
+            };
         }
 
         public void run() {
             try {
-                CyclicDependency.observe(guard, Runner.class, new CyclicDependency() {
-                    public Object run() {
-                        try {
-                            blocker.block();
-                        } catch (InterruptedException e) {
-                        }
-                        return null;
-                    }
-                });
+                guard.observe(ThreadLocalRunner.class);
             } catch (CyclicDependencyException e) {
                 exception = e;
             }
@@ -54,14 +54,8 @@ public class CyclicDependencyTestCase
         }
     }
 
-    private void initTest(ObjectReference guard) throws InterruptedException {
+    private void initTest(final Runnable[] runner) throws InterruptedException {
 
-        final Blocker blocker = new Blocker();
-        
-        for(int i = 0; i < runner.length; ++i) {
-            runner[i] = new Runner(blocker, guard);
-        }
-        
         Thread racer[] = new Thread[runner.length];
         for(int i = 0; i < racer.length; ++i) {
             racer[i] =  new Thread(runner[i]);
@@ -83,23 +77,15 @@ public class CyclicDependencyTestCase
         }
     }
     
-    public void testCyclicDependencyWithSimpleGuard() throws InterruptedException {
-        final ObjectReference guard = new CyclicDependency.SimpleGuard();
-        initTest(guard);
-
-        assertNull(runner[0].exception);
-        for(int i = 1; i < runner.length; ++i) {
-            assertNotNull(runner[i].exception);
-        }
-    }
-
-    
     public void testCyclicDependencyWithThreadSafeGuard() throws InterruptedException {
-        final ObjectReference guard = new CyclicDependency.ThreadLocalGuard();
-        initTest(guard);
+        for(int i = 0; i < runner.length; ++i) {
+            runner[i] = new ThreadLocalRunner();
+        }
+        
+        initTest(runner);
 
         for(int i = 0; i < runner.length; ++i) {
-            assertNull(runner[i].exception);
+            assertNull(((ThreadLocalRunner)runner[i]).exception);
         }
     }
 }

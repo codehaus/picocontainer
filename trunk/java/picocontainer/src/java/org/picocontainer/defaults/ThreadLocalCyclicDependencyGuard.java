@@ -10,39 +10,25 @@
 
 package org.picocontainer.defaults;
 
-import java.io.Serializable;
-
 /**
  * Abstract utility class to detect recursion cycles.
- * Derive from this class and implement {@link CyclicDependency#run}. 
- * The method will be called by  {@link CyclicDependency#observe}. Select
+ * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}. 
+ * The method will be called by  {@link ThreadLocalCyclicDependencyGuard#observe}. Select
  * an appropriate guard for your scope. Any {@link ObjectReference} can be 
  * used as long as it is initialized with  <code>Boolean.FALSE</code>.
  * 
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
-public abstract class CyclicDependency {
+public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal implements CyclicDependencyGuard {
 
     /**
-     * A guard for a CyclicDependency that is based on a {@link ThreadLocal}.
+     * {@inheritDoc}
+     * @see java.lang.ThreadLocal#initialValue()
      */
-    public static class ThreadLocalGuard extends ThreadLocal implements ObjectReference, Serializable {
-        /** Initialize with <code>Boolean.FALSE</code>. */
-        protected synchronized Object initialValue() {
-            return Boolean.FALSE;
-        }
+    protected Object initialValue() {
+        return Boolean.FALSE;
     }
-    /**
-     * A simple guard for a CyclicDependency.
-     */
-    public  static class SimpleGuard extends SimpleReference {
-        /** Construct a SimpleGuard and initialize with <code>Boolean.FALSE</code>. */
-        public SimpleGuard() {
-            set(Boolean.FALSE);
-        }
-    };
-
     /**
      * Derive from this class and implement this function with the functionality 
      * to observe for a dependency cycle.
@@ -57,25 +43,22 @@ public abstract class CyclicDependency {
      * If the guard is already <code>Boolean.TRUE</code> a {@link CyclicDependencyException} 
      * will be  thrown.
      * 
-     * @param guard the guard for the observation.
      * @param stackFrame the current stack frame
-     * @param cyclicDependency the {@link CyclicDependency} instance whose 
-     *      <code>run</code> method will be called.
      * @return the result of the <code>run</code> method
      */
-    public static final Object observe(ObjectReference guard, Class stackFrame, CyclicDependency cyclicDependency) {
-        if (Boolean.TRUE.equals(guard.get())) {
+    public final Object observe(Class stackFrame) {
+        if (Boolean.TRUE.equals(get())) {
             throw new CyclicDependencyException(stackFrame);
         }
         Object result = null;
         try {
-            guard.set(Boolean.TRUE);
-            result = cyclicDependency.run();
+            set(Boolean.TRUE);
+            result = run();
         } catch (final CyclicDependencyException e) {
             e.push(stackFrame);
             throw e;
         } finally {
-            guard.set(Boolean.FALSE);
+            set(Boolean.FALSE);
         }
         return result;
     }

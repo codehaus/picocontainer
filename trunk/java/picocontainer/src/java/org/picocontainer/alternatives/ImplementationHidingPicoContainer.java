@@ -12,9 +12,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -24,7 +24,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -37,7 +36,7 @@ import java.util.Map;
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final InnerMutablePicoContainer delegate;
+    private final DefaultPicoContainer delegate;
     private final ComponentAdapterFactory caf;
 
     /**
@@ -45,7 +44,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
-        delegate = new InnerMutablePicoContainer(caf, parent);
+        delegate = new DefaultPicoContainer(caf, parent);
     }
 
     /**
@@ -147,10 +146,6 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.verify();
     }
 
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        delegate.addOrderedComponentAdapter(componentAdapter);
-    }
-
     public void start() {
         delegate.start();
     }
@@ -196,18 +191,4 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         return delegate.getComponentInstancesOfType(type);
     }
 
-    protected Map getNamedContainers() {
-        return delegate.getNamedContainers();    
-    }
-
-    // TODO: Paul this is a vanilla class now ... remove it and use DPC directly ?
-    private class InnerMutablePicoContainer extends DefaultPicoContainer {
-        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-            super(componentAdapterFactory, parent);
-        }
-
-        public Map getNamedContainers() {
-            return super.getNamedContainers();
-        }
-    }
 }

@@ -6,7 +6,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.jmx.MBeanComponentAdapterFactory;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.nanocontainer.script.groovy.NanoContainerBuilder;
-import org.nanocontainer.script.groovy.NanoContainerBuilderException;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -77,10 +77,10 @@ public class MicroGroovyBuilder  extends BuilderSupport {
             try {
                 return createChildOfContainerNode(parent, name, attributes);
             } catch (ClassNotFoundException e) {
-                throw new NanoContainerBuilderException("ClassNotFoundException:" + e.getMessage(), e);
+                throw new NanoContainerMarkupException("ClassNotFoundException:" + e.getMessage(), e);
             }
         }
-        throw new NanoContainerBuilderException("Unknown method: '" + name + "'");
+        throw new NanoContainerMarkupException("Unknown method: '" + name + "'");
     }
 
     private Object createChildOfContainerNode(Object parent, Object name, Map attributes) throws ClassNotFoundException {
@@ -101,7 +101,7 @@ public class MicroGroovyBuilder  extends BuilderSupport {
             return null;
 
         }
-        throw new NanoContainerBuilderException("Method: '" + name + "' must be a child of a container element");
+        throw new NanoContainerMarkupException("Method: '" + name + "' must be a child of a container element");
     }
 
 	private Object createJMXNode(Map attributes, NanoPicoContainer parentContainer) throws ClassNotFoundException {
@@ -148,7 +148,7 @@ public class MicroGroovyBuilder  extends BuilderSupport {
                 pathURL = new File(path).toURL();
             }
         } catch (MalformedURLException e) {
-            throw new NanoContainerBuilderException("classpath '" + path + "' malformed ", e);
+            throw new NanoContainerMarkupException("classpath '" + path + "' malformed ", e);
         }
         reflectionContainerAdapter.addClassLoaderURL(pathURL);
         return pathURL;
@@ -189,7 +189,7 @@ public class MicroGroovyBuilder  extends BuilderSupport {
         } else if (instance != null) {
             registerComponentInstance(pico, key, instance);
         } else {
-            throw new NanoContainerBuilderException("Must specify a class attribute for a component");
+            throw new NanoContainerMarkupException("Must specify a class attribute for a component");
         }
 
         return name;
@@ -262,7 +262,7 @@ public class MicroGroovyBuilder  extends BuilderSupport {
     protected Object createBean(Map attributes) {
         Class type = (Class) attributes.remove("beanClass");
         if (type == null) {
-            throw new NanoContainerBuilderException("Bean must have a beanClass attribute");
+            throw new NanoContainerMarkupException("Bean must have a beanClass attribute");
         }
         try {
             Object bean = type.newInstance();
@@ -275,9 +275,9 @@ public class MicroGroovyBuilder  extends BuilderSupport {
             }
             return bean;
         } catch (IllegalAccessException e) {
-            throw new NanoContainerBuilderException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
+            throw new NanoContainerMarkupException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
         } catch (InstantiationException e) {
-            throw new NanoContainerBuilderException("Failed to create bean of type " + type + "'. Reason: " + e, e);
+            throw new NanoContainerMarkupException("Failed to create bean of type " + type + "'. Reason: " + e, e);
         }
     }
 

@@ -41,6 +41,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
      * map values are property name/property value pairs.
      */
     private Map componentProperties = new HashMap();
+    private Map adapterCache = new HashMap();
 
     public BeanPropertyComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
@@ -51,6 +52,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
 
         Map propertyMap = (Map) componentProperties.get(componentKey);
         Adapter propertyAdapter = new Adapter(decoratedAdapter, propertyMap);
+        adapterCache.put(componentKey,  propertyAdapter);
         return propertyAdapter;
     }
 
@@ -59,9 +61,16 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
      *
      * @param componentKey key of component instance where properties should be set.
      * @param properties   map of bean property name -> property value
+     * @deprecated (In 1.0-beta-5) This method has been deprecated since it requires properties to be set pior
+     * to the instantiation of the adapter. This might be inconvenient in some scenarios.
+     * Please use BeanPropertyComponentAdapterFactory.Adapter.setProperties(Map) instead.
      */
     public void setProperties(Object componentKey, Map properties) {
         componentProperties.put(componentKey, properties);
+    }
+
+    public Adapter getComponentAdapter(Object key) {
+        return (Adapter) adapterCache.get(key);
     }
 
     public static class PicoBeanInfoInitializationException extends PicoIntrospectionException {
@@ -73,14 +82,14 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
     public static class NoSuchPropertyException extends PicoInitializationException {
     }
 
-    private class Adapter extends DecoratingComponentAdapter {
-        private final Map propertyValues;
+    public class Adapter extends DecoratingComponentAdapter {
+        private Map properties;
         private PropertyDescriptor[] propertyDescriptors;
         private Map propertyDescriptorMap = new HashMap();
 
         public Adapter(ComponentAdapter delegate, Map propertyValues) throws PicoBeanInfoInitializationException {
             super(delegate);
-            this.propertyValues = propertyValues;
+            this.properties = propertyValues;
 
             try {
                 BeanInfo beanInfo = Introspector.getBeanInfo(delegate.getComponentImplementation());
@@ -99,11 +108,11 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             final Object componentInstance = super.getComponentInstance();
 
-            if (propertyValues != null) {
-                Set propertyNames = propertyValues.keySet();
+            if (properties != null) {
+                Set propertyNames = properties.keySet();
                 for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
                     final String propertyName = (String) iterator.next();
-                    final Object propertyValue = propertyValues.get(propertyName);
+                    final Object propertyValue = properties.get(propertyName);
                     final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
                     if (propertyDescriptor == null) {
                         throw new PicoIntrospectionException("Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName());
@@ -156,12 +165,20 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                 // have to be compatible
                 if (getContainer() != null) {
                     Object component = getContainer().getComponentInstance(propertyValue);
-                    if (type.isAssignableFrom(component.getClass())) {
+                    if (component != null && type.isAssignableFrom(component.getClass())) {
                         return component;
                     }
                 }
             }
             return propertyValue;
+        }
+
+        /**
+         * Sets the bean property values that should be set upon creation.
+         * @param properties bean properties
+         */
+        public void setProperties(Map properties) {
+            this.properties = properties;
         }
     }
 }

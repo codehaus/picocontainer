@@ -14,6 +14,7 @@ object accessible to the rest of your code guarantees that, right?
 Unfortunately, Singleton tends to be implemented incorrectly, and for the wrong reasons.
 First off let's examine correctness. If a piece of code is doing anything other than this:
 
+```
 public class MySingleton {
     private static final MySingleton instance = new MySingleton();
 
@@ -24,6 +25,7 @@ public class MySingleton {
         return instance;
     }
 }
+```
 
 then it's probably not thread-safe. Adding extra synchronization, double checked
 locking, or anything else, won't actually protect you from threading issues given Java's

@@ -31,7 +31,7 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder);
     }
-    
+
     public void testComponentInstances() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.nanocontainer.script.groovy.Xxx$A\n" +
@@ -47,14 +47,14 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         assertEquals("banana", pico.getComponentInstance("b"));
         assertEquals("noKeySpecified", pico.getComponentInstance(String.class));
     }
-    
+
     public void testNeitherClassNorInstanceSpecified() {
         Reader script = new StringReader("" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
                 "pico = builder.container {\n" +
                 "    component(key:'a')\n" +
                 "}");
-        
+
         try {
             buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
             fail("PicoBuilderException should have been raised");
@@ -62,7 +62,7 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
             // expected
         }
     }
-    
+
     public void testConstantParameters() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ConstantParameter\n" +
@@ -75,10 +75,10 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
                 "}");
 
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
-        
+
         HasParams byClass = (HasParams) pico.getComponentInstance("byClass");
         assertEquals("abc", byClass.getParams());
-        
+
         HasParams byClassString = (HasParams) pico.getComponentInstance("byClassString");
         assertEquals("cat", byClassString.getParams());
     }
@@ -94,27 +94,27 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
                 "    component(key:'a1', class:Xxx$A)\n" +
                 "    component(key:'a2', class:Xxx$A)\n" +
                 "    component(key:'b1', class:Xxx$B, parameters:[ new ComponentParameter('a1') ])\n" +
-                "    component(key:'b2', class:Xxx$B, parameters:[ new ComponentParameter('a2') ])\n" +                
+                "    component(key:'b2', class:Xxx$B, parameters:[ new ComponentParameter('a2') ])\n" +
                 "}");
 
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
-        
+
         Xxx.A a1 = (Xxx.A) pico.getComponentInstance("a1");
         Xxx.A a2 = (Xxx.A) pico.getComponentInstance("a2");
         Xxx.B b1 = (Xxx.B) pico.getComponentInstance("b1");
         Xxx.B b2 = (Xxx.B) pico.getComponentInstance("b2");
-        
+
         assertNotNull(a1);
         assertNotNull(a2);
         assertNotNull(b1);
         assertNotNull(b2);
-        
+
         assertSame(a1, b1.a);
         assertSame(a2, b2.a);
         assertNotSame(a1, a2);
         assertNotSame(b1, b2);
     }
-    
+
     public void testComponentParameterWithClassNameKey() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ComponentParameter\n" +
@@ -128,24 +128,24 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
                 "}");
 
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
-        
+
         Xxx.A a = (Xxx.A) pico.getComponentInstance(Xxx.A.class);
         Xxx.B b = (Xxx.B) pico.getComponentInstance(Xxx.B.class);
-        
+
         assertNotNull(a);
         assertNotNull(b);
         assertSame(a, b.a);
     }
-    
+
     public void testComponentParametersScript() {
         Reader script = new StringReader("" +
-              "package org.nanocontainer.script.groovy\n" +
-              "import org.picocontainer.defaults.ComponentParameter\n" +
-              "builder = new NanoGroovyBuilder()\n" +
-              "pico = builder.container {\n" +
-              "    component(key:'a', class:Xxx$A)\n" +
-              "    component(key:'b', class:Xxx$B, parameters:[ new ComponentParameter('a') ])\n" +
-              "}");
+                "package org.nanocontainer.script.groovy\n" +
+                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "builder = new NanoGroovyBuilder()\n" +
+                "pico = builder.container {\n" +
+                "    component(key:'a', class:Xxx$A)\n" +
+                "    component(key:'b', class:Xxx$B, parameters:[ new ComponentParameter('a') ])\n" +
+                "}");
 
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
         Xxx.A a = (A) pico.getComponentInstance("a");
@@ -153,5 +153,28 @@ public class NanoGroovyBuilder2TestCase extends AbstractScriptedContainerBuilder
         assertSame(a, b.a);
     }
 
-    
+    public void testBuilderHandoff() {
+
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new NanoGroovyBuilder()\n" +
+                "pico = builder.container {\n" +
+                "    component(key:'a', class:Xxx$A)\n" +
+                "    // this is how we'll AOP stuff.\n" +
+                "    builder(class:'org.nanocontainer.script.groovy.SymbolicAOPTestBuilder') {\n" +
+                //"      foo()\n" +
+                //"      component(key:'b', class:Xxx$B)\n" +
+                "    }\n" +
+                "}");
+
+        PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null);
+
+        Object a = pico.getComponentInstance("a");
+        Object b = pico.getComponentInstance("b");
+        Object foo = pico.getComponentInstance("foo");
+
+//        assertNotNull(b);
+//        assertNotNull(foo);
+    }
+
 }

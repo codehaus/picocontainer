@@ -74,13 +74,13 @@ public class Standalone {
         try {
             buildAndStartContainer(composition, quiet, nowait);
         } catch (RuntimeException e) {
-            System.err.println("ScriptedContainerBuilderFactory has failed to start application. Cause : " + e.getMessage());
+            System.err.println("Failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            System.err.println("ScriptedContainerBuilderFactory has failed to start application, for IO reasons. Exception message : " + e.getMessage());
+            System.err.println("Failed to start application for IO reasons. Exception message : " + e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.err.println("ScriptedContainerBuilderFactory has failed to start application. A Class was not found. Exception message : " + e.getMessage());
+            System.err.println("Failed to start application. A Class was not found. Exception message : " + e.getMessage());
             e.printStackTrace();
         }
         if (!quiet) {
@@ -139,7 +139,7 @@ public class Standalone {
             e.printStackTrace();
         } finally {
             if (!quiet) {
-                System.out.println("ScriptedContainerBuilderFactory: Exiting Virtual Machine");
+                System.out.println("Exiting Virtual Machine");
             }
         }
     }

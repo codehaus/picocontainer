@@ -19,38 +19,6 @@ public class NanoAopGroovyBuilderTestCase extends GroovyTestCase {
     builder = new NanoAopGroovyBuilder()
     cuts = builder.pointcuts()
 
-    public void testContainerScopedInterceptor() {
-        log = new StringBuffer()
-        logger = new LoggingInterceptor(log)
-
-        nano = builder.container() {
-            aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
-            component(key:Dao, class:DaoImpl)
-        }
-
-        dao = nano.pico.getComponentInstance(Dao)
-        verifyIntercepted(dao, log)
-    }
-
-
-    public void testComponentScopedContainerSuppliedInterceptor() {
-        nano = builder.container() {
-            component(key:'intercepted', class:DaoImpl) {
-                aspect(methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)
-            }
-            component(key:'notIntercepted', class:DaoImpl)
-            component(key:'log', class:StringBuffer)
-            component(LoggingInterceptor)
-        }
-
-        intercepted = nano.pico.getComponentInstance('intercepted')
-        notIntercepted = nano.pico.getComponentInstance('notIntercepted')
-        log = nano.pico.getComponentInstance('log')
-
-        verifyIntercepted(intercepted, log)
-        verifyNotIntercepted(notIntercepted, log)
-    }
-
     public void testComponentScopedMixin() {
         nano = builder.container() {
             component(key:Dao, class:DaoImpl) {

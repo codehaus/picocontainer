@@ -13,11 +13,33 @@ import junit.framework.TestCase;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
 
+import java.net.URL;
+import java.io.File;
+
 
 /**
  * @author Mauro Talevi
  */
 public class StandaloneTestCase extends TestCase {
+
+    public void testShouldBeAbleToInvokeMainMethod() {
+        File absoluteScriptPath = getAbsoluteScriptPath();
+        Standalone.main(new String[] {
+            "-c",
+            absoluteScriptPath.getAbsolutePath(),
+            "-n"
+        });
+    }
+
+    private File getAbsoluteScriptPath() {
+        String className = getClass().getName();
+        String relativeClassPath = "/" + className.replace('.', '/') + ".class";
+        URL classURL = Standalone.class.getResource(relativeClassPath);
+        String absoluteClassPath = classURL.getFile();
+        File absoluteDirPath = new File(absoluteClassPath).getParentFile();
+        File absoluteScriptPath = new File(absoluteDirPath, "nanocontainer.groovy");
+        return absoluteScriptPath;
+    }
 
     public void testCommandLineWithNoArgs() throws Exception {
         try {

@@ -1,6 +1,6 @@
 <project default="binary:install">
     <goal name="binary:install" prereqs="jar:install"/>
-    <goal name="binary:deploy" prereqs="jar:deploy"/>
+    <goal name="binary:deploy" prereqs="jar:deploy,site:deploy"/>
 
     <goal name="pico:tck-jar">
         <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">

@@ -15,7 +15,9 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 
 /**
- * A parameter that resolves to a constant value.
+ * A ConstantParameter should be used to pass in "constant" arguments
+ * to constructors. This includes {@link String}s, {@link Integer}s or
+ * any other object that is not registered in the container.
  *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y

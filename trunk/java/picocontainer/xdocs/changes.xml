@@ -7,6 +7,10 @@
 
     <!-- action types are add/update/fix/remove -->
     <body>
+        <release version="1.0-beta-3" date="In CVS">
+
+        </release>
+
         <release version="1.0-beta-2" date="2003-09-10">
 
             <action dev="rinkrank" type="fix">

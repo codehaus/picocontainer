@@ -11,6 +11,10 @@
 package org.picocontainer;
 
 /**
+ * This class represents an argument to a constructor. It can be used to
+ * have finer control over what arguments are passed to a particular
+ * constructor.
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @version $Revision$

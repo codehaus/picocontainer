@@ -35,7 +35,7 @@ public class EditContainerPanel extends JPanel {
 
     private class AddRegistryAction extends AbstractAction {
         public AddRegistryAction() {
-            super("Add Registry");
+            super("Add Container");
         }
 
         public void actionPerformed(ActionEvent evt) {
@@ -130,12 +130,15 @@ public class EditContainerPanel extends JPanel {
     public void registerComponent() {
         if (isRegistrySelected()) {
             try {
-                PicoTreeModel treeModel = (PicoTreeModel) tree.getModel();
-                treeModel.insertComponentIntoRegistry(componentField.getText(), (ComponentRegistryTreeNode) getSelectedNode());
-
+                DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+                String className = componentField.getText();
+                Class componentImplementation = getClass().getClassLoader().loadClass(className);
+                ComponentNode componentNode = new ComponentNode(componentImplementation);
+                ContainerNode containerNode = (ContainerNode) getSelectedNode();
+                treeModel.insertNodeInto(componentNode, containerNode, 0);
             } catch (Exception e) {
                 Throwable t = e.getCause() != null ?  e.getCause() : e;
-                JOptionPane.showMessageDialog(EditContainerPanel.this, t.getMessage() + " : " + componentField.getText(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(tree, t.getStackTrace(), t.getClass().getName() + " " + t.getMessage(), JOptionPane.ERROR_MESSAGE);
             }
         } else {
             throw new IllegalStateException("Shouldn't be called when disabled");
@@ -145,7 +148,7 @@ public class EditContainerPanel extends JPanel {
     public void addRegistry() {
         if (isRegistrySelected()) {
             try {
-                ComponentRegistryTreeNode componentRegistryTreeNode = new ComponentRegistryTreeNode();
+                ContainerNode componentRegistryTreeNode = new ContainerNode();
                 DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
 
                 int index = getSelectedNode().getChildCount();
@@ -156,7 +159,7 @@ public class EditContainerPanel extends JPanel {
 
             } catch (Exception e) {
                 Throwable t = e.getCause() != null ?  e.getCause() : e;
-                JOptionPane.showMessageDialog(EditContainerPanel.this, t.getMessage() + " : " + componentField.getText(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(tree, t.getStackTrace(), t.getClass().getName() + " " + t.getMessage(), JOptionPane.ERROR_MESSAGE);
             }
         } else {
             throw new IllegalStateException("Shouldn't be called when disabled");
@@ -178,26 +181,26 @@ public class EditContainerPanel extends JPanel {
     public void executeSelected() {
         TreeNode selectedNode = getSelectedNode();
         try {
-            if(selectedNode instanceof ComponentTreeNode) {
-                ComponentTreeNode node = (ComponentTreeNode) selectedNode;
+            if(selectedNode instanceof ComponentNode) {
+                ComponentNode node = (ComponentNode) selectedNode;
                 ComponentAdapter componentAdapter = (ComponentAdapter) node.getUserObject();
 
-                ComponentRegistryTreeNode parent = (ComponentRegistryTreeNode) node.getParent();
-                AbstractPicoContainer reg = parent.createHierarchicalComponentRegistry();
-                Object component = componentAdapter.getComponentInstance(reg);
+                ContainerNode parent = (ContainerNode) node.getParent();
+////                AbstractPicoContainer reg = parent.createPicoContainer();
+////                Object component = componentAdapter.getComponentInstance(reg);
             } else {
-                ComponentRegistryTreeNode containerNode = (ComponentRegistryTreeNode) selectedNode;
-                AbstractPicoContainer componentRegistry = containerNode.createHierarchicalComponentRegistry();
-                Collection components = componentRegistry.getComponentInstances();
+                ContainerNode containerNode = (ContainerNode) selectedNode;
+////                AbstractPicoContainer componentRegistry = containerNode.createPicoContainer();
+////                Collection components = componentRegistry.getComponentInstances();
             }
         } catch (PicoInitializationException e) {
             Throwable t = e.getCause() != null ?  e.getCause() : e;
-            JOptionPane.showMessageDialog(EditContainerPanel.this, t.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(tree, t.getStackTrace(), t.getClass().getName() + " " + t.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public boolean isRegistrySelected() {
-        return getSelectedNode() instanceof ComponentRegistryTreeNode;
+        return getSelectedNode() instanceof ContainerNode;
     }
 
     private DefaultMutableTreeNode getSelectedNode() {

@@ -1,24 +1,30 @@
 package org.picocontainer.gui.model;
 
-import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelListener;
 import java.beans.PropertyDescriptor;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.IntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class BeanPropertyTableModel implements TableModel {
-    private static final String[] TABLE_HEADER = new String[] {"Property", "Value"};
+    private static final String[] TABLE_HEADER = new String[]{"Property", "Value"};
     public static final TableModel EMPTY_MODEL = new DefaultTableModel(BeanPropertyTableModel.TABLE_HEADER, 0);
 
-    private final BeanPropertyComponentAdapterFactory.Adapter componentAdapter;
+    private final Class clazz;
+    private final PropertyDescriptor[] propertyDescriptors;
+    private final Object[] propertyValues;
 
-    public BeanPropertyTableModel(BeanPropertyComponentAdapterFactory.Adapter componentAdapter) {
-        this.componentAdapter = componentAdapter;
+    public BeanPropertyTableModel(Class clazz) throws IntrospectionException {
+        this.clazz = clazz;
+        BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+        propertyDescriptors = beanInfo.getPropertyDescriptors();
+        propertyValues = new Object[propertyDescriptors.length];
     }
 
     public int getColumnCount() {
@@ -26,11 +32,11 @@ public class BeanPropertyTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return componentAdapter.getPropertyDescriptors().length;
+        return propertyDescriptors.length;
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        boolean hasWriteMethod = componentAdapter.getPropertyDescriptors()[rowIndex].getWriteMethod() != null;
+        boolean hasWriteMethod = propertyDescriptors[rowIndex].getWriteMethod() != null;
         return columnIndex == 1 && hasWriteMethod;
     }
 
@@ -39,16 +45,16 @@ public class BeanPropertyTableModel implements TableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        PropertyDescriptor propertyDescriptor = componentAdapter.getPropertyDescriptors()[rowIndex];
-        if( columnIndex == 0 ) {
-            return propertyDescriptor.getDisplayName();
+        if (columnIndex == 0) {
+            return propertyDescriptors[rowIndex].getDisplayName();
         } else {
-            return componentAdapter.getPropertValue(propertyDescriptor);
+            return propertyValues[rowIndex];
         }
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        componentAdapter.setPropertyValue(componentAdapter.getPropertyDescriptors()[rowIndex], aValue);
+        // columnIndex is always 1 (never 0)
+        propertyValues[rowIndex] = aValue;
     }
 
     public String getColumnName(int columnIndex) {

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
 
+ <!--
+  ! This POM has NanoContainer settings and not PicoContainer.
+  ! This is because the PicoContainer sub project is the only
+  ! one with special settings (which are overridden) and that
+  ! way we avoid a lot of duplication in the various NanoContainer
+  ! sub projects.
+  !-->
+
     <pomVersion>3</pomVersion>
-    <name>PicoContainer</name>
-    <groupId>picocontainer</groupId>
-    <url>http://www.picocontainer.org</url>
+    <name>NanoContainer</name>
+    <groupId>nancontainer</groupId>
+    <url>http://www.nancontainer.org</url>
     <organization>
         <name>Codehaus</name>
         <url>http://codehaus.org/</url>
@@ -12,12 +20,17 @@
     </organization>
     <inceptionYear>2003</inceptionYear>
     <package>org</package>
-    <shortDescription>PicoContainer</shortDescription>
+    <shortDescription>NanoContainer</shortDescription>
 
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
+    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
 
-    <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/picocontainer.codehaus.org/java/${pom.artifactId}</siteDirectory>
+<!-- This will change later once the nanocontainer.org DNS has been changed the same way as picocontainer.org -->
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/picocontainer/public_html/reports/${pom.artifactId}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
         <url>http://cvs.picocontainer.codehaus.org/java/${pom.artifactId}/?viewcvs.cgi</url>
@@ -87,7 +100,7 @@
     <reports>
         <report>maven-license-plugin</report>
         <report>maven-simian-plugin</report>
-        <report>maven-statcvs-plugin</report>
+        <!--report>maven-statcvs-plugin</report-->
         <report>maven-javadoc-plugin</report>
         <report>maven-clover-plugin</report>
     </reports>

@@ -21,9 +21,9 @@
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
     <description>
-        Please refer to the main http://picocontainer.org website for documentation.    
+        Please refer to the main http://picocontainer.org/ website for documentation.    
     </description>
-    <shortDescription>Small footprint Dependency Injector container</shortDescription>
+    <shortDescription>Small footprint Dependency Injection container</shortDescription>
     <url>http://www.picocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10120</issueTrackingUrl>
     <siteAddress>beaver.codehaus.org</siteAddress>
@@ -285,7 +285,7 @@
     <reports>
         <report>maven-license-plugin</report>
         <report>maven-simian-plugin</report>
-        <report>maven-statcvs-plugin</report>
+        <!--report>maven-statcvs-plugin</report-->
         <report>maven-javadoc-plugin</report>
         <report>maven-clover-plugin</report>
     </reports>

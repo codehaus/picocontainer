@@ -48,6 +48,7 @@ namespace PicoContainer
 		/// <exception cref="PicoContainer.PicoIntrospectionException">if the component has dependencies which could not be resolved, or
 		///                                                            instantiation of the component lead to an ambigous situation within the
 		///                                                            container.</exception>
+		[Obsolete("Need to replace with GetComponentInstance(IPicoContainer)")]
 		object ComponentInstance { get; }
 
 		object GetComponentInstance(IPicoContainer container);

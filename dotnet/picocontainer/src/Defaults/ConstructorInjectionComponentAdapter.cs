@@ -76,13 +76,13 @@ namespace PicoContainer.Defaults
 				} 
 				catch (Exception e)
 				{
+					Console.WriteLine(e.StackTrace);
+
 					cica.componentMonitor.InstantiationFailed(constructor, e);
-					if (e.GetBaseException() is SystemException || e.GetBaseException() is ApplicationException) 
+					if (e is SystemException || e is ApplicationException) 
 					{
 						throw e.GetBaseException();
 					} 
-
-					cica.componentMonitor.InstantiationFailed(constructor, e);
 					throw new PicoInitializationException(e);
 				}
 			}

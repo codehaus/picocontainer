@@ -17,12 +17,11 @@ import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
-import picocontainer.PicoRegistrationException;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoRegistrationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
-
 
 /**
  * @author Jon Tirsen

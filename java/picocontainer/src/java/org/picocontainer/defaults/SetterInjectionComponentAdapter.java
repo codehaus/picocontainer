@@ -32,10 +32,10 @@ import java.util.Set;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class BeanComponentAdapter extends DecoratingComponentAdapter {
+public class SetterInjectionComponentAdapter extends DecoratingComponentAdapter {
     private List setters;
 
-    public BeanComponentAdapter(ComponentAdapter delegate) {
+    public SetterInjectionComponentAdapter(ComponentAdapter delegate) {
         super(delegate);
     }
 

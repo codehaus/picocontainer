@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeanComponentAdapterTestCase extends TestCase {
+public class SetterInjectionComponentAdapterTestCase extends TestCase {
 
     public static class A {
         private B b;
@@ -51,8 +51,8 @@ public class BeanComponentAdapterTestCase extends TestCase {
     }
 
     public void testDependenciesAreResolved() {
-        BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
-        BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -67,8 +67,8 @@ public class BeanComponentAdapterTestCase extends TestCase {
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
-        BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);

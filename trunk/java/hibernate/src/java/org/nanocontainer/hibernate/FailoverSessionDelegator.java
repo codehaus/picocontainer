@@ -42,7 +42,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
     /**
      * obtain hibernate session in lazy way
      */ 
-    Session getSession()  {
+    public Session getSession()  {
         if(session == null) {
             try {
             session = sessionFactory.openSession();
@@ -68,7 +68,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
         return retval;
     }
     
-    void invalidateSession() throws HibernateException {
+    public void invalidateSession() throws HibernateException {
         if(session != null) {
             try {
                 session.clear();

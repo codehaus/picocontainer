@@ -121,6 +121,7 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
 
     private Class loadClass(final String componentImplementationClassName) throws ClassNotFoundException {
         String cn = getClassName(componentImplementationClassName);
+        System.out.println("cn=" + cn);
         return getClassLoader().loadClass(cn);
     }
 
@@ -151,7 +152,8 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         if (parent != null) {
             return parent.getClassLoader();
         } else {
-            return Thread.currentThread().getContextClassLoader();
+            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            return cl == null ? cl : DefaultReflectionContainerAdapter.class.getClassLoader();
         }
     }
 

@@ -48,15 +48,15 @@ public class NanoContainer {
     protected ObjectReference containerRef;
 
     public NanoContainer(File compositionFile, PicoContainer parent, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), parent, classLoader);
+        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), parent, classLoader);
     }
 
     public NanoContainer(File compositionFile, PicoContainer parent) throws IOException, ClassNotFoundException {
-        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), parent, NanoContainer.class.getClassLoader());
+        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), parent, NanoContainer.class.getClassLoader());
     }
 
     public NanoContainer(File compositionFile) throws IOException, ClassNotFoundException {
-        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), new NullPicoContainer(), NanoContainer.class.getClassLoader());
+        this(new FileReader(fileExists(compositionFile)), getLanguage(compositionFile), new NullPicoContainer(), NanoContainer.class.getClassLoader());
     }
 
     public NanoContainer(Reader composition, String extension, ClassLoader classLoader) throws ClassNotFoundException {
@@ -86,6 +86,19 @@ public class NanoContainer {
 
         // build and start the container
         containerBuilder.buildContainer(containerRef, parentRef, null);
+    }
+
+    private static File fileExists(File compositionFile) {
+        if (compositionFile.exists()) {
+            return compositionFile;
+        } else {
+            //todo a proper exception.
+            throw new RuntimeException("File " + compositionFile.getName() + " does not exist.");
+        }
+    }
+
+    private static String getLanguage(File compositionFile) throws IOException {
+        return compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().lastIndexOf("."));
     }
 
     public void killContainer() {

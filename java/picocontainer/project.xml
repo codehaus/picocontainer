@@ -3,6 +3,7 @@
 <!DOCTYPE project [
     <!ENTITY eacute "&#233;">
     <!ENTITY oslash "&#248;">
+    <!ENTITY ouml "&#246;">
 ]>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
@@ -153,6 +154,9 @@
             <name>Mike Hogan</name>
         </contributor>
         <contributor>
+            <name>James Strachan</name>
+        </contributor>
+        <contributor>
             <name>Steve Freeman</name>
         </contributor>
         <contributor>
@@ -178,6 +182,45 @@
         </contributor>
         <contributor>
             <name>Michael Rettig</name>
+        </contributor>
+        <contributor>
+            <name>J&ouml; Schaible</name>
+        </contributor>
+        <contributor>
+            <name>Mirco Novakovic</name>
+        </contributor>
+        <contributor>
+            <name>Laurent Etiemble</name>
+        </contributor>
+        <contributor>
+            <name>Mathias Bogaert</name>
+        </contributor>
+        <contributor>
+            <name>Vincent Tence</name>
+        </contributor>
+        <contributor>
+            <name>Rao Chejarla</name>
+        </contributor>
+        <contributor>
+            <name>Aapo Laakkonen</name>
+        </contributor>
+        <contributor>
+            <name>Kevin O'Neill</name>
+        </contributor>
+        <contributor>
+            <name>Jeppe Cramon</name>
+        </contributor>
+        <contributor>
+            <name>Adam Rosien</name>
+        </contributor>
+        <contributor>
+            <name>Gilles Philippart</name>
+        </contributor>
+        <contributor>
+            <name>Calvin Yu</name>
+        </contributor>
+        <contributor>
+            <name>Matt Ho</name>
         </contributor>
     </contributors>
 

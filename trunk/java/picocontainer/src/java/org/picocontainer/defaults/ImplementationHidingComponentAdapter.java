@@ -55,9 +55,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                  throw new PicoIntrospectionException("Can't hide non interface keyed implementation :" + anInterface.getName());
              }
         }
-        if (interfaces.length == 0) {
-            throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
-        }
         return Proxy.newProxyInstance(getClass().getClassLoader(),
                 interfaces, new InvocationHandler() {
                     public Object invoke(final Object proxy, final Method method,

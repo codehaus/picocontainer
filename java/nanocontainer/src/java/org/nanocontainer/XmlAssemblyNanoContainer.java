@@ -57,7 +57,7 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
     }
 
     protected void configure(Reader nanoContainerXml)
-            throws IOException, ClassNotFoundException, EmptyXmlConfigurationException, SAXConfigurationException {
+            throws IOException, ClassNotFoundException, PicoConfigurationException, SAXConfigurationException {
         final InputSource is = new InputSource(nanoContainerXml);
         try {
             Element rootElement = getRootElement(is);

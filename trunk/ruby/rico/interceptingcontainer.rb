@@ -35,7 +35,7 @@ module Rico
       @interceptor_class, @entry_block = interceptor_class, entry_block
     end
     
-    def create_component(container)
+    def create_component_instance(container)
       return @interceptor_class.new(super, @entry_block)
     end
   end

@@ -44,12 +44,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
@@ -126,7 +126,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
             // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
             Object unstaisifed = unsatisfiableDependencies.iterator().next();
-            assertEquals(Collections.singletonList(Touchable.class), unstaisifed);
+            assertEquals(Touchable.class, unstaisifed);
         }
     }
 
@@ -197,18 +197,12 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             // The set now contains a list containing the two dependencies in
             // order. Therefore, we can't use the original code. - mparaz
 
-            assertEquals(1, unsatisfiableDependencies.size());
 
             final List expectedList = new ArrayList(2);
             expectedList.add(ComponentE.class);
             expectedList.add(ComponentB.class);
 
-            // Convert the Set to a List and assert that its first and only
-            // element is the expected list. This is a stronger check than
-            // contains().
-            // - mparaz
-            assertEquals(new ArrayList(unsatisfiableDependencies).get(0),
-                    expectedList);
+            assertEquals(new HashSet(expectedList), unsatisfiableDependencies);
         }
     }
 

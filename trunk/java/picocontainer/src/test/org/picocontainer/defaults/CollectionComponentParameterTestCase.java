@@ -4,6 +4,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVerificationException;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -257,14 +258,29 @@ public class CollectionComponentParameterTestCase
     }
 
     public void testDifferentCollectiveTypesAreResolved() {
-        MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
-                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
-                new ComponentParameter(Fish.class, true), new ComponentParameter(Fish.class, true),
-        //            new ComponentParameter(Fish.class, true),
-                //            new ComponentParameter(Fish.class, true),
-                //            new ComponentParameter(Fish.class, true),
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        CollectionComponentParameter parameter = new CollectionComponentParameter(Fish.class, true);
+        pico.registerComponentImplementation(DependsOnAll.class, DependsOnAll.class, new Parameter[]{
+                parameter, parameter, parameter, parameter, parameter, parameter,
+        // parameter, parameter, parameter,
                 });
+        assertNotNull(pico.getComponentInstance(DependsOnAll.class));
+    }
+
+    public void testVerify() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        ComponentAdapter dummy = new InstanceComponentAdapter("foo", "bar");
+        CollectionComponentParameter parameterNonEmpty = new CollectionComponentParameter(false);
+        pico.registerComponentImplementation(Shark.class);
+        parameterNonEmpty.verify(pico, dummy, Fish[].class);
+        try {
+            parameterNonEmpty.verify(pico, dummy, Cod[].class);
+            fail("(PicoVerificationException expected");
+        } catch (PicoVerificationException e) {
+            assertEquals(1, e.getNestedExceptions().size());
+        }
+        CollectionComponentParameter parameterEmpty = new CollectionComponentParameter(true);
+        parameterEmpty.verify(pico, dummy, Fish[].class);
+        parameterEmpty.verify(pico, dummy, Cod[].class);
     }
 }

@@ -33,24 +33,3 @@ mkdir target
 # Run clover. This will compile and test, and also work around a bug in
 # clover requiring it to run twice to get proper coverage. The 2nd time
 # happens during site:deploy
-maven clover > target/cleanbuild.log
-
-# See if the "compiling" file is there. If it is, compilation failed.
-if [ -e "target/compiling" ] ; then
-  # Mail Maven's output to the dev list.
-  cat target/cleanbuild.log | mutt -s "[BUILD] Clean build failed" aslak@thoughtworks.net
-else
-  # See if the "testfailure" file is there. If it is, tests failed.
-  if [ -e "target/testfailure" ] ; then
-    # Mail Maven's output to the dev list.
-    cat target/cleanbuild.log | mutt -s "[BUILD] Test failure" aslak@thoughtworks.net
-
-    # We'll deploy the site even if the tests fail. Log currently not used.
-    maven site:deploy > target/sitedeploy.log
-  else
-    # Deploy site only if compile and tests pass. Logs currently not used.
-    # Must be run separately to get the files uploaded in the proper dir on the server
-    maven jar:deploy > target/jardeploy.log
-    maven dist:deploy > target/jardeploy.log
-  fi
-fi

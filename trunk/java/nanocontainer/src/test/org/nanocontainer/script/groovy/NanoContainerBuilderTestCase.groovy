@@ -2,9 +2,7 @@ package org.nanocontainer.script.groovy
 
 import org.picocontainer.defaults.ComponentParameter
 import org.picocontainer.defaults.UnsatisfiableDependenciesException
-import org.picocontainer.defaults.SynchronizedComponentAdapterFactory
 
-import org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory
 import org.nanocontainer.script.groovy.NanoContainerBuilder
 import org.nanocontainer.testmodel.DefaultWebServerConfig
 import org.nanocontainer.testmodel.WebServer

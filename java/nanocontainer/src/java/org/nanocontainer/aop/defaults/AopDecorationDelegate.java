@@ -40,6 +40,8 @@ public class AopDecorationDelegate implements NanoContainerBuilderDecorationDele
     private final AspectsManager aspectsManager;
     private Object currentKey;
     private AspectablePicoContainer currentPico;
+    private ClassPointcut currentClassCut;
+    private MethodPointcut currentMethodCut;
 
     public AopDecorationDelegate(AspectsManager aspectsManager) {
         this.aspectsManager = aspectsManager;
@@ -58,14 +60,29 @@ public class AopDecorationDelegate implements NanoContainerBuilderDecorationDele
     public Object createNode(Object name, Map attributes, Object parentElement) {
         if (name.equals("aspect")) {
             return createAspectNode(attributes, name);
+        } else if (name.equals("pointcut")) {
+            return createPointcutNode(attributes, name);
         } else {
             throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + parentElement.toString() + "' element");
         }
     }
 
+    private Object createPointcutNode(Map attributes, Object name) {
+        currentClassCut = (ClassPointcut) attributes.remove("classCut");
+        currentMethodCut = (MethodPointcut) attributes.remove("methodCut");
+        return name;
+    }
+
     private Object createAspectNode(Map attributes, Object name) {
         ClassPointcut classCut = (ClassPointcut) attributes.remove("classCut");
+        if(classCut != null) {
+            currentClassCut = classCut;
+        }
         MethodPointcut methodCut = (MethodPointcut) attributes.remove("methodCut");
+        if(methodCut != null) {
+            currentMethodCut = methodCut;
+        }
+
         MethodInterceptor interceptor = (MethodInterceptor) attributes.remove("interceptor");
         Object interceptorKey = attributes.remove("interceptorKey");
         Class mixinClass = (Class) attributes.remove("mixinClass");
@@ -77,9 +94,9 @@ public class AopDecorationDelegate implements NanoContainerBuilderDecorationDele
         }
 
         if (interceptor != null || interceptorKey != null) {
-            registerInterceptor(currentPico, classCut, componentCut, methodCut, interceptor, interceptorKey);
+            registerInterceptor(currentPico, currentClassCut, componentCut, currentMethodCut, interceptor, interceptorKey);
         } else if (mixinClass != null) {
-            registerMixin(currentPico, classCut, componentCut, toClassArray(mixinInterfaces), mixinClass);
+            registerMixin(currentPico, currentClassCut, componentCut, toClassArray(mixinInterfaces), mixinClass);
         } else {
             throw new NanoContainerMarkupException("No advice specified - must specify one of interceptor, interceptorKey, mixinClass, or mixinKey");
         }
@@ -115,10 +132,10 @@ public class AopDecorationDelegate implements NanoContainerBuilderDecorationDele
 
         // validate script:
         if (classCut == null && componentCut == null) {
-            throw new NanoContainerMarkupException("classCut or componentCut required for interceptor advice");
+            throw new NanoContainerMarkupException("currentClassCut or componentCut required for interceptor advice");
         }
         if (methodCut == null) {
-            throw new NanoContainerMarkupException("methodCut required for interceptor advice");
+            throw new NanoContainerMarkupException("currentMethodCut required for interceptor advice");
         }
 
         if (classCut != null) {
@@ -145,7 +162,7 @@ public class AopDecorationDelegate implements NanoContainerBuilderDecorationDele
 
         // validate script:
         if (classCut == null && componentCut == null) {
-            throw new NanoContainerMarkupException("classCut or componentCut required for mixin advice");
+            throw new NanoContainerMarkupException("currentClassCut or componentCut required for mixin advice");
         }
 
         if (classCut != null) {

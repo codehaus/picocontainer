@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final DefaultPicoContainer pc;
+    private final InnerMutablePicoContainer pc;
     private final ComponentAdapterFactory caf;
 
 
@@ -39,7 +39,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
-        pc = new DefaultPicoContainer(caf, parent);
+        pc = new InnerMutablePicoContainer(caf, parent);
+
     }
 
     /**
@@ -64,6 +65,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, new Parameter[0]);
+                delegate.setContainer(this);
                 return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
             }
         }
@@ -75,7 +77,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
-                return pc.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate)));
+                delegate.setContainer(this);
+                ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate);
+                //ihDelegate.setContainer(this);
+                return pc.registerComponent(new CachingComponentAdapter(ihDelegate));
             }
         }
         return pc.registerComponentImplementation(componentKey, componentImplementation, parameters);
@@ -161,4 +166,16 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     public void dispose() {
         pc.dispose();
     }
+
+    private class InnerMutablePicoContainer extends DefaultPicoContainer {
+        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+            super(componentAdapterFactory, parent);
+        }
+
+        protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
+            componentAdapter.setContainer(ImplementationHidingPicoContainer.this);
+        }
+    }
+
+
 }

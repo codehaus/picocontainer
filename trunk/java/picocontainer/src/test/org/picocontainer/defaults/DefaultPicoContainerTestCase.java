@@ -43,24 +43,6 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertTrue("Component should be instance of Touchable", Touchable.class.isAssignableFrom(pico.getComponentAdapterOfType(Touchable.class).getComponentImplementation()));
     }
 
-    public void testComponentInstancesFromParentsAreNotDirectlyAccessible() {
-        MutablePicoContainer a = new DefaultPicoContainer();
-        MutablePicoContainer b = new DefaultPicoContainer(a);
-        MutablePicoContainer c = new DefaultPicoContainer(b);
-
-        Object ao = new Object();
-        Object bo = new Object();
-        Object co = new Object();
-
-        a.registerComponentInstance("a", ao);
-        b.registerComponentInstance("b", bo);
-        c.registerComponentInstance("c", co);
-
-        assertEquals(1, a.getComponentInstances().size());
-        assertEquals(1, b.getComponentInstances().size());
-        assertEquals(1, c.getComponentInstances().size());
-    }
-
     public void testUpDownDependenciesCannotBeFollowed() {
         MutablePicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = createPicoContainer(parent);

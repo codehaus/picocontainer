@@ -168,7 +168,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
-        componentAdapter.setContainer(this);
+        setComponentAdaptersContainer(componentAdapter);
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
         return componentAdapter;
@@ -211,6 +211,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;
+    }
+
+    protected void setComponentAdaptersContainer(ComponentAdapter componentAdapter) {
+        componentAdapter.setContainer(this);
     }
 
     /**

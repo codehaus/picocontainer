@@ -17,6 +17,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 
+baaaaaaaaaaaaaaaaajs
+
+
 /**
  * Can Pico host itself ?
  */

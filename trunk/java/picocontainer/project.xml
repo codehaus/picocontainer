@@ -72,16 +72,37 @@
         <version>
             <id>1.0-beta-2</id>
             <name>1.0-beta-2</name>
-            <tag>PICOCONTAINER_1_0_BETA_1</tag>
+            <tag>PICOCONTAINER_1_0_BETA_2</tag>
         </version>
         <version>
             <id>1.0-beta-3</id>
             <name>1.0-beta-3</name>
+            <tag>PICOCONTAINER_1_0_BETA_3</tag>
+        </version>
+        <version>
+            <id>1.0-beta-4</id>
+            <name>1.0-beta-4</name>
+            <tag>RELEASE_1_0_BETA_4</tag>
+        </version>
+        <version>
+            <id>1.0-beta-5</id>
+            <name>1.0-beta-5</name>
+            <tag>RELEASE_1_0_BETA_5</tag>
+        </version>
+        <version>
+            <id>1.0-RC-1</id>
+            <name>1.0-RC-1</name>
             <tag>HEAD</tag>
         </version>
     </versions>
 
     <mailingLists>
+        <mailingList>
+            <name>PicoContainer Users</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-user</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/picocontainer-user/</archive>
+        </mailingList>
         <mailingList>
             <name>PicoContainer Developers</name>
             <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-dev</subscribe>
@@ -133,11 +154,33 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Thomas Heller</name>
+            <id>maniax</id>
+            <email>th.heller@mx4k.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>J&ouml;rg Schaible</name>
+            <id>joehni</id>
+            <email>joerg.schaible@gmx.de</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencies>
 
         <!-- test time only -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
         <dependency>
             <id>jmock</id>
             <version>SNAPSHOT</version>
@@ -171,9 +214,6 @@
             <name>Dan North</name>
         </contributor>
         <contributor>
-            <name>Thomas Heller</name>
-        </contributor>
-        <contributor>
             <name>Rafal Krzewski</name>
         </contributor>
         <contributor>
@@ -181,9 +221,6 @@
         </contributor>
         <contributor>
             <name>Michael Rettig</name>
-        </contributor>
-        <contributor>
-            <name>J&ouml;rg Schaible</name>
         </contributor>
         <contributor>
             <name>Mirco Novakovic</name>
@@ -222,13 +259,6 @@
             <name>Matt Ho</name>
         </contributor>
     </contributors>
-
-    <dependemcies>
-        <dependency>
-            <id>junit</id>
-            <version>3.8.1</version>
-        </dependency>
-    </dependemcies>
 
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>

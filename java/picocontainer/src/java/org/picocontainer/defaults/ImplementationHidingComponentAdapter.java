@@ -14,14 +14,16 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * This component adapter makes it possible to hide the implementation
  * of a real subject (behind a proxy) provided the key is an interface.
  *
+ * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapter for a more feature-rich version of this class.
+ * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @version $Revision$

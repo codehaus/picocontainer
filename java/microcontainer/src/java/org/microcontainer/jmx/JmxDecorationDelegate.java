@@ -20,11 +20,13 @@ import org.picocontainer.MutablePicoContainer;
 
 import javax.management.DynamicMBean;
 import javax.management.JMException;
-import javax.management.MBeanOperationInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.MalformedObjectNameException;
+import javax.management.modelmbean.ModelMBeanInfoSupport;
+import javax.management.modelmbean.ModelMBeanOperationInfo;
+
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
@@ -81,14 +83,14 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		List methods = getMatchingMethods(operations, componentImplementation);
 
 		// todo need to handle attributes and constructors and notifications
-		MBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
-		MBeanInfo mBeanInfo = new MBeanInfo(componentImplementation.getName(), description, null, null, mBeanOperationInfos, null);
+		ModelMBeanOperationInfo[] mBeanOperationInfos = buildMBeanOperationInfoArray(methods);
+		MBeanInfo mBeanInfo = new ModelMBeanInfoSupport(componentImplementation.getName(), description, null, null, mBeanOperationInfos, null);
 
         // Register MBean
         Object componentInstance = picoContainer.getComponentInstance(currentKey);
         DynamicMBean mBean = null;
         if (management == null && !(currentKey instanceof Class)) {
-            mBean = factory.create(componentInstance, mBeanInfo);
+            mBean = factory.create(componentInstance, null, mBeanInfo);
         } else {
             mBean = factory.create(componentInstance, management != null ? management : (Class)currentKey, mBeanInfo);
         }
@@ -115,12 +117,12 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		}
 	}
 
-	protected MBeanOperationInfo[] buildMBeanOperationInfoArray(List methods) {
-		MBeanOperationInfo[] mBeanOperationInfos = new MBeanOperationInfo[methods.size()];
+	protected ModelMBeanOperationInfo[] buildMBeanOperationInfoArray(List methods) {
+		ModelMBeanOperationInfo[] mBeanOperationInfos = new ModelMBeanOperationInfo[methods.size()];
 
 		for (int i = 0; i < methods.size(); i++) {
 			Method method = (Method) methods.get(i);
-			mBeanOperationInfos[i] = new MBeanOperationInfo("No description provided", method);
+			mBeanOperationInfos[i] = new ModelMBeanOperationInfo("No description provided", method);
 		}
 
 		return mBeanOperationInfos;

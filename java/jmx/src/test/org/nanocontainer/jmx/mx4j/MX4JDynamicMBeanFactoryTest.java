@@ -27,7 +27,7 @@ public class MX4JDynamicMBeanFactoryTest extends TestCase {
     public void testMBeanCreationFailsWithoutManagementInterface() {
         final DynamicMBeanFactory factory = new MX4JDynamicMBeanFactory();
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
-        final DynamicMBean mBean = factory.create(new SimpleTouchable(), mBeanInfo);
+        final DynamicMBean mBean = factory.create(new SimpleTouchable(), null, mBeanInfo);
         assertNotNull(mBean);
     }
 

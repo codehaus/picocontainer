@@ -26,10 +26,14 @@ import org.nanocontainer.jmx.StandardMBeanFactory;
 public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
 
     /**
-     * Create a MX4JDynamicMBean for the component using its instance and a {@link MBeanInfo}.
-     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, javax.management.MBeanInfo)
+     * Create a MX4JDynamicMBean for the component. MX4J is only used, if management is <code>null</code>.
+     * @see org.nanocontainer.jmx.StandardMBeanFactory#create(java.lang.Object, java.lang.Class, javax.management.MBeanInfo)
      */
-    public DynamicMBean create(final Object componentInstance, final MBeanInfo mBeanInfo) {
-        return new MX4JDynamicMBean(componentInstance, mBeanInfo);
+    public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
+        if (management != null || mBeanInfo == null) {
+            return super.create(componentInstance, management, mBeanInfo);
+        } else {
+            return new MX4JDynamicMBean(componentInstance, mBeanInfo);
+        }
     }
 }

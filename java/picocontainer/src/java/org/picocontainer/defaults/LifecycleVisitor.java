@@ -29,6 +29,7 @@ import java.util.List;
  * @since 1.1
  */
 public class LifecycleVisitor extends AbstractPicoVisitor {
+
     private static final Method START;
     private static final Method STOP;
     private static final Method DISPOSE;
@@ -65,7 +66,12 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
             }
             for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
                 Object o = iterator.next();
+                long startTime = System.currentTimeMillis();
                 try {
+//                    if (PicoContainer.SHOULD_LOG) {
+//                        System.out.print("PICO: Calling " + method.toString() + " on " + o + "... ");
+//                        System.out.flush();
+//                    }
                     method.invoke(o, null);
                 } catch (IllegalArgumentException e) {
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
@@ -73,6 +79,11 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (InvocationTargetException e) {
                     throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
+                } finally {
+//                    if (PicoContainer.SHOULD_LOG) {
+//                        long endTime = System.currentTimeMillis();
+//                        System.out.println("[" + (endTime - startTime) + "ms]");
+//                    }
                 }
             }
         } finally {

@@ -12,14 +12,11 @@ package org.picocontainer.defaults;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -37,7 +34,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /** The cycle guard for the verification. */ 
     protected transient Guard verifyingGuard;
     /** The parameters to use for initialization. */ 
-    protected Parameter[] parameters;
+    protected transient Parameter[] parameters;
     /** Flag indicating instanciation of non-public classes. */ 
     protected boolean allowNonPublicClasses;
     
@@ -87,9 +84,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         return componentParameters;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void verify(final PicoContainer container) throws PicoIntrospectionException {
         if (verifyingGuard == null) {
             verifyingGuard = new Guard() {
@@ -108,10 +102,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         verifyingGuard.observe(getComponentImplementation());
     }
 
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.ComponentAdapter#accept(org.picocontainer.PicoVisitor)
-     */
     public void accept(PicoVisitor visitor) {
         super.accept(visitor);
         if (parameters != null) {

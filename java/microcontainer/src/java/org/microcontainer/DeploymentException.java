@@ -1,8 +1,5 @@
 package org.microcontainer;
 
-/**
- * 
- */
 public class DeploymentException extends Exception {
 
 	public DeploymentException() {

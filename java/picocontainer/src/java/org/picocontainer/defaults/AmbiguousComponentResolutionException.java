@@ -24,18 +24,20 @@ import java.util.Arrays;
  * @since 1.0
  */
 public class AmbiguousComponentResolutionException extends PicoIntrospectionException {
-    private Class ambiguousClass;
+    private Class component;
+    private Class ambiguousDependency;
     private final Object[] ambiguousComponentKeys;
+
 
     /**
      * Construct a new exception with the ambigous class type and the ambiguous component keys.
      * 
-     * @param ambiguousClass the unresolved dependency type
+     * @param ambiguousDependency the unresolved dependency type
      * @param componentKeys the ambiguous keys.
      */
-    public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] componentKeys) {
+    public AmbiguousComponentResolutionException(Class ambiguousDependency, Object[] componentKeys) {
         super("");
-        this.ambiguousClass = ambiguousClass;
+        this.ambiguousDependency = ambiguousDependency;
         this.ambiguousComponentKeys = new Class[componentKeys.length];
         for (int i = 0; i < componentKeys.length; i++) {
             ambiguousComponentKeys[i] = componentKeys[i];
@@ -47,10 +49,11 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
      */
     public String getMessage() {
         StringBuffer msg = new StringBuffer();
-        msg.append("Ambiguous ");
-        msg.append(ambiguousClass);
+        msg.append(component);
+        msg.append(" has ambiguous dependency on ");
+        msg.append(ambiguousDependency);
         msg.append(", ");
-        msg.append("resolves to multiple keys ");
+        msg.append("resolves to multiple classes: ");
         msg.append(Arrays.asList(getAmbiguousComponentKeys()));
         return msg.toString();
     }
@@ -60,5 +63,9 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
      */
     public Object[] getAmbiguousComponentKeys() {
         return ambiguousComponentKeys;
+    }
+
+    public void setComponent(Class component) {
+        this.component = component;
     }
 }

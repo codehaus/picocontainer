@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.lifecycle.DefaultLifecyclePicoAdaptor;
+import org.picocontainer.extras.DefaultLifecyclePicoAdaptor;
 import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
 import org.picocontainer.lifecycle.Startable;
 import org.xml.sax.InputSource;

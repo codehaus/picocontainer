@@ -17,7 +17,7 @@ import org.nanocontainer.servlet.ContainerFactory;
 import org.nanocontainer.servlet.ObjectInstantiator;
 import org.xml.sax.InputSource;
 import org.picocontainer.*;
-import org.picocontainer.hierarchical.HierarchicalComponentRegistry;
+import org.picocontainer.extras.HierarchicalComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 

@@ -13,7 +13,6 @@ package org.picocontainer.extras;
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.defaults.NullContainer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

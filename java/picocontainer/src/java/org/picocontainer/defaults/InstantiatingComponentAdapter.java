@@ -34,7 +34,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     private boolean verifying;
     protected Parameter[] parameters;
 
-    public InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation);
         this.parameters = parameters;
     }

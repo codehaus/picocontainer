@@ -52,6 +52,10 @@ public class NullPicoContainer implements PicoContainer {
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
     }
 
+    public List getComponentAdaptersOfType(Class componentType) {
+        return null;
+    }
+
     public void start() {
     }
 

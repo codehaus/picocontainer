@@ -14,7 +14,6 @@ import org.picocontainer.PicoException;
 
 import java.io.Serializable;
 import java.util.List;
-import java.lang.reflect.Method;
 
 /**
  * This class makes it possible to multicast invocations to several components
@@ -38,7 +37,16 @@ public class ComponentMulticasterAdapter implements Serializable {
         this.invocationInterceptor = invocationInterceptor;
     }
 
-    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder) throws PicoException {
+    /**
+     * Creates a proxy that will multicast method invocations to all objects in the container that correspond to the
+     * type.
+     * @param picoContainer the container containing the components.
+     * @param type the component type. Null is allowed here, and means "all types".
+     * @param callInInstantiationOrder true if invocations should be done in the components' instantiation order (dependency order).
+     * @return a proxy object that can be cast to the specified type.
+     * @throws PicoException if the multicaster can't be created.
+     */
+    public Object createComponentMulticaster(PicoContainer picoContainer, Class type, boolean callInInstantiationOrder) throws PicoException {
         List componentsToMulticast = picoContainer.getComponentInstances();
         return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder, invocationInterceptor, new MulticastInvoker());
     }

@@ -14,6 +14,8 @@
 package org.nanocontainer.multicast;
 
 import junit.framework.TestCase;
+import org.jmock.C;
+import org.jmock.Mock;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -23,15 +25,12 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.jmock.Mock;
-import org.jmock.C;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public class ComponentMulticasterAdapterTestCase extends TestCase {
     public interface Peelable {
@@ -220,7 +219,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         mockInvocationInterceptor.expect("intercept", C.args(C.isA(Method.class), C.IS_ANYTHING, C.IS_ANYTHING));
 
         ComponentMulticasterAdapter cma = new ComponentMulticasterAdapter(new StandardProxyMulticasterFactory(), (InvocationInterceptor)mockInvocationInterceptor.proxy());
-        Startable startable = (Startable) cma.getComponentMulticaster(pico, true);
+        Startable startable = (Startable) cma.createComponentMulticaster(pico, null, true);
 
         startable.start();
 
@@ -241,7 +240,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         parent.registerComponentImplementation(StandaloneImpl.class);
         child.registerComponentImplementation(NeedsOne.class);
 
-        Object multicaster = new ComponentMulticasterAdapter().getComponentMulticaster(child, true);
+        Object multicaster = new ComponentMulticasterAdapter().createComponentMulticaster(child, null, true);
         assertTrue(multicaster instanceof Serializable);
         assertFalse(multicaster instanceof Standalone);
     }
@@ -254,7 +253,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
 
         assertEquals(2, pico.getComponentInstances().size());
 
-        Peelable myPeelableContainer = (Peelable) new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        Peelable myPeelableContainer = (Peelable) new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
 
         myPeelableContainer.peel();
 
@@ -274,7 +273,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(PeelableComponent.class);
         pico.registerComponentImplementation(PeelableAndWashableComponent.class);
 
-        Object proxy = new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        Object proxy = new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
 
         Peelable peelable = (Peelable) proxy;
         peelable.peel();
@@ -299,7 +298,7 @@ public class ComponentMulticasterAdapterTestCase extends TestCase {
         pico.registerComponentImplementation(OrangeFactory.class);
 
         // Get the proxy for AppleFactory and OrangeFactory
-        FoodFactory foodFactory = (FoodFactory) new ComponentMulticasterAdapter().getComponentMulticaster(pico, true);
+        FoodFactory foodFactory = (FoodFactory) new ComponentMulticasterAdapter().createComponentMulticaster(pico, null, true);
 
         int foodFactoryCode = foodFactory.hashCode();
         assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);

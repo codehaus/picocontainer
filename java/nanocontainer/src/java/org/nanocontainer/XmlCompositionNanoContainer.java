@@ -16,7 +16,7 @@ import org.picoextras.script.xml.XMLContainerBuilder;
  * @author Ward Cunningham
  * @version $Revision$
  * @deprecated To replace with a NanoContainer instance that is given a
- *             {@link XMLContainerBuilder} instance in its ctor.
+ * {@link XMLContainerBuilder} instance in its ctor.
  */
 public class XmlCompositionNanoContainer /*extends NanoContainer*/ {
 

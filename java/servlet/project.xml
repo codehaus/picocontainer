@@ -38,7 +38,7 @@
 
         <dependency>
             <id>jmock</id>
-            <version>SNAPSHOT</version>
+            <version>usedbypico</version>
         </dependency>
         
         <dependency>

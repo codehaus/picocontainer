@@ -1,0 +1,53 @@
+<project  xmlns:j="jelly:core" xmlns:u="jelly:util" >
+
+	<preGoal name="test:test" >
+        <echo>Building test.mar file for use with unit tests </echo>
+		<attainGoal name="build-test.mar"/>
+    </preGoal>
+	
+	<goal name="build-test.mar" >
+		<attainGoal name="compile-testcomp"/>
+        <attainGoal name="test-promoted.jar"/>
+        <attainGoal name="test-components.jar"/>
+        <attainGoal name="test-hidden.jar"/>
+		<delete file="test.mar"/>
+		<zip destfile="test.mar">
+			<fileset dir="src/testcomp/" includes="composition.groovy"/>
+			<zipfileset dir="target/classes/" includes="promoted.jar" prefix="MAR-INF/promoted"/>
+			<zipfileset dir="target/classes/" includes="components.jar" prefix="MAR-INF/components"/>
+			<zipfileset dir="target/classes/" includes="hidden.jar" prefix="MAR-INF/hidden"/>
+		</zip>
+	</goal>
+
+    <goal name="test-promoted.jar">
+		<delete file="target/classes/promoted.jar"/>
+  		<jar destfile="target/classes/promoted.jar"
+			  basedir="src/testcomp/target/classes"
+			  includes="org/megacontainer/testapi/TestPromotable.class"/>
+  	</goal>
+
+	<goal name="test-components.jar">
+		<delete file="target/classes/components.jar"/>
+  		<jar destfile="target/classes/components.jar"
+			  basedir="src/testcomp/target/classes"
+			  includes="org/megacontainer/test/TestComp.class"/>
+  	</goal>
+
+	<goal name="test-hidden.jar">
+		<delete file="target/classes/hidden.jar"/>
+  		<jar destfile="target/classes/hidden.jar"
+			  basedir="src/testcomp/target/classes"
+			  includes="org/megacontainer/test/hopefullyhidden/*.class"/>
+  	</goal>
+
+	<goal name="compile-testcomp">
+		<mkdir dir="src/testcomp/target/classes"/>
+    	<javac srcdir="src/testcomp"
+         	destdir="src/testcomp/target/classes"
+         	includes="**/*"
+         	debug="on">
+			<classpath refid="maven.dependency.classpath"/>
+		</javac>
+	</goal>
+    
+</project>

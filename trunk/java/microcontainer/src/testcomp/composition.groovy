@@ -1,11 +1,12 @@
-container = new org.picocontainer.defaults.ImplementationHidingPicoContainer()
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+
+// must be named "pico" (required by GroovyContainerBuilder)
+pico = new org.picocontainer.defaults.ImplementationHidingPicoContainer()
 
 // assume all /promoted jars are in the current classloader tree to *this*
 
-apiClassLoader = // TODO. err turn /MAR-INF/components/* and /MAR-INF/lib/* jars in to classloader via URL I guess
-hiddenClassLoader = // TODO. err turn /MAR-INF/hidden/* jars in to classloader via URL I guess (with apiClassLoader as parent)
-
-reflectionContainerAdapter = new DefaultReflectionContainerAdapter(hiddenClassLoader, container);
+hiddenClassLoader = parent.getComponentInstance("hiddenClassLoader")
+reflectionContainerAdapter = new DefaultReflectionContainerAdapter(hiddenClassLoader, pico);
 reflectionContainerAdapter.registerComponentImplementation("org.megacontainer.test.TestComp", "org.megacontainer.test.hopefullyhidden.TestCompImpl");
 reflectionContainerAdapter.registerComponentImplementation("org.megacontainer.testapi.TestPromotable", "org.megacontainer.test.hopefullyhidden.TestPromotableImpl");
 

@@ -7,20 +7,21 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.megacontainer;
+package org.megacontainer.impl;
 
 import junit.framework.TestCase;
-import org.megacontainer.impl.DefaultKernel;
+import org.megacontainer.Kernel;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author Paul Hammant
+ * @author Mike Ward
  * @version $Revision$
  */
 

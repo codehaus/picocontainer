@@ -48,4 +48,6 @@ public interface PicoContainer extends LifecycleContainer {
     void registerComponent(Object component)
             throws PicoRegistrationException;
 
+    void addParameterToComponent(Class componentType, Class parameter, Object arg);
+
 }

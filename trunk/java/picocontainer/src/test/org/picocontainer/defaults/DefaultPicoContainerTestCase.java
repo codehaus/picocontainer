@@ -11,18 +11,20 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.Parameter;
 import org.picocontainer.testmodel.FredImpl;
+import org.picocontainer.testmodel.Webster;
 import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
-import org.picocontainer.testmodel.Webster;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DefaultPicoContainerTestCase extends TestCase {
 
@@ -412,11 +414,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("toString() should return the result from the invocation handler", s.indexOf("AggregatingInvocationHandler") != -1);
 
         // Try to call a hashCode on a "recursive" proxy.
-        int foodCode = food.hashCode();
+        food.hashCode();
 
         // Try to call a method returning a primitive.
         try {
-            int magic = food.magic();
+            food.magic();
             fail("Should fail because there is no sensible return value");
         } catch (UndeclaredThrowableException e) {
             // That's expected, and ok.
@@ -698,4 +700,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("has component", pico.getComponent("foo") != null);
     }
+
+    public void testUnmanagedCompsAreNotEligibleForComposite() throws Exception {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        pico.registerComponent(Map.class, new HashMap());
+        pico.instantiateComponents();
+
+        try {
+            Map map = (Map) pico.getCompositeComponent();
+            fail("Unmanaged comps should nopt make it into the composite");
+        } catch (ClassCastException e) {
+            // expected
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ module Rico
   # A dynamic proxy - subclass this and extend method_missing to add intercepting
   # behaviour to a container
   #
-  # TODO - make this a mixin that requires before_method() and after_method() methods.
+  # TODO - make this a mixin that calls optional do_before() and do_after() methods.
   #
   class Interceptor
     all_methods = Object.public_instance_methods(true)

@@ -10,7 +10,7 @@ class ContainerTest < Test::Unit::TestCase
 
   def test_new_container_is_empty
     rico = Container.new
-    assert_equal 0, rico.component_count, "component count"
+    assert_equal true, rico.is_empty?
   end
   
   def test_get_nonexistent_component_details_fails
@@ -26,6 +26,7 @@ class ContainerTest < Test::Unit::TestCase
   def test_registers_component_with_no_dependencies
     rico = Container.new
     rico.register_component :object, Object
+    assert_equal false, rico.is_empty?, "is empty"
     assert_equal 1, rico.component_count, "component count"
     assert_equal Object, rico.component_class(:object), "component class"
     assert_equal [], rico.dependencies(:object), "dependencies"
@@ -67,7 +68,7 @@ class ContainerTest < Test::Unit::TestCase
     rico = Container.new
     rico.register_component :object, Object
     result = rico.component :object
-    assert_equal Object, result.class
+    assert_instance_of Object, result
   end
   
   def test_getting_component_twice_gives_same_component

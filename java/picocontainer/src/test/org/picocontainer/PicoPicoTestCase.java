@@ -39,7 +39,5 @@ public class PicoPicoTestCase extends TestCase {
 
         assertTrue("There should have been a Fred in the container", pc2.hasComponent(DependsOnTouchable.class));
         assertTrue("There should have been a Touchable in the container", pc2.hasComponent(SimpleTouchable.class));
-
     }
-
 }

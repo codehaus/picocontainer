@@ -60,5 +60,6 @@ public interface ReflectionContainerAdapter {
 
     MutablePicoContainer getPicoContainer();
 
-    ClassLoader getClassLoader();
+    ClassLoader getComponentClassLoader();
+
 }

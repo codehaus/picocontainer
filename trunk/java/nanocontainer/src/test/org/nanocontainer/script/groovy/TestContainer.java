@@ -11,11 +11,11 @@ import org.picocontainer.PicoContainer;
 public class TestContainer extends DefaultSoftCompositionPicoContainer {
 
     public TestContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        super(caf, parent);
+        super(TestContainer.class.getClassLoader(), caf, parent);
     }
 
     public TestContainer(PicoContainer parent) {
-        super(parent);
+        super(TestContainer.class.getClassLoader(), parent);
     }
 
     public TestContainer() {

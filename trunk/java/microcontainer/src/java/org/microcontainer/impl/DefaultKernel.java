@@ -33,6 +33,7 @@ import java.util.HashMap;
  * @version $Revision$
  */
 public class DefaultKernel implements Kernel, Startable, Disposable {
+
 	protected ClassLoaderFactory classLoaderFactory = null;
 	protected HashMap contextMap = null;
 	protected MarDeployer marDeployer = null;

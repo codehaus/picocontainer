@@ -68,6 +68,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
                 "var pico = new DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
                 "child = new DefaultSoftCompositionPicoContainer(pico)\n" +
+                "pico.addChildContainer(child)\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
                 "child.registerComponentImplementation('childComponent','TestComp')\n" +

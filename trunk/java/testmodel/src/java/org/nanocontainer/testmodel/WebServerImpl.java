@@ -11,11 +11,23 @@
 package org.nanocontainer.testmodel;
 
 import junit.framework.Assert;
+import org.picocontainer.Startable;
 
-public class WebServerImpl implements WebServer {
+public class WebServerImpl implements WebServer, Startable {
 
     public WebServerImpl(WebServerConfig wsc) {
+        this(wsc, new StringBuffer("d"));
+    }
+
+    public WebServerImpl(WebServerConfig wsc, StringBuffer sb) {
         Assert.assertTrue("No port number specified", wsc.getPort() > 0);
         Assert.assertNotNull("No host name specified", wsc.getHost());
+        sb.append("-WebServerImpl:" + wsc.getHost() + ":" + wsc.getPort());
+    }
+
+    public void start() {
+    }
+
+    public void stop() {
     }
 }

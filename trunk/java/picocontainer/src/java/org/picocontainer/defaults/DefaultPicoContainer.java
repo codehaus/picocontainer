@@ -354,6 +354,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
             MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.getComponentInstances();
             mpc.start();
         }
         started = true;

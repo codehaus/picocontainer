@@ -11,7 +11,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
 public class DefaultSoftCompositionPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultSoftCompositionPicoContainer(parent);
+        return new DefaultSoftCompositionPicoContainer(this.getClass().getClassLoader(), parent);
     }
 
     // test methods inherited. This container is fully compliant.

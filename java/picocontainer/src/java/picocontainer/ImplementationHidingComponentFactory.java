@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 
-public class ImplementationHidingComponentDecorator extends DefaultComponentFactory {
+public class ImplementationHidingComponentFactory extends DefaultComponentFactory {
     public Object createComponent(Class compType, Constructor constructor, Object[] args)
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {

@@ -45,11 +45,22 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
-    public void testAlternate() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
+    public void testResourceBundleConfig() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         nc.registerComponents(new InputSource(new StringReader(
                 "<components>" +
                 "      <component class=\"nanocontainer.testmodel.ResourceBundleWebServerConfig\"/>" +
+                "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
+                "</components>")));
+        nc.start();
+        assertTrue(nc.hasComponent(WebServer.class));
+    }
+
+    public void testDigesterConfig() throws PicoRegistrationException, ParserConfigurationException, PicoStartException, ClassNotFoundException {
+        InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
+        nc.registerComponents(new InputSource(new StringReader(
+                "<components>" +
+                "      <component class=\"nanocontainer.testmodel.DigesterWebServerConfig\"/>" +
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
         nc.start();

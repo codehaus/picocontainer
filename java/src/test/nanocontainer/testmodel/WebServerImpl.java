@@ -10,12 +10,12 @@
 
 package nanocontainer.testmodel;
 
-import nanocontainer.testmodel.WebServer;
-import nanocontainer.testmodel.WebServerConfig;
+import junit.framework.Assert;
 
 public class WebServerImpl implements WebServer {
 
     public WebServerImpl(WebServerConfig wsc) {
-
+        Assert.assertTrue("No port number specified", wsc.getPort() > 0);
+        Assert.assertNotNull("No host name specified", wsc.getHost());
     }
 }

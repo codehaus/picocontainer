@@ -102,7 +102,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
 
     }
 
-    public void testUnknownComponentClassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testUnknownclassThrowsAssemblyException() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
             Reader script = new StringReader("<container>" +
@@ -114,7 +114,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
         }
     }
 
-    public void testUnknownComponentClassThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
+    public void testUnknownclassThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         try {
             Reader script = new StringReader("<container/>");
@@ -123,7 +123,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
         }
     }
 
-    public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testPseudocreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("<container>" +
                 "    <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
                 "      <config-or-whatever/>" +

@@ -52,7 +52,7 @@ public class PicoBuilder extends BuilderSupport {
     protected Object createNode(Object name, Object value) {
         if (value instanceof Class) {
             Map attributes = new HashMap();
-            attributes.put("componentClass", value);
+            attributes.put("class", value);
             return createNode(name, attributes);
         }
         return createNode(name);
@@ -75,7 +75,7 @@ public class PicoBuilder extends BuilderSupport {
                 //System.out.println("Creating node: " + name + " with " + attributes);
 
                 if (name.equals("component")) {
-                    Class type = (Class) attributes.remove("componentClass");
+                    Class type = (Class) attributes.remove("class");
                     if (type != null) {
                         Object key = attributes.remove("key");
                         if (key != null) {
@@ -87,7 +87,7 @@ public class PicoBuilder extends BuilderSupport {
                         return name;
                     }
                     else {
-                        throw new PicoBuilderException("Must specify a componentClass attribute for a component");
+                        throw new PicoBuilderException("Must specify a class attribute for a component");
                     }
                 }
                 else if (name.equals("bean")) {

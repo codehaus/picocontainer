@@ -91,11 +91,22 @@ public class LifecycleSessionProvider implements SessionProvider, Startable {
   
 
     /**
-     * reset session if any
+     * dispose botched session in enviromentally safe and responsible way.
      */
     public void reset() {
-        session = null;
-        transaction = null;
+		try {
+			rollback();
+			if(session != null) {
+				session.clear();
+				session.close();
+			}
+  		} catch(HibernateException ex) {
+			// we do nothing here, because this shall be called if something went wrong.
+			// situation is FUBAR already.
+		} finally {
+			session = null;
+			transaction = null;
+		}
     }
 
 

@@ -42,4 +42,33 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertEquals("Should match the expression", "*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", MockMonitor.monitorRecorder);
     }
 
+    public void testInstantiateXmlWithMissingComponent() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        MockMonitor.monitorRecorder = "";
+
+        try {
+            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                    "<container>" +
+                    "      <component classname='Foo'/>" +
+                    "</container>"), new MockMonitor());
+            fail("Should have thrown a ClassNotFoundException");
+        } catch (ClassNotFoundException cnfe) {
+        }
+
+    }
+
+    public void testInstantiateEmptyXml() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        MockMonitor.monitorRecorder = "";
+
+        try {
+            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                    "<container>" +
+                    "</container>"), new MockMonitor());
+            fail("Should have thrown a EmptyNanoContainerException");
+        } catch (EmptyNanoContainerException cnfe) {
+        }
+
+    }
+
 }

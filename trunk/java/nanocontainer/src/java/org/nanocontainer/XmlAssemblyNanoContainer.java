@@ -34,11 +34,10 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
         super(nanoContainerXml, monitor);
     }
 
-    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, EmptyNanoContainerException {
         InputSource is = new InputSource(nanoContainerXml);
         InputSourceFrontEnd isfe = new InputSourceFrontEnd();
         final PicoContainer rootContainer = isfe.createPicoContainer(is);
-
         instantiateComponentsBreadthFirst(rootContainer);
         startComponentsBreadthFirst();
     }

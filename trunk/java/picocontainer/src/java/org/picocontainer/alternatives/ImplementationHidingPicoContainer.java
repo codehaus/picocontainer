@@ -24,6 +24,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -36,7 +37,7 @@ import java.util.List;
  */
 public class ImplementationHidingPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final DefaultPicoContainer delegate;
+    private final InnerMutablePicoContainer delegate;
     private final ComponentAdapterFactory caf;
 
     /**
@@ -44,7 +45,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
         this.caf = caf;
-        delegate = new DefaultPicoContainer(caf, parent);
+        delegate = new InnerMutablePicoContainer(caf, parent);
     }
 
     /**
@@ -189,6 +190,21 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     public List getComponentInstancesOfType(Class type) throws PicoException {
         return delegate.getComponentInstancesOfType(type);
+    }
+
+    protected Map getNamedContainers() {
+        return delegate.getNamedContainers();
+    }
+
+    // TODO: Paul this is a vanilla class now ... remove it and use DPC directly ?
+    private class InnerMutablePicoContainer extends DefaultPicoContainer {
+        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+            super(componentAdapterFactory, parent);
+        }
+
+        public Map getNamedContainers() {
+            return super.getNamedContainers();
+        }
     }
 
 }

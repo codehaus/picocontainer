@@ -463,4 +463,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             visitor.visitComponentInstance(o);
         }
     }
+    protected Map getNamedContainers() {
+        return namedChildContainers;
+    }
 }

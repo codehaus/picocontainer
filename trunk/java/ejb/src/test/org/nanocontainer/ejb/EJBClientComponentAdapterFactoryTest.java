@@ -9,15 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.ejb;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import org.nanocontainer.ejb.EJBClientComponentAdapterFactory;
+import junit.framework.TestCase;
 import org.nanocontainer.ejb.rmi.mock.PortableRemoteObjectDelegateMock;
 import org.nanocontainer.ejb.testmodel.BarHomeImpl;
 import org.nanocontainer.ejb.testmodel.FooHomeImpl;
@@ -27,16 +19,21 @@ import org.nanocontainer.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
-
-import junit.framework.TestCase;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Unit test for EJBClientComponentAdapterFactory.
+ *
  * @author J&ouml;rg Schaible
  */
 public class EJBClientComponentAdapterFactoryTest
         extends TestCase {
-    
+
     private Properties m_systemProperties;
 
     /**
@@ -46,7 +43,7 @@ public class EJBClientComponentAdapterFactoryTest
         super.setUp();
         m_systemProperties = System.getProperties();
         m_systemProperties.setProperty("javax.rmi.CORBA.PortableRemoteObjectClass", PortableRemoteObjectDelegateMock.class.getName());
-        
+
         final Map narrowMap = new HashMap();
         narrowMap.put("HelloToNarrow", HelloHomeImpl.class.getConstructor(null));
         narrowMap.put("FooToNarrow", FooHomeImpl.class.getConstructor(null));
@@ -64,6 +61,7 @@ public class EJBClientComponentAdapterFactoryTest
 
     /**
      * Test for standard constructor using system InitialContext
+     *
      * @throws NamingException
      */
     public final void testSystemInitialContext() throws NamingException {
@@ -71,11 +69,11 @@ public class EJBClientComponentAdapterFactoryTest
         System.setProperty("org.osjava.jndi.root", "file://src/test-conf/jndi");
         System.setProperty("org.osjava.jndi.delimiter", "/");
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory();
-        final ComponentAdapter componentAdapter = 
-            caf.createComponentAdapter("Hello", HelloHome.class, null); 
+        final ComponentAdapter componentAdapter =
+                caf.createComponentAdapter("Hello", HelloHome.class, null);
         assertNotNull(componentAdapter);
-        final Object hello1 = componentAdapter.getComponentInstance(); 
-        final Object hello2 = componentAdapter.getComponentInstance(); 
+        final Object hello1 = componentAdapter.getComponentInstance();
+        final Object hello2 = componentAdapter.getComponentInstance();
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
         assertSame(hello1, hello2);
@@ -83,6 +81,7 @@ public class EJBClientComponentAdapterFactoryTest
 
     /**
      * Test for constructor using a prepared environment for the InitialContext
+     *
      * @throws NamingException
      */
     public final void testPreparedInitialContext() throws NamingException {
@@ -92,11 +91,11 @@ public class EJBClientComponentAdapterFactoryTest
         env.put("org.osjava.jndi.delimiter", "/");
         final InitialContext initialContext = new InitialContext(env);
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(initialContext);
-        final ComponentAdapter componentAdapter = 
-            caf.createComponentAdapter("Hello", HelloHome.class, null); 
+        final ComponentAdapter componentAdapter =
+                caf.createComponentAdapter("Hello", HelloHome.class, null);
         assertNotNull(componentAdapter);
-        final Object hello1 = componentAdapter.getComponentInstance(); 
-        final Object hello2 = componentAdapter.getComponentInstance(); 
+        final Object hello1 = componentAdapter.getComponentInstance();
+        final Object hello2 = componentAdapter.getComponentInstance();
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
         assertSame(hello1, hello2);

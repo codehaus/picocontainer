@@ -8,16 +8,8 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 package org.nanocontainer.ejb;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
 
-import javax.ejb.EJBHome;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import org.nanocontainer.ejb.EJBClientComponentAdapter;
+import junit.framework.TestCase;
 import org.nanocontainer.ejb.rmi.mock.PortableRemoteObjectDelegateMock;
 import org.nanocontainer.ejb.testmodel.BarHomeImpl;
 import org.nanocontainer.ejb.testmodel.FooBarHome;
@@ -31,16 +23,22 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-
-import junit.framework.TestCase;
+import javax.ejb.EJBHome;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Unit test for EJBClientComponentAdapter.
+ *
  * @author J&ouml;rg Schaible
  */
 public class EJBClientComponentAdapterTest
         extends TestCase {
-    
+
     private Properties m_systemProperties;
     private ComponentAdapter m_componentAdapter;
     private InitialContext m_initialContext;
@@ -52,12 +50,12 @@ public class EJBClientComponentAdapterTest
         super.setUp();
         m_systemProperties = System.getProperties();
         m_systemProperties.setProperty("javax.rmi.CORBA.PortableRemoteObjectClass", PortableRemoteObjectDelegateMock.class.getName());
-        
+
         final Map narrowMap = new HashMap();
         narrowMap.put("HelloToNarrow", HelloHomeImpl.class.getConstructor(null));
         narrowMap.put("FooToNarrow", FooHomeImpl.class.getConstructor(null));
         narrowMap.put("BarToNarrow", BarHomeImpl.class.getConstructor(null));
-         PortableRemoteObjectDelegateMock.setNarrowMap(narrowMap);
+        PortableRemoteObjectDelegateMock.setNarrowMap(narrowMap);
         final Hashtable env = new Hashtable();
         env.put("java.naming.factory.initial", "org.osjava.jndi.PropertiesFactory");
         env.put("org.osjava.jndi.root", "file://src/test-conf/jndi");
@@ -116,7 +114,7 @@ public class EJBClientComponentAdapterTest
      * Test for EJBClientComponentAdapter.getComponentInstance()
      */
     public final void testGetComponentInstance() {
-        final Hello hello = (Hello)m_componentAdapter.getComponentInstance();
+        final Hello hello = (Hello) m_componentAdapter.getComponentInstance();
         assertNotNull(hello);
         assertEquals("Hello World!", hello.getHelloWorld());
     }
@@ -155,7 +153,7 @@ public class EJBClientComponentAdapterTest
      * Test for EJBClientComponentAdapter.toString()
      */
     public final void testToString() {
-        final String stringRep = m_componentAdapter.toString(); 
+        final String stringRep = m_componentAdapter.toString();
         assertEquals(EJBClientComponentAdapter.class.getName() + "[Hello]", stringRep);
     }
 }

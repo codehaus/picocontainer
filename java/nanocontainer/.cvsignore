@@ -3,3 +3,4 @@
 *.ipr
 *.iml
 target
+cachedir

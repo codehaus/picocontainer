@@ -26,7 +26,7 @@ public class NanoNanoTestCase extends TestCase {
 
         StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();
         nc.registerComponent("org.picocontainer.defaults.DefaultComponentRegistry");
-        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$Default");
+        nc.registerComponent("org.nanocontainer.StringRegistrationNanoContainerImpl$WithContainerArray");
 
         nc.instantiateComponents();
 
@@ -54,12 +54,12 @@ public class NanoNanoTestCase extends TestCase {
         nc.registerComponents(new InputSource(new StringReader(
                 "<conponents>" +
                 "      <component class=\"org.picocontainer.defaults.DefaultComponentRegistry\"/>" +
-                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$Default\"/>" +
+                "      <component class=\"org.nanocontainer.DomRegistrationNanoContainer$WithContainerArray\"/>" +
                 "</conponents>")));
 
         nc.instantiateComponents();
 
-        assertTrue("Should have a DomRegistrationNanoContainer.Default", nc.hasComponent(DomRegistrationNanoContainer.Default.class));
+        assertTrue("Should have a DomRegistrationNanoContainer.WithContainerArray", nc.hasComponent(DomRegistrationNanoContainer.Default.class));
 
         tryUsingInputSourceRegistrationNanoContainer((InputSourceRegistrationNanoContainer) nc.getComponent(DomRegistrationNanoContainer.Default.class));
 

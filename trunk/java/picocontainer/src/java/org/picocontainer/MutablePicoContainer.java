@@ -83,6 +83,19 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
 
+    /**
+     * Adds a Child container. Will also add this instance as a parent to child,
+     * so calling {@link #addParent} is not necessary.
+     *
+     * @param child child container.
+     */
     void addChild(MutablePicoContainer child);
+
+    /**
+     * Adds a Parent container. Will also add this instance as a child to parent,
+     * so calling {@link #addChild} is not necessary.
+     *
+     * @param parent parent container.
+     */
     void addParent(MutablePicoContainer parent);
 }

@@ -2,9 +2,7 @@ package org.picocontainer.tck;
 
 import junit.framework.TestCase;
 import org.picocontainer.*;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.*;
 import org.picocontainer.defaults.*;
 
 import java.io.ByteArrayInputStream;
@@ -205,6 +203,33 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         } catch (StackOverflowError e) {
             fail();
         }
+    }
+
+    public static class NeedsTouchable {
+        public Touchable touchable;
+
+        public NeedsTouchable(Touchable touchable) {
+            this.touchable = touchable;
+        }
+    }
+
+    public static class NeedsWashable {
+        public Washable washable;
+
+        public NeedsWashable(Washable washable) {
+            this.washable = washable;
+        }
+    }
+
+    public void testSameInstanceCanBeUsedAsDifferentType() {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(WashableTouchable.class);
+        pico.registerComponentImplementation(NeedsWashable.class);
+        pico.registerComponentImplementation(NeedsTouchable.class);
+
+        NeedsWashable nw = (NeedsWashable) pico.getComponentInstance(NeedsWashable.class);
+        NeedsTouchable nt = (NeedsTouchable) pico.getComponentInstance(NeedsTouchable.class);
+        assertSame(nw.washable, nt.touchable);
     }
 
 }

@@ -16,6 +16,7 @@ import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.extras.DefaultLifecyclePicoContainer;
 import org.xml.sax.SAXException;
 
@@ -23,6 +24,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Vector;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -215,4 +218,32 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
             Assert.assertFalse(wsc instanceof DefaultWebServerConfig);
         }
     }
+
+    public void testInstantiateWithHintedComponentResolution() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+
+        NanoContainer nano = null;
+        try {
+            nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                        "<container>" +
+                        "    <component stringkey='one' impl='java.util.ArrayList'/>" +
+                        "    <component stringkey='two' impl='java.util.Vector'/>" +
+                        "    <component impl='"+CollectionNeedingComponent.class.getName()+"'>" +
+                        "      <hint stringkey='one'/>" +
+                        "    </component>" +
+                        "</container>"), new MockMonitor());
+        } catch (AmbiguousComponentResolutionException e) {
+            //TODO - This should work not barf.
+        }
+
+    }
+
+    public static class CollectionNeedingComponent {
+        public CollectionNeedingComponent(Collection col) {
+            if (col == null) {
+                throw new NullPointerException();
+            }
+        }
+    }
+
+
 }

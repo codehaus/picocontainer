@@ -96,8 +96,9 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     }
 
     // These two methods are copied from ProxyToys' ClassHierarchyIntrospector
-
-    /**
+    // TODO: Why? These two are currently not called in the complete Pico/Nano/Micro codebase ...
+    // they just decrease coverage significantly ...
+    /* *
      * Get all interfaces of the given type.
      * If the type is a class, the returned list contains any interface, that is
      * implemented by the class. If the type is an interface, the all
@@ -106,6 +107,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
      */
+    /*
     public static Class[] getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
@@ -129,5 +131,5 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             clazz = clazz.getSuperclass();
         }
     }
-
+    */
 }

@@ -1,13 +1,15 @@
 package nanocontainer.testmodel;
 
 public class ThingThatTakesParamsInConstructor {
-    String value;
+    private String value;
+    private Integer intValue;
 
-    public ThingThatTakesParamsInConstructor(String value) {
+    public ThingThatTakesParamsInConstructor(String value, Integer intValue) {
         this.value = value;
+        this.intValue = intValue;
     }
 
     public String getValue() {
-        return value;
+        return value + intValue;
     }
 }

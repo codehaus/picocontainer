@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class StringToObjectConverter {
 
-    Map converters = new HashMap();
+    private final Map converters = new HashMap();
 
     public StringToObjectConverter() {
         register(String.class, new Converter() {

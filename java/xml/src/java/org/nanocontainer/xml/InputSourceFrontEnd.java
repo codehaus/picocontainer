@@ -97,7 +97,7 @@ public class InputSourceFrontEnd {
                         }
                         url = file.toURL();
                     }
-                    reflectionFrontEnd.addURL(url);
+                    reflectionFrontEnd.addClassLoaderURL(url);
                 }
             }
         }

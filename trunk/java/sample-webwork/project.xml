@@ -102,7 +102,7 @@
         <!-- Uncomment for Servlet containers that don't bundle commons-logging -->
         <!--        <dependency>-->
         <!--            <id>commons-logging</id>-->
-        <!--            <version>1.0.2</version>-->
+        <!--            <version>1.0.3</version>-->
         <!--            <properties>-->
         <!--                <war.bundle>true</war.bundle>-->
         <!--            </properties>-->

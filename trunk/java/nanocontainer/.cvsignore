@@ -3,5 +3,7 @@ distributions.*
 *.iws
 *.ipr
 *.iml
+.classpath
+.project
 target
 cachedir

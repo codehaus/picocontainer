@@ -1,0 +1,93 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <pomVersion>3</pomVersion>
+    <currentVersion>0.1-SNAPSHOT</currentVersion>
+    <name>MegaContainer</name>
+    <id>megacontainer</id>
+    <url>http://www.picoocontainer.org</url>
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2004</inceptionYear>
+    <package>org.megacontainer</package>
+    <shortDescription>MegaContainer</shortDescription>
+
+    <!-- issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=TODO</issueTrackingUrl -->
+
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/picocontainer/public_html/reports/${pom.artifactId}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/megacontainer/scm:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/megacontainer/scm:java</developerConnection>
+        <url>http://cvs.picocontainer.codehaus.org/java/megacontainer/?viewcvs.cgi</url>
+    </repository>
+
+
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Helles&oslash;y</name>
+            <id>rinkrank</id>
+            <email>rinkrank@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+         <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <!-- later on
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*</exclude>
+            </excludes>
+        </unitTest>
+        -->
+    </build>
+
+    
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
+
+
+</project>

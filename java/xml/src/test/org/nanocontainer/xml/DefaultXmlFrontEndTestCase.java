@@ -70,9 +70,8 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         // Paul's path to TestComp. PLEASE do not take out.
         //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
 
-//        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
-  //      File testCompJar = new File(testcompJarFileName);
-        File testCompJar = new File("D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar");
+        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
         InputSource inputSource = new InputSource(new StringReader(

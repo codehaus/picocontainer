@@ -11,6 +11,7 @@
 package org.nanocontainer.xml;
 
 import org.nanocontainer.reflection.ReflectionFrontEnd;
+import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -42,7 +43,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
     public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
             throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
 
-        ReflectionFrontEnd rootReflectionFrontEnd = new ReflectionFrontEnd(mutablePicoContainer);
+        ReflectionFrontEnd rootReflectionFrontEnd = new DefaultReflectionFrontEnd(mutablePicoContainer);
         registerComponentsAndChildContainers(rootReflectionFrontEnd, rootElement);
 
         return rootReflectionFrontEnd.getPicoContainer();
@@ -73,11 +74,9 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
                     componentCount++;
                 } else if (name.equals("container")) {
 
-                    MutablePicoContainer mutablePicoContainer = null;
+                    MutablePicoContainer mutablePicoContainer = getMutablePicoContainerFromContainerAttribute(child);
 
-                    mutablePicoContainer = getMutablePicoContainerFromContainerAttribute(child);
-
-                    ReflectionFrontEnd childFrontEnd = new ReflectionFrontEnd(reflectionFrontEnd, mutablePicoContainer);
+                    ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(reflectionFrontEnd, mutablePicoContainer);
                     registerComponentsAndChildContainers(childFrontEnd, (Element) child);
                 }
             }
@@ -91,7 +90,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         String picoContainerClassName = ((Element) child).getAttribute("container");
         String componentAdaptorClassName = ((Element) child).getAttribute("componentadaptor");
 
-        ReflectionFrontEnd tempContainer = new ReflectionFrontEnd();
+        ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
 
         if (componentAdaptorClassName != null && !componentAdaptorClassName.equals("")) {
             tempContainer.registerComponent(ComponentAdapterFactory.class, componentAdaptorClassName);
@@ -134,6 +133,8 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         String className = componentElement.getAttribute("impl");
         String stringKey = componentElement.getAttribute("stringkey");
         String typeKey = componentElement.getAttribute("typekey");
+
+        //TODO we need to have config elements parsing here, and register with params action... 
         if (stringKey == null || stringKey.equals("")) {
             stringKey = className;
         }

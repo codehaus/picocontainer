@@ -46,8 +46,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
         Object proxyInstance = Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
                 interfaces, handler);
-
-        container.addOrderedComponentAdapter(this);
         return proxyInstance;
     }
 

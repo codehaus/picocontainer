@@ -32,7 +32,6 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
             componentInstance = super.getComponentInstance(picoContainer);
-            picoContainer.addOrderedComponentAdapter(this);
         }
         return componentInstance;
     }

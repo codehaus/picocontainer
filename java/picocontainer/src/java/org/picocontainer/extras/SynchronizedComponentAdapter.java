@@ -28,7 +28,14 @@ public class SynchronizedComponentAdapter implements ComponentAdapter {
     }
 
     public synchronized Object getComponentInstance(MutablePicoContainer dependencyContainer) throws PicoInitializationException, PicoIntrospectionException {
-        return delegate.getComponentInstance(dependencyContainer);
+        if(dependencyContainer != null) {
+            dependencyContainer.registerOrderedComponentAdapter(this);
+        }
+        Object instance = delegate.getComponentInstance(dependencyContainer);
+        if(dependencyContainer != null) {
+            dependencyContainer.addOrderedComponentAdapter(this);
+        }
+        return instance;
     }
 
     public synchronized void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {

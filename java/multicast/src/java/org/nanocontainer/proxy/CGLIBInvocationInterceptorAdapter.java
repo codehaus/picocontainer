@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
+ * @deprecated Will be replaced by http://proxytoys.cocehaus.org/
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

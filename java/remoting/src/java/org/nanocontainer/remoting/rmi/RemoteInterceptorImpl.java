@@ -1,21 +1,20 @@
 package org.nanocontainer.remoting.rmi;
 
 import org.nanocontainer.proxy.ProxyFactory;
-import org.nanocontainer.remoting.rmi.RemoteInterceptor;
 import org.nanocontainer.remoting.ByRefKey;
 import org.nanocontainer.remoting.Invocation;
-import org.nanocontainer.remoting.NanoNamingImpl;
 import org.nanocontainer.remoting.KeyHolder;
+import org.nanocontainer.remoting.NanoNamingImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import java.util.Iterator;
-import java.io.Serializable;
 
 /**
  * @author Neil Clayton

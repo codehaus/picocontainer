@@ -1,0 +1,8 @@
+distributions.*
+cachedir
+target
+junit*
+*.log
+*.iws
+*.ipr
+*.iml

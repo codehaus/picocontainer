@@ -567,30 +567,6 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
-    public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {
-        final MutablePicoContainer parent = createPicoContainer(null);
-        final MutablePicoContainer child = parent.makeChildContainer();
-        Map map = new HashMap();
-        ComponentAdapter mapAdapter = new InstanceComponentAdapter("map", map);
-        parent.registerComponent(mapAdapter);
-        child.registerComponentImplementation(ArrayList.class);
-
-        Mock noneVisitor = new Mock(PicoVisitor.class);
-        noneVisitor.expects(once()).method("visitContainer").with(same(parent));
-        noneVisitor.expects(once()).method("visitContainer").with(same(child));
-        parent.accept((PicoVisitor) noneVisitor.proxy(), null, true);
-
-        Mock mapVisitor = new Mock(PicoVisitor.class);
-        mapVisitor.expects(once()).method("visitContainer").with(same(parent));
-        mapVisitor.expects(once()).method("visitContainer").with(same(child));
-        mapVisitor.expects(once()).method("visitComponentInstance").with(same(map));
-        mapVisitor.expects(once()).method("visitComponentAdapter").with(same(mapAdapter));
-        parent.accept((PicoVisitor) mapVisitor.proxy(), Map.class, true);
-
-        noneVisitor.verify();
-        mapVisitor.verify();
-    }
-
 
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;

@@ -44,7 +44,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter, Serializabl
         return delegate.getComponentInstance(container);
     }
 
-    public void verify(PicoContainer container) throws PicoVerificationException {
+    public void verify(PicoContainer container) throws PicoIntrospectionException {
         delegate.verify(container);
     }
 

@@ -38,7 +38,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     protected int getComponentAdapterNature() {
-        return SERIALIZABLE;
+        return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
     private ComponentAdapter createComponentAdapterWithSimpleTouchable() {

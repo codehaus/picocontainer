@@ -267,7 +267,7 @@ public abstract class AbstractComponentAdapterTestCase
                 fail("PicoIntrospectionException expected");
             } catch (PicoIntrospectionException e) {
             } catch (Exception e) {
-                fail("PicoIntrospectionException expected");
+                fail("PicoIntrospectionException expected, but got " + e.getClass().getName());
             }
             try {
                 componentAdapter.getComponentInstance(picoContainer);
@@ -275,7 +275,7 @@ public abstract class AbstractComponentAdapterTestCase
             } catch (PicoInitializationException e) {
             } catch (PicoIntrospectionException e) {
             } catch (Exception e) {
-                fail("PicoInitializationException or PicoIntrospectionException expected");
+                fail("PicoInitializationException or PicoIntrospectionException expected, but got " + e.getClass().getName());
             }
         }
     }

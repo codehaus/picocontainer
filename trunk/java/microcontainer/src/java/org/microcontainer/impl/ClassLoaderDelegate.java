@@ -37,7 +37,7 @@ public class ClassLoaderDelegate extends ClassLoader {
 	}
 
 	/**
-	 * Attempts to load class from delegates first and tries parent last.
+	 * Attempts to load class from parent ClassLoader first then tries delegates
 	 */
 	public Class loadClass(String name) throws ClassNotFoundException {
 		Class clazz = null;

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>History of PicoContainer</title>
+</head>
+<body>
+<h2>Overview</h2>
+The history of PicoContaner is tied to that of IoC itself. There are
+three types of Inversion Of Control. Types 1, 2 and 3.&nbsp; They were
+roughly declared in that order.&nbsp; Type 1 has ruled the roost for
+longest.&nbsp; PicoContainer authors have either (formerly) promoted
+it, or avoided it because it did not feel right.&nbsp; Type two and
+three came into being within a short space of each other.<br>
+<h2>Type 1</h2>
+Apache's Avalon (<a href="http://avalon.apache.org">http://avalon.apache.org</a>)
+project has
+been selling the IoC patten for many years
+now.&nbsp; The Avalon-Framework design laces together and configures
+components like
+so:<br>
+<pre style="margin-left: 40px;">import org.apache.avalon.framework.*;<br>   public class Shop implements Serviceable, Configurable, Initializable {<br>&nbsp;&nbsp;&nbsp; StockManager stockManager;<br>&nbsp;&nbsp;&nbsp; String shopZipCode;<br>&nbsp;&nbsp;&nbsp; public void service(org.apache.avalon.framework.ServiceManager sm) <br>          throws ServiceException {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void configure( final Configuration configuration ) <br>          throws ConfigurationException {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shopZipCode = configuration.getChild( "zipcode" ).getValue();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // all service()ing an config()ing done.<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
+A component has to have service (component) declarations in some
+external file. The popular Phoenix (http://avalon.apache.org/phoenix/)
+container had .xinfo files for such
+needs.&nbsp; All Avalon container have some mechanism for storing
+configuration and assembly externally to the class.&nbsp; Cross
+referenced against the xinfo files, Phoenix's assembly.xml defines the
+implementations to be used for component types.&nbsp; This all Avalon
+components must be interface/implementation separated. This in itself
+is not a bad thing in my (Paul) opinion.<br>
+<br>
+<span style="font-weight: bold;">Using type 1 components withou a type
+1 container.</span><br style="font-weight: bold;">
+<br>
+The downside of the this design is that components can only be used
+without the container with great difficulty. If at all.&nbsp; This a
+proper container is needed at all times, and you have to choose one for
+different purposes (that not withstanding the efforts of the Avalon
+team to make a single all-purpose container).&nbsp; If you do manage to
+instantiate components without a container, you might miss one of the
+essential service dependencies.&nbsp; The component-using class&nbsp;
+will continue to compile, but at run time it will be apparent that
+there are missing dependencies.<br>
+<h3>Type 2</h3>
+Joe Walnes whist working on a book with other luminaries, started a
+type 2 IoC design. This is marked up with doclet tags (though that is
+not hard and fast) :<br>
+<pre style="margin-left: 40px;">public class Shop {<br>&nbsp;&nbsp; StockManager stockManager;<br>&nbsp;&nbsp; String shopZipCode;<br>&nbsp;&nbsp; /**<br>&nbsp;&nbsp;&nbsp; * @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; *<br>&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;<br>&nbsp;&nbsp; }<br>&nbsp;&nbsp; /**<br>&nbsp;&nbsp;&nbsp; * @config name="shopZipCode"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; */<br>&nbsp;&nbsp; public void setStockManager(String shopZipCode) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.shopZipCode= shopZipCode;<br>&nbsp;&nbsp; }<br>&nbsp;&nbsp; // TODO - Joe - how does type 2 do config ? Same way?<br>&nbsp;&nbsp; public void initialize() {<br>       // all setXXX's done<br>   }<br>}</pre>
+The container use the meta-information to resolve all the
+dependencies.&nbsp; Components need not be interface/impl separated.
+Coder's choice.<br>
+<span style="font-weight: bold;"><br>
+Using type 2 comps without a type 2 container.</span><br
+ style="font-weight: bold;">
+<br>
+Type2 components can be used directly, without any container.&nbsp; The
+component-using class&nbsp; will continue to compile, but at run time
+it will be apparent that there are missing dependencies.&nbsp;
+The downside of this is that a developer may miss a setXXX() method
+invocation if they are using the component directly. That is fairly
+small as a risk as it would clearly be caught in the development
+cycle.&nbsp; Caught in the development cycle, but maybe obscurely as a
+NullPointerException.
+<h3>Type 3</h3>
+Rachel Davies, while reviewing Joe's book, left a Fermat-like margin
+note when view a snippet like the above.&nbsp; "Why not use
+constructors ?".&nbsp; Brilliant and simple.<br>
+<pre style="margin-left: 40px;">public class Shop {<br>&nbsp;&nbsp;&nbsp;&nbsp;StockManager stockManager;<br>&nbsp;&nbsp;  String shopZipCode;<br>&nbsp;&nbsp;&nbsp;&nbsp;public Shop(StockManager stockManager, String shopZipCode) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.stockManager = stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.shopZipCode = shopZipCode;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;}</pre>
+Note, for this there is no need to declare needs in any other way. No
+interfaces, no doclet tags, no external XML. Just your simple
+component(s)
+and PicoContainer.&nbsp; No need for post assembly/config
+initialization either.&nbsp; If it is constructed (not withstanding
+some
+asserts on nulls) it has its needs satisfied.&nbsp; Components need not
+be interface/implementation separated. This is the coder's choice.<br>
+<br>
+<span style="font-weight: bold;">Using type 3 comps without a type 3
+container.</span><br>
+<br>
+Like type2, the component can be used directly, without any
+container.&nbsp; The missing dependency scenario is not an issue for
+type3. <br>
+<br>
+<small>Authors: Paul Hammant</small><br>
+</body>
+</html>

@@ -8,7 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.script;
 
-import org.nanocontainer.integrationkit.ComposingLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
+import org.picocontainer.MutablePicoContainer;
 
 import java.io.Reader;
 import java.util.HashMap;
@@ -20,12 +21,16 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class ScriptedContainerBuilder extends ComposingLifecycleContainerBuilder {
+public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder {
     protected final Reader script;
     protected final ClassLoader classLoader;
 
     public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
         this.script = script;
         this.classLoader = classLoader;
+    }
+
+    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
+        // do nothing. assume that this is done in createContainer().
     }
 }

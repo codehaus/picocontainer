@@ -10,5 +10,5 @@ import org.nanocontainer.sample.webwork.Cheese;
 
 public interface CheeseDao {
     void saveCheese(Cheese cheese);
-    Cheese findCheese(String name);
+    Cheese findCheese(Cheese example);
 }

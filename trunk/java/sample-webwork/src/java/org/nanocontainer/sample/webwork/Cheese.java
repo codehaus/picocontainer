@@ -23,4 +23,8 @@ public class Cheese {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public String toString() {
+        return "Cheese [" + name + "," + country + "]";
+    }
 }

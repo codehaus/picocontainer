@@ -6,12 +6,14 @@ package org.nanocontainer.sample.webwork;
 
 import org.nanocontainer.sample.webwork.dao.CheeseDao;
 import webwork.action.ActionSupport;
+import webwork.action.CommandDriven;
 
 /**
  * Example of a WebWork action that relies on constructor injection.
  */
-public class CheeseAction extends ActionSupport {
+public class CheeseAction extends ActionSupport implements CommandDriven {
     private final CheeseDao dao;
+
     private Cheese cheese = new Cheese();
 
     public CheeseAction(CheeseDao dao) {
@@ -22,18 +24,24 @@ public class CheeseAction extends ActionSupport {
         return cheese;
     }
 
-    public void setCheese(Cheese cheese) {
-        this.cheese = cheese;
-    }
-
-    public String execute() {
+    public String doSave() {
         try {
             dao.saveCheese(cheese);
             return SUCCESS;
         } catch (Exception e) {
-            e.printStackTrace(
+            e.printStackTrace();
+            addErrorMessage("Couldn't save cheese: " + cheese);
+            return ERROR;
+        }
+    }
 
-            );
+    public String doFind() {
+        try {
+            dao.findCheese(cheese);
+            return SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            addErrorMessage("Couldn't save cheese: " + cheese);
             return ERROR;
         }
     }

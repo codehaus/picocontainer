@@ -10,6 +10,9 @@
 
 package org.nanocontainer.script.xml;
 
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -17,10 +20,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -62,22 +61,6 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-        PicoContainer parentContainer = (PicoContainer) parentContainerRef.get();
-        MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
-        try {
-            ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(classLoader, container);
-            containerRef.set(container);
-            registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
-        } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException(e);
-        } catch (IOException e) {
-            throw new PicoCompositionException(e);
-        } catch (SAXException e) {
-            throw new PicoCompositionException(e);
-        }
-    }
-
     protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
@@ -86,12 +69,27 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
             Class cfaClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
-            return new DefaultPicoContainer(componentAdapterFactory, parentContainer);
+            MutablePicoContainer result = new DefaultPicoContainer(componentAdapterFactory, parentContainer);
+            populateContainer(result);
+            return result;
         } catch (ClassNotFoundException e) {
             throw new PicoCompositionException(e);
         } catch (InstantiationException e) {
             throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
+            throw new PicoCompositionException(e);
+        }
+    }
+
+    private void populateContainer(MutablePicoContainer container) {
+        try {
+            ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(classLoader, container);
+            registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
+        } catch (ClassNotFoundException e) {
+            throw new PicoCompositionException(e);
+        } catch (IOException e) {
+            throw new PicoCompositionException(e);
+        } catch (SAXException e) {
             throw new PicoCompositionException(e);
         }
     }

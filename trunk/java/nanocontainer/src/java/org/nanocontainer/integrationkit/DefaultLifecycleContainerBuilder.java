@@ -16,6 +16,8 @@
 package org.nanocontainer.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder {
     private final ContainerComposer composer;
@@ -26,5 +28,9 @@ public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder 
 
     protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
         composer.composeContainer(container, assemblyScope);
+    }
+
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+        return new DefaultPicoContainer(parentContainer);
     }
 }

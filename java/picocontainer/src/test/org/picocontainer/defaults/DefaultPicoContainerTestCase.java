@@ -13,7 +13,7 @@ import org.picocontainer.tck.SimpleTouchable;
 import org.picocontainer.tck.DependsOnTouchable;
 
 
-public class NewDefaultPicoContainerTestCase extends AbstractBasicCompatabilityTestCase {
+public class DefaultPicoContainerTestCase extends AbstractBasicCompatabilityTestCase {
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
         AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {

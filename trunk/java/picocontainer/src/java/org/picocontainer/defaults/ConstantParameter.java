@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.Field;
+import java.io.Serializable;
 
 /**
  * A ConstantParameter should be used to pass in "constant" arguments
@@ -26,7 +27,7 @@ import java.lang.reflect.Field;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class ConstantParameter implements Parameter {
+public class ConstantParameter implements Parameter, Serializable {
     private final Object value;
 
     public ConstantParameter(Object value) {

@@ -31,9 +31,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -54,9 +52,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
-    private final static String COMPONENT_IMPLEMENTATION = "componentimplementation";
-    private final static String COMPONENT_INSTANCE = "componentinstance";
-    private final static String COMPONENT_ADAPTER_FACTORY = "componentadapterfactory";
+    private final static String COMPONENT = "component";
+    private final static String COMPONENT_IMPLEMENTATION = "component-implementation";
+    private final static String COMPONENT_INSTANCE = "component-instance";
+    private final static String COMPONENT_ADAPTER = "component-adapter";
+    private final static String COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
     private final static String CLASS = "class";
     private final static String ELEMENT = "element";
     private final static String FACTORY = "factory";
@@ -89,18 +89,13 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (EMPTY.equals(cafName) || cafName == null) {
                 cafName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
             }
-            Class cfaClass = classLoader.loadClass(cafName);
-            ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
+            ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(cafName);
             DefaultSoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
                     parentContainer);
             populateContainer(result);
             return result;
         } catch (ClassNotFoundException e) {
-            throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
-        } catch (InstantiationException e) {
-            throw new PicoCompositionException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoCompositionException("Class not found:" + e.getMessage(),e);
 		}		
     }
     
@@ -112,7 +107,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         try {
             registerComponentsAndChildContainers( container, rootElement );
         } catch ( ClassNotFoundException e ) {
-            throw new PicoCompositionException("Class Not Found:" + e.getMessage(),e);
+            throw new PicoCompositionException("Class not found:" + e.getMessage(),e);
         } catch ( IOException e ) {
 			throw new PicoCompositionException(e);
         } catch ( SAXException e ) {
@@ -125,33 +120,36 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            short type = child.getNodeType();
-            if (type == Document.ELEMENT_NODE) {
-                String name = child.getNodeName();
+            if (children.item(i) instanceof Element) {
+                Element childElement = (Element) children.item(i);
+                String name = childElement.getNodeName();
                 if ( CLASSPATH.equals(name)) {
-                    registerClasspath(parentContainer, (Element) child);
+                    registerClasspath(parentContainer, childElement);
                 }
             }
         }
         int count = 0;
         for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            short type = child.getNodeType();
-            if (type == Document.ELEMENT_NODE) {
-                String name = child.getNodeName();
-                if (COMPONENT_INSTANCE.equals(name)) {
-                    registerComponentInstance(parentContainer, (Element) child);
-                    count++;
-                } else if (COMPONENT_IMPLEMENTATION.equals(name)) {
-                    registerComponentImplementation(parentContainer, (Element) child);
-                    count++;
-                } else if (CONTAINER.equals(name)) {
-                    SoftCompositionPicoContainer newChild = new DefaultSoftCompositionPicoContainer(parentContainer.getComponentClassLoader(), parentContainer);
-                    parentContainer.addChildContainer(newChild);
-                    registerComponentsAndChildContainers(newChild, (Element) child);
+            if (children.item(i) instanceof Element) {
+                Element childElement = (Element) children.item(i);
+                String name = childElement.getNodeName();
+                if (CONTAINER.equals(name)) {
+                    SoftCompositionPicoContainer childContainer = new DefaultSoftCompositionPicoContainer(parentContainer.getComponentClassLoader(), parentContainer);
+                    parentContainer.addChildContainer(childContainer);
+                    registerComponentsAndChildContainers(childContainer, childElement);
                     count++;
                 } else if (CLASSPATH.equals(name)) {
+                    // already registered
+                } else if (COMPONENT_IMPLEMENTATION.equals(name)
+                         ||COMPONENT.equals(name)) {
+            	    registerComponentImplementation(parentContainer, childElement);
+            	    count++;
+            	} else if (COMPONENT_INSTANCE.equals(name)) {
+                    registerComponentInstance(parentContainer, childElement);
+                    count++;
+                } else if (COMPONENT_ADAPTER.equals(name)) {
+                    registerComponentAdapter(parentContainer, childElement);
+                    count++;
                 } else {
                     throw new PicoCompositionException("Unsupported element:" + name);
                 }
@@ -162,61 +160,37 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private void registerClasspath(ReflectionContainerAdapter reflectionContainerAdapter, Element classpathElement) throws IOException {
+    private void registerClasspath(SoftCompositionPicoContainer container, Element classpathElement) throws IOException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            short type = child.getNodeType();
-            if (type == Document.ELEMENT_NODE) {
-                String name = child.getNodeName();
-                if (ELEMENT.equals(name)) {
-                    String fileName = ((Element) child).getAttribute(FILE);
-                    String urlSpec = ((Element) child).getAttribute(URL);
-                    URL url = null;
-                    if (urlSpec != null && !EMPTY.equals(urlSpec)) {
-                        url = new URL(urlSpec);
-                    } else {
-                        File file = new File(fileName);
-                        if (!file.exists()) {
-                            throw new IOException(file.getAbsolutePath() + " doesn't exist");
-                        }
-                        url = file.toURL();
+            if (children.item(i) instanceof Element) {
+                Element childElement = (Element) children.item(i);
+
+                String fileName = childElement.getAttribute(FILE);
+                String urlSpec = childElement.getAttribute(URL);
+                URL url = null;
+                if (urlSpec != null && !EMPTY.equals(urlSpec)) {
+                    url = new URL(urlSpec);
+                } else {
+                    File file = new File(fileName);
+                    if (!file.exists()) {
+                        throw new IOException(file.getAbsolutePath() + " doesn't exist");
                     }
-                    reflectionContainerAdapter.addClassLoaderURL(url);
+                    url = file.toURL();
                 }
+                container.addClassLoaderURL(url);
             }
         }
     }
 
-    private PicoContainer registerComponentImplementation(SoftCompositionPicoContainer container, Element componentElement) throws ClassNotFoundException, IOException, SAXException {
-        String className = componentElement.getAttribute(CLASS);
+    private PicoContainer registerComponentImplementation(SoftCompositionPicoContainer container, Element element) throws ClassNotFoundException, IOException, SAXException {
+        String className = element.getAttribute(CLASS);
         if (EMPTY.equals(className)) {
-            throw new SAXException("'class' attribute not specified for " + componentElement.getNodeName());
+            throw new SAXException("'"+CLASS+"' attribute not specified for " + element.getNodeName());
         }
 
-        List parametersList = new ArrayList();
-        NodeList nodeList = componentElement.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            final Node node = nodeList.item(i);
-            if (node.getNodeType() == Document.ELEMENT_NODE) {
-                Element element = (Element) node;
-                if ( PARAMETER.equals(element.getNodeName()) ) {
-                    String key = element.getAttribute(KEY);
-                    if ( key != null && !EMPTY.equals(key) ) {
-                        parametersList.add(new ComponentParameter(key));
-                    } else {
-                        parametersList.add(createConstantParameter(container, element));
-                    }                    
-                }
-            }
-        }
-        
-        Parameter[] parameters = null;
-        if(!parametersList.isEmpty()) {
-            parameters = (Parameter[]) parametersList.toArray(new Parameter[parametersList.size()]);
-        }
-
-        Object key = componentElement.getAttribute(KEY);
+        Parameter[] parameters = createChildParameters(container, element);
+        Object key = element.getAttribute(KEY);
         Class clazz = classLoader.loadClass(className);
         if (key == null || key.equals(EMPTY)) {
             if(parameters == null) {
@@ -234,12 +208,36 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         return null;
     }
     
+    private Parameter[] createChildParameters(SoftCompositionPicoContainer container, Element element) throws ClassNotFoundException{
+        List parametersList = new ArrayList();
+        NodeList children = element.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i) instanceof Element) {
+                Element childElement = (Element) children.item(i);
+                if ( PARAMETER.equals(childElement.getNodeName()) ) {
+                    String key = childElement.getAttribute(KEY);
+                    if ( key != null && !EMPTY.equals(key) ) {
+                        parametersList.add(new ComponentParameter(key));
+                    } else {
+                        parametersList.add(createConstantParameter(container, childElement));
+                    }                    
+                }
+            }
+        }
+        
+        Parameter[] parameters = null;
+        if(!parametersList.isEmpty()) {
+            parameters = (Parameter[]) parametersList.toArray(new Parameter[parametersList.size()]);
+        }
+        return parameters;
+    }
+    
     private Parameter createConstantParameter(PicoContainer pico, Element element) throws ClassNotFoundException{
-        NodeList nl = element.getChildNodes();
+        NodeList children = element.getChildNodes();
         Element childElement = null;
-        for (int i = 0; i < nl.getLength(); i++) {
-            if (nl.item(i) instanceof Element) {
-                childElement = (Element) nl.item(i);
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i) instanceof Element) {
+                childElement = (Element) children.item(i);
                 break;
             }
         }
@@ -249,20 +247,20 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         return new ConstantParameter(instance);
     }
         
-    private void registerComponentInstance(SoftCompositionPicoContainer container, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
-        NodeList nl = componentElement.getChildNodes();
+    private void registerComponentInstance(SoftCompositionPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException {
+        NodeList children = element.getChildNodes();
         Element childElement = null;
-        for (int i = 0; i < nl.getLength(); i++) {
-            if (nl.item(i) instanceof Element) {
-                childElement = (Element) nl.item(i);
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i) instanceof Element) {
+                childElement = (Element) children.item(i);
                 break;
             }
         }
 
-        XMLComponentInstanceFactory factory = createComponentInstanceFactory(componentElement.getAttribute(FACTORY));
+        XMLComponentInstanceFactory factory = createComponentInstanceFactory(element.getAttribute(FACTORY));
         Object instance = factory.makeInstance(container, childElement);
 
-        String key = componentElement.getAttribute(KEY);
+        String key = element.getAttribute(KEY);
         if ( key == null || key.equals(EMPTY) ){ 
             container.getPicoContainer().registerComponentInstance(instance);
         } else {
@@ -278,5 +276,35 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         ReflectionContainerAdapter adapter = new DefaultReflectionContainerAdapter();
         adapter.registerComponentImplementation(XMLComponentInstanceFactory.class.getName(), factoryClass);
         return (XMLComponentInstanceFactory) adapter.getPicoContainer().getComponentInstances().get(0);        
+    }
+
+    private void registerComponentAdapter(SoftCompositionPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException {
+        String factoryName = element.getAttribute(FACTORY);
+        if (EMPTY.equals(factoryName)) {
+            factoryName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
+        }
+        Object key = element.getAttribute(KEY);
+        if (EMPTY.equals(key)) {
+            throw new PicoCompositionException("'"+KEY+"' attribute not specified for " + element.getNodeName());
+        }
+        String className = element.getAttribute(CLASS);
+        if (EMPTY.equals(className)) {            
+            throw new PicoCompositionException("'"+CLASS+"' attribute not specified for " + element.getNodeName());
+        }
+        Class implementationClass = classLoader.loadClass(className);
+        Parameter[] parameters = createChildParameters(container, element);
+        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(factoryName);
+        container.registerComponent(componentAdapterFactory.createComponentAdapter(key, implementationClass, parameters));
+    }
+    
+    private ComponentAdapterFactory createComponentAdapterFactory(String factoryName) throws ClassNotFoundException, PicoCompositionException {
+        Class factoryClass = classLoader.loadClass(factoryName);        
+        try {
+            return (ComponentAdapterFactory)factoryClass.newInstance();
+        } catch ( InstantiationException e ) {
+            throw new PicoCompositionException(e);
+        } catch ( IllegalAccessException e ) {
+            throw new PicoCompositionException(e);
+        }
     }
 }

@@ -40,17 +40,28 @@ public class TulipTraderTest extends TestCase {
 
     public static interface FlowerMarket {
         void sellBid(String flower);
+
+        void buyBid(String flower);
     }
 
     public static class FlowerMarketStub implements FlowerMarket {
         private List currentSellBids = new ArrayList();
+        private List currentBuyBids = new ArrayList();
 
         public void sellBid(String flower) {
             currentSellBids.add(flower);
         }
 
+        public void buyBid(String flower) {
+            currentBuyBids.add(flower);
+        }
+
         public List currentSellBids() {
             return currentSellBids;
+        }
+
+        public List currentBuyBids() {
+            return currentBuyBids;
         }
     }
 
@@ -60,6 +71,9 @@ public class TulipTraderTest extends TestCase {
         public void flowerPriceChanged(String flower, int price) {
             if (price > 100) {
                 market.sellBid(flower);
+            }
+            if (price < 70) {
+                market.buyBid(flower);
             }
         }
 
@@ -83,5 +97,13 @@ public class TulipTraderTest extends TestCase {
         new TulipTrader(ticker, market);
         ticker.changeFlowerPrice("TULIP", 99);
         assertEquals(Collections.EMPTY_LIST, market.currentSellBids());
+    }
+
+    public void testBuyTulipsWhenBelowSeventy() {
+        FlowerTickerStub ticker = new FlowerTickerStub();
+        FlowerMarketStub market = new FlowerMarketStub();
+        new TulipTrader(ticker, market);
+        ticker.changeFlowerPrice("TULIP", 69);
+        assertEquals(Collections.singletonList("TULIP"), market.currentBuyBids());
     }
 }

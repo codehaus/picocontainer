@@ -58,6 +58,12 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
+    public static class WithComponentFactory extends PicoContainerImpl {
+        public WithComponentFactory(ComponentFactory componentFactory) {
+            super(new DummyContainer(), new DummyStartableLifecycleManager(), componentFactory);
+        }
+    }
+
     // TODO:ASLAK just declare PicoRegistrationException?
     public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         registerComponent(componentClass, componentClass);

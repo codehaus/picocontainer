@@ -21,6 +21,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
+import org.picocontainer.ContainerVisitor;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -536,6 +537,22 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
+    public void testChildContainerVisitor() {
+        final MutablePicoContainer parent = createPicoContainer(null);
+        final MutablePicoContainer child = parent.makeChildContainer();
+        ContainerVisitorStub containerVisitor = new ContainerVisitorStub();
+        parent.accept(containerVisitor);
+        assertNotNull(containerVisitor.visitedContainer);
+        assertEquals(child, containerVisitor.visitedContainer);
+
+    }
+
+    public static class ContainerVisitorStub implements ContainerVisitor {
+        public PicoContainer visitedContainer;
+        public void visit(PicoContainer pico) {
+            visitedContainer = pico;
+        }
+    }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;

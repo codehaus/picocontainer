@@ -12,6 +12,9 @@ package org.nanocontainer.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
+import javax.management.modelmbean.ModelMBeanAttributeInfo;
+import javax.management.modelmbean.ModelMBeanInfo;
+import javax.management.modelmbean.ModelMBeanInfoSupport;
 
 import org.nanocontainer.jmx.testmodel.Person;
 import org.nanocontainer.jmx.testmodel.PersonMBean;
@@ -31,14 +34,14 @@ public class StandardMBeanFactoryTestCase extends TestCase {
     public void testMBeanCreationWithMBeanInfo() {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
-        final DynamicMBean mBean = factory.create(new Person(), mBeanInfo);
+        final DynamicMBean mBean = factory.create(new Person(), null, mBeanInfo);
         assertNotNull(mBean);
         assertEquals(mBeanInfo, mBean.getMBeanInfo());
     }
 
     public void testMBeanCreationWithoutMBeanInfo() {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
-        final DynamicMBean mBean = factory.create(new Person(), null);
+        final DynamicMBean mBean = factory.create(new Person(), null, (MBeanInfo)null);
         assertNotNull(mBean);
         assertNotNull(mBean.getMBeanInfo());
     }
@@ -67,11 +70,22 @@ public class StandardMBeanFactoryTestCase extends TestCase {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         try {
-            factory.create(new SimpleTouchable(), mBeanInfo);
+            factory.create(new SimpleTouchable(), null, mBeanInfo);
             fail("JMXRegistrationException expected");
         } catch (final JMXRegistrationException e) {
             // fine
         }
+    }
+
+    public void testMBeanCreationWithoutManagementInterfaceWorksForModelMBeanInfo() {
+        final DynamicMBeanFactory factory = new StandardMBeanFactory();
+        final ModelMBeanAttributeInfo[] attributes = new ModelMBeanAttributeInfo[]{new ModelMBeanAttributeInfo("Name", String.class
+                .getName(), "desc", true, false, false)};
+        final MBeanInfo mBeanInfo = new ModelMBeanInfoSupport(
+                Person.class.getName(), "Description of Person", attributes, null, null, null);
+
+        final DynamicMBean mBean = factory.create(new SimpleTouchable(), null, mBeanInfo);
+        assertNotNull(mBean);
     }
 
     public void testGetDefaultManagementInterfaceFromMBeanType() throws ClassNotFoundException {

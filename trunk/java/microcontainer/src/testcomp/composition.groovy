@@ -20,5 +20,8 @@ pico = builder.container(parent:parent) {
     component(key:'wilma', class:'org.nanocontainer.testmodel.WilmaImpl') {
     	jmx(key:'domain:wilma=default', management:org.nanocontainer.testmodel.Wilma,  operations:['helloCalled'], description:'This is the wilma MBeanInfo description' )
     }
+    component(key:'wilmaDouble', class:'org.nanocontainer.testmodel.WilmaImpl') {
+    	jmx(key:'domain:wilma=double', operations:['helloCalled'], description:'This is the wilma ModelMBeanInfo description' )
+    }
 }
 

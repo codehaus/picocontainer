@@ -10,6 +10,8 @@
 
 package org.microcontainer.impl;
 
+import org.microcontainer.McaDeployer;
+
 import java.io.File;
 import java.net.URLClassLoader;
 import java.net.URL;
@@ -24,8 +26,8 @@ public class ClassLoaderFactory {
 	public static final String LIB_PATH = "/MCA-INF/lib/";
 	protected McaDeployer mcaDeployer = null; // todo fix this should be configurable
 
-	public ClassLoaderFactory() {
-		mcaDeployer = new McaDeployer();
+	public ClassLoaderFactory(McaDeployer mcaDeployer) {
+		this.mcaDeployer = mcaDeployer;
 	}
 
 	public ClassLoader build(String contextName) {

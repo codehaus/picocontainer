@@ -23,6 +23,7 @@ import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Kouhei Mori
  * @version $Revision$
  */
 public class NanoWebServletTestCase extends TestCase {
@@ -97,6 +98,8 @@ public class NanoWebServletTestCase extends TestCase {
 
         // path, action and view
         requestMock.expectAndReturn("getServletPath", "/test.groovy");
+        servletConfigMock.expectAndReturn("getServletContext", servletContextMock.proxy());
+        servletContextMock.expectAndReturn("getResource", C.args(C.eq("/test.groovy")), getClass().getResource("/test.groovy"));
         requestMock.expect("setAttribute", C.args(C.eq("action"), C.isA(Object.class)));
         requestMock.expectAndReturn("getRequestDispatcher", C.args(C.eq("/test_success.vm")), requestDispatcherMock.proxy());
 

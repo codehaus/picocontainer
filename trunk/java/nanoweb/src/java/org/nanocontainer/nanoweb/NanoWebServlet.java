@@ -43,6 +43,7 @@ import java.util.List;
  * </ul>
  *
  * @author Aslak Helles&oslash;y
+ * @author Kouhei Mori
  * @version $Revision$
  */
 public class NanoWebServlet extends HttpServlet implements KeyConstants {
@@ -93,7 +94,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private Object getScriptAction(String key, MutablePicoContainer container) throws SyntaxException, IOException {
-        URL scriptURL = getClass().getResource(key);
+        URL scriptURL = getServletContext().getResource(key);
         Object result = null;
         if (scriptURL != null) {
             Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);

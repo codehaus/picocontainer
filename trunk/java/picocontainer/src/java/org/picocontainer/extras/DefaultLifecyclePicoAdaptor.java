@@ -8,9 +8,13 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.lifecycle;
+package org.picocontainer.extras;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
+import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.lifecycle.Stoppable;
+import org.picocontainer.lifecycle.Disposable;
 
 public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
 

@@ -8,13 +8,17 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.lifecycle;
+package org.picocontainer.extras;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.extras.DefaultLifecyclePicoAdaptor;
+import org.picocontainer.lifecycle.Startable;
+import org.picocontainer.lifecycle.Stoppable;
+import org.picocontainer.lifecycle.Disposable;
+import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
 
 import java.util.ArrayList;
 import java.util.List;

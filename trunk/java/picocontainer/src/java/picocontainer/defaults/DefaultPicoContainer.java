@@ -436,7 +436,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         return (Class[]) types.toArray(new Class[types.size()]);
     }
 
-    public boolean hasComponent(Class componentType) {
+    public final boolean hasComponent(Class componentType) {
         return getComponent(componentType) != null;
     }
 }

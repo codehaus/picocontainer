@@ -164,23 +164,20 @@ public class CollectionComponentParameter
             final Class valueType = getValueType(expectedType);
             final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType);
             if (adapterMap.isEmpty()) {
-                if (emptyCollection) {
-                    return;
+                if (!emptyCollection) {
+                    final List list = new LinkedList();
+                    list.add(new PicoIntrospectionException(expectedType.getName() + " not resolvable"));
+                    throw new PicoVerificationException(list);
                 }
             } else {
                 for (final Iterator iter = adapterMap.entrySet().iterator(); iter.hasNext();) {
                     final Map.Entry entry = (Map.Entry) iter.next();
                     final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
-                    if (componentAdapter.getComponentKey().equals(adapter.getComponentKey())) {
-                        continue;
-                    }
                     componentAdapter.verify(container);
                 }
             }
         }
-        final List list = new LinkedList();
-        list.add(new PicoIntrospectionException(expectedType.getName() + " not resolvable"));
-        throw new PicoVerificationException(list);
+        return;
     }
 
     /**
@@ -274,9 +271,13 @@ public class CollectionComponentParameter
             }
             return result;
         } catch (InstantiationException e) {
+            ///CLOVER:OFF
             throw new PicoInitializationException(e);
+            ///CLOVER:ON
         } catch (IllegalAccessException e) {
+            ///CLOVER:OFF
             throw new PicoInitializationException(e);
+            ///CLOVER:ON
         }
     }
 
@@ -301,9 +302,13 @@ public class CollectionComponentParameter
             }
             return result;
         } catch (InstantiationException e) {
+            ///CLOVER:OFF
             throw new PicoInitializationException(e);
+            ///CLOVER:ON
         } catch (IllegalAccessException e) {
+            ///CLOVER:OFF
             throw new PicoInitializationException(e);
+            ///CLOVER:ON
         }
     }
 

@@ -4,8 +4,56 @@
 </head>
 <body>
 <h1>Introduction</h1>
+NanoContainer is collection of bespoke containers that deliver extra
+value to <a href="http://picocontainer.codehaus.org/">PicoContainer</a>.
 <br>
-NanoContainer is an extension of <a href="http://picocontainer.codehaus.org/">PicoContainer</a>.
+<h2>StringRegistrationNanoContainer <br>
+</h2>
+This container takes strings (class names) instead of class definitions
+as PicoContainer does.&nbsp; This basically means that components can
+be
+soft configured one by one.<br>
 <br>
+Implementations -<br>
+<ul>
+  <li>StringRegistrationNanoContainerImpl&nbsp; - takes a parent
+container<br>
+  </li>
+  <li>StringRegistrationNanoContainerImpl.Default - no args<br>
+  </li>
+</ul>
+<h2>InputSourceRegistrationNanoContainer </h2>
+This container takes a single InpoutSource (SAX) .&nbsp; This basically
+means that components can be
+soft configured in a single document.&nbsp; The single implementation
+takes
+a DOM document. That document mabe inlined or external to the class
+that uses the container.<br>
+<br>
+Implementations -<br>
+<ul>
+  <li>DomRegistrationNanoContainer - document builder (DOM) and parent
+container</li>
+  <li>DomRegistrationNanoContainer.Default - no args</li>
+  <li>DomRegistrationNanoContainer.WithParentContainer - parent
+container</li>
+  <li>DomRegistrationNanoContainer.WithDocumentBuilder - document
+builder</li>
+</ul>
+<h2>AggregatingNanoContainer<br>
+</h2>
+This container takes many components and aggregates them together to
+become a single component that offers all of the methods that each
+would individually offer.<br>
+<br>
+Implementations -<br>
+<ul>
+  <li>AggregatingNanoContainer - object array of components, invocation
+handler<br>
+  </li>
+  <li>AggregatingNanoContainer.ComponentsFromContainer - container ro
+aggegate components for, invocation handler<br>
+  </li>
+</ul>
 </body>
 </html>

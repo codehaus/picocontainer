@@ -22,15 +22,21 @@ import java.util.Arrays;
 
 public class AggregatingNanoContainer implements Container {
 
-    private final Container containerToAggregateComponentsFor;
     private final InvocationHandler invocationHandler;
     /** Cached */
     private Object proxy;
+    private final Object[] componentsToAggregate;
 
-    public AggregatingNanoContainer(Container containerToAggregateComponentsFor,
+    public AggregatingNanoContainer(Object[] componentsToAggregate,
                                     InvocationHandler invocationHandler) {
-        this.containerToAggregateComponentsFor = containerToAggregateComponentsFor;
+        this.componentsToAggregate = componentsToAggregate;
         this.invocationHandler = invocationHandler;
+    }
+
+    public static class ComponentsFromContainer extends AggregatingNanoContainer {
+        public ComponentsFromContainer(Container containerToAggregateComponentsFor, InvocationHandler invocationHandler) {
+            super(containerToAggregateComponentsFor.getComponents(), invocationHandler);
+        }
     }
 
     public boolean hasComponent(Class aClass) {
@@ -51,9 +57,8 @@ public class AggregatingNanoContainer implements Container {
 
             // TODO should fail if container isn't started. Throw checked exception?
             Set interfaces = new HashSet();
-            Object[] comps = containerToAggregateComponentsFor.getComponents();
-            for (int i = 0; i < comps.length; i++) {
-                Class componentClass = comps[i].getClass();
+            for (int i = 0; i < componentsToAggregate.length; i++) {
+                Class componentClass = componentsToAggregate[i].getClass();
                 Class[] implemeted = componentClass.getInterfaces();
                 List implementedList = Arrays.asList(implemeted);
                 interfaces.addAll(implementedList);

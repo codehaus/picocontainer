@@ -18,7 +18,6 @@ import picocontainer.PicoContainerImpl;
 import picocontainer.PicoStopException;
 import picocontainer.DummyContainer;
 
-
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
 
     private final PicoContainer picoContainer;

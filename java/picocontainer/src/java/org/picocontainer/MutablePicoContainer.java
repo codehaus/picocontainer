@@ -181,4 +181,16 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     LifecycleManager getLifecycleManager();
 
+    /**
+     * Accepts a visitor that should visit the child containers.
+     * @since 1.1
+     */
+    void accept(ContainerVisitor containerVisitor);
+
+    /**
+     * Accepts a visitor that should visit the component instances.
+     * @since 1.1
+     */
+    void accept(ComponentVisitor componentVisitor, Class componentType, boolean visitInInstantiationOrder);
+
 }

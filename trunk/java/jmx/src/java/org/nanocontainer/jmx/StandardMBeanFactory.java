@@ -10,6 +10,8 @@
 
 package org.nanocontainer.jmx;
 
+import javax.management.DynamicMBean;
+import javax.management.MBeanInfo;
 import javax.management.StandardMBean;
 import javax.management.NotCompliantMBeanException;
 import java.lang.reflect.Proxy;
@@ -19,11 +21,29 @@ import java.text.MessageFormat;
 
 /**
  * @author Michael Ward
+ * @author J&ouml,rg Schaible
  * @version $Revision$
  */
-public class StandardMBeanFactory {
+public class StandardMBeanFactory implements DynamicMBeanFactory {
+
 	public static final String BUILD_STANDARDMBEAN_ERROR =
 				"{0} must be an instance of {1}, or {2} should define the interface to use as a proxy.";
+
+    public DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo) {
+        throw new JMXRegistrationException("A DynamicMBeanFactory instance supporting DynamicMBean creation with an MBeanInfo MUST be registered with the container");
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class)
+     */
+    public DynamicMBean create(Object componentInstance, Class management) {
+        try {
+            return buildStandardMBean(componentInstance, management);
+        } catch (final NotCompliantMBeanException e) {
+            throw new JMXRegistrationException("Cannot create StandardMBean", e);
+        }
+    }
 
 	/**
 	 *

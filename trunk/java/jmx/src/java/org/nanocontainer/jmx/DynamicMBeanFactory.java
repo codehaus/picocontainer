@@ -15,12 +15,19 @@ import javax.management.MBeanInfo;
 
 /**
  * This factory is responsible for creating instances of DynamicMBean without being dependent on one particular
- * implementation or external dependency.  
+ * implementation or external dependency.
  *
  * @author Michael Ward
+ * @author J&ouml,rg Schaible
  * @version $Revision$
  */
 public interface DynamicMBeanFactory {
 
 	DynamicMBean create(Object componentInstance, MBeanInfo mBeanInfo);
+    /**
+     *
+     * @param implementation the instance of the Object being exposed for management.
+     * @param management the interface defining what to should be exposed.
+     */
+    DynamicMBean create(Object componentInstance, Class management);
 }

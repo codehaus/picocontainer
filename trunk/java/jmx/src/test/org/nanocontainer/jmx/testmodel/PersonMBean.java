@@ -1,25 +1,19 @@
 /*****************************************************************************
- * Copyright (c) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Michael Ward                                             *
+ * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.jmx.testmodel;
 
 /**
- * This is used by the tests!
- *
- * @author Michael Ward
- * @version $Revision$
+ * @author J&ouml;rg Schaible
  */
-public class FooBar {
-
-	public int getCount() {
-		return 1;
-	}
-
+public interface PersonMBean {
+    public void setName(String name);
+    public String getName();
 }

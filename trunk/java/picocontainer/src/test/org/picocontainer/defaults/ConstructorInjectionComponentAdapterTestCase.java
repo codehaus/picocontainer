@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 
-public class ConstructorComponentAdapterTestCase extends TestCase {
+public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
         ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", Object.class);
         Object o1 = componentAdapter.getComponentInstance();

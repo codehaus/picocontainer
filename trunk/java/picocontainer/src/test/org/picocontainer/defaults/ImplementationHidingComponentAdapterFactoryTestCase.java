@@ -128,7 +128,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testBigamy() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
         pico.registerComponentImplementation(Woman.class, Wife.class);
         Woman firstWife = (Woman) pico.getComponentInstance(Woman.class);
         Woman secondWife = (Woman) pico.getComponentInstance(Woman.class);
@@ -137,7 +137,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testComponentsRegisteredWithClassKeyOnlyImplementThatInterface() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
         pico.registerComponentImplementation(Woman.class, Wife.class);
         Woman wife = (Woman) pico.getComponentInstance(Woman.class);
         assertFalse("Wife should not be castable to SuperWoman, as she should be proxied to Woman only", wife instanceof SuperWoman);

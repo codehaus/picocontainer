@@ -59,7 +59,7 @@ public class FarquharTestCase extends TestCase {
     public void testOmeletteCanHaveDifferentCheeseWithAFunnyComponentAdapter() {
         Map cheeseMap = new HashMap();
 
-        MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorComponentAdapterFactory());
+        MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
         pico.registerComponentImplementation(Omelette.class);
         pico.registerComponent(new CheeseComponentAdapter("scott", Gouda.class, cheeseMap));
 

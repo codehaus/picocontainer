@@ -109,8 +109,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             if (initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);
                 // disposable
-                SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer();
-                softPico.setClassLoader(Thread.currentThread().getContextClassLoader());
+                SoftCompositionPicoContainer softPico = new DefaultSoftCompositionPicoContainer(Thread.currentThread().getContextClassLoader());
                 ContainerComposer containerComposer = (ContainerComposer) softPico.registerComponentImplementation(containerComposerClassName).getComponentInstance();
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }

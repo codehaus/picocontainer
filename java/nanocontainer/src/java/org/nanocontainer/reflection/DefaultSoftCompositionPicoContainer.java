@@ -196,10 +196,6 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         return reflectionAdapter.registerComponentImplementation(componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);
     }
 
-    public void setClassLoader(ClassLoader classLoader) {
-        reflectionAdapter.setClassLoader(classLoader);
-    }
-
     public void addClassLoaderURL(URL url) {
         reflectionAdapter.addClassLoaderURL(url);
     }

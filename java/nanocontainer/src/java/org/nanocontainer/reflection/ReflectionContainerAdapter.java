@@ -9,8 +9,6 @@
  *****************************************************************************/
 
 package org.nanocontainer.reflection;
-// TODO: move to org.nanocontainer.script.reflection ?
-// TODO - Naaah - Paul
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -40,15 +38,6 @@ public interface ReflectionContainerAdapter {
     ComponentAdapter registerComponentImplementation(String componentImplementationClassName,
                                                      String[] parameterTypesAsString,
                                                      String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
-
-    /**
-     * Sets what classloader to use. This will reset all previously set URLs.
-     * This overrides the ClassLoaders that may have been set by addClassLoaderURL(..)
-     *
-     * @param classLoader
-     * @see #addClassLoaderURL
-     */
-    void setClassLoader(ClassLoader classLoader);
 
     /**
      * Adds a new URL.

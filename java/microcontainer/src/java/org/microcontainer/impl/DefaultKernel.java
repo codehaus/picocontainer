@@ -8,18 +8,22 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-
 package org.microcontainer.impl;
 
-import org.microcontainer.*;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.microcontainer.Kernel;
+import org.microcontainer.McaDeployer;
+import org.microcontainer.DeploymentException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Paul Hammant
@@ -86,7 +90,29 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 
 	public Object getComponent(String relativeComponentPath) {
         String[] path = relativeComponentPath.split("/");
-		return getRootContainer(path[0]).getComponentInstance(path[1]); // component key
+		String context = path[0];
+		String componentKey = path[1];
+
+		PicoContainer pico = getRootContainer(context);
+		Object result = pico.getComponentInstance(componentKey);
+
+		if(result == null) {
+			// find the correct component adapter for the class name passed in
+			// this needed to be added because the search capability from pico
+			// had been removed
+			Collection adapters = pico.getComponentAdapters();
+
+			for (Iterator iterator = adapters.iterator(); iterator.hasNext();) {
+				ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+				Class clazz = (Class)componentAdapter.getComponentKey(); // assume key is a Class (interface)
+
+				if(clazz.getName().equals(componentKey)) {
+					return componentAdapter.getComponentInstance(pico);
+				}
+			}
+		}
+
+		return result;
 	}
 
     public PicoContainer getRootContainer(String context) {

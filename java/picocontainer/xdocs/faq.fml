@@ -58,19 +58,38 @@
 
   </part>
 
-  <part id="constructors">
-    <title>Constructor Design</title>
+  <part id="component-design">
+    <title>Component Design</title>
 
-    <faq id="why-1-ctor">
+    <faq id="many-constructors">
       <question>
-        Why can my components only have one constructor?
+        Can my component use multiple constructors?
       </question>
       <answer>
         <p>
-          In order for Pico to unambigiously deduce what dependencies your component have. If you require 
-          your component to have several constructors for other purposes, consider creating a Pico-compatible 
-          wrapper or sub-class. We commonly create a 'Default' sub-class, in it's fairly empty constructor, NullObject implementations are passed up the optional superclass parameters as well as real defaults if they 
-          are available. 
+          Yes.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="constructor-resolution">
+      <question>
+        How does PicoContainer decide what constructor to use?
+      </question>
+      <answer>
+        <p>
+          PicoContainer will instantiate a given component using the "greediest" satisfiable constructor.
+          By greedy, we mean the constructor that takes the most parameters.
+          By satisfiable, we mean constructors where all arguments can be satisfied by other.
+        </p>
+        <p>
+          If there are no satisfiable constructors, or two or more ambiguous "largest" constructors,
+          a RuntimeException will be thrown when you ask for the component instance.
+        </p>
+        <p>
+          We recommend, for the sake of predictablility, that PicoContainer compatible components
+          use only one constructor (see <a href="good-citizens.html">Good Citizens</a>), although this is by no means
+          a requirement.
         </p>
       </answer>
     </faq>

@@ -34,9 +34,9 @@ import java.io.File;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class PicoBuilder extends BuilderSupport {
+public class NanoGroovyBuilder extends BuilderSupport {
 
-    public PicoBuilder() {
+    public NanoGroovyBuilder() {
     }
 
     protected void setParent(Object parent, Object child) {

@@ -10,7 +10,7 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>1.0-beta-5-SNAPSHOT</currentVersion>
+    <currentVersion>1.0-beta-5</currentVersion>
 
     <organization>
         <name>Codehaus</name>
@@ -48,9 +48,9 @@
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/java</url>
+        <!--url>http://cvs.picocontainer.codehaus.org/java</url-->
         <!-- statcvs only works with this one: -->
-        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url-->
+        <url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=picocontainer</url>
     </repository>
 
     <versions>

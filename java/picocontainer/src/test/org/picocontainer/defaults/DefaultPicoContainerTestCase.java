@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
@@ -27,8 +28,8 @@ import java.util.List;
  */
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
-    protected MutablePicoContainer createPicoContainer() {
-        return new DefaultPicoContainer();
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+        return new DefaultPicoContainer(parent);
     }
 
     // to go to parent testcase ?
@@ -58,9 +59,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     public void testUpDownDependenciesCannotBeFollowed() {
-        MutablePicoContainer parent = createPicoContainer();
-        MutablePicoContainer child = createPicoContainer();
-        child.setParent(parent);
+        MutablePicoContainer parent = createPicoContainer(null);
+        MutablePicoContainer child = createPicoContainer(parent);
 
         // ComponentF -> ComponentA -> ComponentB+c
         child.registerComponentImplementation(ComponentF.class);
@@ -76,7 +76,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     public void testComponentsCanBeRemovedByInstance() {
-        MutablePicoContainer pico = createPicoContainer();
+        MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponentImplementation(ArrayList.class);
         List list = (List) pico.getComponentInstanceOfType(List.class);
         pico.unregisterComponentByInstance(list);

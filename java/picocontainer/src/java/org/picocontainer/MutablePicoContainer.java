@@ -112,6 +112,8 @@ public interface MutablePicoContainer extends PicoContainer {
     /**
      * Sets the Parent container.
      * @param parent parent container.
+     * @deprecated This will probably go away. implementations should take the parent
+     * in the constructor (constructor injection!)
      */
     void setParent(PicoContainer parent);
 

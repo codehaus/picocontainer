@@ -135,4 +135,10 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     void setParent(PicoContainer parent);
 
+    /**
+     * Make/Get an Immutable wrapper for this container.
+     * @return an immutable wrapper for this container
+     */
+    PicoContainer getImmutable();
+
 }

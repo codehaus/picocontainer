@@ -60,6 +60,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
+    private PicoContainer immutable;
     private List componentAdapters = new ArrayList();
 
     // Keeps track of instantiation order.
@@ -376,6 +377,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         result.addAll(getComponentInstancesOfType(type));
         Collections.sort(result, new StackContainersAtEndComparator());
         return result;
+    }
+
+    public synchronized PicoContainer getImmutable() {
+        if (immutable == null) {
+            immutable = new ImmutablePicoContainer(this);
+        }
+        return immutable;
     }
 
     /**

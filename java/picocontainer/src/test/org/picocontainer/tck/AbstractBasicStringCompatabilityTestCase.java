@@ -35,6 +35,7 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
                 picoContainer.getComponent("touchable") instanceof Touchable);
         assertTrue("Component should be instance of DependsOnTouchable",
                 picoContainer.getComponent("dependsOnTouchable") instanceof DependsOnTouchable);
+        assertTrue("should not have non existent component", !picoContainer.hasComponent("doesNotExist"));
     }
 
 }

@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 
 public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
@@ -36,6 +37,7 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
                 picoContainer.getComponent(Touchable.class) instanceof Touchable);
         assertTrue("Component should be instance of DependsOnTouchable",
                 picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
+        assertTrue("should not have non existent component", !picoContainer.hasComponent(Map.class));
     }
 
     public void testSerializabilityOfContainer() throws PicoRegistrationException, PicoInitializationException,

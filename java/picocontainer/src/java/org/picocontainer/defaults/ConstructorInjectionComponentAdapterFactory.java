@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class ConstructorComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class ConstructorInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)

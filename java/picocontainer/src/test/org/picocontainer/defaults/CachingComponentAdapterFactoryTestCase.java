@@ -23,7 +23,7 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new CachingComponentAdapterFactory(new ConstructorComponentAdapterFactory());
+        return new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
     }
 
     public void testContainerReturnsSameInstaceEachCall() {

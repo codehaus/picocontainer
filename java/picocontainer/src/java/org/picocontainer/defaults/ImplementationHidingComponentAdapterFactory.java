@@ -25,7 +25,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
     private final boolean strict;
 
     public ImplementationHidingComponentAdapterFactory() {
-        this(new ConstructorComponentAdapterFactory(), true);
+        this(new ConstructorInjectionComponentAdapterFactory(), true);
     }
 
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {

@@ -11,8 +11,8 @@
 package org.picocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.testmodel.FredImpl;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.SimpleTouchable;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -32,13 +32,13 @@ public class PicoPicoTestCase extends TestCase {
 
     private void tryDefaultPicoContainer(DefaultPicoContainer pc2) throws PicoRegistrationException, PicoInitializationException {
 
-        pc2.registerComponentByClass(FredImpl.class);
-        pc2.registerComponentByClass(WilmaImpl.class);
+        pc2.registerComponentByClass(DependsOnTouchable.class);
+        pc2.registerComponentByClass(SimpleTouchable.class);
 
         pc2.instantiateComponents();
 
-        assertTrue("There should have been a Fred in the container", pc2.hasComponent(FredImpl.class));
-        assertTrue("There should have been a Wilma in the container", pc2.hasComponent(WilmaImpl.class));
+        assertTrue("There should have been a Fred in the container", pc2.hasComponent(DependsOnTouchable.class));
+        assertTrue("There should have been a Touchable in the container", pc2.hasComponent(SimpleTouchable.class));
 
     }
 

@@ -1,9 +1,9 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.testmodel.Wilma;
-import org.picocontainer.testmodel.WilmaImpl;
-import org.picocontainer.testmodel.FredImpl;
+import org.picocontainer.tck.Touchable;
+import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.tck.DependsOnTouchable;
 import org.picocontainer.*;
 
 
@@ -32,13 +32,13 @@ public class ParameterTestCase extends TestCase {
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
         DefaultComponentRegistry dcr = new DefaultComponentRegistry();
         DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
-        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
         ComponentParameter parameter = new ComponentParameter();
 
-        assertNull(pico.getComponent(Wilma.class));
-        Wilma wilma = (Wilma) parameter.resolve(dcr, null, Wilma.class);
-        assertNotNull(pico.getComponent(Wilma.class));
-        assertSame(wilma, pico.getComponent(Wilma.class));
+        assertNull(pico.getComponent(Touchable.class));
+        Touchable Touchable = (Touchable) parameter.resolve(dcr, null, Touchable.class);
+        assertNotNull(pico.getComponent(Touchable.class));
+        assertSame(Touchable, pico.getComponent(Touchable.class));
     }
 
     public void testConstantParameter() throws PicoInstantiationException {
@@ -47,14 +47,14 @@ public class ParameterTestCase extends TestCase {
         assertSame(value, parameter.resolve(null, null, null));
     }
 
-    public void testFredWithWilmaSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
+    public void testFredWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        WilmaImpl wilma = new WilmaImpl();
-        pico.registerComponent(FredImpl.class, FredImpl.class, new Parameter[] {
-            new ConstantParameter(wilma)
+        SimpleTouchable touchable = new SimpleTouchable();
+        pico.registerComponent(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[] {
+            new ConstantParameter(touchable)
         });
         pico.instantiateComponents();
-        assertTrue(wilma.helloCalled());
+        assertTrue(touchable.wasTouched);
     }
 
 }

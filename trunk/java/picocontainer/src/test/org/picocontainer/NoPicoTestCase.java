@@ -11,9 +11,9 @@
 package org.picocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.testmodel.FlintstonesImpl;
-import org.picocontainer.testmodel.FredImpl;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.DependsOnTwoComponents;
+import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.SimpleTouchable;
 
 public class NoPicoTestCase extends TestCase {
 
@@ -24,13 +24,13 @@ public class NoPicoTestCase extends TestCase {
      * This is manual lacing of components.
      *
      */
-    public void testWilmaWithoutPicoTestCase() {
+    public void testTouchableWithoutPicoTestCase() {
 
-        WilmaImpl wilma = new WilmaImpl();
-        FredImpl fred = new FredImpl(wilma);
+        SimpleTouchable touchable = new SimpleTouchable();
+        new DependsOnTouchable(touchable);
 
-        assertTrue("Wilma should have had her hello method called",
-                wilma.helloCalled());
+        assertTrue("Touchable should have had its wasTouched method called",
+                touchable.wasTouched);
     }
 
 

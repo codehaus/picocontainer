@@ -19,8 +19,8 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.testmodel.Wilma;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.Touchable;
+import org.picocontainer.tck.SimpleTouchable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +31,7 @@ public class CompositePicoContainerTestCase extends TestCase {
 
     public void setUp() throws PicoRegistrationException, PicoInitializationException {
         pico = new DefaultPicoContainer.Default();
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
         pico.instantiateComponents();
         composite = new CompositePicoContainer.WithContainerArray(new PicoContainer[] {pico});
     }
@@ -45,11 +45,11 @@ public class CompositePicoContainerTestCase extends TestCase {
     }
 
     public void testGetComponent() {
-        assertSame("Wilma should be the same", pico.getComponent(WilmaImpl.class), composite.getComponent(WilmaImpl.class));
+        assertSame("Touchable should be the same", pico.getComponent(SimpleTouchable.class), composite.getComponent(SimpleTouchable.class));
     }
 
     public void testHasComponent() {
-        assertEquals("Containers should contain the same", pico.hasComponent(WilmaImpl.class), composite.hasComponent(WilmaImpl.class));
+        assertEquals("Containers should contain the same", pico.hasComponent(SimpleTouchable.class), composite.hasComponent(SimpleTouchable.class));
     }
 
     public void testNullContainer() {
@@ -198,19 +198,19 @@ public class CompositePicoContainerTestCase extends TestCase {
 
     public void testParentComponentRegistryDominance() {
         ComponentRegistry cr = new DefaultComponentRegistry();
-        cr.putComponent(Wilma.class, new WilmaImpl());
+        cr.putComponent(Touchable.class, new SimpleTouchable());
         CompositePicoContainer acc = new CompositePicoContainer(cr, new PicoContainer[0]);
-        assertTrue(acc.hasComponent(Wilma.class));
-        assertTrue(acc.getComponent(Wilma.class) instanceof WilmaImpl);
+        assertTrue(acc.hasComponent(Touchable.class));
+        assertTrue(acc.getComponent(Touchable.class) instanceof SimpleTouchable);
     }
 
     public void testAdditiveFeatures() {
 
         CompositePicoContainer addContainer = new CompositePicoContainer.Default();
         addContainer.addContainer(pico);
-        assertTrue("Should have a wilma", addContainer.hasComponent(WilmaImpl.class));
+        assertTrue("Should have a Touchable", addContainer.hasComponent(SimpleTouchable.class));
         addContainer.removeContainer(pico);
-        assertFalse("Should not have a wilma", addContainer.hasComponent(WilmaImpl.class));
+        assertFalse("Should not have a Touchable", addContainer.hasComponent(SimpleTouchable.class));
 
     }
 

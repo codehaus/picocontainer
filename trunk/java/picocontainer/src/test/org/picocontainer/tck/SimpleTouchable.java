@@ -8,20 +8,19 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.testmodel;
+package org.picocontainer.tck;
 
 import java.io.Serializable;
 
 
-public class WilmaImpl implements Wilma, Serializable {
+/**
+ * @author steve.freeman@m3p.co.uk
+ */
+public class SimpleTouchable implements Touchable, Serializable {
 
-    private boolean helloCalled;
+    public boolean wasTouched;
 
-    public boolean helloCalled() {
-        return helloCalled;
-    }
-
-    public void hello() {
-        helloCalled = true;
+    public void wasTouched() {
+        wasTouched = true;
     }
 }

@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.testmodel;
+package org.picocontainer.tck;
 
 import junit.framework.Assert;
 
@@ -17,21 +17,20 @@ import java.io.ObjectInput;
 import java.io.IOException;
 import java.io.ObjectOutput;
 
-public class FredImpl implements Externalizable {
-    private Wilma wilma;
+/**
+ * @author steve.freeman@m3p.co.uk
+ */
+public class DependsOnTouchable implements Externalizable {
+    public Touchable touchable;
 
     // to satify Externalizable
-    public FredImpl() {
+    public DependsOnTouchable() {
     }
 
-    public FredImpl(Wilma wilma) {
-        Assert.assertNotNull("Wilma cannot be passed in as null", wilma);
-        wilma.hello();
-        this.wilma = wilma;
-    }
-
-    public Wilma getWilma() {
-        return wilma;
+    public DependsOnTouchable(Touchable touchable) {
+        Assert.assertNotNull("Touchable cannot be passed in as null", touchable);
+        touchable.wasTouched();
+        this.touchable = touchable;
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
@@ -40,6 +39,10 @@ public class FredImpl implements Externalizable {
 
     public void writeExternal(ObjectOutput out) throws IOException {
         // whatever
+    }
+
+    public Object getTouchable() {
+        return touchable;
     }
 
 

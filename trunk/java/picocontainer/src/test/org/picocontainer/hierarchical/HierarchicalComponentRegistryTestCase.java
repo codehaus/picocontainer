@@ -15,9 +15,9 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.testmodel.FredImpl;
-import org.picocontainer.testmodel.Wilma;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.Touchable;
+import org.picocontainer.tck.SimpleTouchable;
 
 import java.util.Collection;
 import java.util.Set;
@@ -50,8 +50,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(dcr);
         DefaultPicoContainer dpc2 = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
-        dpc.registerComponentByClass(FredImpl.class);
-        dpc.registerComponentByClass(WilmaImpl.class);
+        dpc.registerComponentByClass(DependsOnTouchable.class);
+        dpc.registerComponentByClass(SimpleTouchable.class);
         HashMap hashMap = new HashMap();
         HashSet hashSet = new HashSet();
         dpc.registerComponent(Map.class, hashMap);
@@ -61,8 +61,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         dpc2.instantiateComponents();
 
         Set set = hcr.getComponentInstanceKeys();
-        assertTrue(set.contains(FredImpl.class));
-        assertTrue(set.contains(WilmaImpl.class));
+        assertTrue(set.contains(DependsOnTouchable.class));
+        assertTrue(set.contains(SimpleTouchable.class));
         assertTrue(set.contains(Map.class));
         assertTrue(set.contains(Set.class));
 
@@ -72,15 +72,15 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         assertEquals("There should be two comps in the container", 4, hcr.getComponentInstances().size());
 
-        assertTrue("There should have been a Fred in the registry", hcr.hasComponentInstance(FredImpl.class));
-        assertTrue("There should have been a Wilma in the registry", hcr.hasComponentInstance(WilmaImpl.class));
+        assertTrue("There should have been a Fred in the registry", hcr.hasComponentInstance(DependsOnTouchable.class));
+        assertTrue("There should have been a Touchable in the registry", hcr.hasComponentInstance(SimpleTouchable.class));
         assertTrue("There should have been a Map in the registry", hcr.hasComponentInstance(Map.class));
         assertTrue("There should have been a Set in the registry", hcr.hasComponentInstance(Set.class));
 
     }
 
-    public static class DerivedWilma extends WilmaImpl {
-        public DerivedWilma() {
+    public static class DerivedTouchable extends SimpleTouchable {
+        public DerivedTouchable() {
         }
     }
 
@@ -90,13 +90,13 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
-        parent.registerComponentByClass(FredImpl.class);
-        parent.registerComponentByInstance(new WilmaImpl());
+        parent.registerComponentByClass(DependsOnTouchable.class);
+        parent.registerComponentByInstance(new SimpleTouchable());
 
         parent.instantiateComponents();
 
-        assertTrue("There should have been a Fred in the container", child.hasComponent(FredImpl.class));
-        assertTrue("There should have been a Wilma in the container", child.hasComponent(WilmaImpl.class));
+        assertTrue("There should have been a Fred in the container", child.hasComponent(DependsOnTouchable.class));
+        assertTrue("There should have been a Touchable in the container", child.hasComponent(SimpleTouchable.class));
     }
 
     public void testGetComponentTypes() throws PicoRegistrationException, PicoInitializationException {
@@ -106,8 +106,8 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
-        parent.registerComponentByClass(FredImpl.class);
-        parent.registerComponent(Wilma.class, WilmaImpl.class);
+        parent.registerComponentByClass(DependsOnTouchable.class);
+        parent.registerComponent(Touchable.class, SimpleTouchable.class);
 
         // You might have thought that starting the container shouldn't be necessary
         // just to get the types, but it is. The map holding the types->component instances
@@ -117,13 +117,13 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
         Collection types = child.getComponentKeys();
         assertEquals("There should be 2 types", 2, types.size());
-        assertTrue("There should be a FredImpl type", types.contains(FredImpl.class));
-        assertTrue("There should be a Wilma type", types.contains(Wilma.class));
-        assertTrue("There should not be a WilmaImpl type", !types.contains(WilmaImpl.class));
+        assertTrue("There should be a DependsOnTouchable type", types.contains(DependsOnTouchable.class));
+        assertTrue("There should be a Touchable type", types.contains(Touchable.class));
+        assertTrue("There should not be a SimpleTouchable type", !types.contains(SimpleTouchable.class));
 
-        assertNotNull("Should have a thing implementing Wilma", hcr.findImplementingComponent(Wilma.class));
-        assertEquals("Should have a thing implementing Wilma", hcr.findImplementingComponent(Wilma.class).getClass(), WilmaImpl.class);
-        assertNotNull("Should have a thing implementing Wilma",hcr.findImplementingComponentSpecification(Wilma.class));
+        assertNotNull("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class));
+        assertEquals("Should have a thing implementing Touchable", hcr.findImplementingComponent(Touchable.class).getClass(), SimpleTouchable.class);
+        assertNotNull("Should have a thing implementing Touchable",hcr.findImplementingComponentSpecification(Touchable.class));
 
     }
 
@@ -134,14 +134,14 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
         HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
-        parent.registerComponent(Wilma.class, WilmaImpl.class);
+        parent.registerComponent(Touchable.class, SimpleTouchable.class);
         parent.instantiateComponents();
-        child.registerComponentByClass(FredImpl.class);
+        child.registerComponentByClass(DependsOnTouchable.class);
         child.instantiateComponents();
 
         assertEquals("The parent should return 2 components (one from the parent)", 2, child.getComponents().size());
-        assertTrue("Wilma should have been passed through the parent container", child.hasComponent(Wilma.class));
-        assertTrue("There should have been a FredImpl in the container", child.hasComponent(FredImpl.class));
+        assertTrue("Touchable should have been passed through the parent container", child.hasComponent(Touchable.class));
+        assertTrue("There should have been a DependsOnTouchable in the container", child.hasComponent(DependsOnTouchable.class));
 
     }
 

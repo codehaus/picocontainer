@@ -8,8 +8,11 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.testmodel;
+package org.picocontainer.tck;
 
-public interface Wilma {
-    void hello();
+/**
+ * @author Steve.Freeman@m3p.co.uk
+ */
+public interface Touchable {
+    void wasTouched();
 }

@@ -7,8 +7,8 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public interface AggregateProxyFactory {
-    Object createAggregateProxy(
+public interface CompositeProxyFactory {
+    Object createCompositeProxy(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder

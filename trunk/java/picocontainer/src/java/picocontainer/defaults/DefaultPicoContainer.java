@@ -44,7 +44,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
     private boolean initialized;
     private Map componentToSpec = new HashMap();
-    private AggregateProxyFactory aggregateProxyFactory = new DefaultAggregateProxyFactory();
+    private CompositeProxyFactory compositeProxyFactory = new DefaultCompositeProxyFactory();
 
     public static class Default extends DefaultPicoContainer {
         public Default() {
@@ -98,7 +98,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
                 aggregateComponents.remove( iterator.next() );
             }
         }
-        return aggregateProxyFactory.createAggregateProxy(
+        return compositeProxyFactory.createCompositeProxy(
                 getClass().getClassLoader(),
                 aggregateComponents,
                 callInInstantiationOrder

@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
+public class DefaultCompositeProxyFactory implements CompositeProxyFactory {
     private static Method equals;
     private static Method hashCode;
 
@@ -36,7 +36,7 @@ public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
         }
     }
 
-    public Object createAggregateProxy(
+    public Object createCompositeProxy(
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder
@@ -113,7 +113,7 @@ public class DefaultAggregateProxyFactory implements AggregateProxyFactory {
                 // We have two or more results
                 // We can make a new proxy that aggregates all the results.
                 //Class[] resultInterfaces = getInterfaces(results.toArray());
-                result = createAggregateProxy(
+                result = createCompositeProxy(
                         classLoader,
                         results,
                         true

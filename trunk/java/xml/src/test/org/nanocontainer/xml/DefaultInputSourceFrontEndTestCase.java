@@ -1,3 +1,13 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Aslak Hellesoy and Paul Hammant                          *
+ *****************************************************************************/
+
 package org.nanocontainer.xml;
 
 import junit.framework.TestCase;
@@ -15,7 +25,7 @@ import java.io.File;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class InputSourceFrontEndTestCase extends TestCase {
+public class DefaultInputSourceFrontEndTestCase extends TestCase {
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
@@ -23,7 +33,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
                 "    <component key='org.nanocontainer.testmodel.WebServer' classname='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceContainerFactory = new InputSourceFrontEnd();
+        InputSourceFrontEnd inputSourceContainerFactory = new DefaultInputSourceFrontEnd();
         PicoContainer picoContainer = inputSourceContainerFactory.createPicoContainer(inputSource);
         assertNotNull(picoContainer.getComponentInstance(DefaultWebServerConfig.class));
     }
@@ -37,7 +47,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
                 "    </container>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceFrontEnd = new InputSourceFrontEnd();
+        InputSourceFrontEnd inputSourceFrontEnd = new DefaultInputSourceFrontEnd();
         PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(inputSource);
         assertNotNull(rootContainer.getComponentInstance(DefaultWebServerConfig.class));
 
@@ -63,7 +73,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
                 "    </container>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceFrontEnd = new InputSourceFrontEnd();
+        InputSourceFrontEnd inputSourceFrontEnd = new DefaultInputSourceFrontEnd();
         PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(inputSource);
         Object fooTestComp = rootContainer.getComponentInstance("foo");
         assertNotNull(fooTestComp);
@@ -82,7 +92,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
                     "<container>" +
                     "      <component classname='Foo'/>" +
                     "</container>"));
-            PicoContainer rootContainer = new InputSourceFrontEnd().createPicoContainer(inputSource);
+            PicoContainer rootContainer = new DefaultInputSourceFrontEnd().createPicoContainer(inputSource);
             fail("Should have thrown a ClassNotFoundException");
         } catch (ClassNotFoundException cnfe) {
         }
@@ -95,7 +105,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
             InputSource inputSource = new InputSource(new StringReader(
                     "<container>" +
                     "</container>"));
-            PicoContainer rootContainer = new InputSourceFrontEnd().createPicoContainer(inputSource);
+            PicoContainer rootContainer = new DefaultInputSourceFrontEnd().createPicoContainer(inputSource);
             fail("Should have thrown a EmptyXmlConfigurationException");
         } catch (EmptyXmlConfigurationException cnfe) {
         }

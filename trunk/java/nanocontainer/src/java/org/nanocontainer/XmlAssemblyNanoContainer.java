@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 import org.nanocontainer.xml.InputSourceFrontEnd;
 import org.nanocontainer.xml.EmptyXmlConfigurationException;
+import org.nanocontainer.xml.DefaultInputSourceFrontEnd;
 import org.picocontainer.PicoContainer;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,12 +38,11 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
 
     protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource is = new InputSource(nanoContainerXml);
-        InputSourceFrontEnd isfe = new InputSourceFrontEnd();
+        InputSourceFrontEnd isfe = new DefaultInputSourceFrontEnd();
         final PicoContainer rootContainer = isfe.createPicoContainer(is);
         instantiateComponentsBreadthFirst(rootContainer);
         startComponentsBreadthFirst();
     }
-
 
     public static void main(String[] args) throws Exception {
         String nanoContainerXml = args[0];

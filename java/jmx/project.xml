@@ -4,7 +4,6 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-jmx</id>
     <name>nanocontainer-jmx</name>
-    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>
         <dependency>

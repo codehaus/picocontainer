@@ -64,6 +64,10 @@
             <id>commons-logging</id>
             <version>1.0.4</version>
         </dependency>
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+        </dependency>
 
         <!-- test time only -->
         <dependency>

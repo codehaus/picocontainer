@@ -146,6 +146,10 @@
             <version>1.2-beta-3</version>
         </dependency>
         
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+        </dependency>
     </dependencies>
 
 </project>

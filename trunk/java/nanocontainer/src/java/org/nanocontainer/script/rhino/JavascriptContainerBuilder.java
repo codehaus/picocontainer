@@ -45,8 +45,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
-                return new DefiningClassLoader(classLoader) {
-                };
+                return new DefiningClassLoader(classLoader);
             }
         };
         cx = Context.enter(cx);

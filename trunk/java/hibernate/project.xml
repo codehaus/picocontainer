@@ -57,6 +57,10 @@
             <id>jta</id>
             <version>1.0.1B</version>
         </dependency>
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+        </dependency>
        
     </dependencies>
 

@@ -187,7 +187,7 @@ public class ImplementationHidingCachingPicoContainer implements MutablePicoCont
     }
 
     public boolean equals(Object obj) {
-        return delegate.equals(obj);
+        return delegate.equals(obj) || this == obj;
     }
 
 }

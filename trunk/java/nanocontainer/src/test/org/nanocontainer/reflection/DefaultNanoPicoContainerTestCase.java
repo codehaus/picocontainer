@@ -15,8 +15,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
-import java.io.IOException;
-
 /**
  * @author Paul Hammant
  * @version $Revision$

@@ -27,6 +27,7 @@
         <property name="idea" value="idea/*"/>
 
         <property name="excludes" value="nanoaop/*,pool/*,pool3/*,${swt},${idea},microcontainer/*"/>
+
         <echo>Excluded from build: ${excludes}</echo>
 
         <maven:reactor

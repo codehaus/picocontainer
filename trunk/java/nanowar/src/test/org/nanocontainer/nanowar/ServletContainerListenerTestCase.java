@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSessionEvent;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
+import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -32,12 +32,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
 
-    private String groovyScript = 
-            "builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()\n" +
-            "pico = builder.container(parent:parent) { \n" +
-            "  component(StringBuffer)\n" +
-            "}";
-    private String composerScript =
+    private String xmlScript =
         "<container>" +
         "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+
         "	   <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>"+
@@ -52,18 +47,18 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
-        initParams.add("nanocontainer.groovy");
+        initParams.add("nanocontainer.xml");
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
         servletContextMock.expects(once())
                 .method("getInitParameter")
-                .with(eq("nanocontainer.groovy"))
-                .will(returnValue(groovyScript));
+                .with(eq("nanocontainer.xml"))
+                .will(returnValue(xmlScript));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(GroovyContainerBuilder.class));
+                .with(eq(BUILDER), isA(XMLContainerBuilder.class));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
@@ -76,22 +71,22 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
-        initParams.add("nanocontainer.groovy");
+        initParams.add("nanocontainer.xml");
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
         servletContextMock.expects(once())
                 .method("getInitParameter")
-                .with(eq("nanocontainer.groovy"))
-                .will(returnValue("/config/nanocontainer.groovy"));
+                .with(eq("nanocontainer.xml"))
+                .will(returnValue("/config/nanocontainer.xml"));
         servletContextMock.expects(once())
                 .method("getResourceAsStream")
-                .with(eq("/config/nanocontainer.groovy"))
-                .will(returnValue(new ByteArrayInputStream(groovyScript.getBytes())));
+                .with(eq("/config/nanocontainer.xml"))
+                .will(returnValue(new ByteArrayInputStream(xmlScript.getBytes())));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(GroovyContainerBuilder.class));
+                .with(eq(BUILDER), isA(XMLContainerBuilder.class));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
@@ -119,7 +114,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
                 .method("getAttribute")
                 .with(eq(BUILDER))
-                .will(returnValue(new GroovyContainerBuilder(new StringReader(groovyScript), getClass().getClassLoader())));
+                .will(returnValue(new XMLContainerBuilder(new StringReader(xmlScript), getClass().getClassLoader())));
 
         httpSessionMock.expects(once())
                 .method("setAttribute")
@@ -176,7 +171,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
         		.method("getResourceAsStream")
         		.with(eq("nanowar/composer-config.xml"))
-        		.will(returnValue(new ByteArrayInputStream(composerScript.getBytes())));
+        		.will(returnValue(new ByteArrayInputStream(xmlScript.getBytes())));
         servletContextMock.expects(once())
 				.method("setAttribute")
 				.with(eq(BUILDER), isA(DefaultLifecycleContainerBuilder.class));

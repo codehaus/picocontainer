@@ -175,6 +175,6 @@ public class CachingPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public boolean equals(Object obj) {
-        return delegate.equals(obj);
+        return delegate.equals(obj) || this == obj;
     }
 }

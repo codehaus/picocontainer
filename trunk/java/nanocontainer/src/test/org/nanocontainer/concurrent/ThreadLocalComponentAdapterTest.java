@@ -82,7 +82,8 @@ public class ThreadLocalComponentAdapterTest
     public final void testInstancesUsedFromMultipleThreads() throws InterruptedException {
         final Set set = Collections.synchronizedSet(new HashSet());
         final List list = Collections.synchronizedList(new ArrayList());
-        final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(Touchable.class, SimpleTouchable.class, null));
+        final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(
+                new ConstructorInjectionComponentAdapter(Touchable.class, SimpleTouchable.class, null));
         final Touchable touchable = (Touchable) componentAdapter.getComponentInstance(null);
 
         final Thread[] threads = {
@@ -92,17 +93,17 @@ public class ThreadLocalComponentAdapterTest
         for (int i = threads.length; i-- > 0;) {
             threads[i].start();
         }
-        Thread.sleep(100);
+        Thread.sleep(300);
         for (int i = threads.length; i-- > 0;) {
             synchronized (threads[i]) {
                 threads[i].notify();
             }
         }
-        Thread.sleep(100);
+        Thread.sleep(300);
         for (int i = threads.length; i-- > 0;) {
             threads[i].interrupt();
         }
-        Thread.sleep(100);
+        Thread.sleep(300);
         assertEquals(6, list.size());
         assertEquals(3, set.size());
     }

@@ -256,6 +256,7 @@ public abstract class AbstractNanoPicoContainer implements NanoPicoContainer, Se
     }
 
     public boolean equals(Object o) {
-        return delegate.equals(o);
+        // mmm - cut'n paste coding. see comment on equals in ImplementationHidingPicoContainer (AH)
+        return delegate.equals(o) || this == o;
     }
 }

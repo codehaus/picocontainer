@@ -78,10 +78,8 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
             DefaultNanoContainer dfca = new DefaultNanoContainer();
             dfca.registerComponentImplementation("foo", "TestComp");
             Object o = dfca.getPico().getComponentInstance("foo");
-            fail("Not expected");
+            fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
         } catch (ClassNotFoundException expected) {
-        } catch (Exception e) {
-            fail("Not expected");
         }
 
     }
@@ -95,18 +93,12 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
         assertNotNull("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
-        File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
-        assertTrue(testCompJar.isFile());
-        assertTrue(testCompJar2.isFile());
 
         // Set up parent
         NanoContainer parentContainer = new DefaultNanoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
-
         parentContainer.registerComponentImplementation("parentTestComp", "TestComp");
-
         parentContainer.registerComponentImplementation("java.lang.StringBuffer");
-
 
         PicoContainer parentContainerAdapterPico = parentContainer.getPico();
         Object parentTestComp = parentContainerAdapterPico.getComponentInstance("parentTestComp");
@@ -114,6 +106,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
         // Set up child
         NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         childContainer.addClassLoaderURL(testCompJar2.toURL());
         childContainer.registerComponentImplementation("childTestComp", "TestComp2");
 
@@ -124,12 +117,23 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
         assertNotSame(parentTestComp, childTestComp);
 
-        assertSame("parentTestComp classloader should be parent of childTestComp classloader",
-                parentTestComp.getClass().getClassLoader(),
-                childTestComp.getClass().getClassLoader().getParent());
-
+        final ClassLoader parentCompClassLoader = parentTestComp.getClass().getClassLoader();
+        final ClassLoader childCompClassLoader = childTestComp.getClass().getClassLoader();
+        if(parentCompClassLoader != childCompClassLoader.getParent()) {
+            printClassLoader(parentCompClassLoader);
+            printClassLoader(childCompClassLoader);
+            fail("parentTestComp classloader should be parent of childTestComp classloader");
+        }
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parentContainerAdapterPico, childContainerAdapterPico.getParent());
+    }
+
+    private void printClassLoader(ClassLoader classLoader) {
+        while(classLoader != null) {
+            System.out.println(classLoader);
+            classLoader = classLoader.getParent();
+        }
+        System.out.println("--");
     }
 
     public static class AnotherFooComp {

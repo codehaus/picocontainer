@@ -14,10 +14,12 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +67,10 @@ public class ScriptedContainerBuilderFactory {
         this(new FileReader(fileExists(compositionFile)), getBuilderClassName(compositionFile), ScriptedContainerBuilderFactory.class.getClassLoader());
     }
 
+    public ScriptedContainerBuilderFactory(URL compositionURL) throws IOException, ClassNotFoundException {
+        this(new InputStreamReader(compositionURL.openStream()), getBuilderClassName(compositionURL), ScriptedContainerBuilderFactory.class.getClassLoader());
+    }
+
     public ScriptedContainerBuilderFactory(Reader composition, String builderClass) throws ClassNotFoundException {
         this(composition, builderClass, ScriptedContainerBuilderFactory.class.getClassLoader());
     }
@@ -93,8 +99,13 @@ public class ScriptedContainerBuilderFactory {
         }
     }
 
-    private static String getBuilderClassName(File compositionFile) throws IOException {
-        String language = getExtension(compositionFile);
+    private static String getBuilderClassName(File compositionFile) {
+        String language = getExtension(compositionFile.getAbsolutePath());
+        return getBuilderClassName(language);
+    }
+
+    private static String getBuilderClassName(URL compositionURL) {
+        String language = getExtension(compositionURL.getFile());
         return getBuilderClassName(language);
     }
 
@@ -102,8 +113,8 @@ public class ScriptedContainerBuilderFactory {
         return (String) extensionToBuilders.get(extension);
     }
 
-    private static String getExtension(File file) throws IOException {
-        return file.getCanonicalPath().substring(file.getCanonicalPath().lastIndexOf("."));
+    private static String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
     public ScriptedContainerBuilder getContainerBuilder() {

@@ -89,20 +89,21 @@ public class PortableRemoteObjectDelegateMock
                     .getName());
             try {
                 if (!Modifier.isInterface(narrowTo.getModifiers())) {
-                    cce.initCause(new IllegalArgumentException(narrowTo.getName()
-                            + " should be an interface"));
+// TODO: Should get this to work with JDK 1.3. Perhaps we can use JMock instead of coding a mock impl?
+//                    cce.initCause(new IllegalArgumentException(narrowTo.getName()
+//                            + " should be an interface"));
                 } else if (EJBHome.class.isAssignableFrom(narrowTo)
                         && narrowTo.isAssignableFrom(ctor.getDeclaringClass())) {
                     return ctor.newInstance(null);
                 }
             } catch (IllegalArgumentException e) {
-                cce.initCause(e);
+//                cce.initCause(e);
             } catch (InstantiationException e) {
-                cce.initCause(e);
+//                cce.initCause(e);
             } catch (IllegalAccessException e) {
-                cce.initCause(e);
+//                cce.initCause(e);
             } catch (InvocationTargetException e) {
-                cce.initCause(e);
+//                cce.initCause(e);
             }
 
             throw cce;

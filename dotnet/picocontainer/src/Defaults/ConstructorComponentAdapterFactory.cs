@@ -11,10 +11,16 @@
 
 using System;
 
-namespace PicoContainer
-{
-  public interface ComponentAdapterFactory 
-  {
-    ComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, Parameter[] parameters) ;
+namespace PicoContainer.Defaults {
+  /// <summary>
+  /// Summary description for ConstructorComponentAdapterFactory.
+  /// </summary>
+  [Serializable]
+  public class ConstructorComponentAdapterFactory : IComponentAdapterFactory {
+    public IComponentAdapter CreateComponentAdapter(object componentKey,
+      Type componentImplementation,
+      IParameter[] parameters) {
+      return new ConstructorComponentAdapter(componentKey, componentImplementation, parameters);
+    }
   }
 }

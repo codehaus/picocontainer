@@ -10,27 +10,18 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using NUnit.Framework;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests
-{
+namespace PicoContainer.Defaults {
 	
-  [TestFixture]
-	public class NoPicoTestCase
-	{
+  public class DecoratingComponentAdapterFactory : IComponentAdapterFactory {
+    private readonly IComponentAdapterFactory theDelegate;
 		
-	 	public virtual void  testTouchableWithoutPicoTestCase()
-		{
-			
-			SimpleTouchable touchable = new SimpleTouchable();
-			new DependsOnTouchable(touchable);
-			
-			Assert.IsTrue(touchable._wasTouched,"Touchable should have had its wasTouched method called");
-		}
-	}
+    public DecoratingComponentAdapterFactory(IComponentAdapterFactory theDelegate) {
+      this.theDelegate= theDelegate;
+    }
+		
+    public virtual IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
+      return theDelegate.CreateComponentAdapter(componentKey, componentImplementation, parameters);
+    }
+  }
 }

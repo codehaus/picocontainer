@@ -8,6 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
+
 using System;
 using System.Collections;
 
@@ -17,6 +18,20 @@ namespace PicoContainer.Defaults {
       ArrayList l = new ArrayList();
       l.Add(obj);
       return GetInterfaces(ArrayList.ReadOnly(l));
+    }
+
+    public Type[] GetInterfaces(Type obj) {
+      ArrayList interfaces = new ArrayList();
+      Type[] implemented = obj.GetInterfaces();
+      foreach (Type t in implemented) {
+        if (!interfaces.Contains(t)) {
+          interfaces.Add(t);
+        }
+      }
+
+      Type[] result = new Type[interfaces.Count];
+      interfaces.CopyTo(result,0);
+      return result;
     }
 
     public Type[] GetInterfaces(IList objects) {
@@ -37,4 +52,6 @@ namespace PicoContainer.Defaults {
       return result;
     }
   }
+
+
 }

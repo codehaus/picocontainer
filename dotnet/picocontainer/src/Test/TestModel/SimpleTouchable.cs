@@ -26,11 +26,11 @@ namespace PicoContainer.Tests.TestModel
     }
     #region Touchable Members
 
-    public bool _wasTouched;
+    public bool wasTouched;
 
-    public void wasTouched()
+    public void touch()
     {
-      _wasTouched = true;
+      wasTouched = true;
     }
 
     #endregion

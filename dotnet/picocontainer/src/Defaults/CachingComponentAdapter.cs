@@ -10,30 +10,31 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using NUnit.Framework;
+namespace PicoContainer.Defaults {
+  /// <summary>
+  /// Summary description for CachingComponentAdapter.
+  /// </summary>
+  public class CachingComponentAdapter : DecoratingComponentAdapter {
 
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+    private IObjectReference instanceReference;
 
-namespace PicoContainer.Tests.Defaults
-{
-  [TestFixture]
-  public class ComponentAdapterTest
-  {
-    
-    public void testEquals()  
-    {
-      ComponentAdapter componentAdapter =
-        createComponentAdapter();
-
-      Assert.AreEqual(componentAdapter, componentAdapter);
+    public CachingComponentAdapter(IComponentAdapter theDelegate) :this (theDelegate, new SimpleReference()){
     }
 
-    private ComponentAdapter createComponentAdapter() 
-    {
-      return new DefaultComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
+    public CachingComponentAdapter(IComponentAdapter theDelegate, SimpleReference reference) :base(theDelegate){
+      instanceReference= reference;
+    }
+
+
+    public override object ComponentInstance   {
+      get {
+        if (instanceReference.Get() == null) {
+          instanceReference.Set(base.ComponentInstance);
+        }
+        return instanceReference.Get();
+      }
+
     }
   }
 }

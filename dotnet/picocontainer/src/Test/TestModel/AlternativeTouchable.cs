@@ -17,11 +17,11 @@ namespace PicoContainer.Tests.TestModel
 	public class AlternativeTouchable : Touchable
 	{
 		
-		public bool wasTouched_Renamed_Field;
+		public bool wasTouched = false;
 		
-		public virtual void  wasTouched()
+		public virtual void  touch()
 		{
-			wasTouched_Renamed_Field = true;
+			wasTouched = true;
 		}
 	}
 }

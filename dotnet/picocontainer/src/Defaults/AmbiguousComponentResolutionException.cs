@@ -10,46 +10,50 @@
  *****************************************************************************/
 
 using System;
+using System.Text;
+using System.Runtime.Serialization;
 
 using PicoContainer;
-namespace PicoContainer.Defaults
-{
+
+namespace PicoContainer.Defaults {
   [Serializable]
-  public class AmbiguousComponentResolutionException : PicoIntrospectionException 
-  {
+  public class AmbiguousComponentResolutionException : PicoIntrospectionException {
     private Type ambiguousClass;
     private object[] ambiguousComponentKeys;
 
-    public AmbiguousComponentResolutionException(Type ambiguousClass, object[] componentKeys) 
-    {
+    public AmbiguousComponentResolutionException(Type ambiguousClass, object[] componentKeys) {
       this.ambiguousClass = ambiguousClass;
       this.ambiguousComponentKeys = new Type[componentKeys.Length];
-      for (int i = 0; i < componentKeys.Length; i++) 
-      {
+      for (int i = 0; i < componentKeys.Length; i++) {
         ambiguousComponentKeys[i] = componentKeys[i];
       }
     }
 
-    public override String Message 
-    {
-      get 
-      {
-        String msg = "Ambiguous class ";
-        msg += ambiguousClass;
-        msg+=", ";
-        msg +="resolves to multiple keys [";
-        foreach (object key in GetAmbiguousComponentKeys()) {
-          msg += key;
-          msg += " ";
+    public AmbiguousComponentResolutionException(){ }
+
+    public AmbiguousComponentResolutionException(Exception ex) : base (ex) {}
+    public AmbiguousComponentResolutionException(string message) : base(message) { }
+
+    public AmbiguousComponentResolutionException(string message, Exception ex) : base(message,ex) {}
+
+    protected AmbiguousComponentResolutionException(SerializationInfo info, StreamingContext context) : base (info, context) {}
+
+    public override String Message {
+      get {
+        StringBuilder msg = new StringBuilder("Ambiguous class ");
+        msg.Append(ambiguousClass).Append(", ").Append("resolves to multiple keys [");
+        foreach (object key in AmbiguousComponentKeys) {
+          msg.Append(key).Append(" ");
         }
-        msg +="resolves to multiple keys ]";
-        return msg;
+        msg.Append("resolves to multiple keys ]");
+        return msg.ToString();
       }
     }
 
-    public object[] GetAmbiguousComponentKeys()
-    {
+    public object[] AmbiguousComponentKeys {
+      get {
         return ambiguousComponentKeys;
+      }
     }
   }
 }

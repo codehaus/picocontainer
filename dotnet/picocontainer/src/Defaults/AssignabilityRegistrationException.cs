@@ -10,14 +10,24 @@
  *****************************************************************************/
 
 using System;
+using System.Runtime.Serialization;
 
 using PicoContainer;
 
-namespace PicoContainer {
+namespace PicoContainer.Defaults {
   [Serializable]
   public class AssignabilityRegistrationException: PicoRegistrationException {
     private Type type;
     private Type typeToAssign;
+
+    public AssignabilityRegistrationException(){ }
+
+    public AssignabilityRegistrationException(Exception ex) : base (ex) {}
+    public AssignabilityRegistrationException(string message) : base(message) { }
+
+    public AssignabilityRegistrationException(string message, Exception ex) : base(message,ex) {}
+
+    protected AssignabilityRegistrationException(SerializationInfo info, StreamingContext context) : base (info, context) {}
 
     public AssignabilityRegistrationException(Type type, Type typeToAssign) {
       this.type = type;

@@ -11,21 +11,44 @@
 
 using System;
 
-namespace PicoContainer
-{
-  public class ComponentParameter : Parameter 
-  {
-
+namespace PicoContainer.Defaults {
+  public class ComponentParameter : IParameter {
     private object componentKey;
 
-    public ComponentParameter(object componentKey) 
-    {
+    /**
+     * Expect a parameter matching a component of a specific key.
+     * @param componentKey the key of the desired component
+     */
+    public ComponentParameter(object componentKey) {
       this.componentKey = componentKey;
     }
 
-    public ComponentAdapter ResolveAdapter(MutablePicoContainer picoContainer) 
-    {
-      return picoContainer.FindComponentAdapter(componentKey);
+    public ComponentParameter() {   }
+
+    public IComponentAdapter ResolveAdapter(IPicoContainer picoContainer, Type expectedType) {
+
+      IComponentAdapter result;
+
+      if (componentKey != null){
+        result = picoContainer.GetComponentAdapter(componentKey);
+        if (result != null && !expectedType.IsAssignableFrom(result.ComponentImplementation)) {
+          result = null;
+        }
+      } else {
+        result =  picoContainer.GetComponentAdapterOfType(expectedType);
+      }
+
+      return result;
     }
   }
+
+  /// <summary>
+  /// A ComponentParameter should be used to pass in a particular component
+  /// as argument to a different component's constructor. This is particularly
+  /// useful in cases where several components of the same type have been registered,
+  /// but with a different key. Passing a ComponentParameter as a parameter
+  /// when registering a component will give PicoContainer a hint about what
+  /// other component to use in the constructor.
+  /// </summary
+
 }

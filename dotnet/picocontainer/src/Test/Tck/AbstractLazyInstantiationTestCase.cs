@@ -22,7 +22,7 @@ namespace PicoContainer.Tests.Tck
   [TestFixture]
   public abstract class AbstractLazyInstantiationTestCase
   {
-    protected abstract MutablePicoContainer createPicoContainer();
+    protected abstract IMutablePicoContainer createPicoContainer();
 
     public class Kilroy 
     {
@@ -45,12 +45,12 @@ namespace PicoContainer.Tests.Tck
     [Test]
     public void testLazyInstantiation() 
     {
-      MutablePicoContainer pico = createPicoContainer();
+      IMutablePicoContainer pico = createPicoContainer();
 
       pico.RegisterComponentImplementation(typeof(Kilroy));
       pico.RegisterComponentImplementation(typeof(Havana));
 
-      Assert.IsTrue(pico.GetComponentInstance(typeof(Havana)) == pico.GetComponentInstance(typeof(Havana)));
+      Assert.AreSame(pico.GetComponentInstance(typeof(Havana)),pico.GetComponentInstance(typeof(Havana)));
       Assert.IsNotNull(pico.GetComponentInstance(typeof(Havana)));
       Assert.AreEqual("Clean wall", ((Havana) pico.GetComponentInstance(typeof(Havana))).paint);
       Assert.IsNotNull(pico.GetComponentInstance(typeof(Kilroy)));

@@ -11,20 +11,16 @@
 
 using System;
 
-namespace PicoContainer.Defaults
-{
-  public class ConstantParameter : Parameter 
-  {
-    private object value;
+namespace PicoContainer.Defaults {
+  public class ConstantParameter : IParameter {
+    private readonly object constantValue;
 
-    public ConstantParameter(object value) 
-    {
-      this.value = value;
+    public ConstantParameter(object constantValue) {
+      this.constantValue = constantValue;
     }
 
-    public ComponentAdapter ResolveAdapter(MutablePicoContainer picoContainer) 
-    {
-      return new InstanceComponentAdapter(value, value);
+    public IComponentAdapter ResolveAdapter(IPicoContainer picoContainer, Type expectedType) {
+      return new InstanceComponentAdapter(constantValue, constantValue);
     }
   }
 }

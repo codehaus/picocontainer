@@ -15,18 +15,19 @@ using PicoContainer;
 
 namespace PicoContainer.Defaults {
 
-  public abstract class AbstractComponentAdapter : ComponentAdapter {
+  public abstract class AbstractComponentAdapter : IComponentAdapter {
     private object componentKey;
     private Type componentImplementation;
+    private IPicoContainer container;
 
     protected AbstractComponentAdapter(object componentKey, Type componentImplementation) {
       if(componentImplementation == null) {
         throw new NullReferenceException("componentImplementation");
       }
-      CheckTypeCompatibility(componentKey, componentImplementation);
-      CheckConcrete(componentImplementation);
       this.componentKey = componentKey;
       this.componentImplementation = componentImplementation;
+      CheckTypeCompatibility();
+      CheckConcrete();
     }
 
     public object ComponentKey {
@@ -44,7 +45,7 @@ namespace PicoContainer.Defaults {
       }
     }
 
-    private void CheckTypeCompatibility(object componentKey, Type componentImplementation) {
+    private void CheckTypeCompatibility() {
       Type componentType = componentKey as Type;
       if (componentType != null) {
         if (!componentType.IsAssignableFrom(componentImplementation)) {
@@ -53,13 +54,28 @@ namespace PicoContainer.Defaults {
       }
     }
 
-    private void CheckConcrete(Type componentImplementation) {
+    private void CheckConcrete() {
       if (componentImplementation.IsInterface || componentImplementation.IsAbstract) {
         throw new NotConcreteRegistrationException(componentImplementation);
       }
     }
 
-    public abstract object GetComponentInstance(MutablePicoContainer dependencyContainer);
-  }
+    public override string ToString() {
+      return this.GetType().Name+"["+ComponentKey+"]";
+    }
+    public IPicoContainer Container {
+      get {
+        return container;
+      }
 
+      set {
+        this.container = value;
+      }
+    }
+
+    public abstract object ComponentInstance{
+      get;
+    }
+    public abstract void Verify();
+  }
 }

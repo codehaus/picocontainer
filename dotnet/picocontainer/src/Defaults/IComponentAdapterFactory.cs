@@ -12,10 +12,8 @@
 using System;
 
 namespace PicoContainer.Defaults {
-  [Serializable]
-  public class DefaultComponentAdapterFactory : IComponentAdapterFactory {
-    public IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
-      return new CachingComponentAdapter(new ConstructorComponentAdapter(componentKey, componentImplementation, parameters));
-    }
+
+  public interface IComponentAdapterFactory {
+    IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) ;
   }
 }

@@ -62,6 +62,16 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     private final HierarchicalStreamDriver xsdriver;
 
+    /**
+    * construct with just reader, use context classloader
+    */
+    public XStreamContainerBuilder(Reader script) {
+        this(script,Thread.currentThread().getContextClassLoader());
+    }
+    
+    /**
+    * construct with given script and specified classloader
+    */
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader) {
         this(script, classLoader, new DomDriver());
     }

@@ -15,10 +15,6 @@ import org.picocontainer.extras.ComponentMulticasterFactory;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -31,24 +27,6 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class DefaultComponentMulticasterFactory implements ComponentMulticasterFactory, Serializable {
-
-    private static Method equals;
-    private static Method hashCode;
-
-    static {
-        try {
-            equals = Object.class.getMethod("equals", new Class[]{Object.class});
-            hashCode = Object.class.getMethod("hashCode", null);
-        } catch (NoSuchMethodException e) {
-            ///CLOVER:OFF
-            throw new InternalError();
-            ///CLOVER:ON
-        } catch (SecurityException e) {
-            ///CLOVER:OFF
-            throw new InternalError();
-            ///CLOVER:ON
-        }
-    }
 
     private final InterfaceFinder interfaceFinder = new InterfaceFinder();
 
@@ -87,12 +65,12 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Class declaringClass = method.getDeclaringClass();
             if (declaringClass.equals(Object.class)) {
-                if (method.equals(hashCode)) {
+                if (method.equals(InterfaceFinder.hashCode)) {
                     // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                     // return cached proxies. We want a unique hashCode for each created proxy!
                     return new Integer(System.identityHashCode(AggregatingInvocationHandler.this));
                 }
-                if (method.equals(equals)) {
+                if (method.equals(InterfaceFinder.equals)) {
                     return new Boolean(proxy == args[0]);
                 }
                 // If it's any other method defined by Object, call on ourself.

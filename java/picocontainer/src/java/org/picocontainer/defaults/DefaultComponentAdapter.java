@@ -51,13 +51,9 @@ public class DefaultComponentAdapter extends TransientComponentAdapter {
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
-
             componentInstance = super.getComponentInstance(picoContainer);
-
             picoContainer.addOrderedComponentAdapter(this);
-
         }
-
         return componentInstance;
     }
 

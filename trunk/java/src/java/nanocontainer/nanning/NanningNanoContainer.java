@@ -7,6 +7,8 @@ import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 /**
@@ -23,6 +25,12 @@ public class NanningNanoContainer extends HierarchicalPicoContainer {
         super(new NanningComponentFactory(aspectSystem, componentFactory), serviceAndAspectContainer);
         this.serviceAndAspectContainer = serviceAndAspectContainer;
         this.aspectSystem = aspectSystem;
+    }
+
+    public static class Default extends NanningNanoContainer {
+        public Default(AspectSystem aspectSystem) {
+            super(new DefaultComponentFactory(), new DefaultPicoContainer.Default(), aspectSystem);
+        }
     }
 
     /**

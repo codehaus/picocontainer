@@ -72,7 +72,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
             Class scriptClass = loader.parseClass(scriptIs, "nanocontainer.groovy");
             groovyScript = InvokerHelper.createScript(scriptClass, null);
         } catch (CompilationFailedException e) {
-            throw new PicoCompositionException(e);
+            throw new NanoGroovyCompositionException("Compilation Failed '" + e.getMessage() +"'",e);
         } catch (IOException e) {
             throw new PicoCompositionException(e);
         }

@@ -5,6 +5,7 @@
 3) Run ant
 
 == Continuous Integration of the Book ==
+
 The book is DamageControlled and lands here upon checkin:
 http://www.picocontainer.org/book.html
 

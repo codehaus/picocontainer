@@ -34,8 +34,17 @@ public class ParameterTestCase extends TestCase {
         ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
 
         assertNotNull(pico.getComponentInstance(Touchable.class));
-        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class);
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, null, Touchable.class);
         assertNotNull(touchable);
+    }
+
+    public void testComponentParameterExcludesSelf() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
+
+        assertNotNull(pico.getComponentInstance(Touchable.class));
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class);
+        assertNull(touchable);
     }
 
     public void testConstantParameter() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
@@ -61,13 +70,12 @@ public class ParameterTestCase extends TestCase {
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class));
     }
 	
-	
 	public void testComponentParameterResolvesPrimitiveType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         ComponentAdapter adapter = picoContainer.registerComponentInstance("glarch", new Integer(239));
 		Parameter parameter = new ComponentParameter("glarch");
-		assertNotNull(parameter.resolveInstance(picoContainer,adapter,Integer.TYPE));
-		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,adapter,Integer.TYPE)).intValue());
+		assertNotNull(parameter.resolveInstance(picoContainer,null,Integer.TYPE));
+		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,null,Integer.TYPE)).intValue());
 	}
 
     public void testConstantParameterRespectsExpectedType() {

@@ -232,7 +232,7 @@ public class CollectionComponentParameter
         for (final Iterator iter = adapterList.iterator(); iter.hasNext();) {
             final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
             final Object key = componentAdapter.getComponentKey();
-            if (key.equals(adapter.getComponentKey())) {
+            if (adapter != null && key.equals(adapter.getComponentKey())) {
                 continue;
             }
             if (keyType.isAssignableFrom(key.getClass()) && evaluate(componentAdapter)) {

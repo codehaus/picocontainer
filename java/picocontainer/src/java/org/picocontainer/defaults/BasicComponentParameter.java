@@ -72,14 +72,11 @@ public class BasicComponentParameter
 
     public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
             throws PicoInstantiationException {
-        // type check is done in isResolvable
-        Object result = null;
-        if (componentKey != null) {
-            result = container.getComponentInstance(componentKey);
-        } else {
-            result = container.getComponentInstanceOfType(expectedType);
+        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
+        if (componentAdapter != null) {
+            return container.getComponentInstance(componentAdapter.getComponentKey());
         }
-        return result;
+        return null;
     }
 
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
@@ -107,7 +104,7 @@ public class BasicComponentParameter
         }
 
         // can't depend on ourselves
-        if (adapter.getComponentKey().equals(result.getComponentKey())) {
+        if (adapter != null && adapter.getComponentKey().equals(result.getComponentKey())) {
             return null;
         }
 

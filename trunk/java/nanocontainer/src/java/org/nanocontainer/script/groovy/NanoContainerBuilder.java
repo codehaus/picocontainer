@@ -8,14 +8,39 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
+/*
+TODO:
+
+don't depend on child packages
+o dynaop
+o aop
+
+don't depend on proxytoys - introduce a PointcutsFactoryFactory
+*/
+
 package org.nanocontainer.script.groovy;
 
+import dynaop.Aspects;
+import dynaop.Pointcuts;
+import dynaop.ProxyFactory;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
+import org.aopalliance.intercept.MethodInterceptor;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.aop.AspectablePicoContainer;
+import org.nanocontainer.aop.AspectsApplicator;
+import org.nanocontainer.aop.AspectsContainer;
+import org.nanocontainer.aop.AspectsManager;
+import org.nanocontainer.aop.ClassPointcut;
+import org.nanocontainer.aop.ComponentPointcut;
+import org.nanocontainer.aop.MethodPointcut;
+import org.nanocontainer.aop.PointcutsFactory;
+import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
+import org.nanocontainer.aop.dynaop.DynaopAspectsManager;
+import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -32,15 +57,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.thoughtworks.proxy.toys.nullobject.Null;
+
 /**
  * Builds trees of PicoContainers and Pico components using GroovyMarkup
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
+ * @author Stephen Molitor
  * @version $Revision$
  */
 public class NanoContainerBuilder extends BuilderSupport {
+
+    private final PointcutsFactory pointcutsFactory;
+    private AspectablePicoContainer currentPico;
+    private Object currentKey;
+
+    public NanoContainerBuilder() {
+        this((PointcutsFactory) Null.object(PointcutsFactory.class));
+    }
+
+    public NanoContainerBuilder(PointcutsFactory pointcutsFactory) {
+        this.pointcutsFactory = pointcutsFactory;
+    }
 
     protected void setParent(Object parent, Object child) {
     }
@@ -93,7 +133,10 @@ public class NanoContainerBuilder extends BuilderSupport {
     }
 
     private Object createChildOfContainerNode(NanoContainer parentContainer, Object name, Map attributes) throws ClassNotFoundException {
-        if (name.equals("component")) {
+        if (name.equals("aspect")) {
+            return createAspectNode(attributes, name);
+        } else if (name.equals("component")) {
+            rememberComponentKey(attributes);
             return createComponentNode(attributes, parentContainer, name);
         } else if (name.equals("bean")) {
             return createBeanNode(attributes, parentContainer.getPico());
@@ -107,7 +150,7 @@ public class NanoContainerBuilder extends BuilderSupport {
         } else if (name.equals("newBuilder")) {
             return createNewBuilderNode(attributes, parentContainer);
         }
-        throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
+        throw new PicoBuilderException("Don't know how to create a '" + name + "' child of a container element");
     }
 
     private Object createNewBuilderNode(Map attributes, NanoContainer parentContainer) {
@@ -179,23 +222,37 @@ public class NanoContainerBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
+    //TODO - two adapterFactory attributes ??
     protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
+        AspectsManager aspectsManager = (AspectsManager) attributes.remove("aspectsManager");
+        if (aspectsManager == null) {
+            aspectsManager = new DynaopAspectsManager(pointcutsFactory);
+        }
+//        ComponentAdapterFactory delegateAdapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
+
+//        Map newAttributes = new HashMap(attributes);
+//        newAttributes.put("adapterFactory", adapterFactory);
+//
+
         ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) attributes.remove("componentAdapterFactory");
         componentAdapterFactory = componentAdapterFactory != null ? componentAdapterFactory : new DefaultComponentAdapterFactory();
+        AspectsComponentAdapterFactory aspectsComponentAdapterFactory = createAdapterFactory(aspectsManager, componentAdapterFactory);
 
-        String name = (String) attributes.remove("name");
+//        String name = (String) attributes.remove("name");
         ClassLoader parentClassLoader = null;
         MutablePicoContainer parentPicoContainer = null;
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
             parentPicoContainer = parent.getPico();
-            parentPicoContainer = new DefaultPicoContainer(componentAdapterFactory, parentPicoContainer);
+            parentPicoContainer = new DefaultPicoContainer(aspectsComponentAdapterFactory, parentPicoContainer);
             parent.getPico().addChildContainer(parentPicoContainer);
         } else {
             parentClassLoader = Thread.currentThread().getContextClassLoader();
-            parentPicoContainer = new DefaultPicoContainer(componentAdapterFactory);
+            parentPicoContainer = new DefaultPicoContainer(aspectsComponentAdapterFactory);
         }
-        return new DefaultNanoContainer(parentClassLoader, parentPicoContainer);
+        currentPico = mixinAspectablePicoContainer(aspectsManager, parentPicoContainer);
+
+        return new DefaultNanoContainer(parentClassLoader, currentPico);
     }
 
     protected Object createBean(Map attributes) {
@@ -234,5 +291,121 @@ public class NanoContainerBuilder extends BuilderSupport {
 
     private Parameter toParameter(Object obj) {
         return obj instanceof Parameter ? (Parameter) obj : new ConstantParameter(obj);
+    }
+
+    private Object createAspectNode(Map attributes, Object name) {
+        ClassPointcut classCut = (ClassPointcut) attributes.remove("classCut");
+        MethodPointcut methodCut = (MethodPointcut) attributes.remove("methodCut");
+        MethodInterceptor interceptor = (MethodInterceptor) attributes.remove("interceptor");
+        Object interceptorKey = attributes.remove("interceptorKey");
+        Class mixinClass = (Class) attributes.remove("mixinClass");
+        List mixinInterfaces = (List) attributes.remove("mixinInterfaces");
+
+        ComponentPointcut componentCut = (ComponentPointcut) attributes.remove("componentCut");
+        if (componentCut == null && currentKey != null) {
+            componentCut = currentPico.getPointcutsFactory().component(currentKey);
+        }
+
+        if (interceptor != null || interceptorKey != null) {
+            registerInterceptor(currentPico, classCut, componentCut, methodCut, interceptor, interceptorKey);
+        } else if (mixinClass != null) {
+            registerMixin(currentPico, classCut, componentCut, toClassArray(mixinInterfaces), mixinClass);
+        } else {
+            throw new PicoBuilderException("No advice specified - must specify one of interceptor, interceptorKey, mixinClass, or mixinKey");
+        }
+
+        return name;
+    }
+
+    private void registerInterceptor(AspectablePicoContainer pico, ClassPointcut classCut,
+                                     ComponentPointcut componentCut, MethodPointcut methodCut, MethodInterceptor interceptor,
+                                     Object interceptorKey) {
+        // precondition:
+        if (interceptor == null && interceptorKey == null) {
+            throw new RuntimeException("assertion failed -- non-null interceptor or interceptorKey expected");
+        }
+
+        // validate script:
+        if (classCut == null && componentCut == null) {
+            throw new PicoBuilderException("classCut or componentCut required for interceptor advice");
+        }
+        if (methodCut == null) {
+            throw new PicoBuilderException("methodCut required for interceptor advice");
+        }
+
+        if (classCut != null) {
+            if (interceptor != null) {
+                pico.registerInterceptor(classCut, methodCut, interceptor);
+            } else {
+                pico.registerInterceptor(classCut, methodCut, interceptorKey);
+            }
+        } else {
+            if (interceptor != null) {
+                pico.registerInterceptor(componentCut, methodCut, interceptor);
+            } else {
+                pico.registerInterceptor(componentCut, methodCut, interceptorKey);
+            }
+        }
+    }
+
+    private void registerMixin(AspectablePicoContainer pico, ClassPointcut classCut, ComponentPointcut componentCut,
+                               Class[] mixinInterfaces, Class mixinClass) {
+        // precondition:
+        if (mixinClass == null) {
+            throw new RuntimeException("assertion failed -- mixinClass required");
+        }
+
+        // validate script:
+        if (classCut == null && componentCut == null) {
+            throw new PicoBuilderException("classCut or componentCut required for mixin advice");
+        }
+
+        if (classCut != null) {
+            if (mixinInterfaces != null) {
+                pico.registerMixin(classCut, mixinInterfaces, mixinClass);
+            } else {
+                pico.registerMixin(classCut, mixinClass);
+            }
+        } else {
+            if (mixinInterfaces != null) {
+                pico.registerMixin(componentCut, mixinInterfaces, mixinClass);
+            } else {
+                pico.registerMixin(componentCut, mixinClass);
+            }
+        }
+    }
+
+    private Class[] toClassArray(List l) {
+        if (l == null) {
+            return null;
+        }
+        return (Class[]) l.toArray(new Class[l.size()]);
+    }
+
+    private AspectablePicoContainer mixinAspectablePicoContainer(AspectsManager aspectsManager,
+                                                                 MutablePicoContainer pico) {
+        Aspects aspects = new Aspects();
+        aspects.mixin(Pointcuts.ALL_CLASSES, new Class[]{AspectsContainer.class}, new InstanceMixinFactory(aspectsManager));
+        aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[]{AspectablePicoContainer.class});
+        return (AspectablePicoContainer) ProxyFactory.getInstance(aspects).wrap(pico);
+    }
+
+    private AspectsComponentAdapterFactory createAdapterFactory(AspectsApplicator aspectsApplicator,
+                                                                ComponentAdapterFactory delegateAdapterFactory) {
+        if (delegateAdapterFactory != null) {
+            return new AspectsComponentAdapterFactory(aspectsApplicator, delegateAdapterFactory);
+        } else {
+            return new AspectsComponentAdapterFactory(aspectsApplicator);
+        }
+    }
+
+    private void rememberComponentKey(Map attributes) {
+        Object key = attributes.get("key");
+        Object clazz = attributes.get("class");
+        if (key != null) {
+            currentKey = key;
+        } else {
+            currentKey = clazz;
+        }
     }
 }

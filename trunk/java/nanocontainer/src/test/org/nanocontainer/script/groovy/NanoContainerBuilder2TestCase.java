@@ -213,19 +213,19 @@ public class NanoContainerBuilder2TestCase extends AbstractScriptedContainerBuil
         assertSame(a, picoContainer.getComponentInstanceOfType(A.class));
     }
 
-    public void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() {
+    public void testInstantiateWithImpossibleComponentDependenciesConsideringTheHierarchy() {
 
         Xxx.reset();
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
-                "            builder = new NanoContainerBuilder()\n" +
-                "            nano = builder.container {\n" +
-                "                component(Xxx$B)\n" +
-                "                container() {\n" +
-                "                    component(Xxx$A)\n" +
-                "                }\n" +
-                "                component(Xxx$C)\n" +
-                "            }");
+                "builder = new NanoContainerBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(Xxx$B)\n" +
+                "    container() {\n" +
+                "        component(Xxx$A)\n" +
+                "    }\n" +
+                "    component(Xxx$C)\n" +
+                "}");
 
         try {
             buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");

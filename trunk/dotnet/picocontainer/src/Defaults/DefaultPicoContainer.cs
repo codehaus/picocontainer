@@ -19,17 +19,40 @@ namespace PicoContainer.Defaults
 	{
 		private readonly IDictionary componentKeyToAdapterMap = new Hashtable();
 		private readonly IComponentAdapterFactory componentAdapterFactory;
+		
 		private IPicoContainer parent;
 		private readonly IList componentAdapters = new ArrayList();
 		private readonly IList orderedComponentAdapters = new ArrayList();
 
 		private bool started = false;
 		private bool disposed = false;
+		private Hashtable children = new Hashtable();
+		private readonly ILifecycleManager lifecycleManager;
 
-		public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory, IPicoContainer parent)
+		/// <summary>
+		/// Creates a new container with a custom ComponentAdapterFactory and a parent container.
+		/// Important note about caching: If you intend the components to be cached, you should pass
+		/// in a factory that creates CachingComponentAdapter instances, such as for example
+		/// other ComponentAdapterFactories.
+		/// </summary>
+		/// <param name="componentAdapterFactory">the factory to use for creation of ComponentAdapters.</param>
+		/// <param name="parent">the parent container (used for component dependency lookups).</param>
+		/// <param name="lifecycleManager">the lifecycle manager to manage start/stop/dispose calls on the container.</param>
+		public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory, IPicoContainer parent,
+		                            ILifecycleManager lifecycleManager)
 		{
+			this.lifecycleManager = lifecycleManager;
+			if (componentAdapterFactory == null)
+			{
+				throw new NullReferenceException("componentAdapterFactory");
+			}
 			this.componentAdapterFactory = componentAdapterFactory;
-			this.parent = parent;
+			this.parent = parent; // == null ? null : new ImmutablePicoContainer(parent);
+		}
+
+		public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory, 
+			IPicoContainer parent) : this(componentAdapterFactory, parent, new DefaultLifecycleManager())
+		{
 		}
 
 		public DefaultPicoContainer(IPicoContainer parent) : this(new DefaultComponentAdapterFactory(), parent)
@@ -37,6 +60,14 @@ namespace PicoContainer.Defaults
 		}
 
 		public DefaultPicoContainer(IComponentAdapterFactory componentAdapterFactory) : this(componentAdapterFactory, null)
+		{
+		}
+
+		/// <summary>
+		/// Creates a new container with a custom LifecycleManger and no parent container.*/
+		/// </summary>
+		/// <param name="lifecycleManager">the lifecycle manager to manage start/stop/dispose calls on the container.</param>
+		public DefaultPicoContainer(ILifecycleManager lifecycleManager) : this(new DefaultComponentAdapterFactory(), null, lifecycleManager)
 		{
 		}
 
@@ -254,6 +285,34 @@ namespace PicoContainer.Defaults
 			return null;
 		}
 
+		public IMutablePicoContainer MakeChildContainer()
+		{
+			DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this, lifecycleManager);
+			AddChildContainer(pc);
+			return pc;
+		}
+
+		public virtual bool AddChildContainer(IPicoContainer child)
+		{
+			if(children.Contains(child))
+			{
+				return false;
+			}
+			children.Add(child, child);
+			return true;
+		}
+
+		public virtual bool RemoveChildContainer(IPicoContainer child)
+		{
+			if(children.Contains(child))
+			{
+				children.Remove(child);
+				return true;
+			}
+
+			return false;
+		}
+
 		public IPicoContainer Parent
 		{
 			get { return parent; }
@@ -281,59 +340,46 @@ namespace PicoContainer.Defaults
 			}
 		}
 
-
 		public void Start()
 		{
 			if (started) throw new ApplicationException("Already started");
 			if (disposed) throw new ApplicationException("Already disposed");
-			IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
-			foreach (IComponentAdapter componentAdapter in  adapters)
+			
+			lifecycleManager.Start(this);
+			foreach (DictionaryEntry child in children)
 			{
-				if (typeof (IStartable).IsAssignableFrom(componentAdapter.ComponentImplementation))
-				{
-					IStartable startable = (IStartable) componentAdapter.ComponentInstance;
-					startable.Start();
-				}
+				IPicoContainer pico = (IPicoContainer)child.Value;
+				pico.Start();
 			}
+			
 			started = true;
 		}
 
-
 		public void Stop()
 		{
-			if (!started) throw new ApplicationException("Not started");
 			if (disposed) throw new ApplicationException("Already disposed");
-			IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
-
-			for (int x = adapters.Count - 1; x >= 0; x--)
+			if (!started) throw new ApplicationException("Not started");
+			
+			foreach (DictionaryEntry child in children)
 			{
-				IComponentAdapter componentAdapter = (IComponentAdapter) adapters[x];
-				if (typeof (IStartable).IsAssignableFrom(componentAdapter.ComponentImplementation))
-				{
-					IStartable startable = (IStartable) componentAdapter.ComponentInstance;
-					startable.Stop();
-				}
+				IPicoContainer pico = (IPicoContainer) child.Value;
+				pico.Stop();
 			}
+			lifecycleManager.Stop(this);
 			started = false;
 		}
 
 		public void Dispose()
 		{
 			if (disposed) throw new SystemException("Already disposed");
-			IList adapters = OrderComponentAdaptersWithContainerAdaptersLast(componentAdapters);
-			for (int x = adapters.Count - 1; x >= 0; x--)
+			foreach (DictionaryEntry child in children)
 			{
-				IComponentAdapter componentAdapter = (IComponentAdapter) adapters[x];
-				if (typeof (IDisposable).IsAssignableFrom(componentAdapter.ComponentImplementation))
-				{
-					IDisposable disposable = (IDisposable) componentAdapter.ComponentInstance;
-					disposable.Dispose();
-				}
+				IPicoContainer pico = (IPicoContainer) child.Value;
+				pico.Dispose();
 			}
+			lifecycleManager.Dispose(this);
 			disposed = true;
-
 		}
-
 
 		public static IList OrderComponentAdaptersWithContainerAdaptersLast(IList ComponentAdapters)
 		{
@@ -355,8 +401,5 @@ namespace PicoContainer.Defaults
 
 			return result;
 		}
-
 	}
-
-
 }

@@ -24,36 +24,39 @@ namespace PicoContainer.Tests.Tck
 	/// </summary>
 	public abstract class AbstractPicoContainerTestCase
 	{
-		protected abstract IMutablePicoContainer createPicoContainer(IPicoContainer parent);
+		protected abstract IMutablePicoContainer CreatePicoContainer(IPicoContainer parent);
+		protected abstract IMutablePicoContainer CreatePicoContainer(IPicoContainer parent, ILifecycleManager lifecycleManager);
 
-		protected IMutablePicoContainer createPicoContainer()
+		protected IMutablePicoContainer CreatePicoContainer()
 		{
-			return this.createPicoContainer(null);
+			return this.CreatePicoContainer(null);
 		}
 
-		protected IMutablePicoContainer createPicoContainerWithDependsOnTouchableOnly()
+		protected IMutablePicoContainer CreatePicoContainerWithDependsOnTouchableOnly()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (DependsOnTouchable));
 			return pico;
 		}
 
 
-		protected IMutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable()
+		protected IMutablePicoContainer CreatePicoContainerWithTouchableAndDependsOnTouchable()
 		{
-			IMutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
+			IMutablePicoContainer pico = CreatePicoContainerWithDependsOnTouchableOnly();
 			pico.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
 			return pico;
 		}
 
-		public void testNewContainerIsNotNull()
+		[Test]
+		public void TestNewContainerIsNotNull()
 		{
-			Assert.IsNotNull(createPicoContainerWithTouchableAndDependsOnTouchable());
+			Assert.IsNotNull(CreatePicoContainerWithTouchableAndDependsOnTouchable());
 		}
 
-		public void testRegisteredComponentsExistAndAreTheCorrectTypes()
+		[Test]
+		public void TestRegisteredComponentsExistAndAreTheCorrectTypes()
 		{
-			IPicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+			IPicoContainer pico = CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
 			Assert.IsNotNull(pico.GetComponentAdapter(typeof (Touchable)));
 			Assert.IsNotNull(pico.GetComponentAdapter(typeof (DependsOnTouchable)));
@@ -64,34 +67,34 @@ namespace PicoContainer.Tests.Tck
 
 		public void testRegistersSingleInstance()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			StringBuilder sb = new StringBuilder();
 			pico.RegisterComponentInstance(sb);
 			Assert.AreSame(sb, pico.GetComponentInstance(typeof (StringBuilder)));
 		}
 
 		/*
-        public void testContainerIsSerializable() {
-    PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
+		public void testContainerIsSerializable() {
+	PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
 
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(baos);
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	ObjectOutputStream oos = new ObjectOutputStream(baos);
 
-    oos.writeObject(pico);
-    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+	oos.writeObject(pico);
+	ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
 
-    pico = (PicoContainer) ois.readObject();
+	pico = (PicoContainer) ois.readObject();
 
-    DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
-                                                                                                                assertNotNull(dependsOnTouchable);
-                                                                                                                SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
+	DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.getComponentInstance(DependsOnTouchable.class);
+																												assertNotNull(dependsOnTouchable);
+																												SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
 
-                                                                                                                                                                                                    assertTrue(touchable.wasTouched);
-                                                                                                                                                                                                  }*/
+																																																	assertTrue(touchable.wasTouched);
+																																																  }*/
 
 		public void testGettingComponentWithMissingDependencyFails()
 		{
-			IPicoContainer picoContainer = createPicoContainerWithDependsOnTouchableOnly();
+			IPicoContainer picoContainer = CreatePicoContainerWithDependsOnTouchableOnly();
 			try
 			{
 				picoContainer.GetComponentInstance(typeof (DependsOnTouchable));
@@ -110,7 +113,7 @@ namespace PicoContainer.Tests.Tck
 		{
 			try
 			{
-				IMutablePicoContainer pico = createPicoContainer();
+				IMutablePicoContainer pico = CreatePicoContainer();
 				pico.RegisterComponentImplementation(typeof (object));
 				pico.RegisterComponentImplementation(typeof (object));
 				Assert.Fail("Should have failed with duplicate registration");
@@ -123,7 +126,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookUp()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			Hashtable map = new Hashtable();
 			pico.RegisterComponentInstance(typeof (Hashtable), map);
 			Assert.AreSame(map, pico.GetComponentInstance(typeof (Hashtable)));
@@ -131,7 +134,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testAmbiguousResolution()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation("ping", typeof (string));
 			pico.RegisterComponentInstance("pong", "pang");
 			try
@@ -146,7 +149,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testLookupWithUnregisteredKeyReturnsNull()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			Assert.IsNull(pico.GetComponentInstance(typeof (string)));
 		}
 
@@ -160,7 +163,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ComponentD));
 
 			try
@@ -181,7 +184,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testCyclicDependencyThrowsCyclicDependencyException()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ComponentB));
 			pico.RegisterComponentImplementation(typeof (ComponentD));
 			pico.RegisterComponentImplementation(typeof (ComponentE));
@@ -215,7 +218,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testRemovalNonRegisteredIComponentAdapterWorksAndReturnsNull()
 		{
-			IMutablePicoContainer picoContainer = createPicoContainer();
+			IMutablePicoContainer picoContainer = CreatePicoContainer();
 			Assert.IsNull(picoContainer.UnregisterComponent("COMPONENT DOES NOT EXIST"));
 		}
 
@@ -225,7 +228,7 @@ namespace PicoContainer.Tests.Tck
 			ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", typeof (object));
 			ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", typeof (MyString));
 
-			IMutablePicoContainer picoContainer = createPicoContainer();
+			IMutablePicoContainer picoContainer = CreatePicoContainer();
 			picoContainer.RegisterComponent(c1);
 			picoContainer.RegisterComponent(c2);
 			ArrayList l = new ArrayList();
@@ -242,7 +245,7 @@ namespace PicoContainer.Tests.Tck
 			Assert.IsFalse(picoContainer.ComponentInstances[0] is MyString);
 			Assert.IsTrue(picoContainer.ComponentInstances[1] is MyString);
 
-			IMutablePicoContainer reversedPicoContainer = createPicoContainer();
+			IMutablePicoContainer reversedPicoContainer = CreatePicoContainer();
 			reversedPicoContainer.RegisterComponent(c2);
 			reversedPicoContainer.RegisterComponent(c1);
 
@@ -286,7 +289,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testSameInstanceCanBeUsedAsDifferentType()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation("wt", typeof (WashableTouchable));
 			pico.RegisterComponentImplementation("nw", typeof (NeedsWashable));
 			pico.RegisterComponentImplementation("nt", typeof (NeedsTouchable));
@@ -298,7 +301,7 @@ namespace PicoContainer.Tests.Tck
 
 		public void testRegisterComponentWithObjectBadType()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 
 			try
 			{
@@ -326,7 +329,7 @@ namespace PicoContainer.Tests.Tck
 		// http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
 		public void testPico52()
 		{
-			IMutablePicoContainer pico = createPicoContainer();
+			IMutablePicoContainer pico = CreatePicoContainer();
 
 			pico.RegisterComponentImplementation("foo", typeof (JMSService), new IParameter[]
 				{
@@ -379,6 +382,52 @@ namespace PicoContainer.Tests.Tck
 				Assert.IsNotNull(a);
 			}
 		}
-	}
 
+		[Test]
+		public void TestMakingOfChildContainerPercolatesLifecycleManager()
+		{
+			TestLifecycleManager lifecycleManager = new TestLifecycleManager();
+			IMutablePicoContainer parent = CreatePicoContainer(null, lifecycleManager);
+			parent.RegisterComponentImplementation("one", typeof(TestLifecycleComponent));
+
+			IMutablePicoContainer child = parent.MakeChildContainer();
+			Assert.IsNotNull(child);
+			child.RegisterComponentImplementation("two", typeof(TestLifecycleComponent));
+
+			parent.Start();
+
+			//TODO - The LifecycleManager reference in child containers is not used. Thus is is almost pointless
+			// The reason is becuase DefaultPicoContainer's accept() method visits child containerson its own.
+			// This may be file for visiting components in a tree for general cases, but for lifecycle, we
+			// should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
+
+			Assert.AreEqual(2, lifecycleManager.started.Count);
+			//assertEquals(1, lifecycleManager.started.size());
+		}
+
+		public class TestLifecycleComponent : IStartable
+		{
+			public bool started;
+
+			public void Start()
+			{
+				started = true;
+			}
+
+			public void Stop()
+			{
+			}
+		}
+
+		public class TestLifecycleManager : DefaultLifecycleManager
+		{
+			public ArrayList started = new ArrayList();
+
+			public override void Start(IPicoContainer node)
+			{
+				started.Add(node);
+				base.Start(node);
+			}
+		}
+	}
 }

@@ -11,7 +11,7 @@ package org.picoextras.servlet;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.LifecycleContainerBuilder;
+import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -31,21 +31,19 @@ import javax.servlet.http.HttpSessionListener;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
-
-    private ContainerBuilder containerBuilder;
+    private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public void contextInitialized(ServletContextEvent event) {
 
         ServletContext context = event.getServletContext();
         ContainerAssembler assembler = loadAssembler(context);
 
-        ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
-
-        containerBuilder = new LifecycleContainerBuilder();
+        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
         builderRef.set(containerBuilder);
 
-        containerBuilder.buildContainer(containerRef, null, assembler, context);
+        ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        containerBuilder.buildContainer(containerRef, null, context);
     }
 
     public void contextDestroyed(ServletContextEvent event) {
@@ -62,7 +60,8 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
         ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
 
-        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, session);
+        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
+        containerBuilder.buildContainer(containerRef, parentContainerRef, session);
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
@@ -93,7 +92,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
     private void killContainer(ObjectReference containerRef) {
         if (containerRef.get() != null) {
-            containerBuilder.killContainer(containerRef);
+            containerKiller.killContainer(containerRef);
         }
     }
 }

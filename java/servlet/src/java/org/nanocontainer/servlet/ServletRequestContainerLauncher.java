@@ -49,7 +49,7 @@ public class ServletRequestContainerLauncher {
             throw new ServletException("org.picoextras.servlet.ServletContainerListener not deployed");
         }
 
-        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, request);
+        containerBuilder.buildContainer(containerRef, parentContainerRef, request);
 
     }
 

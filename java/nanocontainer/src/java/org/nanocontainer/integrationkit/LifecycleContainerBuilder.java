@@ -17,9 +17,9 @@ import org.picocontainer.defaults.ObjectReference;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class LifecycleContainerBuilder implements ContainerBuilder {
+public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
-    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope) {
+    public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
 
         MutablePicoContainer container = createContainer();
 
@@ -28,12 +28,14 @@ public class LifecycleContainerBuilder implements ContainerBuilder {
             container.setParent(parent);
         }
 
-        assembler.assembleContainer(container, assemblyScope);
+        assembleContainer(container, assemblyScope);
         container.start();
 
         // hold on to it
         containerRef.set(container);
     }
+
+    protected abstract void assembleContainer(MutablePicoContainer container, Object assemblyScope);
 
     public void killContainer(ObjectReference containerRef){
         try {

@@ -6,9 +6,6 @@ using PicoContainer.Defaults;
 
 namespace PicoContainer.Alternatives
 {
-	/// <summary>
-	/// Summary description for ImplementationHidingCachingPicoContainerTestCase.
-	/// </summary>
 	[TestFixture]
 	public class ImplementationHidingCachingPicoContainerTestCase : AbstractImplementationHidingPicoContainerTestCase
 	{

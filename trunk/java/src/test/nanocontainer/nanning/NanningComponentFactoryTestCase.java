@@ -24,6 +24,8 @@ import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.WrongNumberOfConstructorsRegistrationException;
 
+import java.util.ArrayList;
+
 /**
  * @author Jon Tirsen
  * @version $Revision: 1.3 $
@@ -35,15 +37,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
     }
 
     public static class WilmaImpl implements Wilma {
-
-        private boolean helloCalled;
-
-        public boolean helloCalled() {
-            return helloCalled;
-        }
-
         public void hello() {
-            helloCalled = true;
         }
     }
 
@@ -54,36 +48,50 @@ public class NanningComponentFactoryTestCase extends TestCase {
         }
     }
 
-    private StringBuffer log = new StringBuffer();
+    private ArrayList log = new ArrayList();
 
     /**
      * Acceptance test (ie a teeny bit functional, but you'll get over it).
      */
-    public void testAcceptance() throws PicoRegistrationException,
-            NotConcreteRegistrationException,
-            WrongNumberOfConstructorsRegistrationException,
-            PicoStartException,
-            DuplicateComponentTypeRegistrationException,
-            DuplicateComponentClassRegistrationException {
+    public void testSimpleLogOfMethodCall() throws PicoRegistrationException, PicoStartException {
+
         AspectSystem aspectSystem = new AspectSystem();
         aspectSystem.addAspect(new InterceptorAspect(new MethodInterceptor() {
             public Object invoke(Invocation invocation) throws Throwable {
-                log.append(invocation.getMethod().getName());
+                log.add(invocation.getMethod().getName());
                 return invocation.invokeNext();
             }
         }));
 
         NanningComponentFactory componentFactory = new NanningComponentFactory(aspectSystem);
-        PicoContainer nanningPicoContainer = new PicoContainerImpl.WithComponentFactory(componentFactory);
-        nanningPicoContainer.registerComponent(WilmaImpl.class);
-        nanningPicoContainer.registerComponent(FredImpl.class);
+        PicoContainer nanningEnabledPicoContainer = new PicoContainerImpl.WithComponentFactory(componentFactory);
+        nanningEnabledPicoContainer.registerComponent(WilmaImpl.class);
+        nanningEnabledPicoContainer.registerComponent(FredImpl.class);
 
-        assertEquals("", log.toString());
+        assertEquals(0, log.size());
 
-        nanningPicoContainer.start();
+        nanningEnabledPicoContainer.start();
+
+        assertEquals(1, log.size());
 
         // fred says hello to wilma, even the interceptor knows
-        assertEquals("hello", log.toString());
+        assertEquals("hello", log.get(0));
+
+//        WilmaImpl wilma = (WilmaImpl) nanningEnabledPicoContainer.getComponent(WilmaImpl.class);
+//
+//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents().length);
+//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[0]);
+//        System.out.println("-->" + nanningEnabledPicoContainer.getComponents()[1]);
+//
+//
+//        assertNotNull(wilma);
+//
+//        wilma.hello();
+//
+//        assertEquals(2, log.size());
+//
+//        assertEquals("hello", log.get(1));
+
     }
 
 }

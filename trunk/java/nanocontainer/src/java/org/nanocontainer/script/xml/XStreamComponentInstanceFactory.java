@@ -13,16 +13,16 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomReader;
 
 /**
- * Implementation of XMLPseudoComponentFactory that uses XStream to unmarshal
+ * Implementation of XMLComponentInstanceFactory that uses XStream to unmarshal
  * DOM elements.
  * 
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class XStreamXMLPseudoComponentFactory implements XMLPseudoComponentFactory {
+public class XStreamComponentInstanceFactory implements XMLComponentInstanceFactory {
     /**
      * {@inheritDoc}
-     * @see XMLPseudoComponentFactory#makeInstance(Element)
+     * @see XMLComponentInstanceFactory#makeInstance(Element)
      */
     public Object makeInstance(Element element) throws ClassNotFoundException {
         XStream xs = new XStream();

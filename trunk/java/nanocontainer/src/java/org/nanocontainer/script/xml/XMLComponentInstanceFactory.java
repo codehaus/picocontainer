@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public interface XMLPseudoComponentFactory {
+public interface XMLComponentInstanceFactory {
     /**
      * Creates an instance of an Object from a DOM Element
      * @param element the DOM Element

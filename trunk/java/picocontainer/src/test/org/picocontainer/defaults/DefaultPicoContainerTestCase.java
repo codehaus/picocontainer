@@ -497,12 +497,13 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
+        DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
-        assertNull(pico.findImplementingComponentSpecification(Wilma.class));
+        assertNull(dcr.findImplementingComponentSpecification(Wilma.class));
         pico.registerComponentByClass(WilmaImpl.class);
-        assertNotNull(pico.findImplementingComponentSpecification(WilmaImpl.class));
-        assertNotNull(pico.findImplementingComponentSpecification(Wilma.class));
+        assertNotNull(dcr.findImplementingComponentSpecification(WilmaImpl.class));
+        assertNotNull(dcr.findImplementingComponentSpecification(Wilma.class));
     }
 
     public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInitializationException {
@@ -594,7 +595,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testRegistrationByInterfaceAndName() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
+        DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
         Webster one = new Webster(new ArrayList());
         Webster two = new Webster(new ArrayList());
@@ -611,7 +613,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue(
                 "There should have been a WilmaImpl in the container",
-                pico.findImplementingComponent(WilmaImpl.class) != null);
+                dcr.findImplementingComponent(WilmaImpl.class) != null);
 
         assertEquals("Looking up one Wilma", one, pico.getComponent("one"));
         assertEquals("Looking up two Wilma", two, pico.getComponent("two"));
@@ -624,7 +626,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public void testRegisterByNameResolvesToInterfaceRegisteredComponents() throws Exception {
         // TODO we should add some kind of findImplementatingComponents() method to PicoContainer!
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
+        DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         pico.registerComponent("fred", FredImpl.class);
@@ -637,7 +640,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(Wilma.class));
         assertTrue(
                 "There should have been a WilmaImpl in the container",
-                pico.findImplementingComponent(WilmaImpl.class) != null);
+                dcr.findImplementingComponent(WilmaImpl.class) != null);
 
         FredImpl fred = (FredImpl) pico.getComponent("fred");
         FredImpl fred2 = (FredImpl) pico.getComponent("fred2");
@@ -733,7 +736,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
             new DefaultPicoContainer(new DefaultComponentFactory(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
-            assertTrue(npe.getMessage().indexOf("componentRegistry") >= 0);
+            assertTrue(npe.getMessage().indexOf("childRegistry") >= 0);
         }
         try {
             new DefaultPicoContainer(null, new DefaultComponentRegistry());

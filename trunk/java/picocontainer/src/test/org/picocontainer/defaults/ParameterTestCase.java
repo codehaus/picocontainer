@@ -30,12 +30,13 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
+        DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         ComponentParameter parameter = new ComponentParameter();
 
         assertNull(pico.getComponent(Wilma.class));
-        Wilma wilma = (Wilma) parameter.resolve(pico, null, Wilma.class);
+        Wilma wilma = (Wilma) parameter.resolve(dcr, null, Wilma.class);
         assertNotNull(pico.getComponent(Wilma.class));
         assertSame(wilma, pico.getComponent(Wilma.class));
     }

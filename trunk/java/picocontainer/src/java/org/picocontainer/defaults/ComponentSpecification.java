@@ -14,6 +14,8 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentRegistry;
 
 import java.util.Arrays;
 import java.io.Serializable;
@@ -22,20 +24,20 @@ public class ComponentSpecification implements Serializable {
 
     private final ComponentFactory componentFactory;
     private final Object componentKey;
-    private final Class comp;
+    private final Class componentImplementation;
     private Parameter[] parameters;
 
     public ComponentSpecification(ComponentFactory componentFactory, final Object componentKey, final Class comp, Parameter[] parameters) {
         this.componentFactory = componentFactory;
         this.componentKey = componentKey;
-        this.comp = comp;
+        this.componentImplementation = comp;
         this.parameters = parameters;
     }
 
     public ComponentSpecification(ComponentFactory componentFactory, Object componentKey, Class comp) throws PicoIntrospectionException {
         this.componentFactory = componentFactory;
         this.componentKey = componentKey;
-        this.comp = comp;
+        this.componentImplementation = comp;
 
         parameters = new Parameter[componentFactory.getDependencies(comp).length];
         for (int i = 0; i < parameters.length; i++) {
@@ -52,15 +54,15 @@ public class ComponentSpecification implements Serializable {
     }
 
     public Class getComponentImplementation() {
-        return comp;
+        return componentImplementation;
     }
 
-    public Object instantiateComponent(DefaultPicoContainer picoContainer)
+    public Object instantiateComponent(ComponentRegistry componentRegistry)
             throws PicoInitializationException {
-        Class[] dependencyTypes = componentFactory.getDependencies(comp);
+        Class[] dependencyTypes = componentFactory.getDependencies(componentImplementation);
         Object[] dependencies = new Object[dependencyTypes.length];
         for (int i = 0; i < dependencies.length; i++) {
-            dependencies[i] = parameters[i].resolve(picoContainer, this, dependencyTypes[i]);
+            dependencies[i] = parameters[i].resolve(componentRegistry, this, dependencyTypes[i]);
         }
         return componentFactory.createComponent(this, dependencies);
     }
@@ -77,7 +79,7 @@ public class ComponentSpecification implements Serializable {
 
     public void addConstantParameterBasedOnType(Class parameter, Object arg) throws PicoIntrospectionException {
         // TODO this is an ugly hack and the feature should simply be removed
-        Class[] dependencies = componentFactory.getDependencies(comp);
+        Class[] dependencies = componentFactory.getDependencies(componentImplementation);
         for (int i = 0; i < dependencies.length; i++) {
 
             if (isAssignableFrom(dependencies[i], parameter) && !(parameters[i] instanceof ConstantParameter)) {
@@ -87,16 +89,6 @@ public class ComponentSpecification implements Serializable {
         }
 
         throw new RuntimeException("No such parameter " + parameter + " in " + Arrays.asList(dependencies));
-    }
-
-    public Object newInstance() {
-        try {
-            return getComponentImplementation().newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("#3 Can we have a concerted effort to try to force these excptions?");
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("#4 Can we have a concerted effort to try to force these excptions?");
-        }
     }
 
     public Parameter[] getParameters() {

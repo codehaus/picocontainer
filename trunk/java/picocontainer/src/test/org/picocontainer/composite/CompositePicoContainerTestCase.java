@@ -11,13 +11,19 @@
 package org.picocontainer.composite;
 
 import junit.framework.TestCase;
-import org.picocontainer.defaults.NullContainer;
+import org.picocontainer.ComponentRegistry;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
-import org.picocontainer.*;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class CompositePicoContainerTestCase extends TestCase {
     private RegistrationPicoContainer pico;
@@ -188,14 +194,14 @@ public class CompositePicoContainerTestCase extends TestCase {
         assertTrue(acc.hasComponent(String.class) == false);
         assertTrue(acc.getComponent(String.class) == null);
         assertTrue(acc.getComponents().size() == 0);
-
     }
 
-    public void testInstantiation() throws PicoInstantiationException
-    {
-        NullContainer nc = new NullContainer ();
-        // Should not barf. Should do nothing, but that hard to test.
-        nc.instantiateComponents();
+    public void testParentComponentRegistryDominance() {
+        ComponentRegistry cr = new DefaultComponentRegistry();
+        cr.putComponent(Wilma.class, new WilmaImpl());
+        CompositePicoContainer acc = new CompositePicoContainer(cr, new PicoContainer[0]);
+        assertTrue(acc.hasComponent(Wilma.class));
+        assertTrue(acc.getComponent(Wilma.class) instanceof WilmaImpl);
     }
 
     public void testAdditiveFeatures() {

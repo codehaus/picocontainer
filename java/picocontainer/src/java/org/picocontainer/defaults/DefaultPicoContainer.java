@@ -23,8 +23,9 @@ import java.util.Iterator;
 import java.util.Collections;
 
 /**
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
- * @author and dozens of others before Aslak removed their names :-)
+ * @author Jon Tirs&eacute;n
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
@@ -220,7 +221,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
         return result;
     }
-    
+
     public List getUnmanagedComponentInstances() {
         getComponentInstances();
         return new ArrayList(unmanagedComponents);

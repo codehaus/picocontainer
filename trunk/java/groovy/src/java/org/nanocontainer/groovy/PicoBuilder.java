@@ -42,9 +42,6 @@ public class PicoBuilder extends BuilderSupport {
         }
     }
 
-    protected void nodeCompleted(Object parent, Object node) {
-    }
-
     protected Object createNode(Object name) {
         return createNode(name, Collections.EMPTY_MAP);
     }
@@ -100,6 +97,10 @@ public class PicoBuilder extends BuilderSupport {
             }
         }
         throw new PicoBuilderException("uknown method: " + name);
+    }
+
+    protected Object createNode(Object name, Map attributes, Object value) {
+        return createNode(name, attributes);
     }
 
     protected MutablePicoContainer createContainer(Map attributes) {

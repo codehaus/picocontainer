@@ -16,8 +16,8 @@ package org.nanocontainer.script.groovy;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.codehaus.groovy.syntax.SyntaxException;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -71,7 +71,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
                             };
             Class scriptClass = loader.parseClass(scriptIs, "nanocontainer.groovy");
             groovyScript = InvokerHelper.createScript(scriptClass, null);
-        } catch (SyntaxException e) {
+        } catch (CompilationFailedException e) {
             throw new PicoCompositionException(e);
         } catch (IOException e) {
             throw new PicoCompositionException(e);

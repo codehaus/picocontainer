@@ -1,7 +1,7 @@
 package org.nanocontainer.nanoweb;
 
 import groovy.lang.GroovyClassLoader;
-import org.codehaus.groovy.syntax.SyntaxException;
+import org.codehaus.groovy.control.CompilationFailedException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,7 +58,7 @@ public class CachingScriptClassLoader {
         try {
             Class scriptClass = loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
             return scriptClass;
-        } catch (SyntaxException e) {
+        } catch (CompilationFailedException e) {
             throw new ScriptException(scriptURL, e);
         }
     }

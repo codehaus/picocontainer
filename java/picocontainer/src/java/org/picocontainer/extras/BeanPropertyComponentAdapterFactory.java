@@ -1,17 +1,23 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.*;
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Iterator;
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.beans.IntrospectionException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A generic ComponentAdapter that will set bean properties on the instantiated
@@ -91,7 +97,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                         final String propertyName = (String) iterator.next();
                         final Object propertyValue = propertyValues.get(propertyName);
                         final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
-                        if(propertyDescriptor == null) {
+                        if (propertyDescriptor == null) {
                             throw new PicoIntrospectionException() {
                                 public String getMessage() {
                                     return "Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName();
@@ -99,7 +105,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                             };
                         }
                         Method setter = propertyDescriptor.getWriteMethod();
-                        if(setter == null) {
+                        if (setter == null) {
                             throw new PicoInitializationException() {
                                 public String getMessage() {
                                     return "There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +

@@ -1,7 +1,7 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.tck.AbstractLazyInstantiationTestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.tck.AbstractLazyInstantiationTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

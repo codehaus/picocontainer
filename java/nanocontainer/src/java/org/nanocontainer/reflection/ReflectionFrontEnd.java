@@ -51,6 +51,6 @@ public interface ReflectionFrontEnd {
     void addClassLoaderURL(URL url);
 
     MutablePicoContainer getPicoContainer();
-    
+
     ClassLoader getClassLoader();
 }

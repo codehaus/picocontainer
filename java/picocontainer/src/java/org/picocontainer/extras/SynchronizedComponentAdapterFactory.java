@@ -1,8 +1,8 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -10,8 +10,8 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
 import junit.framework.TestCase;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class ThrowawayPicoInstantiatorTestCase extends TestCase {
 
@@ -30,6 +30,7 @@ public class ThrowawayPicoInstantiatorTestCase extends TestCase {
         public Foo() {
         }
     }
+
     public static class Bar {
         public Bar(Foo foo) {
         }

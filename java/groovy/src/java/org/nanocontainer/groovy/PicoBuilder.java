@@ -11,16 +11,15 @@
 package org.picoextras.groovy;
 
 import groovy.util.BuilderSupport;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Builds trees of Pico containers and Pico components using GroovyMarkup
@@ -62,8 +61,7 @@ public class PicoBuilder extends BuilderSupport {
     protected Object createNode(Object name, Map attributes) {
         if (name.equals("container")) {
             return createContainer(attributes);
-        }
-        else {
+        } else {
             Object parent = getCurrent();
             if (parent instanceof MutablePicoContainer) {
                 MutablePicoContainer pico = (MutablePicoContainer) parent;
@@ -76,24 +74,20 @@ public class PicoBuilder extends BuilderSupport {
                         Object key = attributes.remove("key");
                         if (key != null) {
                             pico.registerComponentImplementation(key, type);
-                        }
-                        else {
+                        } else {
                             pico.registerComponentImplementation(type);
                         }
                         return name;
-                    }
-                    else {
+                    } else {
                         throw new PicoBuilderException("Must specify a componentClass attribute for a component");
                     }
-                }
-                else if (name.equals("bean")) {
+                } else if (name.equals("bean")) {
                     // lets create a bean
                     Object answer = createBean(attributes);
                     pico.registerComponentInstance(answer);
                     return answer;
                 }
-            }
-            else {
+            } else {
                 throw new PicoBuilderException("method: " + name + " must be a child of a container element");
             }
         }
@@ -104,8 +98,7 @@ public class PicoBuilder extends BuilderSupport {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         if (adapterFactory != null) {
             return new DefaultPicoContainer(adapterFactory);
-        }
-        else {
+        } else {
             return new DefaultPicoContainer();
         }
     }
@@ -125,8 +118,7 @@ public class PicoBuilder extends BuilderSupport {
                 InvokerHelper.setProperty(bean, name, value);
             }
             return bean;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new PicoBuilderException("Failed to create bean of type: " + type + ". Reason: " + e, e);
         }
     }

@@ -8,15 +8,15 @@
  *****************************************************************************/
 package org.picoextras.webwork2;
 
+import com.opensymphony.webwork.WebWorkStatics;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionProxy;
 import com.opensymphony.xwork.DefaultActionInvocation;
-import com.opensymphony.webwork.WebWorkStatics;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.RequestScopeObjectReference;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

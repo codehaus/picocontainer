@@ -1,12 +1,12 @@
 package org.picoextras.script.rhino;
 
 import junit.framework.TestCase;
-import org.picoextras.script.PicoCompositionException;
+import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.script.PicoCompositionException;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
-import org.mozilla.javascript.JavaScriptException;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class PicoManagerTestCase extends TestCase {
         Reader script = new StringReader("" +
                 "var parentContainer = new PicoScriptable();\n" +
                 "with (parentContainer) {\n" +
-                "  registerComponentImplementation('"+ FooTestComp.class.getName() +"');\n" +
+                "  registerComponentImplementation('" + FooTestComp.class.getName() + "');\n" +
                 "}\n" +
                 "pico.setPicoScriptable(parentContainer)\n"
         );
@@ -57,7 +57,7 @@ public class PicoManagerTestCase extends TestCase {
         assertTrue(ws instanceof WebServer);
         assertFalse(ws instanceof WebServerImpl);
 
-        assertEquals("ClassLoader should be the same for both components",ws.getClass().getClassLoader(),wsc.getClass().getClassLoader());
+        assertEquals("ClassLoader should be the same for both components", ws.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
 
     public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
@@ -70,7 +70,7 @@ public class PicoManagerTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
         String canonicalPath = testCompJar.getCanonicalPath();
-        canonicalPath = canonicalPath.replace('\\','/');
+        canonicalPath = canonicalPath.replace('\\', '/');
 
         Reader script = new StringReader(
                 "var parentContainer = new PicoScriptable();\n" +
@@ -95,16 +95,16 @@ public class PicoManagerTestCase extends TestCase {
         Object barTestComp = childContainer.getComponentInstance("bar");
 
         assertNotNull("Container should have a 'bar' component", barTestComp);
-        assertFalse("ClassLoader should not be the same for both components",fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader());
-        assertTrue("ClassLoader for FooTestComp should not the parent of Bar's",fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader().getParent());
+        assertFalse("ClassLoader should not be the same for both components", fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader());
+        assertTrue("ClassLoader for FooTestComp should not the parent of Bar's", fooTestComp.getClass().getClassLoader() == barTestComp.getClass().getClassLoader().getParent());
     }
 
     public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
                 "var picoS = new PicoScriptable();\n" +
                 "with (picoS) {\n" +
-                "  registerComponentInstance( new Packages."+ FooTestComp.class.getName() + "());\n" +
-                "  registerComponentInstance( 'foo', new Packages."+ FooTestComp.class.getName() + "());\n" +
+                "  registerComponentInstance( new Packages." + FooTestComp.class.getName() + "());\n" +
+                "  registerComponentInstance( 'foo', new Packages." + FooTestComp.class.getName() + "());\n" +
                 "}\n" +
                 "pico.setPicoScriptable(picoS)\n"
         );

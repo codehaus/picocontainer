@@ -10,14 +10,13 @@
 
 package org.picoextras.jmx;
 
+import junit.framework.TestCase;
+
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
-
-import junit.framework.TestCase;
 
 /**
  * Abstract base class with some helper methods for testing NanoMX

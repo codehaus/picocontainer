@@ -1,7 +1,7 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.tck.AbstractMultipleConstructorTestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.tck.AbstractMultipleConstructorTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -2,8 +2,6 @@ package org.picocontainer;
 
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
-import java.io.Serializable;
-
 /**
  * A component adapter is responsible for instantiating and caching
  * a specific component instance. It is used internally by PicoContainer,
@@ -44,7 +42,7 @@ public interface ComponentAdapter {
      *  Verify that all dependencies for this adapter can be satisifed given picoConatiner
      * @param picoContainer container where the dependencied fot this adapter will be resolved
      * @throws NoSatisfiableConstructorsException 
-     */ 
+     */
     void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException;
 
 }

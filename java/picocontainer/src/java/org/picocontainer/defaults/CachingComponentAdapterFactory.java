@@ -10,10 +10,10 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.extras.DecoratingComponentAdapterFactory;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.extras.DecoratingComponentAdapterFactory;
 
 /**
  * @author Aslak Helles&oslash;y

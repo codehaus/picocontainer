@@ -11,7 +11,14 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -19,7 +26,11 @@ import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
 import java.lang.reflect.UndeclaredThrowableException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OldDefaultPicoContainerTestCase extends TestCase {
 
@@ -756,7 +767,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation(
                 Animal.class,
                 Dino.class,
-                new Parameter[] {
+                new Parameter[]{
                     new ConstantParameter("bones")
                 });
 

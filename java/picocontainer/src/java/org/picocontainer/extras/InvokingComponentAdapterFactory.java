@@ -1,10 +1,17 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * A generic ComponentAdapter that will invoke a particular method
@@ -54,12 +61,12 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
                 ///CLOVER:ON                
             }
         }
-    
+
         public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             if (componentInstance == null) {
                 componentInstance = super.getComponentInstance(picoContainer);
 
-                if( method != null ) {
+                if (method != null) {
                     try {
                         invocationResult = method.invoke(componentInstance, arguments);
                     } catch (IllegalAccessException e) {

@@ -32,8 +32,7 @@ import java.util.NoSuchElementException;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class DefaultPicoPool implements PicoPool
-{
+public class DefaultPicoPool implements PicoPool {
     public static final byte FAIL_WHEN_EXHAUSTED = 0;
     public static final byte GROW_WHEN_EXHAUSTED = 1;
     public static final byte BLOCK_WHEN_EXHAUSTED = 2;
@@ -51,35 +50,33 @@ public class DefaultPicoPool implements PicoPool
     private Map activeMap = new HashMap();
 
     private Class implementation;
+
     /**
      * ctor that uses default configuration
      * @param implementation
      */
-    public DefaultPicoPool(Class implementation)
-    {
+    public DefaultPicoPool(Class implementation) {
         this(
-            new PicoPoolConfiguration(
-                implementation,
-                DEFAULT_MAX_SIZE,
-                DEFAULT_EXHAUSTED_ACTION,
-                0,
-                null,
-                new DefaultPicoContainer()));
+                new PicoPoolConfiguration(
+                        implementation,
+                        DEFAULT_MAX_SIZE,
+                        DEFAULT_EXHAUSTED_ACTION,
+                        0,
+                        null,
+                        new DefaultPicoContainer()));
     }
 
     /**
      * ctor that takes a PicoPoolConfiguration
      * @param config the config to use
      */
-    public DefaultPicoPool(PicoPoolConfiguration config)
-    {
+    public DefaultPicoPool(PicoPoolConfiguration config) {
         setImplementation(config.getImplementation());
         exhaustedAction = config.getExhaustedAction();
         maxSize = config.getMaxSize();
         maxWait = config.getMaxWait();
         pico = new DefaultPicoContainer(config.getComponentAdapterFactory());
-        if (config.getPoolParentContainer() != null)
-        {
+        if (config.getPoolParentContainer() != null) {
             pico.addParent(config.getPoolParentContainer());
         }
     }
@@ -88,15 +85,12 @@ public class DefaultPicoPool implements PicoPool
      * Validates the implememtation
      * @param clazz the implementation to be used for this pool
      */
-    private void setImplementation(Class clazz)
-    {
-        if (clazz == null)
-        {
+    private void setImplementation(Class clazz) {
+        if (clazz == null) {
             throw new PicoPoolException("Implementation cannot be null");
         }
         int mod = clazz.getModifiers();
-        if (Modifier.isAbstract(mod) || clazz.isInterface())
-        {
+        if (Modifier.isAbstract(mod) || clazz.isInterface()) {
             throw new NotConcreteRegistrationException(clazz);
         }
         implementation = clazz;
@@ -108,20 +102,15 @@ public class DefaultPicoPool implements PicoPool
      * @throws PicoException if the Max pool sized is reached and the
      * exhaustedAction is not GROW_WHEN_EXHAUSTED
      */
-    protected synchronized void addComponent(Object component) throws PicoException
-    {
-        if ((activeMap.size() >= maxSize) && exhaustedAction != GROW_WHEN_EXHAUSTED)
-        {
+    protected synchronized void addComponent(Object component) throws PicoException {
+        if ((activeMap.size() >= maxSize) && exhaustedAction != GROW_WHEN_EXHAUSTED) {
             throw new PicoPoolException("Maximum Pool size reached. Cannot add more components");
         }
 
         Object key = createComponentKey(component);
-        if (component instanceof Class)
-        {
+        if (component instanceof Class) {
             pico.registerComponentImplementation(key, (Class) component);
-        }
-        else
-        {
+        } else {
             pico.registerComponentInstance(key, component);
         }
         poolKeys.add(key);
@@ -133,15 +122,11 @@ public class DefaultPicoPool implements PicoPool
      * @param component the component to create the key for
      * @return the new key
      */
-    protected Object createComponentKey(Object component)
-    {
+    protected Object createComponentKey(Object component) {
         String key;
-        if (component instanceof Class)
-        {
+        if (component instanceof Class) {
             key = ((Class) component).getName() + getSize();
-        }
-        else
-        {
+        } else {
             key = component.getClass().getName() + getSize();
         }
         return key;
@@ -151,50 +136,33 @@ public class DefaultPicoPool implements PicoPool
      * takes a component from the pool
      * @return the borrowed component
      */
-    public synchronized Object borrowComponent() throws PicoPoolException
-    {
+    public synchronized Object borrowComponent() throws PicoPoolException {
         long start = System.currentTimeMillis();
         Object result = null;
-        if (activeMap.size() < getMaxSize())
-        {
+        if (activeMap.size() < getMaxSize()) {
             Object key = getNextKey(true);
             result = pico.getComponentInstance(key);
-        }
-        else if (exhaustedAction == GROW_WHEN_EXHAUSTED)
-        {
+        } else if (exhaustedAction == GROW_WHEN_EXHAUSTED) {
             //Create temporary object
             //We could also enforce some kind of eviction policy
             result = makeComponent();
-        }
-        else if (exhaustedAction == FAIL_WHEN_EXHAUSTED)
-        {
+        } else if (exhaustedAction == FAIL_WHEN_EXHAUSTED) {
             throw new NoSuchElementException();
-        }
-        else if (exhaustedAction == BLOCK_WHEN_EXHAUSTED)
-        {
+        } else if (exhaustedAction == BLOCK_WHEN_EXHAUSTED) {
 
-            try
-            {
-                if (maxWait <= 0)
-                {
+            try {
+                if (maxWait <= 0) {
                     wait();
-                }
-                else
-                {
+                } else {
                     wait(maxWait);
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 //ignore
                 System.out.println("Wait interrupted");
             }
-            if (maxWait > 0 && ((System.currentTimeMillis() - start) >= maxWait) || getSize() == activeMap.size())
-            {
+            if (maxWait > 0 && ((System.currentTimeMillis() - start) >= maxWait) || getSize() == activeMap.size()) {
                 throw new NoSuchElementException("Wait period expired for pooled object");
-            }
-            else
-            {
+            } else {
                 Object key = getNextKey(false);
                 result = pico.getComponentInstance(key);
             }
@@ -212,10 +180,8 @@ public class DefaultPicoPool implements PicoPool
      * @return an available key, or the key of the newly create componet if the
      * createNew flag was set, or null.
      */
-    protected synchronized Object getNextKey(boolean createNew) throws PicoPoolException
-    {
-        if (poolKeys.size() == 0 && createNew)
-        {
+    protected synchronized Object getNextKey(boolean createNew) throws PicoPoolException {
+        if (poolKeys.size() == 0 && createNew) {
             addComponent(makeComponent());
         }
 
@@ -228,12 +194,10 @@ public class DefaultPicoPool implements PicoPool
      * Makes a component in the pool avalible again once it has been borrowed
      * @param component the borrowed component
      */
-    public synchronized void returnComponent(Object component) throws PicoException
-    {
+    public synchronized void returnComponent(Object component) throws PicoException {
         passivateComponent(component);
         Object key = activeMap.remove(component);
-        if (key != null)
-        {
+        if (key != null) {
             poolKeys.add(key);
             notifyAll();
         }
@@ -243,8 +207,7 @@ public class DefaultPicoPool implements PicoPool
      *
      * @return the number of components in the pool
      */
-    public int getSize()
-    {
+    public int getSize() {
         // can't use pico.getComponentKeys()getComponentInstances().size()
         //as this returns count of parent aswell
         return size;
@@ -254,8 +217,7 @@ public class DefaultPicoPool implements PicoPool
      * Creates a component for the pool
      * @return thenewly created component
      */
-    protected Object makeComponent() throws PicoPoolException
-    {
+    protected Object makeComponent() throws PicoPoolException {
         //Create new "uncached" component
         ComponentAdapter componentAdapter = new TransientComponentAdapter(implementation, implementation);
         Object object = componentAdapter.getComponentInstance(pico);
@@ -267,8 +229,7 @@ public class DefaultPicoPool implements PicoPool
      * the caller receives the component
      * @param component the component being borrowed
      */
-    protected void activateComponent(Object component)
-    {
+    protected void activateComponent(Object component) {
         //noop
     }
 
@@ -277,66 +238,58 @@ public class DefaultPicoPool implements PicoPool
      * the component actually enters the pool
      * @param component the component being returned
      */
-    protected void passivateComponent(Object component)
-    {
+    protected void passivateComponent(Object component) {
         //noop
     }
 
     /**
      * @return
      */
-    public int getExhaustedAction()
-    {
+    public int getExhaustedAction() {
         return exhaustedAction;
     }
 
     /**
      * @return
      */
-    public Class getImplementation()
-    {
+    public Class getImplementation() {
         return implementation;
     }
 
     /**
      * @return
      */
-    public long getMaxWait()
-    {
+    public long getMaxWait() {
         return maxWait;
     }
 
     /**
      * @return
      */
-    public int getMaxSize()
-    {
+    public int getMaxSize() {
         return maxSize;
     }
+
     /**
      * @param i
      */
-    protected void setSize(int i)
-    {
+    protected void setSize(int i) {
         size = i;
     }
 
     /**
      *
      */
-    protected MutablePicoContainer getPoolContainer()
-    {
+    protected MutablePicoContainer getPoolContainer() {
         return pico;
     }
 
     /* (non-Javadoc)
      * @see org.picoextras.pool.PicoPool#clearPool()
      */
-    public void clearPool()
-    {
+    public void clearPool() {
         Iterator iter = pico.getComponentKeys().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             pico.unregisterComponent(iter.next());
         }
         activeMap.clear();

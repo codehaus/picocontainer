@@ -15,8 +15,6 @@
 
 package org.picoextras.pool;
 
-import java.io.Serializable;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
@@ -25,30 +23,28 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
+import java.io.Serializable;
+
 /**
  *  <p><code>PicoPoolComponentAdapterFactory</code> TODO (document class)
  *
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class PicoPoolComponentAdapterFactory implements ComponentAdapterFactory, Serializable
-{
+public class PicoPoolComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
 
     private DefaultPicoPool pool;
     private ComponentAdapterFactory delegate;
 
-    public PicoPoolComponentAdapterFactory()
-    {
+    public PicoPoolComponentAdapterFactory() {
         this(new DefaultComponentAdapterFactory());
     }
 
-    public PicoPoolComponentAdapterFactory(ComponentAdapterFactory componentAdapterFactory)
-    {
+    public PicoPoolComponentAdapterFactory(ComponentAdapterFactory componentAdapterFactory) {
         delegate = componentAdapterFactory;
     }
 
-    public PicoPoolComponentAdapterFactory(DefaultPicoPool pool, ComponentAdapterFactory componentAdapterFactory)
-    {
+    public PicoPoolComponentAdapterFactory(DefaultPicoPool pool, ComponentAdapterFactory componentAdapterFactory) {
         this.pool = pool;
         delegate = componentAdapterFactory;
     }
@@ -58,12 +54,11 @@ public class PicoPoolComponentAdapterFactory implements ComponentAdapterFactory,
      * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
      */
     public ComponentAdapter createComponentAdapter(
-        Object componentKey,
-        Class componentImplementation,
-        Parameter[] parameters)
-        throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException
-    {
-        if(pool==null) {
+            Object componentKey,
+            Class componentImplementation,
+            Parameter[] parameters)
+            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        if (pool == null) {
             pool = new DefaultPicoPool(componentImplementation);
         }
         return new PicoPoolComponentAdapter(delegate.createComponentAdapter(componentKey, componentImplementation, parameters), pool);

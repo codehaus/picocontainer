@@ -16,8 +16,17 @@ import org.codehaus.nanning.Invocation;
 import org.codehaus.nanning.MethodInterceptor;
 import org.codehaus.nanning.config.AspectSystem;
 import org.codehaus.nanning.config.InterceptorAspect;
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Jon Tirsen

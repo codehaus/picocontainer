@@ -17,8 +17,7 @@ public class Controller {
         this.database = database;
     }
 
-    public void fireOffAUnitOfWork(String name)
-    {
+    public void fireOffAUnitOfWork(String name) {
         UnitOfWork task = new UnitOfWork(name);
         worker.work(task);
     }

@@ -2,13 +2,18 @@ package org.picoextras.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.picocontainer.extras.InvokingComponentAdapterFactory;
-import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
-import org.picocontainer.defaults.*;
-import org.picocontainer.Parameter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
+import org.picocontainer.extras.InvokingComponentAdapterFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An Ant task that makes the use of PicoContainer possible from Ant.
@@ -41,11 +46,11 @@ public class PicoContainerTask extends Task {
         DefaultComponentAdapterFactory defaultFactory = new DefaultComponentAdapterFactory();
         propertyFactory = new BeanPropertyComponentAdapterFactory(defaultFactory);
         InvokingComponentAdapterFactory invokingFactory = new InvokingComponentAdapterFactory(
-                    propertyFactory,
-                    "execute",
-                    null,
-                    null
-            );
+                propertyFactory,
+                "execute",
+                null,
+                null
+        );
         pico = new DefaultPicoContainer(invokingFactory);
     }
 

@@ -1,17 +1,17 @@
 package org.picoextras.ant;
 
-import org.apache.tools.ant.DynamicConfigurator;
 import org.apache.tools.ant.BuildException;
-import org.picocontainer.defaults.ConstantParameter;
+import org.apache.tools.ant.DynamicConfigurator;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
 import org.picoextras.reflection.StringToObjectConverter;
 
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * 

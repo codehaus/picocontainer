@@ -1,11 +1,11 @@
 package org.picocontainer.extras;
 
 import junit.framework.TestCase;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
-import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Thomas Heller

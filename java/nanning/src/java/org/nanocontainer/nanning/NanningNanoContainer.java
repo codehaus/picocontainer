@@ -11,8 +11,8 @@
 package org.picoextras.nanning;
 
 import org.codehaus.nanning.config.AspectSystem;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

@@ -1,14 +1,14 @@
 package org.picoextras.script.rhino;
 
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.script.PicoCompositionException;
 
-import java.io.Reader;
 import java.io.IOException;
+import java.io.Reader;
 
 public class PicoManager {
     public PicoContainer execute(Class scriptableClass, Reader javascript) throws PicoCompositionException, IOException, JavaScriptException {

@@ -10,13 +10,17 @@
 
 package org.picoextras.reflection;
 
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is a front-end to {@link MutablePicoContainer} that uses reflection

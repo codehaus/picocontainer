@@ -1,9 +1,9 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 
 /**
@@ -38,11 +38,15 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         }
     }
 
-    public static class One {}
-    public static class Two {}
-    public static class Three {}
+    public static class One {
+    }
 
-    
+    public static class Two {
+    }
+
+    public static class Three {
+    }
+
 
     public void testStringWorks() throws PicoException, PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer();

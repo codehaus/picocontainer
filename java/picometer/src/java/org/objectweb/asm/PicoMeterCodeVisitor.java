@@ -4,11 +4,10 @@ package org.objectweb.asm;
 import org.picoextras.picometer.Instantiation;
 import org.picoextras.picometer.PicoMeterClass;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
-import java.net.URL;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Visits code and records instantiations of new objects.

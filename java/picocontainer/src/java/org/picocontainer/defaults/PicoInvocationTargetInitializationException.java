@@ -17,6 +17,6 @@ public class PicoInvocationTargetInitializationException extends PicoInstantiati
         super("InvocationTargetException: "
                 + cause.getClass().getName()
                 + " " + cause.getMessage()
-        , cause);
+                , cause);
     }
 }

@@ -10,12 +10,19 @@
 
 package org.picoextras.jmx;
 
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.*;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.management.*;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 import java.io.Serializable;
 
 /**
@@ -60,7 +67,7 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
      */
     public synchronized ComponentAdapter registerComponentInstance(Object key, Object component)
             throws PicoRegistrationException {
-		ObjectName name = null;             	
+        ObjectName name = null;
         try {
             name = NanoMXComponentAdapter.asObjectName(key);
             ComponentAdapter result = super.registerComponentInstance(key, component);
@@ -72,13 +79,13 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
         } catch (InstanceAlreadyExistsException e) {
             throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
         } catch (MBeanRegistrationException e) {
-			throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
+            throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
         } catch (NotCompliantMBeanException e) {
-			throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
+            throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
         } catch (MalformedObjectNameException e) {
-			throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
+            throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
         } catch (PicoRegistrationException e) {
-			throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
+            throw new NanoMXRegistrationException("Failed to register MBean '" + name + "' for component '" + key + "', due to " + e.getMessage(), e);
         }
     }
 

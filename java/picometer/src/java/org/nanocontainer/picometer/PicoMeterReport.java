@@ -1,12 +1,12 @@
 package org.picoextras.picometer;
 
-import java.io.PrintWriter;
-import java.io.LineNumberReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
-import java.util.HashMap;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -25,10 +25,10 @@ public class PicoMeterReport {
 
         LineNumberReader reader = picoMeterClass.getSource();
         String line = null;
-        while((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             Instantiation instantiation = (Instantiation) lineNumberToInstantiationMap.get(new Integer(reader.getLineNumber()));
             String code;
-            if(instantiation != null) {
+            if (instantiation != null) {
                 String before = line.substring(0, instantiation.getStartColumn());
                 String instantiationString = line.substring(instantiation.getStartColumn(), instantiation.getEndColumn());
                 String after = line.substring(instantiation.getEndColumn());

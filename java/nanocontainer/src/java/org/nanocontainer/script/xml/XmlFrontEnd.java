@@ -11,8 +11,8 @@
 package org.picoextras.script.xml;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picoextras.script.PicoCompositionException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -30,7 +30,7 @@ public interface XmlFrontEnd {
 
     public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
             throws IOException, SAXException, ClassNotFoundException, PicoCompositionException;
-    
+
     public PicoContainer createPicoContainer(Element rootElement)
             throws IOException, SAXException, ClassNotFoundException, PicoCompositionException;
 }

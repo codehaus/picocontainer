@@ -3,9 +3,9 @@ package org.picocontainer.extras;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 /**
@@ -31,5 +31,5 @@ public class SynchronizedComponentAdapter extends DecoratingComponentAdapter {
 
     public synchronized void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
         super.verify(picoContainer);
-    }    
+    }
 }

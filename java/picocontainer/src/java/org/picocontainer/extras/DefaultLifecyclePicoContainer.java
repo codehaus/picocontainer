@@ -1,8 +1,14 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 import java.util.Collection;
 import java.util.List;

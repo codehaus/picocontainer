@@ -19,12 +19,14 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class ThrowawayPicoInstantiator {
     private final Object instance;
+
     public ThrowawayPicoInstantiator(MutablePicoContainer parentContainer, Class classToInstantiate) {
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addParent(parentContainer);
         dpc.registerComponentImplementation(classToInstantiate);
         instance = dpc.getComponentInstance(classToInstantiate);
     }
+
     public Object getInstance() {
         return instance;
     }

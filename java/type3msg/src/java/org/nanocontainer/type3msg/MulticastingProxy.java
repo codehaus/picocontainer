@@ -5,7 +5,9 @@ import org.picocontainer.PicoException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class MulticastingProxy implements InvocationHandler {
 
@@ -18,7 +20,7 @@ public class MulticastingProxy implements InvocationHandler {
     }
 
     public void add(Object item) throws PicoException {
-        if ( !theInterface.isAssignableFrom(item.getClass())) {
+        if (!theInterface.isAssignableFrom(item.getClass())) {
             throw new MulticastingPicoException(
                     "The item " + item.getClass().getName() + " is not an instance of " + theInterface.getName());
         }
@@ -26,7 +28,7 @@ public class MulticastingProxy implements InvocationHandler {
     }
 
     public Object getProxy() {
-        return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {theInterface}, this);
+        return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{theInterface}, this);
     }
 
     public Object invoke(Object object, Method method, Object[] args) throws Throwable {

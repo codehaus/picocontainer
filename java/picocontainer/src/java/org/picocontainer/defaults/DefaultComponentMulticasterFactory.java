@@ -12,14 +12,14 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.extras.ComponentMulticasterFactory;
 
-import java.util.List;
+import java.io.Serializable;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Chris Stevenson

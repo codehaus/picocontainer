@@ -8,14 +8,13 @@
  *****************************************************************************/
 package org.picoextras.webwork2;
 
+import com.opensymphony.webwork.dispatcher.ServletDispatcher;
 import org.picoextras.servlet.KeyConstants;
 import org.picoextras.servlet.ServletRequestContainerLauncher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.opensymphony.webwork.dispatcher.ServletDispatcher;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request

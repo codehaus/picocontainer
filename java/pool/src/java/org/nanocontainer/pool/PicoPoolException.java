@@ -23,14 +23,12 @@ import org.picocontainer.PicoException;
  * @author <a href="mailto:ross.mason@cubis.co.uk">Ross Mason</a>
  * @version $ Revision: 1.0 $
  */
-public class PicoPoolException extends PicoException
-{
+public class PicoPoolException extends PicoException {
 
     /**
      * @param message
      */
-    public PicoPoolException(String message)
-    {
+    public PicoPoolException(String message) {
         super(message);
     }
 
@@ -38,8 +36,7 @@ public class PicoPoolException extends PicoException
      * @param message
      * @param cause
      */
-    public PicoPoolException(String message, Throwable cause)
-    {
+    public PicoPoolException(String message, Throwable cause) {
         super(message, cause);
     }
 

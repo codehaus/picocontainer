@@ -9,13 +9,12 @@
  *****************************************************************************/
 package org.picoextras.script.bsh;
 
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picoextras.script.bsh.BeanShellComponentAdapter;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * This factory creates component adapters that relies on Bsh.

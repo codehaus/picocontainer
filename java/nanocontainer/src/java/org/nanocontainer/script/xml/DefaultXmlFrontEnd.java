@@ -10,13 +10,13 @@
 
 package org.picoextras.script.xml;
 
-import org.picoextras.reflection.ReflectionFrontEnd;
-import org.picoextras.reflection.DefaultReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picoextras.script.PicoCompositionException;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.reflection.DefaultReflectionFrontEnd;
+import org.picoextras.reflection.ReflectionFrontEnd;
+import org.picoextras.script.PicoCompositionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -74,7 +74,8 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
                 if (name.equals("pseudocomponent")) {
                     registerPseudoComponent(reflectionFrontEnd, (Element) child);
                     componentCount++;
-                } if (name.equals("component")) {
+                }
+                if (name.equals("component")) {
                     registerComponent(reflectionFrontEnd, (Element) child);
                     componentCount++;
                 } else if (name.equals("container")) {

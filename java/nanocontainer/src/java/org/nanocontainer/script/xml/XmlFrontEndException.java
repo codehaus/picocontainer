@@ -20,12 +20,12 @@ public class XmlFrontEndException extends PicoCompositionException {
         super();
     }
 
-	/**
-	 * @param cause
-	 */
-	public XmlFrontEndException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * @param cause
+     */
+    public XmlFrontEndException(Throwable cause) {
+        super(cause);
+    }
 
     public XmlFrontEndException(String message, Throwable cause) {
         super(message, cause);

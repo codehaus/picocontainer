@@ -17,7 +17,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,242 +24,113 @@ import java.util.List;
  */
 public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
-    public static class One implements Startable, Disposable {
+    public abstract static class RecordingLifecycle implements Startable, Disposable {
+        private final StringBuffer recording;
 
-        List instantiating = new ArrayList();
-        List starting = new ArrayList();
-        List stopping = new ArrayList();
-        List disposing = new ArrayList();
-
-        public One() {
-            instantiation("One");
-        }
-
-        public void instantiation(String s) {
-            instantiating.add(s);
-        }
-
-        public List getInstantiating() {
-            return instantiating;
-        }
-
-        public List getStarting() {
-            return starting;
-        }
-
-        public List getStopping() {
-            return stopping;
-        }
-
-        public List getDisposing() {
-            return disposing;
+        protected RecordingLifecycle(StringBuffer recording) {
+            this.recording = recording;
         }
 
         public void start() {
-            startCalled("One");
+            recording.append("<" + code());
         }
 
         public void stop() {
-            stopCalled("One");
+            recording.append(code() + ">");
         }
 
         public void dispose() {
-            disposeCalled("One");
+            recording.append("!" + code());
         }
 
-        public void startCalled(String msg) {
-            starting.add(msg);
-        }
-
-        public void stopCalled(String msg) {
-            stopping.add(msg);
-        }
-
-        public void disposeCalled(String msg) {
-            disposing.add(msg);
-        }
-
-    }
-
-    public static class Two implements Startable, Disposable {
-        One one;
-
-        public Two(One one) {
-            one.instantiation("Two");
-            this.one = one;
-        }
-
-        public void start() {
-            one.startCalled("Two");
-        }
-
-        public void stop() {
-            one.stopCalled("Two");
-        }
-
-        public void dispose() {
-            one.disposeCalled("Two");
+        private String code() {
+            String name = getClass().getName();
+            return name.substring(name.indexOf('$') + 1);
         }
     }
 
-    public static class Three implements Startable, Disposable {
-        One one;
-
-        public Three(One one, Two two) {
-            one.instantiation("Three");
-            assertNotNull(two);
-            this.one = one;
-        }
-
-        public void start() {
-            one.startCalled("Three");
-        }
-
-        public void stop() {
-            one.stopCalled("Three");
-        }
-
-        public void dispose() {
-            one.disposeCalled("Three");
+    public static class One extends RecordingLifecycle {
+        public One(StringBuffer sb) {
+            super(sb);
         }
     }
 
-    public static class Four implements Startable, Disposable {
-        One one;
-
-        public Four(Two two, Three three, One one) {
-            one.instantiation("Four");
-            assertNotNull(two);
-            assertNotNull(three);
-            this.one = one;
-        }
-
-        public void start() {
-            one.startCalled("Four");
-        }
-
-        public void stop() {
-            one.stopCalled("Four");
-        }
-
-        public void dispose() {
-            one.disposeCalled("Four");
+    public static class Two extends RecordingLifecycle {
+        public Two(StringBuffer sb, One one) {
+            super(sb);
         }
     }
 
+    public static class Three extends RecordingLifecycle {
+        public Three(StringBuffer sb, One one, Two two) {
+            super(sb);
+        }
+    }
 
-    public void testOrderOfInstantiationWithoutAdapter() throws Exception {
+    public static class Four extends RecordingLifecycle {
+        public Four(StringBuffer sb, Two two, Three three, One one) {
+            super(sb);
+        }
+    }
+
+    public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-
+        pico.registerComponentImplementation("recording", StringBuffer.class);
         pico.registerComponentImplementation(Four.class);
         pico.registerComponentImplementation(Two.class);
         pico.registerComponentImplementation(One.class);
         pico.registerComponentImplementation(Three.class);
-
         final List componentInstances = pico.getComponentInstances();
-        assertEquals(4, componentInstances.size());
 
         // instantiation - would be difficult to do these in the wrong order!!
-        assertEquals("Incorrect Order of Instantiation", One.class, componentInstances.get(0).getClass());
-        assertEquals("Incorrect Order of Instantiation", Two.class, componentInstances.get(1).getClass());
-        assertEquals("Incorrect Order of Instantiation", Three.class, componentInstances.get(2).getClass());
-        assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(3).getClass());
+        assertEquals("Incorrect Order of Instantiation", One.class, componentInstances.get(1).getClass());
+        assertEquals("Incorrect Order of Instantiation", Two.class, componentInstances.get(2).getClass());
+        assertEquals("Incorrect Order of Instantiation", Three.class, componentInstances.get(3).getClass());
+        assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
     }
 
-    public void testStartStopStartStopAndDispose() throws Exception {
+    public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-
-        pico.registerComponentImplementation(One.class);
-        pico.registerComponentImplementation(Two.class);
-        pico.registerComponentImplementation(Three.class);
+        pico.registerComponentImplementation("recording", StringBuffer.class);
         pico.registerComponentImplementation(Four.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Three.class);
 
-        One one = (One) pico.getComponentInstance(One.class);
+        pico.start();
+        pico.stop();
+        pico.dispose();
 
-        pico.getComponentInstances();
-
-        // instantiation - would be difficult to do these in the wrong order!!
-        assertEquals("Should be four elems", 4, one.getInstantiating().size());
-        assertEquals("Incorrect Order of Instantiation", "One", one.getInstantiating().get(0));
-        assertEquals("Incorrect Order of Instantiation", "Two", one.getInstantiating().get(1));
-        assertEquals("Incorrect Order of Instantiation", "Three", one.getInstantiating().get(2));
-        assertEquals("Incorrect Order of Instantiation", "Four", one.getInstantiating().get(3));
-
-        startStopDisposeLifecycleComps(pico, pico, pico, one);
-
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", pico.getComponentInstance("recording").toString());
     }
 
-    private void startStopDisposeLifecycleComps(Startable start, Startable stop, Disposable disp, One one) throws Exception {
-        start.start();
-
-        // post instantiation startup
-        assertEquals("Should be four elems", 4, one.getStarting().size());
-        assertEquals("Incorrect Order of Starting", "One", one.getStarting().get(0));
-        assertEquals("Incorrect Order of Starting", "Two", one.getStarting().get(1));
-        assertEquals("Incorrect Order of Starting", "Three", one.getStarting().get(2));
-        assertEquals("Incorrect Order of Starting", "Four", one.getStarting().get(3));
-
-        stop.stop();
-
-        // post instantiation shutdown - REVERSE order.
-        assertEquals("Should be four elems", 4, one.getStopping().size());
-        assertEquals("Incorrect Order of Stopping", "Four", one.getStopping().get(0));
-        assertEquals("Incorrect Order of Stopping", "Three", one.getStopping().get(1));
-        assertEquals("Incorrect Order of Stopping", "Two", one.getStopping().get(2));
-        assertEquals("Incorrect Order of Stopping", "One", one.getStopping().get(3));
-
-        disp.dispose();
-
-        // post instantiation shutdown - REVERSE order.
-        assertEquals("Should be four elems", 4, one.getDisposing().size());
-        assertEquals("Incorrect Order of Stopping", "Four", one.getDisposing().get(0));
-        assertEquals("Incorrect Order of Stopping", "Three", one.getDisposing().get(1));
-        assertEquals("Incorrect Order of Stopping", "Two", one.getDisposing().get(2));
-        assertEquals("Incorrect Order of Stopping", "One", one.getDisposing().get(3));
-    }
-
-    public void testStartStartCausingBarf() throws Exception {
+    public void testStartStartShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.start();
         try {
             pico.start();
-            fail("Should have barfed");
+            fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
         }
     }
 
-    public void testStartStopStopCausingBarf() throws Exception {
+    public void testStartStopStopShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.start();
         pico.stop();
         try {
             pico.stop();
-            fail("Should have barfed");
+            fail("Should have failed");
         } catch (IllegalStateException e) {
             // expected;
         }
     }
 
-    public void testDisposeDisposeCausingBarf() throws Exception {
+    public void testStartStopDisposeDisposeShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.start();
-        pico.stop();
-        pico.dispose();
-        try {
-            pico.dispose();
-            fail("Should have barfed");
-        } catch (IllegalStateException e) {
-            // expected;
-        }
-    }
-
-
-    public void testStartStopDisposeDisposeCausingBarf() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.getComponentInstances();
         pico.start();
         pico.stop();
         pico.dispose();
@@ -342,59 +212,26 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         assertEquals(0, child.getComponentInstances().size());
     }
 
-    public abstract static class RecordingLifecycle implements Startable, Disposable {
-        private final StringBuffer recording;
-
-        protected RecordingLifecycle(StringBuffer recording) {
-            this.recording = recording;
-        }
-
-        public void start() {
-            recording.append("<" + code());
-        }
-
-        public void stop() {
-            recording.append(code() + ">");
-        }
-
-        public void dispose() {
-            recording.append("!" + code());
-        }
-
-        private String code() {
-            String name = getClass().getName();
-            return name.substring(name.indexOf('$')+1);
-        }
-    }
-
-    public static class A extends RecordingLifecycle {
-        public A(StringBuffer recording) {
-            super(recording);
-        }
-    }
-    public static class B extends RecordingLifecycle {
-        public B(StringBuffer recording) {
-            super(recording);
-        }
-    }
-    public static class C extends RecordingLifecycle {
-        public C(StringBuffer recording, A a) {
-            super(recording);
-        }
-    }
-
-    public void testComponentsAreStartedBreadthFirstAndStoppedDepthFirst() {
+    public void testComponentsAreStartedBreadthFirstAndStoppedAndDisposedDepthFirst() {
+//        <container>
+//              <component class='A'/>
+//              <container>
+//                  <component class='B'/>
+//              </container>
+//              <component class='C'/>
+//        </container>
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponentImplementation(C.class);
+        parent.registerComponentImplementation(Two.class);
         parent.registerComponentImplementation("recording", StringBuffer.class);
-        parent.registerComponentImplementation(A.class);
+        parent.registerComponentImplementation(One.class);
         parent.registerComponentImplementation("child", DefaultPicoContainer.class);
         DefaultPicoContainer child = (DefaultPicoContainer) parent.getComponentInstance("child");
-        child.registerComponentImplementation(B.class);
+        child.registerComponentImplementation(Three.class);
         parent.start();
         parent.stop();
+        parent.dispose();
 
-        assertEquals("<A<C<BB>C>A>", parent.getComponentInstance("recording").toString());
+        assertEquals("<One<Two<ThreeThree>Two>One>!Three!Two!One", parent.getComponentInstance("recording").toString());
     }
 
     public static class NotStartable {
@@ -406,38 +243,12 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
     public void testOnlyStartableComponentsAreInstantiatedOnStart() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("recording", StringBuffer.class);
-        pico.registerComponentImplementation(A.class);
+        pico.registerComponentImplementation(One.class);
         pico.registerComponentImplementation(NotStartable.class);
         pico.start();
         pico.stop();
         pico.dispose();
-        assertEquals("<AA>!A", pico.getComponentInstance("recording").toString());
+        assertEquals("<OneOne>!One", pico.getComponentInstance("recording").toString());
 
-    }
-
-    public void testComponentsAreInstantiatedBreadthFirst() {
-//        <container>
-//              <component class='A'/>
-//              <container>
-//                  <component class='B'/>
-//              </container>
-//              <component class='C'/>
-//        </container>
-
-        MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponentImplementation("recording", StringBuffer.class);
-        parent.registerComponentImplementation(A.class);
-        parent.registerComponentImplementation(DefaultPicoContainer.class);
-        parent.registerComponentImplementation(C.class);
-        MutablePicoContainer child = (MutablePicoContainer) parent.getComponentInstance(DefaultPicoContainer.class);
-        assertNotSame(parent, child);
-        assertSame(parent, child.getParent());
-        child.registerComponentImplementation(B.class);
-
-        parent.start();
-        parent.stop();
-        parent.dispose();
-
-        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", parent.getComponentInstance("recording").toString());
     }
 }

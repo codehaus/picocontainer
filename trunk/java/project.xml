@@ -3,7 +3,7 @@
 
   <pomVersion>3</pomVersion>
   <name>Plugin Parent</name>
-  <id>nanocontainer</id>
+  <groupId>picocontainer</groupId>
   <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
   <url>http://www.nanocontainer.org/${pom.artifactId}/</url>
   <organization>

@@ -51,15 +51,15 @@ module Rico
     end
     
     def component_instances
-    	return @specs.collect { |key, spec| spec.component_instance(self, key) }
+      return @specs.collect { |key, spec| spec.component_instance(self, key) }
     end
 
     def has_component?(key)
-    	return @specs.has_key?(key)
+      return @specs.has_key?(key)
     end
     
     def register_component_instance(key, instance = key)
-    	register_component_implementation key, instance
+      register_component_implementation key, instance
     end
     
     def multicast(meth, *args)
@@ -73,16 +73,16 @@ module Rico
     end
     
     # Allow for simple API. See containertest.test_simple_intuituve_api
-  	def method_missing(name, *args)
-  	  eq = name.to_s.index('=')
-  	  key = (eq ? name.to_s[0,eq].intern : name)
-  	  
-  	  if(!args.empty?)
+    def method_missing(name, *args)
+      eq = name.to_s.index('=')
+      key = (eq ? name.to_s[0,eq].intern : name)
+      
+      if(!args.empty?)
         register_component_implementation key, *args  
       else
         component_instance key
       end
-  	end
+    end
 
   private
     

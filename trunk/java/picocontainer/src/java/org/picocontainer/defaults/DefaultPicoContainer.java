@@ -48,7 +48,7 @@ import java.util.Set;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link ImplementationHidingComponentAdapter}.
+ * {@link org.picocontainer.alternatives.ImplementationHidingComponentAdapter}.
  * </p>
  *
  * @author Paul Hammant

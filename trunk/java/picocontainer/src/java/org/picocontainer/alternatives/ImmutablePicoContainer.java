@@ -7,13 +7,14 @@
  *                                                                           *
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.alternatives.ImmutableComponentAdapter;
 
 import java.util.List;
 import java.util.Collection;

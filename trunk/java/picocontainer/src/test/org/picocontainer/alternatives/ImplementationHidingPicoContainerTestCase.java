@@ -6,10 +6,12 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
+import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 
 public class ImplementationHidingPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 

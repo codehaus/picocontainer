@@ -8,12 +8,15 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.alternatives.ImmutableComponentAdapter;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import java.util.Collection;
 import java.util.HashMap;

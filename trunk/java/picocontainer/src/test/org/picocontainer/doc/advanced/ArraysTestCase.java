@@ -5,10 +5,16 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CollectionComponentParameter;
+import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.doc.advanced.MapsTestCase.Bowl;
+import org.picocontainer.doc.advanced.MapsTestCase.Cod;
+import org.picocontainer.doc.advanced.MapsTestCase.Fish;
+import org.picocontainer.doc.advanced.MapsTestCase.Shark;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -19,9 +25,6 @@ import java.util.List;
 public class ArraysTestCase
         extends TestCase {
     private MutablePicoContainer pico;
-    private Shark shark;
-    private Cod cod;
-    private Bowl bowl;
 
     protected void setUp() throws Exception {
         pico = new DefaultPicoContainer();
@@ -81,11 +84,11 @@ public class ArraysTestCase
         pico.registerComponentImplementation(Cod.class);
         pico.registerComponentImplementation(Bowl.class);
 
-        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: usage
 
-        shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
-        cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
+        Shark shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
+        Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
         
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(2, fishes.size());
@@ -106,11 +109,10 @@ public class ArraysTestCase
         pico.registerComponentImplementation(Bowl.class);
         pico.registerComponentInstance(new Fish[]{});
 
-        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: directUsage
 
-        shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
-        cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
+        Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
 
         //      START SNIPPET: directDemo
         
@@ -137,11 +139,11 @@ public class ArraysTestCase
         pico.registerComponentInstance(new Fish[]{});
         pico.registerComponentInstance(new Cod[]{});
 
-        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: ensureArray
 
-        shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
-        cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
+        Shark shark = (Shark) pico.getComponentInstanceOfType(Shark.class);
+        Cod cod = (Cod) pico.getComponentInstanceOfType(Cod.class);
 
         //      START SNIPPET: ensureDemo
         
@@ -162,16 +164,40 @@ public class ArraysTestCase
         //      START SNIPPET: emptyArray
 
         pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
-            new CollectionComponentParameter(true),
-            new CollectionComponentParameter(true)
+            new ComponentParameter(true),
+            new ComponentParameter(true)
         });
 
-        bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+        Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
         //      END SNIPPET: emptyArray
 
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(0, fishes.size());
         List cods = Arrays.asList(bowl.getCods());
         assertEquals(0, cods.size());
+    }
+    
+    public void testShouldCreateBowlWithNamedFishesOnly() {
+
+        //      START SNIPPET: useKeyType
+
+        pico.registerComponentImplementation(Shark.class);
+        pico.registerComponentImplementation("Nemo", Cod.class);
+        pico.registerComponentImplementation(Bowl.class, Bowl.class, new Parameter[]{
+            new ComponentParameter(String.class, Fish.class, false),
+            new ComponentParameter(Cod.class, false)
+        });
+        
+        Bowl bowl = (Bowl) pico.getComponentInstanceOfType(Bowl.class);
+        //      END SNIPPET: useKeyType
+        
+        //      START SNIPPET: ensureKeyType
+
+        List fishes = Arrays.asList(bowl.getFishes());
+        List cods = Arrays.asList(bowl.getCods());
+        assertEquals(1, fishes.size());
+        assertEquals(1, cods.size());
+        assertEquals(fishes, cods);
+        //      END SNIPPET: ensureKeyType
     }
 }

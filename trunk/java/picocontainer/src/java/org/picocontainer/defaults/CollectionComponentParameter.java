@@ -224,27 +224,8 @@ public class CollectionComponentParameter
 
     private Class getValueType(final Class collectionType) {
         Class valueType = componentValueType;
-        // TODO: Cannot access generic type at runtime !!! Alsak, did your previous solution ever work ??
-//        final TypeVariable typeParameters[] = collectionType.getTypeParameters();
         if (collectionType.isArray()) {
             valueType = collectionType.getComponentType();
-//        } else if (typeParameters.length > 0) {
-//            if (Map.class.isAssignableFrom(collectionType)) {
-//                valueType = (Class) typeParameters[1].getGenericDeclaration();
-//            } else if (Collection.class.isAssignableFrom(collectionType)) {
-//                Type[] types = typeParameters[0].getBounds();
-//                valueType = (Class) typeParameters[0].getGenericDeclaration();
-//                try {
-//                    Constructor ctor = collectionType.getConstructor(null);
-//                    types = ctor.getGenericParameterTypes();
-//                } catch (SecurityException e) {
-//                    e.printStackTrace();
-//                } catch (NoSuchMethodException e) {
-//                    e.printStackTrace();
-//                }
-//                Type[] argumentTypes = ((ParameterizedType) types[0]).getActualTypeArguments();
-//                valueType = (Class) argumentTypes[0];
-//            }
         }
         return valueType;
     }

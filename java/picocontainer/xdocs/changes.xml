@@ -9,6 +9,12 @@
     <body>
         <release version="1.0-beta-2" date="In CVS">
 
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-41">PICO-41</a>
+                - Removed static "constructor" subclasses.
+            </action>
+
             <action dev="rinkrank" type="update">
                 Big refactoring making the API simpler. This was needed because
                 there was no clear separation of concerns between the old
@@ -29,15 +35,15 @@
 
             <action dev="rinkrank" type="update">
                 Fixed
-                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-39</a>
-                - Support multiple constructors.
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-6">PICO-6</a>
+                - Lazy instantiation of components. As a result, PicoContainer.instantiateComponents()
+                is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
             </action>
 
             <action dev="rinkrank" type="update">
                 Fixed
-                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-6</a>
-                - Lazy instantiation of components. As a result, PicoContainer.instantiateComponents()
-                is removed, and PicoContainer.getComponent(Object key) throw PicoInitialisationException.
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-39">PICO-39</a>
+                - Support multiple constructors.
             </action>
 
             <action dev="rinkrank" type="add">

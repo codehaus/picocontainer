@@ -8,13 +8,13 @@ PicoContainer is very simple container for very simple
 components.&nbsp; It honors the Inversion of control pattern (IoC) in a
 way that we calling it type 3 IoC.&nbsp; See below for types.<br>
 <br>
-PicoContainer components declare their needs in their contructor.&nbsp;
+PicoContainer components declare their needs in their constructor.&nbsp;
 A PicoContainer resolves needs at time on instantiation of the
 component.&nbsp; We have a restriction in that PicoContainer comps must
-only have one constructor. We don't think thats a bad restriction.
+only have one constructor. We don't think that is a bad restriction.
 Especially as the XP "change it when you need to" has not delivered a
 use case that would preclude this design yet.&nbsp; We also can't allow
-primatives in the constructor. In skeletal form, here is the simplest
+primitives in the constructor. In skeletal form, here is the simplest
 possible PicoContainer compatible component :<br>
 <pre>&nbsp;&nbsp; public class Shop {
 &nbsp;&nbsp;&nbsp; public Shop(StockManager stockManager) {
@@ -37,7 +37,7 @@ And perhaps some as yet unwritten PicoContainer :<br>
 It does not matter how things are laced together. It does not matter
 how tightly bound one PicoContainer is to an individual purpose.&nbsp;
 The important thing is actually the components and how they are laced
-toegether.<br>
+together.<br>
 <h2>Container</h2>
 PicoContainer's most basic interface is Container :
 <pre>&nbsp;&nbsp; public interface Container {
@@ -49,11 +49,11 @@ Clearly it is a read-only thing. That's deliberate.&nbsp; We see many
 PicoContainers delivering different visions of component lacing and
 configuration.&nbsp; Some may exist in chains or trees, such that a
 tiering model could exist. Such a tiering model could provide
-hierarchys for reasons of security, kernel hiding or scope control (Joe
+hierarchies for reasons of security, kernel hiding or scope control (Joe
 has plans for a trinity of Picos to fit inside the Servlet model -
 Application, Session and Request scoped PicoContainers).
 <h2>Sister projects</h2>
-NanoContainer is not really a sinlge container. It is four
+NanoContainer is not really a single container. It is four
 PicoContainer compatible containers so far.&nbsp; One that takes String
 registration of components, another that takes them via XML. One that
 aggregates components into a single fat (almost) multiple-inheritance
@@ -70,7 +70,7 @@ so:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");
 &nbsp;&nbsp;&nbsp;&nbsp; }
 &nbsp;&nbsp; }</pre>
-A component has to have service (component) declaratrions in some
+A component has to have service (component) declarations in some
 external file. The popular Phoenix container had .xinfo files for such
 needs.<br>
 <h3>&nbsp; Type 2</h3>

@@ -89,6 +89,12 @@
       <version>0.8</version>
       <url>http://nanning.sourceforge.net/</url>
     </dependency>
+
+    <dependency>
+      <id>servlet-api</id>
+      <version>2.3</version>
+      <url>http://microsoft.com/</url>
+    </dependency>
   </dependencies>
 
   <build>

@@ -1,8 +1,52 @@
 package picocontainer;
 
 import junit.framework.TestCase;
+import picocontainer.testmodel.WilmaImpl;
 
 public class AggregatedContainersContainerTestCase extends TestCase {
+    private PicoContainer pico;
+    private AggregatedContainersContainer.Filter filter;
+
+    public void setUp() throws PicoRegistrationException {
+        pico = new HierarchicalPicoContainer.Default();
+        pico.registerComponent(WilmaImpl.class);
+        filter = new AggregatedContainersContainer.Filter(pico);
+    }
+
+    public void tearDown() throws PicoStopException {
+        pico.stop();
+        pico = null;
+        filter = null;
+    }
+
+    public void testGetComponents() {
+        assertEquals("Content of Component arrays should be the same", pico, filter.getSubject());
+    }
+
+    public void testGetComponentTypes() {
+        assertEquals("Content of Component type arrays should be the same", pico, filter.getSubject());
+    }
+
+    public void testGetComponent() {
+        assertSame("Wilma should be the same", pico.getComponent(WilmaImpl.class), filter.getComponent(WilmaImpl.class));
+    }
+
+    public void testHasComponent() {
+        assertEquals("Containers should contain the same", pico.hasComponent(WilmaImpl.class), filter.hasComponent(WilmaImpl.class));
+    }
+
+    public void testNullContainer() {
+        try {
+            AggregatedContainersContainer.Filter badOne = new AggregatedContainersContainer.Filter(null);
+            fail("Should have failed with an NPE");
+        } catch (NullPointerException e) {
+            // fine
+        }
+    }
+
+    public void testGetToFilterFor() {
+        assertSame("The Container to filter for should be the one made in setUp", pico, filter.getSubject());
+    }
 
     public void testBasic() {
 

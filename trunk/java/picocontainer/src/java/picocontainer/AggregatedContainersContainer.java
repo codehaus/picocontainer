@@ -1,6 +1,5 @@
 package picocontainer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
@@ -10,7 +9,29 @@ public class AggregatedContainersContainer extends AbstractContainer {
     private final Container[] containers;
 
     public AggregatedContainersContainer(final Container[] containers) {
+        if( containers == null ) {
+            throw new NullPointerException("containers can't be null");
+        }
+        for (int i = 0; i < containers.length; i++) {
+            Container container = containers[i];
+            if( container == null ) {
+                throw new NullPointerException("Container at position " + i + " was null");
+            }
+        }
         this.containers = containers;
+    }
+
+    public static class Filter extends AggregatedContainersContainer {
+        private final Container subject;
+
+        public Filter(final Container container) {
+            super(new Container[]{container});
+            subject = container;
+        }
+
+        public Container getSubject() {
+            return subject;
+        }
     }
 
     public boolean hasComponent(Class compType) {

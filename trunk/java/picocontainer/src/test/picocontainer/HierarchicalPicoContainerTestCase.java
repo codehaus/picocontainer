@@ -45,7 +45,6 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         } catch (NullPointerException npe) {
             // expected
         }
-
     }
 
     public void testBasicRegAndStart() throws PicoStartException, PicoRegistrationException {

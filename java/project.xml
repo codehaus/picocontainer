@@ -2,7 +2,8 @@
 <project>
 
   <pomVersion>3</pomVersion>
-  <name>Plugin Parent</name>
+  <name>NanoContainer</name>
+  <id>nano</id>
   <groupId>picocontainer</groupId>
   <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
   <url>http://www.nanocontainer.org/${pom.artifactId}/</url>
@@ -91,17 +92,17 @@
     </unitTest>
   </build>
 
-    <reports>
-        <report>maven-license-plugin</report>
-        <!--report>maven-faq-plugin</report-->
-        <report>maven-simian-plugin</report>
-        <report>maven-changes-plugin</report>
-        <report>maven-statcvs-plugin</report>
-        <report>maven-jxr-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-junit-report-plugin</report>
-        <report>maven-clover-plugin</report>
-    </reports>
+  <reports>
+    <report>maven-license-plugin</report>
+    <!--report>maven-faq-plugin</report-->
+    <report>maven-simian-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-clover-plugin</report>
+  </reports>
 
 </project>
 

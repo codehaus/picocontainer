@@ -5,18 +5,14 @@
   <body>
     <links>
       <item name="Wiki"                href="http://wiki.codehaus.org/picocontainer/NanoContainer"/>
-      <item name="Download"            href="/download.html"/>
       <item name="Issue Tracker"       href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121"/>
-      <item name="Roadmap"             href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121&amp;report=roadmap"/>
       <item name="PicoContainer"       href="http://www.picocontainer.org/"/>
-      <item name="Nanning"             href="http://nanning.sf.net/"/>
-      <item name="XWork"               href="http://opensymphony.indigoegg.com/xwork/"/>
     </links>
 
     <menu name="NanoContainer">
       <item name="Introduction"        href="/introduction.html"/>
       <item name="License"             href="/license.html"/>
-      <item name="Download"            href="/download.html"/>
+      <item name="Sub projects"        href="/projects-overview.html"/>
     </menu>
   </body>
 

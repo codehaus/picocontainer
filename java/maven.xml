@@ -1,20 +1,30 @@
 <project
   default="jar-install"
-  xmlns:maven="jelly:maven">
+  xmlns:j="jelly:core"
+  xmlns:maven="jelly:maven"
+  xmlns:ant="jelly:ant">
 
   <goal 
     name="jar-install"
     description="Build each sub project into a jar">
 
+    <property name="goals" value="jar:install"/>
+    <attainGoal name="generic"/>
+
+  </goal>
+
+  <goal 
+    name="generic"
+    description="Build each sub project with a particular goal. e.g. maven -Dgoals=site:deploy generic">
+
     <maven:reactor
       basedir="${basedir}"
       includes="*/project.xml"
       excludes="picogui/*,picoidea/*,webwork2/*"
-      goals="jar:install"
+      goals="${goals}"
       banner="Building"
       ignoreFailures="false"
     />
-
   </goal>
 
   <goal name="cleanall" description="Delete all target folders">
@@ -25,18 +35,9 @@
     </delete>
   </goal>
 
-  <goal 
-    name="generic"
-    description="Build each sub project with a particular goal. e.g. maven -Dgoals=site:deploy generic">
-
-    <maven:reactor
-      basedir="${basedir}"
-      includes="*/project.xml"
-      excludes="picogui/*,picoidea/*"
-      goals="${goals}"
-      banner="Building"
-      ignoreFailures="false"
-    />
+  <goal name="site-deploy">
+    <attainGoal name="multiproject"/>
+    <attainGoal name="site:deploy"/>
   </goal>
 
 </project>

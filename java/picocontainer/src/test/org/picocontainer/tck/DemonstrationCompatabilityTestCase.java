@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  */
 public class DemonstrationCompatabilityTestCase extends TestCase {
 
-    // extends AbstractBasicCompatabilityTestCase {
+    // extends AbstractBasicClassCompatabilityTestCase {
 
     public void testNothing() {
         // remove this method,

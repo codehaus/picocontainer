@@ -620,21 +620,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         assertEquals("Lookup of unknown key should return null", null, pico.getComponent("unknown"));
     }
 
-    public void testDuplicateRegistration() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        pico.registerComponent("one", new SimpleTouchable());
-        try {
-            pico.registerComponent("one", new SimpleTouchable());
-            fail("Should have barfed with dupe registration");
-        } catch (DuplicateComponentKeyRegistrationException e) {
-            // expected
-            assertTrue("Wrong key", e.getDuplicateKey() == "one");
-//            assertTrue("Wrong component", e.getComponent() instanceof SimpleTouchable);
-//            assertTrue("Wrong message: " + e.getMessage(), e.getMessage().startsWith("Key: one duplicated, cannot register:"));
-        }
-    }
-
     public void testHasComponentByKeyForObjectRegistration() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 

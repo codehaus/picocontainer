@@ -4,12 +4,19 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 
 = NanoWar Basics =
 
-Look at this nice Juicer. It was grabbed from CVS.
+Many component models in the servlet world share a common limitation: They must have an empty constructor. This applies to standard servlets, but also non-standard component models such as WebWork, WebWork2 and Struts.
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/org/picocontainer/doc/introduction/Juicer.java|lineNumbers=true}
+In many cases a servlet or an action needs to communicate with other objects or services such as persistent storage or other functionality in other classes. In other words, they generally have dependencies.
 
-Nice, huh?
+Because no objects can be passed into the constructor of a servlet or an action, dependencies must be established in a different way. It is therefore quite common that servlets or actions either instantiate these dependencies themselves, or use some sort of lookup mechanism to establish these dependencies.
 
+As described in [reference to a more general chapter, perhaps the di chapter] using mechanism like this makes it very hard to test servlets or actions in isolation, that is - outside the container. This in turn adds to the complexity of the development process, since servlets and actions typically have to be deployed inside a servlet container in order to be tested. Many people only rely on tools like Cactus to test servlets and actions. This kind of integration testing is important, but too cumbersome for rapid development.
+
+NanoWar is a component that allows servlets and actions to benefit from dependency injection. They can thereby be tested outside the container by passing in dependencies (typically mock objects) via their constructors.
+
+(This is true for actions, not servlets - until we provide hooks into e.g. Jetty or Tomcat, but the containers on the app/session/request scope serve a similar purpose - although not as nice.)
+
+TODO:
 - Nanowar Servlet basics
   - current servlet limitations and drawbacks
     - testing

@@ -5,6 +5,7 @@
      ! is not checked out as a sibling to the book module.
     -->
     <property name="java.module.url" value="file:../java"/>
+    <property name="format" value="html"/>
     
     <target name="slurp">
         <taskdef classname="snippet.ant.SlurpTask" name="slurp">
@@ -12,8 +13,6 @@
                 <fileset dir="lib"/>
             </classpath>
         </taskdef>
-        <echo>${java.module.url}</echo>
-        
 
         <mkdir dir="target/url-replaced"/>
         <copy todir="target/url-replaced" overwrite="true">
@@ -33,9 +32,9 @@
         <exec dir="." executable="python">
             <arg line="txt2tags/txt2tags"/>
             <arg line="--target"/>
-            <arg line="html"/>
+            <arg line="${format}"/>
             <arg line="--outfile"/>
-            <arg line="target/book.html"/>
+            <arg line="target/book.${format}"/>
             <arg line="--toc"/>
             <arg line="--enum-title"/>
             <arg line="target/slurped/book.t2t"/>

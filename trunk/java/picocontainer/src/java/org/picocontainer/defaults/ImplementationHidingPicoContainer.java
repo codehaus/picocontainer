@@ -193,6 +193,10 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         delegate.removeChildContainer(child);
     }
 
+    public List getComponentKeys() {
+        return delegate.getComponentKeys();
+    }
+
     private class InnerMutablePicoContainer extends DefaultPicoContainer {
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
@@ -202,6 +206,5 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             componentAdapter.setContainer(ImplementationHidingPicoContainer.this);
         }
     }
-
 
 }

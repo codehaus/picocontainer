@@ -37,6 +37,15 @@ import java.lang.reflect.Proxy;
  * @version $Revision$
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
+    private static Method hotswap;
+    static {
+        try {
+            hotswap = Swappable.class.getMethod("hotswap", new Class[]{Object.class});
+        } catch (NoSuchMethodException e) {
+            throw new InternalError();
+        }
+    }
+
     private final InterfaceFinder interfaceFinder = new InterfaceFinder();
     private final boolean strict;
 
@@ -70,9 +79,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         } else {
             interfaces = interfaceFinder.getAllInterfaces(getDelegate().getComponentImplementation());
         }
-        Class[] swappableAugmentedInterfaces = new Class[interfaces.length + 1];
-        swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
-        System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);
         if (interfaces.length == 0) {
             if(strict) {
                 throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
@@ -80,6 +86,9 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                 return getDelegate().getComponentInstance();
             }
         }
+        Class[] swappableAugmentedInterfaces = new Class[interfaces.length + 1];
+        swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
+        System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);
         final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
@@ -91,7 +100,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         return super.getComponentInstance();
     }
 
-    private class DelegatingInvocationHandler implements InvocationHandler, Swappable {
+    private class DelegatingInvocationHandler implements InvocationHandler {
         private final ImplementationHidingComponentAdapter adapter;
         private Object delegatedInstance;
 
@@ -105,15 +114,15 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                 if (method.equals(InterfaceFinder.hashCode)) {
                     // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                     // return cached proxies. We want a unique hashCode for each created proxy!
-                    return new Integer(System.identityHashCode(DelegatingInvocationHandler.this));
+                    return new Integer(System.identityHashCode(this));
                 }
                 if (method.equals(InterfaceFinder.equals)) {
                     return new Boolean(proxy == args[0]);
                 }
                 // If it's any other method defined by Object, call on ourself.
-                return method.invoke(DelegatingInvocationHandler.this, args);
-            } else if (declaringClass.equals(Swappable.class)) {
                 return method.invoke(this, args);
+            } else if (hotswap.equals(method)) {
+                return hotswap(args[0]);
             } else {
                 if (delegatedInstance == null) {
                     delegatedInstance = adapter.getDelegatedComponentInstance();
@@ -122,7 +131,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             }
         }
 
-        public Object __hotSwap(Object newSubject) {
+        private Object hotswap(Object newSubject) {
             Object result = delegatedInstance;
             delegatedInstance = newSubject;
             return result;

@@ -87,7 +87,7 @@ public class FarquharTestCase extends TestCase {
 
         // Let's swap the cheese without creating a new omelette
         Swappable swappableCheese = (Swappable) flexibleOmelette.getCheese();
-        swappableCheese.__hotSwap(new Roquefort());
+        swappableCheese.hotswap(new Roquefort());
         assertEquals("Roquefort", flexibleOmelette.getCheese().getName());
     }
 

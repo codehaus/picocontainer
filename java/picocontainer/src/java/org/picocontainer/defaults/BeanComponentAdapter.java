@@ -24,11 +24,12 @@ import java.util.Set;
  * Instantiates components using empty constructors and
  * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
  * For easy setting of primitive properties, also see {@link BeanPropertyComponentAdapter}.
- * <p>
+ * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
  * </em>
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
@@ -42,43 +43,35 @@ public class BeanComponentAdapter extends DecoratingComponentAdapter {
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Object result = super.getComponentInstance();
 
-        Class[] deps = getSetterTypes();
-        ComponentAdapter[] componentAdapters = new ComponentAdapter[deps.length];
-        for (int i = 0; i < componentAdapters.length; i++) {
-            componentAdapters[i] = getContainer().getComponentAdapterOfType(deps[i]);
-        }
-        setDependencies(result, componentAdapters);
+        setDependencies(result);
         return result;
     }
 
-    private Class[] getSetterTypes() throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Method[] setters = getSetters();
-        Class[] dependencies = new Class[setters.length];
-        for (int i = 0; i < setters.length; i++) {
-            dependencies[i] = setters[i].getParameterTypes()[0];
-        }
-        return dependencies;
-    }
-
-    private void setDependencies(Object componentInstance, ComponentAdapter[] adapterDependencies) {
+    private void setDependencies(Object componentInstance) {
         Set unsatisfiableDependencyTypes = new HashSet();
         Method[] setters = getSetters();
         for (int i = 0; i < setters.length; i++) {
             Method setter = setters[i];
-            ComponentAdapter adapterDependency = adapterDependencies[i];
-            if(adapterDependency != null) {
-                Object dependency = adapterDependency.getComponentInstance();
-                try {
-                    setter.invoke(componentInstance, new Object[]{dependency});
-                } catch (Exception e) {
-                    throw new PicoIntrospectionException(e);
-                }
-            } else {
-                unsatisfiableDependencyTypes.add(setter.getParameterTypes()[0]);
+            Class type = setter.getParameterTypes()[0];
+            Object dependency = getDependencyInstance(type, unsatisfiableDependencyTypes);
+            try {
+                setter.invoke(componentInstance, new Object[]{dependency});
+            } catch (Exception e) {
+                throw new PicoIntrospectionException(e);
             }
         }
-        if(!unsatisfiableDependencyTypes.isEmpty()) {
+        if (!unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
+        }
+    }
+
+    private Object getDependencyInstance(Class type, Set unsatisfiableDependencyTypes) {
+        ComponentAdapter adapterDependency = getContainer().getComponentAdapterOfType(type);
+        if (adapterDependency != null) {
+            return adapterDependency.getComponentInstance();
+        } else {
+            unsatisfiableDependencyTypes.add(type);
+            return null;
         }
     }
 

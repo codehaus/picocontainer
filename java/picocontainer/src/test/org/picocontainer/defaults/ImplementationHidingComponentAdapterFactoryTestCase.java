@@ -91,7 +91,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
-        Man oldMan = (Man) ((Swappable) man).__hotSwap(newMan);
+        Man oldMan = (Man) ((Swappable) man).hotswap(newMan);
 
         wife.getMan().kiss();
         assertTrue(newMan.wasKissed());
@@ -119,7 +119,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
-        Man oldMan = (Man) ((Swappable) man).__hotSwap(newMan);
+        Man oldMan = (Man) ((Swappable) man).hotswap(newMan);
 
         wife.getMan().kiss();
         assertFalse(oldMan.wasKissed());
@@ -171,7 +171,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         List l = (List) pico.getComponentInstance("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
-        ArrayList oldSubject = (ArrayList) ((Swappable) l).__hotSwap(newList);
+        ArrayList oldSubject = (ArrayList) ((Swappable) l).hotswap(newList);
         assertEquals("Hello", oldSubject.get(0));
         assertTrue(l.isEmpty());
         l.add("World");
@@ -179,11 +179,11 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public interface OtherSwappable {
-        Object __hotSwap(Object newSubject);
+        Object hotswap(Object newSubject);
     }
 
     public static class OtherSwappableImpl implements OtherSwappable {
-        public Object __hotSwap(Object newSubject) {
+        public Object hotswap(Object newSubject) {
             return "TADA";
         }
     }
@@ -194,9 +194,9 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         OtherSwappable os = (OtherSwappable) pico.getComponentInstance("os");
         OtherSwappable os2 = new OtherSwappableImpl();
 
-        assertEquals("TADA", os.__hotSwap(os2));
+        assertEquals("TADA", os.hotswap(os2));
         Swappable os_ = (Swappable) os;
-        assertEquals("TADA", os_.__hotSwap(os2));
+        assertEquals("TADA", os_.hotswap(os2));
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {

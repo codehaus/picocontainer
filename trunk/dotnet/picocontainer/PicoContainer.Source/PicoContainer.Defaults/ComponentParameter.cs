@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// A ComponentParameter should be used to pass in a particular component

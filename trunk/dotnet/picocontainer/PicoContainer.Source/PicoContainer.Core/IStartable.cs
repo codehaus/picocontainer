@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
 	/// An interface which is implemented by components that can be started and stopped. 

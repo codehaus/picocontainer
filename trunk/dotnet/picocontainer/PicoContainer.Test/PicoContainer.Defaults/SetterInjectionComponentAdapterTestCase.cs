@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Security;
-using PicoContainer;
-using PicoContainer.Defaults;
+using PicoContainer.Core;
+using PicoContainer.Core.Defaults;
 using NUnit.Framework;
 using Test.Tck;
 using Test.TestModel;

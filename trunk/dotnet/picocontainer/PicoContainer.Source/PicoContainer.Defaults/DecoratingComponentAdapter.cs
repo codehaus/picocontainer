@@ -10,9 +10,9 @@
  *****************************************************************************/
 
 using System;
-using PicoContainer;
+using PicoContainer.Core;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// Decorates a Component adapter, used for combining the functionality of multiple IComponentAdapters
@@ -55,7 +55,7 @@ namespace PicoContainer.Defaults
 		/// <summary>
 		/// Verify that all dependencies for this adapter can be satisifed.
 		/// </summary>
-		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
+		/// <exception cref="PicoContainer.Core.PicoIntrospectionException">if the verification failed</exception>
 		public virtual void Verify(IPicoContainer container)
 		{
 			theDelegate.Verify(container);

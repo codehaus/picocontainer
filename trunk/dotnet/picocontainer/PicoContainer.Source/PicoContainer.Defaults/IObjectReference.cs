@@ -9,7 +9,7 @@
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	///  A way to refer to objects that are stored in awkward places

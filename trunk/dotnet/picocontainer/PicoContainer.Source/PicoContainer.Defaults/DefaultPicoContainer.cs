@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections;
-using PicoContainer;
+using PicoContainer.Core;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class DefaultPicoContainer : IMutablePicoContainer, IDisposable

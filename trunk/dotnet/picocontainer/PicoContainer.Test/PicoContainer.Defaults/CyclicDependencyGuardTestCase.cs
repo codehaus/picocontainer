@@ -1,6 +1,6 @@
 using System.Threading;
 using NUnit.Framework;
-using PicoContainer.Defaults;
+using PicoContainer.Core.Defaults;
 
 namespace Test.Defaults
 {

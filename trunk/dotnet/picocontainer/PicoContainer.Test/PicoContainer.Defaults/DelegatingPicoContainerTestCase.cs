@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using PicoContainer.Defaults;
-using PicoContainer;
-using PicoContainer.Tests.TestModel;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core;
+using PicoContainer.Core.Tests.TestModel;
 
 namespace Test.Defaults
 {

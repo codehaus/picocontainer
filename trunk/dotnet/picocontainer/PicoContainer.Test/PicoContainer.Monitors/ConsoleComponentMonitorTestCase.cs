@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using PicoContainer.Monitors;
+using PicoContainer.Core.Monitors;
 
 namespace Test.Monitors
 {

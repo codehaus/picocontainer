@@ -10,7 +10,7 @@
  *****************************************************************************/
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// ComponentAdapter initializing the component only once. Reusing the component.
@@ -44,7 +44,7 @@ namespace PicoContainer.Defaults
 		/// Gets the component instance. Only one instance is created of the type
 		/// </summary>
 		/// <returns>a component instance</returns>
-		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
+		/// <exception cref="PicoContainer.Core.PicoInitializationException">if the component could not be instantiated.</exception>    
 		/*public override object ComponentInstance
 		{
 			get

@@ -3,9 +3,9 @@ using System.Collections;
 using NMock;
 using NMock.Constraints;
 using NUnit.Framework;
-using PicoContainer;
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+using PicoContainer.Core;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core.Tests.TestModel;
 
 namespace Test.Defaults
 {

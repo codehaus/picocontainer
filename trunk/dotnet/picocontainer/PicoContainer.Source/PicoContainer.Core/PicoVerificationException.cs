@@ -8,32 +8,35 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
-
 using System;
+using System.Text;
+using System.Collections;
 using System.Runtime.Serialization;
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
-	/// Exception that is thrown when there is a problem registering a component with the container
-	/// or another part of the PicoContainer API, for example, when a request for a component is ambiguous.
+	/// Exception that is thrown when there is a problem with the internal state of the container or
+	/// another part of the PicoContainer API, for example when a needed dependency cannot be resolved.
 	/// </summary>
 	[Serializable]
-	public class PicoRegistrationException : PicoException
+	public class PicoVerificationException : PicoException
 	{
+		private IList nestedExceptions = new ArrayList();
+
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class.
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class.
 		/// </summary>
 		/// <remarks>
 		/// This constructor initializes the Message property of the new instance to a system-supplied message 
-		/// that describes the error, such as "PicoContainer caused an exception." 
+		/// that describes the error, such as "Verification of the conatainer failed." 
 		/// </remarks>
-		public PicoRegistrationException()
+		public PicoVerificationException() : base("Verification of the conatainer failed.")
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a specified error message.
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class with a specified error message.
 		/// </summary>
 		/// <remarks>
 		/// This constructor initializes the Message property of the new instance using the message parameter.
@@ -41,12 +44,12 @@ namespace PicoContainer
 		/// <param name="ex">The exception that is the cause of the current exception. 
 		/// If the innerException parameter is not a null reference (Nothing in Visual Basic), 
 		/// the current exception is raised in a catch block that handles the inner exception.</param>
-		public PicoRegistrationException(Exception ex) : base(ex)
+		public PicoVerificationException(Exception ex) : base(ex.Message, ex)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a 
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class with a 
 		/// reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <remarks>
@@ -54,12 +57,12 @@ namespace PicoContainer
 		/// passed in exception. 
 		/// </remarks>
 		/// <param name="message">The message that describes the error.</param>
-		public PicoRegistrationException(string message) : base(message)
+		public PicoVerificationException(string message) : base(message)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a specified error message 
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class with a specified error message 
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <remarks>
@@ -70,12 +73,54 @@ namespace PicoContainer
 		/// </remarks>
 		/// <param name="message">The message that describes the error.</param>
 		/// <param name="ex">The exception that caused the error</param>
-		public PicoRegistrationException(string message, Exception ex) : base(message, ex)
+		public PicoVerificationException(string message, Exception ex) : base(message, ex)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with serialized data.
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class with a list of exceptions 
+		/// that where thrown during the verification.
+		/// </summary>
+		/// <remarks>
+		/// This constructor initializes the Message property of the new instance to a system-supplied message 
+		/// that describes the error, such as "Verification of the conatainer failed." 
+		/// </remarks>
+		/// <param name="nestedExceptions">a list of exceptions occurred during verification.</param>
+		public PicoVerificationException(IList nestedExceptions)
+		{
+			this.nestedExceptions = nestedExceptions;
+		}
+
+		/// <summary>
+		/// Readonly property containing a list of exceptions thrown during the verification of the container.
+		/// </summary>
+		/// <remarks>
+		/// Can be null (Nothing in VisualBasic).
+		/// </remarks>
+		public IList NestedExceptions
+		{
+			get { return nestedExceptions; }
+		}
+
+		/// <summary>
+		/// Returns a string containing all errors occured during verification
+		/// </summary>
+		public override string Message
+		{
+			get
+			{
+				StringBuilder buff = new StringBuilder(base.Message);
+				foreach (Exception ex in nestedExceptions)
+				{
+					buff.Append(ex.Message);
+					buff.Append("\n");
+				}
+				return buff.ToString();
+			}
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoException"/> class with serialized data.
 		/// </summary>
 		/// <remarks>
 		/// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.
@@ -84,7 +129,7 @@ namespace PicoContainer
 		/// object data about the exception being thrown.</param>
 		/// <param name="context">The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual 
 		/// information about the source or destination. </param>
-		protected PicoRegistrationException(SerializationInfo info, StreamingContext context) : base(info, context)
+		protected PicoVerificationException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 	}

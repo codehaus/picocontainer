@@ -1,6 +1,6 @@
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// Abstract utility class to detect recursion cycles.  Derive from this class and implement 

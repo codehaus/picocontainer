@@ -16,10 +16,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Collections;
 using NUnit.Framework;
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+using PicoContainer.Core.Defaults;
+using PicoContainer.Core.Tests.TestModel;
 
-namespace PicoContainer.Tests.Tck
+namespace PicoContainer.Core.Tests.Tck
 {
 	/// <summary>
 	/// Summary description for AbstractPicoContainerTestCase.

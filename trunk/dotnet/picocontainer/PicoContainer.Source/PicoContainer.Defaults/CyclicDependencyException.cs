@@ -11,10 +11,10 @@
 
 using System;
 using System.Collections;
-using PicoContainer;
-using PicoContainer.Utils;
+using PicoContainer.Core;
+using PicoContainer.Core.Utils;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	[Serializable]
 	public class CyclicDependencyException : PicoInitializationException

@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// Summary description for CachingComponentAdapterFactory.

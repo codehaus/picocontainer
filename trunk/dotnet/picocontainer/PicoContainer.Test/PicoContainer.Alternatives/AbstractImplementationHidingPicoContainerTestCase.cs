@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
-using PicoContainer;
-using PicoContainer.Tests.Tck;
+using PicoContainer.Core;
+using PicoContainer.Core.Tests.Tck;
 
 namespace Test.Alternatives
 {

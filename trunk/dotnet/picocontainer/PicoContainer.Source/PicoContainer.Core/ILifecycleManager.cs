@@ -1,5 +1,5 @@
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
 	/// Summary description for LifecycleManager.

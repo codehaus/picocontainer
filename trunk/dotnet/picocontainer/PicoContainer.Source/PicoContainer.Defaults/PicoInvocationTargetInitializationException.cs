@@ -11,11 +11,11 @@
 
 using System;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// The PicoInvocationTargetInitializationException is thrown when an error occurs while creating an 
-	/// instance of a registered <see cref="PicoContainer.IComponentAdapter"/>.
+	/// instance of a registered <see cref="PicoContainer.Core.IComponentAdapter"/>.
 	/// </summary>
 	/// <remarks>
 	/// </remarks>

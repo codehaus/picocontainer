@@ -1,7 +1,7 @@
 using System;
-using PicoContainer.Defaults;
+using PicoContainer.Core.Defaults;
 
-namespace PicoContainer.Alternatives
+namespace PicoContainer.Core.Alternatives
 {
 	[Serializable]
 	public class CachingPicoContainer : AbstractDelegatingMutablePicoContainer

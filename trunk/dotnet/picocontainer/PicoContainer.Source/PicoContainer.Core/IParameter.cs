@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer
+namespace PicoContainer.Core
 {
 	/// <summary>
 	/// This class represents an argument to a constructor. </summary>
@@ -19,9 +19,9 @@ namespace PicoContainer
 	/// have finer control over what arguments are passed to a particular constructor.</remarks>
 	/// <see cref="IMutablePicoContainer.RegisterComponentImplementation(object,Type,IParameter[])"/> a method on the 
 	/// <see cref="IMutablePicoContainer"/> interface which allows passing in of an array of <example>IParameter</example>s.
-	/// <see cref="PicoContainer.Defaults.ComponentParameter"/> an implementation of this interface that allows you to specify the
+	/// <see cref="Defaults.ComponentParameter"/> an implementation of this interface that allows you to specify the
 	/// key used for resolving the parameter.
-	/// <see cref="PicoContainer.Defaults.ConstantParameter"/> an implementation of this interface that allows you to specify a
+	/// <see cref="Defaults.ConstantParameter"/> an implementation of this interface that allows you to specify a
 	/// constant that will be used for resolving the parameter.
 	public interface IParameter
 	{

@@ -11,9 +11,9 @@
 
 using System;
 using System.Runtime.Serialization;
-using PicoContainer;
+using PicoContainer.Core;
 
-namespace PicoContainer.Defaults
+namespace PicoContainer.Core.Defaults
 {
 	/// <summary>
 	/// An exception thrown when a type could not be assigned.

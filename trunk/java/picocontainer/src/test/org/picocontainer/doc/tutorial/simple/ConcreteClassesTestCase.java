@@ -7,16 +7,16 @@ import junit.framework.TestCase;
 public class ConcreteClassesTestCase extends TestCase {
 
     public void testAssembleComponentsAndInstantiateAndUseThem() {
-        // START SNIPPET:
+        // START SNIPPET: assemble
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(Boy.class);
         pico.registerComponentImplementation(Girl.class);
-        // END SNIPPET:
+        // END SNIPPET: assemble
 
-        // START SNIPPET:
+        // START SNIPPET: instantiate-and-use
         Girl girl = (Girl) pico.getComponentInstance(Girl.class);
         girl.kissSomeone();
-        // END SNIPPET:
+        // END SNIPPET: instantiate-and-use
     }
 
 

@@ -367,7 +367,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated Use accept(LifecycleVisitor.STARTER, Startable.class, true)
+     * @deprecated 1.1 - Use accept(LifecycleVisitor.STARTER)
      */
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -377,7 +377,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated Use accept(LifecycleVisitor.STOPPER, Startable.class, false)
+     * @deprecated 1.1 - Use accept(LifecycleVisitor.STOPPER)
      */
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -387,7 +387,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated Use accept(LifecycleVisitor.DISPOSER, Disposable.class, false)
+     * @deprecated 1.1 - Use accept(LifecycleVisitor.DISPOSER)
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");

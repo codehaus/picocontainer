@@ -10,7 +10,7 @@ import java.io.File;
 public class ClassLoaderFactoryTestCase extends TestCase {
 
 	public void testIt() throws Exception {
-		ClassLoaderFactory clf = new ClassLoaderFactory();
+		ClassLoaderFactory clf = new ClassLoaderFactory(new DefaultMcaDeployer());
         new File("test").mkdir();
 		ClassLoader classLoader = clf.build("test");
 		assertNotNull(classLoader);

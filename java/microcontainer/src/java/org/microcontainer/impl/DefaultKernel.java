@@ -35,9 +35,9 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 
 	public DefaultKernel(McaDeployer mcaDeployer) {
 		contextMap = new HashMap();
-		classLoaderFactory = new ClassLoaderFactory();
+		classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
 		this.mcaDeployer = mcaDeployer;
-		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler();
+		groovyDeploymentScriptHandler = new GroovyDeploymentScriptHandler(mcaDeployer);
 	}
 
 	protected void doDeploy(String context, URL mcaFile, boolean autoStart) throws DeploymentException {

@@ -5,6 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.microcontainer.DeploymentException;
+import org.microcontainer.McaDeployer;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
@@ -21,10 +22,10 @@ public class GroovyDeploymentScriptHandler {
 	protected ClassLoaderFactory classLoaderFactory = null;
 	protected McaDeployer mcaDeployer = null;
 
-	public GroovyDeploymentScriptHandler() {
+	public GroovyDeploymentScriptHandler(McaDeployer mcaDeployer) {
 		// todo picotize
-		classLoaderFactory = new ClassLoaderFactory();
-		mcaDeployer = new McaDeployer();
+		classLoaderFactory = new ClassLoaderFactory(mcaDeployer);
+		this.mcaDeployer = mcaDeployer;
 	}
 
 	public PicoContainer handle(String contextName, boolean autoStart) throws DeploymentException {

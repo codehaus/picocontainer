@@ -10,6 +10,8 @@
 
 package org.microcontainer.impl;
 
+import org.microcontainer.McaDeployer;
+
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -23,11 +25,11 @@ import java.io.*;
  * @author Mike Ward
  * Responsible for deploying a MCA to the file system.
  */
-public class McaDeployer {
+public class DefaultMcaDeployer implements McaDeployer {
 	protected File workingDir = null;
 	protected File tempDir = null;
 
-	public McaDeployer() {
+	public DefaultMcaDeployer() {
 		// todo this should be configurable! Pico-tize?
 		workingDir = new File("work");
 		workingDir.mkdir();

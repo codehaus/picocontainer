@@ -21,12 +21,12 @@ import junit.framework.TestCase;
 /**
  * @author Mike Ward
  */
-public class McaDeployerTestCase extends TestCase {
-    private McaDeployer deployer;
+public class DefaultMcaDeployerTestCase extends TestCase {
+    private DefaultMcaDeployer deployer;
 	private File unitTestDir;
 
 	protected void setUp() throws Exception {
-		deployer = new McaDeployer();
+		deployer = new DefaultMcaDeployer();
 		unitTestDir = new File("work/unittest");
 	}
 
@@ -53,7 +53,7 @@ public class McaDeployerTestCase extends TestCase {
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
-		McaDeployer mcaDeployer = new McaDeployer();
+		DefaultMcaDeployer mcaDeployer = new DefaultMcaDeployer();
 		mcaDeployer.handleRemoteMCA(unitTestDir, connection);
 
 		validateMcaDeployedToWorkingDir();

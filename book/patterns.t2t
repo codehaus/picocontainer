@@ -1,7 +1,20 @@
-Constructor Dependency Injection - Applicable Patterns
-with PicoContainer
+Constructor Dependency Injection, with PicoContainer 
+Design Patterns
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
-= Patterns =
+= Design Patterns =
 
-Blah
+== What is a Design Pattern ? ==
+
+A Design Pattern is a solution to a commonly found development issue. It is named after the solution.  Singleton, Factory etc etc.
+
+This chapter deals with true patterns and pseudo patterns pertinent to IoC and CDI.
+
+== Applicable Design Patterns For CDI ==
+
+=== Interface & Implementation separation ===
+
+== Applicable Maxims For CDI ==
+
+=== Seperation Of Concerns ===
+

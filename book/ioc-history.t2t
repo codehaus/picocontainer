@@ -1,8 +1,10 @@
-Constructor Dependency Injection - Inverison of Control	
-with PicoContainer
+Constructor Dependency Injection, with PicoContainer 
+Inverison of Control	
 By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
 
 = Inversion of Control =
+
+== Not A Pattern In itself ==
 
 == In the beginning ==
 
@@ -12,9 +14,11 @@ DIP, Hollywood, OSGi, ATG Dynamo ...
 
 == Characterized ==
 
-Component Instantiation
-Initialisation
-Dependency Resolution
-Configuration
-Lifecycle
+=== Component Instantiation ===
+=== Initialisation ===
+=== Dependency Resolution ===
+=== Configuration ===
+=== Lifecycle ===
+
+
 

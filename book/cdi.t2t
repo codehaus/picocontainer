@@ -8,7 +8,12 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 %!include: antipatterns.t2t
 %!include: patterns.t2t
 %!include: dependency-injection.t2t
-%!include: ioc-history.t2t
+%!include: unit-testing.t2t
 %!include: simplepico.t2t
 %!include: hierarchies.t2t
+%!include: nanocontainer.t2t
+%!include: nanocontainer-groovy.t2t
 %!include: servlet.t2t
+%!include: decomposing-hairball-casestudy.t2t
+%!include: ioc-history.t2t
+

@@ -1,16 +1,15 @@
 package org.nanocontainer;
 
-import junit.framework.TestCase;
 import junit.framework.Assert;
+import junit.framework.TestCase;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.Lifecycle;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-import org.picocontainer.PicoContainer;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -77,7 +76,7 @@ public class NanoContainerTestCase extends TestCase {
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertEquals("<A<B<CC>B>A>!C!B!A", componentRecorder);
-        assertEquals("*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", monitorRecorder);
+        assertEquals("Should match the expression", "<A<B<CC>B>A>!C!B!A", componentRecorder);
+        assertEquals("Should match the expression", "*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", monitorRecorder);
     }
 }

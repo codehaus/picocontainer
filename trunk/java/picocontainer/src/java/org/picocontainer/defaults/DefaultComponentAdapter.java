@@ -83,14 +83,12 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
         if(!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         }
-        if (biggestConstructor == null) {
-            throw new NoSatisfiableConstructorsException(getComponentImplementation());
-        }
         return biggestConstructor;
     }
 
     private List getSatisfiableConstructors(List constructors, MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         List result = new ArrayList();
+        Set failedDependencies = new HashSet();
         for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
             Constructor constructor = (Constructor) iterator.next();
             Class[] parameterTypes = constructor.getParameterTypes();
@@ -101,15 +99,18 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                 ComponentAdapter adapter = currentParameters[i].resolveAdapter(componentRegistry);
                 if (adapter == null) {
                     failedDependency = true;
+                    failedDependencies.add(parameterTypes[i]);
                     break;
                 } else {
                     // we can't depend on ourself
                     if(adapter.equals(this)) {
                         failedDependency = true;
+                        failedDependencies.add(parameterTypes[i]);
                         break;
                     }
                     if(getComponentKey().equals(adapter.getComponentKey())) {
                         failedDependency = true;
+                        failedDependencies.add(parameterTypes[i]);
                         break;
                     }
                 }
@@ -118,16 +119,31 @@ public class DefaultComponentAdapter extends AbstractComponentAdapter {
                 result.add(constructor);
             }
         }
+        if(result.isEmpty()) {
+            throw new NoSatisfiableConstructorsException(getComponentImplementation(), failedDependencies);
+        }
+
         return result;
     }
 
     public Object getComponentInstance(MutablePicoContainer mutablePicoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
-            Class[] dependencyTypes = getDependencies(mutablePicoContainer);
-            ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
+            final Class[] dependencyTypes = getDependencies(mutablePicoContainer);
+            final ComponentAdapter[] adapterDependencies = new ComponentAdapter[dependencyTypes.length];
 
-            Parameter[] componentParameters = getParameters(mutablePicoContainer);
+            final Parameter[] componentParameters = getParameters(mutablePicoContainer);
+
+            if(componentParameters.length != adapterDependencies.length) {
+                throw new PicoInitializationException() {
+                    public String getMessage() {
+                        return "The number of specified parameters (" +
+                                componentParameters.length + ") doesn't match the number of arguments in the greediest satisfiable constructor (" +
+                                adapterDependencies.length + "). When parameters are explicitly specified, specify them in the correct order, and one for each constructor argument." +
+                                "The greediest satisfiable constructor takes the following arguments: " + Arrays.asList(dependencyTypes).toString();
+                    }
+                };
+            }
             for (int i = 0; i < adapterDependencies.length; i++) {
                 adapterDependencies[i] = componentParameters[i].resolveAdapter(mutablePicoContainer);
             }

@@ -126,8 +126,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testBigamy() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
-                new ConstructorComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
         pico.registerComponentImplementation(Woman.class, Wife.class);
         Woman firstWife = (Woman) pico.getComponentInstance(Woman.class);
         Woman secondWife = (Woman) pico.getComponentInstance(Woman.class);
@@ -135,17 +134,12 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     }
 
-    //TODO we need to be able to control which interfaces are subject to dynamic proxy
-    // we used to have this feature with registerComponentImplementationByType or somesuch.
-
-    public void do_nottestProxiedWifeIsNotSuperWoman() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
-                new ConstructorComponentAdapterFactory()));
+    public void testComponentsRegisteredWithClassKeyOnlyImplementThatInterface() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorComponentAdapterFactory()));
         pico.registerComponentImplementation(Woman.class, Wife.class);
         Woman wife = (Woman) pico.getComponentInstance(Woman.class);
         assertFalse("Wife should not be castable to SuperWoman, as she should be proxied to Woman only", wife instanceof SuperWoman);
     }
-
 
     public static class Bad implements Serializable {
         public Bad() {
@@ -162,6 +156,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         List list2 = (List) pico.getComponentInstance("l");
 
         assertNotSame(list1, list2);
+        assertFalse(list1 instanceof ArrayList);
 
         list1.add("Hello");
         assertTrue(list1.contains("Hello"));
@@ -174,7 +169,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         List l = (List) pico.getComponentInstance("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
-        ArrayList oldSubject = (ArrayList) ((Swappable)l).__hotSwap(newList);
+        ArrayList oldSubject = (ArrayList) ((Swappable) l).__hotSwap(newList);
         assertEquals("Hello", oldSubject.get(0));
         assertTrue(l.isEmpty());
         l.add("World");

@@ -109,8 +109,9 @@ public class NanoWebServletTestCase extends TestCase {
         assertEquals("2003", resultYear);
 
         Method getCars = action.getClass().getMethod("getCars", null);
-        Object resultCars = getCars.invoke(action, null);
-        assertEquals(Arrays.asList(new String[]{"renault", "fiat"}), resultCars);
+        String[] resultCars = (String[]) getCars.invoke(action, null);
+        String[] expectedCars = new String[]{"renault", "fiat"};
+        assertEquals(Arrays.asList(expectedCars), Arrays.asList(resultCars));
 
         verifyMocks();
     }

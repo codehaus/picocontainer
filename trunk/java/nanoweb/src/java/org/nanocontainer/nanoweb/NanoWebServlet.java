@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 /**
  * Dispatcher servlet for NanoWeb.
@@ -58,8 +59,6 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             Object action = getAction(actionPath, httpServletRequest);
             setPropertiesWithOgnl(httpServletRequest, action);
             String result = execute(action);
-
-            System.out.println("result = " + result);
 
             httpServletRequest.setAttribute("action", action);
             dispatcher.dispatch(httpServletRequest, httpServletResponse, actionPath, result);
@@ -110,15 +109,24 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         for (Iterator iterator = parameterKeys.iterator(); iterator.hasNext();) {
             String parameterKey = (String) iterator.next();
             Object value = parameterMap.get(parameterKey);
-            if (value instanceof String[]) {
-                value = Arrays.asList((String[]) value);
-            }
             try {
                 Ognl.setValue(parameterKey, action, value);
             } catch (OgnlException e) {
-                e.printStackTrace();
-                throw new ServletException(e);
+                if (value instanceof String[]) {
+                    setPropertyAsList(value, parameterKey, action);
+                } else {
+                    throw new ServletException(e);
+                }
             }
+        }
+    }
+
+    private void setPropertyAsList(Object value, String parameterKey, Object action) throws ServletException {
+        List valuesAsList = Arrays.asList((String[]) value);
+        try {
+            Ognl.setValue(parameterKey, action, valuesAsList);
+        } catch (OgnlException e1) {
+            throw new ServletException(e1);
         }
     }
 

@@ -15,6 +15,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
+import java.io.File;
+import java.net.MalformedURLException;
+
 public class DefaultNanoRhinoScriptable extends ScriptableObject implements NanoRhinoScriptable {
 
     private ReflectionFrontEnd reflectionFrontEnd;
@@ -72,5 +75,12 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
         DefaultNanoRhinoScriptable parent = (DefaultNanoRhinoScriptable) thisObj;
         DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];
         parent.reflectionFrontEnd.getPicoContainer().addChild(child.reflectionFrontEnd.getPicoContainer());
+    }
+
+    public static void jsFunction_addFileClassPathJar(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws MalformedURLException {
+        DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
+        ReflectionFrontEnd rfe = rhino.reflectionFrontEnd;
+        File file = new File((String) args[0]);
+        rfe.addClassLoaderURL(file.toURL());
     }
 }

@@ -28,8 +28,9 @@ import java.util.Map;
 
 // TODO: This class should focus on ThreadLocal functionality and not do proxy magic at the same time!
 // TODO: These are two entirely different concerns and should be in different classes. (AH).
+// TODO: Raise an issue and we can discuss. (joehni).
 /**
- * A {@link ComponentAdapter}that realizes a {@link ThreadLocal}component
+ * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} component
  * instance. The adapter creates proxy instances, that will create the necessary
  * instances on-the-fly invoking the methods of the instance.
  * @author J&ouml;rg Schaible
@@ -41,7 +42,7 @@ public class ThreadLocalComponentAdapter
 
     /**
      * Construct a ThreadLocalComponentAdapter.
-     * @param delegate The {@link ComponentAdapter}to delegate.
+     * @param delegate The {@link ComponentAdapter} to delegate.
      */
     public ThreadLocalComponentAdapter(ComponentAdapter delegate) {
         super(new CachingComponentAdapter(delegate, new ThreadLocalReference()));

@@ -219,7 +219,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             o.hashCode();
         }
         List result = new ArrayList();
-        for (Iterator iterator = instantiantionOrderedComponentAdapters.iterator(); iterator.hasNext();) {
+        List copy = new ArrayList(instantiantionOrderedComponentAdapters);
+        for (Iterator iterator = copy.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             result.add(componentAdapter.getComponentInstance(this));
         }

@@ -16,6 +16,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class DefaultNanoRhinoScriptable extends ScriptableObject implements NanoRhinoScriptable {
@@ -74,13 +75,20 @@ public class DefaultNanoRhinoScriptable extends ScriptableObject implements Nano
     public static void jsFunction_addContainer(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
         DefaultNanoRhinoScriptable parent = (DefaultNanoRhinoScriptable) thisObj;
         DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];
-        parent.reflectionFrontEnd.getPicoContainer().addChild(child.reflectionFrontEnd.getPicoContainer());
+        MutablePicoContainer childContainer = child.reflectionFrontEnd.getPicoContainer();
+        MutablePicoContainer parentContainer = parent.reflectionFrontEnd.getPicoContainer();
+        parentContainer.addChild(childContainer);
     }
 
-    public static void jsFunction_addFileClassPathJar(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws MalformedURLException {
+    public static void jsFunction_addFileClassPathJar(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws IOException {
         DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
         ReflectionFrontEnd rfe = rhino.reflectionFrontEnd;
-        File file = new File((String) args[0]);
+        String path = (String) args[0];
+        File file = new File(path);
+        if (!file.exists()) {
+            throw new IOException(file.getAbsolutePath() + " doesn't exist");
+        }
         rfe.addClassLoaderURL(file.toURL());
     }
+
 }

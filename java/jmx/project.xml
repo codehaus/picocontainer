@@ -10,53 +10,11 @@
             <id>picocontainer</id>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>
+        </dependency>       
 
         <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
-            <version>${pom.currentVersion}</version>
-        </dependency>
-
-        <dependency>
-            <id>commons-collections</id>
-            <version>2.1</version>
-            <url>http://jakarta.apache.org/</url>
-        </dependency>
-
-        <dependency>
-            <id>commons-digester</id>
-            <version>1.4.1</version>
-            <url>http://jakarta.apache.org/commons/digester/</url>
-        </dependency>
-
-        <dependency>
-            <id>commons-logging</id>
-            <version>1.0.3</version>
-            <url>http://jakarta.apache.org/commons/logging/</url>
-        </dependency>
-
-        <dependency>
-            <id>commons-beanutils</id>
-            <version>1.6.1</version>
-            <url>http://jakarta.apache.org/</url>
-        </dependency>
-
-        <dependency>
-            <id>mx4j+jmx</id>
-            <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <id>mx4j+tools</id>
-            <version>1.1.1</version>
+            <id>mx4j</id>
+            <version>2.0.1</version>
         </dependency>
 
     </dependencies>

@@ -215,7 +215,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             getComponentInstance(iterator.next());
         }
         List result = new ArrayList();
-        for (Iterator componentAdapters = instantiantionOrderedComponentAdapters.iterator(); componentAdapters.hasNext();) {
+        List instantiantionOrderedComponentAdaptersCopy = new ArrayList(instantiantionOrderedComponentAdapters);
+        for (Iterator componentAdapters = instantiantionOrderedComponentAdaptersCopy.iterator(); componentAdapters.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) componentAdapters.next();
             result.add(componentAdapter.getComponentInstance(this));
         }

@@ -25,7 +25,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     private final InterfaceFinder interfaceFinder = new InterfaceFinder();
 
     private MutablePicoContainer picoContainer;
-    private Object proxyInstance;
     private DelegatingInvocationHandler handler;
 
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
@@ -36,21 +35,19 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     public Object getComponentInstance(MutablePicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
-        if (proxyInstance == null) {
-            this.picoContainer = container;
-            Class[] interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
-            if (interfaces.length == 0) {
-                throw new PicoIntrospectionException() {
-                    public String getMessage() {
-                        return "Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.";
-                    }
-                };
-            }
-            proxyInstance = Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
-                    interfaces, handler);
-
-            container.addOrderedComponentAdapter(this);
+        this.picoContainer = container;
+        Class[] interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
+        if (interfaces.length == 0) {
+            throw new PicoIntrospectionException() {
+                public String getMessage() {
+                    return "Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.";
+                }
+            };
         }
+        Object proxyInstance = Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
+                interfaces, handler);
+
+        container.addOrderedComponentAdapter(this);
         return proxyInstance;
     }
 

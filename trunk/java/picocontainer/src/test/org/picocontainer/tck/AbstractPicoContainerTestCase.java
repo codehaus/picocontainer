@@ -1,6 +1,7 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
+import junit.framework.Assert;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -39,7 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This test tests (at least it should) test all the method in MutablePicoContainer
+ * This test tests (at least it should) all the methods in MutablePicoContainer.
  */
 public abstract class AbstractPicoContainerTestCase extends TestCase {
 
@@ -317,6 +318,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     public static class A {
         public A(B b, C c) {
+            Assert.assertNotNull(b);
+            Assert.assertNotNull(c);
         }
     }
     public static class B {
@@ -325,10 +328,13 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
     public static class D {
         public D(E e, B b) {
+            Assert.assertNotNull(e);
+            Assert.assertNotNull(b);
         }
     }
     public static class E {
         public E(D d) {
+            Assert.assertNotNull(d);
         }
     }
 

@@ -149,29 +149,29 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
     // TODO: remove? Only used from ParameterTestCase
     public static boolean isAssignableFrom(Class actual, Class requested) {
-        if (actual == Character.TYPE || actual == Character.class) {
-            return requested == Character.TYPE || requested == Character.class;
+        if (actual == char.class || actual == Character.class) {
+            return requested == char.class|| requested == Character.class;
         }
-        if (actual == Double.TYPE || actual == Double.class) {
-            return requested == Double.TYPE || requested == Double.class;
+        if (actual == double.class || actual == Double.class) {
+            return requested == double.class || requested == Double.class;
         }
-        if (actual == Float.TYPE || actual == Float.class) {
-            return requested == Float.TYPE || requested == Float.class;
+        if (actual == float.class || actual == Float.class) {
+            return requested == float.class || requested == Float.class;
         }
-        if (actual == Integer.TYPE || actual == Integer.class) {
-            return requested == Integer.TYPE || requested == Integer.class;
+        if (actual == int.class || actual == Integer.class) {
+            return requested == int.class || requested == Integer.class;
         }
-        if (actual == Long.TYPE || actual == Long.class) {
-            return requested == Long.TYPE || requested == Long.class;
+        if (actual == long.class || actual == Long.class) {
+            return requested == long.class || requested == Long.class;
         }
-        if (actual == Short.TYPE || actual == Short.class) {
-            return requested == Short.TYPE || requested == Short.class;
+        if (actual == short.class || actual == Short.class) {
+            return requested == short.class || requested == Short.class;
         }
-        if (actual == Byte.TYPE || actual == Byte.class) {
-            return requested == Byte.TYPE || requested == Byte.class;
+        if (actual == byte.class || actual == Byte.class) {
+            return requested == byte.class || requested == Byte.class;
         }
-        if (actual == Boolean.TYPE || actual == Boolean.class) {
-            return requested == Boolean.TYPE || requested == Boolean.class;
+        if (actual == boolean.class || actual == Boolean.class) {
+            return requested == boolean.class || requested == Boolean.class;
         }
         return actual.isAssignableFrom(requested);
     }

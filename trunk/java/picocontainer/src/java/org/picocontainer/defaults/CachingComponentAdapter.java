@@ -12,43 +12,27 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-
-import java.io.Serializable;
+import org.picocontainer.extras.DecoratingComponentAdapter;
 
 /**
  * This ComponentAdapter caches the instance.
  */
-public class CachingComponentAdapter implements ComponentAdapter, Serializable {
+public class CachingComponentAdapter extends DecoratingComponentAdapter {
 
     private Object componentInstance;
-    private ComponentAdapter delegate;
 
     public CachingComponentAdapter(ComponentAdapter delegate) {
-        this.delegate = delegate;
-    }
-
-    public Object getComponentKey() {
-        return delegate.getComponentKey();
-    }
-
-    public Class getComponentImplementation() {
-        return delegate.getComponentImplementation();
+        super(delegate);
     }
 
     public Object getComponentInstance(MutablePicoContainer picoContainer)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentInstance == null) {
-            componentInstance = delegate.getComponentInstance(picoContainer);
+            componentInstance = super.getComponentInstance(picoContainer);
             picoContainer.addOrderedComponentAdapter(this);
         }
         return componentInstance;
     }
-
-    public void verify(PicoContainer picoContainer) throws NoSatisfiableConstructorsException {
-        delegate.verify(picoContainer);
-    }
-
 }

@@ -58,11 +58,14 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            if (PicoContainer.class.isAssignableFrom(parameters[i])) {
-                componentParameters[i] = new ConstantParameter(getContainer());
-            } else {
+
+            // Oh No we don't. Its a long story, but that is an open door for hackers.
+
+            //if (PicoContainer.class.isAssignableFrom(parameters[i])) {
+            //    componentParameters[i] = new ConstantParameter(getContainer());
+            //} else {
                 componentParameters[i] = new ComponentParameter();
-            }
+            //}
         }
         return componentParameters;
     }

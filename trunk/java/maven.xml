@@ -88,6 +88,7 @@
         <util:available file="${basedir}/xdocs/navigation.xml">
             <j:set var="globalSiteDirectory">/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}</j:set> 
             ${pom.setSiteDirectory(globalSiteDirectory)}
+            <j:set var="_dev_null" value="${pom.reports.remove('maven-javadoc-plugin')}" />
         </util:available>
     </goal>
 

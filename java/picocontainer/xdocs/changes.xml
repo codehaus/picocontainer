@@ -45,6 +45,12 @@
                 - Return ComponentAdapter from registerXXX().
             </action>
 
+            <action dev="rinkrank" type="fix">
+                Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-65">PICO-65</a>
+                - ImplementationHidingComponentAdapter does not work properly with TransientComponentAdapters.
+            </action>
+
             <action dev="tastapod" type="add">
                 Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-69">PICO-69</a>

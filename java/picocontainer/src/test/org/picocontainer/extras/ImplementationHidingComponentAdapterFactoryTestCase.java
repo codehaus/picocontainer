@@ -14,6 +14,8 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.defaults.*;
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+    private ImplementationHidingComponentAdapterFactory implementationHiddingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
+    private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(implementationHiddingComponentAdapterFactory);
 
     public static interface Man {
         Woman getWoman();
@@ -63,8 +65,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         ComponentAdapterFactory caf = createComponentAdapterFactory();
         DefaultPicoContainer pico = new DefaultPicoContainer(caf);
 
-        ImplementationHidingComponentAdapter wifeAdapter = (ImplementationHidingComponentAdapter) caf.createComponentAdapter("wife", Wife.class, null);
-        ImplementationHidingComponentAdapter husbandAdapter = (ImplementationHidingComponentAdapter) caf.createComponentAdapter("husband", Husband.class, null);
+        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter) caf.createComponentAdapter("wife", Wife.class, null);
+        CachingComponentAdapter husbandAdapter = (CachingComponentAdapter) caf.createComponentAdapter("husband", Husband.class, null);
 
         pico.registerComponent(wifeAdapter);
         pico.registerComponent(husbandAdapter);
@@ -79,7 +81,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
-        Man oldMan = (Man) husbandAdapter.hotSwap(newMan);
+        ImplementationHidingComponentAdapter implementationHidingHusbandAdapter = (ImplementationHidingComponentAdapter) husbandAdapter.getDelegate();
+        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(newMan);
 
         wife.getMan().kiss();
         assertTrue(newMan.wasKissed());
@@ -97,8 +100,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         DefaultPicoContainer pico = new DefaultPicoContainer(createComponentAdapterFactory());
 
         // Register two classes with mutual dependencies in the constructor (!!!)
-        pico.registerComponentImplementation(Wife.class);
-        pico.registerComponentImplementation(Husband.class);
+        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter) pico.registerComponentImplementation(Wife.class);
+        CachingComponentAdapter husbandAdapter = (CachingComponentAdapter) pico.registerComponentImplementation(Husband.class);
 
         Woman wife = (Woman) pico.getComponentInstance(Wife.class);
         Man man = (Man) pico.getComponentInstance(Husband.class);
@@ -108,8 +111,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
         // Let the wife use another (single) man
         Man newMan = new Husband(null);
-        ImplementationHidingComponentAdapter husbandAdapter = (ImplementationHidingComponentAdapter) pico.findComponentAdapter(Husband.class);
-        Man oldMan = (Man) husbandAdapter.hotSwap(newMan);
+        ImplementationHidingComponentAdapter implementationHidingHusbandAdapter = (ImplementationHidingComponentAdapter) husbandAdapter.getDelegate();
+        Man oldMan = (Man) implementationHidingHusbandAdapter.hotSwap(newMan);
 
         wife.getMan().kiss();
         assertFalse(oldMan.wasKissed());
@@ -117,7 +120,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     }
 
-    public void XtestBigamy() {
+    public void testBigamy() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
                 new ConstructorComponentAdapterFactory()));
         pico.registerComponentImplementation(Woman.class, Wife.class);
@@ -127,7 +130,6 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
+        return cachingComponentAdapterFactory;
     }
-
 }

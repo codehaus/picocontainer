@@ -19,7 +19,7 @@ namespace Test.Defaults {
     }
 
     protected override IComponentAdapterFactory CreateComponentAdapterFactory() {
-      return new CachingComponentAdapterFactory(new ConstructorComponentAdapterFactory());
+      return new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
     }
 
     [Test]

@@ -38,7 +38,7 @@ namespace Test {
     }
 
     private IComponentAdapter CreateComponentAdapter() {
-      return new ConstructorComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
+      return new ConstructorInjectionComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
     }
 
   }

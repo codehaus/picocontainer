@@ -131,6 +131,7 @@ public class NanoContainerBuilderAopScriptTestCase extends GroovyTestCase {
     }    
     
     public void testExample() {
+        // START SNIPPET: example
         log = new StringBuffer()
         logger = new LoggingInterceptor(log)
         builder = new DynaopNanoContainerBuilder()
@@ -150,7 +151,8 @@ public class NanoContainerBuilderAopScriptTestCase extends GroovyTestCase {
         dao = nano.pico.getComponentInstance(Dao)
         customer = nano.pico.getComponentInstance(CustomerEntity)
         order = nano.pico.getComponentInstance(OrderEntity)
-        
+        // END SNIPPET: example        
+
         verifyIntercepted(dao, log)
         verifyMixin(customer)
         verifyMixin(order)

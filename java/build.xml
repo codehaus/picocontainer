@@ -184,14 +184,14 @@
     </echo>    
   </target>
 
-  <target name="cvsgrab">
+  <target name="cvsgrab" description="download sources with CVSGrab">
     <taskdef 
       name="cvsgrab" 
       classname="net.sourceforge.cvsgrab.CVSGrabTask" 
       classpath="${cvsgrab.home}/lib/cvs-grab.jar;${cvsgrab.home}/lib/hotsax.jar;${cvsgrab.home}/lib/jcvsii-light.jar"/>
 
     <cvsgrab 
-      destdir="${basedir}"
+      destdir="${basedir}/.."
       rootUrl="http://nanocontainer.cvs.codehaus.org/"
       cvsHost="cvs.codehaus.org"
       cvsRoot="/cvsroot/nanocontainer"

@@ -27,6 +27,8 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
+import java.io.Serializable;
+
 /**
  * A simple PicoContainer which allow multiple implementations of the same interface
  * and any component registered with the container is also registered into JMX
@@ -36,7 +38,7 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
  * @author Mauro Talevi
  * @version $Revision: 1.2 $
  */
-public class NanoMXContainer extends DefaultPicoContainer {
+public class NanoMXContainer extends DefaultPicoContainer implements Serializable {
 
     private MBeanServer mbeanServer;
 

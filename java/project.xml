@@ -2,111 +2,137 @@
 
 <project>
 
-  <!-- the version of maven's project object model -->
-  
-  <pomVersion>3</pomVersion>
-  
-  <!-- a unique name for this project -->
-  <id>nanocontainer</id>
-  
-  <!-- a short but descriptive name for the project -->
-  <name>NanoContainer</name>
-  
-  <!-- The version of the project under development, e.g.
-       1.1, 1.2, 2.0-dev -->
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
-  
-  <!-- details about the organization that 'owns' the project -->
-  <organization>
-    <name>NanoContainer team</name>
-    <url>http://www.nanocontainer.org</url>
-    <logo>http://www.nanocontainer.org/images/logo.gif</logo>
-  </organization>
-  
-  <!-- the year the project started -->
-  <inceptionYear>2003</inceptionYear>
-  <package>nanocontainer</package>
-  <logo>http://www.nanocontainer.org/images/logo.gif</logo>
-  <description>
-    A collection of example projects showing how to use maven in different
-    situations   
-  </description>
-  <!-- a short description of what the project does -->
-  <shortDescription>
-    How to use maven in different situations
-  </shortDescription>
+    <!-- the version of maven's project object model -->
 
-  <!-- the project home page -->
-  <url>http://www.nanocontainer.org/examples</url>
-  <issueTrackingUrl>http://jira.codehaus.org</issueTrackingUrl>
-  <siteAddress>www.codehaus.org</siteAddress>
-  <siteDirectory>/www/nanocontainer/examples/</siteDirectory>
-  <distributionDirectory>/www/nanocontainer/builds/</distributionDirectory>
+    <pomVersion>3</pomVersion>
 
-  <!-- the version control repository and http url for online access
-       the connection element has the form:
-       scm:<system>:<system specific connection string> -->
-  <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.codehaus.org:/cvshome:nanocontainer/nano/</connection>
-    <url>http://www.codehaus.org/viewcvs/codehaus/nano</url>
-  </repository>
+    <!-- a unique name for this project -->
+    <id>nanocontainer</id>
 
-  <!-- any mailing lists for the project -->
-  <mailingLists/>
-  
-  <!-- who the developers are for the project -->
-  <developers>
-    <developer>
-      <name>Paul Hammant</name>
-      <id>paul</id>
-      <email>paul_hammant@yahoo.com</email>
-      <organization>n/a</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Aslak Hellesoy</name>
-      <id>rinkrank</id>
-      <email>rinkrank@codehaus.org</email>
-      <organization>n/a</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-  </developers>
+    <!-- a short but descriptive name for the project -->
+    <name>NanoContainer</name>
 
-  <!-- jar files the project is dependent on -->
-  <dependencies>
-    <dependency>
-      <id>picocontainer</id>
-      <version>1.0-SNAPSHOT</version>
-      <url>http://www.picocontainer.org/</url>
-    </dependency>
-  </dependencies>
-  
-  <!-- build information for the project -->
-  <build>
-    <nagEmailAddress>nano-dev@codehaus.org</nagEmailAddress>
-    <sourceDirectory>${basedir}/src/java</sourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <!-- The version of the project under development, e.g.
+         1.1, 1.2, 2.0-dev -->
+    <currentVersion>1.0-SNAPSHOT</currentVersion>
 
-    <unitTest>
-      <includes>
-        <include>**/*TestCase.java</include>
-      </includes>
-    </unitTest>
+    <!-- details about the organization that 'owns' the project -->
+    <organization>
+        <name>NanoContainer team</name>
+        <url>http://nanocontainer.codehaus.org</url>
+        <logo></logo>
+    </organization>
 
-    <resources>
-      <resource>
-        <directory>${basedir}/src/conf</directory>
-        <includes>
-          <include>*.properties</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
+    <!-- the year the project started -->
+    <inceptionYear>2003</inceptionYear>
+    <package>nanocontainer</package>
+    <logo>/images/nanocontainer.jpg</logo>
+    <description></description>
+    <!-- a short description of what the project does -->
+    <shortDescription></shortDescription>
 
+    <!-- the project home page -->
+    <url>http://nanocontainer.codehaus.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org</issueTrackingUrl>
+    <siteAddress>codehaus.org</siteAddress>
+    <siteDirectory>/www/nanocontainer.codehaus.org</siteDirectory>
+    <distributionDirectory>/www/nanocontainer/builds/</distributionDirectory>
+
+    <!-- the version control repository and http url for online access
+         the connection element has the form:
+         scm:<system>:<system specific connection string> -->
+    <repository>
+        <connection>scm:cvs:pserver:anoncvs@cvs.codehaus.org:/cvshome:nanocontainer/nano/</connection>
+        <url>http://www.codehaus.org/viewcvs/codehaus/nano</url>
+    </repository>
+
+    <!-- any mailing lists for the project -->
+    <mailingLists/>
+
+    <!-- who the developers are for the project -->
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Hellesoy</name>
+            <id>rinkrank</id>
+            <email>rinkrank@codehaus.org</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Jon Tirsen</name>
+            <id>tirsen</id>
+            <email>tirsen@codehaus.org</email>
+            <organization>n/a</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- jar files the project is dependent on -->
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <id>nanning</id>
+            <version>0.8</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+    </dependencies>
+
+    <!-- build information for the project -->
+    <build>
+        <nagEmailAddress>nano-dev@codehaus.org</nagEmailAddress>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.java</include>
+            </includes>
+        </unitTest>
+
+        <resources>
+            <resource>
+                <directory>${basedir}/src/conf</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <reports>
+        <report>maven-checkstyle-plugin</report>
+        <report>maven-jdepend-plugin</report>
+        <report>maven-changelog-plugin</report>
+        <report>maven-file-activity-plugin</report>
+        <report>maven-developer-activity-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-junit-report-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
 
 </project>
 

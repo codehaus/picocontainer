@@ -44,7 +44,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     protected void createAction() {
         // load action
         try {
-            MutablePicoContainer container = new DefaultPicoContainer(getParentContainer());
+            MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer());
 
             Class actionClass = proxy.getConfig().getClazz();
             container.registerComponentImplementation(actionClass);
@@ -55,7 +55,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
         }
     }
 
-    private PicoContainer getParentContainer() {
+    private PicoContainer getRequestContainer() {
         HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
         return (PicoContainer) ref.get();

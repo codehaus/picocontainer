@@ -14,16 +14,16 @@ public class PicoMeterClassTestCase extends AbstractPicoMeterTestCase {
     public void testSourceLocation() throws IOException {
         PicoMeterClass instantiatesThree = new PicoMeterClass(InstantiatesThree.class, source);
         Instantiation i0 = (Instantiation) instantiatesThree.getInstantiations().get(0);
-        assertEquals(24, i0.getStartLine());
+        assertEquals(23, i0.getStartLine());
         assertEquals(16, i0.getStartColumn());
         assertEquals(27, i0.getEndColumn());
 
         Instantiation i1 = (Instantiation) instantiatesThree.getInstantiations().get(1);
-        assertEquals(27, i1.getStartLine());
+        assertEquals(26, i1.getStartLine());
         assertEquals(27, i1.getStartColumn());
 
         Instantiation i2 = (Instantiation) instantiatesThree.getInstantiations().get(2);
-        assertEquals(31, i2.getStartLine());
+        assertEquals(30, i2.getStartLine());
         assertEquals(26, i2.getStartColumn());
     }
 

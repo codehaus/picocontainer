@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb;
+package org.nanocontainer.dynaweb;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -7,16 +7,12 @@ package org.nanocontainer.nanoweb;
 public class MyGroovyAction {
 
     property year
-    property cars
-    property country
 
-    public execute() {
-        // success if there is a renault among the cars
-        for( car in cars ) {
-            if( car == "renault" ) {
-                return "success"
-            }
+    public doit() {
+        if(year > 2003) {
+            return "success";
+        } else {
+            return "error";
         }
-        return "error"
     }
 }

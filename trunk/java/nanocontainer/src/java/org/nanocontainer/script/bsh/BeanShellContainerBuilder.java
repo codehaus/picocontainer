@@ -19,13 +19,13 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Interpreter i = new Interpreter();
         try {
             i.set("parent", parentContainer);
             i.set("assemblyScope", assemblyScope);
             i.eval(script, i.getNameSpace(), "nanocontainer.bsh");
-            return (MutablePicoContainer) i.get("pico");
+            return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
             throw new PicoCompositionException(e);
         }

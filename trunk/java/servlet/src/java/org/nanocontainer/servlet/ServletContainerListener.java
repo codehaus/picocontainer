@@ -40,8 +40,9 @@ import java.util.Enumeration;
  * @author Philipp Meier
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants {
-    public static final String KILLER_HELPER = "KILLER_HELPER";
     private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
+
+    public static final String KILLER_HELPER = "KILLER_HELPER";
 
     public void contextInitialized(ServletContextEvent event) {
 
@@ -91,9 +92,9 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         HttpSession session = event.getSession();
         ServletContext context = session.getServletContext();
         ContainerBuilder containerBuilder = getBuilder(context);
-        ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
-        ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-        containerBuilder.buildContainer(containerRef, parentContainerRef, session);
+        ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
+        ObjectReference webappContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session);
 
         session.setAttribute(KILLER_HELPER, new HttpSessionBindingListener() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {

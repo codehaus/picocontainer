@@ -33,12 +33,12 @@ public class ServletRequestContainerLauncher {
     }
 
     public void startContainer() throws ServletException {
-        HttpSession session = request.getSession(true);
-        ObjectReference parentContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
         if (containerBuilder == null) {
             throw new ServletException("org.nanocontainer.servlet.ServletContainerListener not deployed");
         }
-        containerBuilder.buildContainer(containerRef, parentContainerRef, request);
+        HttpSession session = request.getSession(true);
+        ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
+        containerBuilder.buildContainer(containerRef, sessionContainerRef, request);
     }
 
     public void killContainer() {

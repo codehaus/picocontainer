@@ -21,30 +21,32 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
-        MutablePicoContainer container = createContainer(parentContainer, assemblyScope);
+        PicoContainer container = createContainer(parentContainer, assemblyScope);
 
         // register the child in the parent so that lifecycle can be propagated down the hierarchy
-        if(parentContainer != null && parentContainer instanceof MutablePicoContainer) {
+        if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableContainer = (MutablePicoContainer) parentContainer;
             mutableContainer.unregisterComponentByInstance(container);
             mutableContainer.registerComponentInstance(containerRef, container);
         }
 
-        composeContainer(container, assemblyScope);
+        if(container instanceof MutablePicoContainer) {
+            composeContainer((MutablePicoContainer) container, assemblyScope);
+        }
         container.start();
 
         // hold on to it
         containerRef.set(container);
     }
 
-    public void killContainer(ObjectReference containerRef){
+    public void killContainer(ObjectReference containerRef) {
         try {
-            MutablePicoContainer pico = (MutablePicoContainer) containerRef.get();
+            PicoContainer pico = (PicoContainer) containerRef.get();
             pico.stop();
             pico.dispose();
             PicoContainer parent = pico.getParent();
-            if(parent != null && parent instanceof MutablePicoContainer) {
-                ((MutablePicoContainer)parent).unregisterComponentByInstance(pico);
+            if (parent != null && parent instanceof MutablePicoContainer) {
+                ((MutablePicoContainer) parent).unregisterComponentByInstance(pico);
             }
         } finally {
             containerRef.set(null);
@@ -52,5 +54,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
     }
 
     protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
-    protected abstract MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
+
+    protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
 }

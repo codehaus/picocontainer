@@ -25,7 +25,7 @@ public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder 
         composer.composeContainer(container, assemblyScope);
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         return new DefaultPicoContainer(parentContainer);
     }
 }

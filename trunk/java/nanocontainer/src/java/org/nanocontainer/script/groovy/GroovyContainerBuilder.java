@@ -44,7 +44,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         if(groovyScript == null) {
             createGroovyScript();
         }
@@ -59,7 +59,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         if(pico == null) {
             pico = result;
         }
-        return (MutablePicoContainer) pico;
+        return (PicoContainer) pico;
     }
 
     private void createGroovyScript() {

@@ -35,7 +35,7 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("from org.picocontainer.defaults import *");
         interpreter.exec("from org.nanocontainer.reflection import *");
@@ -48,6 +48,6 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
                 return i;
             }
         }, "nanocontainer.py");
-        return (MutablePicoContainer) interpreter.get("pico", MutablePicoContainer.class);
+        return (PicoContainer) interpreter.get("pico", MutablePicoContainer.class);
     }
 }

@@ -11,23 +11,24 @@ package org.nanocontainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-
+import java.io.Reader;
 import java.util.*;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
+ * @author Ward Cunningham
  * @author Paul Hammant
  * @version $Revision$
  */
-public class NanoContainer {
+public abstract class NanoContainer {
     private final List lifecycleAdapters = new ArrayList();
     private final NanoContainerMonitor monitor;
 
-    public NanoContainer(NanoContainerMonitor monitor) {
+    public NanoContainer(Reader configuration, NanoContainerMonitor monitor) throws Exception {
         this.monitor = monitor;
+        configure(configuration);
     }
-
 
     protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) {
         monitor.componentsInstantiated(picoContainer);        
@@ -76,4 +77,6 @@ public class NanoContainer {
             }
         });
     }
+
+    protected abstract void configure(Reader configuration) throws Exception;
 }

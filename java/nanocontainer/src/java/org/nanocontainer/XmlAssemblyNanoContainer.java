@@ -26,12 +26,15 @@ import java.io.IOException;
  */
 public class XmlAssemblyNanoContainer extends NanoContainer {
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerXml) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
+    public XmlAssemblyNanoContainer(Reader nanoContainerXml) throws Exception, ParserConfigurationException, ClassNotFoundException, SAXException {
         this(nanoContainerXml, new ConsoleNanoContainerMonitor());
     }
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerXml, NanoContainerMonitor monitor) throws IOException, ParserConfigurationException, ClassNotFoundException, SAXException {
-        super(monitor);
+    public XmlAssemblyNanoContainer(Reader nanoContainerXml, NanoContainerMonitor monitor) throws Exception, ParserConfigurationException, ClassNotFoundException, SAXException {
+        super(nanoContainerXml, monitor);
+    }
+
+    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
         InputSource is = new InputSource(nanoContainerXml);
         InputSourceFrontEnd isfe = new InputSourceFrontEnd();
         final PicoContainer rootContainer = isfe.createPicoContainer(is);

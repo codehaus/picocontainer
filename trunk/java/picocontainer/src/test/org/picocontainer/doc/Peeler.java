@@ -2,6 +2,7 @@ package org.picocontainer.doc;
 
 import org.picocontainer.Startable;
 
+// START SNIPPET: class
 public class Peeler implements Startable {
     private final Peelable peelable;
 
@@ -17,3 +18,4 @@ public class Peeler implements Startable {
 
     }
 }
+// END SNIPPET: class

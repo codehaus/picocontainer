@@ -10,19 +10,17 @@
 
 package org.picocontainer.composite;
 
+import org.picocontainer.ComponentRegistry;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.DefaultComponentFactory;
 import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.NullContainer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 import java.io.Serializable;
 
 /**
@@ -36,12 +34,15 @@ import java.io.Serializable;
  * constructor puts paid to that).
  *
  */
-public class CompositePicoContainer extends DefaultPicoContainer implements Serializable {
+public class CompositePicoContainer implements PicoContainer, Serializable {
 
     private final List containers = new ArrayList();
+    private final ComponentRegistry componentRegistry;
 
-    public CompositePicoContainer(final PicoContainer[] containers) {
-        super(new DefaultComponentFactory(), new DefaultComponentRegistry());
+    public CompositePicoContainer(final ComponentRegistry componentRegistry,
+                                  final PicoContainer[] containers) {
+        this.componentRegistry = componentRegistry;
+
         if (containers == null) {
             throw new NullPointerException("containers can't be null");
         }
@@ -54,23 +55,22 @@ public class CompositePicoContainer extends DefaultPicoContainer implements Seri
         }
     }
 
-    public static class Filter extends CompositePicoContainer {
-        private final PicoContainer subject;
-
-        public Filter(final PicoContainer container) {
-            super(new PicoContainer[]{container});
-            subject = container;
+    public static class WithContainerArray extends CompositePicoContainer {
+        public WithContainerArray(final PicoContainer[] containers) {
+            super(new DefaultComponentRegistry(), containers);
         }
+    }
 
-        public PicoContainer getSubject() {
-            return subject;
+    public static class Default extends CompositePicoContainer {
+        public Default() {
+            super(new DefaultComponentRegistry(), new PicoContainer[] {new NullContainer()});
         }
     }
 
     public Object getComponent(Object componentKey) {
-        Object answer = super.getComponent(componentKey);
+        Object answer = componentRegistry.getComponentInstance(componentKey);
         if (answer == null) {
-            for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
+            for (Iterator iter = containers.iterator(); iter.hasNext();) {
                 PicoContainer container = (PicoContainer) iter.next();
                 if (container.hasComponent(componentKey)) {
                     return container.getComponent(componentKey);
@@ -82,29 +82,52 @@ public class CompositePicoContainer extends DefaultPicoContainer implements Seri
 
     public Set getComponentKeys() {
         Set componentTypes = new HashSet();
-        componentTypes.addAll(super.getComponentKeys());
-        for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
+        componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
+        for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
         return Collections.unmodifiableSet(componentTypes);
     }
 
-    public Set getComponents() {
-        Set components = new HashSet();
-        components.addAll(super.getComponents());
-        for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
-            PicoContainer container = (PicoContainer) iter.next();
-            components.addAll(container.getComponents());
-        }
-        return Collections.unmodifiableSet(components);
+    public void instantiateComponents() {
+        throw new UnsupportedOperationException();
     }
 
+    public boolean hasComponent(Object componentKey) {
+        boolean answer = componentRegistry.hasComponentInstance(componentKey);
+            if (answer == false) {
+                for (Iterator iter = containers.iterator(); iter.hasNext();) {
+                    PicoContainer container = (PicoContainer) iter.next();
+                    if (container.hasComponent(componentKey)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+    }
 
-    public void instantiateComponents() throws PicoInvocationTargetInitializationException, PicoInitializationException {
-        super.instantiateComponents();
-        
-        // @todo should we iterate through our child containers and instantiate those?
+    public Set getComponents() {
+        Set componentTypes = new HashSet();
+        componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
+        for (Iterator iter = containers.iterator(); iter.hasNext();) {
+            PicoContainer container = (PicoContainer) iter.next();
+            componentTypes.addAll(container.getComponentKeys());
+        }
+        Set set = new HashSet();
+        for (Iterator iterator = componentTypes.iterator(); iterator.hasNext();) {
+            Object key = (Object) iterator.next();
+            set.add(getComponent(key));
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    public Object getCompositeComponent() {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object getCompositeComponent(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -114,7 +137,7 @@ public class CompositePicoContainer extends DefaultPicoContainer implements Seri
     protected void addContainer(PicoContainer container) {
         containers.add(container);
     }
-    
+
     /**
      * Removes a Pico container from this composite container
      * @param container
@@ -122,15 +145,15 @@ public class CompositePicoContainer extends DefaultPicoContainer implements Seri
     protected void removeContainer(PicoContainer container) {
         containers.remove(container);
     }
-    
+
     /**
      * A helper method which adds each of the objects in the array to the list
-     * 
+     *
      * @param list
      * @param objects
      */
     protected static void addAll(List list, Object[] objects) {
-        for (int i = 0, size = objects.length; i < size; i++ ) {
+        for (int i = 0, size = objects.length; i < size; i++) {
             list.add(objects[i]);
         }
     }

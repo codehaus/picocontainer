@@ -41,7 +41,7 @@ public class DummiesTestCase extends TestCase {
     }
 
     public void testInstantiation() throws PicoInitializationException  {
-        CompositePicoContainer acc = new CompositePicoContainer(new PicoContainer[0]);
+        CompositePicoContainer acc = new CompositePicoContainer.WithContainerArray(new PicoContainer[0]);
         // Should not barf. Should no nothing, but that hard to test.
         acc.instantiateComponents();
     }

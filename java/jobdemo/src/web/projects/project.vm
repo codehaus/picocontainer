@@ -1,0 +1,64 @@
+#url($url)
+<html>
+    <head>
+        <title>Project "$project.name"</title>
+    </head>
+    <body>
+
+    <b>
+        <p>
+            $project.shortDescription
+        </p>
+    </b>
+    <p>
+        $project.description
+    </p>
+    
+    <h3>Anragen</h3>
+        <table>
+            <tr>
+                <td class="tblgrid">
+                    <table cellpading="0" cellspacing="1">
+                        <tr>
+                            <td class="tblhead">
+                                Nr. 
+                            </td>
+                            <td class="tblhead">
+                                Profiles
+                            </td>
+                            <td class="tblhead">
+                                Date
+                            </td>
+                            <td class="tblhead">
+                                Action
+                            </td>
+                        </tr>
+                        #foreach( $request in $project.requests )
+                            <tr>
+                                <td class="tblbody">
+                                    $velocityCount
+                                </td>
+                                <td class="tblbody">
+                                    $request.profile.firstName $request.profile.lastName
+                                </td>
+                                <td class="tblbody">
+                                    $request.date
+                                </td>
+                                <td class="tblbody">
+                                    <ul>
+                                        <li>
+                                            <a href="$url.setPage('cancelRequestProjects.action').addParameter('requestId',$request.id).addParameter('projectId',$project.id)">Reject</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        #end
+                    </table>
+                </td>
+            </tr>
+        </table>
+    
+
+ 
+    </body>
+</html>

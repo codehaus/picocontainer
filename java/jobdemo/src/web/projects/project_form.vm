@@ -1,0 +1,39 @@
+<table>
+    <tr>
+        <td class="tblgrid" >
+            <table cellpadding="0" cellspacing="1">
+                <tr>
+                    <td class="input_head">
+                        Project name:
+                    </td>
+                    <td class="input_body">
+                        <input type="text" name="project/name" value="$!project.name" size="50" maxlength="100"/>
+                    </td>
+                </tr>
+               <tr>
+                    <td class="input_head">
+                        Short description:
+                    </td>
+                    <td class="input_body">
+                        <textarea cols="50" rows="5" name="project/shortDescription">$!stringEscape.escapeHtml( $!project.shortDescription )</textarea>
+                    </td>
+                </tr>
+               <tr>
+                    <td class="input_head">
+                        Description:
+                    </td>
+                    <td class="input_body">
+                        <textarea cols="50" rows="5" name="project/description">$!stringEscape.escapeHtml( $!project.description )</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="input_action" align="center">
+                        <input type="submit"/>
+                        <input type="reset"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+

@@ -1,0 +1,12 @@
+#url($url)
+<html>
+    <head>
+        <title>Edit profile</title>
+    </head>
+    <body>
+        <form action="$url.setPage('updateProfile.action')" method="POST">
+            <input type="hidden" name="profileId" value="$profile.id"/>
+            #parse('/profiles/profile_form.vm')
+        </form>
+    </body>
+</html>

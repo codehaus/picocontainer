@@ -1,0 +1,11 @@
+#url($url)
+<html>
+    <head>
+        <title>Create profile</title>
+    </head>
+    <body>
+        <form action="$url.setPage('createProfile.action')" method="POST">
+            #parse('/profiles/profile_form.vm')
+        </form>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+#url($url)
+#set( $profile = $profileManager.getProfile( $profileId ) )
+<html>
+    <head>
+        <title>Projects for profile $profile.firstName $profile.lastName</title>
+    </head>
+    <body>
+        #if( $hits.length() > 0) 
+            #set( $max = $hits.length() - 1 )  
+            <table>
+                <tr>
+                    <td class="tblgrid">
+                        <table cellpading="0" cellspacing="1">
+                           <tr>
+                                <td class="tblhead">
+                                    Nr. 
+                                </td>
+                                <td class="tblhead">
+                                    Score
+                                </td>
+                                <td class="tblhead">
+                                    Project
+                                </td>
+                                <td class="tblhead">
+                                    Action
+                                </td>
+                                
+                            </tr>
+                            #foreach( $index  in [ 0 .. $max] )
+                                #set( $project = $projectManager.loadProject( $hits.doc($index).get('id')))
+                                <tr class="tblbody" valign="top">
+                                    <td> $velocityCount </td>
+                                    <td>
+                                        $hits.score($index)
+                                    </td>
+                                    <td>
+                                        <b>$project.name</b>
+                                        <p>
+                                            $project.shortDescription
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                        <li>
+                                        #if( $profile.requests.get($project))
+                                            <a href="$url.setPage('cancelRequest.action').addParameter('requestId', $profile.requests.get($project).id)">Cancel request</a>
+                                        #else 
+                                           <a href="$url.setPage('requestProject.action').addParameter('projectId',$project.id).addParameter('profileId',$profile.id)">Request project</a>
+                                        #end
+                                        </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            #end
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        #else
+            No project found...
+        #end
+    </body>
+</html>

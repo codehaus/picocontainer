@@ -1,0 +1,39 @@
+<table>
+    <tr>
+        <td class="tblgrid" >
+            <table cellpadding="0" cellspacing="1">
+                <tr>
+                    <td class="input_head">
+                        First name:
+                    </td>
+                    <td class="input_body">
+                        <input type="text" name="profile/firstName" value="$!profile.firstName" size="50" maxlength="50"/>
+                     </td>
+                </tr>
+               <tr>
+                    <td class="input_head">
+                        Last name:
+                    </td>
+                    <td class="input_body">
+                        <input type="text" name="profile/lastName" value="$!profile.lastName" size="50" maxlength="50"/>
+                     </td>
+                </tr>
+               <tr>
+                    <td class="input_head">
+                        Profile:
+                    </td>
+                    <td class="input_body">
+                        <textarea cols="50" rows="20" name="profile/profile">$!stringEscape.escapeHtml( $!profile.profile )</textarea>
+                    </td>
+                </tr>
+                 <tr>
+                    <td colspan="2" class="input_action" align="center">
+                        <input type="submit"/>
+                        <input type="reset"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+

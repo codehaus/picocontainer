@@ -29,12 +29,14 @@ public interface PicoVisitor {
      * @since 1.1
      */
     Object traverse(Object node);
+
     /**
      * Visit a {@link PicoContainer} that has to accept the visitor.
      * 
      * @param pico the visited container.
      * @since 1.1
      */
+
     void visitContainer(PicoContainer pico);
     /**
      * Visit a {@link ComponentAdapter} that has to accept the visitor.
@@ -42,6 +44,7 @@ public interface PicoVisitor {
      * @param componentAdapter the visited ComponentAdapter.
      * @since 1.1
      */
+
     void visitComponentAdapter(ComponentAdapter componentAdapter);
     /**
      * Visit a {@link Parameter} that has to accept the visitor.

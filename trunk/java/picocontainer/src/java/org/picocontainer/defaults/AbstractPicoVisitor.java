@@ -25,10 +25,6 @@ import java.lang.reflect.Method;
 public abstract class AbstractPicoVisitor implements PicoVisitor {
     private boolean traversal;
     
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
-     */
     public Object traverse(Object node) {
         traversal = true;
         try {

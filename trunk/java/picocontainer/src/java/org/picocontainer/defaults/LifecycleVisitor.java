@@ -56,10 +56,6 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
         this.componentInstances = new ArrayList();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
-     */
     public Object traverse(Object node) {
         componentInstances.clear();
         try {

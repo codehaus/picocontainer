@@ -29,10 +29,10 @@ public class BeanXMLPseudoComponentFactoryTestCase extends TestCase {
         BeanXMLPseudoComponentFactory xsf = new BeanXMLPseudoComponentFactory();
 
         StringReader sr = new StringReader("" +
-                "<org.picoextras.script.xml.TestPseudoComp>" +
+                "<org.nanocontainer.script.xml.TestPseudoComp>" +
                 "<foo>10</foo>" +
                 "<bar>hello</bar>" +
-                "</org.picoextras.script.xml.TestPseudoComp>"
+                "</org.nanocontainer.script.xml.TestPseudoComp>"
         );
         InputSource is = new InputSource(sr);
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

@@ -11,7 +11,7 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 %!include: unit-testing.t2t
 %!include: simplepico.t2t
 %!include: hierarchies.t2t
-%!include: componentadapters.t2t
+%!include: componentadapter.t2t
 %!include: nanocontainer.t2t
 %!include: nanocontainer-groovy.t2t
 %!include: nanowar-basics.t2t

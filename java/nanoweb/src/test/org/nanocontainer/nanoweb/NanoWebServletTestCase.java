@@ -26,6 +26,7 @@ import java.util.Vector;
  */
 public class NanoWebServletTestCase extends MockObjectTestCase {
     private NanoWebServlet nanoServlet;
+    private MutablePicoContainer applicationContainer;
     private MutablePicoContainer requestContainer;
 
     private Mock requestMock;
@@ -47,6 +48,10 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
                          .withNoArguments()
                          .will(returnValue(servletContextMock.proxy()));
         servletConfigMock.expects(once())
+                         .method("getServletContext")
+                         .withNoArguments()
+                         .will(returnValue(servletContextMock.proxy()));
+        servletConfigMock.expects(once())
                          .method("getServletName")
                          .withNoArguments()
                          .will(returnValue("NanoWeb"));
@@ -61,6 +66,11 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         servletContextMock.expects(once())
                           .method("log")
                           .with(eq("NanoWeb: init"));
+        applicationContainer = new DefaultPicoContainer();
+        servletContextMock.expects(once())
+                          .method("getAttribute")
+                          .with(eq(KeyConstants.APPLICATION_CONTAINER)).will(returnValue(applicationContainer));
+
         servletContextMock.expects(once())
                           .method("getResource")
                           .with(eq("/test_doit_success.vm"))

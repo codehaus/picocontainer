@@ -2,6 +2,7 @@ package org.nanocontainer.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.nanocontainer.servlet.ApplicationScopeObjectReference;
 import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
@@ -47,9 +48,22 @@ import java.util.Enumeration;
  */
 public class NanoWebServlet extends HttpServlet implements KeyConstants {
 
+    private Dispatcher dispatcher;
     // TODO make this configurable from web.xml
-    private final Dispatcher dispatcher = new ChainingDispatcher();
     private final CachingScriptClassLoader cachingScriptClassLoader = new CachingScriptClassLoader();
+
+    public void init() throws ServletException {
+        ServletContext servletContext = getServletContext();
+        MutablePicoContainer applicationContainer = getApplicationContainer(servletContext);
+        initDispatcher(applicationContainer);
+    }
+
+    private void initDispatcher(MutablePicoContainer applicationContainer) {
+        dispatcher = (Dispatcher) applicationContainer.getComponentInstanceOfType(Dispatcher.class);
+        if (dispatcher == null) {
+            dispatcher = new ChainingDispatcher(".vm");
+        }
+    }
 
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), httpServletRequest);
@@ -167,6 +181,11 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             servletPath = httpServletRequest.getServletPath();
         }
         return servletPath;
+    }
+
+    private MutablePicoContainer getApplicationContainer(ServletContext context) {
+        ObjectReference ref = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        return (MutablePicoContainer) ref.get();
     }
 
     private MutablePicoContainer getRequestContainer(ServletRequest request) {

@@ -14,8 +14,14 @@ import java.util.Arrays;
  * @version $Revision$
  */
 public class ChainingDispatcher implements Dispatcher {
+    private final String extension;
+
+    public ChainingDispatcher(String extension) {
+        this.extension = extension;
+    }
+
     public void dispatch(ServletContext servletContext, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String scriptPathWithoutExtension, String actionMethod, String result) throws IOException, ServletException {
-        String[] views = getViews(scriptPathWithoutExtension, actionMethod, result, ".vm");
+        String[] views = getViews(scriptPathWithoutExtension, actionMethod, result);
 
         boolean didDispatch = false;
         for (int i = 0; i < views.length; i++) {
@@ -37,32 +43,32 @@ public class ChainingDispatcher implements Dispatcher {
         }
     }
 
-    String[] getViews(String scriptPathWithoutExtension, String actionMethod, String result, String extension) {
+    String[] getViews(String scriptPathWithoutExtension, String actionMethod, String result) {
         String[] views = new String[4];
 
-        views[0] = getScriptPathUnderscoreActionNameUnderscoreResultView(scriptPathWithoutExtension, actionMethod, result, extension);
-        views[1] = getScriptPathUnderscoreResultView(scriptPathWithoutExtension, result, extension);
-        views[2] = getActionFolderPathResultView(scriptPathWithoutExtension, result, extension);
-        views[3] = getActionRootResultView(result, extension);
+        views[0] = getScriptPathUnderscoreActionNameUnderscoreResultView(scriptPathWithoutExtension, actionMethod, result);
+        views[1] = getScriptPathUnderscoreResultView(scriptPathWithoutExtension, result);
+        views[2] = getActionFolderPathResultView(scriptPathWithoutExtension, result);
+        views[3] = getActionRootResultView(result);
 
         return views;
     }
 
-    private String getScriptPathUnderscoreResultView(String scriptPathWithoutExtension, String result, String extension) {
+    private String getScriptPathUnderscoreResultView(String scriptPathWithoutExtension, String result) {
         return scriptPathWithoutExtension + "_" + result + extension;
     }
 
-    private String getScriptPathUnderscoreActionNameUnderscoreResultView(String scriptPathWithoutExtension, String actionMethod, String result, String extension) {
+    private String getScriptPathUnderscoreActionNameUnderscoreResultView(String scriptPathWithoutExtension, String actionMethod, String result) {
         return scriptPathWithoutExtension + "_" + actionMethod + "_" + result + extension;
     }
 
-    private String getActionFolderPathResultView(String scriptPathWithoutExtension, String result, String extension) {
+    private String getActionFolderPathResultView(String scriptPathWithoutExtension, String result) {
         String actionFolderPath = scriptPathWithoutExtension.substring(0, scriptPathWithoutExtension.lastIndexOf("/") + 1);
         String view = actionFolderPath + result + extension;
         return view;
     }
 
-    private String getActionRootResultView(String result, String extension) {
+    private String getActionRootResultView(String result) {
         return "/" + result + extension;
     }
 

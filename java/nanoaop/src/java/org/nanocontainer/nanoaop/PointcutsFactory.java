@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 public interface PointcutsFactory {
 
     ComponentPointcut component(Object componentKey);
+    
+    ComponentPointcut componentName(String regex);
 
     ClassPointcut instancesOf(Class type);
 

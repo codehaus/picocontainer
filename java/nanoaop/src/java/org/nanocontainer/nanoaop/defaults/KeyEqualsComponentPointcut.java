@@ -10,19 +10,23 @@
 package org.nanocontainer.nanoaop.defaults;
 
 import org.nanocontainer.nanoaop.ComponentPointcut;
-import org.nanocontainer.nanoaop.PointcutsFactory;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractPointcutsFactory implements PointcutsFactory {
+public class KeyEqualsComponentPointcut implements ComponentPointcut {
 
-    public ComponentPointcut component(Object componentKey) {
-        return new KeyEqualsComponentPointcut(componentKey);
+    private final Object componentKey;
+
+    public KeyEqualsComponentPointcut(Object componentKey) {
+        if (componentKey == null) {
+            throw new NullPointerException("componentKey cannot be null");
+        }
+        this.componentKey = componentKey;
     }
 
-    public ComponentPointcut componentName(String regex) {
-        return new NameMatchesComponentPointcut(regex);
+    public boolean picks(Object componentKey) {
+        return this.componentKey.equals(componentKey);
     }
 
 }

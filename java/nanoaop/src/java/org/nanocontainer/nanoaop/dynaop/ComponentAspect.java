@@ -7,22 +7,29 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
+package org.nanocontainer.nanoaop.dynaop;
 
 import org.nanocontainer.nanoaop.ComponentPointcut;
-import org.nanocontainer.nanoaop.PointcutsFactory;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractPointcutsFactory implements PointcutsFactory {
+abstract class ComponentAspect {
 
-    public ComponentPointcut component(Object componentKey) {
-        return new KeyEqualsComponentPointcut(componentKey);
+    private final ComponentPointcut componentPointcut;
+
+    ComponentAspect(ComponentPointcut componentPointcut) {
+        this.componentPointcut = componentPointcut;
     }
 
-    public ComponentPointcut componentName(String regex) {
-        return new NameMatchesComponentPointcut(regex);
+    final Object applyAspect(Object componentKey, Object component) {
+        if (componentPointcut.picks(componentKey)) {
+            return wrap(component);
+        } else {
+            return component;
+        }
     }
+
+    abstract Object wrap(Object component);
 
 }

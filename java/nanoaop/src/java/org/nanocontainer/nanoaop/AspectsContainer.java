@@ -18,26 +18,26 @@ public interface AspectsContainer {
 
     void registerInterceptor(ClassPointcut classPointcut, MethodPointcut methodPointcut, MethodInterceptor interceptor);
 
-    void registerInterceptor(ComponentPointcut componentPointcut, MethodPointcut methodPointcut, MethodInterceptor interceptor);
+    void registerInterceptor(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
+            MethodInterceptor interceptor);
 
-    void registerInterceptor(ClassPointcut classPointcut, MethodPointcut methodPointcut,
-            ComponentPointcut interceptorComponent);
+    void registerInterceptor(ClassPointcut classPointcut, MethodPointcut methodPointcut, Object interceptorComponentKey);
 
     void registerInterceptor(ComponentPointcut componentPointcut, MethodPointcut methodPointcut,
-            ComponentPointcut interceptorComponent);
+            Object interceptorComponentKey);
 
     void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Class mixinClass);
 
     void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Class mixinClass);
 
-    void registerMixin(ClassPointcut classPointcut, Class[] interfaces, ComponentPointcut mixinComponent);
+    void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Object mixinComponentKey);
 
-    void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, ComponentPointcut mixinComponent);
+    void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Object mixinComponentKey);
 
     void registerMixin(ClassPointcut classPointcut, Class mixinClass);
 
     void registerMixin(ComponentPointcut componentPointcut, Class mixinClass);
-    
+
     PointcutsFactory getPointcutsFactory();
 
 }

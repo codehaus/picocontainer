@@ -7,30 +7,13 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
+package org.nanocontainer.nanoaop;
 
-import org.nanocontainer.nanoaop.ComponentPointcut;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Stephen Molitor
  */
-public class DefaultComponentPointcut implements ComponentPointcut {
-
-    private final Object componentKey;
-
-    public DefaultComponentPointcut(Object componentKey) {
-        if (componentKey == null) {
-            throw new NullPointerException("componentKey cannot be null");
-        }
-        this.componentKey = componentKey;
-    }
-
-    public Object getComponentKey() {
-        return componentKey;
-    }
-
-    public boolean picks(Object componentKey) {
-        return this.componentKey.equals(componentKey);
-    }
+public interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer {
 
 }

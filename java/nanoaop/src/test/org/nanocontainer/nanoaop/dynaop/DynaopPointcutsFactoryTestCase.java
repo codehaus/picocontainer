@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 import org.nanocontainer.nanoaop.ClassPointcut;
+import org.nanocontainer.nanoaop.ComponentPointcut;
+import org.nanocontainer.nanoaop.Dao;
 import org.nanocontainer.nanoaop.MalformedRegularExpressionException;
 import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutsFactory;
@@ -48,23 +50,23 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertTrue(cut.picks(Foo.class));
         assertTrue(cut.picks(FooBar.class));
         assertFalse(cut.picks(Bar.class));
-        
+
         assertFalse(cuts.className("^Foo*").picks(Foo.class));
     }
-    
+
     public void testOneClass() {
         ClassPointcut cut = cuts.oneClass(Foo.class);
         assertTrue(cut.picks(Foo.class));
         assertFalse(cut.picks(FooBar.class));
     }
-    
+
     public void testPackageName() {
         ClassPointcut cut = cuts.packageName("org.nanocontainer.nanoaop.dynaop");
         assertTrue(cut.picks(Foo.class));
         assertTrue(cut.picks(Bar.class));
         assertFalse(cut.picks(org.nanocontainer.nanoaop.Dao.class));
     }
-    
+
     public void testClassPointcutIntersection() {
         ClassPointcut a = cuts.union(cuts.oneClass(Foo.class), cuts.oneClass(Bar.class));
         ClassPointcut b = cuts.union(cuts.oneClass(Foo.class), cuts.oneClass(FooBar.class));
@@ -73,20 +75,20 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(c.picks(Bar.class));
         assertFalse(c.picks(FooBar.class));
     }
-    
+
     public void testClassPointcutNot() {
         ClassPointcut cut = cuts.not(cuts.oneClass(Foo.class));
         assertFalse(cut.picks(Foo.class));
         assertTrue(cut.picks(Bar.class));
     }
-    
+
     public void testClassPointcutUnion() {
         ClassPointcut cut = cuts.union(cuts.oneClass(Foo.class), cuts.oneClass(Bar.class));
         assertTrue(cut.picks(Foo.class));
         assertTrue(cut.picks(Bar.class));
         assertFalse(cut.picks(FooBar.class));
     }
-    
+
     public void testAllMethods() {
         MethodPointcut cut = cuts.allMethods();
         Method[] methods = Foo.class.getMethods();
@@ -94,7 +96,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
             assertTrue(cut.picks(methods[i]));
         }
     }
-    
+
     public void testGetMethods() {
         MethodPointcut cut = cuts.getMethods();
         assertTrue(cut.picks(getA));
@@ -108,7 +110,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(apricot));
         assertFalse(cut.picks(banana));
     }
-    
+
     public void testIsMethods() {
         MethodPointcut cut = cuts.isMethods();
         assertFalse(cut.picks(getA));
@@ -121,7 +123,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(apricot));
         assertFalse(cut.picks(banana));
     }
-    
+
     public void testSetMethods() {
         MethodPointcut cut = cuts.setMethods();
         assertFalse(cut.picks(getA));
@@ -134,18 +136,18 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(apricot));
         assertFalse(cut.picks(banana));
     }
-    
+
     public void testSignature() {
         assertTrue(cuts.signature("getA").picks(getA));
         assertTrue(cuts.signature("getA").picks(misleadingGetA));
         assertTrue(cuts.signature("getA()").picks(getA));
         assertTrue(cuts.signature("String getA\\(String\\)").picks(misleadingGetA));
-        assertFalse(cuts.signature("String getA\\(String\\)").picks(getA));        
+        assertFalse(cuts.signature("String getA\\(String\\)").picks(getA));
         assertTrue(cuts.signature("get*").picks(getA));
         assertTrue(cuts.signature("get*").picks(getB));
         assertTrue(cuts.signature("get*").picks(misleadingGetA));
     }
-    
+
     public void testOneMethod() {
         MethodPointcut cut = cuts.oneMethod(getA);
         assertTrue(cut.picks(getA));
@@ -158,7 +160,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(apricot));
         assertFalse(cut.picks(banana));
     }
-    
+
     public void testReturnType() {
         MethodPointcut cut = cuts.returnType(cuts.oneClass(String.class));
         assertTrue(cut.picks(getA));
@@ -171,17 +173,17 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(apricot));
         assertFalse(cut.picks(banana));
     }
-    
+
     public void testMethodPointcutIntersection() {
         MethodPointcut a = cuts.union(cuts.oneMethod(apple), cuts.oneMethod(apricot));
         MethodPointcut b = cuts.union(cuts.oneMethod(apple), cuts.oneMethod(banana));
         MethodPointcut c = cuts.intersection(a, b);
-        
+
         assertTrue(c.picks(apple));
         assertFalse(c.picks(apricot));
         assertFalse(c.picks(banana));
     }
-    
+
     public void testMethodPointcutNot() {
         MethodPointcut cut = cuts.not(cuts.oneMethod(getA));
         assertFalse(cut.picks(getA));
@@ -194,7 +196,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertTrue(cut.picks(apricot));
         assertTrue(cut.picks(banana));
     }
-    
+
     public void testMethodPointcutUnion() {
         MethodPointcut cut = cuts.union(cuts.oneMethod(apple), cuts.oneMethod(apricot));
         assertTrue(cut.picks(apple));
@@ -208,20 +210,33 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(setB));
     }
     
+    public void testComponent() {
+        ComponentPointcut cut = cuts.component(Dao.class);
+        assertTrue(cut.picks(Dao.class));
+        assertFalse(cut.picks("Dao"));
+    }
+
+    public void testComponentName() {
+        ComponentPointcut cut = cuts.componentName("foo*");
+        assertTrue(cut.picks("foo"));
+        assertTrue(cut.picks("foobar"));
+        assertFalse(cut.picks("bar"));
+    }
+
     public void testMalformedPatternExceptionRethrown() {
         try {
             cuts.className("(");
             fail("MalformedRegularExpressionException should have been raised");
         } catch (MalformedRegularExpressionException e) {
         }
-        
+
         try {
             cuts.signature("(");
             fail("MalformedRegularExpressionException should have been raised");
         } catch (MalformedRegularExpressionException e) {
         }
     }
-    
+
     protected void setUp() throws Exception {
         super.setUp();
         apple = Foo.class.getMethod("apple", new Class[] {});
@@ -235,5 +250,5 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         setA = Foo.class.getMethod("setA", new Class[] { String.class });
         setB = Foo.class.getMethod("setA", new Class[] { String.class });
     }
-    
+
 }

@@ -14,8 +14,6 @@ package org.nanocontainer.nanoaop;
  */
 public interface ComponentPointcut {
 
-    Object getComponentKey();
-    
     boolean picks(Object componentKey);
     
 }

@@ -7,22 +7,17 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop.defaults;
+package org.nanocontainer.nanoaop;
 
-import org.nanocontainer.nanoaop.ComponentPointcut;
-import org.nanocontainer.nanoaop.PointcutsFactory;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractPointcutsFactory implements PointcutsFactory {
+public interface AspectablePicoContainerFactory {
 
-    public ComponentPointcut component(Object componentKey) {
-        return new KeyEqualsComponentPointcut(componentKey);
-    }
-
-    public ComponentPointcut componentName(String regex) {
-        return new NameMatchesComponentPointcut(regex);
-    }
-
+    AspectablePicoContainer createContainer();
+    
+    AspectablePicoContainer createContainer(MutablePicoContainer delegate);
+    
 }

@@ -1,8 +1,5 @@
 TODO list for nanoaop:
 
-2.  Add interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer
-3.  Create interface AspectablePicoContainerFactory
-4.  Create class DynaopAspectablePicoContainerFactory, shall use mixin to introduce DynaopAspectsManager into a PicoContainer.
 5.  Create NanoaopGroovyBuilder
 6.  Create NanoaopXMLBuilder
 7.  BeanShell, Python, etc. support

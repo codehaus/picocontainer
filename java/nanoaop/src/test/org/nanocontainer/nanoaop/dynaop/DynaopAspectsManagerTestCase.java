@@ -9,15 +9,19 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.dynaop;
 
-import junit.framework.TestCase;
+import java.lang.reflect.Method;
 
+import org.nanocontainer.nanoaop.AbstractNanoaopTestCase;
 import org.nanocontainer.nanoaop.AnotherInterface;
 import org.nanocontainer.nanoaop.AspectsManager;
+import org.nanocontainer.nanoaop.ClassPointcut;
+import org.nanocontainer.nanoaop.ComponentPointcut;
 import org.nanocontainer.nanoaop.Dao;
 import org.nanocontainer.nanoaop.DaoImpl;
 import org.nanocontainer.nanoaop.Identifiable;
 import org.nanocontainer.nanoaop.IdentifiableMixin;
 import org.nanocontainer.nanoaop.LoggingInterceptor;
+import org.nanocontainer.nanoaop.MethodPointcut;
 import org.nanocontainer.nanoaop.PointcutsFactory;
 import org.nanocontainer.nanoaop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
@@ -27,7 +31,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class DynaopAspectsManagerTestCase extends TestCase {
+public class DynaopAspectsManagerTestCase extends AbstractNanoaopTestCase {
 
     private AspectsManager aspects = new DynaopAspectsManager();
     private ComponentAdapterFactory caFactory = new AspectsComponentAdapterFactory(aspects);
@@ -43,8 +47,7 @@ public class DynaopAspectsManagerTestCase extends TestCase {
     }
 
     public void testContainerSuppliedInterceptor() {
-        aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(),
-                cuts.component(LoggingInterceptor.class));
+        aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.registerComponentImplementation("log", StringBuffer.class);
         pico.registerComponentImplementation(LoggingInterceptor.class);
@@ -70,8 +73,7 @@ public class DynaopAspectsManagerTestCase extends TestCase {
     }
 
     public void testContainerSuppliedComponentInterceptor() {
-        aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(),
-                cuts.component(LoggingInterceptor.class));
+        aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.registerComponentImplementation("log", StringBuffer.class);
         pico.registerComponentImplementation(LoggingInterceptor.class);
@@ -95,8 +97,7 @@ public class DynaopAspectsManagerTestCase extends TestCase {
     }
 
     public void testContainerSuppliedMixin() {
-        aspects.registerMixin(cuts.instancesOf(Dao.class), new Class[] { Identifiable.class },
-                cuts.component(IdentifiableMixin.class));
+        aspects.registerMixin(cuts.instancesOf(Dao.class), new Class[] { Identifiable.class }, IdentifiableMixin.class);
 
         pico.registerComponentImplementation(IdentifiableMixin.class);
         pico.registerComponentImplementation(Dao.class, DaoImpl.class);
@@ -120,8 +121,7 @@ public class DynaopAspectsManagerTestCase extends TestCase {
     }
 
     public void testContainerSuppliedComponentMixin() {
-        aspects.registerMixin(cuts.component("hasMixin"), new Class[] { Identifiable.class },
-                cuts.component(IdentifiableMixin.class));
+        aspects.registerMixin(cuts.component("hasMixin"), new Class[] { Identifiable.class }, IdentifiableMixin.class);
 
         pico.registerComponentImplementation(IdentifiableMixin.class);
         pico.registerComponentImplementation("hasMixin", DaoImpl.class);
@@ -157,29 +157,49 @@ public class DynaopAspectsManagerTestCase extends TestCase {
         assertFalse(hasMixin instanceof AnotherInterface);
     }
 
-    private void verifyIntercepted(Dao dao, StringBuffer log) {
-        String before = log.toString();
-        String data = dao.loadData();
-        assertEquals("data", data);
-        assertEquals(before + "startend", log.toString());
+    public void testCustomClassPointcut() {
+        StringBuffer log = new StringBuffer();
+
+        ClassPointcut customCut = new ClassPointcut() {
+            public boolean picks(Class clazz) {
+                return true;
+            }
+        };
+
+        aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        verifyIntercepted(dao, log);
     }
 
-    private void verifyNotIntercepted(Dao dao, StringBuffer log) {
-        String before = log.toString();
-        String data = dao.loadData();
-        assertEquals("data", data);
-        assertEquals(before, log.toString());
+    public void testCustomMethodPointcut() {
+        StringBuffer log = new StringBuffer();
+
+        MethodPointcut customCut = new MethodPointcut() {
+            public boolean picks(Method method) {
+                return true;
+            }
+        };
+
+        aspects.registerInterceptor(cuts.instancesOf(Dao.class), customCut, new LoggingInterceptor(log));
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        verifyIntercepted(dao, log);
     }
 
-    private void verifyMixin(Object component) {
-        assertTrue(component instanceof Identifiable);
-        Identifiable identifiable = (Identifiable) component;
-        identifiable.setId("id");
-        assertEquals("id", identifiable.getId());
-    }
+    public void testCustomComponentPointcut() {
+        StringBuffer log = new StringBuffer();
 
-    private void verifyNoMixin(Object component) {
-        assertFalse(component instanceof Identifiable);
+        ComponentPointcut customCut = new ComponentPointcut() {
+            public boolean picks(Object componentKey) {
+                return true;
+            }
+        };
+
+        aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        verifyIntercepted(dao, log);
     }
 
 }

@@ -16,4 +16,20 @@ public class CyclicDependencyException extends PicoInitializationException {
     public Constructor getConstructor() {
         return constructor;
     }
+
+    public String getMessage() {
+        return "Cyclic dependency: " + constructor.getName() + "(" + getCtorParams(constructor) + ")";
+    }
+
+    private String getCtorParams(Constructor constructor) {
+        String retval = "";
+        Class[] parameterTypes = constructor.getParameterTypes();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            retval = retval + parameterTypes[i].getName();
+            if (i+1 < parameterTypes.length) {
+                retval += ",";
+            }
+        }
+        return retval;
+    }
 }

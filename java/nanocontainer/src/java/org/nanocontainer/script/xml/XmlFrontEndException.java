@@ -9,15 +9,16 @@
 
 package org.picoextras.script.xml;
 
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 
 /**
  * @author Jeppe Cramon
  */
 public class XmlFrontEndException extends PicoCompositionException {
 
-	public XmlFrontEndException() {
-	}
+    protected XmlFrontEndException() {
+        super();
+    }
 
 	/**
 	 * @param cause

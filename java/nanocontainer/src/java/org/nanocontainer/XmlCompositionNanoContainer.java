@@ -10,7 +10,8 @@ package org.nanocontainer;
 
 import org.picoextras.script.xml.DefaultXmlFrontEnd;
 import org.picoextras.script.xml.XmlFrontEnd;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -31,54 +32,64 @@ import java.io.Reader;
  */
 public class XmlCompositionNanoContainer extends NanoContainer {
 
-    private DocumentBuilder documentBuilder;
+    private final DocumentBuilder documentBuilder;
+    private Reader composition;
 
-    public XmlCompositionNanoContainer(Reader nanoContainerXml)
-            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoCompositionException {
-        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerXml, new ConsoleNanoContainerMonitor());
+    public XmlCompositionNanoContainer(Reader composition)
+            throws ParserConfigurationException, PicoCompositionException {
+        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), composition, new ConsoleNanoContainerMonitor());
     }
 
-    public XmlCompositionNanoContainer(Reader nanoContainerConfig, NanoContainerMonitor monitor)
-            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoCompositionException {
-        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerConfig, monitor);
+    public XmlCompositionNanoContainer(Reader composition, NanoContainerMonitor monitor)
+            throws ParserConfigurationException, PicoCompositionException {
+        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), composition, monitor);
     }
 
     public XmlCompositionNanoContainer(DocumentBuilder documentBuilder, Reader composition, NanoContainerMonitor monitor)
-            throws ClassNotFoundException, IOException, PicoCompositionException {
+            throws PicoCompositionException {
         super(monitor);
         this.documentBuilder = documentBuilder;
-        compose(composition);
+        this.composition = composition;
+        init();
     }
 
-    protected Element getRootElement(InputSource inputSource) throws SAXException, IOException {
+    private Element getRootElement(InputSource inputSource) throws SAXException, IOException {
         Document document = documentBuilder.parse(inputSource);
         return document.getDocumentElement();
     }
 
-    protected void compose(Reader nanoContainerXml)
-            throws IOException, ClassNotFoundException, PicoCompositionException, SAXCompositionException {
-        final InputSource is = new InputSource(nanoContainerXml);
+    protected PicoContainer createPicoContainer()
+            throws PicoCompositionException {
+        final InputSource is = new InputSource(composition);
         try {
             Element rootElement = getRootElement(is);
             String xmlFrontEndClassName = rootElement.getAttribute("xmlfrontend");
             XmlFrontEnd xmlFrontEnd = null;
             if (xmlFrontEndClassName != null && !xmlFrontEndClassName.equals("")) {
-                try {
-                    xmlFrontEnd = (XmlFrontEnd) this.getClass().getClassLoader().loadClass(xmlFrontEndClassName).newInstance();
-                } catch (InstantiationException e) {
-                    throw new ClassNotFoundException("InstantiationException in XmlCompositionNanoContainer - " + e.getMessage());
-                } catch (IllegalAccessException e) {
-                    throw new ClassNotFoundException("IllegalAccessException in XmlCompositionNanoContainer - " + e.getMessage());
-                }
+                xmlFrontEnd = createXmlFrontEnd(xmlFrontEndClassName);
             } else {
                 xmlFrontEnd = new DefaultXmlFrontEnd();
             }
-            rootContainer = xmlFrontEnd.createPicoContainer(rootElement);
-            instantiateComponentsBreadthFirst(rootContainer);
-            startComponentsBreadthFirst();
+            return xmlFrontEnd.createPicoContainer(rootElement);
         } catch (SAXException e) {
-            throw new SAXCompositionException(e);
+            throw new PicoCompositionException(e);
+        } catch (ClassNotFoundException e) {
+            throw new PicoCompositionException(e);
+        } catch (IOException e) {
+            throw new PicoCompositionException(e);
         }
+    }
+
+    private XmlFrontEnd createXmlFrontEnd(String xmlFrontEndClassName) throws ClassNotFoundException {
+        XmlFrontEnd xmlFrontEnd;
+        try {
+            xmlFrontEnd = (XmlFrontEnd) this.getClass().getClassLoader().loadClass(xmlFrontEndClassName).newInstance();
+        } catch (InstantiationException e) {
+            throw new ClassNotFoundException("InstantiationException in XmlCompositionNanoContainer - " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            throw new ClassNotFoundException("IllegalAccessException in XmlCompositionNanoContainer - " + e.getMessage());
+        }
+        return xmlFrontEnd;
     }
 
     public static void main(String[] args) throws Exception {
@@ -87,6 +98,6 @@ public class XmlCompositionNanoContainer extends NanoContainer {
             nanoContainerXml = "config/nanocontainer.xml";
         }
         NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(nanoContainerXml));
-        addShutdownHook(nano);
+        nano.addShutdownHook();
     }
 }

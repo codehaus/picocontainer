@@ -11,7 +11,7 @@ package org.nanocontainer;
 import org.picoextras.script.xml.DefaultXmlFrontEnd;
 import org.picoextras.script.xml.XmlFrontEnd;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;

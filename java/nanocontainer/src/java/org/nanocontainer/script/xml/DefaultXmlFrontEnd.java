@@ -14,7 +14,7 @@ import org.picoextras.reflection.ReflectionFrontEnd;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.w3c.dom.Document;
@@ -87,7 +87,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
             }
         }
         if (componentCount == 0) {
-            throw new EmptyXmlCompositionException();
+            throw new EmptyCompositionException();
         }
     }
 
@@ -178,11 +178,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);
         } catch (final SAXException e) {
-            throw new PicoCompositionException() {
-                public String getMessage() {
-                    return "SAXException during creation of PseudoComponent :" + e.getMessage();
-                }
-            };
+            throw new PicoCompositionException(e);
         }
     }
 }

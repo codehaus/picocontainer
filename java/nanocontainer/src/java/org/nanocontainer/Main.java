@@ -9,7 +9,7 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLOption;
@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Iterator;
 
 public class Main {
 
@@ -29,58 +30,39 @@ public class Main {
 
     private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]
     {
-        new CLOptionDescriptor( "help",
-                                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                                HELP_OPT,
-                                "print this message and exit" ),
-        new CLOptionDescriptor( "version",
-                                CLOptionDescriptor.ARGUMENT_DISALLOWED,
-                                VERSION_OPT,
-                                "print the version information and exit" ),
-        new CLOptionDescriptor( "monitor",
-                                CLOptionDescriptor.ARGUMENT_REQUIRED,
-                                MONITOR_OPT,
-                                "specify the monitor implemenatation" ),
-        new CLOptionDescriptor( "composition",
-                                CLOptionDescriptor.ARGUMENT_REQUIRED,
-                                COMPOSITION_OPT,
-                                "specify the assembly file" )
+        new CLOptionDescriptor("help",
+                CLOptionDescriptor.ARGUMENT_DISALLOWED,
+                HELP_OPT,
+                "print this message and exit"),
+        new CLOptionDescriptor("version",
+                CLOptionDescriptor.ARGUMENT_DISALLOWED,
+                VERSION_OPT,
+                "print the version information and exit"),
+        new CLOptionDescriptor("monitor",
+                CLOptionDescriptor.ARGUMENT_REQUIRED,
+                MONITOR_OPT,
+                "specify the monitor implemenatation"),
+        new CLOptionDescriptor("composition",
+                CLOptionDescriptor.ARGUMENT_REQUIRED,
+                COMPOSITION_OPT,
+                "specify the assembly file")
 
     };
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, PicoCompositionException, ParserConfigurationException {
-        if (args.length == 0) {
-            System.err.println("NanoContainer: Needs a configuation file as a parameter");
-            System.exit(10);
-        }
-
-        CLArgsParser parser = new CLArgsParser(args, OPTIONS);
-
-        //Make sure that there was no errors parsing
-        //arguments
-        if( null != parser.getErrorString() )
-        {
-            System.err.println( "Error: " + parser.getErrorString() );
-            return;
-        }
-
-        // Get a list of parsed options
-        final List options = parser.getArguments();
-        final int size = options.size();
+        List options = getOptions(args);
 
         String monitor = "";
         String composition = "";
 
-        for( int i = 0; i < size; i++ )
-        {
-            final CLOption option = (CLOption)options.get( i );
+        for (Iterator iterator = options.iterator(); iterator.hasNext();) {
+            CLOption option = (CLOption) iterator.next();
 
-            switch( option.getId() )
-            {
+            switch (option.getId()) {
                 case CLOption.TEXT_ARGUMENT:
                     //This occurs when a user supplies an argument that
                     //is not an option
-                    System.out.println( "Unknown arg: " + option.getArgument() );
+                    System.out.println("Unknown argument: " + option.getArgument());
                     break;
 
                 case HELP_OPT:
@@ -103,6 +85,25 @@ public class Main {
         }
 
         // Monitor
+        NanoContainerMonitor nanoContainerMonitor = createMonitor(args, monitor);
+
+        createComposition(composition, nanoContainerMonitor);
+    }
+
+    private static void createComposition(String composition, NanoContainerMonitor nanoContainerMonitor) throws PicoCompositionException, ClassNotFoundException, IOException, ParserConfigurationException {
+        if (composition.toLowerCase().endsWith(".js")) {
+            NanoContainer nano = new JavaScriptCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
+            nano.addShutdownHook();
+        } else if (composition.toLowerCase().endsWith(".xml")) {
+            NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
+            nano.addShutdownHook();
+        } else {
+            System.err.println("NanoContainer: Unknown configuration file suffix, .js or .xml expected");
+            System.exit(30);
+        }
+    }
+
+    private static NanoContainerMonitor createMonitor(String[] args, String monitor) {
         NanoContainerMonitor nanoContainerMonitor = new NullNanoContainerMonitor();
         if (args.length == 2) {
             if (monitor.equals("CommonsLogging")) {
@@ -113,43 +114,51 @@ public class Main {
                 nanoContainerMonitor = new ConsoleNanoContainerMonitor();
             }
         }
+        return nanoContainerMonitor;
+    }
 
-        if (composition.toLowerCase().endsWith(".js")) {
-            NanoContainer nano = new JavaScriptCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
-            JavaScriptCompositionNanoContainer.addShutdownHook(nano);
-        } else if (composition.toLowerCase().endsWith(".xml")) {
-            NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(composition), nanoContainerMonitor);
-            XmlCompositionNanoContainer.addShutdownHook(nano);
-        } else {
-            System.err.println("NanoContainer: Unknown configuration file suffix, .js or .xml expected");
+    private static List getOptions(String[] args) {
+        if (args.length == 0) {
+            System.err.println("NanoContainer: Needs a configuation file as a parameter");
             System.exit(10);
         }
+
+        CLArgsParser parser = new CLArgsParser(args, OPTIONS);
+
+        //Make sure that there was no errors parsing
+        //arguments
+        if (null != parser.getErrorString()) {
+            System.err.println("Error: " + parser.getErrorString());
+            System.exit(20);
+        }
+
+        // Get a list of parsed options
+        final List options = parser.getArguments();
+        return options;
     }
 
-    private static void printVersion()
-    {
-        System.out.println( "1.0" );
-        System.exit( 0 );
+    private static void printVersion() {
+        System.out.println("1.0");
+        System.exit(0);
     }
 
-    private static void printUsage()
-    {
-        final String lineSeparator = System.getProperty( "line.separator" );
+    private static void printUsage() {
+        final String lineSeparator = System.getProperty("line.separator");
 
         final StringBuffer msg = new StringBuffer();
 
-        msg.append( lineSeparator );
-        msg.append( "Foo!" );
+        msg.append(lineSeparator);
+        msg.append("Foo!");
 
         /*
          * Notice that the next line uses CLUtil.describeOptions to generate the
          * list of descriptions for each option
          */
-        msg.append( CLUtil.describeOptions( OPTIONS ).toString() );
+        msg.append(CLUtil.describeOptions(OPTIONS).toString());
 
-        System.out.println( msg.toString() );
+        System.out.println(msg.toString());
 
-        System.exit( 0 );
+        System.exit(0);
     }
 }
     

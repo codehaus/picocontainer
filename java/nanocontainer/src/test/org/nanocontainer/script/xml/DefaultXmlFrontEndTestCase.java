@@ -11,7 +11,7 @@
 package org.picoextras.script.xml;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
@@ -125,8 +125,8 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
                     "<container>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
-            fail("Should have thrown a EmptyXmlCompositionException");
-        } catch (EmptyXmlCompositionException cnfe) {
+            fail("Should have thrown a EmptyCompositionException");
+        } catch (EmptyCompositionException cnfe) {
         }
     }
 

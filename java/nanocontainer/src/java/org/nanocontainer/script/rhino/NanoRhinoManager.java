@@ -4,7 +4,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.ScriptableObject;
-import org.picocontainer.PicoCompositionException;
+import org.picoextras.script.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 import java.io.Reader;
@@ -28,12 +28,7 @@ public class NanoRhinoManager {
             return nanoHolder.getNanoRhinoScriptable().getPicoContainer();
 
         } catch (final JavaScriptException e) {
-            e.printStackTrace();
-            throw new PicoCompositionException() {
-                public String getMessage() {
-                    return "JavaScriptException : " + e.getMessage();
-                }
-            };
+            throw new PicoCompositionException(e);
         } finally {
             Context.exit();
         }
@@ -44,11 +39,7 @@ public class NanoRhinoManager {
         try {
             ScriptableObject.defineClass(scriptable, rhinoClass);
         } catch (final Exception e) {
-            throw new PicoCompositionException() {
-                public String getMessage() {
-                    return "JavaScriptException : " + e.getMessage();
-                }
-            };
+            throw new PicoCompositionException(e);
         }
     }
 }

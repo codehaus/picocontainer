@@ -4,25 +4,27 @@
   <title>Making components compatible with Avalon-Framework</title>
 </head>
 <body>
-<h1>Introduction</h1>
+<h3>Introduction</h3>
 <br>
 Apache's Avalon's component specification is enshrined in a number of
 interfaces. Blah blah.&nbsp; <br>
 <br>
 This document blah blah illustrated blah legacy compatability with
 Avalon-Framework.&nbsp; XML blah blah.<br>
-<h2>Example component API</h2>
-public interface Engine {<br>
+<h4>Example component API</h4>
+<div style="margin-left: 40px;">public interface Engine {<br>
 &nbsp; void runEngine();<br>
 }<br>
 public interface Persistor {<br>
 &nbsp; void persist(String key, Object data);<br>
 }<br>
+</div>
 <br>
 <span style="font-weight: bold;">Consider the following PicoContainer
 implementation</span><br>
 <br>
-public class EngineImpl implements Engine {<br>
+<div style="margin-left: 40px;">public class EngineImpl implements
+Engine {<br>
 &nbsp; Persistor persistor;<br>
 &nbsp; String persistenceKey;<br>
 &nbsp; Object persistable;<br>
@@ -38,8 +40,10 @@ appreciate.<br>
 &nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>
 &nbsp; }<br>
 }<br>
-<h2>The same component natively written for Apache Avalon</h2>
-public class AvalonEngine implements Engine, Servicable, Configurable,
+</div>
+<h4>The same component natively written for Apache Avalon</h4>
+<div style="margin-left: 40px;">public class AvalonEngine implements
+Engine, Servicable, Configurable,
 Initializable {<br>
 &nbsp; Persistor persistor;<br>
 &nbsp; String persistenceKey;<br>
@@ -60,11 +64,13 @@ appreciate.&nbsp;&nbsp; <br>
 &nbsp;&nbsp;&nbsp; persistor.persist(persistorKey, persistable);<br>
 &nbsp; }<br>
 }<br>
+</div>
 <br>
 <span style="font-weight: bold;">An alternate wrapping strategy for
 Apache Avalon compatability.</span><br>
 <br>
-public class AvalonEngine implements Engine, Servicable, Configurable,
+<div style="margin-left: 40px;">public class AvalonEngine implements
+Engine, Servicable, Configurable,
 Initializable {<br>
 &nbsp; private Engine engine;<br>
 &nbsp; // temporary<br>
@@ -85,6 +91,7 @@ conf.getAttribute("persistorKey");<br>
 &nbsp;&nbsp;&nbsp; engine.runEngine();<br>
 &nbsp; }<br>
 }<br>
+</div>
 <br>
 <br>
 </body>

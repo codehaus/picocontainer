@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Arrays;
 
 /**
  * <p/>
@@ -470,6 +471,32 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 children.remove();
             }
         }
+    }
+
+    public List getComponentKeys() {
+        ArrayList keys = new ArrayList();
+        Collection cas = getComponentAdapters();
+        for (Iterator iterator = cas.iterator(); iterator.hasNext();) {
+            ComponentAdapter ca =  (ComponentAdapter) iterator.next();
+            Object componentKey = ca.getComponentKey();
+            if (componentKey instanceof Class) {
+                keys.add("*" + ((Class)componentKey).getName());
+            } else {
+                keys.add(componentKey.toString());
+            }
+        }
+        Iterator it = namedChildContainers.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String name = (String) entry.getKey();
+            MutablePicoContainer mpc = (MutablePicoContainer) entry.getValue();
+            List list = mpc.getComponentKeys();
+            for (int i = 0; i < list.size(); i++) {
+                String key = (String) list.get(i);
+                keys.add(name + "/" + key);
+            }
+        }
+        return Collections.unmodifiableList(keys);
     }
 
     /**

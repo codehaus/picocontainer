@@ -187,6 +187,10 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         delegate.removeChildContainer(child);
     }
 
+    public List getComponentKeys() {
+        return delegate.getComponentKeys();
+    }
+
     // --------------------
 
     public ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {

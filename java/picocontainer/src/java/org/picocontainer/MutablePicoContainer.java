@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.util.List;
+
 /**
  * This is the core interface used for registration of components with a container. It is possible to register {@link
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
@@ -137,5 +139,6 @@ public interface MutablePicoContainer extends PicoContainer {
     void addChildContainer(MutablePicoContainer child);
     void addChildContainer(String name, MutablePicoContainer child);
     void removeChildContainer(MutablePicoContainer child);
+    List getComponentKeys();
 
 }

@@ -562,14 +562,17 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
-    public void testFicticiousNamedChildContainerIsNotAccessible() {
+    public void testNamedChildContainerIsAccessible() {
         StringBuffer sb = new StringBuffer();
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponentInstance("bar/*" + LifeCycleMonitoring.class.getName());
-        assertNull(o);
+        Object o = parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
+        assertNotNull(o);
+        List keys = parent.getComponentKeys();
+        assertEquals(2, keys.size());
+        assertEquals("foo/*" + LifeCycleMonitoring.class.getName(), keys.get(1));
     }
 
 

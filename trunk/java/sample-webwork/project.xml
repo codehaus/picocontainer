@@ -16,7 +16,7 @@
 
         <dependency>
             <id>picocontainer</id>
-            <version>1.0-beta-5-SNAPSHOT</version>
+            <version>1.0-RC-1-SNAPSHOT</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -88,6 +88,14 @@
         <dependency>
             <id>commons-collections</id>
             <version>2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>ognl</id>
+            <version>2.5.1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

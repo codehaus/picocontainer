@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
  *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class ConstantParameter implements Parameter {
@@ -35,13 +36,13 @@ public class ConstantParameter implements Parameter {
     public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter result = null;
         if (expectedType.isAssignableFrom(value.getClass())) {
-            result = new InstanceComponentAdapter(value, value);
+            result = new InstanceComponentAdapter(uniqueishKey(), value);
         } else if (expectedType.isPrimitive()) {
             try {
                 Field field = value.getClass().getField("TYPE");
                 Class type = (Class) field.get(value);
                 if (expectedType.isAssignableFrom(type)) {
-                    result = new InstanceComponentAdapter(value, value);
+                    result = new InstanceComponentAdapter(uniqueishKey(), value);
                 } else {
                     result = null;
                 }
@@ -57,4 +58,9 @@ public class ConstantParameter implements Parameter {
         }
         return result;
     }
+
+    private Integer uniqueishKey() {
+        return new Integer(System.identityHashCode(value));
+    }
+
 }

@@ -17,6 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.Parameter;
 
 public class ImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
@@ -35,6 +36,23 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractPicoConta
     public void testImplementaionIsAutomaticallyHidden() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
         pc.registerComponentImplementation(Map.class, HashMap.class);
+        Map map = (Map) pc.getComponentInstance(Map.class);
+        assertNotNull(map);
+        assertFalse(map instanceof HashMap);
+    }
+
+    public void testNonInterfaceImplementaionIsAutomaticallyHidden() {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
+        pc.registerComponentImplementation(HashMap.class, HashMap.class);
+        Map map = (Map) pc.getComponentInstance(HashMap.class);
+        assertNotNull(map);
+        assertTrue(map instanceof HashMap);
+    }
+
+
+    public void testImplementaionWithParametersIsAutomaticallyHidden() {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer();
+        pc.registerComponentImplementation(Map.class, HashMap.class, new Parameter[0]);
         Map map = (Map) pc.getComponentInstance(Map.class);
         assertNotNull(map);
         assertFalse(map instanceof HashMap);

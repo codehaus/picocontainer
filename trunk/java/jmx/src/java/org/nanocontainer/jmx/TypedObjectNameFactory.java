@@ -27,7 +27,7 @@ public class TypedObjectNameFactory extends AbstractObjectNameFactory {
      * Construct a TypedObjectNameFactory using the default domain. Using <code>TypedObjectNameFactory(null)</code> is
      * equivalent.
      */
-    protected TypedObjectNameFactory() {
+    public TypedObjectNameFactory() {
         this(null);
     }
 
@@ -35,7 +35,7 @@ public class TypedObjectNameFactory extends AbstractObjectNameFactory {
      * Construct a TypedObjectNameFactory with a predefined domain.
      * @param domain The domain.
      */
-    protected TypedObjectNameFactory(final String domain) {
+    public TypedObjectNameFactory(final String domain) {
         super(domain);
     }
 

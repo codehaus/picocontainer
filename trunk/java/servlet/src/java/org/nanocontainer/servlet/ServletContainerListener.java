@@ -9,7 +9,7 @@
 package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 
@@ -36,7 +36,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void contextInitialized(ServletContextEvent event) {
 
         ServletContext context = event.getServletContext();
-        ContainerAssembler assembler = loadAssembler(context);
+        ContainerComposer assembler = loadAssembler(context);
 
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
         ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
@@ -56,7 +56,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession();
         ServletContext context = session.getServletContext();
-        ContainerAssembler assembler = getAssembler(context);
+        ContainerComposer assembler = getAssembler(context);
         ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
         ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
 
@@ -71,12 +71,12 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         killContainer(containerRef);
     }
 
-    private ContainerAssembler loadAssembler(ServletContext context) {
+    private ContainerComposer loadAssembler(ServletContext context) {
         ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
         String className = context.getInitParameter("assembler");
-        ContainerAssembler result = null;
+        ContainerComposer result = null;
         try {
-            result = (ContainerAssembler) Class.forName(className).newInstance();
+            result = (ContainerComposer) Class.forName(className).newInstance();
         } catch (Exception e) {
             // Don't use exception chaining to be JDK 1.3 compatible
             throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
@@ -85,9 +85,9 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         return result;
     }
 
-    private ContainerAssembler getAssembler(ServletContext context) {
+    private ContainerComposer getAssembler(ServletContext context) {
         ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
-        return (ContainerAssembler) assemblerRef.get();
+        return (ContainerComposer) assemblerRef.get();
     }
 
     private void killContainer(ObjectReference containerRef) {

@@ -3,7 +3,7 @@ package org.picoextras.script.jython;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.AbstractScriptedAssemblingLifecycleContainerBuilderTestCase;
+import org.picoextras.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.WebServer;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.StringReader;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class JythonContainerBuilderTestCase extends AbstractScriptedAssemblingLifecycleContainerBuilderTestCase {
+public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
 
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader(

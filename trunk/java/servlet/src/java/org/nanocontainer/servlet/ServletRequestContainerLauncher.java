@@ -9,7 +9,7 @@
 package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerAssembler;
+import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 
 import javax.servlet.ServletContext;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 public class ServletRequestContainerLauncher {
 
     private ContainerBuilder containerBuilder;
-    private ContainerAssembler assembler;
+    private ContainerComposer assembler;
     private ObjectReference containerRef;
     private HttpServletRequest request;
 
@@ -32,7 +32,7 @@ public class ServletRequestContainerLauncher {
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, KeyConstants.BUILDER);
         ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, KeyConstants.ASSEMBLER);
 
-        assembler = (ContainerAssembler) assemblerRef.get();
+        assembler = (ContainerComposer) assemblerRef.get();
         containerRef = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
         containerBuilder = (ContainerBuilder) builderRef.get();
         this.request = request;

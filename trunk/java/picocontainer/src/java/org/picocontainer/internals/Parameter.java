@@ -10,8 +10,6 @@
 
 package org.picocontainer.internals;
 
-import org.picocontainer.internals.ComponentSpecification;
-import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoInitializationException;
 
 /**

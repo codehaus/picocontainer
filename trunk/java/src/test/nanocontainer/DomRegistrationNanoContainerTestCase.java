@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoRegistrationException;
 import nanocontainer.testmodel.WebServer;
+import nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 
 public class DomRegistrationNanoContainerTestCase extends TestCase {
 

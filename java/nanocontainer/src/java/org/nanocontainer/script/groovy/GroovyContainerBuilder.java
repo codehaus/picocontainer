@@ -10,7 +10,7 @@ import org.codehaus.groovy.syntax.SyntaxException;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 
 import java.io.IOException;
 import java.io.InputStream;

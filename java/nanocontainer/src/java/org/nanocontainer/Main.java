@@ -13,7 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picoextras.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;

@@ -12,7 +12,7 @@ import org.mozilla.javascript.Scriptable;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 
 import java.io.Reader;
 

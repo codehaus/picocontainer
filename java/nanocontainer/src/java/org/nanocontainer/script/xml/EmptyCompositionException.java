@@ -9,7 +9,7 @@
 
 package org.nanocontainer.script.xml;
 
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 
 public class EmptyCompositionException extends PicoAssemblyException {
     public String getMessage() {

@@ -9,9 +9,9 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
-import org.picoextras.integrationkit.ContainerComposer;
-import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerComposer;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
 

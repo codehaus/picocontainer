@@ -4,7 +4,7 @@
  */
 package org.nanocontainer.script;
 
-import org.picoextras.integrationkit.ComposingLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.ComposingLifecycleContainerBuilder;
 import org.nanocontainer.script.rhino.JavascriptContainerBuilder;
 import org.nanocontainer.script.jython.JythonContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;

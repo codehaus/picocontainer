@@ -18,7 +18,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
 import org.w3c.dom.Document;

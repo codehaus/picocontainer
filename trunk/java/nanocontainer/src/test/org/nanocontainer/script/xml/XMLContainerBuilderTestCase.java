@@ -13,7 +13,7 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.DefaultWebServerConfig;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;

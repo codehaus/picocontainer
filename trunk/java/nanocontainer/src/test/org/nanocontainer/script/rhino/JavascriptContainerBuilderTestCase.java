@@ -3,7 +3,7 @@ package org.nanocontainer.script.rhino;
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.picoextras.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;

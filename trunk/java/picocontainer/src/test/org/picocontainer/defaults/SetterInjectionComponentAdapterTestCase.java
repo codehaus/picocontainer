@@ -220,14 +220,16 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
-    // TODO
+    // TODO: fails with incorrect order
     public void XXXtestOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer(
                 new CachingComponentAdapterFactory(
                         new SetterInjectionComponentAdapterFactory(
                                 new ConstructorInjectionComponentAdapterFactory())));
-        pico.registerComponentImplementation("recording", StringBuffer.class);
+        pico.registerComponent(
+                new CachingComponentAdapter(
+                        new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
         pico.registerComponentImplementation(Four.class);
         pico.registerComponentImplementation(Two.class);
         pico.registerComponentImplementation(One.class);
@@ -241,11 +243,13 @@ public class SetterInjectionComponentAdapterTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", Four.class, componentInstances.get(4).getClass());
     }
 
-    // TODO
+    // TODO: fails with NPE
     public void XXXtestOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation("recording", StringBuffer.class);
+        pico.registerComponent(
+                new CachingComponentAdapter(
+                        new ConstructorInjectionComponentAdapter("recording", StringBuffer.class)));
         pico.registerComponentImplementation(Four.class);
         pico.registerComponentImplementation(Two.class);
         pico.registerComponentImplementation(One.class);

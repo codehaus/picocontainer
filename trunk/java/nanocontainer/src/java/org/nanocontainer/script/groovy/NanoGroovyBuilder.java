@@ -106,11 +106,21 @@ public class NanoGroovyBuilder extends BuilderSupport {
 
     private Object createSoftContainerNode(Object parent, Map attributes) {
         PicoContainer parentContainer = null;
+        System.out.println("-->1");
+
         if (parent instanceof MutablePicoContainer) {
+            System.out.println("-->2");
+
             parentContainer = (PicoContainer) parent;
         }
+        System.out.println("-->3");
+
         MutablePicoContainer container = createContainer(attributes, parentContainer);
+        System.out.println("-->4");
+
         ReflectionContainerAdapter rca = new DefaultReflectionContainerAdapter(container);
+        System.out.println("-->5");
+
         return rca;
     }
 
@@ -118,6 +128,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
         String path = (String) attributes.remove("path");
         URL pathURL = null;
         try {
+            System.out.println("--> 6 " + path);
             if (path.toLowerCase().startsWith("http://")) {
                 pathURL = new URL(path);
             } else {

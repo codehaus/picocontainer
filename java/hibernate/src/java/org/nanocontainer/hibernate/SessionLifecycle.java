@@ -32,6 +32,7 @@ public class SessionLifecycle implements Startable {
 	
 	public void stop() {
 		try {
+			session.flush();
 			session.close();
 		} catch(HibernateException ex) {
 			//swallow it? not sure what to do with it...

@@ -95,7 +95,7 @@ public class SessionComponentAdapter implements ComponentAdapter {
     public void verify() throws PicoVerificationException {
         try {
             if (verifying) {
-                throw new CyclicDependencyException(new Class[]{SessionFactory.class});
+                throw new CyclicDependencyException(new Class[]{Session.class});
             }
             verifying = true;
             HashSet unsatisfiableDependencies = new HashSet();

@@ -40,7 +40,7 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
         return multicasterFactory.createComponentMulticaster(
                 getClass().getClassLoader(),
-                componentInstances,
+                null, componentInstances,
                 true,
                 invocationInterceptor,
                 invoker

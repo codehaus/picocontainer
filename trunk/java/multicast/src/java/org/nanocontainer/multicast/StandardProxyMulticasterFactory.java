@@ -24,12 +24,16 @@ import java.util.List;
  */
 public class StandardProxyMulticasterFactory extends AbstractMulticasterFactory {
 
-    protected Object createProxy(ClassLoader classLoader, List objectsToAggregateCallFor, Object[] targets, InvocationInterceptor invocationInterceptor, Invoker invoker) {
+    protected Object createProxy(ClassLoader classLoader, Class type, List objectsToAggregateCallFor, Object[] targets, InvocationInterceptor invocationInterceptor, Invoker invoker) {
         return Proxy.newProxyInstance(
                 classLoader,
-                interfaceFinder.getInterfaces(objectsToAggregateCallFor),
+                type != null ? new Class[]{type} : interfaceFinder.getInterfaces(objectsToAggregateCallFor),
                 new AggregatingInvocationHandler(classLoader, targets, invocationInterceptor, invoker)
         );
+    }
+
+    public boolean canMulticast(Class type) {
+        return type.isInterface();
     }
 
     protected class AggregatingInvocationHandler extends AbstractAggregatingInvocationHandler implements InvocationHandler {

@@ -77,14 +77,8 @@
 
     <dependency>
       <id>picocontainer</id>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0-beta-4-SNAPSHOT</version>
       <url>http://www.picocontainer.org/</url>
-    </dependency>
-
-    <dependency>
-      <groupId>picocontainer</groupId>
-      <artifactId>picoextras-testmodel</artifactId>
-      <version>${pom.currentVersion}</version>
     </dependency>
 
     <dependency>
@@ -96,6 +90,12 @@
     <dependency>
       <groupId>picocontainer</groupId>
       <artifactId>picoextras-script</artifactId>
+      <version>${pom.currentVersion}</version>
+    </dependency>    
+        
+    <dependency>
+      <groupId>picocontainer</groupId>
+      <artifactId>picoextras-integrationkit</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>    
         

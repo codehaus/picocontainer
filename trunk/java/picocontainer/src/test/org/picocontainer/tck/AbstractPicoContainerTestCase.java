@@ -5,11 +5,7 @@ import org.picocontainer.*;
 import org.picocontainer.testmodel.*;
 import org.picocontainer.defaults.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -127,7 +123,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         pico.registerComponentImplementation("ping", String.class);
         pico.registerComponentInstance("pong", "pang");
         try {
-            Object huh = pico.getComponentInstance(String.class);
+            pico.getComponentInstance(String.class);
         } catch (AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
         }
@@ -230,6 +226,18 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         NeedsWashable nw = (NeedsWashable) pico.getComponentInstance("nw");
         NeedsTouchable nt = (NeedsTouchable) pico.getComponentInstance("nt");
         assertSame(nw.washable, nt.touchable);
+    }
+
+    public void testRegisterComponentWithObjectBadType() throws PicoIntrospectionException {
+        MutablePicoContainer pico = createPicoContainer();
+
+        try {
+            pico.registerComponentInstance(Serializable.class, new Object());
+            fail("Shouldn't be able to register an Object.class as Serializable because it is not, " +
+                    "it does not implement it, Object.class does not implement much.");
+        } catch (AssignabilityRegistrationException e) {
+        }
+
     }
 
 }

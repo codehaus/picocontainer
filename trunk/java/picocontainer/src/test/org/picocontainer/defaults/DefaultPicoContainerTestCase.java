@@ -10,15 +10,13 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 import java.util.Map;
+import java.io.Serializable;
 
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 

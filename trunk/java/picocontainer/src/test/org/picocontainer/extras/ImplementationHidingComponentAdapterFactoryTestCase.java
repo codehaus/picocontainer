@@ -53,6 +53,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         assertFalse(swappable instanceof ConcreteSwappable);
         assertEquals("Edam", swappable.getCheese());
 
+        //TODO - what is this last line for, throws something on errror or should have an assert following ?
         componentAdapterFactory.hotSwap(Swappable.class);
     }
 

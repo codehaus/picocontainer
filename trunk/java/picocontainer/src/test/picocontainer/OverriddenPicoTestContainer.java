@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverriddenPicoTestContainer extends PicoContainerImpl.WithStartableLifecycleManager
+public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.WithStartableLifecycleManager
 {
     private Wilma wilma;
 

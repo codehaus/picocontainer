@@ -24,23 +24,23 @@ import picocontainer.testmodel.WilmaImpl;
 import picocontainer.testmodel.*;
 import picocontainer.testmodel.Dictionary;
 
-public class PicoContainerImplTestCase extends TestCase {
+public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new PicoContainerImpl(null, new NullStartableLifecycleManager(), new DefaultComponentFactory());
+            new HierarchicalPicoContainer(null, new NullStartableLifecycleManager(), new DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new PicoContainerImpl(new NullContainer(), null, new DefaultComponentFactory());
+            new HierarchicalPicoContainer(new NullContainer(), null, new DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new PicoContainerImpl(new NullContainer(), new NullStartableLifecycleManager(), null);
+            new HierarchicalPicoContainer(new NullContainer(), new NullStartableLifecycleManager(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
@@ -49,24 +49,21 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testBasicRegAndStart() throws PicoStartException, PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
 
         pico.start();
 
+        assertEquals("There should be two comps in the container", 2, pico.getComponents().length);
+
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
-
-        assertEquals("There should be two comps in the container", 2, pico.getComponents().length);
-        assertEquals("There should have been a Fred in the container", FredImpl.class, pico.getComponents()[0].getClass());
-        assertEquals("There should have been a Wilma in the container", WilmaImpl.class, pico.getComponents()[1].getClass());
-
     }
 
     public void testTooFewComponents() throws PicoStartException, PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
 
@@ -82,7 +79,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testDupeImplementationsOfComponents() throws PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(Dictionary.class, Webster.class);
         try {
@@ -96,7 +93,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testDupeTypesWithClass() throws PicoStartException, PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);
         try {
@@ -110,7 +107,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testDupeTypesWithObject() throws PicoStartException, PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);
         try {
@@ -130,7 +127,7 @@ public class PicoContainerImplTestCase extends TestCase {
 
     public void testAmbiguousHierarchy() throws PicoRegistrationException, PicoStartException {
 
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         // Register two Wilmas that Fred will be confused about
         pico.registerComponent(WilmaImpl.class);
@@ -154,7 +151,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testRegisterComponentWithObject() throws PicoRegistrationException, PicoStartException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(new WilmaImpl());
@@ -166,7 +163,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testRegisterComponentWithObjectBadType() {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         try {
             pico.registerComponent(Serializable.class, new Object());
@@ -178,7 +175,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testComponentRegistrationMismatch() throws PicoStartException, PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
 
         try {
@@ -192,7 +189,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testMultipleArgumentConstructor() throws Throwable /* fixme */ {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(Wilma.class, WilmaImpl.class);
@@ -203,22 +200,44 @@ public class PicoContainerImplTestCase extends TestCase {
         assertTrue("There should have been a FlintstonesImpl in the container", pico.hasComponent(FlintstonesImpl.class));
     }
 
+    public void testGetComponentTypes() throws PicoRegistrationException, PicoStartException {
+        // ASLAK: don't declare as Impl. For IDEA jumps only
+        HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        pico.registerComponent(FredImpl.class);
+        pico.registerComponent(Wilma.class, WilmaImpl.class);
+
+        // You might have thought that starting the container shouldn't be necessary
+        // just to get the types, but it is. The map holding the types->component instances
+        // doesn't receive anything until the components are instantiated.
+        pico.start();
+
+        List types = Arrays.asList( pico.getComponentTypes() );
+        assertEquals( "There should be 2 types", 2, types.size() );
+        assertTrue( "There should be a FredImpl type", types.contains(FredImpl.class) );
+        assertTrue( "There should be a Wilma type", types.contains(Wilma.class) );
+        assertTrue( "There should not be a WilmaImpl type", !types.contains(WilmaImpl.class) );
+    }
+
     public void testParentContainer() throws PicoRegistrationException, PicoStartException {
 
         final Wilma wilma = new WilmaImpl();
 
-        PicoContainer pico = new PicoContainerImpl.WithParentContainer(new Container() {
-            public boolean hasComponent(Class compType) {
-                return compType == Wilma.class;
+        PicoContainer pico = new HierarchicalPicoContainer.WithParentContainer(new Container() {
+            public boolean hasComponent(Class componentType) {
+                return componentType == Wilma.class;
             }
 
-            public Object getComponent(Class compType) {
-                return wilma;
+            public Object getComponent(Class componentType) {
+                return componentType == Wilma.class ? wilma : null;
             }
 
             public Object[] getComponents() {
-                // Won't be called here
-                return null;
+                return new Object[]{wilma};
+            }
+
+            public Class[] getComponentTypes() {
+                return new Class[] { Wilma.class };
             }
         });
 
@@ -226,8 +245,8 @@ public class PicoContainerImplTestCase extends TestCase {
 
         pico.start();
 
-        assertFalse("Wilma should not have been passed through the parent container", pico.hasComponent(Wilma.class));
-
+        assertEquals("The parent should return 2 components (one from the parent)", 2, pico.getComponents().length);
+        assertTrue("Wilma should have been passed through the parent container", pico.hasComponent(Wilma.class));
         assertTrue("There should have been a FredImpl in the container", pico.hasComponent(FredImpl.class));
 
     }
@@ -309,7 +328,7 @@ public class PicoContainerImplTestCase extends TestCase {
 
     public void testTooManyContructors() throws PicoRegistrationException, PicoStartException {
 
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         try {
             pico.registerComponent(Vector.class);
@@ -322,7 +341,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testRegisterAbstractShouldFail() throws PicoRegistrationException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         try {
             pico.registerComponent(Runnable.class);
@@ -357,8 +376,8 @@ public class PicoContainerImplTestCase extends TestCase {
 
     public void testWithComponentFactory() throws PicoRegistrationException, PicoStartException {
         final WilmaImpl wilma = new WilmaImpl();
-        PicoContainer pc = new PicoContainerImpl.WithComponentFactory(new ComponentFactory() {
-            public Object createComponent(Class compType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        PicoContainer pc = new HierarchicalPicoContainer.WithComponentFactory(new ComponentFactory() {
+            public Object createComponent(Class componentType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
                 return wilma;
             }
         });
@@ -374,7 +393,7 @@ public class PicoContainerImplTestCase extends TestCase {
     }
 
     public void testInvocationTargetException() throws PicoRegistrationException, PicoStartException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Barney.class);
         try {
             pico.start();
@@ -391,7 +410,7 @@ public class PicoContainerImplTestCase extends TestCase {
 
     // TODO uncomment this and make it pass
     private void tAestCircularDependencyShouldFail() throws PicoRegistrationException, PicoStartException {
-        PicoContainer pico = new PicoContainerImpl.Default();
+        PicoContainer pico = new HierarchicalPicoContainer.Default();
 
         try {
             pico.registerComponent(A.class);

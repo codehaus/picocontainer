@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OveriddenPicoTestContainer extends PicoContainerImpl.Default
+public class OveriddenPicoTestContainer extends HierarchicalPicoContainer.Default
 {
     private Wilma wilma;
     private List started = new ArrayList();

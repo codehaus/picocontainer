@@ -22,5 +22,9 @@ public class NullContainer implements Container {
     public Object[] getComponents() {
         return new Object[0];
     }
+
+    public Class[] getComponentTypes() {
+        return new Class[0];
+    }
 }
 

@@ -12,9 +12,11 @@ package picocontainer;
 
 public interface Container {
 
-    boolean hasComponent(Class compType);
+    boolean hasComponent(Class componentType);
 
-    Object getComponent(Class compType);
+    Object getComponent(Class componentType);
 
     Object[] getComponents();
+
+    Class[] getComponentTypes();
 }

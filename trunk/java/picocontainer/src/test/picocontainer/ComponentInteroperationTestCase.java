@@ -11,7 +11,7 @@
 package picocontainer;
 
 import junit.framework.TestCase;
-import picocontainer.PicoContainerImpl;
+import picocontainer.HierarchicalPicoContainer;
 import picocontainer.DuplicateComponentTypeRegistrationException;
 import picocontainer.PicoContainer;
 import picocontainer.PicoRegistrationException;

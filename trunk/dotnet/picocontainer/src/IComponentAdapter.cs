@@ -14,8 +14,13 @@ using System;
 namespace PicoContainer {
   
   /// <summary>
-  /// A component adapter is responsible for instantiating a specific component instance. 
+  /// A component adapter is responsible for providing a specific component instance.
+  /// An instance of an implementation of this interface is used in a {@link PicoContainer}
+  /// for every registered component or instance.  Each ComponentAdapter instance has to 
+  /// support unique key for a single PicoContainer.  The key itself is either a class type
+  /// (normally an interface) or an identifier.
   /// </summary>
+  /// 
   public interface IComponentAdapter {
     
     /// <summary>

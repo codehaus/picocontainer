@@ -90,9 +90,10 @@ namespace PicoContainer.Tests.Tck
 																												SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstance(Touchable.class);
 
 																																																	assertTrue(touchable.wasTouched);
-																																																  }*/
-
-		public void testGettingComponentWithMissingDependencyFails()
+			
+																																															  }*/
+		[Test]
+		public void GettingComponentWithMissingDependencyFails()
 		{
 			IPicoContainer picoContainer = CreatePicoContainerWithDependsOnTouchableOnly();
 			try
@@ -109,7 +110,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testDuplicateRegistration()
+		[Test]
+		public void DuplicateRegistration()
 		{
 			try
 			{
@@ -124,7 +126,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookUp()
+		[Test]
+		public void ExternallyInstantiatedObjectsCanBeRegistgeredAndLookUp()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			Hashtable map = new Hashtable();
@@ -132,7 +135,8 @@ namespace PicoContainer.Tests.Tck
 			Assert.AreSame(map, pico.GetComponentInstance(typeof (Hashtable)));
 		}
 
-		public void testAmbiguousResolution()
+		[Test]
+		public void AmbiguousResolution()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation("ping", typeof (string));
@@ -147,7 +151,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testLookupWithUnregisteredKeyReturnsNull()
+		[Test]
+		public void LookupWithUnregisteredKeyReturnsNull()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			Assert.IsNull(pico.GetComponentInstance(typeof (string)));
@@ -161,7 +166,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage()
+		[Test]
+		public void UnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ComponentD));
@@ -182,7 +188,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testCyclicDependencyThrowsCyclicDependencyException()
+		[Test]
+		public void CyclicDependencyThrowsCyclicDependencyException()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ComponentB));
@@ -216,14 +223,15 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testRemovalNonRegisteredIComponentAdapterWorksAndReturnsNull()
+		[Test]
+		public void RemovalNonRegisteredIComponentAdapterWorksAndReturnsNull()
 		{
 			IMutablePicoContainer picoContainer = CreatePicoContainer();
 			Assert.IsNull(picoContainer.UnregisterComponent("COMPONENT DOES NOT EXIST"));
 		}
 
-
-		public void testIComponentAdapterRegistrationOrderIsMaintained()
+		[Test]
+		public void IComponentAdapterRegistrationOrderIsMaintained()
 		{
 			ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", typeof (object));
 			ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", typeof (MyString));
@@ -287,7 +295,8 @@ namespace PicoContainer.Tests.Tck
 			}
 		}
 
-		public void testSameInstanceCanBeUsedAsDifferentType()
+		[Test]
+		public void SameInstanceCanBeUsedAsDifferentType()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation("wt", typeof (WashableTouchable));
@@ -299,7 +308,8 @@ namespace PicoContainer.Tests.Tck
 			Assert.AreSame(nw.washable, nt.touchable);
 		}
 
-		public void testRegisterComponentWithObjectBadType()
+		[Test]
+		public void RegisterComponentWithObjectBadType()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 
@@ -327,7 +337,8 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		// http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-52
-		public void testPico52()
+		[Test]
+		public void PicoIssue52()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 
@@ -384,7 +395,7 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void TestMakingOfChildContainerPercolatesLifecycleManager()
+		public void MakingOfChildContainerPercolatesLifecycleManager()
 		{
 			TestLifecycleManager lifecycleManager = new TestLifecycleManager();
 			IMutablePicoContainer parent = CreatePicoContainer(null, lifecycleManager);

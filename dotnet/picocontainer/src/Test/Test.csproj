@@ -199,6 +199,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Monitors\ConsoleComponentMonitorTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Tck\AbstractComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

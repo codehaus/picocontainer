@@ -24,7 +24,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void TestBasicInstantiationAndContainment()
+		public void BasicInstantiationAndContainment()
 		{
 			DefaultPicoContainer pico = (DefaultPicoContainer) CreatePicoContainerWithTouchableAndDependsOnTouchable();
 
@@ -33,7 +33,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void TestComponentInstancesFromParentsAreNotDirectlyAccessible()
+		public void ComponentInstancesFromParentsAreNotDirectlyAccessible()
 		{
 			IMutablePicoContainer a = new DefaultPicoContainer();
 			IMutablePicoContainer b = new DefaultPicoContainer(a);
@@ -53,7 +53,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void TestUpDownDependenciesCannotBeFollowed()
+		public void UpDownDependenciesCannotBeFollowed()
 		{
 			IMutablePicoContainer parent = CreatePicoContainer();
 			IMutablePicoContainer child = CreatePicoContainer(parent);
@@ -75,7 +75,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void TestComponentsCanBeRemovedByInstance()
+		public void ComponentsCanBeRemovedByInstance()
 		{
 			IMutablePicoContainer pico = CreatePicoContainer();
 			pico.RegisterComponentImplementation(typeof (ArrayList));
@@ -85,7 +85,5 @@ namespace Test.Defaults
 			Assert.AreEqual(0, pico.ComponentInstances.Count);
 			Assert.IsNull(pico.GetComponentInstanceOfType(typeof (IList)));
 		}
-
-
 	}
 }

@@ -10,25 +10,19 @@ import org.picocontainer.PicoContainer;
 import java.io.Reader;
 import java.io.IOException;
 
-public class NanoRhinoManager {
-    public PicoContainer execute(Class scriptableClass, Reader script) throws PicoCompositionException, IOException {
+public class PicoManager {
+    public PicoContainer execute(Class scriptableClass, Reader javascript) throws PicoCompositionException, IOException, JavaScriptException {
         Context cx = Context.enter();
-        Scriptable scriptable;
         try {
-            scriptable = cx.initStandardObjects(null);
-
+            Scriptable scriptable = cx.initStandardObjects(null);
             defineClass(scriptable, scriptableClass);
+            PicoScriptableHolder holder = new PicoScriptableHolder();
 
-            NanoRhinoScriptableHolder nanoHolder = new NanoRhinoScriptableHolder();
-            Scriptable jsArgs = Context.toObject(nanoHolder, scriptable);
-            scriptable.put("nano", scriptable, jsArgs);
+            Scriptable jsArgs = Context.toObject(holder, scriptable);
+            scriptable.put("pico", scriptable, jsArgs);
 
-            cx.evaluateReader(scriptable, script, "<cmd>", 1, null);
-
-            return nanoHolder.getNanoRhinoScriptable().getPicoContainer();
-
-        } catch (final JavaScriptException e) {
-            throw new PicoCompositionException(e);
+            cx.evaluateReader(scriptable, javascript, "<cmd>", 1, null);
+            return holder.getPicoScriptable().getPicoContainer();
         } finally {
             Context.exit();
         }

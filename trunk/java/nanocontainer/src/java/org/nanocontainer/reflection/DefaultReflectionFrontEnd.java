@@ -78,12 +78,12 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
         picoContainer.registerComponentImplementation(getClassLoader().loadClass(componentImplementationClassName));
     }
 
-    public void registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException {
+    public void registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
         Class componentImplementation = getClassLoader().loadClass(componentImplementationClassName);
         picoContainer.registerComponentImplementation(key, componentImplementation);
     }
 
-    public void registerComponent(
+    public void registerComponentImplementation(
             Object key,
             String componentImplementationClassName,
             String[] parameterTypesAsString,

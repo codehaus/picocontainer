@@ -98,10 +98,10 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
 
         if (componentAdaptorClassName != null && !componentAdaptorClassName.equals("")) {
-            tempContainer.registerComponent(ComponentAdapterFactory.class, componentAdaptorClassName);
+            tempContainer.registerComponentImplementation(ComponentAdapterFactory.class, componentAdaptorClassName);
         }
         if (picoContainerClassName == null || picoContainerClassName.equals("")) {
-            tempContainer.registerComponent(PicoContainer.class, DefaultPicoContainer.class.getName());
+            tempContainer.registerComponentImplementation(PicoContainer.class, DefaultPicoContainer.class.getName());
         } else {
             tempContainer.registerComponentImplementation(picoContainerClassName);
         }
@@ -150,7 +150,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         if (stringKey == null || stringKey.equals("")) {
             stringKey = className;
         }
-        reflectionFrontEnd.registerComponent(stringKey, className);
+        reflectionFrontEnd.registerComponentImplementation(stringKey, className);
     }
 
     private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
@@ -162,7 +162,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
 
         ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
-        tempContainer.registerComponent(XmlPseudoComponentFactory.class.getName(), factoryClass);
+        tempContainer.registerComponentImplementation(XmlPseudoComponentFactory.class.getName(), factoryClass);
         XmlPseudoComponentFactory factory = (XmlPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
 
         NodeList nl = componentElement.getChildNodes();

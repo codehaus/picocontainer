@@ -201,7 +201,7 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
 
-    public static class ForgivingLifecyclePicoContainer extends DefaultPicoContainer.Default implements Startable, Stoppable {
+    public static class ForgivingLifecyclePicoContainer extends DefaultPicoContainer.Default implements Startable, Stoppable, Disposable {
 
         private Startable startableAggregatedComponent;
         private Stoppable stoppingAggregatedComponent;
@@ -221,6 +221,11 @@ public class ClassicLifecycleTestCase extends TestCase {
             try {
 
                 stoppingAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
+            } catch (ClassCastException e) {
+            }
+            try {
+
+                disposingAggregatedComponent = (Disposable) getAggregateComponentProxy(false, false);
             } catch (ClassCastException e) {
             }
 

@@ -138,8 +138,10 @@ public class ParameterTestCase extends TestCase {
 
     public void testKeyClashBug118() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentInstance("A", new Object());
-        pico.registerComponentImplementation(String.class, String.class, new Parameter[]{
+        pico.registerComponentImplementation("A", String.class, new Parameter[]{
+            new ConstantParameter("A")
+        });
+        pico.registerComponentImplementation("B", String.class, new Parameter[]{
             new ConstantParameter("A")
         });
         pico.verify();

@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.multicast;
 
+import org.nanocontainer.proxy.InvocationInterceptor;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -17,5 +19,5 @@ import java.util.List;
  * @version $Revision$
  */
 public interface Invoker {
-    void invoke(Object[] targets, Class declaringClass, Method method, Object[] args, List results, InvocationInterceptor invocationInterceptor) throws Throwable;
+    void invoke(Object[] targets, Class declaringClass, Method method, Object[] args, List results) throws Throwable;
 }

@@ -106,4 +106,12 @@ public class NanoWebServletTestCase extends TestCase {
         requestDispatcherMock.verify();
     }
 
+    public void testDispatcher() {
+        ChainingDispatcher dispatcher = new ChainingDispatcher();
+        String[] views = dispatcher.getViews("/foo/bar.nano", "success", ".vm");
+        assertEquals( "/foo/bar_success.vm", views[0]);
+        assertEquals( "/foo/success.vm", views[1]);
+        assertEquals( "/success.vm", views[2]);
+    }
+
 }

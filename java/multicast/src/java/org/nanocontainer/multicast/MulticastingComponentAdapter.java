@@ -11,6 +11,7 @@ package org.nanocontainer.multicast;
 
 import org.picocontainer.*;
 import org.picocontainer.defaults.AbstractComponentAdapter;
+import org.nanocontainer.proxy.InvocationInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +35,12 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     }
 
     public MulticastingComponentAdapter(Object key, Class componentImplementation) {
-        this(key, componentImplementation, new NullInvocationInterceptor(), new MulticastInvoker(), new StandardProxyMulticasterFactory());
+        this(key, componentImplementation, new NullInvocationInterceptor(), new MulticastInvoker(), new MulticasterFactory());
     }
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
-        return multicasterFactory.createComponentMulticaster(
-                getClass().getClassLoader(),
-                null, componentInstances,
+        return multicasterFactory.createComponentMulticaster(null, null, componentInstances,
                 true,
-                invocationInterceptor,
                 invoker
         );
     }

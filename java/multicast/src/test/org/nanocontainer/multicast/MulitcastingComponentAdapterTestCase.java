@@ -64,7 +64,7 @@ public class MulitcastingComponentAdapterTestCase extends TestCase {
         girl1 = new TestGirl();
         girl2 = new TestGirl();
         girl3 = new TestGirl();
-        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, new NullInvocationInterceptor(), invoker, new StandardProxyMulticasterFactory());
+        multicastingComponentAdapter = new MulticastingComponentAdapter("girls", TestGirl.class, new NullInvocationInterceptor(), invoker, new MulticasterFactory());
         multicastingComponentAdapter.addComponentInstance(girl1);
         multicastingComponentAdapter.addComponentInstance(girl2);
         multicastingComponentAdapter.addComponentInstance(girl3);

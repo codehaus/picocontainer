@@ -25,7 +25,7 @@
         <available file="${basedir}/idea/lib/openapi.jar" property="idea" value="dummy/*"/>
         <property name="idea" value="idea/*"/>
 
-        <property name="excludes" value="pool/*,${swt},${idea}"/>
+        <property name="excludes" value="prevayler/*,pool/*,${swt},${idea}"/>
         <echo>Excluded from build: ${excludes}</echo>
 
         <maven:reactor

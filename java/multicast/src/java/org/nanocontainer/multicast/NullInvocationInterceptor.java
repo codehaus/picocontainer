@@ -1,5 +1,7 @@
 package org.nanocontainer.multicast;
 
+import org.nanocontainer.proxy.InvocationInterceptor;
+
 import java.lang.reflect.Method;
 
 /**
@@ -7,7 +9,8 @@ import java.lang.reflect.Method;
  * @version $Revision$
  */
 public class NullInvocationInterceptor implements InvocationInterceptor {
-    public void intercept(Method method, Object target, Object[] args) {
+    public Object intercept(Object proxy, Method method, Object[] args) {
         // do nothing
+        return null;
     }
 }

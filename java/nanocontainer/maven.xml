@@ -27,7 +27,8 @@
         </groovyc>
         <delete>
             <fileset dir="${basedir}/target/test-classes">
-                <include name="**/TestComp*"/>
+                <include name="**/TestComp.*"/>
+                <include name="**/TestComp2.*"/>
             </fileset>
         </delete>
     </postGoal>

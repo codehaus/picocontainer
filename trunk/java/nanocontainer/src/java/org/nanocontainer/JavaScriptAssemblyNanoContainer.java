@@ -14,6 +14,7 @@ import org.picocontainer.PicoConfigurationException;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.FileReader;
 
 public class JavaScriptAssemblyNanoContainer extends NanoContainer {
 
@@ -32,9 +33,25 @@ public class JavaScriptAssemblyNanoContainer extends NanoContainer {
         configure(script);
     }
 
+    public JavaScriptAssemblyNanoContainer(Reader script)
+            throws PicoConfigurationException, ClassNotFoundException, IOException {
+        super(new NullNanoContainerMonitor());
+        configure(script);
+    }
+
     protected void configure(Reader script) throws IOException, ClassNotFoundException, PicoConfigurationException {
         rootContainer = new NanoRhinoManager().execute(nanoRhinoScriptableClass, script);
         instantiateComponentsBreadthFirst(rootContainer);
         startComponentsBreadthFirst();
     }
+
+    public static void main(String[] args) throws Exception {
+        String nanoContainerJs = args[0];
+        if (nanoContainerJs == null) {
+            nanoContainerJs = "config/nanocontainer.js";
+        }
+        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new FileReader(nanoContainerJs));
+        addShutdownHook(nano);
+    }
+
 }

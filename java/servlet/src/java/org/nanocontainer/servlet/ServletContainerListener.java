@@ -45,14 +45,14 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         containerBuilder = new DefaultLifecycleContainerBuilder();
         builderRef.set(containerBuilder);
 
-        containerBuilder.buildContainer(containerRef, null, assembler, "application");
+        containerBuilder.buildContainer(containerRef, null, assembler, context);
     }
 
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
 
-        containerBuilder.killContainer(containerRef);
+        killContainer(containerRef);
     }
 
     public void sessionCreated(HttpSessionEvent event) {
@@ -62,30 +62,38 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
         ObjectReference parentContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
 
-        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, "session");
+        containerBuilder.buildContainer(containerRef, parentContainerRef, assembler, session);
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
         HttpSession session = event.getSession();
         ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
 
-        containerBuilder.killContainer(containerRef);
+        killContainer(containerRef);
     }
 
     private ContainerAssembler loadAssembler(ServletContext context) {
-        try {
             ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
             String className = context.getInitParameter("assembler");
-            ContainerAssembler result = (ContainerAssembler) Class.forName(className).newInstance();
+            ContainerAssembler result = null;
+            try {
+                result = (ContainerAssembler) Class.forName(className).newInstance();
+            } catch (Exception e) {
+                // Don't use exception chaining to be JDK 1.3 compatible
+                throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
+            }
             assemblerRef.set(result);
             return result;
-        } catch (Exception e) {
-            throw new RuntimeException(e); // todo: what should be thrown?
-        }
     }
 
     private ContainerAssembler getAssembler(ServletContext context) {
         ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, ASSEMBLER);
         return (ContainerAssembler) assemblerRef.get();
+    }
+
+    private void killContainer(ObjectReference containerRef) {
+        if (containerRef.get() != null) {
+            containerBuilder.killContainer(containerRef);
+        }
     }
 }

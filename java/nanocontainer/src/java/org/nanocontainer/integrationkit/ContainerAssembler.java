@@ -15,6 +15,6 @@ import org.picocontainer.MutablePicoContainer;
  */
 public interface ContainerAssembler {
 
-    void assembleContainer(MutablePicoContainer container, String name);
+    void assembleContainer(MutablePicoContainer container, Object scope);
 
 }

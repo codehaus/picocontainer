@@ -10,7 +10,6 @@ package org.picoextras.webwork2;
 
 import com.opensymphony.xwork.ActionProxyFactory;
 import org.picoextras.servlet.ServletContainerListener;
-import org.picoextras.webwork2.PicoActionProxyFactory;
 
 import javax.servlet.ServletContextEvent;
 

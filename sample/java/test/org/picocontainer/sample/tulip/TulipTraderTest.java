@@ -13,6 +13,8 @@ import java.util.Iterator;
  * @version $Revision$
  */
 public class TulipTraderTest extends TestCase {
+    private FlowerTickerStub ticker;
+    private FlowerMarketStub market;
 
     public static interface FlowerPriceListener {
         void flowerPriceChanged(String flower, int price);
@@ -83,26 +85,23 @@ public class TulipTraderTest extends TestCase {
         }
     }
 
-    public void testSellTulipsWhenAboveHundred() {
-        FlowerTickerStub ticker = new FlowerTickerStub();
-        FlowerMarketStub market = new FlowerMarketStub();
+    protected void setUp() throws Exception {
+        ticker = new FlowerTickerStub();
+        market = new FlowerMarketStub();
         new TulipTrader(ticker, market);
+    }
+
+    public void testSellTulipsWhenAboveHundred() {
         ticker.changeFlowerPrice("TULIP", 101);
         assertEquals(Collections.singletonList("TULIP"), market.currentSellBids());
     }
 
     public void testDontSellTulipsWhenBelowHundred() {
-        FlowerTickerStub ticker = new FlowerTickerStub();
-        FlowerMarketStub market = new FlowerMarketStub();
-        new TulipTrader(ticker, market);
         ticker.changeFlowerPrice("TULIP", 99);
         assertEquals(Collections.EMPTY_LIST, market.currentSellBids());
     }
 
     public void testBuyTulipsWhenBelowSeventy() {
-        FlowerTickerStub ticker = new FlowerTickerStub();
-        FlowerMarketStub market = new FlowerMarketStub();
-        new TulipTrader(ticker, market);
         ticker.changeFlowerPrice("TULIP", 69);
         assertEquals(Collections.singletonList("TULIP"), market.currentBuyBids());
     }

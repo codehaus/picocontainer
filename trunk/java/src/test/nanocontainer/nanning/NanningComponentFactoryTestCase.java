@@ -10,19 +10,17 @@
 
 package nanocontainer.nanning;
 
-import com.tirsen.nanning.Aspects;
-import com.tirsen.nanning.Invocation;
-import com.tirsen.nanning.MethodInterceptor;
-import com.tirsen.nanning.config.AspectSystem;
-import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
-import picocontainer.RegistrationPicoContainer;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoIntrospectionException;
+import org.codehaus.nanning.Aspects;
+import org.codehaus.nanning.Invocation;
+import org.codehaus.nanning.MethodInterceptor;
+import org.codehaus.nanning.config.AspectSystem;
+import org.codehaus.nanning.config.InterceptorAspect;
 import picocontainer.PicoInitializationException;
-import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.PicoRegistrationException;
+import picocontainer.RegistrationPicoContainer;
 import picocontainer.defaults.ComponentSpecification;
+import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 /**

@@ -1,18 +1,17 @@
 package nanocontainer.nanning;
 
-import com.tirsen.nanning.config.Aspect;
-import com.tirsen.nanning.config.Pointcut;
-import com.tirsen.nanning.config.AllPointcut;
-import com.tirsen.nanning.config.AspectSystem;
-import com.tirsen.nanning.AspectInstance;
-import com.tirsen.nanning.MethodInterceptor;
-import com.tirsen.nanning.Invocation;
-import com.tirsen.nanning.Aspects;
-import com.tirsen.nanning.MixinInstance;
+import org.codehaus.nanning.config.Aspect;
+import org.codehaus.nanning.config.Pointcut;
+import org.codehaus.nanning.config.AspectSystem;
+import org.codehaus.nanning.config.P;
+import org.codehaus.nanning.AspectInstance;
+import org.codehaus.nanning.MethodInterceptor;
+import org.codehaus.nanning.Invocation;
+import org.codehaus.nanning.Aspects;
+import org.codehaus.nanning.Mixin;
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoInitializationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.DefaultPicoContainer;
@@ -42,7 +41,7 @@ public class NanningNanoContainerTestCase extends TestCase {
      * Aa very simplified "declarative" transaction-aspect.
      */
     public static class TransactionAspect implements Aspect {
-        Pointcut transactionPointcut = new AllPointcut();
+        Pointcut transactionPointcut = P.all();
         TransactionManager transactionManager;
 
         public TransactionAspect(TransactionManager transactionManager) {
@@ -51,10 +50,6 @@ public class NanningNanoContainerTestCase extends TestCase {
 
         public void introduce(AspectInstance instance) {
             // nothing to introduce
-        }
-
-        public void adviseMixin(AspectInstance aspectInstance, MixinInstance mixinInstance) {
-            //TODO - Jon
         }
 
         public void advise(AspectInstance instance) {

@@ -113,7 +113,7 @@
 
         <dependency>
             <id>nanning</id>
-            <version>0.8</version>
+            <version>0.9</version>
             <url>http://nanning.codehaus.org/</url>
         </dependency>
 

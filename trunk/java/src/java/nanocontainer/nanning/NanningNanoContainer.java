@@ -1,7 +1,7 @@
 package nanocontainer.nanning;
 
-import com.tirsen.nanning.config.Aspect;
-import com.tirsen.nanning.config.AspectSystem;
+import org.codehaus.nanning.config.Aspect;
+import org.codehaus.nanning.config.AspectSystem;
 import picocontainer.RegistrationPicoContainer;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;

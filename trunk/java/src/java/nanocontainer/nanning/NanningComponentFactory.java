@@ -10,9 +10,9 @@
 
 package nanocontainer.nanning;
 
-import com.tirsen.nanning.AspectInstance;
-import com.tirsen.nanning.MixinInstance;
-import com.tirsen.nanning.config.AspectSystem;
+import org.codehaus.nanning.AspectInstance;
+import org.codehaus.nanning.Mixin;
+import org.codehaus.nanning.config.AspectSystem;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
@@ -41,7 +41,7 @@ class NanningComponentFactory implements ComponentFactory {
             Class intf = component.getClass().getInterfaces()[0];
             // the trick: set up first mixin manually with the component as target
             AspectInstance aspectInstance = new AspectInstance();
-            MixinInstance mixin = new MixinInstance(intf, component);
+            Mixin mixin = new Mixin(intf, component);
             aspectInstance.addMixin(mixin);
 
             // let the aspects do its work

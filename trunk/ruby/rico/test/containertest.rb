@@ -1,7 +1,6 @@
 require 'test/unit'
-require 'singleton'
 
-require 'rico/container'
+require 'rico'
 require 'rico/exceptions'
 
 class ContainerTest < Test::Unit::TestCase
@@ -162,6 +161,12 @@ class ContainerTest < Test::Unit::TestCase
     rico.multicaster.washed = true
     assert_equal true, rico.component(:washable).washed
     assert_equal true, rico.component(:also_washable).washed
+  end
+  
+  def test_registers_constant_values
+  	rico = Container.new
+  	rico.register_component :constant, "some value"
+  	assert_equal "some value", rico.component(:constant)
   end
   
   class ComponentWithDependentAndConstant

@@ -21,6 +21,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.awt.event.ActionEvent;
@@ -259,6 +260,15 @@ public class ConstructorInjectionComponentAdapterTestCase
         assertNotNull(pico.getComponentInstance(Component201.class));
     }
 
+    // http://jira.codehaus.org/browse/PICO-222
+    public void testUnambiguousSelfDependency() {
+        DefaultPicoContainer pico =  new DefaultPicoContainer();
+        pico.registerComponentImplementation(SimpleTouchable.class);
+        pico.registerComponentImplementation(DecoratedTouchable.class);
+        Touchable t = (Touchable) pico.getComponentInstance(DecoratedTouchable.class);
+        assertNotNull(t);
+    }
+    
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final long beforeTime = System.currentTimeMillis();
 

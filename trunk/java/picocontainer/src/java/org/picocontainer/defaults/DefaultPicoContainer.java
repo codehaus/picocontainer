@@ -176,8 +176,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         } else {
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
-                ComponentAdapter componentAdapter = (ComponentAdapter) found.get(i);
-                foundClasses[i] = componentAdapter.getComponentImplementation();
+                foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
             }
 
             throw new AmbiguousComponentResolutionException(componentType, foundClasses);

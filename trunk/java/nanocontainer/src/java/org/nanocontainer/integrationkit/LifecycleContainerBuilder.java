@@ -21,7 +21,7 @@ import org.picocontainer.defaults.ObjectReference;
 public abstract class LifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-        PicoContainer parentContainer = (PicoContainer) parentContainerRef.get();
+        PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         MutablePicoContainer container = createContainer(parentContainer);
 
         composeContainer(container, assemblyScope);

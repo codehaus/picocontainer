@@ -4,13 +4,12 @@
  */
 package org.nanocontainer.script.groovy;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import org.codehaus.groovy.syntax.SyntaxException;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyObject;
+import org.nanocontainer.integrationkit.PicoAssemblyException;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +21,7 @@ import java.io.Reader;
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
+ *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
@@ -31,25 +31,25 @@ public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerB
     }
 
     protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
-        Binding binding = new Binding();
-        binding.setVariable("parent", parentContainer);
-        GroovyShell shell = new GroovyShell(binding);
+        Object result = null;
         try {
-// * imports not supported by groovy yet
-// http://lists.codehaus.org/pipermail/groovy-user/2004q1/000164.html
-//            shell.evaluate("import org.picocontainer.*");
-//            shell.evaluate("import org.picocontainer.defaults.*");
-            return (MutablePicoContainer) shell.evaluate(new InputStream() {
+            GroovyClassLoader loader = new GroovyClassLoader(classLoader);
+            Class groovyClass = loader.parseClass(new InputStream() {
                 public int read() throws IOException {
                     return script.read();
                 }
-            }, "pico.groovy");
-        } catch (SyntaxException e) {
+            }, "picocontainer.groovy");
+
+            GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
+            Object[] args = {parentContainer};
+            result = groovyObject.invokeMethod("buildContainer", args);
+        } catch (Exception e) {
             throw new PicoAssemblyException(e);
-        } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
-        } catch (IOException e) {
-            throw new PicoAssemblyException(e);
+        }
+        if (result instanceof MutablePicoContainer) {
+            return (MutablePicoContainer) result;
+        } else {
+            throw new PicoAssemblyException("The script didn't return an instance of " + MutablePicoContainer.class.getName());
         }
     }
 }

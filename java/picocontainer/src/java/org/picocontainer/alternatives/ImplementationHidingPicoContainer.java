@@ -16,7 +16,6 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -68,7 +67,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             Class clazz = (Class) componentKey;
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, null);
-                return this.delegate.registerComponent(new CachingComponentAdapter(new ImplementationHidingComponentAdapter(delegate, true)));
+                return this.delegate.registerComponent(new ImplementationHidingComponentAdapter(delegate, true));
             }
         }
         return delegate.registerComponentImplementation(componentKey, componentImplementation);
@@ -80,7 +79,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
             if (clazz.isInterface()) {
                 ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
                 ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate, true);
-                return this.delegate.registerComponent(new CachingComponentAdapter(ihDelegate));
+                return this.delegate.registerComponent(ihDelegate);
             }
         }
         return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);

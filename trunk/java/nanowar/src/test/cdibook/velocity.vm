@@ -1,0 +1,7 @@
+Component from container is $component
+<ul>
+#foreach( $message in $errorMessages )
+     <li>$message</li>
+#end
+</ul>
+

@@ -16,9 +16,6 @@
     <menu name="PicoContainer">
       <item name="JavaDoc API"           href="/apidocs/index.html"/>
     </menu>
-    
-    <!-- Google Search -->
-    <search/>
   </body>
 
 </project>

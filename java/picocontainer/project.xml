@@ -171,7 +171,7 @@
         </developer>
         <developer>
             <name>Konstantin Pribluda</name>
-            <id>joehni</id>
+            <id>ko5tik</id>
             <email>NOSPAM.kpribluda@j-tec-team.de</email>
             <organization></organization>
             <roles>
@@ -308,7 +308,6 @@
 
     <reports>
         <report>maven-license-plugin</report>
-        <report>maven-faq-plugin</report>
         <report>maven-simian-plugin</report>
         <report>maven-statcvs-plugin</report>
         <report>maven-jxr-plugin</report>

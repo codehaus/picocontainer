@@ -39,7 +39,7 @@ public class MicroBeanShellConsole implements Startable {
             JConsole console = new JConsole();
             Interpreter interpreter = new Interpreter(console);
             interpreter.set("kernel", kernel);
-            frame = new JFrame("MicoContainer");
+            frame = new JFrame("MicroContainer");
             frame.getContentPane().add(new JScrollPane(console,
                     JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));

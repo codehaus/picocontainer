@@ -1,12 +1,42 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.*;
-import org.picocontainer.testmodel.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.Washable;
+import org.picocontainer.testmodel.WashableTouchable;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This test tests (at least it should) test all the method in MutablePicoContainer
@@ -183,8 +213,9 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             pico.getComponentInstance(D.class);
             fail();
         } catch (CyclicDependencyException e) {
-            assertEquals("Cyclic dependency: " + D.class.getConstructors()[0].getName() + "(" + E.class.getName() + "," + B.class.getName() + ")", e.getMessage());
-            assertEquals(D.class.getConstructors()[0], e.getConstructor());
+            final List dDependencies = Arrays.asList(D.class.getConstructors()[0].getParameterTypes());
+            final List reportedDependencies = Arrays.asList(e.getDependencies());
+            assertEquals(dDependencies, reportedDependencies);
         } catch (StackOverflowError e) {
             fail();
         }

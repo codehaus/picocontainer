@@ -32,7 +32,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     public void testSingleUseComponentCanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = new DefaultComponentAdapter(null, Object.class);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(null, Object.class, null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }

@@ -1,11 +1,26 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
 import org.picocontainer.extras.ComponentMulticasterFactory;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.Parameter;
 
 import java.io.Serializable;
-import java.util.*;
 import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Collections;
 
 /**
  * @author Aslak Helles&oslash;y

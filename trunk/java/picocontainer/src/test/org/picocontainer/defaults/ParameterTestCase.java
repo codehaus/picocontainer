@@ -13,18 +13,18 @@ import org.picocontainer.testmodel.Touchable;
  */
 public class ParameterTestCase extends TestCase {
     public void testComponentSpecificationHandlesPrimtiveTypes() {
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(String.class, String.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
-        assertTrue(TransientComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
-        assertFalse(TransientComponentAdapter.isAssignableFrom(Integer.class, String.class));
-        assertFalse(TransientComponentAdapter.isAssignableFrom(Double.class, String.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Integer.class, Integer.TYPE));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Integer.TYPE, Integer.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(String.class, String.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Double.TYPE, Double.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Long.TYPE, Long.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Short.TYPE, Short.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Float.TYPE, Float.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Byte.TYPE, Byte.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Character.TYPE, Character.class));
+        assertTrue(ConstructorComponentAdapter.isAssignableFrom(Boolean.TYPE, Boolean.class));
+        assertFalse(ConstructorComponentAdapter.isAssignableFrom(Integer.class, String.class));
+        assertFalse(ConstructorComponentAdapter.isAssignableFrom(Double.class, String.class));
     }
 
     static class TestClass {

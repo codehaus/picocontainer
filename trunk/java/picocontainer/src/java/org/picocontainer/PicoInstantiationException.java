@@ -10,15 +10,13 @@
 
 package org.picocontainer;
 
-public abstract class PicoInstantiationException extends PicoInitializationException {
-    protected PicoInstantiationException() {
-    }
+public class PicoInstantiationException extends PicoInitializationException {
 
-    protected PicoInstantiationException(String message) {
+    public PicoInstantiationException(String message) {
         super(message);
     }
 
-    protected PicoInstantiationException(String message, Throwable cause) {
+    public PicoInstantiationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -79,23 +79,23 @@ public interface PicoContainer {
     Collection getComponentKeys();
 
     /**
-     * Get the children of this container. Any given container instance should not use
+     * Get the child containers of this container. Any given container instance should not use
      * the child containers to resolve components, but rahter their parents. This method
-     * is available merely to be able to serialize trees of containers into e.g. XML
-     * or some other persistent format.
+     * is available merely to be able to traverse trees of containers, and is not used by the
+     * container itself.
      * @return a Collection of {@link PicoContainer}.
-     * @see #getParents()
+     * @see #getParentContainers()
      */
     Collection getChildContainers();
 
     /**
-     * Get the parents. In a purely hierarchical (tree structure) container,
+     * Get the parent containers of this container. In a purely hierarchical (tree structure) container,
      * there will be 0..1 parents. However, it is possible to have several parents.
      * A container will look in its parents if a component can be found in self.
      *
      * @return a Collection of {@link PicoContainer}.
      */
-    List getParents();
+    List getParentContainers();
 
     /**
      * Finds a ComponentAdapter matching the key. This method is an "expert" method, and should

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.lang.ref.WeakReference;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -106,13 +105,8 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
         delegate.start();
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.start();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.start();
         }
 
     }
@@ -120,13 +114,8 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
     public void stop() {
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.stop();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.stop();
         }
         delegate.stop();
     }
@@ -134,14 +123,12 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
     public void dispose() {
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.dispose();
-            }
-            it.remove();
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.dispose();
         }
-
+        if (delegate instanceof MutablePicoContainer) {
+            ((MutablePicoContainer) delegate).removeChildContainer(this);
+        }
         delegate.dispose();
     }
 
@@ -190,12 +177,16 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
 
     public MutablePicoContainer makeChildContainer() {
         DefaultSoftCompositionPicoContainer pc = new DefaultSoftCompositionPicoContainer(this);
-        childContainers.add(new WeakReference(pc));
+        childContainers.add(pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
-        childContainers.add(new WeakReference(child));
+        childContainers.add(child);
+    }
+
+    public void removeChildContainer(MutablePicoContainer child) {
+        childContainers.remove(child);
     }
 
     // --------------------

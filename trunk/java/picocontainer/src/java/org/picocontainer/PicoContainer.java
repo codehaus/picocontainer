@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -115,4 +117,5 @@ public interface PicoContainer extends Startable, Disposable {
      * @param componentAdapter the freshly added {@link ComponentAdapter}
      */
     void addOrderedComponentAdapter(ComponentAdapter componentAdapter);
+
 }

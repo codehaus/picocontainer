@@ -28,7 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p/>
@@ -68,7 +69,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private List orderedComponentAdapters = new ArrayList();
     private boolean started = false;
     private boolean disposed = false;
-    private ArrayList childContainers = new ArrayList();
+    private Set childContainers = new HashSet();
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -352,13 +353,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.start();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.start();
         }
         started = true;
     }
@@ -368,13 +364,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (!started) throw new IllegalStateException("Not started");
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.stop();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.stop();
         }
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         Collections.reverse(componentInstances);
@@ -388,21 +379,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         if (disposed) throw new IllegalStateException("Already disposed");
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.dispose();
-            }
-            it.remove();
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.dispose();
         }
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Disposable.class);
         Collections.reverse(componentInstances);
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
             ((Disposable) iterator.next()).dispose();
         }
+        if (parent instanceof MutablePicoContainer) {
+            ((MutablePicoContainer) parent).removeChildContainer(this);
+        }
         parent = null;
         childContainers = null;
         disposed = true;
+
     }
 
     private List getComponentInstancesOfTypeWithContainerAdaptersLast(Class type) {
@@ -421,12 +412,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public MutablePicoContainer makeChildContainer() {
         DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
-        childContainers.add(new WeakReference(pc));
+        childContainers.add(pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
-        childContainers.add(new WeakReference(child));
+        childContainers.add(child);
+    }
+
+    public void removeChildContainer(MutablePicoContainer child) {
+        childContainers.remove(child);
     }
 
     /**

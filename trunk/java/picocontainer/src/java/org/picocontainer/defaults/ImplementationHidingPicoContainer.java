@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.lang.ref.WeakReference;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -162,26 +161,16 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         pc.start();
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.start();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.start();
         }
     }
 
     public void stop() {
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.stop();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.stop();
         }
         pc.stop();
     }
@@ -189,13 +178,8 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     public void dispose() {
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
-            WeakReference weakReference = (WeakReference) it.next();
-            MutablePicoContainer mpc = (MutablePicoContainer) weakReference.get();
-            if (mpc != null) {
-                mpc.dispose();
-            } else {
-                it.remove();
-            }
+            MutablePicoContainer mpc = (MutablePicoContainer) it.next();
+            mpc.dispose();
         }
         pc.dispose();
     }
@@ -206,12 +190,16 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
 
     public MutablePicoContainer makeChildContainer() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
-        childContainers.add(new WeakReference(pc));
+        childContainers.add(pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
-        childContainers.add(new WeakReference(child));        
+        childContainers.add(child);
+    }
+
+    public void removeChildContainer(MutablePicoContainer child) {
+        childContainers.add(child);
     }
 
     private class InnerMutablePicoContainer extends DefaultPicoContainer {

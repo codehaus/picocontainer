@@ -30,7 +30,7 @@ public class FolderContentPollerTestCase extends TestCase {
         FolderContentPoller fileMonitor = new FolderContentPoller((FolderContentHandler) folderContentHandlerMock.proxy());
 
         fileMonitor.start();
-        Thread.sleep(200);
+        Thread.sleep(500);
 
         rootFolderMock.expect("close");
         rootFolderMock.expectAndReturn("getChildren", newChildren);

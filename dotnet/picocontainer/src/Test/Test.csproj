@@ -79,6 +79,16 @@
                     AssemblyName = "nunit.framework"
                     HintPath = "..\..\..\Framework\lib\nunit.framework.dll"
                 />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -89,12 +99,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DefaultComponentRegistryTestCase.cs"
+                    RelPath = "Defaults\BeanComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Defaults\BeanComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\BeanPropertyComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -114,7 +124,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\ConstructorInjectionComponentAdapterTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\DefaultComponentAdapterFactoryTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\DefaultComponentRegistryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -135,6 +155,16 @@
                 />
                 <File
                     RelPath = "Defaults\DefaultPicoContainerTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\DefaultPicoContainerUnregisterComponentTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\DelegatingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

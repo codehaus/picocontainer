@@ -11,6 +11,8 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoInitializationException;
 
 public class ConstructorComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
@@ -67,6 +69,51 @@ public class ConstructorComponentAdapterTestCase extends TestCase {
             componentAdapter.verify();
             fail();
         } catch (UnsatisfiableDependenciesException e) {
+        }
+    }
+    
+    public static class C1 {
+    	public C1(C2 c2) {
+            fail("verification should not instantiate");
+        }
+    }
+    
+    public static class C2 {
+    	public C2(C1 i1) {
+            fail("verification should not instantiate");
+        }
+    }
+
+    public void testFailingVerificationWithCyclicDependencyException() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(C1.class);
+        picoContainer.registerComponentImplementation(C2.class);
+        try {
+            picoContainer.verify();
+            fail();
+        } catch (CyclicDependencyException e) {
+            String message = e.getMessage();
+            assertTrue(message.indexOf("C1") + message.indexOf("C2") > 0);
+        }
+    }
+    
+    public static class D {
+    	public D(A a) {
+        }
+    }
+
+    public void testFailingVerificationWithPicoInitializationException() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(A.class);
+        picoContainer.registerComponentImplementation(B.class);
+        picoContainer.registerComponentImplementation(D.class, D.class, 
+                new Parameter[] { new ComponentParameter(), new ComponentParameter() });
+        try {
+            picoContainer.verify();
+            fail();
+        } catch (PicoInitializationException e) {
+            String message = e.getMessage();
+            assertTrue(message.indexOf(D.class.getName() + "(" + A.class.getName() + ")") > 0);
         }
     }
 

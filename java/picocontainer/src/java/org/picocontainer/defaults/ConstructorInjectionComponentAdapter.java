@@ -154,15 +154,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return greediestConstructor;
     }
 
-    protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies) {
-        Object[] result = new Object[adapterDependencies.length];
-        for (int i = 0; i < adapterDependencies.length; i++) {
-            ComponentAdapter adapterDependency = adapterDependencies[i];
-            result[i] = adapterDependency.getComponentInstance();
-        }
-        return result;
-    }
-
     protected Object instantiateComponent(List adapterDependencies) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
             Constructor constructor = getGreediestSatisifableConstructor(adapterDependencies);

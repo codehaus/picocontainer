@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -106,4 +107,20 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         pico.registerComponentImplementation(ArrayList.class);
         assertEquals(ArrayList.class, pico.getComponentInstanceOfType(ArrayList.class).getClass());
     }
+
+    public static class Thingie {
+        private final Collection c;
+
+        public Thingie(List c) {
+            this.c = c;
+        }
+    }
+
+    public void testThangCanBeInstantiatedWithArrayList() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(Thingie.class);
+        pico.registerComponentImplementation(ArrayList.class);
+        assertNotNull(pico.getComponentInstance(Thingie.class));
+    }
+
 }

@@ -11,6 +11,12 @@
 
             <action dev="rinkrank" type="fix">
                 Fixed 
+                <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-43">PICO-43</a>
+                - Make DefaultComponentAdapter compile under JDK 1.3.
+            </action>
+
+            <action dev="rinkrank" type="fix">
+                Fixed 
                 <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-44">PICO-44</a>
                 - Lack of information when pico is unable to satisfy dependencies.
             </action>

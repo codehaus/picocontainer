@@ -168,12 +168,12 @@ public class TransientComponentAdapter extends AbstractComponentAdapter {
 
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof RuntimeException) {
-                throw (RuntimeException) e.getCause();
-            } else if (e.getCause() instanceof Error) {
-                throw (Error) e.getCause();
+            if (e.getTargetException() instanceof RuntimeException) {
+                throw (RuntimeException) e.getTargetException();
+            } else if (e.getTargetException() instanceof Error) {
+                throw (Error) e.getTargetException();
             }
-            throw new PicoInvocationTargetInitializationException(e.getCause());
+            throw new PicoInvocationTargetInitializationException(e.getTargetException());
         } catch (InstantiationException e) {
             throw new PicoInvocationTargetInitializationException(e);
         } catch (IllegalAccessException e) {

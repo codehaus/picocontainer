@@ -9,27 +9,15 @@
 package org.nanocontainer.webwork;
 
 
-import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
-import org.apache.velocity.context.Context;
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.Template;
-
-import org.apache.commons.collections.ExtendedProperties;
-
-import webwork.config.Configuration;
-import webwork.action.ServletActionContext;
-import webwork.util.ServletValueStack;
-
-import javax.servlet.ServletConfig;
-
-import org.picocontainer.PicoContainer;
-
-import java.io.IOException;
-import java.io.FileNotFoundException;
-
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
-
+import org.picocontainer.PicoContainer;
+import webwork.action.ServletActionContext;
+import webwork.util.ServletValueStack;
 import webwork.view.velocity.WebWorkUtil;
 
 /**

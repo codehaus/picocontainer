@@ -4,11 +4,12 @@ using PicoContainer;
 using PicoContainer.Defaults;
 using System.Collections;
 using PicoContainer.Tests.TestModel;
+using PicoContainer.Tests.Tck;
 
 namespace Test.Defaults {
 
   [TestFixture]
-  public class BeanPropertyComponentAdapterFactoryTestCase {
+  public class BeanPropertyComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase{
     public class Foo {
       private String message;
 
@@ -29,8 +30,20 @@ namespace Test.Defaults {
     public class A {
       private B b;
 
+      public B B {
+        get {
+          return b;
+        }
+        set {
+          b = value;
+        }
+      }
       public void setB(B b) {
         this.b = b;
+      }
+
+      public B getB() {
+        return b;
       }
     }
 
@@ -74,7 +87,7 @@ namespace Test.Defaults {
       Assert.IsNotNull(componentAdapter.Delegate);
     }
 
-    protected IComponentAdapterFactory CreateComponentAdapterFactory() {
+    protected override IComponentAdapterFactory CreateComponentAdapterFactory() {
       return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
@@ -89,6 +102,21 @@ namespace Test.Defaults {
       return adapter;
     }
 
+    public void testSetDependenComponentWillBeSetByTheAdapter() {
+      picoContainer.RegisterComponentImplementation("b", typeof(B));
+      BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) CreateComponentAdapterFactory();
+      Hashtable properties = new Hashtable();
+
+      // the second b is the key of the B implementation
+      properties.Add("B", "b");
+      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.CreateComponentAdapter(typeof(A),typeof(A), null);
+      adapter.Properties = properties;
+      picoContainer.RegisterComponent(adapter);
+      A a = (A) picoContainer.GetComponentInstance(typeof(A));
+
+      Assert.IsNotNull(a);
+      Assert.IsNotNull(a.getB());
+    }
 
   }
 }

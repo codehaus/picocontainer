@@ -31,16 +31,21 @@ namespace PicoContainer.Defaults {
     private IList sortedMatchingConstructors;
 
     /// <summary>
-    /// Explicitly specifies parameters, if null uses default parameters.
+    /// Constructor
     /// </summary>
-    /// <param name="componentKey"></param>
-    /// <param name="componentImplementation"></param>
-    /// <param name="parameters"></param>
+    /// <param name="componentKey">The component's key</param>
+    /// <param name="componentImplementation">The component implementing type</param>
+    /// <param name="parameters">Parameters used to initialize the component</param>
     public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) 
       : base(componentKey, componentImplementation, parameters) {
       sortedMatchingConstructors = GetSortedMatchingConstructors();
     }
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="componentKey">The component's key</param>
+    /// <param name="componentImplementation">The component implementing type</param>
     public ConstructorInjectionComponentAdapter(object componentKey, Type componentImplementation) 
       : this (componentKey, componentImplementation, null) {
     }

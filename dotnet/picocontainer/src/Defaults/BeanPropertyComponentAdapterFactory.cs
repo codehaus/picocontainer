@@ -13,14 +13,11 @@ using System;
 using System.Collections;
 
 namespace PicoContainer.Defaults {
+
   public class BeanPropertyComponentAdapterFactory : DecoratingComponentAdapterFactory {
 
     IDictionary adapterCache = new Hashtable();
-
     public BeanPropertyComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate) {
-      //
-      // TODO: Add constructor logic here
-      //
     }
 
     public override IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters) {
@@ -34,6 +31,4 @@ namespace PicoContainer.Defaults {
       return (BeanPropertyComponentAdapter) adapterCache[key];
     }
   }
-
-
 }

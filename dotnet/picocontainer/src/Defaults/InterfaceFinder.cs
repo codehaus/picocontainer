@@ -20,19 +20,6 @@ namespace PicoContainer.Defaults {
       return GetInterfaces(ArrayList.ReadOnly(l));
     }
 
-    public Type[] GetInterfaces(Type obj) {
-      ArrayList interfaces = new ArrayList();
-      Type[] implemented = obj.GetInterfaces();
-      foreach (Type t in implemented) {
-        if (!interfaces.Contains(t)) {
-          interfaces.Add(t);
-        }
-      }
-
-      Type[] result = new Type[interfaces.Count];
-      interfaces.CopyTo(result,0);
-      return result;
-    }
 
     public Type[] GetInterfaces(IList objects) {
       ArrayList interfaces = new ArrayList();
@@ -51,6 +38,30 @@ namespace PicoContainer.Defaults {
       interfaces.CopyTo(result,0);
       return result;
     }
+
+    public Type[] GetInterfaces(Type i) {
+      ArrayList found = new ArrayList();
+      walk(found, i);	
+      return (Type[]) found.ToArray(typeof(Type));
+    }
+		
+    private void walk(IList found, Type current) {
+      if (current == null || current == typeof(Object)) {
+        return;
+      }
+      add(found, current);
+      foreach(Type superType in current.GetInterfaces()) {
+        add(found, superType);
+      }
+      walk(found, current.BaseType);
+    }
+		
+    private void add(IList found, Type item) {
+      if (!found.Contains(item)) {
+        found.Add(item);
+      }
+    }
+
   }
 
 

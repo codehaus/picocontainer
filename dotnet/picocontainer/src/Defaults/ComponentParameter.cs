@@ -12,19 +12,43 @@
 using System;
 
 namespace PicoContainer.Defaults {
+
+
+  /// <summary>
+  /// A ComponentParameter should be used to pass in a particular component
+  /// as argument to a different component's constructor. 
+  /// <remarks>
+  /// This is particularly
+  /// useful in cases where several components of the same type have been registered,
+  /// but with a different key. Passing a ComponentParameter as a parameter
+  /// when registering a component will give PicoContainer a hint about what
+  /// other component to use in the constructor.</remarks>
+  /// </summary>
   public class ComponentParameter : IParameter {
     private object componentKey;
 
-    /**
-     * Expect a parameter matching a component of a specific key.
-     * @param componentKey the key of the desired component
-     */
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="componentKey">the key of the desired component</param>
     public ComponentParameter(object componentKey) {
       this.componentKey = componentKey;
     }
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public ComponentParameter() {   }
 
+    /// <summary>
+    /// Get the component adapter for the key.
+    /// <remarks>
+    /// If the component key is null the component returned will be located using the type
+    /// </remarks>
+    /// </summary>
+    /// <param name="picoContainer">The container to search in for the component</param>
+    /// <param name="expectedType">The type that should be returned</param>
+    /// <returns>The component adapter</returns>
     public IComponentAdapter ResolveAdapter(IPicoContainer picoContainer, Type expectedType) {
 
       IComponentAdapter result;

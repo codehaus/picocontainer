@@ -11,6 +11,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 
@@ -100,5 +101,9 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         if (this.container == null) {
             this.container = picoContainer;
         }
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
     }
 }

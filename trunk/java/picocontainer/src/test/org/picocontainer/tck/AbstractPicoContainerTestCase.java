@@ -10,9 +10,7 @@
 package org.picocontainer.tck;
 
 import junit.framework.Assert;
-import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -535,15 +533,6 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertTrue(sb.toString().indexOf("-stopped") != -1);
         parent.dispose();
         assertTrue(sb.toString().indexOf("-disposed") != -1);
-    }
-
-    public void testAcceptShouldIterateOverChildContainers() {
-        final MutablePicoContainer parent = createPicoContainer(null);
-        final MutablePicoContainer child = parent.makeChildContainer();
-        Mock visitorMock = new Mock(PicoVisitor.class);
-        visitorMock.expects(once()).method("visitContainer").with(same(child));
-        parent.accept((PicoVisitor) visitorMock.proxy(), null, true);
-        visitorMock.verify();
     }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {

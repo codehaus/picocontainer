@@ -73,4 +73,6 @@ public interface ComponentAdapter {
      * @throws PicoVerificationException if one or more dependencies cannot be resolved.
      */
     void verify() throws PicoVerificationException;
+
+    void accept(PicoVisitor visitor);
 }

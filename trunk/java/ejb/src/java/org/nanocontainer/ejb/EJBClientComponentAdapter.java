@@ -13,6 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
@@ -97,6 +98,10 @@ public class EJBClientComponentAdapter implements ComponentAdapter {
      */
     public void verify() throws UnsatisfiableDependenciesException {
         // cannot do anything here
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
     }
 
     /**

@@ -16,6 +16,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 
@@ -57,5 +58,9 @@ public class ImmutableComponentAdapter implements ComponentAdapter, Serializable
 
     public void verify() throws PicoVerificationException {
         delegate.verify();
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
     }
 }

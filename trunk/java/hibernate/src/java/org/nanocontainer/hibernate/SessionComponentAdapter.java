@@ -18,6 +18,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
@@ -110,5 +111,9 @@ public class SessionComponentAdapter implements ComponentAdapter {
         } finally {
             verifying = false;
         }
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
     }
 }

@@ -10,19 +10,22 @@
 
 package org.picocontainer.defaults;
 
+import org.jmock.Mock;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -90,10 +93,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     public static class Thingie {
-        private final Collection c;
-
         public Thingie(List c) {
-            this.c = c;
+            assertNotNull(c);
         }
     }
 
@@ -112,6 +113,30 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
             fail("Expected an exception!");
         } catch (UnsupportedOperationException th) {
         }
+    }
+
+    public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {
+        final MutablePicoContainer parent = createPicoContainer(null);
+        final MutablePicoContainer child = parent.makeChildContainer();
+        Map map = new HashMap();
+        ComponentAdapter mapAdapter = new InstanceComponentAdapter("map", map);
+        parent.registerComponent(mapAdapter);
+        child.registerComponentImplementation(ArrayList.class);
+
+        Mock noneVisitor = new Mock(PicoVisitor.class);
+        noneVisitor.expects(once()).method("visitContainer").with(same(parent));
+        noneVisitor.expects(once()).method("visitContainer").with(same(child));
+        parent.accept((PicoVisitor) noneVisitor.proxy(), null, true);
+
+        Mock mapVisitor = new Mock(PicoVisitor.class);
+        mapVisitor.expects(once()).method("visitContainer").with(same(parent));
+        mapVisitor.expects(once()).method("visitContainer").with(same(child));
+        mapVisitor.expects(once()).method("visitComponentInstance").with(same(map));
+        mapVisitor.expects(once()).method("visitComponentAdapter").with(same(mapAdapter));
+        parent.accept((PicoVisitor) mapVisitor.proxy(), Map.class, true);
+
+        noneVisitor.verify();
+        mapVisitor.verify();
     }
 
 }

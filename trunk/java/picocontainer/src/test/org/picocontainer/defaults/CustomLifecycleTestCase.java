@@ -64,9 +64,9 @@ public class CustomLifecycleTestCase extends TestCase {
     }
 
     public void testShouldAllowCustomLifecycle() throws NoSuchMethodException {
-        LifecycleVisitor starter = new LifecycleVisitor(RecordingLifecycle.class.getMethod("demarrer", null), true);
-        LifecycleVisitor stopper = new LifecycleVisitor(RecordingLifecycle.class.getMethod("arreter", null), false);
-        LifecycleVisitor disposer = new LifecycleVisitor(RecordingLifecycle.class.getMethod("ecraser", null), false);
+        LifecycleVisitor starter = new LifecycleVisitor(RecordingLifecycle.class.getMethod("demarrer", null));
+        LifecycleVisitor stopper = new LifecycleVisitor(RecordingLifecycle.class.getMethod("arreter", null));
+        LifecycleVisitor disposer = new LifecycleVisitor(RecordingLifecycle.class.getMethod("ecraser", null));
 
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
@@ -76,9 +76,9 @@ public class CustomLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation(One.class);
         child.registerComponentImplementation(Three.class);
 
-        starter.visitContainer(parent);
-        stopper.visitContainer(parent);
-        disposer.visitContainer(parent);
+        parent.accept(starter, RecordingLifecycle.class, true);
+        parent.accept(stopper, RecordingLifecycle.class, false);
+        parent.accept(disposer, RecordingLifecycle.class, false);
 
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording").toString());
     }

@@ -508,4 +508,53 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertSame(ipc,ipc2);
     }
 
+
+    public void testStartStopAndDisposeCascadedtoChildren() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = createPicoContainer(parent);
+        parent.addChildContainer(child);
+        child.registerComponentImplementation(LifeCycleMonitoring.class);
+        parent.start();
+        assertTrue(sb.toString().indexOf("-started") != -1);
+        parent.stop();
+        assertTrue(sb.toString().indexOf("-stopped") != -1);
+        parent.dispose();
+        assertTrue(sb.toString().indexOf("-disposed") != -1);
+
+    }
+
+    public void testStartStopAndDisposeCascadedtoAutomaticChild() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = parent.makeChildContainer();
+        child.registerComponentImplementation(LifeCycleMonitoring.class);
+        parent.start();
+        assertTrue(sb.toString().indexOf("-started") != -1);
+        parent.stop();
+        assertTrue(sb.toString().indexOf("-stopped") != -1);
+        parent.dispose();
+        assertTrue(sb.toString().indexOf("-disposed") != -1);
+
+    }
+
+    public static class LifeCycleMonitoring implements Startable, Disposable {
+        StringBuffer sb;
+
+        public LifeCycleMonitoring(StringBuffer sb) {
+            this.sb = sb;
+        }
+        public void start() {
+            sb.append("-started");
+        }
+        public void stop() {
+            sb.append("-stopped");
+        }
+        public void dispose() {
+            sb.append("-disposed");
+        }
+    }
+
 }

@@ -59,7 +59,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context);
         } catch (Exception e) {
             // Not all servlet containers print the nested exception. Do it here.
-            e.printStackTrace();
+            event.getServletContext().log(e.getMessage(), e);
             throw new PicoCompositionException(e);
         }
     }

@@ -13,7 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.internals.*;
-import org.picocontainer.defaults.NoPicoSuitableConstructorException;
+import org.picocontainer.defaults.CannotDecideWhatConstructorToUseException;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import java.io.Serializable;
@@ -76,22 +76,22 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
     /**
      * This is now IoC 2.5 compatible.  Multi ctors next.
      * @return
-     * @throws org.picocontainer.defaults.NoPicoSuitableConstructorException
+     * @throws org.picocontainer.defaults.CannotDecideWhatConstructorToUseException
      */
-    private Constructor getConstructor() throws NoPicoSuitableConstructorException {
+    private Constructor getConstructor() throws CannotDecideWhatConstructorToUseException {
         Constructor[] constructors = componentImplementation.getConstructors();
         Constructor picoConstructor = null;
         for (int i = 0; i < constructors.length; i++) {
             Constructor constructor = constructors[i];
             if (constructor.getParameterTypes().length != 0 || constructors.length == 1) {
                 if (picoConstructor != null) {
-                    throw new NoPicoSuitableConstructorException(componentImplementation);
+                    throw new CannotDecideWhatConstructorToUseException(componentImplementation);
                 }
                 picoConstructor = constructor;
             }
         }
         if (picoConstructor == null) {
-            throw new NoPicoSuitableConstructorException(componentImplementation);
+            throw new CannotDecideWhatConstructorToUseException(componentImplementation);
         }
         // Get the pico enabled constructor
         return picoConstructor;
@@ -122,7 +122,7 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
         return createComponent(this, dependencies);
     }
 
-    public Object createComponent(ComponentAdapter componentAdapter, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, NoPicoSuitableConstructorException {
+    public Object createComponent(ComponentAdapter componentAdapter, Object[] instanceDependencies) throws PicoInvocationTargetInitializationException, CannotDecideWhatConstructorToUseException {
         try {
             Constructor constructor = getConstructor();
             return constructor.newInstance(instanceDependencies);

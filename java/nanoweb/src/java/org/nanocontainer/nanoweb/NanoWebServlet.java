@@ -2,11 +2,11 @@ package org.nanocontainer.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+import org.codehaus.groovy.syntax.SyntaxException;
 import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.nanocontainer.servlet.ServletRequestContainerLauncher;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletException;
@@ -16,26 +16,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Arrays;
 
 /**
  * Dispatcher servlet for NanoWeb.
  * NanoWeb is an ultra simple MVC framework inspired from WebWork It is based on NanoContainer,
- * PicoContainer, Ognl and Velocity.
+ * PicoContainer, Ognl, Groovy and Velocity.
  * Design goals:
  * <ul>
  * <li>One-file configuration (all in an embedded NanoContainer script in web.xml)</li>
  * <li>Sensible defaults with the goal to reduce the need for complex configuration</li>
  * <li>Non intrusiveness. Actions are PicoComponents/POJOs that extend nothing</li>
+ * <li>Actions can be written in a compilable scripting language like Groovy</li>
  * <li>Actions must implement a String execute() method</li>
  * <li>The result from execute will be used to determine the view path. Example: /something.nano + "success" -> /something_success.vm</li>
  * </ul>
  * Other things:
  * <ul>
- * <li>Map action paths to action classes in nanocontainer servlet script (groovy)</li>
+ * <li>Map action paths to action classes in nanocontainer servlet script (using groovy)</li>
  * <li>Views can set values in actions with Ognl expressions</li>
  * </ul>
  *
@@ -43,8 +45,10 @@ import java.util.Arrays;
  * @version $Revision$
  */
 public class NanoWebServlet extends HttpServlet implements KeyConstants {
+
     // TODO make this configurable from web.xml
-    private Dispatcher dispatcher = new ChainingDispatcher();
+    private final Dispatcher dispatcher = new ChainingDispatcher();
+    private final CachingScriptClassLoader cachingScriptClassLoader = new CachingScriptClassLoader();
 
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), httpServletRequest);
@@ -66,13 +70,32 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private Object getAction(String key, ServletRequest request) throws ServletException {
-        PicoContainer container = getRequestContainer(request);
+        MutablePicoContainer container = getRequestContainer(request);
+        // Try to get an action as specified in the configuration
         Object action = container.getComponentInstance(key);
+        if (action == null) {
+            // Try to get an action from a script (groovy)
+            try {
+                action = getScriptAction(key, container);
+            } catch (SyntaxException e) {
+                throw new ServletException(e);
+            } catch (IOException e) {
+                throw new ServletException(e);
+            }
+        }
         if (action == null) {
             String msg = "No action found for '" + key + "'";
             throw new ServletException(msg);
         }
         return action;
+    }
+
+    private Object getScriptAction(String key, MutablePicoContainer container) throws SyntaxException, IOException {
+        URL scriptURL = getClass().getResource(key);
+        Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
+        container.registerComponentImplementation(key, scriptClass);
+        Object result = container.getComponentInstance(key);
+        return result;
     }
 
     private void setPropertiesWithOgnl(HttpServletRequest servletRequest, Object action) throws ServletException {

@@ -45,7 +45,7 @@ public class ChainingDispatcher implements Dispatcher {
     }
 
     private String getActionNameUnderscoreResultView(String actionPath, String result, String extension) {
-        String actionName = actionPath.substring(0, actionPath.indexOf(".nano"));
+        String actionName = actionPath.substring(0, actionPath.indexOf("."));
         String view = actionName + "_" + result + extension;
         return view;
     }

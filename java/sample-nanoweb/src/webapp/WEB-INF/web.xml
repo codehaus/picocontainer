@@ -42,6 +42,11 @@
         <servlet-name>NanoWeb</servlet-name>
         <url-pattern>*.nano</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NanoWeb</servlet-name>
+        <url-pattern>*.groovy
+       </url-pattern>
+    </servlet-mapping>
 
     <!-- For views (forwarded to by NanoWeb after action execution) -->
     <servlet-mapping>

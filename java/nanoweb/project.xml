@@ -3,8 +3,8 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <groupId>nanocontainer</groupId>
-    <id>nanocontainer-servlet</id>
-    <name>nanocontainer-servlet</name>
+    <id>nanocontainer-nanoweb</id>
+    <name>nanocontainer-nanoweb</name>
     <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
 
     <dependencies>
@@ -18,6 +18,12 @@
         <dependency>
             <id>servletapi</id>
             <version>2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-servlet</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -37,8 +43,33 @@
         </dependency>
 
         <dependency>
+            <id>ognl</id>
+            <version>2.5.1</version>
+        </dependency>
+
+        <dependency>
+            <id>velocity</id>
+            <version>1.4-rc1</version>
+        </dependency>
+
+        <dependency>
+            <id>velocity-tools</id>
+            <version>view-1.0</version>
+        </dependency>
+
+        <dependency>
             <id>jmock</id>
             <version>SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
         </dependency>
 
     </dependencies>

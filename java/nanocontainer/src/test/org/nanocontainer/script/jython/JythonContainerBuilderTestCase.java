@@ -14,7 +14,7 @@ import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -24,7 +24,7 @@ import java.io.StringReader;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
+public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader(

@@ -30,19 +30,19 @@ public class PicoContainerImpl implements PicoContainer {
 
     public PicoContainerImpl(Container parentContainer,
             StartableLifecycleManager startableLifecycleManager,
-            ComponentFactory proxyFactory) {
+            ComponentFactory componentFactory) {
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer cannot be null");
         }
         if (startableLifecycleManager == null) {
             throw new NullPointerException("startableLifecycleManager cannot be null");
         }
-        if (proxyFactory == null) {
+        if (componentFactory == null) {
             throw new NullPointerException("componentFactory cannot be null");
         }
         this.parentContainer = parentContainer;
         this.startableLifecycleManager = startableLifecycleManager;
-        this.componentFactory = proxyFactory;
+        this.componentFactory = componentFactory;
     }
 
     public static class Default extends PicoContainerImpl {

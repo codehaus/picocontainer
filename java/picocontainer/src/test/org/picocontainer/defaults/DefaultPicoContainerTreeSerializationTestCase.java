@@ -10,13 +10,16 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * @author Thomas Heller
@@ -26,18 +29,13 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
     protected MutablePicoContainer createPicoContainer() {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         DefaultPicoContainer child = new DefaultPicoContainer(parent);
-
-        child.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-        child.registerComponentImplementation(DependsOnTouchable.class);
-        return parent;
+        return child;
     }
 
     public void testContainerIsDeserializableWithParent() throws PicoException, PicoInitializationException,
             IOException, ClassNotFoundException {
 
-        PicoContainer parent = createPicoContainer();
         MutablePicoContainer child = createPicoContainer();
-        child.setParent(parent);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);

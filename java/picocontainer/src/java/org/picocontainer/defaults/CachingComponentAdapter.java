@@ -11,7 +11,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.*;
-import org.picocontainer.extras.DecoratingComponentAdapter;
 
 import java.io.Serializable;
 

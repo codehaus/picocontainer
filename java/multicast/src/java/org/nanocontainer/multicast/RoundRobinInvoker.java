@@ -1,8 +1,5 @@
 package org.picoextras.multicast;
 
-import org.picocontainer.defaults.Invoker;
-import org.picocontainer.defaults.InvocationInterceptor;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

@@ -135,15 +135,15 @@
         </developer>
     </developers>
 
-  <dependencies>
+    <dependencies>
 
-    <!-- test time only -->
-    <dependency>
-      <id>jmock</id>
-      <version>SNAPSHOT</version>
-    </dependency>
+        <!-- test time only -->
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
+        </dependency>
 
-  </dependencies>
+    </dependencies>
 
     <contributors>
         <contributor>

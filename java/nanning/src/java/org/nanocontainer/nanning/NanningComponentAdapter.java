@@ -16,7 +16,7 @@ import org.codehaus.nanning.config.AspectSystem;
 import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

@@ -14,7 +14,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 import javax.management.*;
 

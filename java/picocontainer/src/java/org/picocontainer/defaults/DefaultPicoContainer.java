@@ -1,9 +1,23 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
@@ -17,8 +31,6 @@ import java.util.*;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
 
-    private final LifecycleAdapter lifecycleAdapter = new LifecycleAdapter(this);
-
     private final Map componentKeyToAdapterCache = new HashMap();
     private final ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
@@ -26,6 +38,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     // Keeps track of instantiation order. Will be cleared regularly.
     private final List orderedComponentAdapters = new ArrayList();
+    private boolean started = false;
+    private boolean disposed = false;
 
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
@@ -253,26 +267,43 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void start() {
-        lifecycleAdapter.start();
+        if(started) throw new IllegalStateException("Already started");
+        if(disposed) throw new IllegalStateException("Already disposed");
+        Collection components = getComponentInstances();
+        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+            Object o =  iterator.next();
+            if(o instanceof Startable) {
+                ((Startable)o).start();
+            }
+        }
+        started = true;
     }
 
     public void stop(){
-        lifecycleAdapter.stop();
+        if(!started) throw new IllegalStateException("Not started");
+        if(disposed) throw new IllegalStateException("Already disposed");
+        List components = new ArrayList(getComponentInstances());
+        Collections.reverse(components);
+        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+            Object o =  iterator.next();
+            if(o instanceof Startable) {
+                ((Startable)o).stop();
+            }
+        }
+        started = false;
     }
 
     public void dispose() {
-        lifecycleAdapter.dispose();
+        if(disposed) throw new IllegalStateException("Already disposed");
+        List components = new ArrayList(getComponentInstances());
+        Collections.reverse(components);
+        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+            Object o =  iterator.next();
+            if(o instanceof Disposable) {
+                ((Disposable)o).dispose();
+            }
+        }
+        disposed = true;
     }
 
-    public boolean isStarted() {
-        return lifecycleAdapter.isStarted();
-    }
-
-    public boolean isStopped() {
-        return lifecycleAdapter.isStopped();
-    }
-
-    public boolean isDisposed() {
-        return lifecycleAdapter.isDisposed();
-    }
 }

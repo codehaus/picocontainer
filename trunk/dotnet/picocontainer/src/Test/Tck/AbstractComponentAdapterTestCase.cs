@@ -59,7 +59,7 @@ namespace Test.Tck
 		protected abstract IComponentAdapter prepDEF_verifyWithoutDependencyWorks(IMutablePicoContainer picoContainer);
 
 		[Test]
-		public void testDEF_verifyWithoutDependencyWorks()
+		public void DEF_verifyWithoutDependencyWorks()
 		{
 			IMutablePicoContainer picoContainer = new DefaultPicoContainer(CreateDefaultComponentAdapterFactory());
 			IComponentAdapter componentAdapter = prepDEF_verifyWithoutDependencyWorks(picoContainer);
@@ -76,7 +76,7 @@ namespace Test.Tck
 		protected abstract IComponentAdapter prepDEF_verifyDoesNotInstantiate(IMutablePicoContainer picoContainer);
 
 		[Test]
-		public void testDEF_verifyDoesNotInstantiate()
+		public void DEF_verifyDoesNotInstantiate()
 		{
 			IMutablePicoContainer picoContainer = new DefaultPicoContainer(CreateDefaultComponentAdapterFactory());
 			IComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
@@ -109,7 +109,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testSER_isSerializable()
+		public void SER_isSerializable()
 		{
 			if ((GetComponentAdapterNature() & SERIALIZABLE) > 0)
 			{
@@ -156,7 +156,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testVER_verificationFails()
+		public void VER_verificationFails()
 		{
 			if ((GetComponentAdapterNature() & VERIFYING) > 0)
 			{
@@ -209,7 +209,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testINS_createsNewInstances()
+		public void INS_createsNewInstances()
 		{
 			if ((GetComponentAdapterNature() & INSTANTIATING) > 0)
 			{
@@ -236,7 +236,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testINS_errorIsRethrown()
+		public void INS_errorIsRethrown()
 		{
 			if ((GetComponentAdapterNature() & INSTANTIATING) > 0)
 			{
@@ -251,7 +251,7 @@ namespace Test.Tck
 				}
 				catch (Exception e)
 				{
-					Assert.AreEqual("test", e.Message);
+					Assert.AreEqual("test", e.GetBaseException().Message);
 				}
 			}
 		}
@@ -269,7 +269,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testINS_runtimeExceptionIsRethrown()
+		public void INS_runtimeExceptionIsRethrown()
 		{
 			if ((GetComponentAdapterNature() & INSTANTIATING) > 0)
 			{
@@ -281,9 +281,9 @@ namespace Test.Tck
 					componentAdapter.GetComponentInstance(picoContainer);
 					Assert.Fail("Thrown RuntimeException excpected");
 				}
-				catch (SystemException e)
+				catch (PicoInvocationTargetInitializationException e)
 				{
-					Assert.AreEqual("test", e.Message);
+					Assert.AreEqual("test", e.GetBaseException().Message);
 				}
 			}
 		}
@@ -300,7 +300,8 @@ namespace Test.Tck
 			throw new AssertionException("You have to overwrite this method for a useful test");
 		}
 
-		public void testINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException()
+		[Test]
+		public void INS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException()
 		{
 			if ((GetComponentAdapterNature() & INSTANTIATING) > 0)
 			{
@@ -314,8 +315,7 @@ namespace Test.Tck
 				}
 				catch (PicoInvocationTargetInitializationException e)
 				{
-					Assert.IsTrue(e.Message.EndsWith("test"));
-					Assert.IsTrue(e.GetBaseException() is Exception);
+					Assert.IsTrue(e.GetBaseException().Message.EndsWith("test"));
 				}
 			}
 		}
@@ -337,7 +337,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testRES_dependenciesAreResolved()
+		public void RES_dependenciesAreResolved()
 		{
 			if ((GetComponentAdapterNature() & RESOLVING) > 0)
 			{
@@ -367,7 +367,7 @@ namespace Test.Tck
 		}
 
 		[Test]
-		public void testRES_failingVerificationWithCyclicDependencyException()
+		public void RES_failingVerificationWithCyclicDependencyException()
 		{
 			if ((GetComponentAdapterNature() & RESOLVING) > 0)
 			{
@@ -386,7 +386,7 @@ namespace Test.Tck
 				}
 				catch (CyclicDependencyException cycle)
 				{
-					Type[] dependencies = (Type[])cycle.Dependencies;
+					object[] dependencies = cycle.Dependencies;
 					Assert.AreSame(dependencies[0], dependencies[dependencies.Length - 1]);
 				}
 			}
@@ -404,7 +404,8 @@ namespace Test.Tck
 			throw new AssertionException("You have to overwrite this method for a useful test");
 		}
 
-		public void testRES_failingInstantiationWithCyclicDependencyException()
+		[Test]
+		public void RES_failingInstantiationWithCyclicDependencyException()
 		{
 			if ((GetComponentAdapterNature() & RESOLVING) > 0)
 			{
@@ -423,7 +424,7 @@ namespace Test.Tck
 				}
 				catch (CyclicDependencyException e)
 				{
-					Type[] dependencies = (Type[])e.Dependencies;
+					object[] dependencies = e.Dependencies;
 					Assert.AreSame(dependencies[0], dependencies[dependencies.Length - 1]);
 				}
 			}
@@ -456,7 +457,7 @@ namespace Test.Tck
 			this.list = list;
 		}
 
-		public object GetComponentInstance(IPicoContainer container)
+		public override object GetComponentInstance(IPicoContainer container)
 		{
 			Object result = base.GetComponentInstance(container);
 			list.Add(result);

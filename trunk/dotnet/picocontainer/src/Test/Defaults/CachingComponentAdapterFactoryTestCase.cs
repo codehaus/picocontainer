@@ -1,5 +1,3 @@
-using System;
-using PicoContainer;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
 using PicoContainer.Tests.TestModel;
@@ -7,9 +5,6 @@ using NUnit.Framework;
 
 namespace Test.Defaults
 {
-	/// <summary>
-	/// Summary description for CachingComponentAdapterFactoryTestCase.
-	/// </summary>
 	[TestFixture]
 	public class CachingComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase
 	{
@@ -32,7 +27,5 @@ namespace Test.Defaults
 			ITouchable t2 = (ITouchable) picoContainer.GetComponentInstance(typeof (ITouchable));
 			Assert.AreSame(t1, t2);
 		}
-
-
 	}
 }

@@ -16,16 +16,30 @@ import java.io.Serializable;
 import java.lang.reflect.Modifier;
 
 /**
+ * Base class for a ComponentAdapter with general functionality.
+ * This implementation provides basic checks for a healthy implementation of a ComponentAdapter.
+ * It does not allow to use <code>null</code> for the component key or the implementation, 
+ * ensures that the implementation is a concrete class and that the key is assignable from the 
+ * implementation if the key represents a type.   
+ *  
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @version $Revision$
+ * @since 1.0
  */
 public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {
     private final Object componentKey;
     private final Class componentImplementation;
     private PicoContainer container;
 
+    /**
+     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     */
     protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
@@ -36,6 +50,10 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         checkConcrete();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.ComponentAdapter#getComponentKey()
+     */
     public Object getComponentKey() {
         if (componentKey == null) {
             throw new NullPointerException("componentKey");
@@ -43,6 +61,10 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
         return componentKey;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.ComponentAdapter#getComponentImplementation()
+     */
     public Class getComponentImplementation() {
         return componentImplementation;
     }
@@ -65,14 +87,24 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
     }
 
 
+    /**
+     * @return Returns the ComponentAdapter's class name and the component's key.
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return getClass().getName() + "[" + getComponentKey() + "]";
     }
 
+    /**
+     * @see org.picocontainer.ComponentAdapter#getContainer()
+     */
     public PicoContainer getContainer() {
         return container;
     }
 
+    /**
+     * @see org.picocontainer.ComponentAdapter#setContainer(org.picocontainer.PicoContainer)
+     */
     public void setContainer(PicoContainer picoContainer) {
         this.container = picoContainer;
     }

@@ -14,14 +14,25 @@ import org.picocontainer.PicoIntrospectionException;
 import java.util.Arrays;
 
 /**
+ * Exception that is thrown as part of the introspection. Raised if a PicoContainer cannot resolve a 
+ * type dependency because the registered {@link org.picocontainer.ComponentAdapter}s are not 
+ * distinct.  
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
+ * @since 1.0
  */
 public class AmbiguousComponentResolutionException extends PicoIntrospectionException {
     private Class ambiguousClass;
     private final Object[] ambiguousComponentKeys;
 
+    /**
+     * Construct a new exception with the ambigous class type and the ambiguous component keys.
+     * 
+     * @param ambiguousClass the unresolved dependency type
+     * @param componentKeys the ambiguous keys.
+     */
     public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] componentKeys) {
         this.ambiguousClass = ambiguousClass;
         this.ambiguousComponentKeys = new Class[componentKeys.length];
@@ -30,6 +41,9 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
         }
     }
 
+    /**
+     * @return Returns a string containing the unresolved class type and the ambiguous keys. 
+     */
     public String getMessage() {
         StringBuffer msg = new StringBuffer();
         msg.append("Ambiguous ");
@@ -40,6 +54,9 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
         return msg.toString();
     }
 
+    /**
+     * @return Returns the ambiguous component keys as array.
+     */
     public Object[] getAmbiguousComponentKeys() {
         return ambiguousComponentKeys;
     }

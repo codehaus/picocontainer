@@ -35,7 +35,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     public void testInstantiateBasicRhinoFrontEnd() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "var parentContainer = new RhinoFrontEnd();\n" +
+                "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
                 "}\n" +
@@ -52,10 +52,10 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
         // A and C have no no dependancies. B Depends on A.
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "var parentContainer = new RhinoFrontEnd();\n" +
+                "var parentContainer = new NanoRhinoScriptable();\n" +
                 "with (parentContainer) {\n" +
                 "  addComponent('org.nanocontainer.Xxx$A');\n" +
-                "  var childContainer = new RhinoFrontEnd();\n" +
+                "  var childContainer = new NanoRhinoScriptable();\n" +
                 "  addContainer(childContainer);\n" +
                 "  with (childContainer) {\n" +
                 "      addComponent('org.nanocontainer.Xxx$B');\n" +
@@ -78,10 +78,10 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
 
         try {
             new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                    "var parentContainer = new RhinoFrontEnd();\n" +
+                    "var parentContainer = new NanoRhinoScriptable();\n" +
                     "with (parentContainer) {\n" +
                     "  addComponent('org.nanocontainer.Xxx$B');\n" +
-                    "  var childContainer = new RhinoFrontEnd();\n" +
+                    "  var childContainer = new NanoRhinoScriptable();\n" +
                     "  addContainer(childContainer);\n" +
                     "  with (childContainer) {\n" +
                     "      addComponent('org.nanocontainer.Xxx$A');\n" +
@@ -98,7 +98,7 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     public void testInstantiateWithBespokeComponentAdaptor() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "var parentContainer = new RhinoFrontEnd('org.picocontainer.extras.ImplementationHidingComponentAdapterFactory');\n" +
+                "var parentContainer = new NanoRhinoScriptable('org.picocontainer.extras.ImplementationHidingComponentAdapterFactory');\n" +
                 "with (parentContainer) {\n" +
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServerConfig','org.nanocontainer.testmodel.DefaultWebServerConfig');\n" +
                 "  addComponentWithClassKey('org.nanocontainer.testmodel.WebServer','" + XmlAssemblyNanoContainerTestCase.OverriddenWebServerImpl.class.getName() + "');\n" +

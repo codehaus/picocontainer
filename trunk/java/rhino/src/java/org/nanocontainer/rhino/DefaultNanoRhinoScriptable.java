@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
-public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFrontEnd {
+public class DefaultNanoRhinoScriptable extends ScriptableObject implements NanoRhinoScriptable {
 
     private ReflectionFrontEnd reflectionFrontEnd;
 
@@ -24,7 +24,7 @@ public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFront
     }
 
     public String getClassName() {
-        return "RhinoFrontEnd";
+        return "NanoRhinoScriptable";
     }
 
     public static Object jsConstructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) throws ClassNotFoundException {
@@ -40,13 +40,13 @@ public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFront
         } else {
             defaultReflectionFrontEnd = new DefaultReflectionFrontEnd();
         }
-        DefaultRhinoFrontEnd rhino = new DefaultRhinoFrontEnd();
+        DefaultNanoRhinoScriptable rhino = new DefaultNanoRhinoScriptable();
         rhino.reflectionFrontEnd = defaultReflectionFrontEnd;
         return rhino;
     }
 
     public static void jsFunction_addComponent(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
-        DefaultRhinoFrontEnd rhino = (DefaultRhinoFrontEnd) thisObj;
+        DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
         if (args.length == 1) {
             rhino.reflectionFrontEnd.registerComponentImplementation((String) args[0]);
         } else if (args.length == 2) {
@@ -55,13 +55,13 @@ public class DefaultRhinoFrontEnd extends ScriptableObject implements RhinoFront
     }
 
     public static void jsFunction_addComponentWithClassKey(Context cx, Scriptable thisObj, Object[] args, Function funObj) throws ClassNotFoundException {
-        DefaultRhinoFrontEnd rhino = (DefaultRhinoFrontEnd) thisObj;
+        DefaultNanoRhinoScriptable rhino = (DefaultNanoRhinoScriptable) thisObj;
         rhino.reflectionFrontEnd.registerComponentWithClassKey((String) args[0], (String) args[1]);
     }
 
     public static void jsFunction_addContainer(Context cx, Scriptable thisObj, Object[] args, Function funObj) {
-        DefaultRhinoFrontEnd parent = (DefaultRhinoFrontEnd) thisObj;
-        DefaultRhinoFrontEnd child = (DefaultRhinoFrontEnd) args[0];
+        DefaultNanoRhinoScriptable parent = (DefaultNanoRhinoScriptable) thisObj;
+        DefaultNanoRhinoScriptable child = (DefaultNanoRhinoScriptable) args[0];
         parent.reflectionFrontEnd.getPicoContainer().addChild(child.reflectionFrontEnd.getPicoContainer());
 
     }

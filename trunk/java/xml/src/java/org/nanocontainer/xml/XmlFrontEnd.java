@@ -10,11 +10,11 @@
 
 package org.nanocontainer.xml;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
@@ -29,8 +29,8 @@ import java.io.IOException;
 public interface XmlFrontEnd {
 
     public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
-            throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException;
+            throws IOException, SAXException, ClassNotFoundException, PicoConfigurationException;
     
     public PicoContainer createPicoContainer(Element rootElement)
-            throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException;
+            throws IOException, SAXException, ClassNotFoundException, PicoConfigurationException;
 }

@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.lang.reflect.Constructor;
@@ -62,23 +63,53 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
         Constructor[] allConstructors = getComponentImplementation().getConstructors();
         List satisfiableConstructors = getAllSatisfiableConstructors(allConstructors, dependencyContainer);
 
-        // now we'll just take the biggest one
+        int arity = parameters == null ? -1 : parameters.length; 
+        
+        // if no parameters were provided, we'll just take the biggest one
         Constructor greediestConstructor = null;
-        Set conflicts = new HashSet();
+        final Set conflicts = new HashSet();
+        final Set nonMatching = new HashSet();
         for (int i = 0; i < satisfiableConstructors.size(); i++) {
             Constructor currentConstructor = (Constructor) satisfiableConstructors.get(i);
-            if (greediestConstructor == null) {
+            Class[] parameterTypes = currentConstructor.getParameterTypes();
+            if (arity >= 0) {
+                if (arity == parameterTypes.length) {
+                    int j;
+                    for (j = 0; j < arity; j++) {
+                        ComponentAdapter adapter = parameters[j].resolveAdapter(dependencyContainer, parameterTypes[j]);
+                        if (adapter == null) {
+                            nonMatching.add(currentConstructor);
+                            break;
+                        }
+                    }
+                    if (j == arity) {
+                        if (greediestConstructor == null) {
+                            greediestConstructor = currentConstructor;
+                        } else {
+                            conflicts.add(greediestConstructor);
+                            conflicts.add(currentConstructor);
+                        }
+                    }
+                }
+            } else if (greediestConstructor == null) {
                 greediestConstructor = currentConstructor;
-            } else if (greediestConstructor.getParameterTypes().length < currentConstructor.getParameterTypes().length) {
+            } else if (greediestConstructor.getParameterTypes().length < parameterTypes.length) {
                 conflicts.clear();
                 greediestConstructor = currentConstructor;
-            } else if (greediestConstructor.getParameterTypes().length == currentConstructor.getParameterTypes().length) {
+            } else if (greediestConstructor.getParameterTypes().length == parameterTypes.length) {
                 conflicts.add(greediestConstructor);
                 conflicts.add(currentConstructor);
             }
         }
         if (!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
+        }
+        if (greediestConstructor == null && !nonMatching.isEmpty()) {
+            throw new PicoInitializationException() {
+                public String getMessage() {
+                    return "The specified parameters do not match any of the following constructors: " + nonMatching.toString();
+                }
+            };
         }
         return greediestConstructor;
     }
@@ -92,7 +123,7 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes, picoContainer);
 
-            for (int j = 0; j < currentParameters.length; j++) {
+            for (int j = 0; j < currentParameters.length && j < parameterTypes.length; j++) {
                 ComponentAdapter adapter = currentParameters[j].resolveAdapter(picoContainer, parameterTypes[j]);
                 if (adapter == null) {
                     failedDependency = true;

@@ -1,8 +1,10 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
 public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory {
@@ -14,7 +16,7 @@ public class DecoratingComponentAdapterFactory implements ComponentAdapterFactor
 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter[] parameters) throws PicoIntrospectionException {
+                                                   Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return delegate.createComponentAdapter(componentKey, componentImplementation, parameters);
     }
 }

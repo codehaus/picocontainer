@@ -1,12 +1,9 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.Parameter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +30,7 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
         this.arguments = arguments;
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException {
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
@@ -59,8 +56,8 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
             }
         }
     
-        public Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException {
-            Object result = super.instantiateComponent(componentRegistry);
+        public Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            Object result = super.getComponentInstance(picoContainer);
 
             if( method != null ) {
                 try {

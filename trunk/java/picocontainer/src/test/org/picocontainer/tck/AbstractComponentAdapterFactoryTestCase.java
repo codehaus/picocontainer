@@ -1,43 +1,40 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.defaults.DefaultComponentRegistry;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentAdapterFactory;
+import org.picocontainer.defaults.*;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
-    protected ComponentRegistry componentRegistry;
+    protected AbstractPicoContainer picoContainer;
 
     protected abstract ComponentAdapterFactory createComponentAdapterFactory();
 
     protected void setUp() throws Exception {
-		componentRegistry = new DefaultComponentRegistry();
+		picoContainer = new DefaultPicoContainer();
 	}
 
-    public void testRegisterComponent() throws PicoIntrospectionException {
+    public void testRegisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
 		ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-		componentRegistry.registerComponent(componentAdapter);
+		picoContainer.registerComponent(componentAdapter);
 
-		assertTrue(componentRegistry.getComponentAdapters().contains(componentAdapter));
+		assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
 	}
 
-    public void testUnregisterComponent() throws PicoIntrospectionException {
+    public void testUnregisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-		componentRegistry.registerComponent(componentAdapter);
-		componentRegistry.unregisterComponent(Touchable.class);
+		picoContainer.registerComponent(componentAdapter);
+		picoContainer.unregisterComponent(Touchable.class);
 
-		assertFalse(componentRegistry.getComponentAdapters().contains(componentAdapter));
+		assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
 	}
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,10 +11,9 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.ComponentAdapterFactory;
+import org.picocontainer.defaults.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,9 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testCreatedComponentAdapterCreatesInstancesWhereImplementationIsHidden()
-            throws NoSuchMethodException, PicoInitializationException {
+            throws NoSuchMethodException, PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(List.class, OneConstructorArrayList.class, null);
-        Object o = componentAdapter.instantiateComponent(componentRegistry);
+        Object o = componentAdapter.getComponentInstance(picoContainer);
         assertTrue(o instanceof List);
         assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");

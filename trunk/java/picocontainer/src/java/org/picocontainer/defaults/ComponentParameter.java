@@ -1,6 +1,9 @@
-package org.picocontainer.internals;
+package org.picocontainer.defaults;
 
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+
 import java.io.Serializable;
 
 /**
@@ -16,7 +19,7 @@ public class ComponentParameter implements Parameter, Serializable {
         this.componentKey = componentKey;
     }
 
-    public ComponentAdapter resolveAdapter(ComponentRegistry componentRegistry) throws AmbiguousComponentResolutionException {
-        return componentRegistry.findComponentAdapter(componentKey);
+    public ComponentAdapter resolveAdapter(MutablePicoContainer picoContainer) throws PicoIntrospectionException {
+        return picoContainer.findComponentAdapter(componentKey);
     }
 }

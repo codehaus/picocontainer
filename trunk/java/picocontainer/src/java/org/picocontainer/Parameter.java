@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -8,9 +8,12 @@
  * Idea by Rachel Davies, Original code by Jon Tirsen                        *
  *****************************************************************************/
 
-package org.picocontainer.internals;
+package org.picocontainer;
 
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -18,5 +21,5 @@ import org.picocontainer.defaults.AmbiguousComponentResolutionException;
  * @version $Revision$
  */
 public interface Parameter {
-    ComponentAdapter resolveAdapter(ComponentRegistry componentRegistry) throws AmbiguousComponentResolutionException;
+    ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistry) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 }

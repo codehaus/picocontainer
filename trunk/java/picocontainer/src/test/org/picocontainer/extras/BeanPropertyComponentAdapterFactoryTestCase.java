@@ -1,12 +1,10 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.defaults.*;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
 import java.lang.reflect.Method;
@@ -18,21 +16,6 @@ import java.beans.PropertyDescriptor;
  * @version $Revision$
  */
 public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-
-    private ComponentAdapter createAdapterCallingSetMessage(Class impl) throws PicoIntrospectionException, NoSuchMethodException {
-        BeanPropertyComponentAdapterFactory.Adapter adapter =
-                (BeanPropertyComponentAdapterFactory.Adapter) createComponentAdapterFactory().createComponentAdapter("whatever", impl, null);
-
-        final Method setMessage = Foo.class.getMethod("setMessage", new Class[]{String.class});
-        PropertyDescriptor[] pd = adapter.getPropertyDescriptors();
-        for (int i = 0; i < pd.length; i++) {
-            if(setMessage.equals(pd[i].getWriteMethod())) {
-                adapter.setPropertyValue(pd[i], "hello");
-                assertEquals("hello", adapter.getPropertValue(pd[i]));
-            }
-        }
-        return adapter;
-    }
 
     public static class Foo {
         public String message;
@@ -48,17 +31,17 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         }
     }
 
-    public void testSetProperties() throws PicoInitializationException, NoSuchMethodException, IntrospectionException {
+    public void testSetProperties() throws PicoInitializationException, NoSuchMethodException, IntrospectionException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
-        Foo foo = (Foo) adapter.instantiateComponent(componentRegistry);
+        Foo foo = (Foo) adapter.getComponentInstance(picoContainer);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
 
-    public void testFailingSetter() throws NoSuchMethodException, PicoIntrospectionException {
+    public void testFailingSetter() throws NoSuchMethodException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
-            adapter.instantiateComponent(componentRegistry);
+            adapter.getComponentInstance(picoContainer);
             fail();
         } catch (PicoInitializationException e) {
         }
@@ -68,11 +51,26 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
-    public void testDelegateIsAccessible() throws PicoIntrospectionException {
+    public void testDelegateIsAccessible() throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         DecoratingComponentAdapter componentAdapter =
                 (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
         assertNotNull(componentAdapter.getDelegate());
+    }
+
+    private ComponentAdapter createAdapterCallingSetMessage(Class impl) throws PicoIntrospectionException, NoSuchMethodException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        BeanPropertyComponentAdapterFactory.Adapter adapter =
+                (BeanPropertyComponentAdapterFactory.Adapter) createComponentAdapterFactory().createComponentAdapter("whatever", impl, null);
+
+        final Method setMessage = Foo.class.getMethod("setMessage", new Class[]{String.class});
+        PropertyDescriptor[] pd = adapter.getPropertyDescriptors();
+        for (int i = 0; i < pd.length; i++) {
+            if(setMessage.equals(pd[i].getWriteMethod())) {
+                adapter.setPropertyValue(pd[i], "hello");
+                assertEquals("hello", adapter.getPropertValue(pd[i]));
+            }
+        }
+        return adapter;
     }
 
 }

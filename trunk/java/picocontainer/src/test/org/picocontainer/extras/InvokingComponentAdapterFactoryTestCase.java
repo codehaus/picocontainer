@@ -1,10 +1,8 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
+import org.picocontainer.defaults.*;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
 import java.beans.IntrospectionException;
@@ -19,7 +17,7 @@ public class InvokingComponentAdapterFactoryTestCase extends AbstractComponentAd
         return new InvokingComponentAdapterFactory(new DefaultComponentAdapterFactory(), "setMessage", new Class[]{String.class}, new String[]{"hello"});
     }
 
-    private ComponentAdapter createAdapterCallingSetMessage(Class impl) throws PicoIntrospectionException {
+    private ComponentAdapter createAdapterCallingSetMessage(Class impl) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         InvokingComponentAdapterFactory.Adapter adapter =
                 (InvokingComponentAdapterFactory.Adapter) createComponentAdapterFactory().createComponentAdapter("whatever", impl, null);
         return adapter;
@@ -43,27 +41,27 @@ public class InvokingComponentAdapterFactoryTestCase extends AbstractComponentAd
     public static class NoSetMessage {
     }
 
-    public void testSuccessfulMethod() throws PicoInitializationException, NoSuchMethodException, IntrospectionException {
+    public void testSuccessfulMethod() throws PicoInitializationException, NoSuchMethodException, IntrospectionException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
-        Foo foo = (Foo) adapter.instantiateComponent(componentRegistry);
+        Foo foo = (Foo) adapter.getComponentInstance(picoContainer);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
 
         assertEquals("hello world", ((InvokingComponentAdapterFactory.Adapter)adapter).getInvocationResult());
     }
 
-    public void testFailingInvocation() throws NoSuchMethodException, PicoIntrospectionException {
+    public void testFailingInvocation() throws NoSuchMethodException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
-            adapter.instantiateComponent(componentRegistry);
+            adapter.getComponentInstance(picoContainer);
             fail();
         } catch (PicoInitializationException e) {
         }
     }
 
-    public void testNoInvocation() throws NoSuchMethodException, PicoInitializationException {
+    public void testNoInvocation() throws NoSuchMethodException, PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter adapter = createAdapterCallingSetMessage(NoSetMessage.class);
-        NoSetMessage noSetMessage = (NoSetMessage) adapter.instantiateComponent(componentRegistry);
+        NoSetMessage noSetMessage = (NoSetMessage) adapter.getComponentInstance(picoContainer);
         assertNotNull(noSetMessage);
     }
 }

@@ -11,7 +11,12 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.internals.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.defaults.AbstractPicoContainer;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -34,8 +39,8 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
         return delegate.getComponentImplementation();
     }
 
-    public Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException {
-        return delegate.instantiateComponent(componentRegistry);
+    public Object getComponentInstance(AbstractPicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return delegate.getComponentInstance(componentRegistry);
     }
 
     public ComponentAdapter getDelegate() {

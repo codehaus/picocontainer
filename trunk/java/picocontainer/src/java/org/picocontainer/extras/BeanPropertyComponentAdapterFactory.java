@@ -1,9 +1,7 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.Parameter;
-import org.picocontainer.internals.ComponentAdapterFactory;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.*;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -28,7 +26,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException {
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new Adapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
@@ -67,8 +65,8 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
             }
         }
 
-        public Object instantiateComponent(ComponentRegistry componentRegistry) throws PicoInitializationException {
-            Object result = super.instantiateComponent(componentRegistry);
+        public Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            Object result = super.getComponentInstance(picoContainer);
 
             try {
                 BeanInfo beanInfo = Introspector.getBeanInfo(getComponentImplementation());

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,10 +10,9 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoContainer;
 
-import java.util.Set;
 import java.util.Collections;
 import java.util.Collection;
 import java.io.Serializable;
@@ -23,11 +22,11 @@ public class NullContainer implements PicoContainer, Serializable {
         return false;
     }
 
-    public Object getComponent(Object compType) {
+    public Object getComponentInstance(Object compType) {
         return null;
     }
 
-    public Collection getComponents() {
+    public Collection getComponentInstances() {
         return Collections.EMPTY_SET;
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,21 +11,18 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.internals.ComponentAdapter;
-import org.picocontainer.internals.ComponentRegistry;
-import org.picocontainer.defaults.DefaultComponentAdapter;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentRegistryTestCase extends TestCase {
-	private ComponentRegistry componentRegistry;
+	private AbstractPicoContainer componentRegistry;
 
 	protected void setUp() throws Exception {
-		componentRegistry = new DefaultComponentRegistry();
+		componentRegistry = new DefaultPicoContainer();
 	}
 	
-	public void testRegisterComponent() throws PicoIntrospectionException {
+	public void testRegisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
 		
 		componentRegistry.registerComponent(componentSpecification);
@@ -33,7 +30,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 		assertTrue(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
 	
-	public void testUnregisterComponent() throws PicoIntrospectionException {
+	public void testUnregisterComponent() throws PicoRegistrationException {
 		ComponentAdapter componentSpecification = createComponentAdapter();
 			
 		componentRegistry.registerComponent(componentSpecification);
@@ -43,7 +40,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 		assertFalse(componentRegistry.getComponentAdapters().contains(componentSpecification));
 	}
 
-	private ComponentAdapter createComponentAdapter() throws PicoIntrospectionException {
+	private ComponentAdapter createComponentAdapter() throws AssignabilityRegistrationException, NotConcreteRegistrationException {
 		return new DefaultComponentAdapter(Touchable.class, SimpleTouchable.class);
 	}
 }

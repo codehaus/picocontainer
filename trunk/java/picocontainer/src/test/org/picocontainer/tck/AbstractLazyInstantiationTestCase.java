@@ -1,9 +1,9 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -11,7 +11,7 @@ import org.picocontainer.PicoInitializationException;
  */
 public abstract class AbstractLazyInstantiationTestCase extends TestCase {
 
-    protected abstract RegistrationPicoContainer createRegistrationPicoContainer();
+    protected abstract MutablePicoContainer createPicoContainer();
 
     public static class Kilroy {
         public Kilroy(Havana havana) {
@@ -27,16 +27,16 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
         }
     }
 
-    public void testLazyInstantiation() throws PicoInitializationException, PicoRegistrationException {
-        RegistrationPicoContainer pico = createRegistrationPicoContainer();
+    public void testLazyInstantiation() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
 
-        pico.registerComponentByClass(Kilroy.class);
-        pico.registerComponentByClass(Havana.class);
+        pico.registerComponentImplementation(Kilroy.class);
+        pico.registerComponentImplementation(Havana.class);
 
-        assertSame(pico.getComponent(Havana.class), pico.getComponent(Havana.class));
-        assertNotNull(pico.getComponent(Havana.class));
-        assertEquals("Clean wall", ((Havana) pico.getComponent(Havana.class)).paint);
-        assertNotNull(pico.getComponent(Kilroy.class));
-        assertEquals("Kilroy was here", ((Havana) pico.getComponent(Havana.class)).paint);
+        assertSame(pico.getComponentInstance(Havana.class), pico.getComponentInstance(Havana.class));
+        assertNotNull(pico.getComponentInstance(Havana.class));
+        assertEquals("Clean wall", ((Havana) pico.getComponentInstance(Havana.class)).paint);
+        assertNotNull(pico.getComponentInstance(Kilroy.class));
+        assertEquals("Kilroy was here", ((Havana) pico.getComponentInstance(Havana.class)).paint);
     }
 }

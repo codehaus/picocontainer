@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -8,9 +8,10 @@
  * Idea by Rachel Davies, Original code by Jon Tirsen                        *
  *****************************************************************************/
 
-package org.picocontainer.internals;
+package org.picocontainer.defaults;
 
-import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ConstantParameter implements Parameter {
         this.value = value;
     }
 
-    public ComponentAdapter resolveAdapter(ComponentRegistry componentRegistries) {
+    public ComponentAdapter resolveAdapter(MutablePicoContainer componentRegistries) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new InstanceComponentAdapter(value, value);
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) OldPicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -11,13 +11,16 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.lifecycle.LifecyclePicoAdaptor;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
 import org.picocontainer.lifecycle.Disposable;
 
-public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
+public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdapter {
 
     private Startable startableAggregatedComponent;
     private Stoppable stoppableAggregatedComponent;
@@ -42,7 +45,7 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
         return disposed;
     }
 
-    private void initializeIfNotInitialized() throws PicoInitializationException {
+    private void initializeIfNotInitialized() throws PicoException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (startableAggregatedComponent == null) {
             try {
                 startableAggregatedComponent = (Startable) picoContainer.getComponentMulticaster(true, false);
@@ -51,14 +54,12 @@ public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
         }
         if (stoppableAggregatedComponent == null) {
             try {
-
                 stoppableAggregatedComponent = (Stoppable) picoContainer.getComponentMulticaster(false, false);
             } catch (ClassCastException e) {
             }
         }
         if (disposableAggregatedComponent == null) {
             try {
-                //TODO-Aslak broken ?
                 Object o = picoContainer.getComponentMulticaster(false, false);
                 disposableAggregatedComponent = (Disposable) o;
             } catch (ClassCastException e) {

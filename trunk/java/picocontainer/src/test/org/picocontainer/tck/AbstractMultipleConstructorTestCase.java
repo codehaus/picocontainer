@@ -3,8 +3,8 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 
 /**
@@ -13,7 +13,7 @@ import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
  */
 public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 
-    protected abstract RegistrationPicoContainer createRegistrationPicoContainer();
+    protected abstract MutablePicoContainer createPicoContainer();
 
     public static class Multi {
         public String message;
@@ -43,45 +43,46 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
     public static class Two {}
     public static class Three {}
 
-    public void testStringWorks() throws PicoInitializationException, PicoRegistrationException {
-        RegistrationPicoContainer pico = createRegistrationPicoContainer();
-        pico.registerComponentByClass(String.class);
-        assertEquals("", pico.getComponent(String.class));
+    public void testStringWorks() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(String.class);
+        assertEquals("", pico.getComponentInstance(String.class));
     }
 
-    public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoInitializationException, PicoRegistrationException {
-        RegistrationPicoContainer pc = createRegistrationPicoContainer();
-        pc.registerComponentByClass(Multi.class);
-        pc.registerComponentByClass(One.class);
-        pc.registerComponentByClass(Three.class);
+    public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(Multi.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Three.class);
 
-        Multi multi = (Multi) pc.getComponent(Multi.class);
+        Multi multi = (Multi) pico.getComponentInstance(Multi.class);
         assertEquals("three one", multi.message);
     }
 
-    public void testMultiWithBothSatisfiedDependencyWorks() throws PicoInitializationException, PicoRegistrationException {
-        RegistrationPicoContainer pc = createRegistrationPicoContainer();
-        pc.registerComponentByClass(Multi.class);
-        pc.registerComponentByClass(One.class);
-        pc.registerComponentByClass(Two.class);
-        pc.registerComponentByClass(Three.class);
+    public void testMultiWithBothSatisfiedDependencyWorks() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(Multi.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Two.class);
+        pico.registerComponentImplementation(Three.class);
 
-        Multi multi = (Multi) pc.getComponent(Multi.class);
+        Multi multi = (Multi) pico.getComponentInstance(Multi.class);
         assertEquals("one two three", multi.message);
     }
 
-    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoInitializationException, PicoRegistrationException {
-        RegistrationPicoContainer pc = createRegistrationPicoContainer();
-        pc.registerComponentByClass(Multi.class);
-        pc.registerComponentByClass(One.class);
-        pc.registerComponentByClass(Two.class);
+    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoException, PicoRegistrationException {
+        MutablePicoContainer pico = createPicoContainer();
+        pico.registerComponentImplementation(Multi.class);
+        pico.registerComponentImplementation(One.class);
+        pico.registerComponentImplementation(Two.class);
 
         try {
-            Multi multi = (Multi) pc.getComponent(Multi.class);
+            Multi multi = (Multi) pico.getComponentInstance(Multi.class);
             fail();
         } catch (TooManySatisfiableConstructorsException e) {
             assertTrue(e.getMessage().indexOf("Three") == -1);
             assertEquals(2, e.getConstructors().size());
+            assertEquals(Multi.class, e.getForImplementationClass());
         }
     }
 }

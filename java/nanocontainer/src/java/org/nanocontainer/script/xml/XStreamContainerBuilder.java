@@ -21,7 +21,7 @@ import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -57,11 +57,11 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IOException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (ParserConfigurationException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -73,11 +73,11 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
             populateContainer(container, rootElement);
 
         } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
             //} catch (IOException e) {
-            //    throw new PicoAssemblyException(e);
+            //    throw new PicoCompositionException(e);
         } catch (SAXException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -101,7 +101,7 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
                 } else {
-                    throw new PicoAssemblyException("Unsupported element:" + name);
+                    throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
@@ -114,7 +114,7 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
         if (klass == null || "".equals(klass)) {
-            throw new PicoAssemblyException("class specification is required for component implementation");
+            throw new PicoCompositionException("class specification is required for component implementation");
         }
 
         Class clazz = classLoader.loadClass(klass);
@@ -137,7 +137,7 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
                     // create constant with xstream
                     parseResult = parseElementChild((Element) child);
                     if (parseResult == null) {
-                        throw new PicoAssemblyException("could not parse constant parameter");
+                        throw new PicoCompositionException("could not parse constant parameter");
                     }
                     parameters.add(new ConstantParameter(parseResult));
                 } else if (DEPENDENCY.equals(name)) {
@@ -147,7 +147,7 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
                     if (dependencyKey == null || "".equals(dependencyKey)) {
                         dependencyClass = ((Element) child).getAttribute(CLASS);
                         if (dependencyClass == null || "".equals(dependencyClass)) {
-                            throw new PicoAssemblyException("either key or class must be present for dependecy");
+                            throw new PicoCompositionException("either key or class must be present for dependecy");
                         } else {
                             parameters.add(new ComponentParameter(classLoader.loadClass(dependencyClass)));
                         }
@@ -178,7 +178,7 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
         String key = rootElement.getAttribute(KEY);
         Object result = parseElementChild(rootElement);
         if (result == null) {
-            throw new PicoAssemblyException("no content could be parsed in instance");
+            throw new PicoCompositionException("no content could be parsed in instance");
         }
         if (key != null && !"".equals(key)) {
             // insert with key
@@ -215,11 +215,11 @@ public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainer
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
             return new DefaultPicoContainer(componentAdapterFactory);
         } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (InstantiationException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 

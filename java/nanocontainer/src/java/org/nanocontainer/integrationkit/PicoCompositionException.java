@@ -2,24 +2,24 @@ package org.nanocontainer.integrationkit;
 
 import org.picocontainer.PicoException;
 
-public class PicoAssemblyException extends PicoException {
+public class PicoCompositionException extends PicoException {
 
     protected Throwable cause;
 
-    protected PicoAssemblyException() {
+    protected PicoCompositionException() {
         super();
     }
 
-    public PicoAssemblyException(String message, Throwable cause) {
+    public PicoCompositionException(String message, Throwable cause) {
         super(message);
         this.cause = cause;
     }
 
-    public PicoAssemblyException(Throwable cause) {
+    public PicoCompositionException(Throwable cause) {
         this.cause = cause;
     }
 
-    public PicoAssemblyException(String message) {
+    public PicoCompositionException(String message) {
         super(message);
         cause = null;
     }

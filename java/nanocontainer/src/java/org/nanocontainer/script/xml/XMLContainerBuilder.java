@@ -18,7 +18,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.w3c.dom.Document;
@@ -54,11 +54,11 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IOException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (ParserConfigurationException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -70,11 +70,11 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
             containerRef.set(container);
             registerComponentsAndChildContainers(reflectionFrontEnd, rootElement);
         } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IOException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (SAXException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -88,11 +88,11 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
             return new DefaultPicoContainer(componentAdapterFactory, parentContainer);
         } catch (ClassNotFoundException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (InstantiationException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 
@@ -124,7 +124,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
                     componentCount++;
                 } else if (name.equals("classpath")) {
                 } else {
-                    throw new PicoAssemblyException("Unsupported element:" + name);
+                    throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
@@ -213,7 +213,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
         }
     }
 
-    private void registerPseudoComponent(ReflectionContainerAdapter pico, Element componentElement) throws ClassNotFoundException, PicoAssemblyException {
+    private void registerPseudoComponent(ReflectionContainerAdapter pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
         String factoryClass = componentElement.getAttribute("factory");
 
         if (factoryClass == null || factoryClass.equals("")) {
@@ -238,7 +238,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);
         } catch (final SAXException e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
     }
 }

@@ -6,7 +6,7 @@ package org.nanocontainer.script.groovy;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -44,12 +44,12 @@ public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerB
             Object[] args = {parentContainer, assemblyScope};
             result = groovyObject.invokeMethod("buildContainer", args);
         } catch (Exception e) {
-            throw new PicoAssemblyException(e);
+            throw new PicoCompositionException(e);
         }
         if (result instanceof MutablePicoContainer) {
             return (MutablePicoContainer) result;
         } else {
-            throw new PicoAssemblyException("The script didn't return an instance of " + MutablePicoContainer.class.getName());
+            throw new PicoCompositionException("The script didn't return an instance of " + MutablePicoContainer.class.getName());
         }
     }
 }

@@ -82,7 +82,7 @@ public class Deployer {
      * @param parentContainerRef reference to the parent container (can be used to lookup components form a parent container).
      * @return an ObjectReference holding a PicoContainer with the deployed components
      * @throws org.apache.commons.vfs.FileSystemException if the file structure was bad.
-     * @throws org.nanocontainer.integrationkit.PicoAssemblyException if the deployment failed for some reason.
+     * @throws org.nanocontainer.integrationkit.PicoCompositionException if the deployment failed for some reason.
      */
     public ObjectReference deploy(FileObject applicationFolder, FileSystemManager fileSystemManager, ClassLoader parentClassLoader, ObjectReference parentContainerRef) throws FileSystemException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, fileSystemManager, parentClassLoader);

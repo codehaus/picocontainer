@@ -3,7 +3,7 @@ package org.nanocontainer.script.rhino;
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerImpl;
@@ -17,7 +17,7 @@ import java.lang.reflect.Proxy;
 
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
 
-    public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoAssemblyException, JavaScriptException {
+    public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultPicoContainer()\n" +
@@ -28,7 +28,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
         assertNotNull(pico.getComponentInstanceOfType(WebServerConfig.class).getClass());
     }
 
-    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoAssemblyException, JavaScriptException {
+    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory())\n" +
@@ -47,7 +47,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
         assertEquals("ClassLoader should be the same for both components", ws.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
 
-    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoAssemblyException, JavaScriptException {
+    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.

@@ -3,7 +3,7 @@ package org.nanocontainer.script.jython;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 
@@ -28,7 +28,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLif
         assertNotNull(pico.getComponentInstanceOfType(WebServer.class));
     }
 
-    public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoAssemblyException {
+    public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoCompositionException {
         try {
             Reader script = new StringReader("" +
                     "from org.nanocontainer.testmodel import *\n" +
@@ -43,7 +43,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedComposingLif
         }
     }
 
-    public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoAssemblyException {
+    public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultPicoContainer()\n" +

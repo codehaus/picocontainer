@@ -11,7 +11,7 @@ package org.nanocontainer.script.xml;
 
 import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.integrationkit.PicoAssemblyException;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
@@ -27,7 +27,7 @@ import java.io.StringReader;
 public class XStreamContainerBuilderTestCase extends AbstractScriptedComposingLifecycleContainerBuilderTestCase {
 
 
-	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
+	public void testContainerBuilding() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("<container>" +
                 "    <instance key='foo'>" +
                 "    	<string>foo bar</string>" +

@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.composite;
+package org.picocontainer.extras;
 
 import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.PicoContainer;

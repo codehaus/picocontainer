@@ -107,10 +107,10 @@
             <archive>http://archive.picocontainer.org/dev</archive>
         </mailingList>
         <mailingList>
-            <name>PicoContainer CVS Commits (CVSSpam)</name>
-            <subscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</subscribe>
-            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/picocontainer-commits</unsubscribe>
-            <archive>http://lists.codehaus.org/pipermail/picocontainer-commits/</archive>
+            <name>PicoContainer Commits and JIRA reports</name>
+            <subscribe>http://archive.picocontainer.org/scm</subscribe>
+            <unsubscribe>http://archive.picocontainer.org/scm</unsubscribe>
+            <archive>http://archive.picocontainer.org/scm</archive>
         </mailingList>
     </mailingLists>
 
@@ -178,6 +178,15 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Leo Simons</name>
+            <id>lsimons</id>
+            <email>NOSPAM.lsimons@jicarilla.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <contributors>
@@ -199,10 +208,6 @@
         </contributor>
         <contributor>
             <name>Stacy Curl</name>
-            <email/>
-        </contributor>
-        <contributor>
-            <name>Leo Simons</name>
             <email/>
         </contributor>
         <contributor>

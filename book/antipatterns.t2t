@@ -4,4 +4,60 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 
 = Anti-patterns =
 
-Blah
+== Singleton ==
+
+Probably the ultimate anti-pattern, Singleton is crops up on most software projects.
+It's easy to understand the intent of the Singleton -- there are obviously objects
+in your system which should only get created once and be unique, and having one static
+object accessible to the rest of your code guarantees that, right?
+
+Unfortunately, Singleton tends to be implemented incorrectly, and for the wrong reasons.
+First off let's examine correctness. If a piece of code is doing anything other than this:
+
+public class MySingleton {
+    private static final MySingleton instance = new MySingleton();
+
+    private MySingleton() {
+    }
+
+    public MySingleton getInstance() {
+        return instance;
+    }
+}
+
+then it's probably not thread-safe. Adding extra synchronization, double checked
+locking, or anything else, won't actually protect you from threading issues given Java's
+underlying memory model.
+
+But this is just a technicality - in the majority of cases you won't hit a race condition
+and your singleton will work just fine. You'll get one object. Per classloader.
+How many classloaders do we have here? Well, mostly that will depend on
+your container. Tomcat has a particular implementation, WebLogic another. How many
+singletons you actually get could well depend on where you deploy.
+
+One clear problem with singletons is that they're not easy to test. It's generally
+difficult to instantiate a singleton class, since the constructor is private. If you
+simply use the getInstance() method to retrieve the object you wish to test, you can't
+be sure that the object you're retrieving has been cleanly instantiated. By definition
+it will have been available to other tests in your application. It's possible to get
+around this to a certain extent by using a package-protected constructor and instantiating
+the singleton within a test.
+
+Let's challenge the original assumption behind singleton - that there are objects
+in an application which should only exist once. It's difficult to think of examples
+of these kinds of objects which //aren't// to do with infrastructure. Sure, a cache
+isn't much use if every piece of client code in your system gets its own cache.
+Maybe you need to control access to a scarce resource, and wish to put some kind
+of access-controller in front of that resource. These are all pieces of functionality
+that your //container// should provide, not that you should have to write yourself.
+
+Finally, if you are writing a container, you'll need to dish out instances of objects
+that should only exist once - the client code using your container just asked you to
+create it a cache, remember? Storing these kinds of objects is much better achieved
+through a registry that your container is using internally, and can be referenced by
+the client facing components in the container. Here there's no need for singleton -
+just pass around a reference to the registry. No real need for a static singleton,
+unless you're being lazy.
+
+In short, replacing a Singleton with well thought-out, testable objects managed by
+your container is a good idea.

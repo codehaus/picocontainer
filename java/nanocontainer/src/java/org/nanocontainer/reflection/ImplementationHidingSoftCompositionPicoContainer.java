@@ -41,20 +41,20 @@ import java.util.Map;
  */
 public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final ImplementationHidingPicoContainer delegate;
+    private final ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new ImplementationHidingPicoContainer(caf, parent);
+        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        delegate = new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent);
+        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(new DefaultComponentAdapterFactory(), parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
@@ -72,9 +72,7 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
     }
 
     protected Map getNamedContainers() {
-        // TODO: Paul, why did you remove the method ?
-        return null;
-        //return delegate.getNamedContainers();
+        return delegate.getNamedContainers();
     }
 
     public Object getComponentInstanceFromDelegate(Object componentKey) {
@@ -225,5 +223,14 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
 
     public ClassLoader getComponentClassLoader() {
         return reflectionAdapter.getComponentClassLoader();
+    }
+
+    private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {
+        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+            super(componentAdapterFactory, parent);
+        }
+        public Map getNamedContainers() {
+            return super.getNamedContainers();
+        }
     }
 }

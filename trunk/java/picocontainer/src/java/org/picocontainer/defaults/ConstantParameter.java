@@ -13,10 +13,14 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVerificationException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A ConstantParameter should be used to pass in "constant" arguments
@@ -58,15 +62,19 @@ public class ConstantParameter implements Parameter, Serializable {
      * {@inheritDoc}
      * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer, org.picocontainer.ComponentAdapter, java.lang.Class)
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoVerificationException {
         try {
             if (!(expectedType.isPrimitive() && checkPrimitive(expectedType)) && !expectedType.isInstance(value)) {
-                throw new PicoIntrospectionException(value.toString() + " does not match the type " + expectedType.getClass().getName()) {};
+                throw new ClassCastException(value.toString()
+                        + " does not match the type "
+                        + expectedType.getClass().getName());
             }
-        } catch (NoSuchFieldException e) {
-            throw new PicoIntrospectionException(e) {};
-        } catch (IllegalAccessException e) {
-            throw new PicoIntrospectionException(e) {};
+        } catch(PicoVerificationException e) {
+            throw e;
+        } catch(Exception e) {
+            final List list = new LinkedList();
+            list.add(e);
+            throw new PicoVerificationException(list);
         }
     }
     

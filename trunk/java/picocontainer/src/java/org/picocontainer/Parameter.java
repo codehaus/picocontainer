@@ -54,8 +54,8 @@ public interface Parameter {
      * @param container the container from which dependencies are resolved.
      * @param adapter     the container that should be searched
      * @param expectedType the required type
-     * @throws PicoIntrospectionException if parameter and its dependencies cannot be resolved
+     * @throws PicoVerificationException if parameter and its dependencies cannot be resolved
      * @since 1.1
      */
-    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException;
+    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoVerificationException;
 }

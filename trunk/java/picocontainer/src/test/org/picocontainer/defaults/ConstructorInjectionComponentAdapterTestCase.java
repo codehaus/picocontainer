@@ -9,24 +9,160 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
-import java.awt.AWTError;
+public class ConstructorInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
 
-public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
-    public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
-        ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", Object.class);
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
+     */
+    protected Class getComponentAdapterType() {
+        return ConstructorInjectionComponentAdapter.class;
+    }
 
-        PicoContainer pico = new DefaultPicoContainer();
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestVerifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter("foo", A.class);
+    }
+    
+    public static class A {
+        public A() {
+            fail("verification should not instantiate");
+        }
+    }
 
-        Object o1 = componentAdapter.getComponentInstance(pico);
-        Object o2 = componentAdapter.getComponentInstance(pico);
-        assertNotNull(o1);
-        assertNotSame(o1, o2);
+    public static class B {
+        public B(A a) {
+            fail("verification should not instantiate");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVerifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestVerifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(A.class);
+        return new ConstructorInjectionComponentAdapter(B.class, B.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestVisitable()
+     */
+    protected ComponentAdapter prepareTestVisitable() {
+        return new ConstructorInjectionComponentAdapter("foo", A.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareSerializable(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareSerializable(final MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithUnsatisfiedDependency(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingVerificationWithUnsatisfiedDependency(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(DependsOnTouchable.class, DependsOnTouchable.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestComponentAdapterCreatesNewInstances(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestComponentAdapterCreatesNewInstances(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(SimpleTouchable.class, SimpleTouchable.class);
+    }
+
+    public static class Erroneous {
+        public Erroneous() {
+            throw new VerifyError("test");
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestErrorIsRethrown(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestErrorIsRethrown(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(Erroneous.class, Erroneous.class);
+    }
+
+    public static class RuntimeThrowing {
+        public RuntimeThrowing() {
+            throw new RuntimeException("test");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestRuntimeExceptionIsRethrown(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestRuntimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(RuntimeThrowing.class, RuntimeThrowing.class);
+    }
+    
+    public static class NormalExceptionThrowing {
+        public NormalExceptionThrowing() throws Exception {
+            throw new Exception("test");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestNormalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(MutablePicoContainer picoContainer) {
+        return new ConstructorInjectionComponentAdapter(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
+    }
+
+    public static class C1 {
+        public C1(C2 c2) {
+            fail("verification should not instantiate");
+        }
+    }
+
+    public static class C2 {
+        public C2(C1 c1) {
+            fail("verification should not instantiate");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
+        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(C1.class, C1.class);
+        picoContainer.registerComponent(componentAdapter);
+        picoContainer.registerComponentImplementation(C2.class, C2.class);
+        return componentAdapter;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingInstantiationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestFailingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
+        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(C1.class, C1.class);
+        picoContainer.registerComponent(componentAdapter);
+        picoContainer.registerComponentImplementation(C2.class, C2.class);
+        return componentAdapter;
     }
 
     public static class Service {
@@ -40,6 +176,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         }
     }
 
+    // TODO Move this to DPC
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.registerComponentImplementation(Service.class);
@@ -50,100 +187,6 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
         assertSame(c1.service, c2.service);
     }
 
-
-    public static class A {
-        public A() {
-            fail("verification should not instantiate");
-        }
-    }
-
-    public static class B {
-        public B(A a) {
-            fail("verification should not instantiate");
-        }
-    }
-
-    public void testSuccessfulVerificationWithNoDependencies() {
-        ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", A.class);
-        componentAdapter.verify(new DefaultPicoContainer());
-    }
-
-    public void testFailingVerificationWithUnsatisfiedDependencies() {
-        ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", B.class);
-        try {
-            componentAdapter.verify(new DefaultPicoContainer());
-            fail();
-        } catch (UnsatisfiableDependenciesException e) {
-        }
-    }
-
-    public static class C1 {
-        public C1(C2 c2) {
-            fail("verification should not instantiate");
-        }
-    }
-
-    public static class C2 {
-        public C2(C1 i1) {
-            fail("verification should not instantiate");
-        }
-    }
-
-    public void testFailingVerificationWithCyclicDependencyException() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(C1.class, C1.class);
-        picoContainer.registerComponentImplementation(C2.class, C2.class);
-        try {
-            picoContainer.verify();
-            fail();
-        } catch (CyclicDependencyException e) {
-            String message = e.getMessage();
-            // TODO  (eg. -1 + 16 isn't the correct result but would pass) should check e.getDependencies()
-            assertTrue(message.indexOf("C1") + message.indexOf("C2") > 0);
-        }
-    }
-
-    public static class D {
-        public D(A a) {
-        }
-    }
-
-    public void testFailingVerificationWithPicoInitializationException() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(A.class);
-        picoContainer.registerComponentImplementation(B.class);
-        picoContainer.registerComponentImplementation(D.class, D.class,
-                new Parameter[]{new ComponentParameter(), new ComponentParameter()});
-        try {
-            picoContainer.verify();
-            fail();
-        } catch (PicoInitializationException e) {
-            String message = e.getMessage();
-            assertTrue(message.indexOf(D.class.getName() + "(" + A.class.getName() + ")") > 0);
-        }
-    }
-
-    public void testErrorThrownInCtorIsRethrown() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(Erroneous.class);
-        try {
-            picoContainer.getComponentInstance(Erroneous.class);
-            fail();
-        } catch (AWTError e) {
-        }
-    }
-
-    public void testRuntimeExceptionThrownInCtorIsRethrown() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponentImplementation(RuntimeThrowing.class);
-        try {
-            picoContainer.getComponentInstance(RuntimeThrowing.class);
-            fail();
-        } catch (RuntimeException e) {
-            assertEquals("ha!", e.getMessage());
-        }
-    }
-
     public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.registerComponentImplementation(NormalExceptionThrowing.class);
@@ -151,7 +194,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             picoContainer.getComponentInstance(NormalExceptionThrowing.class);
             fail();
         } catch (PicoInvocationTargetInitializationException e) {
-            assertEquals("ha!", e.getCause().getMessage());
+            assertEquals("test", e.getCause().getMessage());
         }
     }
 
@@ -177,6 +220,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends TestCase {
             assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
+    
     public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {

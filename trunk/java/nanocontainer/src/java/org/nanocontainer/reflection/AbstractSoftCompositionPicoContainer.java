@@ -81,15 +81,18 @@ public abstract class AbstractSoftCompositionPicoContainer implements SoftCompos
         return makeChildContainer("containers" + namedChildContainers.size());
     }
 
-    public void removeChildContainer(PicoContainer child) {
+    public boolean removeChildContainer(PicoContainer child) {
+        boolean result = false;
         Iterator children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
             Map.Entry e = (Map.Entry) children.next();
             PicoContainer pc = (PicoContainer) e.getValue();
             if (pc == child) {
                 children.remove();
+                result = true;
             }
         }
+        return result;
     }
 
     protected final Map getNamedContainers() {

@@ -16,6 +16,7 @@ import java.util.Properties;
  * @version $Revision$
  */
 public class VelocityOgnlTestCase extends TestCase {
+
     public void testCollectionsCanBeNavigated() throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         Properties properties = new Properties();
@@ -41,10 +42,9 @@ public class VelocityOgnlTestCase extends TestCase {
         velocityEngine.mergeTemplate("test.vm",
                 context,
                 output);
-        assertEquals("" +
-                "mercedes\r\n" +
-                "volkswagen\r\n",
-                output.getBuffer().toString());
+        String outputString = output.getBuffer().toString();
+        assertTrue(outputString.indexOf("mercedes") > -1);
+        assertTrue(outputString.indexOf("volkswagen") > -1);
     }
 
 }

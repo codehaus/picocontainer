@@ -47,9 +47,9 @@ public class JMXVisitor extends AbstractPicoVisitor {
 			Object obj = map.get(className);
 
 			if (obj instanceof MBeanInfoWrapper) {
-            	handleMBeanInfo(componentAdapter, (MBeanInfoWrapper)obj);
+				handleMBeanInfo(componentAdapter, (MBeanInfoWrapper) obj);
 			} else { // StandardMBean
-				handleStandardMBean(componentAdapter, (ObjectName)obj);
+				handleStandardMBean(componentAdapter, (ObjectName) obj);
 			}
 		}
 	}
@@ -61,11 +61,11 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	protected String getComponentKeyAsString(ComponentAdapter componentAdapter) {
 		Object componentKey = componentAdapter.getComponentKey();
 
-		if(componentKey instanceof Class) {
-			return ((Class)componentKey).getName();
+		if (componentKey instanceof Class) {
+			return ((Class) componentKey).getName();
 		}
 
-		return (String)componentKey;
+		return (String) componentKey;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	 * Create a StandardMBean and register it to the MBeanServer
 	 */
 	protected void handleStandardMBean(ComponentAdapter componentAdapter, ObjectName objectName) {
-		StandardMBean standardMBean = (StandardMBean)componentAdapter.getComponentInstance(picoContainer);
+		StandardMBean standardMBean = (StandardMBean) componentAdapter.getComponentInstance(picoContainer);
 		registerWithMBeanServer(standardMBean, objectName);
 	}
 
@@ -94,11 +94,13 @@ public class JMXVisitor extends AbstractPicoVisitor {
 		if (mBeanServer == null) {
 			throw new JMXRegistrationException("An MBeanServer instance MUST be registered with the container");
 		}
-
-		try {
-			mBeanServer.registerMBean(dynamicMBean, objectName);
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to register MBean to MBean Server", e);
+		// Can only register an ObjectName to the MBeanServer once
+		if (mBeanServer.isRegistered(objectName) == false) {
+			try {
+				mBeanServer.registerMBean(dynamicMBean, objectName);
+			} catch (Exception e) {
+				throw new RuntimeException("Unable to register MBean to MBean Server", e);
+			}
 		}
 	}
 

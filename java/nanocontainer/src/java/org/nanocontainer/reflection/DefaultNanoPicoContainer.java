@@ -14,10 +14,12 @@ import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NullComponentMonitor;
+import org.picocontainer.defaults.DefaultLifecycleManager;
 
 import java.io.Serializable;
 
@@ -33,9 +35,20 @@ import java.io.Serializable;
  */
 public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implements NanoPicoContainer, Serializable {
 
-    public DefaultNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
-        super(new DefaultPicoContainer(caf, parent), classLoader);
+    private LifecycleManager lifecycleManager;
 
+    public DefaultNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifcycleManager) {
+        super(new DefaultPicoContainer(caf, parent, lifcycleManager), classLoader);
+        this.lifecycleManager = lifcycleManager;
+    }
+
+    public DefaultNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
+        this(classLoader, caf, parent, new DefaultLifecycleManager());
+
+    }
+
+    public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, LifecycleManager lifcycleManager) {
+        this(classLoader, new DefaultComponentAdapterFactory(), parent, lifcycleManager);
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
@@ -66,7 +79,7 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
 
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = container.getComponentClassLoader();
-        DefaultNanoPicoContainer child = new DefaultNanoPicoContainer(currentClassloader, this);
+        DefaultNanoPicoContainer child = new DefaultNanoPicoContainer(currentClassloader, this, lifecycleManager);
         getDelegate().addChildContainer(child);
         namedChildContainers.put(name, child);
         return child;

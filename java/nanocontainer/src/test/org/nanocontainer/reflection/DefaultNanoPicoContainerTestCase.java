@@ -13,6 +13,7 @@ package org.nanocontainer.reflection;
 import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 /**
@@ -23,6 +24,10 @@ public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestC
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoPicoContainer(this.getClass().getClassLoader(), parent);
+    }
+
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
+        return new DefaultNanoPicoContainer(this.getClass().getClassLoader(), parent, lifecycleManager);
     }
 
     // TODO - go to a Nano TCK?

@@ -10,6 +10,7 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
@@ -29,6 +30,10 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false)), parent);
+    }
+
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
+        return new DefaultPicoContainer(new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false)), parent, lifecycleManager);
     }
 
     public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {

@@ -14,10 +14,12 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultLifecycleManager;
 
 import java.io.Serializable;
 
@@ -39,11 +41,15 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
      */
 
     public ImplementationHidingCachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(parent, new CachingComponentAdapterFactory(caf));
+        this(parent, new CachingComponentAdapterFactory(caf), new DefaultLifecycleManager());
     }
 
-    private ImplementationHidingCachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf) {
-        super(new ImplementationHidingPicoContainer(caf, parent));
+    public ImplementationHidingCachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecyleManager) {
+        this(parent, new CachingComponentAdapterFactory(caf), lifecyleManager);
+    }
+
+    private ImplementationHidingCachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf, LifecycleManager lifecycleManager) {
+        super(new ImplementationHidingPicoContainer(caf, parent, lifecycleManager));
         this.caf = caf;
     }
 

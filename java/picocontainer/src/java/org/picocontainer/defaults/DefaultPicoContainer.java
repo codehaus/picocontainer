@@ -433,7 +433,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this, lifecycleManager);
         addChildContainer(pc);
         return pc;
     }

@@ -11,10 +11,12 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DefaultLifecycleManager;
 
 import java.io.Serializable;
 
@@ -31,8 +33,15 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
     /**
      * Creates a new container with a parent container.
      */
+    public CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
+        super(new DefaultPicoContainer(caf, parent, lifecycleManager));
+    }
+
+    /**
+     * Creates a new container with a parent container.
+     */
     public CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent) {
-        super(new DefaultPicoContainer(caf, parent));
+        this(caf, parent, new DefaultLifecycleManager());
     }
 
     public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
@@ -46,6 +55,13 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
         this(new DefaultComponentAdapterFactory(), parent);
     }
 
+    /**
+     * Creates a new container with a parent container.
+     */
+    public CachingPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
+        this(new CachingComponentAdapterFactory(new DefaultComponentAdapterFactory()), parent, lifecycleManager);
+    }
+    
     /**
      * Creates a new container with a parent container.
      */

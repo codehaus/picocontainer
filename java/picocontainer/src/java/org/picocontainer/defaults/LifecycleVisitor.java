@@ -35,11 +35,6 @@ public class LifecycleVisitor extends AbstractPicoVisitor {
     private final List componentInstances;
     private ComponentMonitor componentMonitor;
 
-    // TODO - in reality this ctor is unlikely to be called, the other ctor is prevalent in the ..
-    // public static void start|stop|dispose(Object node) methods below.
-    // next on the list is to inject a "LifecycleManager" to DPC (which may or may not use a PicoVisitor)
-    // Aslak and Paul have talked about this, and it's been on the mail list as a proposal -
-    // Refer "LifecycleManager - pluggable", 29/10/2004 (mail)
     public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
         this.method = method;
         this.type = ofType;

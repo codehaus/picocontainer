@@ -1,6 +1,7 @@
 package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.*;
+import org.picocontainer.MutablePicoContainer;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
@@ -30,7 +31,8 @@ public class ExecuteContainerAction extends AbstractAction implements TreeSelect
         try {
             // will call execute() on the components. Cuz we have such a smart,
             // chained componentadapter
-            selectedContainerNode.createPicoContainer().getComponentInstances();
+            MutablePicoContainer picoContainer = selectedContainerNode.createPicoContainer();
+            picoContainer.getComponentInstances();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(treeToListenTo,e.getStackTrace(),e.getClass().getName() + " " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }

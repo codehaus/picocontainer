@@ -1,4 +1,4 @@
-package org.nanocontainer.idea;
+package org.picocontainer.idea;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.Anchor;
@@ -8,20 +8,20 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.diagnostic.Logger;
 
 /**
- * Main class in the XDoclet Plugin for IDEA.
+ * Main class for the PicoContainer Plugin for IDEA.
  *
- * @author <a href="mailto:aslak.hellesoy at bekk.no">Aslak Helles&oslash;y</a>
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class XDocletPlugin implements ApplicationComponent {
+public class PicoPlugin implements ApplicationComponent {
     /** Logger */
-    private static final Logger log = Logger.getInstance(XDocletPlugin.class.getName());
+    private static final Logger log = Logger.getInstance(PicoPlugin.class.getName());
 
     private DefaultActionGroup spg;
-    private XDocletToggle toggleAction;
+    private PicoToggleAction toggleAction;
 
-    public XDocletPlugin() {
-        toggleAction = new XDocletToggle();
+    public PicoPlugin() {
+        toggleAction = new PicoToggleAction();
         spg = new DefaultActionGroup();
         spg.addSeparator();
         spg.add(toggleAction);
@@ -34,8 +34,8 @@ public class XDocletPlugin implements ApplicationComponent {
     public void initComponent() {
         final ActionManager actionManager = ActionManager.getInstance();
         // try register action
-        if (actionManager.getAction(XDocletToggle.ID) == null) {
-            actionManager.registerAction(XDocletToggle.ID, toggleAction);
+        if (actionManager.getAction(PicoToggleAction.ID) == null) {
+            actionManager.registerAction(PicoToggleAction.ID, toggleAction);
         }
 
         // add toggle icon into IntelliJ UI, add to MainToolbar
@@ -71,12 +71,12 @@ public class XDocletPlugin implements ApplicationComponent {
         }
 
         toggleAction.clear();
-        if (actionManager.getAction(XDocletToggle.ID) != null) {
-            actionManager.unregisterAction(XDocletToggle.ID);
+        if (actionManager.getAction(PicoToggleAction.ID) != null) {
+            actionManager.unregisterAction(PicoToggleAction.ID);
         }
     }
 
     public String getComponentName() {
-        return XDocletPlugin.class.getName();
+        return PicoPlugin.class.getName();
     }
 }

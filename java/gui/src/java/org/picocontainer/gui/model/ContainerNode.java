@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class ContainerNode extends DefaultMutableTreeNode {
     public ContainerNode() {
-        super("DUMMY");
+        super(new Object());
     }
 
     public MutablePicoContainer createPicoContainer() throws PicoInitializationException {

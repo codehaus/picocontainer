@@ -1,4 +1,4 @@
-package org.nanocontainer.idea;
+package org.picocontainer.idea;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataConstants;
@@ -11,16 +11,19 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import javax.swing.*;
 import java.util.*;
 
+import org.picocontainer.gui.swing.PicoGui;
+
 /**
  * Toggle action for XDoclet Build.
  *
  * @author <a href="mailto:mbo at jcs.be">Mathias Bogaert</a>
  * @version $Revision$
  */
-public class XDocletToggle extends ToggleAction {
-    public static final String ID = "XDocletToggleAction";
-    public final static String XDOCLET_BUILD = "XDoclet Build";
-    private static final Icon ICON = new ImageIcon(XDocletToggle.class.getResource("toggle.gif"));
+public class PicoToggleAction extends ToggleAction {
+    public static final String ID = "PicoToggleAction";
+    public static final String PICO_CONTAINER = "PicoContainer";
+    // todo get from pico gui
+    private static final Icon ICON = new ImageIcon(PicoToggleAction.class.getResource("picocontainer.gif"));
 
     private Map consoles = new HashMap();
     private List managers = new ArrayList();
@@ -36,6 +39,23 @@ public class XDocletToggle extends ToggleAction {
             final ToolWindowManager manager = ToolWindowManager.getInstance(project);
             ToolWindow console = (ToolWindow) consoles.get(project);
             if (isSelected && console == null) {
+                PicoGui picoGui = new PicoGui();
+
+                // show window
+                manager.registerToolWindow(PICO_CONTAINER,
+                        picoGui,
+                        ToolWindowAnchor.RIGHT);
+
+                console = manager.getToolWindow(PICO_CONTAINER);
+
+                if (console != null) {
+                    // Add manager to array to do unregister on finalize
+                    managers.add(manager);
+                    consoles.put(project, console);
+                    console.setIcon(ICON);
+                    console.show(null);
+                    console.activate(null);
+
 //                BeanContextSupportEx xdocletContainer = new BeanContextSupportEx();
 //                XDoclet xdoclet = new XDoclet();
 //                xdocletContainer.add(xdoclet);
@@ -49,11 +69,11 @@ public class XDocletToggle extends ToggleAction {
 //                }
 //
 //                // show window
-//                manager.registerToolWindow(XDOCLET_BUILD,
+//                manager.registerToolWindow(PICO_CONTAINER,
 //                        new BeanContextConfigurationPanel(xdocletContainer),
 //                        ToolWindowAnchor.RIGHT);
 //
-//                console = manager.getToolWindow(XDOCLET_BUILD);
+//                console = manager.getToolWindow(PICO_CONTAINER);
 //
 //                if (console != null) {
 //                    // Add manager to array to do unregister on finalize
@@ -62,20 +82,20 @@ public class XDocletToggle extends ToggleAction {
 //                    console.setIcon(ICON);
 //                    console.show(null);
 //                    console.activate(null);
-//                }
+                }
             }
             else if (!isSelected && console != null) {
                 // Hide window
                 console.hide(null);
-                manager.unregisterToolWindow(XDOCLET_BUILD);
+                manager.unregisterToolWindow(PICO_CONTAINER);
                 managers.remove(manager);
                 consoles.remove(project);
             }
         }
     }
 
-    public XDocletToggle() {
-        super(XDOCLET_BUILD, "Show/Hide " + XDOCLET_BUILD, ICON);
+    public PicoToggleAction() {
+        super(PICO_CONTAINER, "Show/Hide " + PICO_CONTAINER, ICON);
     }
 
     public void clear() {
@@ -83,7 +103,7 @@ public class XDocletToggle extends ToggleAction {
         Iterator iterator = managers.iterator();
         while (iterator.hasNext()) {
             ToolWindowManager manager = (ToolWindowManager) iterator.next();
-            manager.unregisterToolWindow(XDOCLET_BUILD);
+            manager.unregisterToolWindow(PICO_CONTAINER);
         }
         managers.clear();
         consoles.clear();

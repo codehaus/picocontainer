@@ -1,12 +1,8 @@
 package org.picocontainer.gui.swing;
 
-import org.picocontainer.gui.model.*;
-
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -20,11 +16,9 @@ import java.awt.*;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class AddPicoComponentAction extends AbstractAction implements TreeSelectionListener, DocumentListener {
+public class AddPicoComponentAction extends AddToContainerNodeAction implements DocumentListener {
     private final ComponentRegistrar componentRegistrar;
-    private final Component errorDialogParent;
 
-    private ContainerNode selectedContainerNode = null;
     private Class componentImplementation = null;
 
     public AddPicoComponentAction(
@@ -32,32 +26,17 @@ public class AddPicoComponentAction extends AbstractAction implements TreeSelect
             Component errorDialogParent,
             JTree treeToListenTo,
             Document documentToListenTo) {
-        super("Add PicoComponent");
+        super("Add PicoComponent", errorDialogParent, treeToListenTo);
         this.componentRegistrar = componentRegistrar;
-        this.errorDialogParent = errorDialogParent;
 
-        treeToListenTo.addTreeSelectionListener(this);
         documentToListenTo.addDocumentListener(this);
-
-        setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent evt) {
         try {
-            componentRegistrar.createComponentNodeInTree(selectedContainerNode, componentImplementation, componentImplementation);
+            componentRegistrar.createComponentNodeInTree(getSelectedContainerNode(), componentImplementation, componentImplementation);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(errorDialogParent,e.getStackTrace(),e.getClass().getName() + " " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void valueChanged(TreeSelectionEvent evt) {
-        Object selected = evt.getPath().getLastPathComponent();
-        if(selected instanceof ContainerNode) {
-            selectedContainerNode = (ContainerNode) selected;
-            setEnabled();
-        } else {
-            selectedContainerNode = null;
-            setEnabled();
+            showErrorDialog(e);
         }
     }
 
@@ -87,7 +66,7 @@ public class AddPicoComponentAction extends AbstractAction implements TreeSelect
         }
     }
 
-    private void setEnabled() {
-        setEnabled(componentImplementation != null && selectedContainerNode != null);
+    protected void setEnabled() {
+        setEnabled(componentImplementation != null && getSelectedContainerNode() != null);
     }
 }

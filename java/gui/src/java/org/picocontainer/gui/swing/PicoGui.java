@@ -6,7 +6,10 @@ import javax.swing.*;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.DefaultTreeCellEditor;
 import java.awt.*;
+import java.util.EventObject;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -14,15 +17,25 @@ import java.awt.*;
  */
 public class PicoGui extends JPanel {
 
-    public PicoGui(ContainerNode rootNode) {
+    public PicoGui() {
         super(new BorderLayout());
+
+        ContainerNode rootNode = new ContainerNode();
 
         JSplitPane split = new JSplitPane();
         JPanel left = new JPanel(new BorderLayout());
 
         DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
-        JTree tree = new JTree(treeModel);
-        tree.setCellRenderer(new PicoTreeCellRenderer());
+        final JTree tree = new JTree(treeModel);
+
+        new TreeExpander(tree);
+
+        PicoTreeCellRenderer picoTreeCellRenderer = new PicoTreeCellRenderer();
+        tree.setCellRenderer(picoTreeCellRenderer);
+
+        new DefaultTreeCellEditor(tree, picoTreeCellRenderer, null) {
+        };
+
         left.add(new JScrollPane(tree), BorderLayout.CENTER);
 
         JTable table = new JTable(BeanPropertyTableModel.EMPTY_MODEL);
@@ -31,7 +44,7 @@ public class PicoGui extends JPanel {
         ComponentRegistrar componentRegistrar = new ComponentRegistrar(treeModel, table);
 
         // Set up a PropertyTableCommander
-        PropertyTableCommander propertyTableCommander = new PropertyTableCommander(tree, componentRegistrar);
+        new PropertyTableCommander(tree, componentRegistrar);
 
         // Set up an AddPicoComponentAction
         Document componentImplementationDocument = new PlainDocument();
@@ -43,8 +56,12 @@ public class PicoGui extends JPanel {
 
         ExecuteContainerAction executeContainerAction = new ExecuteContainerAction(tree);
 
+        // Set up an AddPicoContainerAction
+        AddPicoContainerAction addPicoContainerAction = new AddPicoContainerAction(tree, treeModel, tree);
+
         EditContainerPanel editContainerPanel = new EditContainerPanel(
                 addPicoComponentAction,
+                addPicoContainerAction,
                 executeContainerAction,
                 componentImplementationDocument
         );
@@ -62,8 +79,7 @@ public class PicoGui extends JPanel {
     }
 
     public static void main(String[] args) {
-        ContainerNode parentNode = new ContainerNode();
-        PicoGui gui = new PicoGui(parentNode);
+        PicoGui gui = new PicoGui();
 
         JFrame f = new JFrame();
         f.getContentPane().add(gui);
@@ -80,12 +96,12 @@ public class PicoGui extends JPanel {
         }
 
         public A() {
-            System.out.println("CONSTRUCTED");
+            System.out.println("A a = new A()");
         }
 
         public void setMessage(String message) {
             this.message = message;
-            System.out.println("SET:" + message);
+            System.out.println("a.setMessage(" + message + ")");
         }
 
         public String getMessage() {

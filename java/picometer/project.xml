@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../project.xml</extend>
+  <id>picoextras-picometer</id>
+  <name>picoextras-picometer</name>
+
+  <dependencies>
+    <dependency>
+      <id>asm</id>
+      <version>1.4</version>
+    </dependency>
+  </dependencies>
+
+</project>

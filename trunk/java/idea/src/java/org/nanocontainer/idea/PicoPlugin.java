@@ -107,7 +107,6 @@ public class PicoPlugin implements ProjectComponent {
                 path = path.substring(0, path.length() - 1);
             }
             URL url = new File(path).toURL();
-            System.out.println("url = " + url);
             return url;
         } catch (MalformedURLException e) {
             return null;

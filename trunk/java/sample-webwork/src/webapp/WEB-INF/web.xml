@@ -12,13 +12,13 @@
 
             pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
-                System.out.println("**** Webapp-level pico components registered by Groovy")
+                println("**** Webapp-level pico components registered by Groovy")
                 pico.registerComponentImplementation(org.nanocontainer.sample.webwork.dao.simple.MemoryCheeseDao)
 
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                System.out.println("**** Session-level pico components registered by Groovy")
+                println("**** Session-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                System.out.println("**** Request-level pico components registered by Groovy")
+                println("**** Request-level pico components registered by Groovy")
             }
         ]]></param-value>
     </context-param>

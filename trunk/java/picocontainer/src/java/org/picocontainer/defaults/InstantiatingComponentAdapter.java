@@ -39,11 +39,11 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     public Object getComponentInstance()
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        List dependencyAdapterList = new ArrayList();
-        Object instance = instantiateComponent(dependencyAdapterList);
+        List adapterInstantiationOrderTrackingList = new ArrayList();
+        Object instance = instantiateComponent(adapterInstantiationOrderTrackingList);
 
         // Now, track the instantiation order
-        for (Iterator it = dependencyAdapterList.iterator(); it.hasNext(); ) {
+        for (Iterator it = adapterInstantiationOrderTrackingList.iterator(); it.hasNext(); ) {
             ComponentAdapter dependencyAdapter = (ComponentAdapter) it.next();
             getContainer().addOrderedComponentAdapter(dependencyAdapter);
         }
@@ -64,12 +64,12 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     /**
      * Instantiate the object. 
-     * @param adapterDependencies This list is filled with the dependent adapters of the instance.
+     * @param adapterInstantiationOrderTrackingList This list is filled with the dependent adapters of the instance.
      * @return Returns the new instance.
      * @throws PicoInitializationException
      * @throws PicoIntrospectionException
      * @throws AssignabilityRegistrationException
      * @throws NotConcreteRegistrationException
      */
-    protected abstract Object instantiateComponent(List adapterDependencies) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 }

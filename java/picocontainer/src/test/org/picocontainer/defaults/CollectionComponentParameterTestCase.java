@@ -6,6 +6,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -207,5 +209,32 @@ public class CollectionComponentParameterTestCase
                 .getComponentInstance(AnotherGenericCollectionBowl.class);
         assertNotNull(bowl);
         assertEquals(0, bowl.strings.length);
+    }
+
+    public static class TouchableObserver
+            implements Touchable {
+        private final Touchable[] touchables;
+
+        public TouchableObserver(Touchable[] touchables) {
+            this.touchables = touchables;
+
+        }
+
+        public void touch() {
+            for (int i = 0; i < touchables.length; i++) {
+                touchables[i].touch();
+            }
+        }
+    }
+
+    public void testWillOmitSelfFromCollection() {
+        MutablePicoContainer pico = getDefaultPicoContainer();
+        pico.registerComponentImplementation(SimpleTouchable.class);
+        pico.registerComponentImplementation(TouchableObserver.class);
+        Touchable observer = (Touchable) pico.getComponentInstanceOfType(TouchableObserver.class);
+        assertNotNull(observer);
+        observer.touch();
+        SimpleTouchable touchable = (SimpleTouchable) pico.getComponentInstanceOfType(SimpleTouchable.class);
+        assertTrue(touchable.wasTouched);
     }
 }

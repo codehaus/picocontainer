@@ -84,6 +84,7 @@
           <directory>${basedir}/src/test</directory>
           <includes>
             <include>**/*.xml</include>
+            <include>**/*.bsh</include>
           </includes>
         </resource>
       </resources>

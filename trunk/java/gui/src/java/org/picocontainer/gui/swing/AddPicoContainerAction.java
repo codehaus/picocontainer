@@ -3,6 +3,7 @@ package org.picocontainer.gui.swing;
 import org.picocontainer.gui.model.ContainerNode;
 
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.*;
@@ -12,11 +13,11 @@ import java.awt.*;
  * @version $Revision$
  */
 public class AddPicoContainerAction extends AddToContainerNodeAction {
-    private final DefaultTreeModel treeModel;
+    private final TreeModel treeModel;
 
     public AddPicoContainerAction(
             Component errorDialogParent,
-            DefaultTreeModel treeModel,
+            TreeModel treeModel,
             JTree treeToListenTo) {
         super("Add PicoContainer", errorDialogParent, treeToListenTo);
         this.treeModel = treeModel;
@@ -29,6 +30,6 @@ public class AddPicoContainerAction extends AddToContainerNodeAction {
 
     public void actionPerformed(ActionEvent e) {
         ContainerNode containerNode = new ContainerNode();
-        treeModel.insertNodeInto(containerNode, getSelectedContainerNode(), 0);
+//        treeModel.insertNodeInto(containerNode, getSelectedContainerNode(), 0);
     }
 }

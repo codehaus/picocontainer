@@ -32,33 +32,28 @@ import java.util.*;
  * @version $Revision$
  */
 public class PicoContainerTask extends Task {
-    protected MutablePicoContainer createPicoContainer(InvokingComponentAdapterFactory invokingFactory) {
-        return new DefaultPicoContainer(invokingFactory);
-    }
-
     private final List components = new ArrayList();
 
     private final BeanPropertyComponentAdapterFactory propertyFactory;
-    private final InvokingComponentAdapterFactory invokingFactory;
     private final MutablePicoContainer pico;
 
     public PicoContainerTask() {
         DefaultComponentAdapterFactory defaultFactory = new DefaultComponentAdapterFactory();
         propertyFactory = new BeanPropertyComponentAdapterFactory(defaultFactory);
-        invokingFactory = new InvokingComponentAdapterFactory(
+        InvokingComponentAdapterFactory invokingFactory = new InvokingComponentAdapterFactory(
                     propertyFactory,
                     "execute",
                     null,
                     null
             );
-        pico = createPicoContainer(invokingFactory);
+        pico = new DefaultPicoContainer(invokingFactory);
     }
 
     public void addComponent(Component component) {
         components.add(component);
     }
 
-    public final void execute() {
+    public void execute() {
         registerComponentsSpecifiedInAnt();
         try {
             getPicoContainer().getComponentInstances();
@@ -95,17 +90,11 @@ public class PicoContainerTask extends Task {
     }
 
     private ClassLoader getClassLoader() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = getClass().getClassLoader();
         if (classLoader == null) {
             classLoader = getClass().getClassLoader();
         }
         return classLoader;
-    }
-
-    public static class ExecutingComponentAdapterFactory extends InvokingComponentAdapterFactory {
-        public ExecutingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-            super(delegate, "execute", null, null);
-        }
     }
 
     public MutablePicoContainer getPicoContainer() {

@@ -15,7 +15,7 @@ import picocontainer.PicoStartException;
 import picocontainer.PicoStopException;
 import picocontainer.PicoDisposalException;
 
-class NullStartableLifecycleManager
+public class NullStartableLifecycleManager
         implements StartableLifecycleManager {
     public void startComponent(Object component) throws PicoStartException {
     }

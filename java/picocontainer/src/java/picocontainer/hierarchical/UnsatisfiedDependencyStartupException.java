@@ -23,7 +23,7 @@ public class UnsatisfiedDependencyStartupException extends PicoStartException
 
     public String getMessage()
     {
-        return "Class " + classThatNeedsDeps.getName() + " needs unnamed depenencies";
+        return "Class " + classThatNeedsDeps.getName() + " needs unnamed dependencies";
     }
 
     public Class getClassThatNeedsDeps()

@@ -43,18 +43,19 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
         // The order of tests are significant. The least generic types last.
         if (Array.class.isAssignableFrom(collectionType)) {
             collectionClass = Array.class;
-        } else if (List.class.isAssignableFrom(collectionType)) {
-            collectionClass = ArrayList.class;
-        } else if (SortedSet.class.isAssignableFrom(collectionType)) {
-            collectionClass = TreeSet.class;
-        } else if (Set.class.isAssignableFrom(collectionType)) {
-            collectionClass = HashSet.class;
-        } else if (Collection.class.isAssignableFrom(collectionType)) {
-            collectionClass = ArrayList.class;
-        } else if (SortedMap.class.isAssignableFrom(collectionType)) {
-            collectionClass = TreeMap.class;
-        } else if (Map.class.isAssignableFrom(collectionType)) {
-            collectionClass = HashMap.class;
+            // TODO: uncomment when we start supporting generics
+//        } else if (List.class.isAssignableFrom(collectionType)) {
+//            collectionClass = ArrayList.class;
+//        } else if (SortedSet.class.isAssignableFrom(collectionType)) {
+//            collectionClass = TreeSet.class;
+//        } else if (Set.class.isAssignableFrom(collectionType)) {
+//            collectionClass = HashSet.class;
+//        } else if (Collection.class.isAssignableFrom(collectionType)) {
+//            collectionClass = ArrayList.class;
+//        } else if (SortedMap.class.isAssignableFrom(collectionType)) {
+//            collectionClass = TreeMap.class;
+//        } else if (Map.class.isAssignableFrom(collectionType)) {
+//            collectionClass = HashMap.class;
         } else {
             throw new PicoIntrospectionException("Unsupported collection type: " + collectionType.getName());
         }
@@ -62,13 +63,14 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
         List adaptersOfType = getContainer().getComponentAdaptersOfType(valueType);
-        if (Array.class.isAssignableFrom(collectionType)) {
+        // TODO: uncomment when we start supporting generics
+//        if (Array.class.isAssignableFrom(collectionType)) {
             return getArrayInstance(adaptersOfType);
-        } else if (Map.class.isAssignableFrom(collectionType)) {
-            return getMapInstance(adaptersOfType);
-        } else {
-            return getCollectionInstance(adaptersOfType);
-        }
+//        } else if (Map.class.isAssignableFrom(collectionType)) {
+//            return getMapInstance(adaptersOfType);
+//        } else {
+//            return getCollectionInstance(adaptersOfType);
+//        }
     }
 
     private Object[] getArrayInstance(List adaptersOfType) {
@@ -82,38 +84,39 @@ class GenericCollectionComponentAdapter extends AbstractComponentAdapter {
         return result;
     }
 
-    private Collection getCollectionInstance(List adaptersOfType) {
-        try {
-            Collection result = (Collection) collectionClass.newInstance();
-            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
-                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-                result.add(componentAdapter.getComponentInstance());
-            }
-            return result;
-        } catch (InstantiationException e) {
-            throw new PicoInitializationException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoInitializationException(e);
-        }
-    }
-
-    private Map getMapInstance(List adaptersOfType) {
-        try {
-            Map result = (Map) collectionClass.newInstance();
-            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
-                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
-                Object componentKey = componentAdapter.getComponentKey();
-                if (keyType.isAssignableFrom(componentKey.getClass())) {
-                    result.put(componentKey, componentAdapter.getComponentInstance());
-                }
-            }
-            return result;
-        } catch (InstantiationException e) {
-            throw new PicoInitializationException(e);
-        } catch (IllegalAccessException e) {
-            throw new PicoInitializationException(e);
-        }
-    }
+    // TODO: uncomment when we start supporting generics
+//    private Collection getCollectionInstance(List adaptersOfType) {
+//        try {
+//            Collection result = (Collection) collectionClass.newInstance();
+//            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
+//                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+//                result.add(componentAdapter.getComponentInstance());
+//            }
+//            return result;
+//        } catch (InstantiationException e) {
+//            throw new PicoInitializationException(e);
+//        } catch (IllegalAccessException e) {
+//            throw new PicoInitializationException(e);
+//        }
+//    }
+//
+//    private Map getMapInstance(List adaptersOfType) {
+//        try {
+//            Map result = (Map) collectionClass.newInstance();
+//            for (Iterator iterator = adaptersOfType.iterator(); iterator.hasNext();) {
+//                ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+//                Object componentKey = componentAdapter.getComponentKey();
+//                if (keyType.isAssignableFrom(componentKey.getClass())) {
+//                    result.put(componentKey, componentAdapter.getComponentInstance());
+//                }
+//            }
+//            return result;
+//        } catch (InstantiationException e) {
+//            throw new PicoInitializationException(e);
+//        } catch (IllegalAccessException e) {
+//            throw new PicoInitializationException(e);
+//        }
+//    }
 
     public void verify() throws UnsatisfiableDependenciesException {
 

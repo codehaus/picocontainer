@@ -14,10 +14,12 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.PicoContainer;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
@@ -254,6 +256,43 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         pico.stop();
         pico.dispose();
         assertEquals("<OneOne>!One", pico.getComponentInstance("recording").toString());
-
     }
+
+    public void testShouldFailOnStartAfterDispose() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.dispose();
+        try {
+            pico.start();
+            fail();
+        } catch (IllegalStateException expected) {
+        }
+    }
+
+    public void testShouldFailOnStopAfterDispose() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.dispose();
+        try {
+            pico.stop();
+            fail();
+        } catch (IllegalStateException expected) {
+        }
+    }
+
+    public void testShouldStackContainersLast() {
+        // this is merely a code coverage test - but it doesn't seem to cover the StackContainersAtEndComparator
+        // fully. oh well.
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(ArrayList.class);
+        pico.registerComponentImplementation(DefaultPicoContainer.class);
+        pico.registerComponentImplementation(HashMap.class);
+        pico.start();
+        PicoContainer childContainer = (PicoContainer) pico.getComponentInstance(DefaultPicoContainer.class);
+        // it should be started too
+        try {
+            childContainer.start();
+            fail();
+        } catch (IllegalStateException e) {
+        }
+    }
+
 }

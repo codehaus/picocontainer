@@ -422,4 +422,14 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
 
+    public void testShouldReturnNullWhenUnregistereingUnmanagedComponent() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        assertNull(pico.unregisterComponentByInstance("yo"));
+    }
+
+    public void testShouldReturnNullForComponentAdapterOfUnregisteredType() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        assertNull(pico.getComponentInstanceOfType(List.class));
+    }
+
 }

@@ -20,9 +20,6 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,24 +56,6 @@ import java.util.Map;
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
-    /**
-     * Empty immutable container. The lifecycle methods can be invoked several times without
-     * throwing exceptions.
-     */
-    public static final PicoContainer EMPTY_IMMUTABLE_INSTANCE;
-
-    static {
-        final PicoContainer picoContainer = new DefaultPicoContainer();
-        EMPTY_IMMUTABLE_INSTANCE = (PicoContainer) Proxy.newProxyInstance(DefaultPicoContainer.class.getClassLoader(), new Class[]{PicoContainer.class}, new InvocationHandler() {
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                String methodName = method.getName();
-                if (methodName.equals("start") || methodName.equals("stop") || methodName.equals("dispose")) {
-                    return null;
-                }
-                return method.invoke(picoContainer, args);
-            }
-        });
-    }
 
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
@@ -254,7 +233,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     /**
      * Same as {@link #registerComponentImplementation(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])}
      * but with parameters as a {@link List}. Makes it possible to use with Groovy arrays (which are actually Lists).
-     */ 
+     */
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) throws PicoRegistrationException {
         Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
         return registerComponentImplementation(componentKey, componentImplementation, parametersAsArray);
@@ -346,8 +325,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void start() {
-        if (started) throw new IllegalStateException("Already started");
         if (disposed) throw new IllegalStateException("Already disposed");
+        if (started) throw new IllegalStateException("Already started");
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
             ((Startable) iterator.next()).start();
@@ -356,8 +335,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public void stop() {
-        if (!started) throw new IllegalStateException("Not started");
         if (disposed) throw new IllegalStateException("Already disposed");
+        if (!started) throw new IllegalStateException("Not started");
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         Collections.reverse(componentInstances);
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
@@ -393,10 +372,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     class StackContainersAtEndComparator implements Comparator {
         public int compare(Object o1, Object o2) {
-            if (PicoContainer.class.isAssignableFrom(o1.getClass())) {
+            if (PicoContainer.class.isInstance(o1)) {
                 return 1;
             }
-            if (PicoContainer.class.isAssignableFrom(o2.getClass())) {
+            if (PicoContainer.class.isInstance(o2)) {
                 return -1;
             }
             return 0;

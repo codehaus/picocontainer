@@ -1,10 +1,7 @@
 package org.picoextras.multicast;
 
 import org.picocontainer.*;
-import org.picocontainer.defaults.DefaultComponentMulticasterFactory;
-import org.picocontainer.defaults.Invoker;
 import org.picocontainer.defaults.AbstractComponentAdapter;
-import org.picocontainer.defaults.InvocationInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;

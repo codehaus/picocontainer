@@ -2,8 +2,8 @@ package org.picoextras.guimodel;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
-import org.picocontainer.extras.DecoratingComponentAdapter;
 
 import java.util.Collection;
 import java.util.Iterator;

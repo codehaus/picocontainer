@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <extend>${basedir}/../project.xml</extend>
-  <id>picoextras-multicast</id>
-  <name>picoextras-multicast</name>
+    <extend>${basedir}/../project.xml</extend>
+    <id>picoextras-multicast</id>
+    <name>picoextras-multicast</name>
 
-  <dependencies>
-  </dependencies>
+    <dependencies>
+
+        <!-- test time only -->
+        <dependency>
+            <id>jmock</id>
+            <version>SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

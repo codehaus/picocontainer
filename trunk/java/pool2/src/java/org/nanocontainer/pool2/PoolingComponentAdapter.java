@@ -1,7 +1,7 @@
 package org.picoextras.pool2;
 
 import org.picocontainer.*;
-import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 import java.util.LinkedList;
 import java.util.List;

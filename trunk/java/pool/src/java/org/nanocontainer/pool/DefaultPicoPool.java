@@ -13,9 +13,9 @@ package org.picoextras.pool;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.defaults.ConstructorComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.TransientComponentAdapter;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -219,7 +219,7 @@ public class DefaultPicoPool implements PicoPool {
      */
     protected Object makeComponent() throws PicoPoolException {
         //Create new "uncached" component
-        ComponentAdapter componentAdapter = new TransientComponentAdapter(implementation, implementation);
+        ComponentAdapter componentAdapter = new ConstructorComponentAdapter(implementation, implementation);
         componentAdapter.setContainer(pico);
         Object object = componentAdapter.getComponentInstance();
         return object;

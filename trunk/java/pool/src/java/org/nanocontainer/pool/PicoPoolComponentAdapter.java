@@ -13,7 +13,7 @@ package org.picoextras.pool;
 import org.picocontainer.*;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.extras.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 /**
  *  <p><code>DefaultPicoPool</code> is a pooling component that uses a pico container for the pool

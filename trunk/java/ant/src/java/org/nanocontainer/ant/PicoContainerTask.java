@@ -7,7 +7,7 @@ import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
+import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
 import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;

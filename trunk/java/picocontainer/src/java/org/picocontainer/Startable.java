@@ -8,9 +8,12 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-
 package org.picocontainer;
 
+/**
+ * Basic lifecycle interface for Pico components. For more advanced and pluggable lifecycle
+ * support, see picextras-multicast.
+ */
 public interface Startable {
     void start();
     void stop();

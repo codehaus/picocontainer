@@ -10,13 +10,10 @@
 
 package org.picocontainer.defaults;
 
-import org.jmock.Mock;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.Touchable;
 
@@ -25,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -116,5 +112,24 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
 
+    public static class Service {
+    }
 
+    public static class TransientComponent {
+        private Service service;
+
+        public TransientComponent(Service service) {
+            this.service = service;
+        }
+    }
+
+    public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        picoContainer.registerComponentImplementation(Service.class);
+        picoContainer.registerComponent(new ConstructorInjectionComponentAdapter(TransientComponent.class, TransientComponent.class));
+        TransientComponent c1 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
+        TransientComponent c2 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
+        assertNotSame(c1, c2);
+        assertSame(c1.service, c2.service);
+    }
 }

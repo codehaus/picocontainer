@@ -10,11 +10,22 @@
 
 package org.picocontainer.testmodel;
 
-import junit.framework.Assert;
+import java.util.List;
 
-public class FlintstonesImpl {
-    public FlintstonesImpl(Wilma wilma, FredImpl fred) {
-        Assert.assertNotNull("Wilma cannot be passed in as null", wilma);
-        Assert.assertNotNull("FredImpl cannot be passed in as null", fred);
+/**
+ *
+ * @author Steve.Freeman@m3p.co.uk
+ * @version $Revision$
+ * was UnaccessibleStartComponent
+ */
+public class InaccessibleStartComponent extends Object {
+    private List messages;
+
+    public InaccessibleStartComponent(List messages) {
+        this.messages = messages;
+    }
+
+    private final void start() {
+        messages.add("started");
     }
 }

@@ -19,11 +19,11 @@ import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.testmodel.FlintstonesImpl;
-import org.picocontainer.testmodel.FredImpl;
+import org.picocontainer.tck.DependsOnTwoComponents;
+import org.picocontainer.tck.DependsOnTouchable;
 import org.picocontainer.testmodel.Webster;
-import org.picocontainer.testmodel.Wilma;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.Touchable;
+import org.picocontainer.tck.SimpleTouchable;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -488,31 +488,31 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
 
-        WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);
+        SimpleTouchable touchable = (SimpleTouchable) pico.getComponent(SimpleTouchable.class);
 
-        assertTrue("hello should have been called in wilma", wilma.helloCalled());
+        assertTrue("hello should have been called in Touchable", touchable.wasTouched);
     }
 
     public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
         DefaultComponentRegistry dcr = new DefaultComponentRegistry();
         DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
-        assertNull(dcr.findImplementingComponentSpecification(Wilma.class));
-        pico.registerComponentByClass(WilmaImpl.class);
-        assertNotNull(dcr.findImplementingComponentSpecification(WilmaImpl.class));
-        assertNotNull(dcr.findImplementingComponentSpecification(Wilma.class));
+        assertNull(dcr.findImplementingComponentSpecification(Touchable.class));
+        pico.registerComponentByClass(SimpleTouchable.class);
+        assertNotNull(dcr.findImplementingComponentSpecification(SimpleTouchable.class));
+        assertNotNull(dcr.findImplementingComponentSpecification(Touchable.class));
     }
 
     public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInitializationException {
-        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class, new Parameter[0]);
+        ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), SimpleTouchable.class, SimpleTouchable.class, new Parameter[0]);
         Object comp = componentSpec.instantiateComponent(null);
         assertNotNull(comp);
-        assertTrue(comp instanceof WilmaImpl);
+        assertTrue(comp instanceof SimpleTouchable);
     }
 
     public void testDoubleInstantiation() throws PicoInitializationException {
@@ -529,39 +529,39 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testInstantiateOneComponent() throws PicoInitializationException, PicoRegistrationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
         pico.instantiateComponents();
 
-        WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);
+        SimpleTouchable Touchable = (SimpleTouchable) pico.getComponent(SimpleTouchable.class);
 
-        assertNotNull(wilma);
+        assertNotNull(Touchable);
     }
 
     public void testMultipleImplementationsAccessedThroughKey()
             throws PicoInitializationException, PicoRegistrationException, PicoInvocationTargetInitializationException {
-        WilmaImpl wilma1 = new WilmaImpl();
-        WilmaImpl wilma2 = new WilmaImpl();
+        SimpleTouchable Touchable1 = new SimpleTouchable();
+        SimpleTouchable Touchable2 = new SimpleTouchable();
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        pico.registerComponent("wilma1", wilma1);
-        pico.registerComponent("wilma2", wilma2);
-        pico.registerComponent("fred1", FredImpl.class, new Parameter[]{new ComponentParameter("wilma1")});
-        pico.registerComponent("fred2", FredImpl.class, new Parameter[]{new ComponentParameter("wilma2")});
+        pico.registerComponent("Touchable1", Touchable1);
+        pico.registerComponent("Touchable2", Touchable2);
+        pico.registerComponent("fred1", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable1")});
+        pico.registerComponent("fred2", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable2")});
 
         pico.instantiateComponents();
 
-        FredImpl fred1 = (FredImpl) pico.getComponent("fred1");
-        FredImpl fred2 = (FredImpl) pico.getComponent("fred2");
+        DependsOnTouchable fred1 = (DependsOnTouchable) pico.getComponent("fred1");
+        DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");
 
         assertFalse(fred1 == fred2);
-        assertSame(wilma1, fred1.getWilma());
-        assertSame(wilma2, fred2.getWilma());
+        assertSame(Touchable1, fred1.getTouchable());
+        assertSame(Touchable2, fred2.getTouchable());
     }
 
     public void testRegistrationByName() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         Webster one = new Webster(new ArrayList());
-        Wilma two = new WilmaImpl();
+        Touchable two = new SimpleTouchable();
 
         pico.registerComponent("one", one);
         pico.registerComponent("two", two);
@@ -570,8 +570,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertEquals("Wrong number of comps in the container", 2, pico.getComponents().size());
 
-        assertEquals("Looking up one Wilma", one, pico.getComponent("one"));
-        assertEquals("Looking up two Wilma", two, pico.getComponent("two"));
+        assertEquals("Looking up one Touchable", one, pico.getComponent("one"));
+        assertEquals("Looking up two Touchable", two, pico.getComponent("two"));
 
         assertTrue("Object one the same", one == pico.getComponent("one"));
         assertTrue("Object two the same", two == pico.getComponent("two"));
@@ -584,7 +584,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         pico.registerComponent(List.class, new ArrayList());
         pico.registerComponent("one", Webster.class);
-        pico.registerComponent("two", WilmaImpl.class);
+        pico.registerComponent("two", SimpleTouchable.class);
 
         pico.instantiateComponents();
 
@@ -603,8 +603,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
         Webster one = new Webster(new ArrayList());
         Webster two = new Webster(new ArrayList());
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
         pico.registerComponent("one", one);
         pico.registerComponent("two", two);
 
@@ -612,13 +612,13 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertEquals("Wrong number of comps in the container", 4, pico.getComponents().size());
 
-        assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
+        assertTrue("There should have been a Fred in the container", pico.hasComponent(DependsOnTouchable.class));
         assertTrue(
-                "There should have been a WilmaImpl in the container",
-                dcr.findImplementingComponent(WilmaImpl.class) != null);
+                "There should have been a SimpleTouchable in the container",
+                dcr.findImplementingComponent(SimpleTouchable.class) != null);
 
-        assertEquals("Looking up one Wilma", one, pico.getComponent("one"));
-        assertEquals("Looking up two Wilma", two, pico.getComponent("two"));
+        assertEquals("Looking up one Touchable", one, pico.getComponent("one"));
+        assertEquals("Looking up two Touchable", two, pico.getComponent("two"));
 
         assertTrue("Object one the same", one == pico.getComponent("one"));
         assertTrue("Object two the same", two == pico.getComponent("two"));
@@ -631,28 +631,28 @@ public class DefaultPicoContainerTestCase extends TestCase {
         DefaultComponentRegistry dcr = new DefaultComponentRegistry();
         DefaultPicoContainer pico = new DefaultPicoContainer.WithComponentRegistry(dcr);
 
-        pico.registerComponent(Wilma.class, WilmaImpl.class);
-        pico.registerComponent("fred", FredImpl.class);
-        pico.registerComponent("fred2", FredImpl.class);
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
+        pico.registerComponent("fred", DependsOnTouchable.class);
+        pico.registerComponent("fred2", DependsOnTouchable.class);
 
         pico.instantiateComponents();
 
         assertEquals("Wrong number of comps in the container", 3, pico.getComponents().size());
 
-        assertTrue("There should have been a Wilma in the container", pico.hasComponent(Wilma.class));
+        assertTrue("There should have been a Touchable in the container", pico.hasComponent(Touchable.class));
         assertTrue(
-                "There should have been a WilmaImpl in the container",
-                dcr.findImplementingComponent(WilmaImpl.class) != null);
+                "There should have been a SimpleTouchable in the container",
+                dcr.findImplementingComponent(SimpleTouchable.class) != null);
 
-        FredImpl fred = (FredImpl) pico.getComponent("fred");
-        FredImpl fred2 = (FredImpl) pico.getComponent("fred2");
+        DependsOnTouchable fred = (DependsOnTouchable) pico.getComponent("fred");
+        DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");
 
         assertTrue("Found fred", fred != null);
         assertTrue("Found fred2", fred2 != null);
 
-        // lets check that the wilma's have been resolved
-        assertTrue("fred should have a wilma", fred.getWilma() != null);
-        assertTrue("fred2 should have a wilma", fred2.getWilma() != null);
+        // lets check that the Touchable's have been resolved
+        assertTrue("fred should have a Touchable", fred.getTouchable() != null);
+        assertTrue("fred2 should have a Touchable", fred2.getTouchable() != null);
 
         assertEquals("Lookup of unknown key should return null", null, pico.getComponent("unknown"));
     }
@@ -660,14 +660,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testDuplicateRegistration() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponent("one", new WilmaImpl());
+        pico.registerComponent("one", new SimpleTouchable());
         try {
-            pico.registerComponent("one", new WilmaImpl());
+            pico.registerComponent("one", new SimpleTouchable());
             fail("Should have barfed with dupe registration");
         } catch (DuplicateComponentKeyRegistrationException e) {
             // expected
             assertTrue("Wrong key", e.getDuplicateKey() == "one");
-//            assertTrue("Wrong component", e.getComponent() instanceof WilmaImpl);
+//            assertTrue("Wrong component", e.getComponent() instanceof SimpleTouchable);
 //            assertTrue("Wrong message: " + e.getMessage(), e.getMessage().startsWith("Key: one duplicated, cannot register:"));
         }
     }
@@ -677,7 +677,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("should not have non existent component", !pico.hasComponent("doesNotExist"));
 
-        pico.registerComponent("foo", new WilmaImpl());
+        pico.registerComponent("foo", new SimpleTouchable());
 
         assertTrue("has component", pico.hasComponent("foo"));
     }
@@ -687,7 +687,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("should not have non existent component", !pico.hasComponent("doesNotExist"));
 
-        pico.registerComponent("foo", WilmaImpl.class);
+        pico.registerComponent("foo", SimpleTouchable.class);
 
         // TODO should this really need to be called to check whether container has component or not
         pico.instantiateComponents();
@@ -700,7 +700,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("should not have non existent component", pico.getComponent("doesNotExist") == null);
 
-        pico.registerComponent("foo", new WilmaImpl());
+        pico.registerComponent("foo", new SimpleTouchable());
 
         pico.instantiateComponents();
 
@@ -712,7 +712,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         assertTrue("should not have non existent component", pico.getComponent("doesNotExist") == null);
 
-        pico.registerComponent("foo", WilmaImpl.class);
+        pico.registerComponent("foo", SimpleTouchable.class);
 
         pico.instantiateComponents();
 
@@ -755,8 +755,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
         IOException, ClassNotFoundException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
 
@@ -771,23 +771,23 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         PicoContainer deserializedPico = (PicoContainer) ois.readObject();
 
-        WilmaImpl wilma = (WilmaImpl) deserializedPico.getComponent(WilmaImpl.class);
+        SimpleTouchable touchable = (SimpleTouchable) deserializedPico.getComponent(SimpleTouchable.class);
 
-        assertTrue("hello should have been called in wilma", wilma.helloCalled());
+        assertTrue("hello should have been called in Touchable", touchable.wasTouched);
     }
 
     public void testTooFewComponents() throws PicoInitializationException, PicoRegistrationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
 
         try {
             pico.instantiateComponents();
-            fail("should need a wilma");
+            fail("should need a Touchable");
         } catch (UnsatisfiedDependencyInstantiationException e) {
             // expected
-            assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
-            assertTrue(e.getMessage().indexOf(FredImpl.class.getName()) > 0);
+            assertTrue(e.getClassThatNeedsDeps() == DependsOnTouchable.class);
+            assertTrue(e.getMessage().indexOf(DependsOnTouchable.class.getName()) > 0);
 
         }
     }
@@ -795,19 +795,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
         try {
-            pico.registerComponent(WilmaImpl.class, new WilmaImpl());
+            pico.registerComponent(SimpleTouchable.class, new SimpleTouchable());
             fail("Should have barfed with dupe registration");
         } catch (DuplicateComponentKeyRegistrationException e) {
             // expected
-            assertTrue(e.getDuplicateKey() == WilmaImpl.class);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+            assertTrue(e.getDuplicateKey() == SimpleTouchable.class);
+            assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
         }
     }
 
-    public static class DerivedWilma extends WilmaImpl {
-        public DerivedWilma() {
+    public static class DerivedTouchable extends SimpleTouchable {
+        public DerivedTouchable() {
         }
     }
 
@@ -815,24 +815,24 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        // Register two Wilmas that Fred will be confused about
-        pico.registerComponentByClass(WilmaImpl.class);
-        pico.registerComponentByClass(DerivedWilma.class);
+        // Register two Touchables that Fred will be confused about
+        pico.registerComponentByClass(SimpleTouchable.class);
+        pico.registerComponentByClass(DerivedTouchable.class);
 
         // Register a confused Fred
-        pico.registerComponentByClass(FredImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
 
         try {
             pico.instantiateComponents();
-            fail("Fred should have been confused about the two Wilmas");
+            fail("Fred should have been confused about the two Touchables");
         } catch (AmbiguousComponentResolutionException e) {
             // expected
 
             List ambiguous = Arrays.asList(e.getResultingKeys());
-            assertTrue(ambiguous.contains(DerivedWilma.class));
-            assertTrue(ambiguous.contains(WilmaImpl.class));
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
-            assertTrue(e.getMessage().indexOf(DerivedWilma.class.getName()) > 0);
+            assertTrue(ambiguous.contains(DerivedTouchable.class));
+            assertTrue(ambiguous.contains(SimpleTouchable.class));
+            assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) > 0);
         }
     }
 
@@ -854,11 +854,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
         RegistrationPicoContainer pico = new DefaultPicoContainer.Default();
 
         try {
-            pico.registerComponent(List.class, WilmaImpl.class);
+            pico.registerComponent(List.class, SimpleTouchable.class);
         } catch (AssignabilityRegistrationException e) {
             // not worded in message
             assertTrue(e.getMessage().indexOf(List.class.getName()) > 0);
-            assertTrue(e.getMessage().indexOf(WilmaImpl.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
         }
 
     }
@@ -866,13 +866,13 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testMultipleArgumentConstructor() throws Throwable /* fixme */ {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponent(Wilma.class, WilmaImpl.class);
-        pico.registerComponentByClass(FlintstonesImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
+        pico.registerComponentByClass(DependsOnTwoComponents.class);
 
         pico.instantiateComponents();
 
-        assertTrue("There should have been a FlintstonesImpl in the container", pico.hasComponent(FlintstonesImpl.class));
+        assertTrue("There should have been a DependsOnTwoComponents in the container", pico.hasComponent(DependsOnTwoComponents.class));
     }
 
     public void testTooManyContructors() throws PicoRegistrationException, PicoInitializationException {
@@ -902,19 +902,19 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
     public void testWithComponentFactory() throws PicoRegistrationException, PicoInitializationException {
-        final WilmaImpl wilma = new WilmaImpl();
+        final SimpleTouchable Touchable = new SimpleTouchable();
         DefaultPicoContainer pc = new DefaultPicoContainer.WithComponentFactory(new ComponentFactory() {
             public Object createComponent(ComponentSpecification componentSpec, Object[] args) {
-                return wilma;
+                return Touchable;
             }
 
             public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {
                 return new Class[0];
             }
         });
-        pc.registerComponentByClass(WilmaImpl.class);
+        pc.registerComponentByClass(SimpleTouchable.class);
         pc.instantiateComponents();
-        assertEquals(pc.getComponent(WilmaImpl.class), wilma);
+        assertEquals(pc.getComponent(SimpleTouchable.class), Touchable);
     }
 
     public static class Barney {
@@ -964,8 +964,8 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
     public static class Dino4 extends Dino {
-        public Dino4(String a, int n, String b, Wilma wilma) {
-            super(a + n + b + " " + wilma.getClass().getName());
+        public Dino4(String a, int n, String b, Touchable Touchable) {
+            super(a + n + b + " " + Touchable.getClass().getName());
         }
     }
 
@@ -1007,7 +1007,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
     public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(Animal.class, Dino4.class);
-        pico.registerComponent(Wilma.class, WilmaImpl.class);
+        pico.registerComponent(Touchable.class, SimpleTouchable.class);
         pico.addParameterToComponent(Dino4.class, String.class, "a");
         pico.addParameterToComponent(Dino4.class, Integer.class, new Integer(3));
         pico.addParameterToComponent(Dino4.class, String.class, "b");
@@ -1015,7 +1015,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
-        assertEquals("a3b org.picocontainer.testmodel.WilmaImpl", animal.getFood());
+        assertEquals("a3b org.picocontainer.tck.SimpleTouchable", animal.getFood());
     }
 
     public static interface I {

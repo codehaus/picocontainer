@@ -12,8 +12,8 @@ package org.picocontainer.lifecycle;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.testmodel.FredImpl;
-import org.picocontainer.testmodel.WilmaImpl;
+import org.picocontainer.tck.DependsOnTouchable;
+import org.picocontainer.tck.SimpleTouchable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,8 +238,8 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
 
@@ -260,8 +260,8 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
         assertTrue(lifecycle.isStopped());
@@ -283,8 +283,8 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
         lifecycle.start();
@@ -307,8 +307,8 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
         lifecycle.start();
@@ -364,8 +364,8 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        pico.registerComponentByClass(FredImpl.class);
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(DependsOnTouchable.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
         pico.registerComponentByClass(FooRunnable.class);
 
         pico.instantiateComponents();
@@ -392,9 +392,9 @@ public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
         LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
 
-        // Wilma is not Startable (etc). This container should be able to handle the
+        // Touchable is not Startable (etc). This container should be able to handle the
         // fact that none of the comps are Startable (etc).
-        pico.registerComponentByClass(WilmaImpl.class);
+        pico.registerComponentByClass(SimpleTouchable.class);
 
         pico.instantiateComponents();
 

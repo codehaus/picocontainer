@@ -8,23 +8,18 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.testmodel;
+package org.picocontainer.tck;
 
-import java.util.List;
+import junit.framework.Assert;
+import org.picocontainer.tck.DependsOnTouchable;
 
 /**
- *
- * @author Aslak Hellesoy
- * @version $Revision: 0 $
+ * @author steve.freeman@m3p.co.uk
+ * was FlintstoneImpl
  */
-public class UnaccessibleStartComponent extends Object {
-    private List messages;
-
-    public UnaccessibleStartComponent(List messages) {
-        this.messages = messages;
-    }
-
-    private final void start() {
-        messages.add("started");
+public class DependsOnTwoComponents {
+    public DependsOnTwoComponents(Touchable Touchable, DependsOnTouchable fred) {
+        Assert.assertNotNull("Touchable cannot be passed in as null", Touchable);
+        Assert.assertNotNull("DependsOnTouchable cannot be passed in as null", fred);
     }
 }

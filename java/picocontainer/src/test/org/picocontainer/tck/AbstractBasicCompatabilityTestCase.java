@@ -3,23 +3,31 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.testmodel.FredImpl;
-import org.picocontainer.testmodel.Wilma;
 
 public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
 
     protected PicoContainer picoContainer;
 
+    protected void setUp() throws Exception {
+        picoContainer = createPicoContainer();
+    }
+
+    abstract public PicoContainer createPicoContainer() throws Exception;
+
     public void testNotNull() {
-        assertNotNull("You need to assign 'picoContainer' in your setup() method", picoContainer);
+        assertNotNull("Are you calling super.setUp() in your setUp method?", picoContainer);
     }
 
     public void testBasicInstantiationAndContainment() throws PicoInitializationException {
         picoContainer.instantiateComponents();
-        assertTrue(picoContainer.hasComponent(Wilma.class));
-        assertTrue(picoContainer.hasComponent(FredImpl.class));
-        assertTrue(picoContainer.getComponent(Wilma.class) instanceof Wilma);
-        assertTrue(picoContainer.getComponent(FredImpl.class) instanceof FredImpl);
+        assertTrue("Container should have Touchable component",
+                picoContainer.hasComponent(Touchable.class));
+        assertTrue("Container should have DependsOnTouchable component",
+                picoContainer.hasComponent(DependsOnTouchable.class));
+        assertTrue("Component should be instance of Touchable",
+                picoContainer.getComponent(Touchable.class) instanceof Touchable);
+        assertTrue("Component should be instance of DependsOnTouchable",
+                picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
     }
 
 

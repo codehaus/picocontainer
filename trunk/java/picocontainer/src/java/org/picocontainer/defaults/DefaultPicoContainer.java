@@ -251,6 +251,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return componentAdapter;
     }
 
+    /**
+     * Same as {@link #registerComponentImplementation(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])}
+     * but with parameters as a {@link List}. Makes it possible to use with Groovy arrays (which are actually Lists).
+     */ 
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) throws PicoRegistrationException {
         Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
         return registerComponentImplementation(componentKey, componentImplementation, parametersAsArray);

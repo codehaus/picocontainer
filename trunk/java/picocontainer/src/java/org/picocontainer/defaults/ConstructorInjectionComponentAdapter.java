@@ -142,17 +142,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             final Set nonMatching = new HashSet();
             final Constructor[] constructors = getComponentImplementation().getDeclaredConstructors();
             for (int i = 0; i < constructors.length; i++) {
-                if (!sortedMatchingConstructors.contains(constructors[i])) {
-                    nonMatching.add(constructors[i]);
-                } else {
-                    // TODO - will it ever get here?, is the if() bogus?
-                }
+                nonMatching.add(constructors[i]);
             }
-            if (nonMatching.size() > 0) {
-                throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString() + " for '" + getComponentImplementation() + "'");
-            } else {
-                throw new PicoInitializationException("There are no public constructors for '" + getComponentImplementation() + "'");
-            }
+            throw new PicoInitializationException("The specified parameters do not match any of the following constructors: " + nonMatching.toString() + " for '" + getComponentImplementation() + "'");
         }
         return greediestConstructor;
     }

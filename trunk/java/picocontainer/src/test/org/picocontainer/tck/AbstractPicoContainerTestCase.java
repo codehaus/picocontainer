@@ -382,6 +382,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         } catch (PicoVerificationException e) {
             List nested = e.getNestedExceptions();
             assertEquals(2, nested.size());
+            assertTrue(-1 != e.getMessage().indexOf(ComponentA.class.getName()));
+            assertTrue(-1 != e.getMessage().indexOf(ComponentE.class.getName()));
         }
     }
 

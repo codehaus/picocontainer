@@ -22,9 +22,6 @@ import org.picocontainer.PicoRegistrationException;
  * @since 1.0
  */
 public class AssignabilityRegistrationException extends PicoRegistrationException {
-    private final Class type;
-    private final Class clazz;
-
     /**
      * Construct an exception with the type and the unassignable class.
      *
@@ -32,14 +29,6 @@ public class AssignabilityRegistrationException extends PicoRegistrationExceptio
      * @param clazz the unassignable implementation class
      */
     public AssignabilityRegistrationException(Class type, Class clazz) {
-        this.type = type;
-        this.clazz = clazz;
-    }
-
-    /**
-     * @return Returns a string explaining the exception araised from the two class types.
-     */
-    public String getMessage() {
-        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
+        super("The type:" + type.getName() + "  was not assignable from the class " + clazz.getName());
     }
 }

@@ -20,14 +20,11 @@ public class DuplicateComponentKeyRegistrationException extends PicoRegistration
     private Object key;
 
     public DuplicateComponentKeyRegistrationException(Object key) {
+        super("Key " + key + " duplicated");
         this.key = key;
     }
 
     public Object getDuplicateKey() {
         return key;
-    }
-
-    public String getMessage() {
-        return "Key " + key + " duplicated";
     }
 }

@@ -20,12 +20,12 @@
         
         <dependency>
             <id>velocity</id>
-            <version>1.5-dev</version>
+            <version>1.4</version>
         </dependency>
         
         <dependency>
             <id>velocity-tools</id>
-            <version>1.2-dev</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>

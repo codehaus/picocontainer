@@ -14,6 +14,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -23,9 +25,14 @@ import java.io.StringReader;
  */
 public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
-    public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
+    protected void setUp() throws Exception {
 
         MockMonitor.monitorRecorder = "";
+        MockMonitor.allComps = new ArrayList();
+
+    }
+
+    public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                 "<container>" +
@@ -44,8 +51,6 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     public void testInstantiateXmlWithMissingComponent() throws Exception, SAXException, ParserConfigurationException, IOException {
 
-        MockMonitor.monitorRecorder = "";
-
         try {
             NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                     "<container>" +
@@ -59,8 +64,6 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
 
     public void testInstantiateEmptyXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
-        MockMonitor.monitorRecorder = "";
-
         try {
             NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
                     "<container>" +
@@ -68,6 +71,42 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
             fail("Should have thrown a EmptyNanoContainerException");
         } catch (EmptyNanoContainerException cnfe) {
         }
+    }
+
+    public void testInstantiateWithBespokeClassLoader() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        StringBuffer xml = new StringBuffer(
+                "<container>" +
+                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "      <container>" +
+                "          <component classname='TestComp'/>" +
+                "          <jarfile location='*test-comp/TestComp.jar'/>" +
+                "          <!-- yet to implement " +
+                "            <jarurl location='http://foobar.com/TestComp.jar'/>" +
+                "          -->" +
+                "      </container>" +
+                "</container>");
+
+        //TODO - need to make this adaptive. I.e. can run in IDEA, under Maven etc.
+        // Tis currently hard coded to my (Paul) file system
+        // aslak has some magic code...
+        xml.replace(xml.indexOf("*"), xml.indexOf("*")+ 1, "d:/dev/nano/nanocontainer/");
+
+        NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader(xml.toString()), new MockMonitor());
+        nano.stopComponentsDepthFirst();
+        nano.disposeComponentsDepthFirst();
+
+        List comps = MockMonitor.allComps;
+        assertEquals("There should be two components", comps.size(), 2);
+
+        Class XxxAClass = comps.get(0).getClass();
+        Class testCompClass = comps.get(1).getClass();
+
+        assertFalse("Components should be in different classloaders",
+                XxxAClass.getClassLoader() == testCompClass.getClassLoader());
+
+        assertTrue("The parent classloader of 'TestComp' should be that of 'Xxx$A'",
+                XxxAClass.getClassLoader() == testCompClass.getClassLoader().getParent());
 
     }
 

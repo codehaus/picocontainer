@@ -19,6 +19,9 @@ import org.nanocontainer.nanoaop.Identifiable;
 import org.nanocontainer.nanoaop.IdentifiableMixin;
 import org.nanocontainer.nanoaop.LoggingInterceptor;
 import org.nanocontainer.nanoaop.PointcutsFactory;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor
@@ -28,7 +31,7 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
     private AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
     private AspectablePicoContainer pico = containerFactory.createContainer();
     private PointcutsFactory cuts = pico.getPointcutsFactory();
-    
+
     public void testInterceptor() {
         StringBuffer log = new StringBuffer();
         pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), new LoggingInterceptor(log));
@@ -146,6 +149,14 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
         verifyNoMixin(noMixin);
 
         assertFalse(hasMixin instanceof AnotherInterface);
+    }
+
+    public void testCreateWithParentContainer() {
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentInstance("key", "value");
+        AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
+        PicoContainer child = containerFactory.createContainer(parent);
+        assertEquals("value", child.getComponentInstance("key"));
     }
 
 }

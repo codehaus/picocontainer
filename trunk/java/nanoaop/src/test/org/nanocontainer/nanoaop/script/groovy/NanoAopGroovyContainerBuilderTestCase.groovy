@@ -182,6 +182,33 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
             }
         })
     }
+    
+    public void testNoAdviceSpecified() {
+        shouldFail(PicoBuilderException, {
+            builder.container() {
+                aspect(classCut:cuts.instancesOf(Dao))
+            }
+        })
+    }
+    
+    public void testComponentInstance() {
+        // Note:  aspecting of instances is not supported, but we just want to make sure we didn't mess anything up.
+        pico = builder.container() {
+            component(key:'foo', instance:'bar')
+        }
+        assertEquals('bar', pico.getComponentInstance('foo'))
+    }
+    
+    public void testBean() {
+        // Note:  aspecting of beanClass instantiated beans isn't supported either, but again we just want to make sure we didn't mess anything up.
+        pico = builder.container() {
+            bean(beanClass:StringBean, firstName:'tom', lastName:'jones')
+        }
+        stringBean = pico.getComponentInstance(StringBean)
+        assertNotNull(stringBean)
+        assertEquals('tom', stringBean.firstName)
+        assertEquals('jones', stringBean.lastName)
+    }    
 
     void verifyIntercepted(dao, log) {
         before = log.toString()

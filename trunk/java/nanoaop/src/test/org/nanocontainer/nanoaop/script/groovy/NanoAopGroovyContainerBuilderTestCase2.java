@@ -71,6 +71,22 @@ public class NanoAopGroovyContainerBuilderTestCase2 extends TestCase {
 
         assertTrue(dao instanceof Identifiable);
     }
+    
+    public void testComponentAdapterFactorySupplied() throws PicoCompositionException {
+        Reader script = new StringReader(
+                ""
+                + "import org.nanocontainer.nanoaop.*\n"
+                + "myFactory = new org.nanocontainer.nanoaop.script.groovy.DummyAdapterFactory()\n"
+                + "builder = new org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder()\n"
+                + "pico = builder.container(adapterFactory:myFactory) {\n"
+                + "    component(key:Dao, class:DaoImpl)\n"
+                + "}\n");
+        
+        AspectablePicoContainer pico = (AspectablePicoContainer) buildContainer(new GroovyContainerBuilder(script,
+                getClass().getClassLoader()), null);
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        assertNotNull(dao);
+    }
 
     protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
         ObjectReference containerRef = new SimpleReference();

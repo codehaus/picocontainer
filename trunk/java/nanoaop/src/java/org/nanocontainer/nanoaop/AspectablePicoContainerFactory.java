@@ -36,7 +36,7 @@ public interface AspectablePicoContainerFactory {
             PicoContainer parent);
 
     /**
-     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * Creates a new <code>AspectablePicoContainer</code>. Uses 
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container.
      * 
@@ -48,7 +48,7 @@ public interface AspectablePicoContainerFactory {
     AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
 
     /**
-     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * Creates a new <code>AspectablePicoContainer</code>. Uses 
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container.
      * 
@@ -59,9 +59,9 @@ public interface AspectablePicoContainerFactory {
     AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory);
 
     /**
-     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * Creates a new <code>AspectablePicoContainer</code>. Uses 
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
-     * delegate container. Uses a
+     * delegate container. Uses 
      * <code>org.picocontainer.defaults.DefaultComponentAdapterFactory</code>
      * as the delegate component adapter factory.
      * 
@@ -71,9 +71,9 @@ public interface AspectablePicoContainerFactory {
     AspectablePicoContainer createContainer(PicoContainer parent);
 
     /**
-     * Creates a new <code>AspectablePicoContainer</code>. Uses a
+     * Creates a new <code>AspectablePicoContainer</code>. Uses 
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
-     * delegate container. Uses a
+     * delegate container. Uses 
      * <code>org.picocontainer.defaults.DefaultComponentAdapterFactory</code>
      * as the delegate component adapter factory.
      * 

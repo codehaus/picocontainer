@@ -37,10 +37,11 @@ import dynaop.ProxyFactory;
 
 /**
  * Extends <code>org.nanocontainer.script.groovy.NanoGroovyBuilder</code> to
- * provide support for adding aspects. {@inheritDoc}
+ * provide support for adding aspects.
  * 
  * @author Stephen Molitor
  * @version $Revision$
+ * @see org.nanocontainer.script.groovy.NanoGroovyBuilder
  */
 public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
 
@@ -49,16 +50,16 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
     private Object currentKey;
 
     /**
-     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use a
-     * <code>org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory</code>.
+     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use
+     * a <code>org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory</code>.
      */
     public NanoAopGroovyContainerBuilder() {
         this(new DynaopPointcutsFactory());
     }
 
     /**
-     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use the given
-     * pointcuts factory.
+     * Creates a new <code>NanoAopGroovyContainerBuilder</code> that will use
+     * the given pointcuts factory.
      * 
      * @param pointcutsFactory the pointcuts factory.
      */
@@ -102,18 +103,10 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
     private void rememberComponentKey(Map attributes) {
         Object key = attributes.get("key");
         Object clazz = attributes.get("class");
-        Object instance = attributes.get("instance");
-        Class beanClass = (Class) attributes.get("beanClass");
         if (key != null) {
             currentKey = key;
-        } else if (clazz != null) {
-            currentKey = clazz;
-        } else if (instance != null) {
-            currentKey = instance.getClass();
-        } else if (beanClass != null) {
-            currentKey = beanClass;
         } else {
-            throw new PicoBuilderException("at least one of key, class, instance, or beanClass required for component");
+            currentKey = clazz;
         }
     }
 

@@ -9,7 +9,7 @@ org.picocontainer.PicoContainer}.  Two kinds of advice are supported,
 interceptors and mixins.  An interceptor is invoked around method
 calls.  Nanaop interceptors implement
 the <code>org.aopalliance.interceptor.MethodInterceptor</code>
-interface.  Mixins allow you to add new methods an behavior to an
+interface.  Mixins allow you to add new methods and behavior to an
 existing object.  You can think of them as a way of dynamically
 providing multiple inheritance in java.  Mixins can be any kind of
 object; they are not required to extend or implement anything.  You
@@ -21,7 +21,8 @@ on other components.  Currently, nanoaop uses <a
 href="http://dynaop.dev.java.net">dynaop</a> to apply the aspects.
 Other backends may be supported in the future.
 
-<h2>Configuring Aspects</h2> For the following examples, we'll use the
+<h2>Configuring Aspects</h2> 
+For the following examples, we'll use the
 following logging interceptor:
 
 <pre>
@@ -65,7 +66,7 @@ do the following:
 
 <pre>
     pico.registerComponentImplementation("myDao", DaoImpl.class);
-    pico.registerInterceptor(cuts.component(Dao.class), cuts.allMethods(), logger);
+    pico.registerInterceptor(cuts.component("myDao"), cuts.allMethods(), logger);
 </pre>
 
 Note that components and aspects can be registered in any order.  An
@@ -80,8 +81,8 @@ Advice objects may themselves be components in the <code>PicoContainer</code>:
     pico.registerComponentImplementation("logger", LoggingInterceptor.class);
     pico.registerComponentImplementation("myDao", DaoImpl.class);
 
-    // you can specifyi the component key of the advice object:
-    pico.registerInterceptor(cuts.component(Dao.class), cuts.allMethods(), "logger");
+    // you can specify the component key of the advice object:
+    pico.registerInterceptor(cuts.component("myDao"), cuts.allMethods(), "logger");
 </pre>
 
 <h4>Pointcuts</h4>
@@ -102,11 +103,12 @@ being invoked.  Method pointcuts only apply to interceptor advice;
 they are not used for mixins.
 
 <h3>Groovy Configuration</h3>
-To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder}.  Applying an interceptor to just one component might look something like this:
+To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder}.  
+A groovy configuration file might look like this:
 
 <pre>
     logger = new LoggingInterceptor()
-    builder = new AopNanoGroovyBuilder()
+    builder = new NanoAopGroovyContainerBuilder()
     cuts = builder.pointcuts()
 
     pico = builder.container() {
@@ -116,12 +118,12 @@ To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.g
         component(key:CustomerEntity, class:CustomerEntityImpl)
         component(key:OrderEntity, class:OrderEntityImpl)
 
-        aspect(cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
-        aspect(cuts.packageName('com.mycompany.buggypackage', cuts.signature("save*"), interceptor:logger)
+        aspect(classCut:cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
+        aspect(classCut:cuts.packageName('com.mycompany.buggypackage'), methodCut:cuts.signature('save*'), interceptor:logger)
     }
 </pre>
 
-<h2>Limitation</h2>
+<h2>Limitations</h2>
 Components that have aspects applied to them must implement an
 interface.  Aspects are not applied to components regsistered with the
 container via <code>registerComponentInstance</code>.

@@ -1,11 +1,10 @@
-using System;
 
 namespace Test.TestModel
 {
 	/// <summary>
 	/// Summary description for Thesaurus.
 	/// </summary>
-	public interface Thesaurus
+	public interface IThesaurus
 	{
 		//
 		// TODO: Create Interface Definition

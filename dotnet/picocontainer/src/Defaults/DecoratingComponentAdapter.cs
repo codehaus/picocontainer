@@ -17,6 +17,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Decorates a Component adapter, used for combining the functionality of multiple IComponentAdapters
 	/// </summary>
+	[Serializable]
 	public class DecoratingComponentAdapter : IComponentAdapter
 	{
 		private IComponentAdapter theDelegate;

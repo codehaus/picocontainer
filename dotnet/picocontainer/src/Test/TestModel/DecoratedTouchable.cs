@@ -4,18 +4,18 @@ namespace PicoContainer.Tests.TestModel
 	/// <summary>
 	/// Summary description for DecoratedTouchable.
 	/// </summary>
-	public class DecoratedTouchable : Touchable
+	public class DecoratedTouchable : ITouchable
 	{
-		private readonly Touchable theDelegate;
+		private readonly ITouchable theDelegate;
 
-		public DecoratedTouchable(Touchable theDelegate)
+		public DecoratedTouchable(ITouchable theDelegate)
 		{
 			this.theDelegate = theDelegate;
 		}
 
-		public void touch()
+		public void Touch()
 		{
-			theDelegate.touch();
+			theDelegate.Touch();
 		}
 
 	}

@@ -38,7 +38,7 @@ namespace Test.TestModel
 	{
 	}
 
-	public class Webster : Thesaurus, Dictionairy
+	public class Webster : IThesaurus, IDictionairy
 	{
 		public Webster(IList list)
 		{

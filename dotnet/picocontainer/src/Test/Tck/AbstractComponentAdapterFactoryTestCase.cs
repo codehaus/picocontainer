@@ -31,16 +31,16 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testEquals()
+		public void TestEquals()
 		{
-			IComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
+			IComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 			Assert.AreEqual(componentAdapter, componentAdapter);
 		}
 
 		[Test]
-		public void testRegisterComponent()
+		public void RegisterComponent()
 		{
-			IComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
+			IComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 
 			picoContainer.RegisterComponent(componentAdapter);
 
@@ -48,17 +48,15 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testUnRegisterComponent()
+		public void UnRegisterComponent()
 		{
 			IComponentAdapter componentAdapter =
-				CreateComponentAdapterFactory().CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
+				CreateComponentAdapterFactory().CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 
 			picoContainer.RegisterComponent(componentAdapter);
-			Assert.IsNotNull(picoContainer.UnregisterComponent(typeof (Touchable)));
+			Assert.IsNotNull(picoContainer.UnregisterComponent(typeof (ITouchable)));
 
 			Assert.IsFalse(picoContainer.ComponentAdapters.Contains(componentAdapter));
 		}
 	}
-
-
 }

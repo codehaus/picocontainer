@@ -24,6 +24,7 @@ namespace PicoContainer.Defaults
 	/// use a <see cref="CachingComponentAdapter"/> around this one.
 	/// </remarks>
 	/// </summary>
+	[Serializable]
 	public class SetterInjectionComponentAdapter : DecoratingComponentAdapter
 	{
 		private ArrayList setters;

@@ -18,6 +18,7 @@ using System.Runtime.Remoting;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class ImplementationHidingComponentAdapter : DecoratingComponentAdapter
 	{
 		private readonly InterfaceFinder interfaceFinder = new InterfaceFinder();

@@ -91,7 +91,7 @@ namespace Test.Defaults
 		public void testDelegateIsAccessible()
 		{
 			DecoratingComponentAdapter componentAdapter =
-				(DecoratingComponentAdapter) CreateComponentAdapterFactory().CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
+				(DecoratingComponentAdapter) CreateComponentAdapterFactory().CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 
 			Assert.IsNotNull(componentAdapter.Delegate);
 		}

@@ -20,6 +20,7 @@ namespace PicoContainer.Defaults
 	/// when used with a PicoContainer, getComponentInstance will return a new
 	/// object each time.
 	/// </summary>
+	[Serializable]
 	public abstract class InstantiatingComponentAdapter : AbstractComponentAdapter
 	{
 		internal IParameter[] parameters;

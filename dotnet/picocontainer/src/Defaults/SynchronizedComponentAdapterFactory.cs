@@ -16,6 +16,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Summary description for SynchronizedComponentAdapterFactory.
 	/// </summary>
+	[Serializable]
 	public class SynchronizedComponentAdapterFactory : DecoratingComponentAdapterFactory
 	{
 		public SynchronizedComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate)

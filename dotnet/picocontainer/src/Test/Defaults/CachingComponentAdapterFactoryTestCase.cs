@@ -27,9 +27,9 @@ namespace Test.Defaults
 		[Test]
 		public void testContainerReturnsSameInstaceEachCall()
 		{
-			picoContainer.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
-			Touchable t1 = (Touchable) picoContainer.GetComponentInstance(typeof (Touchable));
-			Touchable t2 = (Touchable) picoContainer.GetComponentInstance(typeof (Touchable));
+			picoContainer.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
+			ITouchable t1 = (ITouchable) picoContainer.GetComponentInstance(typeof (ITouchable));
+			ITouchable t2 = (ITouchable) picoContainer.GetComponentInstance(typeof (ITouchable));
 			Assert.AreSame(t1, t2);
 		}
 

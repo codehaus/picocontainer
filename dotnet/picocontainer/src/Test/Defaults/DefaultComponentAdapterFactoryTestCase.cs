@@ -22,7 +22,7 @@ namespace Test.Defaults
 		public void testInstantiateComponentWithNoDependencies()
 		{
 			IComponentAdapter componentAdapter = CreateComponentAdapterFactory()
-				.CreateComponentAdapter(typeof (Touchable), typeof (SimpleTouchable), null);
+				.CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 
 			Object comp = componentAdapter.ComponentInstance;
 			Assert.IsNotNull(comp);

@@ -15,6 +15,7 @@ using PicoContainer;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class DefaultPicoContainer : IMutablePicoContainer, IDisposable
 	{
 		private readonly IDictionary componentKeyToAdapterMap = new Hashtable();

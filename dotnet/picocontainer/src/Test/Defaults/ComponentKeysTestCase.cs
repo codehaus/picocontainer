@@ -20,12 +20,12 @@ namespace Test.Defaults
 			/*
        * By using a class as key, this should take precedence over the other Touchable (Simmpe)
        */
-			pico.RegisterComponentImplementation(typeof (Touchable), typeof (DecoratedTouchable), new IParameter[]
+			pico.RegisterComponentImplementation(typeof (ITouchable), typeof (DecoratedTouchable), new IParameter[]
 				{
 					new ComponentParameter("default")
 				});
 
-			Touchable touchable = (Touchable) pico.GetComponentInstanceOfType(typeof (Touchable));
+			ITouchable touchable = (ITouchable) pico.GetComponentInstanceOfType(typeof (ITouchable));
 			Assert.AreEqual(typeof (DecoratedTouchable), touchable.GetType());
 		}
 
@@ -35,14 +35,14 @@ namespace Test.Defaults
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation("default", typeof (SimpleTouchable));
 
-			pico.RegisterComponentImplementation(typeof (Touchable), typeof (DecoratedTouchable), new IParameter[]
+			pico.RegisterComponentImplementation(typeof (ITouchable), typeof (DecoratedTouchable), new IParameter[]
 				{
 					new ComponentParameter("default")
 				});
 
 			DefaultPicoContainer grandChild = new DefaultPicoContainer(new DefaultPicoContainer(new DefaultPicoContainer(pico)));
 
-			Touchable touchable = (Touchable) grandChild.GetComponentInstanceOfType(typeof (Touchable));
+			ITouchable touchable = (ITouchable) grandChild.GetComponentInstanceOfType(typeof (ITouchable));
 			Assert.AreEqual(typeof (DecoratedTouchable), touchable.GetType());
 
 		}

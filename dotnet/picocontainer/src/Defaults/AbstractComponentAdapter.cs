@@ -17,6 +17,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// Base for implementing ComponentAdapters
 	/// </summary>
+	[Serializable]
 	public abstract class AbstractComponentAdapter : IComponentAdapter
 	{
 		private readonly object componentKey;

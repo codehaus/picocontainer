@@ -8,6 +8,7 @@ namespace PicoContainer.Monitors
 	/// <summary>
 	/// Implementation of ComponentMonitor which logs to the Console.
 	/// </summary>
+	[Serializable]
 	public class ConsoleComponentMonitor : IComponentMonitor
 	{
 		private TextWriter writer;

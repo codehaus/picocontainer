@@ -16,11 +16,11 @@ namespace Test.Defaults
 		public void TestComponentParameterFetches()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
-			ComponentParameter parameter = new ComponentParameter(typeof (Touchable));
+			pico.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
+			ComponentParameter parameter = new ComponentParameter(typeof (ITouchable));
 
-			Assert.IsNotNull(pico.GetComponentInstance(typeof (Touchable)));
-			Touchable touchable = (Touchable) parameter.ResolveAdapter(pico, typeof (Touchable)).ComponentInstance;
+			Assert.IsNotNull(pico.GetComponentInstance(typeof (ITouchable)));
+			ITouchable touchable = (ITouchable) parameter.ResolveAdapter(pico, typeof (ITouchable)).ComponentInstance;
 			Assert.IsNotNull(touchable);
 		}
 
@@ -43,7 +43,7 @@ namespace Test.Defaults
 					new ConstantParameter(touchable)
 				});
 			object o = pico.ComponentInstances;
-			Assert.IsTrue(touchable.wasTouched);
+			Assert.IsTrue(touchable.WasTouched);
 		}
 	}
 }

@@ -1,4 +1,4 @@
- /*****************************************************************************
+/*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -8,6 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
+using System;
 
 namespace PicoContainer.Defaults
 {
@@ -16,6 +17,7 @@ namespace PicoContainer.Defaults
 	/// <remarks>Components registered using this adapter can be seen as Singleton. No synchronization of calls is done.
 	/// </remarks>
 	/// </summary>
+	[Serializable]
 	public class CachingComponentAdapter : DecoratingComponentAdapter
 	{
 		private IObjectReference instanceReference;

@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class SynchronizedComponentAdapter : DecoratingComponentAdapter
 	{
 		public SynchronizedComponentAdapter(IComponentAdapter theDelegate) : base(theDelegate)

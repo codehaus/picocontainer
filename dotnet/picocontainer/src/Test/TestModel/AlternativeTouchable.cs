@@ -14,11 +14,16 @@ using System;
 namespace PicoContainer.Tests.TestModel
 {
 	[Serializable]
-	public class AlternativeTouchable : Touchable
+	public class AlternativeTouchable : ITouchable
 	{
-		public bool wasTouched = false;
+		private bool wasTouched = false;
 
-		public virtual void touch()
+		public bool WasTouched
+		{
+			get { return wasTouched; }
+		}
+
+		public virtual void Touch()
 		{
 			wasTouched = true;
 		}

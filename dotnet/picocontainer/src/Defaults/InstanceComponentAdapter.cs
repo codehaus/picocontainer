@@ -1,4 +1,5 @@
- /*****************************************************************************
+using System;
+/*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
@@ -11,6 +12,7 @@
 
 namespace PicoContainer.Defaults
 {
+	[Serializable]
 	public class InstanceComponentAdapter : AbstractComponentAdapter
 	{
 		private object componentInstance;

@@ -41,7 +41,7 @@ namespace PicoContainer.Tests.Tck
 		}
 
 		[Test]
-		public void testLazyInstantiation()
+		public void LazyInstantiation()
 		{
 			IMutablePicoContainer pico = createPicoContainer();
 

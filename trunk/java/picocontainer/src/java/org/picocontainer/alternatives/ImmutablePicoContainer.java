@@ -10,7 +10,6 @@
 package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVerificationException;
@@ -20,6 +19,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+// TODO: replace this with a proxy? It don't do nothing! (AH)
+
 /**
  * @author Paul Hammant
  * @version $Revision$
@@ -28,10 +29,10 @@ import java.util.List;
 public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
     private PicoContainer delegate;
-    private PicoContainer parent;
 
-    public ImmutablePicoContainer(PicoContainer pc) {
-        this.delegate = pc;
+    public ImmutablePicoContainer(PicoContainer delegate) {
+        if(delegate == null) throw new NullPointerException();
+        this.delegate = delegate;
     }
 
     public Object getComponentInstance(Object componentKey) {
@@ -47,15 +48,7 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public synchronized PicoContainer getParent() {
-        if (parent == null) {
-            PicoContainer par = delegate.getParent();
-            if (par instanceof ImmutablePicoContainer) {
-                parent = par;
-            } else {
-                parent = new ImmutablePicoContainer((MutablePicoContainer) par);
-            }
-        }
-        return parent;
+        return delegate.getParent();
     }
 
     public ComponentAdapter getComponentAdapter(Object componentKey) {
@@ -88,25 +81,17 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     public void start() {
+        // This is false security. As long as components can be accessed with getComponentInstance(), they can also be started. (AH).
         throw new UnsupportedOperationException("This container is immutable, start() is not allowed");
     }
 
     public void stop() {
+        // This is false security. As long as components can be accessed with getComponentInstance(), they can also be stopped. (AH).
         throw new UnsupportedOperationException("This container is immutable, stop() is not allowed");
     }
 
     public void dispose() {
+        // This is false security. As long as components can be accessed with getComponentInstance(), they can also be disposed. (AH).
         throw new UnsupportedOperationException("This container is immutable, dispose() is not allowed");
-    }
-
-    public int hashCode() {
-        return delegate.hashCode();
-    }
-
-    public boolean equals(Object obj) {
-        if (obj instanceof ImmutablePicoContainer) {
-            return obj.hashCode() == delegate.hashCode();
-        }
-        return false;
     }
 }

@@ -58,9 +58,9 @@ namespace Test.TestModel
 			l.Add(new InstanceComponentAdapter("casa", "asa"));
 
 			l = DefaultPicoContainer.OrderComponentAdaptersWithContainerAdaptersLast(l);
-			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[4]).ComponentInstance is DefaultPicoContainer);
-			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[5]).ComponentInstance is DefaultPicoContainer);
-			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[6]).ComponentInstance is DefaultPicoContainer);
+			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[4]).GetComponentInstance(null) is DefaultPicoContainer);
+			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[5]).GetComponentInstance(null) is DefaultPicoContainer);
+			System.Diagnostics.Debug.Assert(((IComponentAdapter) l[6]).GetComponentInstance(null) is DefaultPicoContainer);
 		}
 	}
 }

@@ -33,12 +33,6 @@ namespace PicoContainer.Defaults
 			get { return base.ComponentImplementation; }
 		}
 
-		public override object ComponentInstance
-		{
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			get { return base.ComponentInstance; }
-		}
-
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override void Verify(IPicoContainer container)
 		{

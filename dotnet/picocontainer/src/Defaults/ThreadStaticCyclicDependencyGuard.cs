@@ -11,8 +11,7 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public abstract class ThreadStaticCyclicDependencyGuard : ICyclicDependencyGuard
 	{
-		[ThreadStatic]
-		private static Boolean guardFlag = new Boolean();
+		[ThreadStatic] private Boolean guardFlag = new Boolean();
 
 		public ThreadStaticCyclicDependencyGuard()
 		{

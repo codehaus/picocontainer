@@ -6,10 +6,6 @@ using PicoContainer.Tests.TestModel;
 
 namespace Test.Defaults
 {
-	/// <summary>
-	/// Summary description for DefaultComponentAdapterFactoryTestCase.
-	/// </summary>
-	/// 
 	[TestFixture]
 	public class DefaultComponentAdapterFactoryTestCase
 	{
@@ -19,22 +15,22 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testInstantiateComponentWithNoDependencies()
+		public void InstantiateComponentWithNoDependencies()
 		{
 			IComponentAdapter componentAdapter = CreateComponentAdapterFactory()
 				.CreateComponentAdapter(typeof (ITouchable), typeof (SimpleTouchable), null);
 
-			Object comp = componentAdapter.ComponentInstance;
+			Object comp = componentAdapter.GetComponentInstance(null);
 			Assert.IsNotNull(comp);
 			Assert.IsTrue(comp is SimpleTouchable);
 		}
 
 		[Test]
-		public void testSingleUseComponentCanBeInstantiatedByDefaultIComponentAdapter()
+		public void SingleUseComponentCanBeInstantiatedByDefaultIComponentAdapter()
 		{
 			IComponentAdapter componentAdapter = CreateComponentAdapterFactory()
 				.CreateComponentAdapter("o", typeof (object), null);
-			Object component = componentAdapter.ComponentInstance;
+			Object component = componentAdapter.GetComponentInstance(null);
 			Assert.IsNotNull(component);
 		}
 	}

@@ -2,25 +2,22 @@ using System;
 
 namespace PicoContainer.Defaults
 {
-	/// <summary>
-	/// Summary description for SetterInjectionComponentAdapterFactory.
-	/// </summary>
-	[Serializable]
-	public class SetterInjectionComponentAdapterFactory : DecoratingComponentAdapterFactory
+	public class SetterInjectionComponentAdapterFactory : IComponentAdapterFactory
 	{
-		/// <summary>
-		/// Constructs a SetterInjectionComponentAdapterFactory.
-		/// </summary>
-		/// <param name="theDelegate">The delegated <see cref="IComponentAdapterFactory"/></param>
-		public SetterInjectionComponentAdapterFactory(IComponentAdapterFactory theDelegate) : base(theDelegate)
+		private bool allowNonPublicClasses;
+
+		public SetterInjectionComponentAdapterFactory(bool allowNonPublicClasses)
+		{
+			this.allowNonPublicClasses = allowNonPublicClasses;
+		}
+
+		public SetterInjectionComponentAdapterFactory() : this(false)
 		{
 		}
 
-		public override IComponentAdapter CreateComponentAdapter(object componentKey,
-		                                                         Type componentImplementation,
-		                                                         IParameter[] parameters)
+		public IComponentAdapter CreateComponentAdapter(object componentKey, Type componentImplementation, IParameter[] parameters)
 		{
-			return new SetterInjectionComponentAdapter(base.CreateComponentAdapter(componentKey, componentImplementation, new IParameter[] {}));
+			return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses);
 		}
 	}
 }

@@ -27,18 +27,17 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public class ComponentParameter : BasicComponentParameter
 	{
-		/**
-	 * <code>DEFAULT</code> is an instance of ComponentParameter using the default constructor.
-	 */
+		/// <summary>
+		/// is an instance of ComponentParameter using the default constructor.
+		/// </summary>
 		public static readonly ComponentParameter DEFAULT = new ComponentParameter();
-		/**
-		 * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
-		 */
+		/// <summary>
+		/// Use <code>ARRAY</code> as IParameter for an Array that must have elements.
+		/// </summary>
 		public static readonly ComponentParameter ARRAY = new ComponentParameter(false);
-		/**
-		 * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
-		 * elements.
-		 */
+		/// <summary>
+		/// Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no elements.
+		/// </summary>
 		public static readonly ComponentParameter ARRAY_ALLOW_EMPTY = new ComponentParameter(true);
 
 		private readonly IParameter collectionParameter;

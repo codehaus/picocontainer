@@ -443,9 +443,9 @@ namespace Test.Defaults
 			l.Add(new InstanceComponentAdapter("casa", "asa"));
 
 			l = DefaultPicoContainer.OrderComponentAdaptersWithContainerAdaptersLast(l);
-			Assert.IsTrue(((IComponentAdapter) l[4]).ComponentInstance is DefaultPicoContainer);
-			Assert.IsTrue(((IComponentAdapter) l[5]).ComponentInstance is DefaultPicoContainer);
-			Assert.IsTrue(((IComponentAdapter) l[6]).ComponentInstance is DefaultPicoContainer);
+			Assert.IsTrue(((IComponentAdapter) l[4]).GetComponentInstance(null) is DefaultPicoContainer);
+			Assert.IsTrue(((IComponentAdapter) l[5]).GetComponentInstance(null) is DefaultPicoContainer);
+			Assert.IsTrue(((IComponentAdapter) l[6]).GetComponentInstance(null) is DefaultPicoContainer);
 		}
 
 		[Test]

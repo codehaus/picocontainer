@@ -14,9 +14,6 @@ using NUnit.Framework;
 
 namespace PicoContainer.Tests.Tck
 {
-	/// <summary>
-	/// Summary description for AbstractComponentAdapterFactoryTestCase.
-	/// </summary>
 	[TestFixture]
 	public abstract class AbstractComponentAdapterFactoryTestCase
 	{
@@ -25,7 +22,7 @@ namespace PicoContainer.Tests.Tck
 		protected abstract IComponentAdapterFactory CreateComponentAdapterFactory();
 
 		[SetUp]
-		public void SetUp()
+		public virtual void SetUp()
 		{
 			picoContainer = new DefaultPicoContainer();
 		}
@@ -55,7 +52,6 @@ namespace PicoContainer.Tests.Tck
 
 			picoContainer.RegisterComponent(componentAdapter);
 			Assert.IsNotNull(picoContainer.UnregisterComponent(typeof (ITouchable)));
-
 			Assert.IsFalse(picoContainer.ComponentAdapters.Contains(componentAdapter));
 		}
 	}

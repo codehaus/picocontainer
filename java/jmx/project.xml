@@ -15,6 +15,12 @@
     </dependency>
 
         <dependency>
+            <id>picocontainer</id>
+            <version>1.0-beta-5-SNAPSHOT</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
             <id>commons-collections</id>
             <version>2.1</version>
             <url>http://jakarta.apache.org/</url>

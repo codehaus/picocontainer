@@ -8,7 +8,9 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
+
+import picocontainer.PicoStartException;
 
 public class UnsatisfiedDependencyStartupException extends PicoStartException
 {

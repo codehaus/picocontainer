@@ -8,24 +8,24 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
+import picocontainer.StartableLifecycleManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OveriddenPicoTestContainer extends HierarchicalPicoContainer.Default
+public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.WithStartableLifecycleManager
 {
     private Wilma wilma;
-    private List started = new ArrayList();
-    private List stopped = new ArrayList();
 
-    public OveriddenPicoTestContainer(Wilma wilma)
+    public OverriddenPicoTestContainer(Wilma wilma, StartableLifecycleManager slm)
     {
+        super(slm);
         this.wilma = wilma;
     }
 
@@ -38,19 +38,5 @@ public class OveriddenPicoTestContainer extends HierarchicalPicoContainer.Defaul
         return super.makeComponentInstance(compType, constructor, args);
     }
 
-    protected void startComponent(Object component) {
-        started.add(component.getClass());
-    }
 
-    protected void stopComponent(Object component) {
-        stopped.add(component.getClass());
-    }
-
-    public List getStarted() {
-        return started;
-    }
-
-    public List getStopped() {
-        return stopped;
-    }
 }

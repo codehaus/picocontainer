@@ -8,24 +8,29 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException
-{
-    private Class clazz;
+import picocontainer.PicoStartException;
 
-    public DuplicateComponentTypeRegistrationException(Class clazz)
-    {
-        this.clazz = clazz;
+public class PicoInvocationTargetStartException extends PicoStartException {
+    private final Throwable cause;
+
+    public PicoInvocationTargetStartException(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("Cause must not be null");
+        }
+        this.cause = cause;
     }
 
-    public Class getDuplicateClass()
-    {
-        return clazz;
+    public Throwable getCause() {
+        return cause;
     }
 
-    public String getMessage()
-    {
-        return "Class " + clazz.getName() + " duplicated";
+    public String getMessage() {
+        return "InvocationTargetException: "
+                + cause.getClass().getName()
+                + " " + cause.getMessage();
     }
+
+
 }

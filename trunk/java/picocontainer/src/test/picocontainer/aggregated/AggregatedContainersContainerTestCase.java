@@ -1,7 +1,12 @@
-package picocontainer;
+package picocontainer.aggregated;
 
 import junit.framework.TestCase;
 import picocontainer.testmodel.WilmaImpl;
+import picocontainer.PicoContainer;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoStopException;
+import picocontainer.Container;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 public class AggregatedContainersContainerTestCase extends TestCase {
     private PicoContainer pico;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 
 import picocontainer.testmodel.UnaccessibleStartComponent;
+import picocontainer.hierarchical.PicoInvocationTargetStartException;
 
 public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
 

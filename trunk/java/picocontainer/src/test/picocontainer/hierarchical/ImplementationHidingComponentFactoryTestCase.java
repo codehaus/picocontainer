@@ -1,4 +1,4 @@
-package picocontainer;
+package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
 
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import picocontainer.hierarchical.ImplementationHidingComponentFactory;
 
 public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 

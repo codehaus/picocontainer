@@ -8,16 +8,22 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
 
 import java.lang.reflect.InvocationTargetException;
 
+import picocontainer.NullContainer;
+import picocontainer.hierarchical.NullStartableLifecycleManager;
+import picocontainer.DefaultComponentFactory;
+import picocontainer.PicoStartException;
+import picocontainer.PicoStopException;
+
 public class DummiesTestCase extends TestCase {
 
     public void testDummyContainer() {
-        NullContainer dc = new NullContainer();
+        picocontainer.NullContainer dc = new picocontainer.NullContainer();
         assertFalse(dc.hasComponent(String.class));
         assertNull(dc.getComponent(String.class));
         assertEquals(0, dc.getComponents().length);
@@ -37,7 +43,7 @@ public class DummiesTestCase extends TestCase {
                                                      InvocationTargetException,
                                                      IllegalAccessException,
                                                      InstantiationException {
-        DefaultComponentFactory dcd = new DefaultComponentFactory();
+        picocontainer.DefaultComponentFactory dcd = new picocontainer.DefaultComponentFactory();
         Object decorated = dcd.createComponent(Object.class, Object.class.getConstructor(null), null);
         assertNotNull(decorated);
         //TODO check no methods were called, via proxy ?

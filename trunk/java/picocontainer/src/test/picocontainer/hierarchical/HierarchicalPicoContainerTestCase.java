@@ -8,39 +8,52 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
 
-import java.util.*;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
 import picocontainer.testmodel.FlintstonesImpl;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
-import picocontainer.testmodel.*;
 import picocontainer.testmodel.Dictionary;
+import picocontainer.testmodel.Webster;
+import picocontainer.testmodel.Thesaurus;
+import picocontainer.PicoStartException;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoContainer;
+import picocontainer.Container;
+import picocontainer.PicoStopException;
+import picocontainer.OverriddenStartableLifecycleManager;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoDisposalException;
+import picocontainer.ReflectionUsingLifecycleManager;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new HierarchicalPicoContainer(null, new NullStartableLifecycleManager(), new DefaultComponentFactory());
+            new HierarchicalPicoContainer(null, new NullStartableLifecycleManager(), new picocontainer.DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalPicoContainer(new NullContainer(), null, new DefaultComponentFactory());
+            new HierarchicalPicoContainer(new picocontainer.NullContainer(), null, new picocontainer.DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalPicoContainer(new NullContainer(), new NullStartableLifecycleManager(), null);
+            new HierarchicalPicoContainer(new picocontainer.NullContainer(), new NullStartableLifecycleManager(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
@@ -125,7 +138,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         }
     }
 
-    private static class DerivedWilma extends WilmaImpl {
+    public static class DerivedWilma extends WilmaImpl {
         public DerivedWilma() {
         }
     }
@@ -390,7 +403,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         assertEquals(pc.getComponent(WilmaImpl.class), wilma);
     }
 
-    static class Barney {
+    public static class Barney {
         public Barney() {
             throw new RuntimeException("Whoa!");
         }

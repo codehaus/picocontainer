@@ -23,7 +23,7 @@
     <url>http://www.nanocontainer.org/</url>
     <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
     <siteAddress>codehaus.org</siteAddress>
-    <siteDirectory>/www/nanocontainer.codehaus.org/</siteDirectory>
+    <siteDirectory>/www/nanocontainer.codehaus.org/maven</siteDirectory>
     <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>

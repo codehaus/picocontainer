@@ -24,8 +24,8 @@ import org.picocontainer.ComponentAdapter;
  */
 public class ContainerTreeCellRenderer extends DefaultTreeCellRenderer {
     // todo Move to PicoContainerBeanInfo?
-	private final Icon picoContainerIcon = new ImageIcon(getClass().getResource("/picocontainer.gif"));
-	private final Icon defaultComponentIcon = new ImageIcon(getClass().getResource("/defaultcomponent.gif"));
+	private final Icon picoContainerIcon = IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON);
+	private final Icon defaultComponentIcon = IconHelper.getIcon(IconHelper.DEFAULT_COMPONENT_ICON);
 
 	public Component getTreeCellRendererComponent(
 		JTree tree,

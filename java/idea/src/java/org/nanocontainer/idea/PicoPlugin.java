@@ -1,82 +1,102 @@
 package org.picoextras.idea;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.Anchor;
-import com.intellij.openapi.actionSystem.Constraints;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindowAnchor;
+import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.actionSystem.Separator;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picoextras.swing.ContainerTreePanel;
+import org.picoextras.swing.IconHelper;
+import org.picoextras.idea.action.StartContainerAction;
+import org.picoextras.idea.action.StopContainerAction;
+import org.picoextras.idea.action.RegisterComponentAction;
+import org.picoextras.idea.action.UnregisterComponentAction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
 
 /**
- * Main class for the PicoContainer Plugin for IDEA.
- *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class PicoPlugin implements ApplicationComponent {
-    /** Logger */
-    private static final Logger log = Logger.getInstance(PicoPlugin.class.getName());
+public class PicoPlugin implements ProjectComponent {
+    public static final String TOOL_WINDOW_ID = "PicoContainer";
+    private static final String TOOL_WINDOW_TOOLBAR_ID = "PicoContainerToolBar";
+    public static final String START_ACTION_ID = "PicoContainer.Start";
+    public static final String STOP_ACTION_ID = "PicoContainer.Stop";
+    public static final String REGISTER_ACTION_ID = "PicoContainer.Register";
+    public static final String UNREGISTER_ACTION_ID = "PicoContainer.Unregister";
 
-    private DefaultActionGroup spg;
-    private PicoToggleAction toggleAction;
+    private Project project;
+    private DefaultPicoContainer pico;
 
-    public PicoPlugin() {
-        toggleAction = new PicoToggleAction();
-        spg = new DefaultActionGroup();
-        spg.addSeparator();
-        spg.add(toggleAction);
+    public PicoPlugin(Project project) {
+        this.project = project;
     }
 
-    /**
-     * Method is called after plugin is already created and configured. Plugin can start to communicate with
-     * other plugin only in this method.
-     */
-    public void initComponent() {
-        final ActionManager actionManager = ActionManager.getInstance();
-        // try register action
-        if (actionManager.getAction(PicoToggleAction.ID) == null) {
-            actionManager.registerAction(PicoToggleAction.ID, toggleAction);
-        }
+    public void projectOpened() {
+        final ToolWindowManager manager = ToolWindowManager.getInstance(project);
+        pico = new DefaultPicoContainer();
+        ContainerTreePanel picoGui = new ContainerTreePanel(pico, createToolBar().getComponent());
 
-        // add toggle icon into IntelliJ UI, add to MainToolbar
-        DefaultActionGroup mainToolBar = (DefaultActionGroup) actionManager.getAction(ActionID.MAIN_TOOLBAR);
-        if (mainToolBar != null) {
-            mainToolBar.add(spg);
-        }
-        else {
-            log.info("Can't find " + ActionID.MAIN_TOOLBAR + " group");
-        }
-
-        // add to menu "Window"
-        DefaultActionGroup menuWindow = (DefaultActionGroup) actionManager.getAction(ActionID.WINDOW_MENU);
-        if (menuWindow != null) {
-            menuWindow.add(toggleAction, new Constraints(Anchor.AFTER, ActionID.WINDOW_MENU_INSPECTION));
-        }
-        else {
-            log.info("Can't find " + ActionID.WINDOW_MENU + " group");
-        }
+        ToolWindow toolWindow = manager.registerToolWindow(TOOL_WINDOW_ID,
+                picoGui,
+                ToolWindowAnchor.RIGHT);
+        toolWindow.setIcon(IconHelper.getIcon(IconHelper.PICO_CONTAINER_ICON));
     }
 
-    public void disposeComponent() {
+    private ActionToolbar createToolBar() {
         ActionManager actionManager = ActionManager.getInstance();
-        // remove toggle icon from InteliJ UI
-        DefaultActionGroup mainToolBar = (DefaultActionGroup) actionManager.getAction(ActionID.MAIN_TOOLBAR);
-        if (mainToolBar != null) {
-            mainToolBar.remove(spg);
-        }
+        DefaultActionGroup toolGroup = (DefaultActionGroup) registerAction(actionManager, new DefaultActionGroup(TOOL_WINDOW_TOOLBAR_ID, false), TOOL_WINDOW_TOOLBAR_ID);
 
-        DefaultActionGroup menuWindow = (DefaultActionGroup) actionManager.getAction(ActionID.WINDOW_MENU);
-        if (menuWindow != null) {
-            menuWindow.remove(toggleAction);
-        }
+        List actions = new ArrayList();
+        actions.add(registerAction(actionManager, new StartContainerAction(pico), START_ACTION_ID));
+        actions.add(registerAction(actionManager, new StopContainerAction(pico), STOP_ACTION_ID));
+        actions.add(Separator.getInstance());
+        actions.add(registerAction(actionManager, new RegisterComponentAction(pico), REGISTER_ACTION_ID));
+        actions.add(registerAction(actionManager, new UnregisterComponentAction(pico), UNREGISTER_ACTION_ID));
+        addToolBarActions(toolGroup, actions);
+        return actionManager.createActionToolbar(TOOL_WINDOW_TOOLBAR_ID, toolGroup, true);
+    }
 
-        toggleAction.clear();
-        if (actionManager.getAction(PicoToggleAction.ID) != null) {
-            actionManager.unregisterAction(PicoToggleAction.ID);
+    private AnAction registerAction(ActionManager actionManager, AnAction action, String id) {
+        id = project.getProjectFile().getNameWithoutExtension() + "." + id;
+        if (actionManager.getAction(id) == null) {
+            actionManager.registerAction(id, action);
+            return action;
+        } else {
+            return actionManager.getAction(id);
+        }
+    }
+
+    private void addToolBarActions(DefaultActionGroup toolGroup, List actions) {
+        toolGroup.removeAll();
+        for (Iterator iterator = actions.iterator(); iterator.hasNext();) {
+            AnAction a = (AnAction) iterator.next();
+            toolGroup.add(a);
         }
     }
 
     public String getComponentName() {
         return PicoPlugin.class.getName();
+    }
+
+    public void initComponent() {
+
+    }
+
+    public void disposeComponent() {
+
+    }
+
+    public void projectClosed() {
+
     }
 }

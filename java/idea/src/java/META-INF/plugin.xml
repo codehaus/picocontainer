@@ -1,14 +1,14 @@
 <idea-plugin>
-    <name>XDoclet</name>
+    <name>PicoContainer</name>
     <description>PicoContainer IDEA Plugin</description>
     <version>1.0-alpha-1-SNAPSHOT</version>
     <vendor>PicoContainer Organization</vendor>
-    <idea-version min="3.0" max="3.2"/>
+    <idea-version min="3.0" max="4.0"/>
 
-    <application-components>
+    <project-components>
         <component>
             <implementation-class>org.picoextras.idea.PicoPlugin</implementation-class>
         </component>
-    </application-components>
+    </project-components>
 </idea-plugin>
 

@@ -171,5 +171,16 @@
 
   <task name="cvs:make-patch" description="Creates a patch of *your* changes">
     <cvs command="-q diff -b -u -N" output="patch.txt"/>
+    <echo>
+      Please create a new issue in NanoContainer's JIRA: 
+      http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121
+      Then attach the patch.txt file.
+      If your patch consists of entirely new files too, please zip them
+      up and attach them too.
+      
+      If your patch includes JUnit tests and a decent description,
+      you increase the chance of having the patch applied by some
+      of the committers.
+    </echo>    
   </task>
 </project>

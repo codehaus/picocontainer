@@ -93,6 +93,12 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
         Class componentImplementation = loadClass(componentImplementationClassName);
         return picoContainer.registerComponentImplementation(key, componentImplementation);
     }
+    
+
+    public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
+        Class componentImplementation = loadClass(componentImplementationClassName);
+        return picoContainer.registerComponentImplementation(key, componentImplementation, parameters);
+    }    
 
     public ComponentAdapter registerComponentImplementation(Object key,
                                                             String componentImplementationClassName,

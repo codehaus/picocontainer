@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -26,8 +27,11 @@ import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
 
 /**
  * Builds trees of PicoContainers and Pico components using GroovyMarkup
@@ -124,9 +128,10 @@ public class NanoGroovyBuilder extends BuilderSupport {
         Object key = attributes.remove("key");
         Object type = attributes.remove("class");
         Object instance = attributes.remove("instance");
+        List parameters = (List) attributes.remove("parameters");
         
         if (type != null) {
-            registerComponentImplementation(pico, key, type);
+            registerComponentImplementation(pico, key, type, parameters);
         } else if (instance != null) {
             registerComponentInstance(pico, key, instance);
         } else {
@@ -218,12 +223,23 @@ public class NanoGroovyBuilder extends BuilderSupport {
         }
     }
     
-    private void registerComponentImplementation(SoftCompositionPicoContainer pico, Object key, Object type) throws ClassNotFoundException {
+    private void registerComponentImplementation(SoftCompositionPicoContainer pico, 
+            Object key, Object type, List paramsList) throws ClassNotFoundException {
+        
+        Parameter[] parameters = getParameters(paramsList);
         if (key != null) {
             if (type instanceof String) {
-                pico.registerComponentImplementation(key, (String) type);
+                if (parameters != null) {
+                    pico.registerComponentImplementation(key, (String) type, parameters);
+                } else {
+                    pico.registerComponentImplementation(key, (String) type);                    
+                }
             } else {
-                pico.registerComponentImplementation(key, (Class) type);
+                if (parameters != null) {
+                    pico.registerComponentImplementation(key, (Class) type, parameters);
+                } else {
+                    pico.registerComponentImplementation(key, (Class) type);
+                }
             }
         } else {
             if (type instanceof String) {
@@ -232,6 +248,22 @@ public class NanoGroovyBuilder extends BuilderSupport {
                 pico.registerComponentImplementation((Class) type);
             }
         }
+    }
+    
+    private Parameter[] getParameters(List paramsList) {
+        if (paramsList == null) {
+            return null;
+        }
+        int n = paramsList.size();        
+        Parameter[] parameters = new Parameter[n];
+        for (int i = 0; i < n; ++i) {
+            parameters[i] = toParameter(paramsList.get(i));
+        }
+        return parameters;
+    }
+    
+    private Parameter toParameter(Object obj) {
+        return obj instanceof Parameter ? (Parameter) obj : new ConstantParameter(obj);
     }
 
     private void registerComponentInstance(SoftCompositionPicoContainer pico, Object key, Object instance) {

@@ -113,5 +113,17 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
 
     }
 
+    public void testNoStartOrStopInvocation() {
 
+        ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
+
+        try {
+            lm.startComponent(new Object());
+            lm.stopComponent(new Object());
+        } catch (PicoStartException e) {
+            fail("Should have started just fine");
+        } catch (PicoStopException e) {
+            fail("Should have stopped just fine");
+        }
+    }
 }

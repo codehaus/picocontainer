@@ -173,11 +173,11 @@ public class PicoContainerImpl implements PicoContainer {
                         }
 
                     } catch (InvocationTargetException e) {
-                        throw new PicoInvocationTargetStartException(e);
+                        throw new PicoInvocationTargetStartException(e.getCause());
                     } catch (InstantiationException e) {
-                        e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                        // covered by checkConcrete() in registration
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                        // covered by checkConstructor() in registration
                     }
                 }
             }

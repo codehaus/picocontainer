@@ -203,7 +203,6 @@
         <report>maven-license-plugin</report>
         <report>maven-faq-plugin</report>
         <report>maven-simian-plugin</report>
-        <report>maven-changes-plugin</report>
         <report>maven-statcvs-plugin</report>
         <report>maven-jxr-plugin</report>
         <report>maven-javadoc-plugin</report>

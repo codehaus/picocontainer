@@ -9,18 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.CachingComponentAdapter;
-
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.ComponentAdapter;
-
+import junit.framework.TestCase;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.cfg.Configuration;
-
-import junit.framework.TestCase;
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * test case for session factory component adapter

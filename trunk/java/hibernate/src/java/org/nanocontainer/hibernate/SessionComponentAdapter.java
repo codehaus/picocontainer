@@ -9,90 +9,106 @@
  *****************************************************************************/
 package org.nanocontainer.hibernate;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Parameter;
+import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Session;
+import net.sf.hibernate.SessionFactory;
 import org.picocontainer.ComponentAdapter;
-
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
-
+import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.AbstractComponentAdapter;
-
-import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.HibernateException;
 
 import java.util.HashSet;
 
 /**
- * provides instance of hibernate session. this component will open new sessin of every request,
+ * Provides instance of hibernate session. this component will open new session of every request,
  * and thus all management shall be done by component.
  * it's also unvise to cache this session by CachingComponentAdapter, because session may
- * become invalid due to some exception. 
+ * become invalid due to some exception.
+ *
  * @author Konstantin Pribluda
  * @version $Revision$
  */
-public class SessionComponentAdapter extends AbstractComponentAdapter {
-	
-	Parameter sessionFactoryParameter = null;
-	ComponentAdapter sessionFactoryAdapter = null;
-	boolean verifying = false;
+public class SessionComponentAdapter implements ComponentAdapter {
 
-	/**
-	 * construct adapter with net.sf.hibernate.Session.class as key 
-	 * and dependecy to net.sf.hibernate.SessionFactory.class
-	 */
-	public SessionComponentAdapter() {
-		this(Session.class,null);
-	}
-	
-	/**
-	 * construct component adapter with specified key and dependecy to 
-	 * net.sf.hibernate.SessionFactory.class
-	 */
-	public SessionComponentAdapter(Object componentKey) {
-		this(componentKey,null);
-	}
-	/**
- 	 * register adapter with given key and parameter
-	 */
-	public SessionComponentAdapter(Object componentKey,Parameter parameter) {
-		super(componentKey,Session.class);
-		this.sessionFactoryParameter = parameter == null ? new ComponentParameter(null) : parameter;
-	}
-	
-	public Object getComponentInstance() throws   PicoInitializationException, PicoIntrospectionException {
-		verify();
-		try {
-			return ((SessionFactory)sessionFactoryAdapter.getComponentInstance()).openSession();
-		} catch(HibernateException he) {
-			throw new PicoInitializationException(he);
-		}
+    private Parameter sessionFactoryParameter = null;
+    private ComponentAdapter sessionFactoryAdapter = null;
+    private boolean verifying = false;
+    private final Object componentKey;
+    private PicoContainer pico;
 
-	}
-	
-	public void verify() throws PicoVerificationException {
-		try {
-			if(verifying) {
-				throw new CyclicDependencyException(new Class[] { SessionFactory.class } );
-			}
-			verifying = true;
-			HashSet unsatisfiableDependencies = new HashSet();
-			unsatisfiableDependencies.add(SessionFactory.class);
-			
-			sessionFactoryAdapter = sessionFactoryParameter.resolveAdapter(getContainer(),SessionFactory.class);
-			
-			if(sessionFactoryAdapter == null) {
-				throw new  UnsatisfiableDependenciesException(this,unsatisfiableDependencies);
-			}
+    /**
+     * construct adapter with net.sf.hibernate.Session.class as key
+     * and dependecy to net.sf.hibernate.SessionFactory.class
+     */
+    public SessionComponentAdapter() {
+        this(Session.class, null);
+    }
+
+    /**
+     * construct component adapter with specified key and dependecy to
+     * net.sf.hibernate.SessionFactory.class
+     */
+    public SessionComponentAdapter(Object componentKey) {
+        this(componentKey, null);
+    }
+
+    /**
+     * register adapter with given key and parameter
+     */
+    public SessionComponentAdapter(Object componentKey, Parameter parameter) {
+        this.componentKey = componentKey;
+        this.sessionFactoryParameter = parameter == null ? new ComponentParameter(null) : parameter;
+    }
+
+    public Object getComponentKey() {
+        return componentKey;
+    }
+
+    public Class getComponentImplementation() {
+        return Session.class;
+    }
+
+    public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {
+        verify();
+        try {
+            return ((SessionFactory) sessionFactoryAdapter.getComponentInstance()).openSession();
+        } catch (HibernateException he) {
+            throw new PicoInitializationException(he);
+        }
+
+    }
+
+    public PicoContainer getContainer() {
+        return pico;
+    }
+
+    public void setContainer(PicoContainer picoContainer) {
+        pico = picoContainer;
+    }
+
+    public void verify() throws PicoVerificationException {
+        try {
+            if (verifying) {
+                throw new CyclicDependencyException(new Class[]{SessionFactory.class});
+            }
+            verifying = true;
+            HashSet unsatisfiableDependencies = new HashSet();
+            unsatisfiableDependencies.add(SessionFactory.class);
+
+            sessionFactoryAdapter = sessionFactoryParameter.resolveAdapter(getContainer(), SessionFactory.class);
+
+            if (sessionFactoryAdapter == null) {
+                throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencies);
+            }
 
 
-		} finally {
-			verifying = false;
-		}
-	}
+        } finally {
+            verifying = false;
+        }
+    }
 }

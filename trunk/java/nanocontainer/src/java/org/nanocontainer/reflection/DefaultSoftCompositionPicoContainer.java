@@ -123,10 +123,6 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
         delegate.verify();
     }
 
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        delegate.addOrderedComponentAdapter(componentAdapter);
-    }
-
     public void start() {
         delegate.start();
     }

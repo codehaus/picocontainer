@@ -41,20 +41,20 @@ import java.util.Map;
  */
 public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSoftCompositionPicoContainer implements SoftCompositionPicoContainer, Serializable {
 
-    private final ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer delegate;
+    private final ImplementationHidingPicoContainer delegate;
 
     // Serializable cannot be cascaded into DefaultReflectionContainerAdapter's referenced classes
     // need to implement custom Externalisable regime.
     private transient ReflectionContainerAdapter reflectionAdapter;
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
-        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(caf, parent);
+        delegate = new ImplementationHidingPicoContainer(caf, parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
 
     public ImplementationHidingSoftCompositionPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        delegate = new ImplementationHidingSoftCompositionPicoContainer.InnerMutablePicoContainer(new DefaultComponentAdapterFactory(), parent);
+        delegate = new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent);
 
         reflectionAdapter = new DefaultReflectionContainerAdapter(classLoader, delegate);
     }
@@ -72,7 +72,9 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
     }
 
     protected Map getNamedContainers() {
-        return delegate.getNamedContainers();
+        // TODO: Paul, why did you remove the method ?
+        return null;
+        //return delegate.getNamedContainers();
     }
 
     public Object getComponentInstanceFromDelegate(Object componentKey) {
@@ -113,10 +115,6 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
 
     public void verify() throws PicoVerificationException {
         delegate.verify();
-    }
-
-    public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        delegate.addOrderedComponentAdapter(componentAdapter);
     }
 
     public void start() {
@@ -227,14 +225,5 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
 
     public ClassLoader getComponentClassLoader() {
         return reflectionAdapter.getComponentClassLoader();
-    }
-
-    private class InnerMutablePicoContainer extends ImplementationHidingPicoContainer {
-        public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-            super(componentAdapterFactory, parent);
-        }
-        public Map getNamedContainers() {
-            return super.getNamedContainers();
-        }
     }
 }

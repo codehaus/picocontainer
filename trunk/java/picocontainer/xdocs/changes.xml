@@ -9,6 +9,10 @@
     <release version="1.0-beta-1-SNAPSHOT" date="In CVS">
 
       <action dev="paul" type="update">
+        - Moved loads of classes. Simplified package structure. In prep for release.
+      </action>
+
+      <action dev="paul" type="update">
         - CompositePicoContainer changed to take ComponentRegistry and no longer 
         extend DefaultPicoContainer.
       </action>

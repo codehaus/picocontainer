@@ -91,6 +91,13 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                         final String propertyName = (String) iterator.next();
                         final Object propertyValue = propertyValues.get(propertyName);
                         final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+                        if(propertyDescriptor == null) {
+                            throw new PicoIntrospectionException() {
+                                public String getMessage() {
+                                    return "Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName();
+                                }
+                            };
+                        }
                         Method setter = propertyDescriptor.getWriteMethod();
                         if(setter == null) {
                             throw new PicoInitializationException() {

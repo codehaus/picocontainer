@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 /**
  * @author Michael Ward
  */
-public class ClassLoaderDelegateTest extends TestCase {
+public class ClassLoaderDelegateTestCase extends TestCase {
 
 	private ClassLoaderDelegate delegate;
 	private MockClassLoaderOne mockClassLoaderOne;

@@ -1,4 +1,4 @@
-<project  xmlns:j="jelly:core" xmlns:u="jelly:util" >
+<project xmlns:ant="jelly:ant" xmlns:j="jelly:core" xmlns:u="jelly:util" >
 
     <preGoal name="test:test" >
         <echo>Building test.mca file for use with unit tests </echo>
@@ -52,34 +52,57 @@
     </goal>
 
 
-        <goal name="jar">
-            <attainGoal name="test"/>
-
-        <delete file="target/microcontainer-api-0.1-SNAPSHOT.jar"/>
-          <jar destfile="target/microcontainer-api-0.1-SNAPSHOT.jar"
-              basedir="target/classes"
+     <goal name="jars" prereqs="test">
+        <ant:delete file="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"/>
+        <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"
+              basedir="${maven.build.dir}/classes"
               includes="org/microcontainer/*.class"/>
-        <delete file="target/microcontainer-impl-0.1-SNAPSHOT.jar"/>
-          <jar destfile="target/microcontainer-impl-0.1-SNAPSHOT.jar"
-              basedir="target/classes"
+        <ant:delete file="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"/>
+        <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"
+              basedir="${maven.build.dir}/classes"
               includes="org/microcontainer/impl/**.class"/>
-
       </goal>
+      
+      <goal name="zip" prereqs="jars">
+        <ant:zip destfile="${maven.build.dir}/${pom.artifactId}.zip">
+            <!-- Add boostrap scripts -->
+            <ant:fileset dir="${maven.src.dir}/bootstrap">
+                <ant:include name="*.bat"/>
+                <ant:include name="*.groovy"/>
+            </ant:fileset>        
+            <!-- Add build artifacts -->
+            <ant:zipfileset dir="${maven.build.dir}" prefix="lib">
+                <ant:include name="${pom.artifactId}-api-${pom.currentVersion}.jar"/>
+            </ant:zipfileset>
+            <ant:zipfileset dir="${maven.build.dir}" prefix="lib/hidden">
+                <ant:include name="${pom.artifactId}-impl-${pom.currentVersion}.jar"/>
+            </ant:zipfileset>
+            <!-- Add dependency artifacts -->
+            <j:forEach var="artifact" items="${pom.artifacts}">
+                <j:set var="dependency" value="${artifact.dependency}"/>
+                <j:if test="${dependency.artifactId.indexOf('container') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('asm') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('groovy') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('spice-cli') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
 
-      <goal name="microcontainerzip" >
-        <attainGoal name="jar"/>
-        <delete file="target/microcontainer.zip"/>
-        <zip destfile="target/microcontainer.zip">
-          <fileset dir="src/bootstrap" includes="*.groovy"/>
-          <fileset dir="src/bootstrap" includes="*.bat"/>
-          <zipfileset dir="target" includes="*api*.jar" prefix="lib"/>
-          <zipfileset dir="target" includes="*impl*.jar" prefix="lib/hidden"/>
-          <zipfileset dir="../picocontainer/target" includes="picocontainer-1.1-SNAPSHOT.jar" prefix="lib"/>
-          <zipfileset dir="../nanocontainer/target" includes="nanocontainer-1.0-SNAPSHOT.jar" prefix="lib"/>
-        </zip>
-      </goal>
-
+            </j:forEach>
+        </ant:zip>
+    </goal>
     
 </project>
-
-

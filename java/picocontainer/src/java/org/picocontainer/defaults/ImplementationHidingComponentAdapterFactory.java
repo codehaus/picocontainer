@@ -15,6 +15,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
 /**
+ * Hides implementation.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -23,7 +25,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
     private final boolean strict;
 
     public ImplementationHidingComponentAdapterFactory() {
-        this(new DefaultComponentAdapterFactory(), true);
+        this(new ConstructorComponentAdapterFactory(), true);
     }
 
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {

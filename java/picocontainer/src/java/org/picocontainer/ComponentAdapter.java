@@ -15,8 +15,9 @@ import org.picocontainer.defaults.UnsatisfiableDependenciesException;
  * A component adapter is responsible for providing
  * a specific component instance.
  *
- * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
+ * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  */
 public interface ComponentAdapter {
     /**

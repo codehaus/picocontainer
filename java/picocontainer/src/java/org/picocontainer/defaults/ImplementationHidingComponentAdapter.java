@@ -27,8 +27,8 @@ import java.lang.reflect.Proxy;
  * {@link Swappable}, making it possible to swap out the underlying
  * subject at runtime.
  * 
- * @author Aslak Helles&oslash;y
  * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {

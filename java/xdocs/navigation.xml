@@ -1,18 +1,16 @@
-<project name="qdox" repository="qdox" href="http://qdox.codehaus.org">
+<project name="nanocontainer" repository="nanocontainer" href="http://nanocontainer.codehaus.org">
 
-    <title>PicoExtras</title>
+    <title>NanoContainer</title>
 
     <body>
         <links>
-            <item name="Wiki" href="http://wiki.codehaus.org/picocontainer/PicoExtras"/>
-            <item name="Issue Tracker" href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121"/>
+            <item name="NanoContainer main site" href="http://www.nanocontainer.org"/>
             <item name="PicoContainer" href="http://www.picocontainer.org/"/>
         </links>
 
-        <menu name="PicoExtras">
-            <item name="Introduction" href="/introduction.html"/>
+        <menu name="NanoContainer">
+            <item name="Overview" href="/index.html"/>
             <item name="License" href="/license.html"/>
-            <item name="Sub projects" href="/projects-overview.html"/>
         </menu>
     </body>
 

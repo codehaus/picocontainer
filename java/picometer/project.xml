@@ -4,6 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-picometer</id>
     <name>nanocontainer-picometer</name>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>
 

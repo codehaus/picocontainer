@@ -4,6 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-webwork2</id>
     <name>nanocontainer-webwork2</name>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>
 

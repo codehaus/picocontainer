@@ -13,6 +13,7 @@
     <currentVersion>1.0-SNAPSHOT</currentVersion>
     <name>NanoContainer</name>
     <groupId>nanocontainer</groupId>
+    <id>nanocontainer-buildmain</id>
     <url>http://www.nanocontainer.org</url>
     <organization>
         <name>Codehaus</name>
@@ -20,21 +21,24 @@
         <logo>http://codehaus.org/codehaus-small.gif</logo>
     </organization>
     <inceptionYear>2003</inceptionYear>
-    <package>org</package>
+    <package>org.nanocontainer</package>
+    <description>
+        Please refer to the &lt;a href="http://nanocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
+    </description>
     <shortDescription>NanoContainer</shortDescription>
 
-    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121</issueTrackingUrl>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/NANO</issueTrackingUrl>
 
-<!-- This will change later once the nanocontainer.org DNS has been changed the same way as picocontainer.org -->
     <siteAddress>beaver.codehaus.org</siteAddress>
-    <siteDirectory>/home/projects/picocontainer/public_html/reports/${pom.artifactId}</siteDirectory>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}</siteDirectory>
 
     <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
         <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
-        <url>http://cvs.picocontainer.codehaus.org/java/${pom.artifactId}/?viewcvs.cgi</url>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
+        <url>http://cvs.picocontainer.codehaus.org/viewrep/picocontainer/java}</url>
     </repository>
 
     <!--
@@ -111,7 +115,6 @@
     <reports>
         <report>maven-license-plugin</report>
         <report>maven-simian-plugin</report>
-        <!--report>maven-statcvs-plugin</report-->
         <report>maven-javadoc-plugin</report>
         <report>maven-clover-plugin</report>
     </reports>

@@ -4,6 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-axis</id>
     <name>nanocontainer-axis</name>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/components/${pom.artifactId}</siteDirectory>
 
     <dependencies>
         <dependency>

@@ -2,6 +2,7 @@
     default="binary:install"
     xmlns:j="jelly:core"
     xmlns:maven="jelly:maven"
+    xmlns:util="jelly:util"
     xmlns:ant="jelly:ant">
 
     <goal
@@ -50,5 +51,41 @@
         <attainGoal name="multiproject"/>
         <attainGoal name="site:deploy"/>
     </goal>
+
+    <goal name="nano:replace-index">
+        <j:set var="projectOverviewFile" value="${maven.docs.dest}/projects-overview.html" />
+        <util:available file="${projectOverviewFile}">
+            <ant:move file="${projectOverviewFile}" toFile="${maven.docs.dest}/index.html" />
+        </util:available>
+        <j:set var="replaceIndex" value="true" />
+        <util:available file="${basedir}/xdocs/navigation.xml">
+            <j:set var="replaceIndex" value="false" />
+        </util:available>
+        <j:if test="${replaceIndex}">
+                <ant:move file="${maven.docs.dest}/maven-reports.html" toFile="${maven.docs.dest}/index.html" />
+        </j:if>
+    </goal>
+
+    <goal name="nano:subnavigation">
+        <j:set var="createNavigation" value="true" />
+        <util:available file="${basedir}/xdocs/navigation.xml">
+            <j:set var="createNavigation" value="false" />
+        </util:available>
+        <j:if test="${createNavigation}">
+            <ant:filter token="pom.name" value="${pom.name}" />
+            <ant:filter token="pom.artifactId" value="${pom.artifactId}" />
+            <ant:mkdir dir="${maven.gen.docs}" />
+            <ant:delete file="${maven.gen.docs}/navigation.xml" />
+            <ant:copy file="${maven.multiproject.basedir}/navigation.template" toFile="${maven.gen.docs}/navigation.xml" filtering="true" />
+        </j:if>
+    </goal>
+
+    <postGoal name="site">
+        <attainGoal name="nano:replace-index" />
+    </postGoal>
+    <postGoal name="xdoc:copy-resources">
+        <attainGoal name="nano:subnavigation" />
+    </postGoal>
+
 
 </project>

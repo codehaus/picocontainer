@@ -15,7 +15,8 @@ namespace Test.Defaults
 			picoContainer = new DefaultPicoContainer();
 		}
 
-		public void testCannotInstantiateAnUnregisteredComponent()
+		[Test]
+		public void TestCannotInstantiateAnUnregisteredComponent()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
 			object o = picoContainer.ComponentInstances;
@@ -24,7 +25,8 @@ namespace Test.Defaults
 			Assert.IsTrue(picoContainer.ComponentInstances.Count == 0);
 		}
 
-		public void testCanInstantiateReplacedComponent()
+		[Test]
+		public void TestCanInstantiateReplacedComponent()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
 			object o = picoContainer.ComponentInstances;
@@ -35,7 +37,8 @@ namespace Test.Defaults
 			Assert.AreEqual(1, picoContainer.ComponentInstances.Count);
 		}
 
-		public void testUnregisterAfterInstantiateComponents()
+		[Test]
+		public void TestUnregisterAfterInstantiateComponents()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
 			object o = picoContainer.ComponentInstances;
@@ -43,8 +46,8 @@ namespace Test.Defaults
 			Assert.IsNull(picoContainer.GetComponentInstance(typeof (Touchable)));
 		}
 
-
-		public void testReplacedInstantiatedComponentHasCorrectClass()
+		[Test]
+		public void TestReplacedInstantiatedComponentHasCorrectClass()
 		{
 			picoContainer.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
 			object o = picoContainer.ComponentInstances;

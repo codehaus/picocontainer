@@ -74,7 +74,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testLowLevelCheating()
+		public void TestLowLevelCheating()
 		{
 			IComponentAdapterFactory caf = CreateComponentAdapterFactory();
 			DefaultPicoContainer pico = new DefaultPicoContainer(caf);
@@ -110,9 +110,8 @@ namespace Test.Defaults
 			//      Assert.IsFalse(newMan.GetHashCode() == man.GetHashCode());
 		}
 
-
 		[Test]
-		public void testHighLevelCheating()
+		public void TestHighLevelCheating()
 		{
 			IMutablePicoContainer pico = new DefaultPicoContainer(CreateComponentAdapterFactory());
 
@@ -133,24 +132,20 @@ namespace Test.Defaults
 			wife.getMan().kiss();
 			Assert.IsFalse(oldMan.wasKissed());
 			Assert.IsTrue(newMan.wasKissed());
-
 		}
 
-
 		[Test]
-		public void testBigamy()
+		public void TestBigamy()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
 			pico.RegisterComponentImplementation(typeof (Woman), typeof (Wife));
 			Woman firstWife = (Woman) pico.GetComponentInstance(typeof (Woman));
 			Woman secondWife = (Woman) pico.GetComponentInstance(typeof (Woman));
 			Assert.IsFalse(firstWife == secondWife);
-
 		}
 
-
 		[Test]
-		public void testComponentsRegisteredWithClassKeyOnlyImplementThatInterface()
+		public void TestComponentsRegisteredWithClassKeyOnlyImplementThatInterface()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
 			pico.RegisterComponentImplementation(typeof (Woman), typeof (Wife));
@@ -158,8 +153,8 @@ namespace Test.Defaults
 			Assert.IsFalse(wife is SuperWoman);
 		}
 
-
-		public void testIHCAFwithCTORandNoCaching()
+		[Test]
+		public void TestIHCAFwithCTORandNoCaching()
 		{
 			// http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
 			IMutablePicoContainer pico = new DefaultPicoContainer();
@@ -176,7 +171,8 @@ namespace Test.Defaults
 			Assert.IsFalse(list2.Contains("Hello"));
 		}
 
-		public void testSwappingViaSwappableInterface()
+		[Test]
+		public void TestSwappingViaSwappableInterface()
 		{
 			IMutablePicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", typeof (ArrayList))));
@@ -189,7 +185,6 @@ namespace Test.Defaults
 			l.Add("World");
 			Assert.AreEqual("World", l[0]);
 		}
-
 
 		public interface OtherSwappable
 		{
@@ -204,8 +199,8 @@ namespace Test.Defaults
 			}
 		}
 
-
-		public void testInterferingSwapMethodsInComponentMasksHotSwappingFunctionality()
+		[Test]
+		public void TestInterferingSwapMethodsInComponentMasksHotSwappingFunctionality()
 		{
 			IMutablePicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("os", typeof (OtherSwappableImpl))));
@@ -217,12 +212,9 @@ namespace Test.Defaults
 			Assert.AreEqual("TADA", os_.HotSwap(os2));
 		}
 
-
 		protected IComponentAdapterFactory CreateComponentAdapterFactory()
 		{
 			return cachingComponentAdapterFactory;
 		}
-
-
 	}
 }

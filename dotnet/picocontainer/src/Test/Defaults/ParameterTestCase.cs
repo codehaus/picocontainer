@@ -13,7 +13,7 @@ namespace Test.Defaults
 	public class ParameterTestCase
 	{
 		[Test]
-		public void testComponentParameterFetches()
+		public void TestComponentParameterFetches()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation(typeof (Touchable), typeof (SimpleTouchable));
@@ -25,7 +25,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testConstantParameter()
+		public void TestConstantParameter()
 		{
 			Object value = new Object();
 			ConstantParameter parameter = new ConstantParameter(value);
@@ -34,7 +34,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testDependsOnTouchableWithTouchableSpecifiedAsConstant()
+		public void TestDependsOnTouchableWithTouchableSpecifiedAsConstant()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			SimpleTouchable touchable = new SimpleTouchable();

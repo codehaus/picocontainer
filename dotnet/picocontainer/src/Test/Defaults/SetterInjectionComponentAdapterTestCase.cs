@@ -43,7 +43,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testDependenciesAreResolved()
+		public void TestDependenciesAreResolved()
 		{
 			SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", typeof (A), null));
 			SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", typeof (B), null));
@@ -61,7 +61,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void testAllUnsatisfiableDependenciesAreSignalled()
+		public void TestAllUnsatisfiableDependenciesAreSignalled()
 		{
 			SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("a", typeof (A), null));
 			SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter(new ConstructorInjectionComponentAdapter("b", typeof (B), null));

@@ -57,10 +57,8 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
         return document.getDocumentElement();
     }
 
-
     protected void configure(Reader nanoContainerXml)
-            throws IOException, ClassNotFoundException, EmptyXmlConfigurationException, SAXConfigurationException,
-            InstantiationConfigurationException, IllegalAccessConfigurationException {
+            throws IOException, ClassNotFoundException, EmptyXmlConfigurationException, SAXConfigurationException {
         final InputSource is = new InputSource(nanoContainerXml);
         try {
             Element rootElement = getRootElement(is);
@@ -68,11 +66,11 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
             XmlFrontEnd xmlFrontEnd = null;
             if (xmlFrontEndClassName != null && !xmlFrontEndClassName.equals("")) {
                 try {
-                    xmlFrontEnd = (XmlFrontEnd) Class.forName(xmlFrontEndClassName).newInstance();
+                    xmlFrontEnd = (XmlFrontEnd) this.getClass().getClassLoader().loadClass(xmlFrontEndClassName).newInstance();
                 } catch (InstantiationException e) {
-                    throw new InstantiationConfigurationException(e);
+                    throw new ClassNotFoundException("InstantiationException in XmlAssemblyNanoContainer - " + e.getMessage());
                 } catch (IllegalAccessException e) {
-                    throw new IllegalAccessConfigurationException(e);
+                    throw new ClassNotFoundException("IllegalAccessException in XmlAssemblyNanoContainer - " + e.getMessage());
                 }
             } else {
                 xmlFrontEnd = new DefaultXmlFrontEnd();

@@ -10,6 +10,10 @@ package org.nanocontainer;
 
 import junit.framework.TestCase;
 import org.xml.sax.SAXException;
+import org.picocontainer.extras.DefaultLifecyclePicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -34,7 +38,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
     public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
-                "<container isfe='foo'>" +
+                "<container>" +
                 "      <component classname='org.nanocontainer.Xxx$A'/>" +
                 "      <container>" +
                 "          <component classname='org.nanocontainer.Xxx$C'/>" +
@@ -59,9 +63,57 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        ;
+        assertTrue("Bespoke Front End (a test class) should have been used",BespokeXmlFrontEnd.used);
+    }
 
-        assertTrue("Bespoke Front End (test class) should have been used",BespokeXmlFrontEnd.used);
+    public void testInstantiateWithBogusXmlFrontEnd() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        try {
+            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                    "<container xmlfrontend='YeeeeeHaaaaa'>" +
+                    "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                    "</container>"), new MockMonitor());
+            fail("Should have barfed with ClassNotFoundException");
+        } catch (ClassNotFoundException e) {
+        }
+
+    }
+
+    public void testInstantiateWithBespokeContainer() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        OverriddenDefaultLifecyclePicoContainer.used = false;
+
+        NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                "<container container='"+OverriddenDefaultLifecyclePicoContainer.class.getName()+"'>" +
+                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "</container>"), new MockMonitor());
+        nano.stopComponentsDepthFirst();
+        nano.disposeComponentsDepthFirst();
+
+        assertTrue("Bespoke Container (a test class) should have been used",OverriddenDefaultLifecyclePicoContainer.used);
+    }
+
+    public void testInstantiateWithBogusContainer() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        try {
+            NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                    "<container container='YeeeHaaaaa'>" +
+                    "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                    "</container>"), new MockMonitor());
+            fail("Should have barfed with ClassNotFoundException");
+        } catch (ClassNotFoundException e) {
+        }
+
+    }
+
+
+    public static class OverriddenDefaultLifecyclePicoContainer extends DefaultLifecyclePicoContainer {
+
+        public static boolean used;
+
+        public OverriddenDefaultLifecyclePicoContainer() {
+            used = true;
+        }
     }
 
 

@@ -9,25 +9,31 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
+import org.nanocontainer.script.xml.XMLContainerBuilder;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
 /**
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  */
-public class XMLContainerComposerTestCase extends MockObjectTestCase {
+public class ScopedContainerComposerTestCase extends MockObjectTestCase {
 
     public void testDefaultConfiguration() throws Exception {
-        XMLContainerComposer composer = new XMLContainerComposer();
+        ScopedContainerComposer composer = new ScopedContainerComposer();
 
         MutablePicoContainer application = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
@@ -47,14 +53,10 @@ public class XMLContainerComposerTestCase extends MockObjectTestCase {
     }
 
     public void testCustomConfiguration() throws Exception {
-        Map config = new HashMap();
-        config.put(XMLContainerComposer.APPLICATION_CONFIG_KEY,
-                new String[]{"nanowar-application.xml","nanowar/application.xml"});
-        config.put(XMLContainerComposer.SESSION_CONFIG_KEY,
-                new String[]{"nanowar-session.xml","nanowar/session.xml"});
-        config.put(XMLContainerComposer.REQUEST_CONFIG_KEY,
-                new String[]{"nanowar-request.xml","nanowar/request.xml"});
-        XMLContainerComposer composer = new XMLContainerComposer(config);
+        PicoContainer pico = createPicoContainerConfiguration();
+        ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponentInstance(ScopedContainerConfigurator.class);
+        assertNotNull("configurator", configurator);
+        ScopedContainerComposer composer = new ScopedContainerComposer(pico);
 
         MutablePicoContainer application = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
@@ -76,4 +78,25 @@ public class XMLContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(request.getComponentInstance("requestScopedInstance2"));
     }
 
+    private PicoContainer createPicoContainerConfiguration() throws ClassNotFoundException{
+        Reader scriptReader = new StringReader("" +
+                "<container>" +
+                "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+
+                "	   <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>"+
+                "      <parameter><string>nanowar-application.xml,nanowar/application.xml</string></parameter> "+
+                "      <parameter><string>nanowar-session.xml,nanowar/session.xml</string></parameter>        "+
+                "      <parameter><string>nanowar-request.xml,nanowar/request.xml</string></parameter> "+
+                "</component-implementation>" +    						
+                "</container>");
+        String builderClassName = XMLContainerBuilder.class.getName();
+        ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
+        return buildContainer(scriptedContainerBuilderFactory.getContainerBuilder());        
+    }
+
+    private PicoContainer buildContainer(ScriptedContainerBuilder builder) {
+        ObjectReference containerRef = new SimpleReference();
+        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
+        return (PicoContainer) containerRef.get();
+    }
+        
 }

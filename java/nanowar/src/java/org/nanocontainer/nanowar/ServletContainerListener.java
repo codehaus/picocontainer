@@ -8,18 +8,11 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
-
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.Enumeration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -28,11 +21,20 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.Enumeration;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerComposer;
+import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet
@@ -41,17 +43,33 @@ import java.util.Enumeration;
  * applications/sessions start/stop.
  * <p/>
  * To use, add this as a listener-class to web.xml.
+ * The containers are configured via context-params in web.xml, in two ways: 
+ * <ol>
+ * 	 <li>A NanoContainer script via a parameter whose name is nanocontainer.<language>, 
+ *       where <language> is one of the supported scripting languages,
+ *       see {@link ScriptedContainerBuilderFactory}.  The parameter value can be
+ * 	     either an inlined script (enclosed in <![CDATA[]>), or a resource path for 
+ * 	  	 the script.
+ *   </li>
+ *   <li>A ContainerComposer class via the parameter name {@link CONTAINER_COMPOSER},
+ * 		which can be configured via an optional parameter {@link CONTAINER_COMPOSER_CONFIGURATION}.
+ *   </li>
+ * </ol>
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Aslak Helles&oslash;y
  * @author Philipp Meier
  * @author Paul Hammant
+ * @author Mauro Talevi
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
     private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public static final String KILLER_HELPER = "KILLER_HELPER";
-
+    public static final String NANOCONTAINER_PREFIX = "nanocontainer";
+    public static final String CONTAINER_COMPOSER = ContainerComposer.class.getName();
+    public static final String CONTAINER_COMPOSER_CONFIGURATION = CONTAINER_COMPOSER + ".configuration";
+    
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         try {
@@ -73,9 +91,8 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();
-            if (initParameter.startsWith("nanocontainer")) {
-                String extension = initParameter.substring(initParameter.lastIndexOf('.'));
-                String builderClassName = ScriptedContainerBuilderFactory.getBuilderClassName(extension);
+            if (initParameter.startsWith(NANOCONTAINER_PREFIX)) {
+                String builderClassName = getBuilderClassName(initParameter);
                 String script = context.getInitParameter(initParameter);
                 Reader scriptReader;
                 if (script.trim().startsWith("/") && !(script.trim().startsWith("//") || script.trim().startsWith("/*"))) {
@@ -87,17 +104,47 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
                 return scriptedContainerBuilderFactory.getContainerBuilder();
             }
-            if (initParameter.equals(ContainerComposer.class.getName())) {
-                String containerComposerClassName = context.getInitParameter(initParameter);
-                // disposable
-                NanoContainer nanoContainer = new DefaultNanoContainer(Thread.currentThread().getContextClassLoader());
-                ContainerComposer containerComposer = (ContainerComposer) nanoContainer.registerComponentImplementation(containerComposerClassName).getComponentInstance(nanoContainer.getPico());
+            if (initParameter.equals(CONTAINER_COMPOSER)) {
+                ContainerComposer containerComposer = createContainerComposer(context);
                 return new DefaultLifecycleContainerBuilder(containerComposer);
             }
         }
         throw new PicoCompositionException("Couldn't create a builder from context parameters in web.xml");
     }
 
+    private ContainerComposer createContainerComposer(ServletContext context) throws ClassNotFoundException{
+        String containerComposerClassName = context.getInitParameter(CONTAINER_COMPOSER);
+        // disposable container used to instantiate the ContainerComposer
+        NanoContainer nanoContainer = new DefaultNanoContainer(Thread.currentThread().getContextClassLoader());
+        String script = context.getInitParameter(CONTAINER_COMPOSER_CONFIGURATION);
+        PicoContainer picoConfiguration = null;
+        if ( script != null ){
+            Reader scriptReader = new InputStreamReader(context.getResourceAsStream(script));
+            String builderClassName = getBuilderClassName(script);
+            ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
+            picoConfiguration = buildContainer(scriptedContainerBuilderFactory.getContainerBuilder());
+        }
+        ComponentAdapter componentAdapter = null;
+        if ( picoConfiguration != null ){
+            Parameter[] parameters = new Parameter[]{ new ConstantParameter(picoConfiguration) };
+            componentAdapter = nanoContainer.registerComponentImplementation(containerComposerClassName, containerComposerClassName, parameters);
+        } else {
+            componentAdapter = nanoContainer.registerComponentImplementation(containerComposerClassName);            
+        }
+        return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer.getPico());        
+    }
+
+    private String getBuilderClassName(String scriptName){
+        String extension = scriptName.substring(scriptName.lastIndexOf('.'));
+        return ScriptedContainerBuilderFactory.getBuilderClassName(extension);
+    }
+    
+    protected PicoContainer buildContainer(ScriptedContainerBuilder builder) {
+        ObjectReference containerRef = new SimpleReference();
+        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
+        return (PicoContainer) containerRef.get();
+    }
+    
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);

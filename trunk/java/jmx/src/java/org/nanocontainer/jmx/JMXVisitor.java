@@ -26,7 +26,7 @@ import org.picocontainer.defaults.AbstractPicoVisitor;
 
 /**
  * @author Michael Ward
- * @author J&ouml,rg Schaible
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class JMXVisitor extends AbstractPicoVisitor {
@@ -54,6 +54,10 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	}
 
 	public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        if (picoContainer == null) {
+            throw new JMXRegistrationException("Cannot start JMXVisitor traversal with a ComponentAdapter");
+        }
+
 		String className = getComponentKeyAsString(componentAdapter);
 
 		if (map.containsKey(className)) {
@@ -85,7 +89,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	 * Create a DynamicMBean from the MBeanInfoWrapper being passed in.
 	 */
 	protected void handleMBeanInfo(ComponentAdapter componentAdapter, MBeanInfoWrapper mBeanInfoWrapper) {
-		MBeanInfo mBeanInfo = mBeanInfoWrapper.getmBeanInfo();
+		MBeanInfo mBeanInfo = mBeanInfoWrapper.getMBeanInfo();
 		ObjectName objectName = mBeanInfoWrapper.getObjectName();
 		Object instance = componentAdapter.getComponentInstance(picoContainer);
 		DynamicMBean mbean = getDynamicMBeanFactory(picoContainer).create(instance, mBeanInfo);
@@ -99,13 +103,14 @@ public class JMXVisitor extends AbstractPicoVisitor {
      * @return the DynamicMBeanFactory to use.
      */
 	protected DynamicMBeanFactory getDynamicMBeanFactory(PicoContainer picoContainer) {
-        if (factory == null) {
-            factory = (DynamicMBeanFactory)picoContainer.getComponentInstanceOfType(DynamicMBeanFactory.class);
+        DynamicMBeanFactory mBeanFactory = (DynamicMBeanFactory)picoContainer.getComponentInstanceOfType(DynamicMBeanFactory.class);
+        if (mBeanFactory == null) {
             if (factory == null) {
                 factory = createDynamicMBeanFactory();
             }
+            mBeanFactory = factory;
         }
-        return factory;
+        return mBeanFactory;
 	}
 
     /**
@@ -161,7 +166,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 			this.objectName = objectName;
 		}
 
-		public MBeanInfo getmBeanInfo() {
+		public MBeanInfo getMBeanInfo() {
 			return mBeanInfo;
 		}
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="comp-dep-non-comp">
+      <question>
+        What if my component depend on non-component objects (such as configuration, ints and strings)?
+      </question>
+      <answer>
+        <p>
+          This is not supported in the current release (1.0-alpha). We have a design and have 
+          almost implemented support for it. Will hopefully be included in next release.
+        </p>
+        
+        <source>bla bla</source>
+      </answer>
+    </faq>
+
+    <faq id="why-1-ctor">
+      <question>
+        Why can my components only have one constructor?
+      </question>
+      <answer>
+        <p>
+          In order for Pico to unambigiously deduce what dependencies your component have. If you require 
+          your component to have several constructors for other purposes, consider creating a Pico-compatible 
+          wrapper or sub-class.
+        </p>
+      </answer>
+    </faq>
+  </part>
+  
+  <part id="install">
+    <title>Installation</title>
+   
+    <faq id="how-install">
+      <question>
+        How do I install PicoContainer?
+      </question>
+      <answer>
+        <p>
+          Like any other library that comes in a jar. Just make sure it's on your application's classpath.
+        </p>
+      </answer>
+    </faq>
+  </part>  
+</faqs>

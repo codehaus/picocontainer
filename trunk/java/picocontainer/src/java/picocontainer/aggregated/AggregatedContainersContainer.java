@@ -12,10 +12,15 @@ package picocontainer.aggregated;
 
 import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.PicoInvocationTargetInitializationException;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -32,7 +37,7 @@ import java.util.HashSet;
  */
 public class AggregatedContainersContainer extends DefaultPicoContainer {
 
-    private final PicoContainer[] containers;
+    private final List containers = new ArrayList();
 
     public AggregatedContainersContainer(final PicoContainer[] containers) {
         super(new DefaultComponentFactory());
@@ -44,8 +49,8 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
             if (container == null) {
                 throw new NullPointerException("PicoContainer at position " + i + " was null");
             }
+            this.containers.add(container);
         }
-        this.containers = containers;
     }
 
     public static class Filter extends AggregatedContainersContainer {
@@ -62,24 +67,59 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
     }
 
     public Object getComponent(Class componentType) {
-        for (int i = 0; i < containers.length; i++) {
-            PicoContainer container = containers[i];
-            if (container.hasComponent(componentType)) {
-                return container.getComponent(componentType);
+        Object answer = super.getComponent(componentType);
+        if (answer == null) {
+            for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
+                PicoContainer container = (PicoContainer) iter.next();
+                if (container.hasComponent(componentType)) {
+                    return container.getComponent(componentType);
+                }
             }
         }
-        return null;
+        return answer;
     }
 
     public Class[] getComponentTypes() {
         Set componentTypes = new HashSet();
-        for (int i = 0; i < containers.length; i++) {
-            PicoContainer container = containers[i];
+        componentTypes.addAll(Arrays.asList(super.getComponentTypes()));
+        for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
+            PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(Arrays.asList(container.getComponentTypes()));
         }
-        return (Class[]) componentTypes.toArray(new Class[containers.length]);
+        return (Class[]) componentTypes.toArray(new Class[containers.size()]);
     }
 
-    public void instantiateComponents() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInvocationTargetInitializationException, PicoInstantiationException, PicoIntrospectionException {
+        super.instantiateComponents();
+        
+        // @todo should we iterate through our child containers and instantiate those?
+    }
+
+    /**
+     * Adds a new Pico container to this aggregated container
+     * @param container
+     */
+    protected void addContainer(PicoContainer container) {
+        containers.add(container);
+    }
+    
+    /**
+     * Removes a Pico container from this aggregated container
+     * @param container
+     */
+    protected void removeContainer(PicoContainer container) {
+        containers.remove(container);
+    }
+    
+    /**
+     * A helper method which adds each of the objects in the array to the list
+     * 
+     * @param list
+     * @param objects
+     */
+    protected static void addAll(List list, Object[] objects) {
+        for (int i = 0, size = objects.length; i < size; i++ ) {
+            list.add(objects[i]);
+        }
     }
 }

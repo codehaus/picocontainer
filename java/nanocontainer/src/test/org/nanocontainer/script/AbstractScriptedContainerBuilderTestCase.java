@@ -13,19 +13,18 @@
  */
 package org.nanocontainer.script;
 
-import junit.framework.TestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
-public abstract class AbstractScriptedContainerBuilderTestCase extends TestCase {
+public abstract class AbstractScriptedContainerBuilderTestCase extends MockObjectTestCase {
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
-    protected SoftCompositionPicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer) {
+    protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer, Object scope) {
         parentContainerRef.set(parentContainer);
-        builder.buildContainer(containerRef, parentContainerRef, "SOME_SCOPE", true);
-        return (SoftCompositionPicoContainer) containerRef.get();
+        builder.buildContainer(containerRef, parentContainerRef, scope, true);
+        return (PicoContainer) containerRef.get();
     }
 }

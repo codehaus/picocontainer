@@ -100,7 +100,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
                 "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new TestPicoContainer());
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new TestPicoContainer(), "SOME_SCOPE");
         assertEquals(2, pico.getComponentInstances().size());
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
     }
@@ -112,7 +112,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
                 "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new DefaultPicoContainer());
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new DefaultPicoContainer(), "SOME_SCOPE");
         assertEquals(2, pico.getComponentInstances().size());
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
         assertNotNull(pico.getParent());

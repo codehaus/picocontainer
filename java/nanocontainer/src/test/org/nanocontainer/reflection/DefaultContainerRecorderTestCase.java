@@ -1,20 +1,19 @@
 package org.nanocontainer.reflection;
 
+import junit.framework.TestCase;
+import org.nanocontainer.integrationkit.ContainerRecorder;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
-import junit.framework.TestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.integrationkit.ContainerRecorder;
-import org.nanocontainer.reflection.DefaultContainerRecorder;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ComponentParameter;
 
 /**
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
@@ -22,7 +21,7 @@ import org.picocontainer.defaults.ComponentParameter;
  */
 public class DefaultContainerRecorderTestCase extends TestCase {
 	public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
-		ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
+		ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoPicoContainer());
 		MutablePicoContainer recorded = recorder.getContainerProxy();
 
 		recorded.registerComponentInstance("fruit", "apple");
@@ -34,25 +33,25 @@ public class DefaultContainerRecorderTestCase extends TestCase {
 					new ComponentParameter()
 			});
 
-		SoftCompositionPicoContainer slave = new DefaultSoftCompositionPicoContainer();
+		MutablePicoContainer slave = new DefaultPicoContainer();
 		recorder.replay(slave);
 		assertEquals("apple",slave.getComponentInstance("fruit"));
 		assertEquals("apple239",((ThingThatTakesParamsInConstructor)slave.getComponentInstance("thing")).getValue());
 
 		// test that we can replay once more
-		SoftCompositionPicoContainer anotherSlave = new DefaultSoftCompositionPicoContainer();
+		MutablePicoContainer anotherSlave = new DefaultPicoContainer();
 		recorder.replay(anotherSlave);
 		assertEquals("apple",anotherSlave.getComponentInstance("fruit"));
 		assertEquals("apple239",((ThingThatTakesParamsInConstructor)anotherSlave.getComponentInstance("thing")).getValue());
 	}
 
     public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
-        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultSoftCompositionPicoContainer());
-        SoftCompositionPicoContainer recorded = recorder.getContainerProxy();
+        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultPicoContainer());
+        MutablePicoContainer recorded = recorder.getContainerProxy();
         recorded.registerComponentInstance("fruit", "apple");
 
         ContainerRecorder serializedRecorder = (ContainerRecorder) serializeAndDeserialize(recorder);
-        SoftCompositionPicoContainer slave = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer slave = new DefaultPicoContainer();
 		serializedRecorder.replay(slave);
 		assertEquals("apple",slave.getComponentInstance("fruit"));
     }

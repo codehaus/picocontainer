@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.script.rhino;
 
-import java.io.IOException;
-import java.io.Reader;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.DefiningClassLoader;
 import org.mozilla.javascript.GeneratedClassLoader;
@@ -20,15 +18,17 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 
+import java.io.IOException;
+import java.io.Reader;
+
 /**
  * {@inheritDoc}
  * The script has to assign a "pico" variable with an instance of 
- * {@link SoftCompositionPicoContainer}.
+ * {@link PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
@@ -75,10 +75,10 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                 throw new PicoCompositionException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
-            if (!(javaObject instanceof SoftCompositionPicoContainer)) {
-                throw new PicoCompositionException("The 'pico' variable must be of type " + SoftCompositionPicoContainer.class.getName());
+            if (!(javaObject instanceof PicoContainer)) {
+                throw new PicoCompositionException("The 'pico' variable must be of type " + PicoContainer.class.getName());
             }
-            return (SoftCompositionPicoContainer) javaObject;
+            return (PicoContainer) javaObject;
         } catch (PicoCompositionException e) {
             throw e;
         } catch (JavaScriptException e) {

@@ -8,21 +8,20 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-
 package org.nanocontainer.script.groovy;
 
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -38,12 +37,10 @@ import java.util.Map;
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Paul Hammant
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class NanoGroovyBuilder extends BuilderSupport {
-
-    public NanoGroovyBuilder() {
-    }
 
     protected void setParent(Object parent, Object child) {
     }
@@ -67,74 +64,67 @@ public class NanoGroovyBuilder extends BuilderSupport {
     }
 
     protected Object createNode(Object name, Object value) {
-        if (value instanceof Class) {
-            Map attributes = new HashMap();
-            attributes.put("class", value);
-            return createNode(name, attributes);
-        }
-        return createNode(name);
+        Map attributes = new HashMap();
+        attributes.put("class", value);
+        return createNode(name, attributes);
     }
 
     protected Object createNode(Object name, Map attributes) {
-        Object parent = getCurrent();
-        if (name.equals("container")) {
-            return createContainerNode(parent, attributes);
-        } else if (parent instanceof MutablePicoContainer) {
-            try {
-                return createChildOfContainerNode(parent, name, attributes);
-            } catch (ClassNotFoundException e) {
-                throw new PicoBuilderException("ClassNotFoundException:" + e.getMessage(), e);
+        Object current = getCurrent();
+        if (current != null && current instanceof GroovyObject) {
+            return createChildBuilder(current, name, attributes);
+        } else {
+            NanoContainer parent = (NanoContainer) current;
+            if (name.equals("container")) {
+                return createChildContainer(attributes, parent);
+            } else {
+                try {
+                    return createChildOfContainerNode(parent, name, attributes);
+                } catch (ClassNotFoundException e) {
+                    throw new PicoBuilderException("ClassNotFoundException:" + e.getMessage(), e);
+                }
             }
         }
-        throw new PicoBuilderException("Unknown method: '" + name + "'");
     }
 
-    private Object createChildOfContainerNode(Object parent, Object name, Map attributes) throws ClassNotFoundException {
-        SoftCompositionPicoContainer parentContainer = (SoftCompositionPicoContainer) parent;
+    private Object createChildBuilder(Object current, Object name, Map attributes) {
+        GroovyObject groovyObject = (GroovyObject) current;
+        return groovyObject.invokeMethod(name.toString(), attributes);
+    }
+
+    private Object createChildOfContainerNode(NanoContainer parentContainer, Object name, Map attributes) throws ClassNotFoundException {
         if (name.equals("component")) {
             return createComponentNode(attributes, parentContainer, name);
         } else if (name.equals("bean")) {
-            return createBeanNode(attributes, parentContainer);
+            return createBeanNode(attributes, parentContainer.getPico());
         } else if (name.equals("classpathelement")) {
             return createClassPathElementNode(attributes, parentContainer);
+        } else if (name.equals("doCall")) {
+            // TODO ????
+            //BuilderSupport builder = (BuilderSupport) attributes.remove("class");
+            return null;
+
         } else if (name.equals("newBuilder")) {
             return createNewBuilderNode(attributes, parentContainer);
-        } else {
-            return processAlternateContainerNodes(parent, name, attributes);
         }
-    }
-
-    private Object createNewBuilderNode(Map attributes, SoftCompositionPicoContainer parentContainer) {
-        String builderClass = (String) attributes.remove("class");
-        DefaultSoftCompositionPicoContainer transientPC = new DefaultSoftCompositionPicoContainer();
-        transientPC.registerComponentInstance(MutablePicoContainer.class, parentContainer);
-        try {
-            transientPC.registerComponentImplementation(GroovyObject.class, builderClass);
-        } catch (ClassNotFoundException e) {
-            throw new PicoBuilderException("ClassNotFoundException " + builderClass);
-        }
-        Object componentInstance = transientPC.getComponentInstance(GroovyObject.class);
-        return componentInstance;
-    }
-
-    protected Object processAlternateContainerNodes(Object parent, Object name, Map attributes) {
         throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
     }
 
-    private Object createContainerNode(Object parent, Map attributes) {
-        MutablePicoContainer parentContainer = null;
-        if (parent instanceof MutablePicoContainer) {
-            parentContainer = (MutablePicoContainer) parent;
+    private Object createNewBuilderNode(Map attributes, NanoContainer parentContainer) {
+        String builderClass = (String) attributes.remove("class");
+        NanoContainer factory = new DefaultNanoContainer();
+        MutablePicoContainer parentPico = parentContainer.getPico();
+        factory.getPico().registerComponentInstance(MutablePicoContainer.class, parentPico);
+        try {
+            factory.registerComponentImplementation(GroovyObject.class, builderClass);
+        } catch (ClassNotFoundException e) {
+            throw new PicoBuilderException("ClassNotFoundException " + builderClass);
         }
-        if (parentContainer == null) {
-            parentContainer = (MutablePicoContainer) attributes.remove("parent");
-            ;
-        }
-        MutablePicoContainer answer = createContainer(attributes, parentContainer);
-        return answer;
+        Object componentInstance = factory.getPico().getComponentInstance(GroovyObject.class);
+        return componentInstance;
     }
 
-    private Object createClassPathElementNode(Map attributes, ReflectionContainerAdapter reflectionContainerAdapter) {
+    private Object createClassPathElementNode(Map attributes, NanoContainer nanoContainer) {
 
         String path = (String) attributes.remove("path");
         URL pathURL = null;
@@ -147,7 +137,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
         } catch (MalformedURLException e) {
             throw new PicoBuilderException("classpath '" + path + "' malformed ", e);
         }
-        reflectionContainerAdapter.addClassLoaderURL(pathURL);
+        nanoContainer.addClassLoaderURL(pathURL);
         return pathURL;
     }
 
@@ -158,16 +148,25 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return answer;
     }
 
-    private Object createComponentNode(Map attributes, SoftCompositionPicoContainer pico, Object name) throws ClassNotFoundException {
+    private Object createComponentNode(Map attributes, NanoContainer nano, Object name) throws ClassNotFoundException {
         Object key = attributes.remove("key");
-        Object type = attributes.remove("class");
+        Object classValue = attributes.remove("class");
         Object instance = attributes.remove("instance");
         List parameters = (List) attributes.remove("parameters");
 
-        if (type != null) {
-            registerComponentImplementation(pico, key, type, parameters);
+        Parameter[] parameterArray = getParameters(parameters);
+        if (classValue instanceof Class) {
+            Class clazz = (Class) classValue;
+            key = key == null ? clazz : key;
+            MutablePicoContainer pico = nano.getPico();
+            pico.registerComponentImplementation(key, clazz, parameterArray);
+        } else if (classValue instanceof String) {
+            String className = (String) classValue;
+            key = key == null ? className : key;
+            nano.registerComponentImplementation(key, className, parameterArray);
         } else if (instance != null) {
-            registerComponentInstance(pico, key, instance);
+            key = key == null ? instance.getClass() : key;
+            nano.getPico().registerComponentInstance(key, instance);
         } else {
             throw new PicoBuilderException("Must specify a class attribute for a component");
         }
@@ -180,63 +179,23 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
-        ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
-        Class containerImpl = (Class) attributes.remove("class");
+    protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
+        ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) attributes.remove("componentAdapterFactory");
+        componentAdapterFactory = componentAdapterFactory != null ? componentAdapterFactory : new DefaultComponentAdapterFactory();
+
         String name = (String) attributes.remove("name");
-        SoftCompositionPicoContainer softPico = null;
-
-        if (containerImpl != null) {
-            SoftCompositionPicoContainer scpc = null;
-            if (parent != null) {
-                ClassLoader cl = null;
-                if (parent instanceof SoftCompositionPicoContainer) {
-                    cl = ((SoftCompositionPicoContainer) parent).getComponentClassLoader();
-                } else {
-                    cl = this.getClass().getClassLoader();
-                }
-                scpc = new DefaultSoftCompositionPicoContainer(cl);
-                scpc.registerComponentInstance(ClassLoader.class, cl);
-                scpc.registerComponentInstance(PicoContainer.class, parent);
-            } else {
-                scpc = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader());
-                scpc.registerComponentInstance(ClassLoader.class, NanoGroovyBuilder.class.getClassLoader());
-            }
-            if (adapterFactory != null) {
-                scpc.registerComponentInstance(ComponentAdapterFactory.class, adapterFactory);
-            }
-            scpc.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
-            softPico = (SoftCompositionPicoContainer) scpc.getComponentInstance(SoftCompositionPicoContainer.class);
+        ClassLoader parentClassLoader = null;
+        MutablePicoContainer parentPicoContainer = null;
+        if (parent != null) {
+            parentClassLoader = parent.getComponentClassLoader();
+            parentPicoContainer = parent.getPico();
+            parentPicoContainer = new DefaultPicoContainer(componentAdapterFactory, parentPicoContainer);
+            parent.getPico().addChildContainer(parentPicoContainer);
         } else {
-
-            if (parent != null) {
-                ClassLoader cl = null;
-                if (parent instanceof SoftCompositionPicoContainer) {
-                    cl = ((SoftCompositionPicoContainer) parent).getComponentClassLoader();
-                } else {
-                    cl = this.getClass().getClassLoader();
-                }
-                if (adapterFactory != null) {
-                    softPico = new DefaultSoftCompositionPicoContainer(cl, adapterFactory, parent);
-                } else {
-                    softPico = new DefaultSoftCompositionPicoContainer(cl, parent);
-                }
-                if (parent instanceof SoftCompositionPicoContainer) {
-                    ((SoftCompositionPicoContainer) parent).addChildContainer(name, softPico);
-                } else {
-                    parent.addChildContainer(softPico);
-                }
-
-            } else {
-                if (adapterFactory != null) {
-                    softPico = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader(), adapterFactory, null);
-                } else {
-                    softPico = new DefaultSoftCompositionPicoContainer();
-                }
-            }
+            parentClassLoader = Thread.currentThread().getContextClassLoader();
+            parentPicoContainer = new DefaultPicoContainer(componentAdapterFactory);
         }
-
-        return softPico;
+        return new DefaultNanoContainer(parentClassLoader, parentPicoContainer);
     }
 
     protected Object createBean(Map attributes) {
@@ -261,33 +220,6 @@ public class NanoGroovyBuilder extends BuilderSupport {
         }
     }
 
-    private void registerComponentImplementation(SoftCompositionPicoContainer pico,
-                                                 Object key, Object type, List paramsList) throws ClassNotFoundException {
-
-        Parameter[] parameters = getParameters(paramsList);
-        if (key != null) {
-            if (type instanceof String) {
-                if (parameters != null) {
-                    pico.registerComponentImplementation(key, (String) type, parameters);
-                } else {
-                    pico.registerComponentImplementation(key, (String) type);
-                }
-            } else {
-                if (parameters != null) {
-                    pico.registerComponentImplementation(key, (Class) type, parameters);
-                } else {
-                    pico.registerComponentImplementation(key, (Class) type);
-                }
-            }
-        } else {
-            if (type instanceof String) {
-                pico.registerComponentImplementation((String) type);
-            } else {
-                pico.registerComponentImplementation((Class) type);
-            }
-        }
-    }
-
     private Parameter[] getParameters(List paramsList) {
         if (paramsList == null) {
             return null;
@@ -302,13 +234,5 @@ public class NanoGroovyBuilder extends BuilderSupport {
 
     private Parameter toParameter(Object obj) {
         return obj instanceof Parameter ? (Parameter) obj : new ConstantParameter(obj);
-    }
-
-    private void registerComponentInstance(SoftCompositionPicoContainer pico, Object key, Object instance) {
-        if (key != null) {
-            pico.registerComponentInstance(key, instance);
-        } else {
-            pico.registerComponentInstance(instance);
-        }
     }
 }

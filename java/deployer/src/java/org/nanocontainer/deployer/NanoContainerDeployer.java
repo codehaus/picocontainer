@@ -20,7 +20,7 @@ import org.apache.commons.vfs.FileSelector;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ScriptedContainerBuilderFactory;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
@@ -31,7 +31,7 @@ import java.io.Reader;
 /**
  * This class is capable of deploying an application from any kind of file system
  * supported by <a href="http://jakarta.apache.org/commons/sandbox/vfs/">Jakarta VFS</a>.
- * (Like local files, zip files etc.) - following the NanoContainer scripting model.
+ * (Like local files, zip files etc.) - following the ScriptedContainerBuilderFactory scripting model.
  *
  * The root folder to deploy must have the following file structure:
  * <pre>
@@ -45,7 +45,7 @@ import java.io.Reader;
  * </pre>
  *
  * For those familiar with J2EE containers (or other containers for that matter), the
- * META-INF/picocontainer script is the NanoContainer <em>composition script</em>. It plays the same
+ * META-INF/picocontainer script is the ScriptedContainerBuilderFactory <em>composition script</em>. It plays the same
  * role as more classical "deployment descriptors", except that deploying via a full blown
  * scripting language is a lot more powerful!
  *
@@ -107,10 +107,10 @@ public class NanoContainerDeployer implements Deployer {
 
         String extension = "." + deploymentScript.getName().getExtension();
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
-        String builderClassName = NanoContainer.getBuilderClassName(extension);
+        String builderClassName = ScriptedContainerBuilderFactory.getBuilderClassName(extension);
 
-        NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, applicationClassLoader);
-        ContainerBuilder builder = nanoContainer.getContainerBuilder();
+        ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, applicationClassLoader);
+        ContainerBuilder builder = scriptedContainerBuilderFactory.getContainerBuilder();
         builder.buildContainer(result, parentContainerRef, null, true);
 
         return result;

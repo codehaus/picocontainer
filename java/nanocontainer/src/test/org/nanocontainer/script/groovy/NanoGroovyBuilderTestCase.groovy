@@ -20,11 +20,11 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container() {
+        nano = builder.container() {
             component(Xxx$A)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
@@ -34,13 +34,13 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             container() {
                 component(Xxx$A)
             }
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
@@ -52,7 +52,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         // A and C have no no dependancies. B Depends on A.
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             component(Xxx$A)
             container() {
                 component(Xxx$B)
@@ -60,7 +60,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
             component(Xxx$C)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         // TODO this method seems non-deterministic, returning either of the following
         //
@@ -70,11 +70,11 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
 
     void testInstantiateWithImpossibleComponentDependanciesConsideringTheHierarchy() {
 
-        // A and C have no no dependancies. B Depends on A.
+        // A and C have no no dependencies. B Depends on A.
 
         try {
             builder = new NanoGroovyBuilder()
-            pico = builder.container {
+            nano = builder.container {
                 component(Xxx$B)
                 container() {
                     component(Xxx$A)
@@ -82,7 +82,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
                 component(Xxx$C)
             }
 
-            startAndStop(pico)
+            startAndDispose(nano)
 
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.")
         }
@@ -90,18 +90,18 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         }
     }
 
-    void testInstantiateWithBespokeComponentAdaptor() {
+    void testInstantiateWithBespokeComponentAdapter() {
 
         sb = new StringBuffer();
 
         builder = new NanoGroovyBuilder()
         caf = new TestComponentAdapterFactory(sb)
-        pico = builder.container(adapterFactory:caf) {
+        nano = builder.container(componentAdapterFactory:caf) {
             component(key:WebServerConfig, class:DefaultWebServerConfig)
             component(key:WebServer, class:WebServerImpl)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         assertTrue(sb.toString().indexOf("called") != -1)
     }
@@ -109,16 +109,16 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
     void testInstantiateWithInlineConfiguration() {
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             bean(beanClass:WebServerConfigBean, host:'foobar.com', port:4321)
             component(key:WebServer, class:WebServerImpl)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
-        assertTrue("WebServerConfigBean and WebServerImpl expected", pico.getComponentInstances().size() == 2)
+        assertTrue("WebServerConfigBean and WebServerImpl expected", nano.pico.getComponentInstances().size() == 2)
 
-        wsc = pico.getComponentInstanceOfType(WebServerConfig)
+        wsc = nano.pico.getComponentInstanceOfType(WebServerConfig)
         assertEquals("foobar.com", wsc.getHost())
         assertTrue(wsc.getPort() == 4321)
     }
@@ -141,30 +141,32 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
                 component(class:"TestComp2")
             }
         }
-        assertTrue(parent.getComponentInstances().size() == 2)
-        assertTrue(child.getComponentInstances().size() == 1)
+        assertTrue(parent.pico.getComponentInstances().size() == 2)
+        assertTrue(child.pico.getComponentInstances().size() == 1)
         assertNotNull(child.getComponentInstanceOfType("TestComp2"))
 
     }
 
-
-    protected void startAndStop(pico) {
-        pico.start()
-        pico.dispose()
-    }
-
-    void testInstantiateBasicComponentInCustomContainer() {
+    /*
+    Now that the builder is building NanoContainer instances, we must agree on what the class
+    paramter means - is it the NanoContainer type or the nested PicoContainer type?
+    Is it even desirable to have bespoke implementations? Can we get the same flexibility
+    by specifying various delegation classes rather than - sigh - inheritance? Inheritance
+    is always painful to deal with. It's a pattern as bad as singletons...
+    Aslak
+    */
+    void FIXMEtestInstantiateBasicComponentInCustomContainer() {
 
         Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container(class:TestContainer) {
+        nano = builder.container(class:TestContainer) {
             component(Xxx$A)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
-        assertEquals("org.nanocontainer.script.groovy.TestContainer",pico.getClass().getName())
+        assertEquals("org.nanocontainer.script.groovy.TestContainer",nano.getClass().getName())
     }
 
     void testInstantiateBasicComponentWithDeepTree() {
@@ -172,7 +174,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
        Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             container() {
                 container() {
                     component(Xxx$A)
@@ -181,7 +183,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
             component(HashMap.class)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
     }
@@ -191,7 +193,7 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         Xxx.reset()
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             container(name:"huey") {
                 container(name:"duey") {
                     component(key:"Luis", class:Xxx$A)
@@ -200,35 +202,35 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
             component(HashMap.class)
         }
 
-        startAndStop(pico)
+        startAndDispose(nano)
 
         assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
-        Object o = pico.getComponentInstance("huey/duey/Luis")
+        Object o = nano.pico.getComponentInstance("huey/duey/Luis")
         assertNotNull(o)
     }
     
     public void testComponentInstances() {
     
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             component(key:"Louis", instance:"Armstrong")
             component(key:"Duke", instance: "Ellington")
         }
 	
-        assertEquals("Armstrong", pico.getComponentInstance("Louis"))
-        assertEquals("Ellington", pico.getComponentInstance("Duke"))
+        assertEquals("Armstrong", nano.pico.getComponentInstance("Louis"))
+        assertEquals("Ellington", nano.pico.getComponentInstance("Duke"))
     }
 	
     public void testConstantParameters() {
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             component(key:"cat", class:HasParams, parameters:[ "c", "a", "t" ])
             component(key:"dog", class:HasParams, parameters:[ "d", "o", "g" ])
         }
 	
-        cat = pico.getComponentInstance("cat");
-        dog = pico.getComponentInstance("dog");
+        cat = nano.pico.getComponentInstance("cat");
+        dog = nano.pico.getComponentInstance("dog");
         assertEquals("cat", cat.getParams());
         assertEquals("dog", dog.getParams());
     }
@@ -236,17 +238,19 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
     public void testComponentParameters() {
 
         builder = new NanoGroovyBuilder()
-        pico = builder.container {
+        nano = builder.container {
             component(key:"a", class:Xxx$A)
             component(key:"b", class:Xxx$B, parameters:[ new ComponentParameter("a") ])
         }
 	
-        a = pico.getComponentInstance("a");
-        b = pico.getComponentInstance("b");
+        a = nano.pico.getComponentInstance("a");
+        b = nano.pico.getComponentInstance("b");
         assertSame(a, b.getA())
     }
 
-
-
+    protected void startAndDispose(nano) {
+        nano.pico.start()
+        nano.pico.dispose()
+    }
 
 }

@@ -1,8 +1,13 @@
 distributions.*
 target
 junit*
+*.iml
+*.ipr
 *.iws
 *.log
 *.idea
 .classpath
 .project
+.clover
+cachedir
+piconano.iml

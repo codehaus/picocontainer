@@ -17,11 +17,11 @@ Syntax:
 
 <container> ::= <container-class> <container-parent> <assembly-scope>
 
-<container-class> ::= <pico-container>
+<container-class> ::= <nano-container>
 
-<container-parent> ::= { <pico-container> | <null> }
+<container-parent> ::= { <nano-container> | <null> }
 
-<pico-container> ::= org.nanocontainer.SoftCompositionPicoContainer reference
+<nano-container> ::= org.nanocontainer.NanoContainer reference
 
 <null> ::= Null reference
 

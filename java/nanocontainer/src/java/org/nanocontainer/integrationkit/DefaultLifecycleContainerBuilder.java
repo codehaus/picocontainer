@@ -10,9 +10,9 @@
 
 package org.nanocontainer.integrationkit;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder {
     private final ContainerComposer composer;
@@ -21,11 +21,11 @@ public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder 
         this.composer = composer;
     }
 
-    protected void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope) {
+    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
         composer.composeContainer(container, assemblyScope);
     }
 
     protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-        return new DefaultSoftCompositionPicoContainer(parentContainer);
+        return new DefaultPicoContainer(parentContainer);
     }
 }

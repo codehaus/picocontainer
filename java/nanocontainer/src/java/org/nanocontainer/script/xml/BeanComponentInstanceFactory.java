@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import java.util.Properties;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -18,6 +17,8 @@ import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.Properties;
 
 /**
  * Implementation of XMLComponentInstanceFactory that uses BeanPropertyComponentAdapter 

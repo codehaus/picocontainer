@@ -11,7 +11,6 @@ package org.nanocontainer.integrationkit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
@@ -29,12 +28,12 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
         childStartable.expects( once() ).method( "start" ).withNoArguments();
         childStartable.expects( once() ).method( "stop" ).withNoArguments();
 
-        ContainerComposer containerAssembler = new ContainerComposer() {
-            public void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope) {
+        ContainerComposer containerComposer = new ContainerComposer() {
+            public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
                 container.registerComponentInstance(childStartable.proxy());
             }
         };
-        LifecycleContainerBuilder builder = new DefaultLifecycleContainerBuilder(containerAssembler);
+        LifecycleContainerBuilder builder = new DefaultLifecycleContainerBuilder(containerComposer);
 
         ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parent = new DefaultPicoContainer();

@@ -10,7 +10,6 @@ package org.nanocontainer.nanowar.axis;
 
 import org.apache.axis.transport.http.AxisServlet;
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.picocontainer.PicoContainer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

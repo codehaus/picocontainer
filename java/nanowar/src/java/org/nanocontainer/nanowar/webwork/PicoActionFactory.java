@@ -10,8 +10,6 @@ package org.nanocontainer.nanowar.webwork;
 
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
-import org.nanocontainer.nanowar.webwork.ActionContextScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;

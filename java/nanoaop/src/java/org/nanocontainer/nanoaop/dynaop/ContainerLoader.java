@@ -28,12 +28,6 @@ class ContainerLoader {
     private PicoContainer container;
 
     /**
-     * Creates a new <code>ContainerLoader</code>.
-     */
-    ContainerLoader() {
-    }
-
-    /**
      * Gets the Pico container. The <code>setContainer</code> method must have
      * been called prior to calling this method.
      * 

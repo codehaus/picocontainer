@@ -48,7 +48,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 				"	 </implementation>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertEquals(5, pico.getComponentInstances().size());
         assertEquals("foo bar",pico.getComponentInstance("foo"));
         assertEquals(new Integer(239),pico.getComponentInstance("bar"));
@@ -82,7 +82,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 			"</container>" 
 		);
 		
-        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 		TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
 		assertNotNull(tca);
 	}
@@ -107,7 +107,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
 				"		<dependency key='bean2'/>" +
                 "  </implementation>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
         TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());

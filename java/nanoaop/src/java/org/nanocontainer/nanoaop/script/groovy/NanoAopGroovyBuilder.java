@@ -9,11 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.script.groovy;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import dynaop.Aspects;
+import dynaop.Pointcuts;
+import dynaop.ProxyFactory;
 import org.aopalliance.intercept.MethodInterceptor;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.nanoaop.AspectablePicoContainer;
 import org.nanocontainer.nanoaop.AspectsApplicator;
 import org.nanocontainer.nanoaop.AspectsContainer;
@@ -31,9 +32,9 @@ import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
-import dynaop.Aspects;
-import dynaop.Pointcuts;
-import dynaop.ProxyFactory;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Extends <code>org.nanocontainer.script.groovy.NanoGroovyBuilder</code> to
@@ -84,7 +85,7 @@ public class NanoAopGroovyBuilder extends NanoGroovyBuilder {
         return super.createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
+    protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
         AspectsManager aspectsManager = (AspectsManager) attributes.remove("aspectsManager");
         if (aspectsManager == null) {
             aspectsManager = new DynaopAspectsManager(pointcutsFactory);
@@ -95,9 +96,9 @@ public class NanoAopGroovyBuilder extends NanoGroovyBuilder {
 
         Map newAttributes = new HashMap(attributes);
         newAttributes.put("adapterFactory", adapterFactory);
-        MutablePicoContainer pico = super.createContainer(newAttributes, parent);
-        currentPico = mixinAspectablePicoContainer(aspectsManager, pico);
-        return currentPico;
+        NanoContainer nano = super.createChildContainer(newAttributes, parent);
+        currentPico = mixinAspectablePicoContainer(aspectsManager, nano.getPico());
+        return new DefaultNanoContainer(currentPico);
     }
 
     private void rememberComponentKey(Map attributes) {

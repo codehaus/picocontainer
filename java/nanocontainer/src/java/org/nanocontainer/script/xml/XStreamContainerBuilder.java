@@ -14,14 +14,14 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.DomReader;
+import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentParameter;
@@ -80,7 +80,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         }
     }
 
-    public void populateContainer(SoftCompositionPicoContainer container) {
+    public void populateContainer(MutablePicoContainer container) {
 		populateContainer(container,rootElement);
     }
 
@@ -254,7 +254,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             }
             Class cafClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafClass.newInstance();
-            SoftCompositionPicoContainer result = new DefaultSoftCompositionPicoContainer(classLoader, componentAdapterFactory,
+            NanoPicoContainer result = new DefaultNanoPicoContainer(classLoader, componentAdapterFactory,
                     parentContainer);
             populateContainer(result);
             return result;

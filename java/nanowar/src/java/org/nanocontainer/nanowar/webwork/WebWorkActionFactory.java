@@ -17,7 +17,6 @@ import webwork.action.factory.ContextActionFactoryProxy;
 import webwork.action.factory.ParametersActionFactoryProxy;
 import webwork.action.factory.PrefixActionFactoryProxy;
 import webwork.action.factory.PrepareActionFactoryProxy;
-import org.nanocontainer.nanowar.webwork.PicoActionFactory;
 
 /**
  * Custom webwork action lifecycle that ensures actions are treated as pico components.

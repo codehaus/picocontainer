@@ -10,39 +10,41 @@
 
 package org.nanocontainer.reflection;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import junit.framework.TestCase;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
+
+import java.io.File;
+import java.net.MalformedURLException;
 
 public class DefaultReflectionContainerAdapterTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
-        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
-        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
+        NanoContainer nanoContainer = new DefaultNanoContainer();
+        nanoContainer.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        nanoContainer.registerComponentImplementation("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
-        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
-        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
-        reflectionContainerAdapter.registerComponentImplementation("org.nanocontainer.testmodel.WebServerImpl");
+        NanoContainer nanoContainer = new DefaultNanoContainer();
+        nanoContainer.registerComponentImplementation("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        nanoContainer.registerComponentImplementation("org.nanocontainer.testmodel.WebServerImpl");
 
-        assertNotNull("WebServerImpl should exist", reflectionContainerAdapter.getPicoContainer().getComponentInstance(WebServerImpl.class));
-        assertTrue("WebServerImpl should exist", reflectionContainerAdapter.getPicoContainer().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
+        assertNotNull("WebServerImpl should exist", nanoContainer.getPico().getComponentInstance(WebServerImpl.class));
+        assertTrue("WebServerImpl should exist", nanoContainer.getPico().getComponentInstance(WebServerImpl.class) instanceof WebServerImpl);
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
+        NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
-            reflectionContainerAdapter.registerComponentImplementation("Ping");
+            nanoContainer.registerComponentImplementation("Ping");
             fail("should have failed");
         } catch (ClassNotFoundException e) {
             // expected
@@ -50,10 +52,10 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
     }
 
     public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
-        ReflectionContainerAdapter reflectionContainerAdapter = new DefaultReflectionContainerAdapter();
+        NanoContainer nanoContainer = new DefaultNanoContainer();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
-        reflectionContainerAdapter.registerComponentImplementation("thing",
+        nanoContainer.registerComponentImplementation("thing",
                 className,
                 new String[]{
                     "java.lang.String",
@@ -65,7 +67,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
                 });
 
         ThingThatTakesParamsInConstructor thing =
-                (ThingThatTakesParamsInConstructor) reflectionContainerAdapter.getPicoContainer().getComponentInstance("thing");
+                (ThingThatTakesParamsInConstructor) nanoContainer.getPico().getComponentInstance("thing");
         assertNotNull("component not present", thing);
         assertEquals("hello22", thing.getValue());
     }
@@ -73,9 +75,9 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
     public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
 
         try {
-            DefaultReflectionContainerAdapter dfca = new DefaultReflectionContainerAdapter();
+            DefaultNanoContainer dfca = new DefaultNanoContainer();
             dfca.registerComponentImplementation("foo", "TestComp");
-            Object o = dfca.getPicoContainer().getComponentInstance("foo");
+            Object o = dfca.getPico().getComponentInstance("foo");
             fail("Not expected");
         } catch (ClassNotFoundException expected) {
         } catch (Exception e) {
@@ -98,24 +100,24 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         assertTrue(testCompJar2.isFile());
 
         // Set up parent
-        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
-        parentContainerAdapter.addClassLoaderURL(testCompJar.toURL());
+        NanoContainer parentContainer = new DefaultNanoContainer();
+        parentContainer.addClassLoaderURL(testCompJar.toURL());
 
-        parentContainerAdapter.registerComponentImplementation("parentTestComp", "TestComp");
+        parentContainer.registerComponentImplementation("parentTestComp", "TestComp");
 
-        parentContainerAdapter.registerComponentImplementation("java.lang.StringBuffer");
+        parentContainer.registerComponentImplementation("java.lang.StringBuffer");
 
 
-        PicoContainer parentContainerAdapterPico = parentContainerAdapter.getPicoContainer();
+        PicoContainer parentContainerAdapterPico = parentContainer.getPico();
         Object parentTestComp = parentContainerAdapterPico.getComponentInstance("parentTestComp");
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
-        childContainerAdapter.addClassLoaderURL(testCompJar2.toURL());
-        childContainerAdapter.registerComponentImplementation("childTestComp", "TestComp2");
+        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        childContainer.addClassLoaderURL(testCompJar2.toURL());
+        childContainer.registerComponentImplementation("childTestComp", "TestComp2");
 
-        PicoContainer childContainerAdapterPico = childContainerAdapter.getPicoContainer();
+        PicoContainer childContainerAdapterPico = childContainer.getPico();
         Object childTestComp = childContainerAdapterPico.getComponentInstance("childTestComp");
 
         assertEquals("TestComp2", childTestComp.getClass().getName());
@@ -135,7 +137,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
     }
 
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException, ClassNotFoundException {
-        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
+        NanoContainer parentContainer = new DefaultNanoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -144,16 +146,16 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentContainerAdapter.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+        parentContainer.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
 
-        Object fooWebServerConfig = parentContainerAdapter.getPicoContainer().getComponentInstance("foo");
+        Object fooWebServerConfig = parentContainer.getPico().getComponentInstance("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
-        childContainerAdapter.addClassLoaderURL(testCompJar.toURL());
-        childContainerAdapter.registerComponentImplementation("bar", "TestComp");
+        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        childContainer.addClassLoaderURL(testCompJar.toURL());
+        childContainer.registerComponentImplementation("bar", "TestComp");
 
-        Object barTestComp = childContainerAdapter.getPicoContainer().getComponentInstance("bar");
+        Object barTestComp = childContainer.getPico().getComponentInstance("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());
 
         assertNotSame(fooWebServerConfig.getClass().getClassLoader(), barTestComp.getClass().getClassLoader());
@@ -175,7 +177,7 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
     }
 
     public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException, ClassNotFoundException {
-        ReflectionContainerAdapter parentContainerAdapter = new DefaultReflectionContainerAdapter();
+        NanoContainer parentContainer = new DefaultNanoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -184,20 +186,20 @@ public class DefaultReflectionContainerAdapterTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentContainerAdapter.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+        parentContainer.registerComponentImplementation("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
 
-        Object fooWebServerConfig = parentContainerAdapter.getPicoContainer().getComponentInstance("foo");
+        Object fooWebServerConfig = parentContainer.getPico().getComponentInstance("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        ReflectionContainerAdapter childContainerAdapter = new DefaultReflectionContainerAdapter(parentContainerAdapter);
-        childContainerAdapter.addClassLoaderURL(testCompJar.toURL());
-        //TODO childContainerAdapter.setPermission(some permission list, that includes the preventing of general file access);
+        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        childContainer.addClassLoaderURL(testCompJar.toURL());
+        //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?
         // or should it a parameter in the addClassLoaderURL(..) method
-        childContainerAdapter.registerComponentImplementation("bar", "org.nanocontainer.testmodel.FileSystemUsing");
+        childContainer.registerComponentImplementation("bar", "org.nanocontainer.testmodel.FileSystemUsing");
 
         try {
-            parentContainerAdapter.getPicoContainer().getComponentInstance("bar");
+            parentContainer.getPico().getComponentInstance("bar");
             fail("Should have barfed");
         } catch (java.security.AccessControlException e) {
             // expected

@@ -9,9 +9,6 @@
 package org.nanocontainer.nanowar;
 
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.nanowar.ApplicationScopeObjectReference;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;

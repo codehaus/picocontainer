@@ -8,10 +8,10 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
- * Records method calls on a {@link SoftCompositionPicoContainer}.
+ * Records method calls on a {@link MutablePicoContainer}.
  * This allows to replay all invocations on a different container instance.
  * 
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
@@ -27,11 +27,11 @@ public interface ContainerRecorder {
      * @see #replay
      * @return a recording container proxy
      */
-    public SoftCompositionPicoContainer getContainerProxy();
+    public MutablePicoContainer getContainerProxy();
 
     /**
      * Replay recorded invocations on target container
      * @param target container where the invocations should be replayed.
      */
-    public void replay(SoftCompositionPicoContainer target);
+    public void replay(MutablePicoContainer target);
 }

@@ -9,20 +9,21 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.util.Vector;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.nanocontainer.script.groovy.GroovyContainerBuilder;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.picocontainer.PicoContainer;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.util.Vector;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -100,7 +101,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         httpSessionMock.expects(once())
                 .method("setAttribute")
                 .with(eq(ServletContainerListener.KILLER_HELPER), isA(HttpSessionBindingListener.class));
-        SoftCompositionPicoContainer appScopeContainer = new DefaultSoftCompositionPicoContainer();
+        MutablePicoContainer appScopeContainer = new DefaultPicoContainer();
         servletContextMock.expects(once())
                 .method("getAttribute")
                 .with(eq(APPLICATION_CONTAINER))

@@ -9,8 +9,6 @@
 
 package org.nanocontainer;
 
-import java.io.File;
-import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
@@ -18,6 +16,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Standalone {
 
@@ -37,9 +38,9 @@ public class Standalone {
         options.addOption(String.valueOf(COMPOSITION_OPT), "composition", true,
                 "specify the composition file");
         options.addOption(String.valueOf(QUIET_OPT), "quiet", false,
-                "forces NanoContainer to be quiet");
+                "forces ScriptedContainerBuilderFactory to be quiet");
         options.addOption(String.valueOf(NOWAIT_OPT), "nowait", false,
-        		"forces NanoContainer to exit after start");
+        		"forces ScriptedContainerBuilderFactory to exit after start");
         return options;
     }
     
@@ -72,17 +73,17 @@ public class Standalone {
         try {
             buildAndStartContainer(composition, quiet, nowait);
         } catch (RuntimeException e) {
-            System.err.println("NanoContainer has failed to start application. Cause : " + e.getMessage());
+            System.err.println("ScriptedContainerBuilderFactory has failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            System.err.println("NanoContainer has failed to start application, for IO reasons. Exception message : " + e.getMessage());
+            System.err.println("ScriptedContainerBuilderFactory has failed to start application, for IO reasons. Exception message : " + e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.err.println("NanoContainer has failed to start application. A Class was not found. Exception message : " + e.getMessage());
+            System.err.println("ScriptedContainerBuilderFactory has failed to start application. A Class was not found. Exception message : " + e.getMessage());
             e.printStackTrace();
         }
         if (!quiet) {
-            System.out.println("Exiting NanoContainer's standalone main method.");
+            System.out.println("Exiting ScriptedContainerBuilderFactory's standalone main method.");
         }
     }
 
@@ -108,36 +109,36 @@ public class Standalone {
     */
     private static void buildAndStartContainer(String compositionFileName, final boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
 
-        final NanoContainer nanoContainer = new NanoContainer(new File(compositionFileName));
+        final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(new File(compositionFileName));
 
         final ObjectReference containerRef = new SimpleReference();
-        nanoContainer.getContainerBuilder().buildContainer(containerRef, null, null, true);
+        scriptedContainerBuilderFactory.getContainerBuilder().buildContainer(containerRef, null, null, true);
 
         if (nowait == false) {
-            setShutdownHook(quiet, nanoContainer, containerRef);
+            setShutdownHook(quiet, scriptedContainerBuilderFactory, containerRef);
         } else {
-//            shuttingDown(quiet, nanoContainer, containerRef);
+//            shuttingDown(quiet, scriptedContainerBuilderFactory, containerRef);
         }
     }
 
-    private static void setShutdownHook(final boolean quiet, final NanoContainer nanoContainer, final ObjectReference containerRef) {
+    private static void setShutdownHook(final boolean quiet, final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, final ObjectReference containerRef) {
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {
             public void run() {
-                shuttingDown(quiet, nanoContainer, containerRef);
+                shuttingDown(quiet, scriptedContainerBuilderFactory, containerRef);
             }
         };
         Runtime.getRuntime().addShutdownHook(new Thread(shutdownHook));
     }
 
-    private static void shuttingDown(final boolean quiet, final NanoContainer nanoContainer, final ObjectReference containerRef) {
+    private static void shuttingDown(final boolean quiet, final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, final ObjectReference containerRef) {
         try {
-            nanoContainer.getContainerBuilder().killContainer(containerRef);
+            scriptedContainerBuilderFactory.getContainerBuilder().killContainer(containerRef);
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
             if (!quiet) {
-                System.out.println("NanoContainer: Exiting Virtual Machine");
+                System.out.println("ScriptedContainerBuilderFactory: Exiting Virtual Machine");
             }
         }
     }
@@ -156,7 +157,7 @@ public class Standalone {
 
         final StringBuffer usage = new StringBuffer();
         usage.append(lineSeparator);
-        usage.append("NanoContainer: Standalone -c <composition> [-q|-n|-h|-v]");
+        usage.append("ScriptedContainerBuilderFactory: Standalone -c <composition> [-q|-n|-h|-v]");
         usage.append(OPTIONS.getOptions());
         System.out.println(usage.toString());
     }

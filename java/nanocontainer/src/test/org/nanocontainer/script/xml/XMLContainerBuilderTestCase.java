@@ -48,7 +48,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
 
         XMLContainerBuilder builder = new XMLContainerBuilder(script, getClass().getClassLoader());
-        PicoContainer pico = buildContainer(builder, null);
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
         assertEquals(3, pico.getComponentInstances().size());
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
     }
@@ -64,7 +64,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
 
         XMLContainerBuilder builder = new XMLContainerBuilder(script, getClass().getClassLoader());
-        PicoContainer pico = buildContainer(builder, null);
+        PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
 
         StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
@@ -102,7 +102,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
 
         XMLContainerBuilder builder = new XMLContainerBuilder(script, getClass().getClassLoader());
-        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(builder, null);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(builder, null, "SOME_SCOPE");
 
         Object fooTestComp = pico.getComponentInstance("foo");
         assertNotNull("Container should have a 'foo' component", fooTestComp);
@@ -119,7 +119,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                     "<container>" +
                     "  <component-implementation class='Foo'/>" +
                     "</container>");
-            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             fail("Expected PicoCompositionException");
         } catch (PicoCompositionException e) {
             assertTrue("ClassNotFoundException", e.getCause() instanceof ClassNotFoundException);
@@ -129,7 +129,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     public void testEmptyScriptThrowsEmptyCompositionException() throws Exception, SAXException, ParserConfigurationException, IOException {
         try {
             Reader script = new StringReader("<container/>");
-            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+            buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             fail("Expected EmptyCompositionException");
         } catch (EmptyCompositionException expected) {
         }
@@ -143,7 +143,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-instance>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
         assertTrue(instance instanceof String);
@@ -161,7 +161,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-instance>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
         assertTrue(instance instanceof TestBean);
@@ -180,7 +180,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-instance>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
         assertTrue(instance instanceof TestBean);
@@ -196,7 +196,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-instance>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object instance = pico.getComponentInstance("aKey");
         assertNotNull(instance);
         assertTrue(instance instanceof String);
@@ -212,7 +212,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-instance>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object instance = pico.getComponentInstance("aKey");
         assertNotNull(instance);
         assertTrue(instance instanceof String);
@@ -234,7 +234,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  </component-implementation>" +
                 "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(WebServerConfigComp.class));
         WebServerConfigComp config = (WebServerConfigComp) pico.getComponentInstanceOfType(WebServerConfigComp.class);
         assertEquals("localhost", config.getHost());
@@ -259,7 +259,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "		</parameter>" +
                 "  </component-implementation>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
         TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
@@ -284,7 +284,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "		</parameter>" +
                 "  </component-implementation>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
         TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
@@ -311,7 +311,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 " 		<parameter key='bean2'/>" +
                 "  </component-implementation>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
         TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
@@ -338,7 +338,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 " 		<parameter key='bean2'/>" +
                 "  </component-adapter>" +
                 "</container>");
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance("beanKey"));
         TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance("beanKey");
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
@@ -352,7 +352,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         Object wsc1 = pico.getComponentInstanceOfType(WebServerConfig.class);
         Object wsc2 = pico.getComponentInstanceOfType(WebServerConfig.class);
 

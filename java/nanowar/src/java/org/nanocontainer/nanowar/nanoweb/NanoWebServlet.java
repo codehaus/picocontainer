@@ -4,14 +4,8 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import org.nanocontainer.nanowar.ApplicationScopeObjectReference;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.nanocontainer.nanowar.nanoweb.CachingScriptClassLoader;
-import org.nanocontainer.nanowar.nanoweb.ChainingDispatcher;
-import org.nanocontainer.nanowar.nanoweb.Dispatcher;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
@@ -31,11 +25,11 @@ import java.util.Enumeration;
 
 /**
  * Dispatcher servlet for NanoWeb.
- * NanoWeb is an ultra simple MVC framework inspired from WebWork It is based on NanoContainer,
+ * NanoWeb is an ultra simple MVC framework inspired from WebWork It is based on ScriptedContainerBuilderFactory,
  * PicoContainer, Ognl, Groovy and Velocity.
  * Design goals:
  * <ul>
- * <li>One-file configuration (all in an embedded NanoContainer script in web.xml)</li>
+ * <li>One-file configuration (all in an embedded ScriptedContainerBuilderFactory script in web.xml)</li>
  * <li>Sensible defaults with the goal to reduce the need for complex configuration</li>
  * <li>Non intrusiveness. Actions are PicoComponents/POJOs that extend nothing</li>
  * <li>Actions can be written in a compilable scripting language like Groovy</li>

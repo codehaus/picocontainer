@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
@@ -26,7 +25,6 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
-        // register the child in the parent so that lifecycle can be propagated down the hierarchy
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableParentContainer = (MutablePicoContainer) parentContainer;
 
@@ -35,13 +33,14 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
             // especially in framed environments
             synchronized (mutableParentContainer) {
                 if (addChildToParent) {
+                    // register the child in the parent so that lifecycle can be propagated down the hierarchy
                     mutableParentContainer.addChildContainer(container);
                 }
             }
         }
 
-        if (container instanceof SoftCompositionPicoContainer) {
-            composeContainer((SoftCompositionPicoContainer) container, assemblyScope);
+        if (container instanceof MutablePicoContainer) {
+            composeContainer((MutablePicoContainer) container, assemblyScope);
         }
         autoStart(container);
 
@@ -70,7 +69,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected abstract void composeContainer(SoftCompositionPicoContainer container, Object assemblyScope);
+    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
 
     protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
 }

@@ -159,7 +159,8 @@ namespace Test.Defaults
 			return componentAdapter;
 		}
 
-		public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption()
+		[Test]
+		public void NormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption()
 		{
 			DefaultPicoContainer picoContainer = new DefaultPicoContainer();
 			picoContainer.RegisterComponentImplementation(typeof (NormalExceptionThrowing));

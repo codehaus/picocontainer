@@ -12,6 +12,7 @@ import java.net.URLStreamHandler;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Kouhei Mori
  * @version $Revision$
  */
 public class CachingScriptClassLoaderTestCase extends TestCase {
@@ -34,16 +35,16 @@ public class CachingScriptClassLoaderTestCase extends TestCase {
         MockURLStreamHandler urlStreamHandler = new MockURLStreamHandler(urlConnection);
 
         URL classUrl = new URL("test", "test", -1, "test", urlStreamHandler);
-        urlConnection.setDate(1);
+        urlConnection.setLastModified(1);
         Class clazz1 = loader.getClass(classUrl);
-        urlConnection.setDate(2);
+        urlConnection.setLastModified(2);
         Class clazz2 = loader.getClass(classUrl);
         assertNotSame(clazz1, clazz2);
     }
 
     private static class MockURLConnection extends URLConnection {
         private final String GROOVY_CLASS = "class GroovyClass{}";
-        private long date;
+        private long lastModified;
 
         public MockURLConnection() {
             super(null);
@@ -56,12 +57,12 @@ public class CachingScriptClassLoaderTestCase extends TestCase {
             return new StringBufferInputStream(GROOVY_CLASS);
         }
 
-        public void setDate(long date) {
-            this.date = date;
+        public void setLastModified(long lastModified) {
+            this.lastModified = lastModified;
         }
 
-        public long getDate() {
-            return date;
+        public long getLastModified() {
+            return lastModified;
         }
     }
 

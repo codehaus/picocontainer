@@ -31,8 +31,14 @@ public class PicoServletDispatcher extends ServletDispatcher {
             containerLauncher.startContainer();
             // process the servlet using webwork2
             super.service(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
         } finally {
-            containerLauncher.killContainer();
+            try {
+                containerLauncher.killContainer();
+            } catch (Exception e) {
+                throw new ServletException(e);
+            }
         }
     }
 }

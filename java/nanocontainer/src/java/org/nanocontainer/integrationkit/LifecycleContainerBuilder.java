@@ -21,7 +21,7 @@ public class LifecycleContainerBuilder implements ContainerBuilder {
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, ContainerAssembler assembler, Object assemblyScope) {
 
-        MutablePicoContainer container = new DefaultPicoContainer();
+        MutablePicoContainer container = createContainer();
 
         if (parentContainerRef != null) {
             MutablePicoContainer parent = (MutablePicoContainer) parentContainerRef.get();
@@ -35,7 +35,7 @@ public class LifecycleContainerBuilder implements ContainerBuilder {
         containerRef.set(container);
     }
 
-    public void killContainer(ObjectReference containerRef) {
+    public void killContainer(ObjectReference containerRef){
         try {
             MutablePicoContainer pico = (MutablePicoContainer) containerRef.get();
             pico.stop();
@@ -45,4 +45,8 @@ public class LifecycleContainerBuilder implements ContainerBuilder {
             containerRef.set(null);
         }
     }
+
+    protected MutablePicoContainer createContainer() {
+		return new DefaultPicoContainer();
+	}
 }

@@ -48,7 +48,7 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         } catch (IllegalAccessException e) {
             e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            throw new PicoInvocationTargetStopException(e.getCause());
         }
     }
 }

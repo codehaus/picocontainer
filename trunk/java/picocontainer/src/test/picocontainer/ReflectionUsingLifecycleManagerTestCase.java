@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
 
-    public void testBasic() {
+    public void testStartInvocation() {
 
         ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
 
@@ -23,15 +23,13 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             fail("Should have started just fine");
         }
 
-        assertEquals(1,messages.size());
-        assertEquals("started",messages.get(0));
+        assertEquals(1, messages.size());
+        assertEquals("started", messages.get(0));
     }
 
-    public void ttestFailing() throws PicoStartException {
+    public void testFailingStartInvocation() throws PicoStartException {
 
         ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
-
-        final ArrayList messages = new ArrayList();
 
         try {
             lm.startComponent(new Object() {
@@ -41,6 +39,45 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             });
             fail("Should have barfed");
         } catch (PicoInvocationTargetStartException e) {
+            assertEquals(SQLException.class, e.getCause().getClass());
+            // expected
+            e.printStackTrace();
+        }
+    }
+
+    public void testStopInvocation() {
+
+        ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
+
+        final ArrayList messages = new ArrayList();
+
+        try {
+            lm.stopComponent(new Object() {
+                public void stop() {
+                    messages.add("stopped");
+                }
+            });
+        } catch (PicoStopException e) {
+            fail("Should have stopped just fine");
+        }
+
+        assertEquals(1, messages.size());
+        assertEquals("stopped", messages.get(0));
+    }
+
+    public void testFailingStopInvocation() throws PicoStopException {
+
+        ReflectionUsingLifecycleManager lm = new ReflectionUsingLifecycleManager();
+
+        try {
+            lm.stopComponent(new Object() {
+                public void stop() throws SQLException {
+                    throw new SQLException();
+                }
+            });
+            fail("Should have barfed");
+        } catch (PicoInvocationTargetStopException e) {
+            assertEquals(SQLException.class, e.getCause().getClass());
             // expected
             e.printStackTrace();
         }

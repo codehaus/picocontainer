@@ -112,12 +112,20 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         registerComponent(createDefaultComponentAdapter(componentKey, componentImplementation, parameters));
     }
 
-    private void registerComponent(ComponentAdapter compSpec) {
-        componentRegistry.registerComponent(compSpec);
+
+    /**
+     * TODO: Should be moved to some interface? -- jon
+     */
+    public void registerComponent(ComponentAdapter adapter) {
+        componentRegistry.registerComponent(adapter);
+    }
+
+    public void registerComponent(Class component) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentKeyRegistrationException, PicoIntrospectionException {
+        registerComponent(component, component);
     }
 
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
-        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentAdapters().iterator(); iterator.hasNext();) {
             Object key = ((ComponentAdapter) iterator.next()).getComponentKey();
             if (key == componentKey) {
                 throw new DuplicateComponentKeyRegistrationException(key);
@@ -190,7 +198,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
 
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInitializationException {
-        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = componentRegistry.getComponentAdapters().iterator(); iterator.hasNext();) {
             componentRegistry.createComponent((ComponentAdapter) iterator.next());
         }
     }
@@ -239,10 +247,14 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     //TODO - remove from PicoContainer interface?
     //TODO - maybe not ?
     public Collection getComponentKeys() {
-        return componentRegistry.getComponentInstanceKeys();
+        return componentRegistry.getComponentKeys();
     }
 
     public final boolean hasComponent(Object componentKey) {
         return getComponent(componentKey) != null;
+    }
+
+    public ComponentRegistry getComponentRegistry() {
+        return componentRegistry;
     }
 }

@@ -55,8 +55,8 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
 		childRegistry.unregisterComponent(componentKey);
 	}
 
-    public Collection getComponentSpecifications() {
-        return childRegistry.getComponentSpecifications();
+    public List getComponentAdapters() {
+        return childRegistry.getComponentAdapters();
     }
 
     public List getOrderedComponents() {
@@ -93,13 +93,13 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         return result;
     }
 
-    public Collection getComponentInstanceKeys() {
+    public Collection getComponentKeys() {
 
         // Get child types
-        Set types = new HashSet(childRegistry.getComponentInstanceKeys());
+        Set types = new HashSet(childRegistry.getComponentKeys());
 
         // Get those from parent.
-        types.addAll(parentRegistry.getComponentInstanceKeys());
+        types.addAll(parentRegistry.getComponentKeys());
 
         return Collections.unmodifiableCollection(types);
 

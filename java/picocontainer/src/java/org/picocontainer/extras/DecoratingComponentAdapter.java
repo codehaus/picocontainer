@@ -23,8 +23,8 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
 
     private final ComponentAdapter delegate;
 
-    public DecoratingComponentAdapter(ComponentAdapter decoratedComponentAdapter) {
-        this.delegate = decoratedComponentAdapter;
+    public DecoratingComponentAdapter(ComponentAdapter delegate) {
+        this.delegate = delegate;
     }
 
     public Parameter createDefaultParameter() {

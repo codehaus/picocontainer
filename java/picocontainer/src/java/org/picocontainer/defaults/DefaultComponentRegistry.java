@@ -59,7 +59,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         }
     }
 
-    public Collection getComponentSpecifications() {
+    public List getComponentAdapters() {
         return registeredComponentSpecifications;
     }
 
@@ -83,7 +83,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
         return componentKeyToInstanceMap.get(componentKey);
     }
 
-    public Collection getComponentInstanceKeys() {
+    public Collection getComponentKeys() {
         return Collections.unmodifiableCollection(componentKeyToInstanceMap.keySet());
     }
 
@@ -102,7 +102,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
     public Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
 
-        for (Iterator iterator = getComponentInstanceKeys().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = getComponentKeys().iterator(); iterator.hasNext();) {
             Object key = iterator.next();
             Object component = getComponentInstance(key);
             if (componentType.isInstance(component)) {
@@ -120,7 +120,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
 
     public ComponentAdapter findImplementingComponentAdapter(Class componentType) throws AmbiguousComponentResolutionException {
         List found = new ArrayList();
-        for (Iterator iterator = getComponentSpecifications().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = getComponentAdapters().iterator(); iterator.hasNext();) {
             ComponentAdapter componentSpecification = (ComponentAdapter) iterator.next();
 
             if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {

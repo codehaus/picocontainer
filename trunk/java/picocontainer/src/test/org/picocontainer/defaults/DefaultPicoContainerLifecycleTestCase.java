@@ -22,6 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
+ * @author Ward Cunningham
+ * @version $Revision$
+ */
+
+/**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
  */
 public class DefaultPicoContainerLifecycleTestCase extends TestCase {
@@ -302,5 +309,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         } catch (IllegalStateException e) {
         }
     }
+
+
 
 }

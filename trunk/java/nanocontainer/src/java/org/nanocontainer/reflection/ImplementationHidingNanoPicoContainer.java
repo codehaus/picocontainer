@@ -53,10 +53,12 @@ public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoConta
 
     public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, LifecycleManager lifecycleManager) {
         super(new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager), classLoader);
+        this.lifecycleManager = lifecycleManager;
     }
 
     public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
         super(new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(NullComponentMonitor.getInstance()), parent), classLoader);
+        this.lifecycleManager = new DefaultLifecycleManager();
     }
 
     public ImplementationHidingNanoPicoContainer(PicoContainer pc) {

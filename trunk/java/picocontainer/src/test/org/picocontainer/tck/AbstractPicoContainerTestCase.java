@@ -540,8 +540,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         // This may be file for visiting components in a tree for general cases, but for lifecycle, we
         // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
 
-        //assertEquals(2, lifecycleManager.started.size());
-        assertEquals(1, lifecycleManager.started.size());
+        assertEquals(2, lifecycleManager.started.size());
+        //assertEquals(1, lifecycleManager.started.size());
     }
 
     public static class TestLifecycleManager extends DefaultLifecycleManager {

@@ -10,18 +10,16 @@
 
 package org.picocontainer.alternatives;
 
-import junit.framework.TestCase;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.VerifyingVisitor;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import java.util.Collection;
 import java.util.HashMap;

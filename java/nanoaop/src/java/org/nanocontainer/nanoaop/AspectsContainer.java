@@ -82,6 +82,14 @@ public interface AspectsContainer {
      * Registers container scoped mixin advice. The mixin will be added to all
      * components in the container whose class satisfies the
      * <code>classPointcut</code>.
+     * <p>
+     * If a component of type <code>mixinClass</code> has been registered in
+     * the container, that component will be used as the mixin. Otherwise a new
+     * object of type <code>mixinClass</code> will be instantiated each time
+     * the mixin is applied to a component. Any dependencies the mixin has will
+     * be supplied from components in the container, or, if there are no
+     * dependencies, the default constructor will be invoked to instantiate the
+     * mixin.
      * 
      * @param classPointcut classes to add mixin to.
      * @param interfaces interfaces the mixin implements.
@@ -94,6 +102,9 @@ public interface AspectsContainer {
      * components in the container whose key satisfies the
      * <code>componentPointcut</code>.
      * 
+     * @see AspectsContainer#registerMixin(ClassPointcut, Class[], Class) for
+     *      details on how <code>mixinClass</code> gets instantiated.
+     * 
      * @param componentPointcut classes to add mixin to.
      * @param interfaces interfaces the mixin implements.
      * @param mixinClass the mixin implementation.
@@ -101,60 +112,13 @@ public interface AspectsContainer {
     void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Class mixinClass);
 
     /**
-     * Registers container scoped mixin advice. The interceptor advice object
-     * itself is a component in the container, specified by
-     * <code>mixinComponentKey</code>. The mixin will be added to all
-     * components in the container whose class satisfies the
-     * <code>classPointcut</code>.
-     * 
-     * @param classPointcut classes to add mixin to.
-     * @param interfaces interfaces the mixin implements.
-     * @param mixinComponentKey the mixin component key.
-     */
-    void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Object mixinComponentKey);
-
-    /**
-     * Registers container scoped mixin advice. The interceptor advice object
-     * itself is a component in the container, specified by
-     * <code>mixinComponentKey</code>. The mixin will be added to all
-     * components in the container whose class satisfies the
-     * <code>classPointcut</code>. Use this method when the mixin component
-     * key is a <code>java.lang.Class</code> object.
-     * 
-     * @param classPointcut classes to add mixin to.
-     * @param interfaces interfaces the mixin implements.
-     * @param mixinComponentKey the mixin component key.
-     */
-    void registerMixin(ClassPointcut classPointcut, Class[] interfaces, ComponentKey mixinComponentKey);
-
-    /**
-     * Registers component scoped mixin advice. The mixin will be added to all
-     * components in the container whose key satisfies the
-     * <code>componentPointcut</code>.
-     * 
-     * @param componentPointcut classes to add mixin to.
-     * @param interfaces interfaces the mixin implements.
-     * @param mixinComponentKey the mixin implementation.
-     */
-    void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Object mixinComponentKey);
-
-    /**
-     * Registers component scoped mixin advice. The mixin will be added to all
-     * components in the container whose key satisfies the
-     * <code>componentPointcut</code>. Use this method when the mixin
-     * component key is a <code>java.lang.Class</code> object.
-     * 
-     * @param componentPointcut classes to add mixin to.
-     * @param interfaces interfaces the mixin implements.
-     * @param mixinComponentKey the mixin implementation.
-     */
-    void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, ComponentKey mixinComponentKey);
-
-    /**
      * Registers container scoped mixin advice. The mixin will be added to all
      * components in the container whose class satisfies the
      * <code>classPointcut</code>. Convenience method that uses all
      * interfaces implemented by the mixin class.
+     * 
+     * @see AspectsContainer#registerMixin(ClassPointcut, Class[], Class) for
+     *      details on how <code>mixinClass</code> gets instantiated.
      * 
      * @param classPointcut classes to add mixin to.
      * @param mixinClass the mixin implementation.
@@ -166,6 +130,9 @@ public interface AspectsContainer {
      * components in the container whose key satisfies the
      * <code>componentPointcut</code>. Convenience method that uses all
      * interfaces implemented by the mixin class.
+     * 
+     * @see AspectsContainer#registerMixin(ClassPointcut, Class[], Class) for
+     *      details on how <code>mixinClass</code> gets instantiated.
      * 
      * @param componentPointcut classes to add mixin to.
      * @param mixinClass the mixin implementation.

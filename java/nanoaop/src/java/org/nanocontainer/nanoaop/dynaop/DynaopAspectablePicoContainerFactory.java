@@ -32,10 +32,9 @@ import dynaop.ProxyFactory;
  */
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 
-    public AspectablePicoContainer createContainer(Class containerClass,
+    public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
             ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
 
-        final AspectsManager aspectsManager = new DynaopAspectsManager();
         ComponentAdapterFactory aspectsCaFactory = new AspectsComponentAdapterFactory(aspectsManager,
                 componentAdapterFactory);
         MutablePicoContainer pico = createBasicContainer(containerClass, aspectsCaFactory, parent);
@@ -46,6 +45,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
         aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[] { AspectablePicoContainer.class });
 
         return (AspectablePicoContainer) ProxyFactory.getInstance(aspects).wrap(pico);
+    }
+
+    public AspectablePicoContainer createContainer(Class containerClass,
+            ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+        return createContainer(containerClass, new DynaopAspectsManager(), componentAdapterFactory, parent);
     }
 
     public AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {

@@ -11,7 +11,9 @@ package org.nanocontainer.nanoaop.dynaop;
 
 import java.util.Properties;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 
 import dynaop.MixinFactory;
 import dynaop.Proxy;
@@ -26,7 +28,7 @@ import dynaop.Proxy;
 class ContainerSuppliedMixinFactory implements MixinFactory {
 
     private final PicoContainer pico;
-    private final Object mixinComponentKey;
+    private final Class mixinClass;
 
     /**
      * Creates a new <code>ContainerSuppliedMixinFactory</code> that will
@@ -37,9 +39,9 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
      * @param mixinComponentKey the component key that will be used to retrieve
      *        the mixin object from the pico container.
      */
-    ContainerSuppliedMixinFactory(PicoContainer pico, Object mixinComponentKey) {
+    ContainerSuppliedMixinFactory(PicoContainer pico, Class mixinClass) {
         this.pico = pico;
-        this.mixinComponentKey = mixinComponentKey;
+        this.mixinClass = mixinClass;
     }
 
     /**
@@ -48,13 +50,14 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
      * 
      * @param proxy the proxy that the interceptor will wrap.
      * @return the <code>Mixin</code> object.
-     * @throws NullPointerException if the mixin can not be found in the pico container.
+     * @throws NullPointerException if the mixin can not be found in the pico
+     *         container.
      */
     public Object create(Proxy proxy) throws NullPointerException {
-        Object mixin = pico.getComponentInstance(mixinComponentKey);
+        Object mixin = pico.getComponentInstanceOfType(mixinClass);
         if (mixin == null) {
-            throw new NullPointerException("Mixin with component key " + mixinComponentKey
-                    + " + not found in PicoContainer");
+            ComponentAdapter adapter = new ConstructorInjectionComponentAdapter(mixinClass, mixinClass);
+            mixin = adapter.getComponentInstance(pico);
         }
         return mixin;
     }

@@ -63,7 +63,7 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
 
     public static class Default extends CompositePicoContainer {
         public Default() {
-            super(new DefaultComponentRegistry(), new PicoContainer[] {new NullContainer()});
+            super(new DefaultComponentRegistry(), new PicoContainer[]{new NullContainer()});
         }
     }
 
@@ -95,16 +95,17 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     public boolean hasComponent(Object componentKey) {
-        boolean answer = componentRegistry.hasComponentInstance(componentKey);
-            if (answer == false) {
-                for (Iterator iter = containers.iterator(); iter.hasNext();) {
-                    PicoContainer container = (PicoContainer) iter.next();
-                    if (container.hasComponent(componentKey)) {
-                        return true;
-                    }
+        if (componentRegistry.hasComponentInstance(componentKey)) {
+            return true;
+        } else {
+            for (Iterator iter = containers.iterator(); iter.hasNext();) {
+                PicoContainer container = (PicoContainer) iter.next();
+                if (container.hasComponent(componentKey)) {
+                    return true;
                 }
             }
             return false;
+        }
     }
 
     public Set getComponents() {
@@ -146,15 +147,4 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
         containers.remove(container);
     }
 
-    /**
-     * A helper method which adds each of the objects in the array to the list
-     *
-     * @param list
-     * @param objects
-     */
-    protected static void addAll(List list, Object[] objects) {
-        for (int i = 0, size = objects.length; i < size; i++) {
-            list.add(objects[i]);
-        }
-    }
 }

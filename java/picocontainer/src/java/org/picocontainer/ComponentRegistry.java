@@ -11,11 +11,11 @@
 package org.picocontainer;
 
 import org.picocontainer.defaults.ComponentSpecification;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
 
 public interface ComponentRegistry {
 
@@ -43,4 +43,9 @@ public interface ComponentRegistry {
 
     ComponentSpecification getComponentSpec(Object componentKey);
 
+    Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException;
+
+    ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException;
+
+    Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException;
 }

@@ -67,7 +67,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
             throw new NullPointerException("componentFactory cannot be null");
         }
         if (componentRegistry == null) {
-            throw new NullPointerException("componentRegistry cannot be null");
+            throw new NullPointerException("childRegistry cannot be null");
         }
         this.componentFactory = componentFactory;
         this.componentRegistry = componentRegistry;
@@ -180,95 +180,13 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     // This is Lazy and NOT public :-)
     private void initializeComponents() throws PicoInitializationException {
         for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
-            ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
-            createComponent(componentSpec);
+            componentRegistry.createComponent((ComponentSpecification) iterator.next());
         }
     }
 
-    Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
-        if (!componentRegistry.contains(componentSpecification.getComponentKey())) {
-            Object component = componentSpecification.instantiateComponent(this);
-            componentRegistry.addOrderedComponent(component);
-
-            componentRegistry.putComponent(componentSpecification.getComponentKey(), component);
-
-            return component;
-        } else {
-            return componentRegistry.getComponentInstance(componentSpecification.getComponentKey());
-        }
-    }
 
     public Object getComponent(Object componentKey) {
         return componentRegistry.getComponentInstance(componentKey);
-    }
-
-    Object createComponent(Class componentType) throws PicoInitializationException {
-        Object componentInstance = getComponent(componentType);
-
-        if (componentInstance != null) {
-            return componentInstance;
-        }
-
-        componentInstance = findImplementingComponent(componentType);
-
-        if (componentInstance != null) {
-            return componentInstance;
-        }
-
-        // try to find components that satisfy the interface (implements the component service asked for)
-        ComponentSpecification componentSpecification = findImplementingComponentSpecification(componentType);
-        if (componentSpecification == null) {
-            return null;
-        }
-
-        // if the component does not exist yet, instantiate it lazily
-        componentInstance = createComponent(componentSpecification);
-
-        return componentInstance;
-    }
-
-    Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
-        List found = new ArrayList();
-
-        for (Iterator iterator = componentRegistry.getComponentInstanceKeys().iterator(); iterator.hasNext();) {
-            Object key = iterator.next();
-            Object component = componentRegistry.getComponentInstance(key);
-            if(componentType.isInstance(component)) {
-                found.add(key);
-            }
-        }
-
-        if (found.size() > 1) {
-            Object[] ambiguousKeys = found.toArray();
-            throw new AmbiguousComponentResolutionException(componentType, ambiguousKeys);
-        }
-
-        return found.isEmpty() ? null : componentRegistry.getComponentInstance(found.get(0));
-    }
-
-    Object getComponent(ComponentSpecification componentSpec) {
-        return componentSpec == null ? null : getComponent(componentSpec.getComponentKey());
-    }
-
-    ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
-        List found = new ArrayList();
-        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
-            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
-
-            if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
-                found.add(componentSpecification);
-            }
-        }
-
-        if (found.size() > 1) {
-            Class[] foundClasses = new Class[found.size()];
-            for (int i = 0; i < foundClasses.length; i++) {
-                foundClasses[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
-            }
-            throw new AmbiguousComponentResolutionException(componentType, foundClasses);
-        }
-
-        return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
     }
 
     public Set getComponents() {
@@ -317,13 +235,4 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         return getComponent(componentKey) != null;
     }
 
-    public ComponentSpecification getComponentSpecification(Object componentKey) {
-        for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
-            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
-            if (componentSpecification.getComponentKey().equals(componentKey)) {
-                return componentSpecification;
-            }
-        }
-        return null;
-    }
 }

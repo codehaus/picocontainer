@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentRegistry;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
@@ -25,7 +26,7 @@ public class ConstantParameter implements Parameter {
         this.arg = parameter;
     }
 
-    public Object resolve(PicoContainer picoContainer, ComponentSpecification compSpec, Class targetType) throws PicoInstantiationException {
+    public Object resolve(ComponentRegistry componentRegistry, ComponentSpecification compSpec, Class targetType) throws PicoInstantiationException {
         return arg;
     }
 }

@@ -28,10 +28,14 @@ public class ImplementationHidingComponentFactory implements ComponentFactory {
 
     public Object createComponent(ComponentSpecification componentSpec, Object[] instanceDependencies) throws PicoInitializationException {
         Object componentInstance = componentFactory.createComponent(componentSpec, instanceDependencies);
+        if (componentInstance == null) {
+            //TODO Should be subclass of PicoInit..
+            throw new NullPointerException("Unable to create componentInstance for componentSpec" + componentSpec);
+        }
         // TODO: search for all interfaces for component-implementation instead
-        Class[] interfaces = new Class[]{ (Class) componentSpec.getComponentKey() };
+        Class[] interfaces = new Class[]{(Class) componentSpec.getComponentKey()};
         return Proxy.newProxyInstance(componentSpec.getComponentImplementation().getClassLoader(),
-                interfaces, new ImplementationHidingProxy(componentInstance));
+            interfaces, new ImplementationHidingProxy(componentInstance));
     }
 
     public Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException {
@@ -42,9 +46,6 @@ public class ImplementationHidingComponentFactory implements ComponentFactory {
         private Object componentInstance;
 
         public ImplementationHidingProxy(Object componentInstance) {
-            if (componentInstance == null) {
-                throw new NullPointerException("componentInstance can't be null");
-            }
             this.componentInstance = componentInstance;
         }
 

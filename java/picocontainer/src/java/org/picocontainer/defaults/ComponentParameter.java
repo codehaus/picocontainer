@@ -3,6 +3,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentRegistry;
 
 import java.io.Serializable;
 
@@ -21,10 +22,10 @@ public class ComponentParameter implements Parameter, Serializable {
         this.componentKey = componentKey;
     }
 
-    public Object resolve(PicoContainer picoContainer, ComponentSpecification compSpec, Class requestedType)
+    public Object resolve(ComponentRegistry componentRegistry, ComponentSpecification compSpec, Class requestedType)
             throws PicoInitializationException {
         // TODO figure out a way to remove this ugly cast?
-        DefaultPicoContainer defaultPicoContainer = (DefaultPicoContainer) picoContainer;
+        //PicoContainer defaultPicoContainer = (DefaultPicoContainer) childRegistry;
 
         Object componentInstance;
         ComponentSpecification componentSpecification = null;
@@ -32,27 +33,27 @@ public class ComponentParameter implements Parameter, Serializable {
         if (componentKey != null) {
 
             // is specified dependency already instantiated?
-            componentInstance = picoContainer.getComponent(componentKey);
+            componentInstance = componentRegistry.getComponentInstance(componentKey);
 
             if (componentInstance == null) {
                 // try to find the component based on the key
-                componentSpecification = defaultPicoContainer.getComponentSpecification(componentKey);
+                componentSpecification = componentRegistry.getComponentSpec(componentKey);
             }
 
         } else {
 
             // try to find it directly using the requestType as the key
-            componentInstance = picoContainer.getComponent(requestedType);
+            componentInstance = componentRegistry.getComponentInstance(requestedType);
 
             if (componentInstance == null) {
 
                 // is there already an instantiated instance that satisfies the dependency?
-                componentInstance = defaultPicoContainer.findImplementingComponent(requestedType);
+                componentInstance = componentRegistry.findImplementingComponent(requestedType);
 
 
                 if (componentInstance == null) {
                     // try to find components that satisfy the interface (implements the component service asked for)
-                    componentSpecification = defaultPicoContainer.findImplementingComponentSpecification(requestedType);
+                    componentSpecification = componentRegistry.findImplementingComponentSpecification(requestedType);
                 }
             }
 
@@ -60,7 +61,7 @@ public class ComponentParameter implements Parameter, Serializable {
 
         if (componentSpecification != null) {
             // if the component does not exist yet, instantiate it
-            componentInstance = defaultPicoContainer.createComponent(componentSpecification);
+            componentInstance = componentRegistry.createComponent(componentSpecification);
         }
 
         if (componentInstance == null) {

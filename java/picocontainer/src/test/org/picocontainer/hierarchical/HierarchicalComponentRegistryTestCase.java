@@ -13,9 +13,8 @@ package org.picocontainer.hierarchical;
 import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NullContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.FredImpl;
 import org.picocontainer.testmodel.Wilma;
 import org.picocontainer.testmodel.WilmaImpl;
@@ -26,13 +25,13 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new HierarchicalComponentRegistry(null, new DefaultComponentRegistry());
+            new HierarchicalComponentRegistry.WithChildRegistry(null, new DefaultComponentRegistry());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalComponentRegistry(new NullContainer(), null);
+            new HierarchicalComponentRegistry.WithChildRegistry(new DefaultComponentRegistry(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
@@ -41,8 +40,9 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
     }
 
     public void testBasicRegAndStart() throws PicoInitializationException, PicoRegistrationException {
-        DefaultPicoContainer dpc = new DefaultPicoContainer.Default();
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(dpc);
+        DefaultComponentRegistry dcr = new DefaultComponentRegistry();
+        DefaultPicoContainer dpc = new DefaultPicoContainer.WithComponentRegistry(dcr);
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(dcr);
 
         dpc.registerComponentByClass(FredImpl.class);
         dpc.registerComponentByClass(WilmaImpl.class);
@@ -61,8 +61,9 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
     }
 
     public void testRegisterComponentWithObject() throws PicoRegistrationException, PicoInitializationException {
-        DefaultPicoContainer parent = new DefaultPicoContainer.Default();
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parent);
+        DefaultComponentRegistry parentReg = new DefaultComponentRegistry();
+        DefaultPicoContainer parent = new DefaultPicoContainer.WithComponentRegistry(parentReg);
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
         parent.registerComponentByClass(FredImpl.class);
@@ -76,8 +77,9 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
     public void testGetComponentTypes() throws PicoRegistrationException, PicoInitializationException {
 
-        DefaultPicoContainer parent = new DefaultPicoContainer.Default();
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parent);
+        DefaultComponentRegistry parentReg = new DefaultComponentRegistry();
+        DefaultPicoContainer parent = new DefaultPicoContainer.WithComponentRegistry(parentReg);
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
         parent.registerComponentByClass(FredImpl.class);
@@ -98,8 +100,9 @@ public class HierarchicalComponentRegistryTestCase extends TestCase {
 
     public void testParentContainer() throws PicoRegistrationException, PicoInitializationException {
 
-        DefaultPicoContainer parent = new DefaultPicoContainer.Default();
-        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parent);
+        DefaultComponentRegistry parentReg = new DefaultComponentRegistry();
+        DefaultPicoContainer parent = new DefaultPicoContainer.WithComponentRegistry(parentReg);
+        HierarchicalComponentRegistry hcr = new HierarchicalComponentRegistry.Default(parentReg);
         DefaultPicoContainer child = new DefaultPicoContainer.WithComponentRegistry(hcr);
 
         parent.registerComponent(Wilma.class, WilmaImpl.class);

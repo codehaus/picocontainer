@@ -17,9 +17,7 @@ public interface ComponentFactory {
     /**
      * Create a component. Used by the internals of applicable PicoContainers
      * to instantiate a component.
-     * @param componentType the type the component will be registered as.
-     * @param componentImplementation concrete component class.
-     * @param dependencies
+     * @param componentSpec
      * @param instanceDependencies The component instances the created component will depend on.
      * @throws PicoInitializationException
      * @throws PicoIntrospectionException

@@ -10,6 +10,8 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentRegistry;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoContainer;
 
 import java.io.Serializable;
 import java.util.*;
@@ -92,6 +94,60 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
 
     public ComponentSpecification getComponentSpec(Object componentKey) {
         return (ComponentSpecification) componentToSpec.get(componentKey);
+    }
+
+    public Object findImplementingComponent(Class componentType) throws AmbiguousComponentResolutionException {
+        List found = new ArrayList();
+
+        for (Iterator iterator = getComponentInstanceKeys().iterator(); iterator.hasNext();) {
+            Object key = iterator.next();
+            Object component = getComponentInstance(key);
+            if (componentType.isInstance(component)) {
+                found.add(key);
+            }
+        }
+
+        if (found.size() > 1) {
+            Object[] ambiguousKeys = found.toArray();
+            throw new AmbiguousComponentResolutionException(componentType, ambiguousKeys);
+        }
+
+        return found.isEmpty() ? null : getComponentInstance(found.get(0));
+    }
+
+    public ComponentSpecification findImplementingComponentSpecification(Class componentType) throws AmbiguousComponentResolutionException {
+        List found = new ArrayList();
+        for (Iterator iterator = getComponentSpecifications().iterator(); iterator.hasNext();) {
+            ComponentSpecification componentSpecification = (ComponentSpecification) iterator.next();
+
+            if (componentType.isAssignableFrom(componentSpecification.getComponentImplementation())) {
+                found.add(componentSpecification);
+            }
+        }
+
+        if (found.size() > 1) {
+            Class[] foundClasses = new Class[found.size()];
+            for (int i = 0; i < foundClasses.length; i++) {
+                foundClasses[i] = ((ComponentSpecification) found.get(i)).getComponentImplementation();
+            }
+            throw new AmbiguousComponentResolutionException(componentType, foundClasses);
+        }
+
+        return found.isEmpty() ? null : ((ComponentSpecification) found.get(0));
+    }
+
+
+    public Object createComponent(ComponentSpecification componentSpecification) throws PicoInitializationException {
+        if (!contains(componentSpecification.getComponentKey())) {
+            Object component = componentSpecification.instantiateComponent(this);
+            addOrderedComponent(component);
+
+            putComponent(componentSpecification.getComponentKey(), component);
+
+            return component;
+        } else {
+            return getComponentInstance(componentSpecification.getComponentKey());
+        }
     }
 
 }

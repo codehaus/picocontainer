@@ -17,6 +17,6 @@ import org.picocontainer.defaults.ComponentSpecification;
  * @version $Revision$
  */
 public interface Parameter {
-    Object resolve(PicoContainer picoContainer, ComponentSpecification compSpec, Class targetType)
+    Object resolve(ComponentRegistry componentRegistry, ComponentSpecification compSpec, Class targetType)
             throws PicoInitializationException;
 }

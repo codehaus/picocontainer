@@ -16,13 +16,9 @@ namespace PicoContainer
 {
 
   /// <summary>
-  /// The PicoIntrospectionException is thrown when an error in the resolution of a Component.
+  /// Exception that is thrown when there is a problem creating, providing or locating a component
+  /// instance or a part of the PicoContainer API, for example, when a request for a component is ambiguous.
   /// </summary>
-  /// <remarks>
-  /// This is the base exception for all exceptions thrown in PicoContainer regarding the resolution 
-  /// of components. 
-  /// Derive all component related exc ecxeptions in PicoContainer from this exception.
-  /// </remarks>
   [Serializable]  
   public class PicoIntrospectionException : PicoException
 	{

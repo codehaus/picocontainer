@@ -15,11 +15,9 @@ using System.Runtime.Serialization;
 namespace PicoContainer {
 
   /// <summary>
-  /// A PicoInitializationException is thrown when the container could not be initialized.
+  /// Exception that is thrown when there is a problem initializing the container or some other
+  /// part of the PicoContainer api, for example, when a cyclic dependency between components occurs.
   /// </summary>
-  /// <remarks>
-  /// When this exception occurs check the PicoContainer is not functioning correct.
-  /// </remarks>
   [Serializable]
   public class PicoInitializationException : PicoException {
 
@@ -30,7 +28,6 @@ namespace PicoContainer {
     /// This constructor initializes the Message property of the new instance to a system-supplied message 
     /// that describes the error, such as "Could not initialize the PicoContainer." 
     /// </remarks>
-    /// <param name="ex"></param>
     public PicoInitializationException(): base ("Could not initialize the PicoContainer."){ }
 
     /// <summary>

@@ -15,11 +15,12 @@ using System.Runtime.Serialization;
 namespace PicoContainer {
 
   /// <summary>
-  /// The PicoException is thrown when an error in the PicoContainer occurs.
+  /// Superclass for all Exceptions in PicoContainer. 
   /// </summary>
   /// <remarks>
-  /// This is the base exception for all exceptions thrown in PicoContainer. 
-  /// Derive all PicoContainer specific exceptions in PicoContainer from this exception.
+  /// You can use this if you want to catch all exceptions thrown by
+  /// PicoContainer. Be aware that some parts of the PicoContainer API will also throw <see cref="NullReferenceException"/> when
+  /// <example>null</example> values are provided for method arguments, and this is not allowed.
   /// </remarks>
   [Serializable]
   public class PicoException : ApplicationException {

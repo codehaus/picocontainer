@@ -16,10 +16,9 @@ using System.Runtime.Serialization;
 namespace PicoContainer
 {
   /// <summary>
-  /// The PicoVerificationException is thrown when the verification of the container failed.
+  /// Exception that is thrown when there is a problem with the internal state of the container or
+  /// another part of the PicoContainer API, for example when a needed dependency cannot be resolved.
   /// </summary>
-  /// <remarks>
-  /// </remarks>
   [Serializable]
   public class PicoVerificationException : PicoException
 	{

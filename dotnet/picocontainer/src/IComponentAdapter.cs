@@ -15,50 +15,47 @@ namespace PicoContainer {
   
   /// <summary>
   /// A component adapter is responsible for providing a specific component instance.
-  /// An instance of an implementation of this interface is used in a {@link PicoContainer}
-  /// for every registered component or instance.  Each ComponentAdapter instance has to 
-  /// support unique key for a single PicoContainer.  The key itself is either a class type
-  /// (normally an interface) or an identifier.
   /// </summary>
+  /// <remarks>
+  /// An instance of an implementation of this interface is used in a <see cref="IPicoContainer"/>
+  /// for every registered component or instance. Each ComponentAdapter instance has to 
+  /// support unique key for a single PicoContainer. The key itself is either a class type
+  /// (normally an interface) or an identifier.
+  /// See <see cref="IMutablePicoContainer"/>an extension of the PicoContainer interface which 
+  /// allows you to modify the contents of the container.</remarks>
   /// 
   public interface IComponentAdapter {
     
     /// <summary>
-    /// Returns the component's key
+    /// Retrieve the key associated with the component.
     /// </summary>
     object ComponentKey {
       get;
     }
 
     /// <summary>
-    /// Returns the component's implementing type
+    /// Retrieve the implementing Type of the component.
     /// </summary>
     Type ComponentImplementation{
       get;
     }
 
     /// <summary>
-    /// Gets the component instance. This method will usually create
-    /// a new instance for each call.
+    /// Gets the component instance. 
     /// </summary>
     /// <remarks>
+    /// This method will usually create a new instance for each call, this is not required.
     /// Not all ComponentAdapters return a new instance for each call an example is the <see cref="PicoContainer.Defaults.CachingComponentAdapter"/>.<BR/>
     /// </remarks>
-    /// <returns>a component instance</returns>
-    /// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
+    /// <returns>The component instance</returns>
+    /// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>
+    /// <exception cref="PicoContainer.PicoIntrospectionException">if the component has dependencies which could not be resolved, or
+    ///                                                            instantiation of the component lead to an ambigous situation within the
+    ///                                                            container.</exception>
     object ComponentInstance {
       get;
     }
     
-
-    
-    /// <summary>
-    /// Verify that all dependencies for this adapter can be satisifed.
-    /// </summary>
-    /// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
-    void Verify();
-
-
     /// 
     /// <summary>
     ///  Property containing the container in which this instance is registered, called by the container upon registration
@@ -67,5 +64,11 @@ namespace PicoContainer {
       get;
       set;
     }
+
+    /// <summary>
+    /// Verify that all dependencies for this adapter can be satisifed.
+    /// </summary>
+    /// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
+    void Verify();
   }
 }

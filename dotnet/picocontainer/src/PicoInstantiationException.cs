@@ -15,12 +15,9 @@ using System.Runtime.Serialization;
 namespace PicoContainer
 {
   /// <summary>
-  /// The PicoInvocationTargetInitializationException is thrown when an error occurs while creating an 
-  /// instance of a registered component.
+  /// Exception that is thrown when there is a problem creating an instance of a container or some
+  /// other part of the PicoContainer api, for example, when an invocation through the reflection api fails.  
   /// </summary>
-  /// <remarks>
-  /// Use this Exception as a base class of all instantiating related exceptions.
-  /// </remarks>
   [Serializable]
   public class PicoInstantiationException : PicoException
 	{

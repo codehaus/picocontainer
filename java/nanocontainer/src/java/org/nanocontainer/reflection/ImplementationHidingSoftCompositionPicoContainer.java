@@ -233,7 +233,8 @@ public class ImplementationHidingSoftCompositionPicoContainer extends AbstractSo
         public InnerMutablePicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
             super(componentAdapterFactory, parent);
         }
-        public Map getNamedContainers() {
+
+        protected Map getNamedContainers() {
             return super.getNamedContainers();
         }
 

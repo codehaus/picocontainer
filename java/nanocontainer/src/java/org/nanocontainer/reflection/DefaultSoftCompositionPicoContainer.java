@@ -244,7 +244,7 @@ public class DefaultSoftCompositionPicoContainer extends AbstractSoftComposition
             super(componentAdapterFactory, parent);
         }
 
-        public Map getNamedContainers() {
+        protected Map getNamedContainers() {
             return namedChildContainers;
         }
 

@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Mirko Novakovic
  * @version $Revision$
  */
 public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
@@ -100,27 +101,14 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         }
     }
 
-    /**
-     * A component that depends on another component.
-     *
-     * @author Mirko Novakovic
-     */
     public static class A {
         private B b;
 
-        /**
-         * @param b The b to set.
-         */
         public void setB(B b) {
             this.b = b;
         }
     }
 
-    /**
-     * Yet another component.
-     *
-     * @author Mirko Novakovic
-     */
     public static class B {
     }
 
@@ -144,6 +132,21 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
     }
 
+    public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
+        BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
+
+        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter("foo", Foo.class, null);
+
+        Map properties = new HashMap();
+        properties.put("message", "hello");
+        adapter.setProperties(properties);
+
+        Foo foo = (Foo) adapter.getComponentInstance();
+
+        assertEquals("hello", foo.message);
+    }
+
+
     public void testDelegateIsAccessible() {
         DecoratingComponentAdapter componentAdapter =
                 (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
@@ -156,16 +159,13 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
         Map properties = new HashMap();
         properties.put("message", "hello");
-        factory.setProperties(impl, properties);
 
-        ComponentAdapter adapter = factory.createComponentAdapter(impl, impl, null);
+        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(impl, impl, null);
+        adapter.setProperties(properties);
         return adapter;
     }
 
-    /**
-     * Tests if all attributes that are Java primitive types will be set by the adpater.
-     */
-    public void testSetPrimitiveProperties() throws MalformedURLException {
+    public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
         Map properties = new HashMap();
         properties.put("byte_", "1");
@@ -178,8 +178,9 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("boolean_", "true");
         properties.put("file_", "/foo/bar");
         properties.put("url_", "http://www.picocontainer.org/");
-        factory.setProperties(Primitives.class, properties);
-        Primitives primitives = (Primitives) factory.createComponentAdapter(Primitives.class, Primitives.class, null).getComponentInstance();
+        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(Primitives.class, Primitives.class, null);
+        adapter.setProperties(properties);
+        Primitives primitives = (Primitives) adapter.getComponentInstance();
 
         assertNotNull(primitives);
         assertEquals(1, primitives.byte_);
@@ -194,18 +195,16 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         assertEquals(new URL("http://www.picocontainer.org/"), primitives.url_);
     }
 
-    /**
-     * Tests if a dependend component will be set by the adpater.
-     */
-    public void testSetDependenComponent() {
+    public void testSetDependenComponentWillBeSetByTheAdapter() {
         picoContainer.registerComponentImplementation("b", B.class);
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
         Map properties = new HashMap();
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        factory.setProperties(A.class, properties);
-        picoContainer.registerComponent(factory.createComponentAdapter(A.class, A.class, null));
+        BeanPropertyComponentAdapterFactory.Adapter adapter = (BeanPropertyComponentAdapterFactory.Adapter) factory.createComponentAdapter(A.class, A.class, null);
+        adapter.setProperties(properties);
+        picoContainer.registerComponent(adapter);
         A a = (A) picoContainer.getComponentInstance(A.class);
 
         assertNotNull(a);

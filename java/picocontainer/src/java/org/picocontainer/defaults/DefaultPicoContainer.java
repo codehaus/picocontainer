@@ -188,7 +188,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * passed to the container's constructor.
      */
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        return registerComponentImplementation(componentKey, componentImplementation, null);
+        return registerComponentImplementation(componentKey, componentImplementation, (Parameter[]) null);
     }
 
     /**
@@ -200,6 +200,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
         registerComponent(componentAdapter);
         return componentAdapter;
+    }
+
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) throws PicoRegistrationException {
+        Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
+        return registerComponentImplementation(componentKey,  componentImplementation, parametersAsArray);
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {

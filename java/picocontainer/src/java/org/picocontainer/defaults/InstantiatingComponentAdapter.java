@@ -66,7 +66,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             if(PicoContainer.class.isAssignableFrom(parameters[i])) {
                 componentParameters[i] = new ConstantParameter(picoContainer);
             } else {
-                componentParameters[i] = new ComponentParameter(parameters[i]);
+                componentParameters[i] = new ComponentParameter();
             }
         }
         return componentParameters;

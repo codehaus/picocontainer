@@ -16,10 +16,8 @@ import java.util.*;
 import java.io.Serializable;
 import java.lang.reflect.UndeclaredThrowableException;
 
-import picocontainer.testmodel.FlintstonesImpl;
-import picocontainer.testmodel.FredImpl;
-import picocontainer.testmodel.Wilma;
-import picocontainer.testmodel.WilmaImpl;
+import picocontainer.testmodel.*;
+import picocontainer.testmodel.Dictionary;
 import picocontainer.reflect.SequentialInvocationHandler;
 
 public class DefaultPicoContainerTestCase extends TestCase {
@@ -55,10 +53,25 @@ public class DefaultPicoContainerTestCase extends TestCase {
             assertTrue(e.getClassThatNeedsDeps() == FredImpl.class);
 
         }
-
     }
 
-    public void testDupesWithClass() throws PicoStartException, PicoRegistrationException
+    public void testDupeImplementations() throws PicoRegistrationException {
+        PicoContainer pico = new PicoContainerImpl.Default();
+
+        pico.registerComponent(Dictionary.class, Webster.class);
+        try
+        {
+            pico.registerComponent(Thesaurus.class, Webster.class);
+            fail("Should have barfed with dupe registration");
+        }
+        catch (DuplicateComponentClassRegistrationException e)
+        {
+            // expected
+            assertTrue(e.getDuplicateClass() == Webster.class);
+        }
+    }
+
+    public void testDupeTypesWithClass() throws PicoStartException, PicoRegistrationException
     {
         PicoContainer pico = new PicoContainerImpl.Default();
 
@@ -68,14 +81,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
             pico.registerComponent(WilmaImpl.class);
             fail("Should have barfed with dupe registration");
         }
-        catch (DuplicateComponentRegistrationException e)
+        catch (DuplicateComponentTypeRegistrationException e)
         {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
         }
     }
 
-    public void testDupesWithObject() throws PicoStartException, PicoRegistrationException
+    public void testDupeTypesWithObject() throws PicoStartException, PicoRegistrationException
     {
         PicoContainer pico = new PicoContainerImpl.Default();
 
@@ -85,7 +98,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
             pico.registerComponent(WilmaImpl.class, new WilmaImpl());
             fail("Should have barfed with dupe registration");
         }
-        catch (DuplicateComponentRegistrationException e)
+        catch (DuplicateComponentTypeRegistrationException e)
         {
             // expected
             assertTrue(e.getDuplicateClass() == WilmaImpl.class);
@@ -338,4 +351,36 @@ public class DefaultPicoContainerTestCase extends TestCase {
         FooImpl foo = (FooImpl) pico.getComponent(Foo.class);
         assertEquals( "Zap", foo.getBar() );
     }
+
+    public static class A {
+        public A(B b){}
+    }
+    public static class B {
+        public B(C c, D d){}
+    }
+    public static class C {
+        public C(A a, B b) {}
+    }
+    public static class D {
+        public D() {System.out.println("D instantiated");}
+    }
+
+    // TODO uncomment this and make it pass
+    private void tAestCircularDependencyShouldFail() throws PicoRegistrationException, PicoStartException {
+        PicoContainer pico = new PicoContainerImpl.Default();
+
+        try {
+            pico.registerComponent(A.class);
+            pico.registerComponent(B.class);
+            pico.registerComponent(C.class);
+            pico.registerComponent(D.class);
+
+            pico.start();
+            fail( "Should have gotten a CircularDependencyRegistrationException" );
+        } catch (CircularDependencyRegistrationException e) {
+            // ok
+        }
+    }
+
+
 }

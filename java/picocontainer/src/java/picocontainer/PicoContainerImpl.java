@@ -47,16 +47,17 @@ public class PicoContainerImpl implements PicoContainer {
     }
 
     // TODO:ASLAK just declare PicoRegistrationException?
-    public void registerComponent(Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
+    public void registerComponent(Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
     // TODO:ASLAK just declare PicoRegistrationException?
-    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
+    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentClassRegistrationException {
         checkConcrete(componentClass);
         checkConstructor(componentClass);
-        checkType(componentType, componentClass);
-        checkDuplication(componentType);
+        checkTypeCompatibility(componentType, componentClass);
+        checkTypeDuplication(componentType);
+        checkImplementationDuplication(componentClass);
         registeredComponents.add(new ComponentSpecification(componentType, componentClass));
     }
 
@@ -69,16 +70,26 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
-    private void checkDuplication(Class componentType) throws DuplicateComponentRegistrationException {
+    private void checkTypeDuplication(Class componentType) throws DuplicateComponentTypeRegistrationException {
         for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
             Class aClass = ((ComponentSpecification) iterator.next()).getComponentType();
             if (aClass == componentType) {
-                throw new DuplicateComponentRegistrationException(aClass);
+                throw new DuplicateComponentTypeRegistrationException(aClass);
             }
         }
     }
 
-    private void checkType(Class componentType, Class componentClass) throws AssignabilityRegistrationException {
+    // todo rename componentClass to componentImplementation everywhere
+    private void checkImplementationDuplication(Class componentImplementation) throws DuplicateComponentClassRegistrationException {
+        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+            Class aClass = ((ComponentSpecification) iterator.next()).getComponentClass();
+            if (aClass == componentImplementation) {
+                throw new DuplicateComponentClassRegistrationException(aClass);
+            }
+        }
+    }
+
+    private void checkTypeCompatibility(Class componentType, Class componentClass) throws AssignabilityRegistrationException {
         if (!componentType.isAssignableFrom(componentClass)) {
             throw new AssignabilityRegistrationException(componentType, componentClass);
         }
@@ -98,8 +109,9 @@ public class PicoContainerImpl implements PicoContainer {
     }
 
     public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
-        checkType(componentType, component.getClass());
-        checkDuplication(componentType);
+        checkTypeCompatibility(componentType, component.getClass());
+        checkTypeDuplication(componentType);
+        checkImplementationDuplication(component.getClass());
         componentTypeToInstanceMap.put(componentType, component);
     }
 
@@ -110,26 +122,26 @@ public class PicoContainerImpl implements PicoContainer {
 
             for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
                 ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
-                Class comp = componentSpec.getComponentClass();
-                Class compType = componentSpec.getComponentType();
-                if (componentTypeToInstanceMap.get(compType) == null) {
+                Class componentClass = componentSpec.getComponentClass();
+                Class componentType = componentSpec.getComponentType();
+                if (componentTypeToInstanceMap.get(componentType) == null) {
                     // hook'em up
                     try {
-                        Constructor[] ctors = comp.getConstructors();
-                        Constructor constructor = ctors[0];
-                        Class[] params = constructor.getParameterTypes();
+                        Constructor[] constructors = componentClass.getConstructors();
+                        Constructor constructor = constructors[0];
+                        Class[] parameters = constructor.getParameterTypes();
 
-                        // For each param, look up the instantiated comp.
-                        Object[] args = new Object[params.length];
-                        for (int i = 0; i < params.length; i++) {
-                            Class param = params[i];
+                        // For each param, look up the instantiated componentClass.
+                        Object[] args = new Object[parameters.length];
+                        for (int i = 0; i < parameters.length; i++) {
+                            Class param = parameters[i];
                             args[i] = getComponentForParam(param);
                         }
                         if (hasNullArgs(args) == false) {
                             Object componentInstance = null;
                             componentInstance = makeComponentInstance(constructor, args);
-                            // Put the instantiated comp back in the map
-                            componentTypeToInstanceMap.put(compType, componentInstance);
+                            // Put the instantiated componentClass back in the map
+                            componentTypeToInstanceMap.put(componentType, componentInstance);
                             orderedComponents.add(componentInstance);
                             progress = true;
                         }
@@ -190,14 +202,14 @@ public class PicoContainerImpl implements PicoContainer {
         return constructor.newInstance(args);
     }
 
-    private Object getComponentForParam(Class param) throws AmbiguousComponentResolutionException {
+    private Object getComponentForParam(Class parameter) throws AmbiguousComponentResolutionException {
         Object result = null;
 
         // If the parent container has the component type
         // it can be seen to be dominant. No need to check
         // for ambiguities
-        if (parentContainer != null && parentContainer.hasComponent(param)) {
-            return parentContainer.getComponent(param);
+        if (parentContainer != null && parentContainer.hasComponent(parameter)) {
+            return parentContainer.getComponent(parameter);
         }
 
         // We're keeping track of all candidate parameters, so we can bomb with a detailed error message
@@ -207,7 +219,7 @@ public class PicoContainerImpl implements PicoContainer {
         for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
             Map.Entry entry = (Map.Entry) iterator.next();
             Class clazz = (Class) entry.getKey();
-            if (param.isAssignableFrom(clazz)) {
+            if (parameter.isAssignableFrom(clazz)) {
                 candidateClasses.add(clazz);
                 result = entry.getValue();
             }

@@ -10,11 +10,11 @@
 
 package picocontainer;
 
-public class DuplicateComponentRegistrationException extends PicoRegistrationException
+public class DuplicateComponentClassRegistrationException extends PicoRegistrationException
 {
     private Class clazz;
 
-    public DuplicateComponentRegistrationException(Class clazz)
+    public DuplicateComponentClassRegistrationException(Class clazz)
     {
         this.clazz = clazz;
     }

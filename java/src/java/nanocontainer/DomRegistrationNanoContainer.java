@@ -31,26 +31,32 @@ public class DomRegistrationNanoContainer extends StringRegistrationNanoContaine
 
     private final DocumentBuilder documentBuilder;
 
-    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, Container parentContainer) {
-        super(parentContainer);
+    public DomRegistrationNanoContainer(DocumentBuilder documentBuilder, Container parentContainer, ClassLoader classLoader) {
+        super(parentContainer, classLoader);
         this.documentBuilder = documentBuilder;
     }
 
     public static class Default extends DomRegistrationNanoContainer {
         public Default() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer());
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer(), DomRegistrationNanoContainer.class.getClassLoader() );
         }
     }
 
     public static class WithParentContainer extends DomRegistrationNanoContainer {
         public WithParentContainer(Container parentContainer) throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), parentContainer);
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), parentContainer, DomRegistrationNanoContainer.class.getClassLoader());
         }
     }
 
     public static class WithCustomDocumentBuilder extends DomRegistrationNanoContainer {
         public WithCustomDocumentBuilder(DocumentBuilder documentBuilder) {
-            super(documentBuilder, new DummyContainer());
+            super(documentBuilder, new DummyContainer(), DomRegistrationNanoContainer.class.getClassLoader());
+        }
+    }
+
+    public static class WithClassLoader extends DomRegistrationNanoContainer {
+        public WithClassLoader(ClassLoader classLoader) throws ParserConfigurationException {
+            super(DocumentBuilderFactory.newInstance().newDocumentBuilder(), new DummyContainer(), classLoader);
         }
     }
 

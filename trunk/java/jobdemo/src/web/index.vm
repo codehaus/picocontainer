@@ -1,0 +1,30 @@
+#url( $url ) 
+<html>
+    <head>
+        <title>
+            Start page
+        </title>
+    </head>
+    <body>
+        <dl>
+            <dt>
+                <a href="$url.setPage('/projects/')">Projects</a>
+            </dt>
+            <dd>
+                Recruiter functionality
+            </dd>
+            <dt>
+                <a href="$url.setPage('/profiles/')">Profiles</a>
+            </dt>
+            <dd>
+                Profiles functionality
+            </dd>
+            <dt>
+                <a href="$url.setPage('/info/')">Information</a>
+            </dt>
+            <dd>
+                User information and help
+            </dd>
+        </dl>
+    </body>
+</html>

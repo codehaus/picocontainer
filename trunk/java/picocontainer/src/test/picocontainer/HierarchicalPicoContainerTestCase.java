@@ -353,7 +353,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             pico.registerComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
         } catch (NotConcreteRegistrationException e) {
-            assertEquals(Runnable.class, e.getComponentClass());
+            assertEquals(Runnable.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
     }

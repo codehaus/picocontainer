@@ -16,10 +16,10 @@ public interface PicoContainer extends LifecycleContainer {
      * Registers a component. Same as calling {@link #registerComponent(java.lang.Class, java.lang.Class)}
      * with the same argument.
      *
-     * @param componentClass The class of the component to instantiate
+     * @param componentImplementation The class of the component to instantiate
      * @throws PicoRegistrationException If a registration problem
      */
-    void registerComponent(Class componentClass)
+    void registerComponent(Class componentImplementation)
             throws PicoRegistrationException;
 
     /**
@@ -27,10 +27,10 @@ public interface PicoContainer extends LifecycleContainer {
      * component type.
      *
      * @param componentType Component type
-     * @param componentClass The class of the component to instantiate
+     * @param componentImplementation The class of the component to instantiate
      * @throws PicoRegistrationException If a registration problem
      */
-    void registerComponent(Class componentType, Class componentClass)
+    void registerComponent(Class componentType, Class componentImplementation)
             throws PicoRegistrationException;
 
     /**

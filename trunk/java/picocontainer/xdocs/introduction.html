@@ -43,10 +43,14 @@ imaginative deployments for them.<br>
 <h2>Container</h2>
 PicoContainer's most basic interface is Container :
 <br>
-<pre>&nbsp;&nbsp; public interface Container {</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;   boolean hasComponent(Class componentType);</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;   Object getComponent(Class componentType);</pre>
+<pre>&nbsp;&nbsp; public interface Container {
+</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;   boolean hasComponent(Class componentType);
+</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;   Object getComponent(Class componentType);
+</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;   Object[] getComponents();</pre>
+<pre>       Class[] getComponentTypes();</pre>
 <pre>&nbsp;&nbsp; }</pre>
 Clearly a PicoContainer is a read-only thing. That's deliberate.&nbsp;
 We see many
@@ -71,9 +75,9 @@ Apache's <a href="http://avalon.apache.org/">Avalon</a> project has
 been selling the IoC patten for many years
 now.&nbsp; The Avalon-Framework design laces together components like
 so:<br>
-<pre>&nbsp;&nbsp; public class Shop implements Serviceable {</pre>
+<pre>&nbsp;&nbsp; public class Shop implements org.apache.avalon.framework.Serviceable {</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;   StockManager stockManager;</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;   public void service(ServiceManager sm) {</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;   public void service(org.apache.avalon.framework.ServiceManager sm) {</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     stockManager = (StockManager) sm.lookup("StockManager");</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;   }</pre>
 <pre>&nbsp;&nbsp; }</pre>

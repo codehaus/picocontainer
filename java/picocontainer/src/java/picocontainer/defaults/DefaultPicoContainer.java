@@ -70,7 +70,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
     }
 
     /**
-     * @deprecated Use getCompositeComponent instead
+     * @deprecated Use {@link #getCompositeComponent} instead
      */
     public Object getAggregateComponentProxy() {
         return getCompositeComponent();
@@ -156,7 +156,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         }
     }
 
-    public void registerComponent(Object component) throws PicoRegistrationException, PicoIntrospectionException {
+    public void registerComponentByInstance(Object component) throws PicoRegistrationException, PicoIntrospectionException {
         registerComponent(component.getClass(), component);
     }
 

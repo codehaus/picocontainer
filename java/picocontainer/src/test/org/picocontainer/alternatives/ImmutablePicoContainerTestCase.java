@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * @author Paul Hammant
@@ -44,6 +45,16 @@ public class ImmutablePicoContainerTestCase extends TestCase {
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         Map map = (Map) ipc.getComponentInstanceOfType(Map.class);
         assertNotNull(map);
+    }
+
+    public void testDelegationOfGettingComponentInstancesOfType() {
+        DefaultPicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponentImplementation(Map.class, HashMap.class);
+        mpc.registerComponentImplementation(Collection.class, Vector.class);
+        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
+        List list = ipc.getComponentInstancesOfType(Map.class);
+        assertNotNull(list);
+        assertEquals(1,list.size());
     }
 
     public void testDelegationOfGetComponentInstances() {

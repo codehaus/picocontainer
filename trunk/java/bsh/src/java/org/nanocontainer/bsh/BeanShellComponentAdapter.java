@@ -29,7 +29,7 @@ import bsh.EvalError;
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation
  * (and possibly also initialisation) of component instances.
  * <p>
- * When {@link #getComponentInstance(MutablePicoContainer) is called (by PicoContainer),
+ * When {@link #getComponentInstance} is called (by PicoContainer),
  * the adapter instance will look for a script with the same name as the component implementation
  * class (but with the .bsh extension). This script must reside in the same folder as the class.
  * (It's ok to have them both in a jar).

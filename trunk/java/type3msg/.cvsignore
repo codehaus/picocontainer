@@ -1,6 +1,6 @@
 target
+junit*
 *.log
-cvsspam_test
 *.iws
 *.ipr
 *.iml

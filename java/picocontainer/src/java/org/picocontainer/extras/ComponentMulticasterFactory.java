@@ -13,7 +13,7 @@ package org.picocontainer.extras;
 import java.util.List;
 
 /**
- *
+ * @author Chris Stevenson
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

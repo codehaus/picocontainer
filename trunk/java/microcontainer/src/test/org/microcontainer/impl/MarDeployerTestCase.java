@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) MicroContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
+
 package org.microcontainer.impl;
 
 import java.io.File;
@@ -35,9 +44,12 @@ public class MarDeployerTestCase extends TestCase {
 		validateMarDeployedToWorkingDir();
 	}
 
+	/**
+	 * remote MAR files are first downloaded to a temporary directory once downloaded they are expanded into the
+	 * working directory as normal
+	 */
 	public void testDeployFromHttp() throws Exception {
 		// normally this directory would be created by deploy()... but we are bypassing for testing
-		File unitTestDir = new File("work/unittest");
 		unitTestDir.mkdir();
 
 		HttpURLConnection connection = new MockHttpURLConnection(null);
@@ -62,6 +74,9 @@ public class MarDeployerTestCase extends TestCase {
 		assertTrue(new File(unitTestDir, "MAR-INF/hidden/hidden.jar").exists());
 	}
 
+	/**
+	 * Mock class to simulate (mock) download from an HTTP connection
+	 */
 	protected class MockHttpURLConnection extends HttpURLConnection {
 		public MockHttpURLConnection(URL u) {
 			super(u);

@@ -15,6 +15,7 @@ import org.microcontainer.DeploymentException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -70,8 +71,8 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
 		Class interfaceClass = o.getClass().getInterfaces()[0];
-        // the interface should be three removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent().getParent().getParent());
+        // the interface should be two removed from each other.
+        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent().getParent());
 
         // LSD: what kind of number is that, "two"?
         // You're testing that the kernel is two classloaders
@@ -88,8 +89,8 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
-        // these should be two removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent());
+        // these should be three removed from each other.
+        assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent().getParent());
         // LSD: those numbers again...you want to expose the classloader architecture
         // to the client...that'll make it difficult to change...
     }
@@ -134,8 +135,14 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     }
 
     public void testMarMissingJavaCannotBeDeployed() throws DeploymentException{
-        kernel.deploy(new File("incomplete.mar"));
-        // .bogus language not supported
+		try {
+			kernel.deploy(new File("incomplete.mar"));
+			fail("The file incomplete.mar should NOT be valid, deployment exception should be thrown");
+		} catch (DeploymentException e) {
+        	assertTrue(e.getCause() instanceof ZipException);
+		}
+
+		assertFalse(new File("work/incomplete").exists()); // ensure directory was NOT created
     }
 
     public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile() throws DeploymentException {
@@ -152,6 +159,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 			kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
 			fail("DeploymentException should have been thrown");
 		} catch (DeploymentException e) {
+			assertTrue(e.getCause() instanceof FileNotFoundException);
 		}
 	}
 
@@ -222,10 +230,12 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
     public void testKernelCanRunInPicoContainer() {
         // lets keep true to COP principles, shall we?
         DefaultPicoContainer c = new DefaultPicoContainer();
-        c.registerComponentImplementation(DefaultKernel.class);
-        assertTrue( c.getComponentInstance(Kernel.class) instanceof Kernel );
+        c.registerComponentImplementation(Kernel.class, DefaultKernel.class);
+        assertNotNull( c.getComponentInstance(Kernel.class) );
         c.start();
         c.stop();
         c.dispose();
     }
 }
+
+

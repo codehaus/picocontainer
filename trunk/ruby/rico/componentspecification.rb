@@ -1,4 +1,3 @@
-    
 class ComponentSpecification
   attr_reader :type, :dependencies
   
@@ -9,12 +8,12 @@ class ComponentSpecification
   def create_component(container)
       check_access @type, @create_method # calling by reflection doesn't check access
       args = @dependencies.collect { |dep| container.component(dep) }
-      @component = @type.send @create_method, *args
+      @component = @type.send(@create_method, *args)
+      return @component
   end
   
   def component(container)
-  	create_component container unless @component
-  	return @component
+  	return @component || create_component(container)
   end
   
   private

@@ -2,27 +2,6 @@ require 'rico/exceptions'
 require 'rico/componentspecification'
 
 module Rico
-  module RunState
-    attr_reader :run_state
-    
-    def initialize(run_state = :stopped)
-      @run_state = run_state
-    end
-    
-    def started?; @run_state == :started; end
-    def stopped?; @run_state == :stopped; end
-    
-    def start
-      @run_state = :started
-      do_start
-    end
-    
-    def stop
-   	  @run_state = :stopped
-   	  do_stop
-   	end
-  end
-  
   class Container
     def initialize
       @specs = {}
@@ -38,8 +17,7 @@ module Rico
     end
     
     def component_class(key)
-      check_key key
-      @specs[key].type
+      return spec(key).type
     end
     
     def dependencies(key)
@@ -47,7 +25,7 @@ module Rico
     end
     
     def component_specification(key)
-      return @specs[check_key(key)]
+      return spec(key)
     end
     
     def component(key)
@@ -58,6 +36,11 @@ module Rico
       @specs.each_key do |key|
         component(key).send(method, *args) if component(key).respond_to? method
       end
+    end
+    
+    protected
+    def spec(key)
+      return @specs[check_key(key)]
     end
     
     private

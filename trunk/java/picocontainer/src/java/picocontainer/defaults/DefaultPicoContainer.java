@@ -60,20 +60,6 @@ public class DefaultPicoContainer implements RegistrationPicoContainer {
         this.componentFactory = componentFactory;
     }
 
-    /**
-     * @deprecated Use {@link #getCompositeComponent} instead
-     */
-    public final Object getAggregateComponentProxy() {
-        return getCompositeComponent();
-    }
-
-    /**
-     * @deprecated Use getCompositeComponent instead
-     */
-    public final Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
-        return getCompositeComponent(callInInstantiationOrder, callUnmanagedComponents);
-    }
-
     // see PicoContainer interface for Javadocs
     public final Object getCompositeComponent()
     {

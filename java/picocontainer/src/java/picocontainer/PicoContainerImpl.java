@@ -10,13 +10,8 @@
 
 package picocontainer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.lang.reflect.*;
+import java.util.*;
 
 public class PicoContainerImpl implements PicoContainer {
 
@@ -51,14 +46,20 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
-    public void registerComponent(Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException {
+    public void registerComponent(Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         registerComponent(componentClass, componentClass);
     }
 
-    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException {
+    public void registerComponent(Class componentType, Class componentClass) throws DuplicateComponentRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        checkConcrete(componentClass);
+        checkConstructor(componentClass);
         checkType(componentType, componentClass);
         checkDuplication(componentType);
         registeredComponents.add(new ComponentSpecification(componentType, componentClass));
+    }
+
+    private void checkConstructor(Class componentClass) {
+        // TODO
     }
 
     private void checkDuplication(Class componentType) throws DuplicateComponentRegistrationException {
@@ -76,8 +77,17 @@ public class PicoContainerImpl implements PicoContainer {
         }
     }
 
+    private void checkConcrete(Class componentClass) throws NotConcreteRegistrationException {
+        // Assert that the component class is concrete.
+        boolean isAbstract = (componentClass.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
+        if (componentClass.isInterface() || isAbstract ) {
+            throw new NotConcreteRegistrationException(componentClass);
+        }
+    }
+
     public void registerComponent(Object component) throws PicoRegistrationException {
         registerComponent(component.getClass(), component);
+        orderedComps.add(component);
     }
 
     public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
@@ -100,6 +110,8 @@ public class PicoContainerImpl implements PicoContainer {
                     try {
                         Constructor[] ctors = comp.getConstructors();
 
+                        // TODO move this check to checkConstructor and rename the exception to
+                        // WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException
                         if (ctors.length != 1) {
                             throw new WrongNumberOfConstructorsStartException(ctors.length);
                         }
@@ -114,7 +126,6 @@ public class PicoContainerImpl implements PicoContainer {
                         }
                         if (hasNullArgs(args) == false) {
                             Object componentInstance = null;
-                            //System.out.println("-->  " + comp.getName());
                             componentInstance = makeComponentInstance(constructor, args);
                             // Put the instantiated comp back in the map
                             componentTypeToInstanceMap.put(compType, componentInstance);
@@ -214,6 +225,11 @@ public class PicoContainerImpl implements PicoContainer {
         return componentTypeToInstanceMap.get(compType);
     }
 
+    public Object[] getComponents() {
+        return componentTypeToInstanceMap.values().toArray();
+
+    }
+
     private boolean hasNullArgs(Object[] args) {
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
@@ -228,5 +244,17 @@ public class PicoContainerImpl implements PicoContainer {
         return componentTypeToInstanceMap.get(compType) != null;
     }
 
+    public Object getProxy(InvocationHandler invocationHandler) {
+        // TODO should fail if container isn't started. Throw checked exception?
+        Set interfaces = new HashSet();
+        for (Iterator iterator = orderedComps.iterator(); iterator.hasNext();) {
+            Class componentClass = iterator.next().getClass();
+            Class[] implemeted = componentClass.getInterfaces();
+            List implementedList = Arrays.asList(implemeted);
+            interfaces.addAll(implementedList);
+        }
 
+        Class[] interfaceArray = (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return Proxy.newProxyInstance( getClass().getClassLoader(), interfaceArray, invocationHandler);
+    }
 }

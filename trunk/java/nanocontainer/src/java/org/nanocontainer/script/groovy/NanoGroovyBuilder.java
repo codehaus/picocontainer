@@ -19,7 +19,6 @@ import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -85,9 +84,12 @@ public class NanoGroovyBuilder extends BuilderSupport {
     }
 
     private Object createContainerNode(Object parent, Map attributes) {
-        SoftCompositionPicoContainer parentContainer = null;
-        if (parent instanceof SoftCompositionPicoContainer) {
-            parentContainer = (SoftCompositionPicoContainer) parent;
+        MutablePicoContainer parentContainer = null;
+        if (parent instanceof MutablePicoContainer) {
+            parentContainer = (MutablePicoContainer) parent;
+        }
+        if (parentContainer == null) {
+            parentContainer = (MutablePicoContainer) attributes.remove("parent");;
         }
         MutablePicoContainer answer = createContainer(attributes, parentContainer);
         return answer;
@@ -144,7 +146,7 @@ public class NanoGroovyBuilder extends BuilderSupport {
         return createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes, SoftCompositionPicoContainer parent) {
+    protected MutablePicoContainer createContainer(Map attributes, MutablePicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         Class containerImpl = (Class) attributes.remove("class");
         SoftCompositionPicoContainer softPico = null;
@@ -152,8 +154,14 @@ public class NanoGroovyBuilder extends BuilderSupport {
         if (containerImpl != null) {
             SoftCompositionPicoContainer scpc = null;
             if (parent != null) {
-                scpc = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader());
-                scpc.registerComponentInstance(ClassLoader.class, parent.getComponentClassLoader());
+                ClassLoader cl = null;
+                if (parent instanceof SoftCompositionPicoContainer) {
+                    cl = ((SoftCompositionPicoContainer) parent).getComponentClassLoader();
+                } else {
+                    cl = this.getClass().getClassLoader();
+                }
+                scpc = new DefaultSoftCompositionPicoContainer(cl);
+                scpc.registerComponentInstance(ClassLoader.class, cl);
                 scpc.registerComponentInstance(PicoContainer.class, parent);
             } else {
                 scpc = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader());
@@ -167,10 +175,16 @@ public class NanoGroovyBuilder extends BuilderSupport {
         } else {
 
             if (parent != null) {
-                if (adapterFactory != null) {
-                    softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), adapterFactory, parent);
+                ClassLoader cl = null;
+                if (parent instanceof SoftCompositionPicoContainer) {
+                    cl = ((SoftCompositionPicoContainer) parent).getComponentClassLoader();
                 } else {
-                    softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), parent);
+                    cl = this.getClass().getClassLoader();
+                }
+                if (adapterFactory != null) {
+                    softPico = new DefaultSoftCompositionPicoContainer(cl, adapterFactory, parent);
+                } else {
+                    softPico = new DefaultSoftCompositionPicoContainer(cl, parent);
                 }
                 parent.addChildContainer(softPico);
 

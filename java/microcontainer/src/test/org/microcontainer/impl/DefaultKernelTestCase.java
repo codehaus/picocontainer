@@ -101,7 +101,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // testDeployedMcasComponentsAreInDiffClassloaderToKernel()
     }
 
-    public void testAPIisPromotedToDifferentClassLoaderHierachy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
+    public void testAPIisPromotedToDifferentClassLoaderHierachy() throws Exception {
         kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
 		Class interfaceClass =  o.getClass().getInterfaces()[0];
@@ -116,12 +116,20 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // to the client...that'll make it difficult to change...
     }
 
-    public void donot_testTwoDeployedMcaComponentAPIsAreInDifferentClassloadersButSharePromotedClassLoader() throws Exception {
+	// todo mward implement this
+	public void fixthis_testDeployedComponentCanAccessPromotedAPIsFromDifferentComponent() throws Exception {
+		kernel.deploy(new File("test.mca"));
+		kernel.deploy(new File("test2.mca"));
+
+		// A class in test2 should be dependent on an api promoted by another component
+	}
+
+    public void testTwoDeployedMcaComponentAPIsAreInDifferentClassloadersButSharePromotedClassLoader() throws Exception {
 		URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
-        Object o = kernel.getComponent("test/*org.microcontainer.test.TestComp");
+        Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
 		kernel.deploy("test2", url);
-        Object o2 = kernel.getComponent("test2/*org.microcontainer.test.TestComp");
+        Object o2 = kernel.getComponent("test2/org.microcontainer.test.TestComp");
         assertNotNull(o);
         assertNotNull(o2);
         // LSD: this, I like...
@@ -290,7 +298,6 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
 		pico.registerComponentImplementation(Kernel.class, DefaultKernel.class);
-		pico.registerComponentImplementation(ClassLoaderFactory.class, DefaultClassLoaderFactory.class);
 
 		// registers Directories to names
 		pico.registerComponentInstance(workDirKey, new File("work"));
@@ -307,6 +314,12 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 		parameters[0] = ComponentParameter.DEFAULT; // uses ClassLoaderFactory
 		parameters[1] = new ComponentParameter(workDirKey);
 		pico.registerComponentImplementation(DeploymentScriptHandler.class, GroovyDeploymentScriptHandler.class, parameters);
+
+		// register for DefaultClassLoader
+		parameters = new Parameter[1];
+		parameters[0] = new ComponentParameter(workDirKey);
+		pico.registerComponentImplementation(ClassLoaderFactory.class, DefaultClassLoaderFactory.class, parameters);
+
 
 		assertNotNull( pico.getComponentInstance(Kernel.class) );
         pico.start();

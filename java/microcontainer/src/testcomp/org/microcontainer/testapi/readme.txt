@@ -1,1 +1,1 @@
-these classes go to a jar of their own in /MCA-INF/promotable
+these classes go to a jar of their own in /MCA-INF/promoted

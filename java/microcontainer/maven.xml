@@ -44,8 +44,8 @@
         <jar destfile="${maven.build.dir}/hidden.jar"
               basedir="src/testcomp/target/classes"
               includes="org/microcontainer/test/hopefullyhidden/*.class"/>
-      </goal>
-
+    </goal>
+	
     <goal name="compile-testcomp">
         <mkdir dir="src/testcomp/target/classes"/>
         <javac srcdir="src/testcomp"

@@ -11,20 +11,19 @@ import java.io.File;
  * @author Michael Ward
  */
 public class TestFixture {
-	private static File workingDir = new File("work");
-	private static File tempDir = new File("temp");
+	public static File workingDir = new File("work");
+	public static File tempDir = new File("temp");
 
 	public static Kernel createKernel() {
 		McaDeployer deployer = createDefaultMcaDeployer();
-		ClassLoaderFactory classLoaderFactory = new DefaultClassLoaderFactory(deployer);
+		ClassLoaderFactory classLoaderFactory = new DefaultClassLoaderFactory(workingDir);
 		DeploymentScriptHandler scriptHandler = new GroovyDeploymentScriptHandler(classLoaderFactory, workingDir);
 
         return new DefaultKernel( deployer, scriptHandler);
 	}
 
 	public static ClassLoaderFactory createClassLoaderFactory() {
-		McaDeployer deployer = createDefaultMcaDeployer();
-		return new DefaultClassLoaderFactory(deployer);
+		return new DefaultClassLoaderFactory(workingDir);
 	}
 
 	public static DefaultMcaDeployer createDefaultMcaDeployer() {

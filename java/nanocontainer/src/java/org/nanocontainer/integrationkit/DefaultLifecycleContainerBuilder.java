@@ -7,12 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-/*
- * Created by IntelliJ IDEA.
- * User: ahelleso
- * Date: 23-Jan-2004
- * Time: 23:09:14
- */
+
 package org.nanocontainer.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;

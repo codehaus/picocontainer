@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
+ * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
 public class DefaultReflectionContainerAdapter implements ReflectionContainerAdapter {

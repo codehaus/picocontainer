@@ -12,10 +12,8 @@ import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
-import java.io.Reader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Reader;
 
 /**
  * Baseclass for container builders based on scripting.

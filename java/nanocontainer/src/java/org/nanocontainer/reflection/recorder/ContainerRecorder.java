@@ -58,7 +58,7 @@ public class ContainerRecorder implements Serializable {
         for (Iterator iter = invocations.iterator(); iter.hasNext();) {
             Invocation invocation = (Invocation) iter.next();
             try {
-                invocation.method.invoke(target, invocation.args);
+                invocation.invoke(target);
             } catch (IllegalAccessException e) {
                 throw new PicoException(e){};
             } catch (InvocationTargetException e) {
@@ -68,8 +68,8 @@ public class ContainerRecorder implements Serializable {
     }
 
     private class Invocation implements Serializable {
-        transient Method method;
-        Object[] args;
+        private transient Method method;
+        private Object[] args;
 
         Invocation(Method method, Object[] args) {
             this.method = method;
@@ -101,6 +101,10 @@ public class ContainerRecorder implements Serializable {
             } catch (NoSuchMethodException e) {
                 throw new IOException("Couldn't load method " + methodName);
             }
+        }
+
+        public void invoke(Object target) throws IllegalAccessException, InvocationTargetException {
+            method.invoke(target, args);
         }
     }
 

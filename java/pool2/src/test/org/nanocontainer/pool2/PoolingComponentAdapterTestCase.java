@@ -83,8 +83,6 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         }
     }
 
-    // TODO: Aslak, under what circumstances fails this version for you? It in here for more that 7 months
-    // and I've tested it with several JDKs on Windows and Linux ...
     public void testBlocksWhenExhausted() throws InterruptedException {
         final PoolingComponentAdapter componentAdapter2 = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter("foo", Object.class), 2, 5000);
 
@@ -95,6 +93,9 @@ public class PoolingComponentAdapterTestCase extends TestCase {
         final Thread returner = new Thread() {
             public void run() {
                 try {
+                    synchronized (this) {
+                        notifyAll();
+                    }
                     Thread.sleep(100); // ensure, that main thread is blocked
                     order.append("returner ");
                     componentAdapter2.returnComponentInstance(borrowed[0]);
@@ -110,7 +111,10 @@ public class PoolingComponentAdapterTestCase extends TestCase {
 
         borrowed[0] = componentAdapter2.getComponentInstance(null);
         borrowed[1] = componentAdapter2.getComponentInstance(null);
-        returner.start();
+        synchronized (returner) {
+            returner.start();
+            returner.wait();
+        }
 
         // should block
         order.append("main ");

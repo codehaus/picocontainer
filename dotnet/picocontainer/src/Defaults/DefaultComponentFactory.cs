@@ -18,26 +18,22 @@ namespace PicoContainer.Defaults
 
     private object componentInstance;
 
-    public DefaultComponentAdapter(Object componentKey,
-      Type componentImplementation,
-      Parameter[] parameters) : base(componentKey, componentImplementation, parameters)
+    public DefaultComponentAdapter(Object componentKey, Type componentImplementation, Parameter[] parameters) 
+      : base(componentKey, componentImplementation, parameters)
     {
     
     }
 
-    public DefaultComponentAdapter(Object componentKey,
-      Type componentImplementation) :  base(componentKey, componentImplementation, null){}
+    public DefaultComponentAdapter(Object componentKey, Type componentImplementation) 
+      : base(componentKey, componentImplementation, null){}
 
 
     public override object GetComponentInstance(MutablePicoContainer picoContainer)
     {
-
       if (componentInstance == null ) 
       {
-
         componentInstance = base.GetComponentInstance(picoContainer);
         picoContainer.AddOrderedComponentAdapter(this);
-
       }
 
       return componentInstance;

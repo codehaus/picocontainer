@@ -19,7 +19,7 @@ namespace PicoContainer.Defaults {
       return GetInterfaces(ArrayList.ReadOnly(l));
     }
 
-    public Type[] GetInterfaces(ArrayList objects) {
+    public Type[] GetInterfaces(IList objects) {
       ArrayList interfaces = new ArrayList();
       foreach (object o in objects) {
             

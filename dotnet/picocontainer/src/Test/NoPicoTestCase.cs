@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
@@ -30,7 +30,7 @@ namespace PicoContainer.Tests
 			SimpleTouchable touchable = new SimpleTouchable();
 			new DependsOnTouchable(touchable);
 			
-			Assert.True(touchable._wasTouched,"Touchable should have had its wasTouched method called");
+			Assert.IsTrue(touchable._wasTouched,"Touchable should have had its wasTouched method called");
 		}
 	}
 }

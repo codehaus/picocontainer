@@ -45,9 +45,8 @@ namespace PicoContainer.Defaults {
     }
 
     private void CheckTypeCompatibility(object componentKey, Type componentImplementation) {
-      if (componentKey is Type) {
-        Type componentType = (Type) componentKey;
-
+      Type componentType = componentKey as Type;
+      if (componentType != null) {
         if (!componentType.IsAssignableFrom(componentImplementation)) {
           throw new AssignabilityRegistrationException(componentType, componentImplementation);
         }
@@ -55,7 +54,6 @@ namespace PicoContainer.Defaults {
     }
 
     private void CheckConcrete(Type componentImplementation) {
-
       if (componentImplementation.IsInterface || componentImplementation.IsAbstract) {
         throw new NotConcreteRegistrationException(componentImplementation);
       }

@@ -11,7 +11,7 @@
 
 using System;
 using PicoContainer.Lifecycle;
-
+using PicoContainer.Defaults;
 namespace PicoContainer.Extras
 {
 	public class DefaultLifecyclePicoAdapter : LifecyclePicoAdapter
@@ -56,9 +56,9 @@ namespace PicoContainer.Extras
 		private bool started;
 		private bool disposed;
 
-		private PicoContainer picoContainer;
+		private DefaultPicoContainer picoContainer;
 		
-		public DefaultLifecyclePicoAdapter(PicoContainer picoContainer)
+		public DefaultLifecyclePicoAdapter(DefaultPicoContainer picoContainer)
 		{
 			this.picoContainer = picoContainer;
 		}

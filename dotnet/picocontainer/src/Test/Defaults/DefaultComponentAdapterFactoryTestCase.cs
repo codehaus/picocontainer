@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -23,12 +23,6 @@ namespace PicoContainer.Tests.Defaults
   [TestFixture]
   public class DefaultComponentAdapterFactoryTestCase : AbstractComponentAdapterFactoryTestCase
   {
-
-    [SetUp]
-    protected new void SetUp() 
-    {
-      picoContainer = new DefaultPicoContainer();
-    }
 
     protected override ComponentAdapterFactory CreateComponentAdapterFactory() 
     {
@@ -42,8 +36,8 @@ namespace PicoContainer.Tests.Defaults
         CreateComponentAdapterFactory().CreateComponentAdapter(typeof(Touchable), typeof(SimpleTouchable), null);
 
       Object comp = componentAdapter.GetComponentInstance(picoContainer);
-      Assert.NotNull(comp);
-      Assert.True(comp is SimpleTouchable);
+      Assert.IsNotNull(comp);
+      Assert.IsTrue(comp is SimpleTouchable);
     }
 
     [Test]
@@ -51,7 +45,7 @@ namespace PicoContainer.Tests.Defaults
     {
       ComponentAdapter componentAdapter = new DefaultComponentAdapter(null, typeof(object));
       Object component = componentAdapter.GetComponentInstance(new DefaultPicoContainer());
-      Assert.NotNull(component);
+      Assert.IsNotNull(component);
     }
 
   }

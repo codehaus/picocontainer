@@ -12,7 +12,7 @@
 using System;
 using System.Threading;
 using System.Collections;
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Extras;
 using PicoContainer.Lifecycle;
@@ -49,16 +49,16 @@ namespace PicoContainer.Tests.Extras {
     public void testCreatedComponentAdapterCreatesInstancesWhereImplementationIsHidden() {
       ComponentAdapter componentAdapter = CreateComponentAdapterFactory().CreateComponentAdapter(typeof(Swappable), typeof(ConcreteSwappable), null);
       Swappable swappable = (Swappable) componentAdapter.GetComponentInstance(picoContainer);
-      Assert.False(swappable is ConcreteSwappable);
-      Assert.Equals("Edam", swappable.getCheese());
+      Assert.IsFalse(swappable is ConcreteSwappable);
+      Assert.AreEqual("Edam", swappable.getCheese());
     }
 
     public void testHotSwap() {
       ImplementationHidingComponentAdapterFactory componentAdapterFactory = (ImplementationHidingComponentAdapterFactory) CreateComponentAdapterFactory();
       ComponentAdapter componentAdapter = componentAdapterFactory.CreateComponentAdapter(typeof(Swappable), typeof(ConcreteSwappable), null);
       Swappable swappable = (Swappable) componentAdapter.GetComponentInstance(picoContainer);
-      Assert.False(swappable is ConcreteSwappable);
-      Assert.Equals("Edam", swappable.getCheese());
+      Assert.IsFalse(swappable is ConcreteSwappable);
+      Assert.AreEqual("Edam", swappable.getCheese());
 
       //TODO - what is this last line for, throws something on errror or should have an Assert. following ?
       componentAdapterFactory.HotSwap(typeof(Swappable));

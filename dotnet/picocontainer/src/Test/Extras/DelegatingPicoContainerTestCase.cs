@@ -12,7 +12,8 @@
 using System;
 using System.Threading;
 using System.Collections;
-using csUnit;
+using NUnit.Framework;
+
 
 using PicoContainer.Extras;
 using PicoContainer.Lifecycle;
@@ -31,6 +32,7 @@ namespace PicoContainer.Tests.Extras
     private MutablePicoContainer parent;
     private DefaultPicoContainer child;
 
+    [SetUp]
     public void SetUp() {
       parent = new DefaultPicoContainer();
       child = new DefaultPicoContainer();
@@ -42,7 +44,7 @@ namespace PicoContainer.Tests.Extras
       child.RegisterComponentImplementation(typeof(DependsOnTouchable));
       DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) child.GetComponentInstance(typeof(DependsOnTouchable));
 
-      Assert.NotNull(dependsOnTouchable);
+      Assert.IsNotNull(dependsOnTouchable);
     }
 
     public void testParentDoesntGetFromChild() {
@@ -61,8 +63,8 @@ namespace PicoContainer.Tests.Extras
 
       SimpleTouchable parentTouchable = (SimpleTouchable) parent.GetComponentInstance(typeof(SimpleTouchable));
       SimpleTouchable childTouchable = (SimpleTouchable) child.GetComponentInstance(typeof(SimpleTouchable));
-      Assert.Equals(1, child.ComponentInstances.Count);
-      Assert.True(parentTouchable!=childTouchable);
+      Assert.AreEqual(1, child.ComponentInstances.Count);
+      Assert.IsTrue(parentTouchable!=childTouchable);
     }
 
     public void testMulticaster()  {
@@ -70,7 +72,7 @@ namespace PicoContainer.Tests.Extras
       child.RegisterComponentImplementation(typeof(DependsOnTouchable));
 
       Object multicaster = child.GetComponentMulticaster();
-      Assert.True(multicaster is Touchable);
+      Assert.IsTrue(multicaster is Touchable);
     }
   }
 }

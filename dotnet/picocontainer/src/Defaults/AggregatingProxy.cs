@@ -19,7 +19,7 @@ using System.Runtime.Remoting.Proxies;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Services;
 
-namespace PicoContainer.Defaults {
+namespace PicoContainer {
   public class AggregatingProxy : RealProxy {
 
     ArrayList targets;   

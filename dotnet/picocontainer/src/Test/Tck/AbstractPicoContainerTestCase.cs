@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections;
-using csUnit;
+using NUnit.Framework;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
 
@@ -38,24 +38,24 @@ namespace PicoContainer.Tests.Tck {
     }
 
     public void testNotNull()  {
-      Assert.NotNull(createPicoContainerWithTouchableAndDependency(),"Are you calling super.setUp() in your setUp method?");
+      Assert.IsNotNull(createPicoContainerWithTouchableAndDependency(),"Are you calling super.setUp() in your setUp method?");
     }
 
     public virtual void testBasicInstantiationAndContainment() {
       PicoContainer pico = createPicoContainerWithTouchableAndDependency();
 
-      Assert.True(pico.HasComponent(typeof(Touchable)), "Container should have Touchable component");
-      Assert.True(pico.HasComponent(typeof(DependsOnTouchable)),"Container should have DependsOnTouchable component");
-      Assert.True(pico.GetComponentInstance(typeof(Touchable)) is Touchable,"Component should be instance of Touchable");
-      Assert.True(pico.GetComponentInstance(typeof(DependsOnTouchable)) is DependsOnTouchable,"Component should be instance of DependsOnTouchable");
-      Assert.True(!pico.HasComponent(typeof(Hashtable)),"should not have non existent component");
+      Assert.IsTrue(pico.HasComponent(typeof(Touchable)), "Container should have Touchable component");
+      Assert.IsTrue(pico.HasComponent(typeof(DependsOnTouchable)),"Container should have DependsOnTouchable component");
+      Assert.IsTrue(pico.GetComponentInstance(typeof(Touchable)) is Touchable,"Component should be instance of Touchable");
+      Assert.IsTrue(pico.GetComponentInstance(typeof(DependsOnTouchable)) is DependsOnTouchable,"Component should be instance of DependsOnTouchable");
+      Assert.IsTrue(!pico.HasComponent(typeof(Hashtable)),"should not have non existent component");
     }
 
     public void testInstanceRegistration() {
       MutablePicoContainer pico = createPicoContainer();
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       pico.RegisterComponentInstance(sb);
-      Assert.Equals(sb, pico.GetComponentInstance(typeof(System.Text.StringBuilder)));
+      Assert.AreEqual(sb, pico.GetComponentInstance(typeof(System.Text.StringBuilder)));
     }
 
     public void testSerializabilityOfContainer() {
@@ -63,7 +63,7 @@ namespace PicoContainer.Tests.Tck {
 
     public void testDoubleInstantiation() {
       PicoContainer pico = createPicoContainerWithTouchableAndDependency();
-      Assert.Equals(
+      Assert.AreEqual(
         pico.GetComponentInstance(typeof(DependsOnTouchable)),
         pico.GetComponentInstance(typeof(DependsOnTouchable))
         );
@@ -75,20 +75,20 @@ namespace PicoContainer.Tests.Tck {
         pico.RegisterComponentImplementation(typeof(Touchable), typeof(SimpleTouchable));
         Assert.Fail("Should have barfed with dupe registration");
       } catch (DuplicateComponentKeyRegistrationException e) {
-        Assert.True(e.DuplicateKey == typeof(Touchable),"Wrong key");
+        Assert.IsTrue(e.DuplicateKey == typeof(Touchable),"Wrong key");
       }
     }
 
     public void testByInstanceRegistration() {
       MutablePicoContainer pico = createPicoContainerWithTouchableAndDependency();
       pico.RegisterComponentInstance(typeof(Hashtable), new Hashtable());
-      Assert.Equals(3, pico.ComponentInstances.Count,"Wrong number of comps in the internals");
-      Assert.Equals( typeof(Hashtable), pico.GetComponentInstance(typeof(Hashtable)).GetType(), "Key - Map, Impl - HashMap should be in internals");
+      Assert.AreEqual(3, pico.ComponentInstances.Count,"Wrong number of comps in the internals");
+      Assert.AreEqual( typeof(Hashtable), pico.GetComponentInstance(typeof(Hashtable)).GetType(), "Key - Map, Impl - HashMap should be in internals");
     }
 
     public void testNoResolution()  {
       MutablePicoContainer pico = createPicoContainer();
-      Assert.Null(pico.GetComponentInstance(typeof(String)));
+      Assert.IsNull(pico.GetComponentInstance(typeof(String)));
     }
 
     public class ListAdder {
@@ -113,10 +113,10 @@ namespace PicoContainer.Tests.Tck {
       try {
         pico.GetComponentInstance(typeof(A));
       } catch (NoSatisfiableConstructorsException e) {
-        Assert.Equals( typeof(A).Name + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + typeof(C).Name , e.Message );
+        Assert.AreEqual( typeof(A).Name + " doesn't have any satisfiable constructors. Unsatisfiable dependencies: " + typeof(C).Name , e.Message );
         ArrayList unsatisfiableDependencies = e.UnsatisfiableDependencies;
-        Assert.Equals(1, unsatisfiableDependencies.Count);
-        Assert.True(unsatisfiableDependencies.Contains(typeof(C)));
+        Assert.AreEqual(1, unsatisfiableDependencies.Count);
+        Assert.IsTrue(unsatisfiableDependencies.Contains(typeof(C)));
                                                         }
   }
 
@@ -137,8 +137,8 @@ namespace PicoContainer.Tests.Tck {
         pico.GetComponentInstance(typeof(D));
         Assert.Fail();
       } catch (CyclicDependencyException e) {
-        Assert.Equals("Cyclic dependency: " + typeof(D).GetConstructors()[0].Name + "(" + typeof(E).Name + "," + typeof(B).Name + ")", e.Message);
-        Assert.Equals(typeof(D).GetConstructors()[0], e.Constructor);
+        Assert.AreEqual("Cyclic dependency: " + typeof(D).GetConstructors()[0].Name + "(" + typeof(E).Name + "," + typeof(B).Name + ")", e.Message);
+        Assert.AreEqual(typeof(D).GetConstructors()[0], e.Constructor);
       } catch (System.StackOverflowException ) {
         Assert.Fail();
       }
@@ -168,7 +168,7 @@ namespace PicoContainer.Tests.Tck {
 
       NeedsWashable nw = (NeedsWashable) pico.GetComponentInstance("nw");
       NeedsTouchable nt = (NeedsTouchable) pico.GetComponentInstance("nt");
-      Assert.Equals(nw.washable.GetType(), nt.touchable.GetType());
+      Assert.AreEqual(nw.washable.GetType(), nt.touchable.GetType());
     }
 
     public void testRegisterComponentWithObjectBadType() {
@@ -201,8 +201,8 @@ namespace PicoContainer.Tests.Tck {
                                                                new ConstantParameter("something"),
                                                              });
     JMSService jms = (JMSService) pico.GetComponentInstance("foo");
-    Assert.Equals("0", jms.serverid);
-    Assert.Equals("something", jms.path);
+    Assert.AreEqual("0", jms.serverid);
+    Assert.AreEqual("something", jms.path);
   }
 
 

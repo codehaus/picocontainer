@@ -12,7 +12,7 @@
 using System;
 using System.Threading;
 using System.Collections;
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Extras;
 using PicoContainer.Lifecycle;
@@ -57,10 +57,10 @@ namespace PicoContainer.Tests.Extras
     public void testSuccessfulMethod() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(typeof(Foo));
         Foo foo = (Foo) adapter.GetComponentInstance(picoContainer);
-        Assert.NotNull(foo);
-        Assert.Equals("hello", foo.message);
+        Assert.IsNotNull(foo);
+        Assert.AreEqual("hello", foo.message);
 
-        Assert.Equals("hello world", ((InvokingComponentAdapterFactory.Adapter)adapter).InvocationResult);
+        Assert.AreEqual("hello world", ((InvokingComponentAdapterFactory.Adapter)adapter).InvocationResult);
     }
 
     public void testFailingInvocation() {
@@ -75,7 +75,7 @@ namespace PicoContainer.Tests.Extras
     public void testNoInvocation() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(typeof(NoSetMessage));
         NoSetMessage noSetMessage = (NoSetMessage) adapter.GetComponentInstance(picoContainer);
-        Assert.NotNull(noSetMessage);
+        Assert.IsNotNull(noSetMessage);
     }
 }
 

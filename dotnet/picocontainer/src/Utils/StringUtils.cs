@@ -10,30 +10,23 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using NUnit.Framework;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests.Defaults
+namespace PicoContainer.Utils
 {
-  [TestFixture]
-  public class ComponentAdapterTest
-  {
-    
-    public void testEquals()  
-    {
-      ComponentAdapter componentAdapter =
-        createComponentAdapter();
 
-      Assert.AreEqual(componentAdapter, componentAdapter);
-    }
+	public class StringUtils
+	{
+    public static string ArrayToString(object [] array) {
+      String retval = "";
 
-    private ComponentAdapter createComponentAdapter() 
-    {
-      return new DefaultComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
+      for (int i = 0; i < array.Length; i++) {
+        retval = retval + array[i].ToString();
+        if (i+1 < array.Length) {
+          retval += ",";
+        }
+      }
+      return retval;
+
     }
-  }
+	}
 }

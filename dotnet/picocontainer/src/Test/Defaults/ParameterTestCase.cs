@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;
@@ -22,18 +22,18 @@ namespace PicoContainer.Tests.Defaults {
   [TestFixture]
   public class ParameterTestCase {
     public virtual void  testComponentSpecificationHandlesPrimtiveTypes() {
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(typeof(System.Int32), System.Type.GetType("System.Int32")));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int32"), typeof(System.Int32)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(typeof(string), typeof(string)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Double"), typeof(System.Double)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int64"), typeof(System.Int64)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int16"), typeof(System.Int16)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Single"), typeof(System.Single)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Byte"), typeof(System.Byte)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Char"), typeof(System.Char)));
-      Assert.True(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Boolean"), typeof(System.Boolean)));
-      Assert.False(TransientComponentAdapter.IsAssignableFrom(typeof(System.Int32), typeof(string)));
-      Assert.False(TransientComponentAdapter.IsAssignableFrom(typeof(System.Double), typeof(string)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(typeof(System.Int32), System.Type.GetType("System.Int32")));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int32"), typeof(System.Int32)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(typeof(string), typeof(string)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Double"), typeof(System.Double)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int64"), typeof(System.Int64)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Int16"), typeof(System.Int16)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Single"), typeof(System.Single)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Byte"), typeof(System.Byte)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Char"), typeof(System.Char)));
+      Assert.IsTrue(TransientComponentAdapter.IsAssignableFrom(System.Type.GetType("System.Boolean"), typeof(System.Boolean)));
+      Assert.IsFalse(TransientComponentAdapter.IsAssignableFrom(typeof(System.Int32), typeof(string)));
+      Assert.IsFalse(TransientComponentAdapter.IsAssignableFrom(typeof(System.Double), typeof(string)));
     }
 		
     internal class TestClass {
@@ -46,15 +46,15 @@ namespace PicoContainer.Tests.Defaults {
       pico.RegisterComponentImplementation(typeof(Touchable), typeof(SimpleTouchable));
       ComponentParameter parameter = new ComponentParameter(typeof(Touchable));
 			
-      Assert.NotNull(pico.GetComponentInstance(typeof(Touchable)));
+      Assert.IsNotNull(pico.GetComponentInstance(typeof(Touchable)));
       Touchable touchable = (Touchable) parameter.ResolveAdapter(pico).GetComponentInstance(pico);
-      Assert.NotNull(touchable);
+      Assert.IsNotNull(touchable);
     }
 		
     public virtual void  testConstantParameter() {
       object value_Renamed = new object();
       ConstantParameter parameter = new ConstantParameter(value_Renamed);
-      Assert.Equals(value_Renamed, parameter.ResolveAdapter(null).GetComponentInstance(null));
+      Assert.AreEqual(value_Renamed, parameter.ResolveAdapter(null).GetComponentInstance(null));
     }
 		
     public virtual void  testDependsOnTouchableWithTouchableSpecifiedAsConstant() {
@@ -62,7 +62,7 @@ namespace PicoContainer.Tests.Defaults {
       SimpleTouchable touchable = new SimpleTouchable();
       pico.RegisterComponentImplementation(typeof(DependsOnTouchable), typeof(DependsOnTouchable), new Parameter[]{new ConstantParameter(touchable)});
       object o = pico.ComponentInstances;
-      Assert.True(touchable._wasTouched);
+      Assert.IsTrue(touchable._wasTouched);
     }
   }
 }

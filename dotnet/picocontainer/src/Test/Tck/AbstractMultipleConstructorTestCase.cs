@@ -12,7 +12,7 @@
 using System;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
-using csUnit;
+using NUnit.Framework;
 
 namespace PicoContainer.Tests.Tck
 {
@@ -68,7 +68,7 @@ namespace PicoContainer.Tests.Tck
       pico.RegisterComponentImplementation(typeof(Three));
 
       Multi multi = (Multi) pico.GetComponentInstance(typeof(Multi));
-      Assert.Equals("three one", multi.message);
+      Assert.AreEqual("three one", multi.message);
     }
 
     [Test]
@@ -81,7 +81,7 @@ namespace PicoContainer.Tests.Tck
       pico.RegisterComponentImplementation(typeof(Three));
 
       Multi multi = (Multi) pico.GetComponentInstance(typeof(Multi));
-      Assert.Equals("one two three", multi.message);
+      Assert.AreEqual("one two three", multi.message);
     }
 
     [Test]
@@ -99,9 +99,9 @@ namespace PicoContainer.Tests.Tck
       } 
       catch (TooManySatisfiableConstructorsException e) 
       {
-        Assert.True(e.Message.IndexOf("Three") == -1);
-        Assert.Equals(2, e.Constructors.Count);
-        Assert.Equals(typeof(Multi), e.ForImplementationClass);
+        Assert.IsTrue(e.Message.IndexOf("Three") == -1);
+        Assert.AreEqual(2, e.Constructors.Count);
+        Assert.AreEqual(typeof(Multi), e.ForImplementationClass);
       }
     }
   }

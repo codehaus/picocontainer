@@ -12,7 +12,7 @@
 using System;
 using System.Diagnostics;
 
-using csUnit;
+using NUnit.Framework;
 
 using PicoContainer.Defaults;
 using PicoContainer.Tests.Tck;

@@ -13,7 +13,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 
-
+using PicoContainer.Utils;
 
 namespace PicoContainer.Defaults {
   public class TransientComponentAdapter : AbstractComponentAdapter {
@@ -24,31 +24,19 @@ namespace PicoContainer.Defaults {
     private ConstructorInfo greediestConstructor;
     private bool instantiating;
 
-    public TransientComponentAdapter(Object componentKey,
-      Type componentImplementation,
-      Parameter[] parameters) : base(componentKey, componentImplementation) {
+    public TransientComponentAdapter(Object componentKey, Type componentImplementation, Parameter[] parameters) 
+      : base(componentKey, componentImplementation) {
       this.parameters = parameters;
     }
 
-    public TransientComponentAdapter(Object componentKey,
-      Type componentImplementation) :base (componentKey, componentImplementation) {
-      this.parameters = null;
+    public TransientComponentAdapter(Object componentKey, Type componentImplementation) 
+      : this (componentKey, componentImplementation, null) {
     }
 
-    public Type[] GetParameterTypes(ConstructorInfo ci) {
-      ParameterInfo[] pis = ci.GetParameters();
-      Type[] t=new Type[pis.Length];
-      int x = 0;
-      foreach (System.Reflection.ParameterInfo pi in pis) {
-        t[x++] = pi.ParameterType;
-      }
-    
-      return t;
-    }
     public Type[] GetDependencies(MutablePicoContainer picoContainer) {
       ConstructorInfo constructor = GetConstructor(picoContainer);
 
-      return this.GetParameterTypes(constructor);
+      return TypeUtils.GetParameterTypes(GetConstructor(picoContainer));
     }
 
     private ConstructorInfo GetConstructor(MutablePicoContainer picoContainer) {
@@ -60,16 +48,15 @@ namespace PicoContainer.Defaults {
         greediestConstructor = null;
           
         ArrayList conflicts = new ArrayList();
-        for (int i = 0; i < satisfiableConstructors.Count; i++) {
-          ConstructorInfo currentConstructor = (ConstructorInfo) satisfiableConstructors[i];
+        foreach (ConstructorInfo currentConstructor in satisfiableConstructors) {
           if (greediestConstructor == null) {
             greediestConstructor = currentConstructor;
           } 
-          else if (this.GetParameterTypes(greediestConstructor).Length < this.GetParameterTypes(currentConstructor).Length) {
+          else if (TypeUtils.GetParameterTypes(greediestConstructor).Length < TypeUtils.GetParameterTypes(currentConstructor).Length) {
             conflicts.Clear();
             greediestConstructor = currentConstructor;
           } 
-          else if (this.GetParameterTypes(greediestConstructor).Length == this.GetParameterTypes(currentConstructor).Length) {
+          else if (TypeUtils.GetParameterTypes(greediestConstructor).Length == TypeUtils.GetParameterTypes(currentConstructor).Length) {
             conflicts.Add(greediestConstructor);
             conflicts.Add(currentConstructor);
           }
@@ -87,7 +74,7 @@ namespace PicoContainer.Defaults {
         ArrayList failedDependencies = new ArrayList();
         foreach (ConstructorInfo constructor in constructors) {
 
-          Type[] parameterTypes = GetParameterTypes( constructor);
+          Type[] parameterTypes = TypeUtils.GetParameterTypes( constructor);
           Parameter[] currentParameters = parameters != null ? parameters : CreateDefaultParameters(parameterTypes);
 
           bool failedDependency = false;

@@ -12,7 +12,7 @@
 using System;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
-using csUnit;
+using NUnit.Framework;
 
 namespace PicoContainer.Tests.Tck
 {
@@ -50,11 +50,11 @@ namespace PicoContainer.Tests.Tck
       pico.RegisterComponentImplementation(typeof(Kilroy));
       pico.RegisterComponentImplementation(typeof(Havana));
 
-      Assert.True(pico.GetComponentInstance(typeof(Havana)) == pico.GetComponentInstance(typeof(Havana)));
-      Assert.NotNull(pico.GetComponentInstance(typeof(Havana)));
-      Assert.Equals("Clean wall", ((Havana) pico.GetComponentInstance(typeof(Havana))).paint);
-      Assert.NotNull(pico.GetComponentInstance(typeof(Kilroy)));
-      Assert.Equals("Kilroy was here", ((Havana) pico.GetComponentInstance(typeof(Havana))).paint);
+      Assert.IsTrue(pico.GetComponentInstance(typeof(Havana)) == pico.GetComponentInstance(typeof(Havana)));
+      Assert.IsNotNull(pico.GetComponentInstance(typeof(Havana)));
+      Assert.AreEqual("Clean wall", ((Havana) pico.GetComponentInstance(typeof(Havana))).paint);
+      Assert.IsNotNull(pico.GetComponentInstance(typeof(Kilroy)));
+      Assert.AreEqual("Kilroy was here", ((Havana) pico.GetComponentInstance(typeof(Havana))).paint);
     }
   }
 }

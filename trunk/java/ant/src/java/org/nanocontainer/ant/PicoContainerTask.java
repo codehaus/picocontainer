@@ -9,8 +9,8 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.picocontainer.extras.BeanPropertyComponentAdapterFactory;
 import org.picoextras.integrationkit.ContainerAssembler;
-import org.picoextras.integrationkit.LifecycleContainerBuilder;
 import org.picoextras.integrationkit.ContainerBuilder;
+import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
 
@@ -82,13 +82,13 @@ public class PicoContainerTask extends Task {
     }
 
     public void execute() {
-		ContainerBuilder containerBuilder = new LifecycleContainerBuilder() {
+		ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerAssembler) {
 			protected MutablePicoContainer createContainer() {
 				return new DefaultPicoContainer(propertyFactory);
 			}
 		};
         try {
-            containerBuilder.buildContainer(containerRef, null, containerAssembler, null);
+            containerBuilder.buildContainer(containerRef, null, null);
 			containerBuilder.killContainer(containerRef);
         } catch (java.lang.reflect.UndeclaredThrowableException e) {
 			Throwable ex = e.getUndeclaredThrowable();

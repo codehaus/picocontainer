@@ -18,12 +18,12 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
         final Mock childStartable = new Mock(Startable.class);
         childStartable.expect("start");
 
-        LifecycleContainerBuilder builder = new LifecycleContainerBuilder();
         ContainerAssembler containerAssembler = new ContainerAssembler() {
             public void assembleContainer(MutablePicoContainer container, Object assemblyScope) {
                 container.registerComponentInstance(childStartable.proxy());
             }
         };
+        LifecycleContainerBuilder builder = new DefaultLifecycleContainerBuilder(containerAssembler);
 
         ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parentC = new DefaultPicoContainer();
@@ -35,7 +35,7 @@ public class LifecycleContainerBuilderTestCase extends TestCase {
 
         ObjectReference childRef = new SimpleReference();
 
-        builder.buildContainer(childRef, parentRef, containerAssembler, null);
+        builder.buildContainer(childRef, parentRef, null);
         PicoContainer childContainer = (PicoContainer) childRef.get();
         assertSame(parentC, childContainer.getParent());
 

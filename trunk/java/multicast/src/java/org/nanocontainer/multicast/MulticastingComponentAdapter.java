@@ -9,14 +9,15 @@
  *****************************************************************************/
 package org.nanocontainer.multicast;
 
-import org.picocontainer.*;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AbstractComponentAdapter;
-import org.nanocontainer.proxy.InvocationInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @deprecated Will be replaced by {@link org.nanocontainer.proxytoys.Multicaster}
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
@@ -24,18 +25,16 @@ public class MulticastingComponentAdapter extends AbstractComponentAdapter {
     private final List componentInstances = new ArrayList();
 
     private final Invoker invoker;
-    private final InvocationInterceptor invocationInterceptor;
     private final MulticasterFactory multicasterFactory;
 
-    public MulticastingComponentAdapter(Object key, Class componentImplementation, InvocationInterceptor invocationInterceptor, Invoker invoker, MulticasterFactory multicasterFactory) {
+    public MulticastingComponentAdapter(Object key, Class componentImplementation, Invoker invoker, MulticasterFactory multicasterFactory) {
         super(key, componentImplementation);
         this.invoker = invoker;
-        this.invocationInterceptor = invocationInterceptor;
         this.multicasterFactory = multicasterFactory;
     }
 
     public MulticastingComponentAdapter(Object key, Class componentImplementation) {
-        this(key, componentImplementation, new NullInvocationInterceptor(), new MulticastInvoker(), new MulticasterFactory());
+        this(key, componentImplementation, new MulticastInvoker(), new MulticasterFactory());
     }
 
     public Object getComponentInstance() throws PicoInitializationException, PicoIntrospectionException {

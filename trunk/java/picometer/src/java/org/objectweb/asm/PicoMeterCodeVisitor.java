@@ -8,7 +8,7 @@
  * Original code by                                                          *
  *****************************************************************************/
 
-// The class is in this package inly to ba able to access package private members from Label.
+// The class is in this package only to be able to access package private members from Label.
 package org.objectweb.asm;
 
 import org.nanocontainer.picometer.Instantiation;

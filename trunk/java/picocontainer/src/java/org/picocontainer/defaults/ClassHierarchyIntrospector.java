@@ -18,6 +18,7 @@ import java.util.Set;
 /**
  * Helper class for introspecting interface and class hierarchies.
  *
+ * @deprecated Use {@link com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector} instead. * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision$

@@ -14,6 +14,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
+ * @deprecated Will be replaced by {@link org.nanocontainer.proxytoys.Multicaster}
+ * @deprecated Will be replaced by {@link org.nanocontainer.proxytoys.Multicaster}
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

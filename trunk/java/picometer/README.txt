@@ -2,7 +2,7 @@ This is an experimental attempt at a little tool that can identify where new obj
 The goal is to run this over a project's source code to identify classes that are candidates
 for Picofication.
 
-We realise that object instantiation is not necessarily contradictory to SI desgign rules. Even hard core SI-designed systems will contain classes that instantiate a lot of objects, such as collections and even domain-specific objects.
+We realise that object instantiation is not necessarily contradictory to DI desgign rules. Even hard core DI-designed systems will contain classes that instantiate a lot of objects, such as collections and even domain-specific objects.
 
 In order to provide useful metrics, it is therefore essential that the user of the tool can specify what types of object instantiation we are looking for.
 

@@ -16,10 +16,11 @@ import java.lang.reflect.Proxy;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Arrays;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * <p>This Component Adapter maintains a pool of component instances that are 
@@ -105,7 +106,7 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
             if(getDelegate().getComponentKey() instanceof Class && ((Class)getDelegate().getComponentKey()).isInterface()) {
                 interfaceSet.add(getDelegate().getComponentKey());
             } else {
-                interfaceSet.addAll(ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation()));
+                interfaceSet.addAll(Arrays.asList(ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation())));
             }
             if (interfaceSet.size() == 0) {
                 throw new PicoIntrospectionException("Can't realize auto releasing pool for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");

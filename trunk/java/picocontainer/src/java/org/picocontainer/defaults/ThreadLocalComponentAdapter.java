@@ -25,6 +25,12 @@ import org.picocontainer.PicoIntrospectionException;
  * A {@link ComponentAdapter}that realizes a {@link ThreadLocal}component
  * instance. The adapter creates proxy instances, that will create the necessary
  * instances on-the-fly invoking the methods of the instance.
+ *
+ * <em>
+ * IMPORTANT! This class will be moved out of the PicoContainer core
+ * before release of the final version!
+ * </em>
+ * 
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapter

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
+ * @deprecated Will be replaced by {@link org.nanocontainer.proxytoys.Multicaster}
  * @author Chris Stevenson
  * @author Aslak Helles&oslash;y
  * @version $Revision$

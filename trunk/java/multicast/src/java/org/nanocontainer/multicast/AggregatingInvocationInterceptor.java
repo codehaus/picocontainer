@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @deprecated Will be replaced by {@link org.nanocontainer.proxytoys.Multicaster}
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
  * @version $Revision$

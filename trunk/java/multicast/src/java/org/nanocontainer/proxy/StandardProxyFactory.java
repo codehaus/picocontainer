@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * @deprecated Use {@link com.thoughtworks.proxy.factory.StandardProxyFactory} instead.
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

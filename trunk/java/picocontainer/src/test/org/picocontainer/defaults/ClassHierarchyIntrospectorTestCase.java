@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
+ * @deprecated Use {@link com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector} instead.
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision$

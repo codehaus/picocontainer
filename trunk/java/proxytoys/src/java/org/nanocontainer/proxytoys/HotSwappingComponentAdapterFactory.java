@@ -8,40 +8,48 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.nanocontainer.proxytoys;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * Hides implementation.
  *
- * @deprecated Use {@link org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory} instead.
+ * @see HotSwappingComponentAdapter
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    private final boolean strict;
+public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+    private final ProxyFactory proxyFactory;
 
-    public ImplementationHidingComponentAdapterFactory() {
-        this(new ConstructorInjectionComponentAdapterFactory(), true);
+    public HotSwappingComponentAdapterFactory() {
+        this(new DefaultComponentAdapterFactory());
     }
 
-    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        this(delegate, true);
+    public HotSwappingComponentAdapterFactory(ComponentAdapterFactory delegate) {
+        this(delegate, new StandardProxyFactory());
     }
 
-    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate, boolean strict) {
+    public HotSwappingComponentAdapterFactory(ComponentAdapterFactory delegate, ProxyFactory proxyFactory) {
         super(delegate);
-        this.strict = strict;
+        this.proxyFactory = proxyFactory;
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ImplementationHidingComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters), strict);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
+        return new HotSwappingComponentAdapter(componentAdapter, proxyFactory);
     }
 }

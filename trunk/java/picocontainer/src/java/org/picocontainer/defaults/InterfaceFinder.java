@@ -98,17 +98,15 @@ public class InterfaceFinder implements Serializable {
      * @return the superclass or <code>{@link Void}.class</code> for an empty array.
      */
     public Class getClass(Object[] objects) {
-        Class clazz = null;
+        Class clazz = Void.class;
         boolean found = false;
-        if (objects == null || objects.length == 0) {
-            clazz = Void.class;
-        } else {
+        if (objects != null && objects.length > 0) {
             while (!found) {
                 for (int i = 0; i < objects.length; i++) {
                     found = true;
                     if (objects[i] != null) {
                         Class currentClazz = objects[i].getClass();
-                        if(clazz == null) {
+                        if(clazz == Void.class) {
                             clazz = currentClazz;
                         }
                         if(!clazz.isAssignableFrom(currentClazz)) {

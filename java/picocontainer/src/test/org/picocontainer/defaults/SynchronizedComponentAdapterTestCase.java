@@ -12,10 +12,6 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.SynchronizedComponentAdapter;
 
 /**
  * @author Thomas Heller
@@ -47,7 +43,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
     public static class Blocker {
         public Blocker() throws InterruptedException {
             // Yes I know sleeping in tests is bad, but it's also simple :-)
-            Thread.sleep(300);
+            Thread.sleep(3000);
         }
     }
 

@@ -12,8 +12,8 @@ package org.picocontainer.lifecycle;
 
 import junit.framework.TestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.ArrayList;
 import java.util.List;

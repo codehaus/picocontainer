@@ -11,8 +11,8 @@
 package org.picocontainer;
 
 import junit.framework.TestCase;
-import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

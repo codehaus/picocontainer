@@ -5,6 +5,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
 
 import java.io.ByteArrayInputStream;

@@ -19,8 +19,8 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.tck.Touchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -4,8 +4,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractBasicStringCompatabilityTestCase;
-import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.tck.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.HashMap;
 

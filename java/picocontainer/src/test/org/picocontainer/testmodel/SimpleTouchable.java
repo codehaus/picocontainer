@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.tck;
+package org.picocontainer.testmodel;
 
 import java.io.Serializable;
 

@@ -10,9 +10,6 @@
 
 package org.picocontainer.testmodel;
 
-import org.picocontainer.testmodel.Dictionary;
-import org.picocontainer.testmodel.Thesaurus;
-
 import java.util.List;
 
 /**

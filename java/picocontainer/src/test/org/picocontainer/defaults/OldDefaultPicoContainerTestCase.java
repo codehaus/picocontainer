@@ -18,10 +18,10 @@ import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
-import org.picocontainer.tck.DependsOnTouchable;
-import org.picocontainer.tck.DependsOnTwoComponents;
-import org.picocontainer.tck.SimpleTouchable;
-import org.picocontainer.tck.Touchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.DependsOnTwoComponents;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
 import java.io.Serializable;
@@ -857,7 +857,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
-        assertEquals("a3b org.picocontainer.tck.SimpleTouchable", animal.getFood());
+        assertEquals("a3b org.picocontainer.testmodel.SimpleTouchable", animal.getFood());
     }
 
     public static interface I {

@@ -37,7 +37,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     private transient boolean verifying;
     /** The parameters to use for initialization. */ 
     protected Parameter[] parameters;
-    private final boolean allowNonPublicClasses;
+    protected final boolean allowNonPublicClasses;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 

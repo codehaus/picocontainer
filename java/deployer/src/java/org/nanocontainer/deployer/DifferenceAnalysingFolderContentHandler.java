@@ -49,6 +49,20 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
         }
     }
 
+    private void fireFolderRemovedMaybe(List current, List last) {
+        current = new ArrayList(current);
+        last = new ArrayList(last);
+
+        last.removeAll(current);
+        for (Iterator iterator = last.iterator(); iterator.hasNext();) {
+            FileObject fileObject = (FileObject) iterator.next();
+            FileObject folderObject = convertToFolder(fileObject);
+            if (folderObject != null && folderListener != null) {
+                folderListener.folderRemoved(fileObject);
+            }
+        }
+    }
+
     private FileObject convertToFolder(FileObject fileObject) {
         FileObject result = null;
         try {
@@ -64,19 +78,6 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
         } catch (FileSystemException ignore) {
         }
         return result;
-    }
-
-    private void fireFolderRemovedMaybe(List current, List last) {
-        current = new ArrayList(current);
-        last = new ArrayList(last);
-
-        last.removeAll(current);
-        for (Iterator iterator = last.iterator(); iterator.hasNext();) {
-            FileObject fileObject = (FileObject) iterator.next();
-            if (folderListener != null) {
-                folderListener.folderRemoved(fileObject);
-            }
-        }
     }
 
     public FileObject getFolder() {

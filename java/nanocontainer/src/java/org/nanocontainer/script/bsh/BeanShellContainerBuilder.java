@@ -19,7 +19,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         Interpreter i = new Interpreter();
         try {
             i.set("parent", parentContainer);

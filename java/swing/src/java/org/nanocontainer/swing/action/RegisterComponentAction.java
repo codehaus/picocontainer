@@ -20,17 +20,20 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 
 public class RegisterComponentAction extends TreeSelectionAction {
+    private final ClassLoader componentClassLoader;
+
     private int i;
 
-    public RegisterComponentAction(String iconPath, ContainerTree tree) {
+    public RegisterComponentAction(String iconPath, ContainerTree tree, ClassLoader componentClassLoader) {
         super("Register Component", iconPath, tree);
+        this.componentClassLoader = componentClassLoader;
     }
 
     public void actionPerformed(ActionEvent evt) {
         String className = (String) JOptionPane.showInputDialog(null, "Component Implementation", "Register Component", JOptionPane.OK_CANCEL_OPTION, null, null, null);
         if (className != null) {
             try {
-                Class componentImplementation = Class.forName(className);
+                Class componentImplementation = componentClassLoader.loadClass(className);
                 ComponentAdapter ca = selectedContainer.registerComponentImplementation("" + i++,  componentImplementation);
                 containerTreeModel.fire(ca);
             } catch (Exception e) {

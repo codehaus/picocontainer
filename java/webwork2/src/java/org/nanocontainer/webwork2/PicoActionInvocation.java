@@ -44,8 +44,7 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     protected void createAction() {
         // load action
         try {
-            MutablePicoContainer container = new DefaultPicoContainer();
-            container.setParent(getParentContainer());
+            MutablePicoContainer container = new DefaultPicoContainer(getParentContainer());
 
             Class actionClass = proxy.getConfig().getClazz();
             container.registerComponentImplementation(actionClass);

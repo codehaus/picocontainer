@@ -23,8 +23,8 @@ import java.util.Set;
 import java.util.HashSet;
 
 /**
- * Instantiates components using Setter-Based Dependency Injection.
  * {@inheritDoc}
+ * Instantiates components using <a href="">Setter Injection</a>.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$

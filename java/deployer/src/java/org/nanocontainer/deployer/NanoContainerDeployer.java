@@ -37,7 +37,7 @@ import java.io.Reader;
  * <pre>
  * +-someapp/
  *   +-META-INF/
- *   | +-picocontainer.[py|js|xml]
+ *   | +-nanocontainer.[py|js|xml|bsh]
  *   +-com/
  *     +-blablah/
  *       +-Hip.class
@@ -45,7 +45,7 @@ import java.io.Reader;
  * </pre>
  *
  * For those familiar with J2EE containers (or other containers for that matter), the
- * META-INF/picocontainer script is the <em>deployment script</em>. It plays the same
+ * META-INF/picocontainer script is the NanoContainer <em>composition script</em>. It plays the same
  * role as more classical "deployment descriptors", except that deploying via a full blown
  * scripting language is a lot more powerful!
  *
@@ -103,12 +103,13 @@ public class NanoContainerDeployer implements Deployer {
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
 
-        String extension = "." + deploymentScript.getName().getExtension();
-
         ObjectReference result = new SimpleReference();
-        Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
 
-        NanoContainer nanoContainer = new NanoContainer(scriptReader, extension, applicationClassLoader);
+        String extension = "." + deploymentScript.getName().getExtension();
+        Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
+        String builderClassName = NanoContainer.getBuilderClassName(extension);
+
+        NanoContainer nanoContainer = new NanoContainer(scriptReader, builderClassName, applicationClassLoader);
         ContainerBuilder builder = nanoContainer.getContainerBuilder();
         builder.buildContainer(result, parentContainerRef, null);
 

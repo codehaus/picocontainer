@@ -10,8 +10,10 @@ package org.nanocontainer.script;
 
 import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 import java.io.Reader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +31,19 @@ public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder
         this.script = script;
         this.classLoader = classLoader;
     }
+
+    protected final MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+        try {
+            return createContainerFromScript(parentContainer, assemblyScope);
+        } finally {
+            try {
+                script.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    protected abstract MutablePicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
     protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
         // do nothing. assume that this is done in createContainer().

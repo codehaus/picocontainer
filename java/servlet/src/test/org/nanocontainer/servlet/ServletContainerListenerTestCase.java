@@ -3,9 +3,9 @@ package org.picoextras.servlet;
 import junit.framework.TestCase;
 import org.jmock.C;
 import org.jmock.Mock;
-import org.picoextras.script.jython.JythonContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.script.jython.JythonContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

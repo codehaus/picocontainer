@@ -10,17 +10,17 @@
 
 package org.nanocontainer.script.xml;
 
+import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.PicoAssemblyException;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.picoextras.reflection.ReflectionContainerAdapter;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -63,8 +63,8 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
     }
 
     public void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope) {
-
-        MutablePicoContainer container = createContainer();
+        PicoContainer parentContainer = (PicoContainer) parentContainerRef.get();
+        MutablePicoContainer container = createContainer(parentContainer);
         try {
             ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter(classLoader, container);
             containerRef.set(container);
@@ -78,7 +78,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
         }
     }
 
-    protected MutablePicoContainer createContainer() {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {
@@ -86,7 +86,7 @@ public class XMLContainerBuilder extends ScriptedComposingLifecycleContainerBuil
             }
             Class cfaClass = classLoader.loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cfaClass.newInstance();
-            return new DefaultPicoContainer(componentAdapterFactory);
+            return new DefaultPicoContainer(componentAdapterFactory, parentContainer);
         } catch (ClassNotFoundException e) {
             throw new PicoAssemblyException(e);
         } catch (InstantiationException e) {

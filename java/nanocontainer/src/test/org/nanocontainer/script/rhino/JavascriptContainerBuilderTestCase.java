@@ -2,11 +2,12 @@ package org.nanocontainer.script.rhino;
 
 import org.mozilla.javascript.JavaScriptException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picoextras.integrationkit.PicoAssemblyException;
-import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 import org.picoextras.testmodel.WebServer;
 import org.picoextras.testmodel.WebServerConfig;
 import org.picoextras.testmodel.WebServerImpl;
+import org.nanocontainer.script.AbstractScriptedComposingLifecycleContainerBuilderTestCase;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
                 "var pico = new DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfig)\n");
 
-        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         assertNotNull(pico.getComponentInstanceOfType(WebServerConfig.class).getClass());
     }
@@ -34,7 +35,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
                 "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.DefaultWebServerConfig)\n" +
                 "pico.registerComponentImplementation(Packages.org.picoextras.testmodel.WebServerImpl)\n");
 
-        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
         Object ws = pico.getComponentInstanceOfType(WebServer.class);
@@ -65,7 +66,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
                 "childAdapter.addClassLoaderURL(url)\n" +
                 "childAdapter.registerComponentImplementation('childComponent','TestComp')\n" +
                 "pico.registerComponentInstance('child1', childAdapter.getPicoContainer())");
-        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object parentComponent = pico.getComponentInstance("parentComponent");
 
@@ -87,7 +88,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
                 "pico.registerComponentInstance( new Packages." + FooTestComp.class.getName() + "())\n" +
                 "pico.registerComponentInstance( 'foo', new Packages." + FooTestComp.class.getName() + "())\n");
 
-        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()));
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(0).getClass());
         assertEquals(FooTestComp.class, pico.getComponentInstances().get(1).getClass());
@@ -97,4 +98,11 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedComposin
 
     }
 
+    public void testContainerCanBeBuiltWithParent() {
+        Reader script = new StringReader("" +
+                "var pico = new DefaultPicoContainer(parent)\n");
+        PicoContainer parent = new DefaultPicoContainer();
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent);
+        assertSame(parent, pico.getParent());
+    }
 }

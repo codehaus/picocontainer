@@ -1,13 +1,27 @@
 package org.nanocontainer.script.rhino;
 
-import org.mozilla.javascript.*;
-import org.picocontainer.MutablePicoContainer;
-import org.picoextras.integrationkit.PicoAssemblyException;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.DefiningClassLoader;
+import org.mozilla.javascript.GeneratedClassLoader;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.NativeJavaPackage;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
 import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picoextras.integrationkit.PicoAssemblyException;
 
 import java.io.Reader;
 
 /**
+ * {@inheritDoc}
+ * The script has to assign a "pico" variable with an instance of {@link PicoContainer}.
+ * There is an implicit variable named "parent" that may contain a reference to a parent
+ * container. It is recommended to use this as a constructor argument to the instantiated
+ * PicoContainer.
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
@@ -16,7 +30,7 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
         super(script, classLoader);
     }
 
-    protected MutablePicoContainer createContainer() {
+    protected MutablePicoContainer createContainer(PicoContainer parentContainer) {
         Context cx = new Context() {
             public GeneratedClassLoader createClassLoader(ClassLoader parent) {
                 return new DefiningClassLoader(classLoader) {
@@ -27,10 +41,10 @@ public class JavascriptContainerBuilder extends ScriptedComposingLifecycleContai
 
         try {
             Scriptable scope = new ImporterTopLevel(cx);
+            scope.put("parent", scope, parentContainer);
             ImporterTopLevel.importPackage(cx,
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.defaults", classLoader),
-                        new NativeJavaPackage("org.picocontainer.extras", classLoader),
                         new NativeJavaPackage("org.picoextras.reflection", classLoader),
                         // File, URL and URLClassLoader will be frequently used by scripts.
                         new NativeJavaPackage("java.net", classLoader),

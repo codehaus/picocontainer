@@ -1,0 +1,7 @@
+target
+junit*
+*.log
+*.iws
+*.ipr
+*.iml
+*.idea

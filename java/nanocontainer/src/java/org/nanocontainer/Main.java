@@ -9,25 +9,22 @@
 
 package org.nanocontainer;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
 import org.picoextras.reflection.DefaultReflectionContainerAdapter;
 import org.realityforge.cli.CLArgsParser;
 import org.realityforge.cli.CLOption;
 import org.realityforge.cli.CLOptionDescriptor;
 import org.realityforge.cli.CLUtil;
-import org.xml.sax.InputSource;
 
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.io.FileReader;
 
 public class Main {
 

@@ -21,6 +21,12 @@
       </action>
 
       <action dev="tirsen" type="update">
+        Factored out default dependency-handling algorithms into pluggable Parameter-strategies.
+        This opens up for multiple implementations, parameters configured from properties-files
+        and so on.
+      </action>
+
+      <action dev="tirsen" type="update">
         Refactored the ComponentFactory interface so that IoC type 3
         (based on constructors) is no longer mandatory.
       </action>

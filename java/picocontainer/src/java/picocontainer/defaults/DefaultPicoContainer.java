@@ -10,21 +10,19 @@
 
 package picocontainer.defaults;
 
-import picocontainer.ComponentFactory;
-import picocontainer.ComponentFactory;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInstantiationException;
-import picocontainer.PicoIntrospectionException;
-import picocontainer.ClassRegistrationPicoContainer;
-
-import java.util.Set;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.lang.reflect.Modifier;
+import java.util.Set;
+
+import picocontainer.ClassRegistrationPicoContainer;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.PicoRegistrationException;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -61,7 +59,7 @@ public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
         this.componentFactory = componentFactory;
     }
 
-    public final Object[] getComponents() {
+    public Object[] getComponents() {
         Class[] componentTypes = getComponentTypes();
         Object[] components = new Object[componentTypes.length];
         for (int i = 0; i < componentTypes.length; i++) {

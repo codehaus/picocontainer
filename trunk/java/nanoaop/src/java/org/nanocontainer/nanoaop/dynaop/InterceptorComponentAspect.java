@@ -16,7 +16,6 @@ import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
 import dynaop.MethodPointcut;
 import dynaop.Pointcuts;
-import dynaop.ProxyFactory;
 
 /**
  * Interceptor aspect that is applied to the components that match a component
@@ -60,15 +59,13 @@ class InterceptorComponentAspect extends ComponentAspect {
         this.methodPointcut = methodPointcut;
         this.interceptorFactory = interceptorFactory;
     }
-
-    Object wrap(Object component) {
-        Aspects aspects = new Aspects();
+    
+    void doRegisterAspect(Object componentKey, Aspects aspects) {
         if (interceptor != null) {
             aspects.interceptor(Pointcuts.ALL_CLASSES, methodPointcut, interceptor);
         } else {
             aspects.interceptor(Pointcuts.ALL_CLASSES, methodPointcut, interceptorFactory);
         }
-        return ProxyFactory.getInstance(aspects).wrap(component);
     }
 
 }

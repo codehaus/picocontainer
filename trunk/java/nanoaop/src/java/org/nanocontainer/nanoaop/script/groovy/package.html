@@ -5,23 +5,6 @@
 <body>
 Provides support for building and configuring {@link
 org.nanocontainer.nanoaop.AspectablePicoContainer} objects using
-groovy.  A groovy configuration file might look something like this:
-<pre>
-    logger = new LoggingInterceptor()
-    builder = new AopNanoGroovyBuilder()
-    cuts = builder.pointcuts()
-
-    pico = builder.container() {
-        component(key:Dao, class:DaoImpl) {
-            aspect(methodCut:cuts.allMethods(), interceptor:logger)
-        }
-        component(key:CustomerEntity, class:CustomerEntityImpl)
-        component(key:OrderEntity, class:OrderEntityImpl)
-
-        aspect(cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
-        aspect(cuts.packageName('com.mycompany.buggypackage', cuts.signature("save*"), interceptor:logger)
-    }
-</pre>
-
+groovy.
 </body>
 </html>

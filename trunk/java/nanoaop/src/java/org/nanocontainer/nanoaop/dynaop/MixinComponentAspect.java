@@ -14,7 +14,6 @@ import org.nanocontainer.nanoaop.ComponentPointcut;
 import dynaop.Aspects;
 import dynaop.MixinFactory;
 import dynaop.Pointcuts;
-import dynaop.ProxyFactory;
 
 /**
  * Mixin aspect that is applied to the components that match a component
@@ -72,14 +71,12 @@ class MixinComponentAspect extends ComponentAspect {
         this.mixinFactory = mixinFactory;
     }
 
-    Object wrap(Object component) {
-        Aspects aspects = new Aspects();
+    void doRegisterAspect(Object componentKey, Aspects aspects) {
         if (mixinClass != null) {
             mixinClass(aspects);
         } else {
             aspects.mixin(Pointcuts.ALL_CLASSES, mixinInterfaces, mixinFactory);
         }
-        return ProxyFactory.getInstance(aspects).wrap(component);
     }
 
     private void mixinClass(Aspects aspects) {

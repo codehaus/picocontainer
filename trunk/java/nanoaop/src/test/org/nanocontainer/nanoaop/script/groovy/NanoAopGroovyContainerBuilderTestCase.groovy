@@ -183,7 +183,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         })
     }
     
-    public void testNoAdviceSpecified() {
+    public void testNoAdviceSpecifiedInAspect() {
         shouldFail(PicoBuilderException, {
             builder.container() {
                 aspect(classCut:cuts.instancesOf(Dao))
@@ -209,12 +209,62 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         assertEquals('tom', stringBean.firstName)
         assertEquals('jones', stringBean.lastName)
     }    
+    
+    public void testExample() {
+        log = new StringBuffer()
+        logger = new LoggingInterceptor(log)
+        builder = new NanoAopGroovyContainerBuilder()
+        cuts = builder.pointcuts()
+
+        pico = builder.container() {
+            component(key:Dao, class:DaoImpl) {
+                aspect(methodCut:cuts.allMethods(), interceptor:logger)
+            }
+            component(key:CustomerEntity, class:CustomerEntityImpl)
+            component(key:OrderEntity, class:OrderEntityImpl)
+
+            aspect(classCut:cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
+            aspect(classCut:cuts.packageName('org.nanocontainer.nanoaop'), methodCut:cuts.signature('save*'), interceptor:logger)
+        }
+        
+        dao = pico.getComponentInstance(Dao)
+        customer = pico.getComponentInstance(CustomerEntity)
+        order = pico.getComponentInstance(OrderEntity)
+        
+        verifyIntercepted(dao, log)
+        verifyMixin(customer)
+        verifyMixin(order)
+        
+        before = log.toString()
+        customer.saveMe()
+        assertEquals(before + 'startend', log.toString())
+        
+        before = log.toString()
+        order.saveMeToo()
+        assertEquals(before + 'startend', log.toString())
+    }
+    
+    public void testCustomContainerFactory() {
+        // TODO:  OK, this isn't the world's greatest test.  We need to verify
+        // that our containerFactory is indeed being used.
+        log = new StringBuffer()
+        logger = new LoggingInterceptor(log)
+        containerFactory = new org.nanocontainer.nanoaop.dynaop.DynaopAspectablePicoContainerFactory()
+
+        pico = builder.container(containerFactory:containerFactory) {
+            aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
+            component(key:Dao, class:DaoImpl)
+        }
+
+        dao = pico.getComponentInstance(Dao)
+        verifyIntercepted(dao, log)
+    }
 
     void verifyIntercepted(dao, log) {
         before = log.toString()
         data = dao.loadData()
         assertEquals('data', data)
-        assertEquals(before + "startend", log.toString())
+        assertEquals(before + 'startend', log.toString())
     }
 
     void verifyNotIntercepted(dao, log) {

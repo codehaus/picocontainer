@@ -8,12 +8,13 @@
  *****************************************************************************/
 package org.nanocontainer.servlet;
 
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -52,7 +53,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             builderRef.set(containerBuilder);
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, null, context);
+            containerBuilder.buildContainer(containerRef, new SimpleReference(), context);
         } catch (ClassNotFoundException e) {
             throw new PicoCompositionException(e);
         } catch (IllegalAccessException e) {
@@ -67,9 +68,10 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();
             if(initParameter.startsWith("nanocontainer")) {
-                String extension = initParameter.substring(initParameter.lastIndexOf('.') + 1);
+                String extension = initParameter.substring(initParameter.lastIndexOf('.'));
                 String script = context.getInitParameter(initParameter);
-                return ScriptedContainerBuilder.createBuilder(extension, new StringReader(script), Thread.currentThread().getContextClassLoader());
+                NanoContainer nanoContainer = new NanoContainer(new StringReader(script), extension, Thread.currentThread().getContextClassLoader());
+                return nanoContainer.getContainerBuilder();
             }
             if(initParameter.equals(ContainerComposer.class.getName())) {
                 String containerComposerClassName = context.getInitParameter(initParameter);

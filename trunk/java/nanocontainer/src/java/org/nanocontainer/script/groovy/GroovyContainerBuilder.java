@@ -13,10 +13,13 @@
  */
 package org.nanocontainer.script.groovy;
 
+import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyObject;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import groovy.lang.Script;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.codehaus.groovy.syntax.SyntaxException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
@@ -26,7 +29,7 @@ import java.io.Reader;
 
 /**
  * {@inheritDoc}
- * The script has to return an instance of {@link PicoContainer}.
+ * The groovyScript has to return an instance of {@link PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
@@ -35,31 +38,46 @@ import java.io.Reader;
  * @version $Revision$
  */
 public class GroovyContainerBuilder extends ScriptedContainerBuilder {
+    private Script groovyScript;
 
-    public GroovyContainerBuilder(Reader script, ClassLoader classLoader) {
+    public GroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
         super(script, classLoader);
     }
 
     protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-        Object result = null;
+        if(groovyScript == null) {
+            createGroovyScript();
+        }
+        Binding binding = new Binding();
+        binding.setVariable("parent", parentContainer);
+        binding.setVariable("assemblyScope", assemblyScope);
+        groovyScript.setBinding(binding);
+
+        // both returning something or defining the variable is ok.
+        Object result = groovyScript.run();
+        Object pico = binding.getVariable("pico");
+        if(pico == null) {
+            pico = result;
+        }
+        return (MutablePicoContainer) pico;
+
+    }
+
+    private void createGroovyScript() {
         try {
             GroovyClassLoader loader = new GroovyClassLoader(classLoader);
-            Class groovyClass = loader.parseClass(new InputStream() {
-                public int read() throws IOException {
-                    return script.read();
-                }
-            }, "nanocontainer.groovy");
-
-            GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
-            Object[] args = {parentContainer, assemblyScope};
-            result = groovyObject.invokeMethod("buildContainer", args);
-        } catch (Exception e) {
+            InputStream scriptIs = new InputStream() {
+                                public int read() throws IOException {
+                                    return script.read();
+                                }
+                            };
+            Class scriptClass = loader.parseClass(scriptIs, "nanocontainer.groovy");
+            groovyScript = InvokerHelper.createScript(scriptClass, null);
+        } catch (SyntaxException e) {
+            throw new PicoCompositionException(e);
+        } catch (IOException e) {
             throw new PicoCompositionException(e);
         }
-        if (result instanceof MutablePicoContainer) {
-            return (MutablePicoContainer) result;
-        } else {
-            throw new PicoCompositionException("The script didn't return an instance of " + MutablePicoContainer.class.getName());
-        }
+
     }
 }

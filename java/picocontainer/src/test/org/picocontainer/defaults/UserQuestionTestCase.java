@@ -214,4 +214,23 @@ public class UserQuestionTestCase extends TestCase {
         assertSame(needsFoo.getFoo(), needsBar.getBar());
     }
 
+    public void testSeveralDifferentInstancesCanBeCreatedWithOnePreconfiguredContainer() {
+        // create a container that doesn't cache instances
+        MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
+        container.registerComponentImplementation(NeedsBar.class);
+
+        Foo fooOne = new FooBar();
+        container.registerComponentInstance(Foo.class, fooOne);
+        NeedsBar barOne = (NeedsBar) container.getComponentInstance(NeedsBar.class);
+        assertSame(fooOne, barOne.getBar());
+
+        // reuse the same container - just flip out the existing foo.
+        Foo fooTwo = new FooBar();
+        container.unregisterComponent(Foo.class);
+        container.registerComponentInstance(Foo.class, fooTwo);
+        NeedsBar barTwo = (NeedsBar) container.getComponentInstance(NeedsBar.class);
+        assertSame(fooTwo, barTwo.getBar());
+
+        assertNotSame(barOne, barTwo);
+    }
 }

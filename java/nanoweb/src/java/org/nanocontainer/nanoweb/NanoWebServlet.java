@@ -58,6 +58,9 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             Object action = getAction(actionPath, httpServletRequest);
             setPropertiesWithOgnl(httpServletRequest, action);
             String result = execute(action);
+
+            System.out.println("result = " + result);
+
             httpServletRequest.setAttribute("action", action);
             dispatcher.dispatch(httpServletRequest, httpServletResponse, actionPath, result);
         } finally {

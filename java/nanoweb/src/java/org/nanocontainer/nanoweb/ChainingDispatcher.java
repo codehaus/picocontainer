@@ -15,7 +15,8 @@ public class ChainingDispatcher implements Dispatcher {
         boolean didDispatch = false;
         int counter = 0;
         while(!didDispatch) {
-            RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(views[counter]);
+            String view = views[counter];
+            RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(view);
             didDispatch = dispatch(httpServletRequest, requestDispatcher, httpServletResponse);
             counter++;
         }

@@ -19,7 +19,9 @@ import org.picocontainer.defaults.DefaultComponentRegistry;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 
 public class HierarchicalComponentRegistry implements ComponentRegistry, Serializable {
@@ -53,6 +55,10 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
     public void registerComponent(ComponentSpecification compSpec) {
         childRegistry.registerComponent(compSpec);
     }
+    
+	public void unregisterComponent(Class componentKey) {
+		childRegistry.unregisterComponent(componentKey);
+	}
 
     public Collection getComponentSpecifications() {
         return childRegistry.getComponentSpecifications();
@@ -92,26 +98,26 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
         return result;
     }
 
-    public Collection getComponentInstanceKeys() {
+    public Set getComponentInstanceKeys() {
 
         // Get child types
-        List types = new ArrayList(childRegistry.getComponentInstanceKeys());
+        Set types = new HashSet(childRegistry.getComponentInstanceKeys());
 
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstanceKeys());
 
-        return Collections.unmodifiableList(types);
+        return Collections.unmodifiableSet(types);
 
     }
 
-    public Collection getComponentInstances() {
+    public Set getComponentInstances() {
         // Get child types
-        List types = new ArrayList(childRegistry.getComponentInstances());
+        Set types = new HashSet(childRegistry.getComponentInstances());
 
         // Get those from parent.
         types.addAll(parentRegistry.getComponentInstances());
 
-        return Collections.unmodifiableList(types);
+        return Collections.unmodifiableSet(types);
     }
 
     public boolean hasComponentInstance(Object componentKey) {

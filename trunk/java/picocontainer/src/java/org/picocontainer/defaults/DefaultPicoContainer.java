@@ -25,6 +25,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Collection;
 
 
@@ -113,7 +114,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     private void registerComponent(ComponentSpecification compSpec) {
         componentRegistry.registerComponent(compSpec);
     }
-
+    
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
         for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             Object key = ((ComponentSpecification) iterator.next()).getComponentKey();
@@ -166,6 +167,10 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public void registerComponentByClass(Class componentImplementation) throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         registerComponent(componentImplementation, componentImplementation);
     }
+
+	public void unregisterComponent(Class componentKey) {
+		componentRegistry.unregisterComponent(componentKey);
+	}
 
     public void instantiateComponents() throws PicoInitializationException, PicoInvocationTargetInitializationException {
         if (initialized == false) {
@@ -224,6 +229,8 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         return componentRegistry.getComponentInstances();
     }
 
+    //TODO - remove from PicoContainer interface?
+    //TODO - maybe not ?
     public Collection getComponentKeys() {
         return componentRegistry.getComponentInstanceKeys();
     }
@@ -231,5 +238,4 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     public final boolean hasComponent(Object componentKey) {
         return getComponent(componentKey) != null;
     }
-
 }

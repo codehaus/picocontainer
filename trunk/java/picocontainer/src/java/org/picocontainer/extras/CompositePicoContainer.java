@@ -15,8 +15,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Collections;
 import java.util.Collection;
 import java.io.Serializable;
@@ -79,13 +81,13 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     public Collection getComponentKeys() {
-        List componentTypes = new ArrayList();
+        Set componentTypes = new HashSet();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        return Collections.unmodifiableList(componentTypes);
+        return Collections.unmodifiableSet(componentTypes);
     }
 
     public void instantiateComponents() {
@@ -107,18 +109,18 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     public Collection getComponents() {
-        List componentTypes = new ArrayList();
+        Set componentTypes = new HashSet();
         componentTypes.addAll(componentRegistry.getComponentInstanceKeys());
         for (Iterator iter = containers.iterator(); iter.hasNext();) {
             PicoContainer container = (PicoContainer) iter.next();
             componentTypes.addAll(container.getComponentKeys());
         }
-        List components = new ArrayList();
+        Set set = new HashSet();
         for (Iterator iterator = componentTypes.iterator(); iterator.hasNext();) {
             Object key = (Object) iterator.next();
-            components.add(getComponent(key));
+            set.add(getComponent(key));
         }
-        return Collections.unmodifiableList(components);
+        return Collections.unmodifiableSet(set);
     }
 
     public Object getCompositeComponent() {

@@ -90,4 +90,15 @@ public class ComponentSpecification implements Serializable {
     public Parameter[] getParameters() {
         return parameters;
     }
+    
+	public boolean equals(Object object) {
+		if (object == null || !getClass().equals(object.getClass())) {
+			return false;
+		}
+		ComponentSpecification other = (ComponentSpecification) object;
+		
+		return getComponentKey().equals(other.getComponentKey()) &&
+			getComponentImplementation().equals(other.getComponentImplementation()) &&
+			Arrays.asList(getParameters()).equals(Arrays.asList(other.getParameters()));
+	}
 }

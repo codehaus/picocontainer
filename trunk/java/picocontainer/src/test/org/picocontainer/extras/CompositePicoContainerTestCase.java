@@ -17,13 +17,14 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.extras.CompositePicoContainer;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Collection;
 
 public class CompositePicoContainerTestCase extends TestCase {
@@ -117,13 +118,13 @@ public class CompositePicoContainerTestCase extends TestCase {
             }
 
             public Collection getComponents() {
-                List result = new ArrayList();
+                Set result = new HashSet();
                 result.add(acomp);
                 return result;
             }
 
             public Collection getComponentKeys() {
-                List result = new ArrayList();
+                Set result = new HashSet();
                 result.add(String.class);
                 return result;
             }
@@ -150,13 +151,13 @@ public class CompositePicoContainerTestCase extends TestCase {
             }
 
             public Collection getComponents() {
-                List result = new ArrayList();
+                Set result = new HashSet();
                 result.add(bcomp);
                 return result;
             }
 
             public Collection getComponentKeys() {
-                List result = new ArrayList();
+                Set result = new HashSet();
                 result.add(Integer.class);
                 return result;
 

@@ -5,8 +5,9 @@
   <body>
     <links>
       <item name="PicoContainer"       href="http://www.picocontainer.org/"/>
-      <item name="Nanning"             href="http://nanning.sf.net/"/>
       <item name="Download"            href="/download.html"/>
+      <item name="Issue Tracker"       href="http://jira.codehaus.org/secure/BrowseProject.jspa?id=10121"/>
+      <item name="Nanning"             href="http://nanning.sf.net/"/>
     </links>
 
     <menu name="PicoContainer">

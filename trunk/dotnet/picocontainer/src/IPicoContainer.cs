@@ -21,9 +21,15 @@ namespace PicoContainer
   {
 
     /// <summary>
-    /// Gets a component instance registered with a specific key.</summary>
+    /// Retrieve a component instance registered with a specific key.
+    /// </summary>
+    /// <remarks>
+    /// If a component cannot be found in this container,
+    /// the parent container (if one exists) will be searched.
+    /// </remarks>
     /// <param name="componentKey">the key the component was registered with.</param>
-    /// <returns>an instantiated component.</returns>
+    /// <returns>an instantiated component, , or <example>null</example> if no component has been registered for the specified
+    /// key.</returns>
     object GetComponentInstance (object componentKey);
 
     /// <summary>
@@ -43,46 +49,67 @@ namespace PicoContainer
     IList ComponentInstances { get; }
 
     /// <summary>
-    /// Get the parent of this container
+    /// Get the parent of this container, or <example>null</example> if this container does not have a parent.
     /// </summary>
     IPicoContainer Parent { get; }
 
     /// <summary>
-    /// Finds a ComponentAdapter matching the key, looking in parent if
-    /// not found in self (unless parent is null).
+    /// Finds a ComponentAdapter matching the key
     /// </summary>
+    /// <remarks>If a component adapter cannot be found in this
+    /// container, the parent container (if one exists) will be searched.</remarks>
     /// <param name="componentKey">key of the component</param>
-    /// <returns>the adapter matching the key.</returns>
+    /// <returns>the component adapter associated with this key, or <example>null</example> if no component has been registered
+    /// for the specified key.</returns>
     IComponentAdapter GetComponentAdapter (object componentKey);
 
     /// <summary>
-    /// Finds a ComponentAdapter matching the type, looking in parent if
-    /// not found in self (unless parent is null).
+    /// Finds a ComponentAdapter matching the type. 
     /// </summary>
+    /// <remarks>If a component adapter cannot be found in this
+    /// container, the parent container (if one exists) will be searched.</remarks>
     /// <param name="componentType">type of the component.</param>
-    /// <returns>the adapter matching the type.</returns>
+    /// <returns>the component adapter associated with this class, or <example>null</example> if no component has been
+    /// registered for the specified key.</returns>
     IComponentAdapter GetComponentAdapterOfType (Type componentType);
 
+ 
     /// <summary>
-    /// Returns all adapters (not including the adapters from the parent).
+    /// Retrieve all the component adapters inside this container. 
     /// </summary>
-    /// <returns>List of <see cref="PicoContainer.IComponentAdapter"/></returns>
+    /// <remarks>The component adapters from the parent container are
+    /// not returned.
+    /// <see cref="GetComponentAdaptersOfType(Type)"/> a variant of this method which returns the component adapters inside this
+    /// container that are associated with the specified type.
+    /// </remarks>
+    /// <returns>List of <see cref="PicoContainer.IComponentAdapter"/> all the {@link ComponentAdapter}s inside this container. 
+    /// The collection will be readonly.</returns>
     IList ComponentAdapters { get; }
 
     /// <summary>
-    /// Verifies that the dependencies for all the registered components can be satisfied
-    /// None of the components are instantiated during the verification process.
+    /// Retrieve all the component adapters inside this container. 
     /// </summary>
+    /// <remarks>The component adapters from the parent container are
+    /// not returned.
+    /// </remarks>
+    /// <param name="componentType">type of the component</param>
+    /// <returns>a collection containing all the {@link ComponentAdapter}s inside this container. The collection is readonly.
+    /// </returns>
+    IList GetComponentAdaptersOfType(Type componentType);
+
+    /// <summary>
+    /// Verifies that the dependencies for all the registered components can be satisfied
+    /// </summary>
+    /// <remarks>None of the components are instantiated during the verification process.</remarks>
     /// <exception cref="PicoVerificationException">if there are unsatisifiable dependencies.</exception>
     void Verify ();
 
     /// <summary>
     /// Callback method from the implementation to keep track of the instantiation
-    /// order. This method is not intended to be called explicitly by clients of the API!
+    /// order. 
     /// </summary>
+    /// <remarks>This method is not intended to be called explicitly by clients of the API!</remarks>
     /// <param name="componentAdapter">the adapter</param>
     void AddOrderedComponentAdapter (IComponentAdapter componentAdapter);
- 
-    IList GetComponentAdaptersOfType(Type componentType);
   }
 }

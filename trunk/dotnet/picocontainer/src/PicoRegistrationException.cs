@@ -15,10 +15,9 @@ using System.Runtime.Serialization;
 namespace PicoContainer
 {
   /// <summary>
-  /// The PicoException is thrown when an error in the PicoContainer occurs during the registration of components.
+  /// Exception that is thrown when there is a problem registering a component with the container
+  /// or another part of the PicoContainer API, for example, when a request for a component is ambiguous.
   /// </summary>
-  /// <remarks>
-  /// </remarks>
   [Serializable]
   public class PicoRegistrationException : PicoException
 	{

@@ -12,19 +12,28 @@
 using System;
 
 namespace PicoContainer {
+
   /// <summary>
-  /// Basic lifecycle interface for Pico components. 
-  /// support.
+  /// An interface which is implemented by components that can be started and stopped. 
   /// </summary>
-  /// <remarks>For more advanced and pluggable lifecycle</remarks>
+  /// <remarks>The <see cref="Start()"/>
+  /// must be called at the begin of the component lifecycle. It can be called again only after a call to
+  /// <see cref="Stop()"/>. The <see cref="Stop()"/> method must be called at the end of the component lifecycle,
+  /// and can further be called after every <see cref="Start()"/>. If a component implements the <see cref="IDisposable"/>
+  /// interface as well, <see cref="Stop()"/> should be called before <see cref="IDisposable.Dispose()"/>.</remarks>  
   public interface IStartable {
     /// <summary>
-    /// Starts a component, called by the container
+    /// Starts a component. 
     /// </summary>
+    /// <remarks>Called initially at the begin of the lifecycle. It can be called again after a stop.</remarks>
     void Start();
+
     /// <summary>
-    /// Stops a component, called by the container
+    /// Stop this component. 
     /// </summary>
+    /// <remarks>Called near the end the lifecycle.
+    /// It can be called again after a further start. Implement <see cref="IDisposable"/> if you need a single call at the definite end of the lifecycle.
+    /// </remarks>
     void Stop();
   }
 }

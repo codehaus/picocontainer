@@ -131,6 +131,15 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         return new ConstructorInjectionComponentAdapter(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestDependenciesAreResolved(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestDependenciesAreResolved(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(SimpleTouchable.class);
+        return new ConstructorInjectionComponentAdapter(DependsOnTouchable.class, DependsOnTouchable.class);
+    }
+    
     public static class C1 {
         public C1(C2 c2) {
             fail("verification should not instantiate");

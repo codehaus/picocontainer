@@ -23,9 +23,11 @@ public class InterfaceFinderTestCase extends TestCase {
         assertEquals(AbstractList.class, i.getClass(new Object[]{new ArrayList(), new LinkedList()}));
     }
 
+    // TODO: Fix test when functionality is working
     public void testMostCommonSuperclassForObjectIdsAndSequentialListIsAbstractSequentialList() {
         InterfaceFinder i = new InterfaceFinder();
         assertEquals(AbstractSequentialList.class, i.getClass(new Object[]{new ObjectIds(), new LinkedList()}));
+        assertEquals(LinkedList.class, i.getClass(new Object[]{new LinkedList(), new ObjectIds()}));
     }
 
     public void testAllInterfacesOfListShouldBeFound() {

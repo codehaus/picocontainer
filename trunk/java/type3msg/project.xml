@@ -4,6 +4,8 @@
   <extend>${basedir}/../project.xml</extend>
   <id>nanocontainer-type3msg</id>
   <name>nanocontainer-type3msg</name>
+  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+
 
   <dependencies>
   </dependencies>

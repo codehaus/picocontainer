@@ -4,6 +4,9 @@
   <extend>${basedir}/../project.xml</extend>
   <id>nanocontainer-swing</id>
   <name>nanocontainer-swing</name>
+  <currentVersion>1.0-alpha-1-SNAPSHOT</currentVersion>
+
+
 
   <dependencies>
     <dependency>

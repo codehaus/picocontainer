@@ -44,35 +44,6 @@ public interface PicoContainer {
     boolean hasComponent(Object componentKey);
 
     /**
-     * Returns an object (in fact, a dynamic proxy) that implements the union
-     * of all the interfaces of the currently registered components.
-     * <p>
-     * Casting this object to any of those interfaces and then calling a method
-     * on it will result in that call being multicast to all the components implementing
-     * that given interface.
-     * <p>
-     * This is a simple yet extremely powerful way to handle lifecycle of components.
-     * Component writers can invent their own lifecycle interfaces, and then use the multicaster
-     * to invoke the method in one go.
-     *
-     * @param callInInstantiationOrder whether or not to call the method in the order of instantiation,
-     *    which depends on the components' inter-dependencies.
-     * @param callUnmanagedComponents whether or not to multicast to components that are not managed
-     *    by this container.
-     * @return a multicaster object.
-     */
-    Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException;
-
-    /**
-     * Shorthand for {@link #getComponentMulticaster(boolean, boolean)}<pre>(true, false)</pre>,
-     * which is the most common usage scenario.
-     *
-     * @return a multicaster object.
-     * @throws PicoException
-     */
-    Object getComponentMulticaster() throws PicoException;
-
-    /**
      * Get all the component keys.
      * @return all the component keys.
      */
@@ -90,7 +61,7 @@ public interface PicoContainer {
 
     /**
      * Get the parent containers of this container. In a purely hierarchical (tree structure) container,
-     * there will be 0..1 parents. However, it is possible to have several parents.
+     * there will be 0..1 parents. However, it is possible to have several parents to construct graphs.
      * A container will look in its parents if a component can be found in self.
      *
      * @return a Collection of {@link PicoContainer}.
@@ -98,8 +69,7 @@ public interface PicoContainer {
     List getParentContainers();
 
     /**
-     * Finds a ComponentAdapter matching the key. This method is an "expert" method, and should
-     * normally not be called by clients of this API. (It is called by the implementation).
+     * Finds a ComponentAdapter matching the key.
      *
      * @param componentKey key of the component.
      */

@@ -73,7 +73,8 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException;
 
     /**
-     * Registers a ComponentAdapter.
+     * Registers a component via a ComponentAdapter. Use this if you need fine grained control over what ComponentAdapter
+     * to use for a specific component.
      *
      * @param componentAdapter the adapter
      * @throws PicoRegistrationException if registration fails.
@@ -89,9 +90,9 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter unregisterComponent(Object componentKey);
 
     /**
-     * Adds a component instance to the container. Do not call this method
-     * explicitly. It is used by the internals. Use {@link #registerComponentInstance}
-     * instead if you wish to register externally instantiated objects.
+     * Adds a component instance to the container. <b>Do not call this method
+     * explicitly</b>. It is used by the internals. Use {@link #registerComponent}
+     * instead if you wish to register custom component adapters.
      *
      * @param componentAdapter key of the component.
      */

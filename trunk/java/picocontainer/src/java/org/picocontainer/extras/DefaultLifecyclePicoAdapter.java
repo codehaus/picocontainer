@@ -15,6 +15,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import org.picocontainer.lifecycle.Startable;
 import org.picocontainer.lifecycle.Stoppable;
@@ -32,9 +33,9 @@ public class DefaultLifecyclePicoAdapter implements LifecyclePicoAdapter {
     private Disposable disposableAggregatedComponent;
     private boolean started;
     private boolean disposed;
-    private final PicoContainer picoContainer;
+    private final DefaultPicoContainer picoContainer;
 
-    public DefaultLifecyclePicoAdapter(PicoContainer picoContainer) {
+    public DefaultLifecyclePicoAdapter(DefaultPicoContainer picoContainer) {
         this.picoContainer = picoContainer;
     }
 

@@ -9,15 +9,15 @@ import java.util.List;
 
 public class DefaultLifecyclePicoContainer implements LifecyclePicoAdapter, MutablePicoContainer {
 
-    private final MutablePicoContainer mutablePicoContainer;
+    private final DefaultPicoContainer mutablePicoContainer;
     private final LifecyclePicoAdapter lifecyclePicoAdapter;
 
-    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, MutablePicoContainer mutablePicoContainer) {
+    public DefaultLifecyclePicoContainer(LifecyclePicoAdapter lifecyclePicoAdapter, DefaultPicoContainer mutablePicoContainer) {
         this.lifecyclePicoAdapter = lifecyclePicoAdapter;
         this.mutablePicoContainer = mutablePicoContainer;
     }
 
-    public DefaultLifecyclePicoContainer(MutablePicoContainer mutablePicoContainer) {
+    public DefaultLifecyclePicoContainer(DefaultPicoContainer mutablePicoContainer) {
         this.mutablePicoContainer = mutablePicoContainer;
         lifecyclePicoAdapter = new DefaultLifecyclePicoAdapter(mutablePicoContainer);
     }

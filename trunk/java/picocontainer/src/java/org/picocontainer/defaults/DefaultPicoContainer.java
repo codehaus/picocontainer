@@ -143,6 +143,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return registerComponentImplementation(componentImplementation, componentImplementation);
     }
 
+    /**
+     * Returns an object (in fact, a dynamic proxy) that implements the union
+     * of all the interfaces of the currently registered components.
+     * <p>
+     * Casting this object to any of those interfaces and then calling a method
+     * on it will result in that call being multicast to all the components implementing
+     * that given interface.
+     * <p>
+     * This is a simple yet extremely powerful way to handle lifecycle of components.
+     * Component writers can invent their own lifecycle interfaces, and then use the multicaster
+     * to invoke the method in one go.
+     *
+     * @param callInInstantiationOrder whether or not to call the method in the order of instantiation,
+     *    which depends on the components' inter-dependencies.
+     * @param callUnmanagedComponents whether or not to multicast to components that are not managed
+     *    by this container.
+     * @return a multicaster object.
+     */
     public Object getComponentMulticaster(boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         // TODO: take a MultiCasterFactory as argument. That way we can support
         // multicasters based on reflection (e.g. look for execute() methods) too.
@@ -164,6 +182,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         );
     }
 
+    /**
+     * Shorthand for {@link #getComponentMulticaster(boolean, boolean)}<pre>(true, false)</pre>,
+     * which is the most common usage scenario.
+     *
+     * @return a multicaster object.
+     * @throws PicoException
+     */
     public Object getComponentMulticaster() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return getComponentMulticaster(true, false);
     }

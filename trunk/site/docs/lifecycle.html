@@ -5,23 +5,31 @@
 </head>
 <body>
 <h2>Overview</h2>
-Lifecycle is at least half of Inversion of Control.&nbsp; The other
-half is component dependancy resolution and configuration.&nbsp;
-Lifecycle concerns the post composition (instantiation in type-3) life
-of the component.&nbsp; Typically start and stop are the most commonly
-encountered lifecycle methods.<br>
+Lifecycle is a a third of Inversion of Control.&nbsp; The two thirds
+(detailed elsewhere) are dependancy resolution and configuration.&nbsp;
+Lifecycle concerns the post composition life
+of the component.&nbsp; Start, stop and dispose are the most commonly
+encountered lifecycle concepts.<br>
 <h2>No Lifecycle</h2>
 For really simple PicoContainer compatible components, you would not
 bother with a lifecycle beyond Instantiation and Garbage Collection -
 both of which are consequences of basic use of say
 DefaultPicoContainer.&nbsp; This is the vast majority of Pico
 components in the vast majority of applications.<br>
-<br>
-<pre style="margin-left: 40px;">public class Foo {<br>&nbsp;&nbsp; public Foo() { <br>      // yipee, I am alive, active, going, steaming ahead, strutting my stuff.<br>   }<br>}</pre>
+<pre style="margin-left: 40px;">public class Foo {<br>&nbsp;&nbsp; public Foo() { <br>      // yippee, I am alive, active, going, steaming ahead, strutting my stuff...<br>   }<br>}<br></pre>
+<h2>Aggregated View</h2>
+It might be common to see a tree of components and containers in a
+advanced application. If one of the lifecycle methods is invoked on the
+root container, it is in turn invoked on all child containers and
+components where is is appropriately implemented.&nbsp; The starting of
+components is handled breadth first, and in order of
+instantiation.&nbsp; The stopping and disposing of containers and
+components is handled depth first, and in reverse order to instatiation.<br>
+<pre style="margin-left: 40px;"></pre>
 <h2>Simple lifecycle - LifecyclePicoAdapter&nbsp;<br>
 </h2>
 With LifecyclePicoAdapter, we have provided a very simple set of
-interfaces for start(), stop() and dispose()....<br>
+interfaces for start(), stop() and dispose().<br>
 <br>
 The LifecyclePicoAdapter honors the classic lifecycle concepts for
 components.&nbsp; These are start(), stop() and dispose().&nbsp; If any
@@ -31,32 +39,45 @@ instantiation of component ) will find that the call is percolated
 though to
 it.&nbsp; The container is forgiving, as it is just fine if some of
 none of the components contained are Startable etc.<br>
-<br>
-Suitable components :<br>
-<pre style="margin-left: 40px;">public class Peach implements Startable, Stoppable, Disposable {<br>   public Peach(DependantComp dComp) {<br>      // no wait, I'm fully composed but should wait for further instruction<br>   }<br>&nbsp;&nbsp; public void start() { <br>   }<br>&nbsp;&nbsp; public void stop() { <br>   }<br>&nbsp;&nbsp; public void dispose() { <br>   }<br>}<br><br>public class Kiwi implements Stoppable {<br>&nbsp;&nbsp; public void stop() { <br>   }<br>}</pre>
-A component that needs adaption ...<br>
-<pre style="margin-left: 40px;">public interface Banana {<br>&nbsp;&nbsp; public void banana();<br>}<br><br>public class BananaImpl implements Banana {<br>&nbsp;&nbsp; public void banana() { }<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>}<br><br>public BananaExtender extends BananaImpl<br>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{<br>}</pre>
-Or...<br>
-<pre style="margin-left: 40px;">public class BananaDelegate implements Banana, Startable, Stoppable {<br>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();<br>&nbsp;&nbsp;&nbsp; public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();<br>&nbsp;&nbsp;&nbsp; }<br>}&nbsp;<br></pre>
+<h3>Example</h3>
+<pre style="margin-left: 40px;">public class Peach implements Startable, Stoppable, Disposable {<br>   public Peach(DependantComp dComp) {<br>      // no wait, I'm fully composed but should wait for further instruction<br>   }<br>&nbsp;&nbsp; public void start() { <br>   }<br>&nbsp;&nbsp; public void stop() { <br>   }<br>&nbsp;&nbsp; public void dispose() { <br>   }<br>}<br><br>public class Kiwi implements Stoppable {<br>&nbsp;&nbsp; public void stop() { <br>   }<br>}<br></pre>
+<h3>Adaption</h3>
+<span style="font-family: monospace;">Components can sometime implement
+start/stop, but not those mandated by an the PicoContainer lifecycle
+interface:<br>
+</span>
+<pre style="margin-left: 40px;">public interface Banana {<br>&nbsp;&nbsp; public void banana();<br>}<br><br>public class BananaImpl implements Banana {<br>&nbsp;&nbsp; public void banana() { }<br>&nbsp;&nbsp; public void start() { }<br>&nbsp;&nbsp; public void stop() { }<br>}<br><br></pre>
+In this scenario, a simple extension can make the component honor the
+PicoContainer lifecycle interface:<br>
+<pre style="margin-left: 40px;"><br>public BananaExtender extends BananaImpl<br>&nbsp;&nbsp;&nbsp; implements Startable, Stoppable{<br>}</pre>
+Delegation is also a neat way of adapting the component:<br>
+<pre style="margin-left: 40px;">public class BananaDelegate implements Banana, Startable, Stoppable {<br>&nbsp;&nbsp;&nbsp; private Banana realBanana = new BananaImpl();<br>&nbsp;&nbsp;&nbsp; public void banana() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.banana();<br>&nbsp;&nbsp;&nbsp; }<br>    public void start() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void stop() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; realBanana.stop();<br>&nbsp;&nbsp;&nbsp; }<br>}&nbsp;<br></pre>
 <span style="font-weight: bold;"></span>
 <h2>Custom lifecycles</h2>
 <p>Custom lifecycle management is a common requirement for components.
-Probably because it is so crucial there are many competing
-implementations, and
-each has its own passionate group of advocates.</p>
-<p>Pico tries to avoid controversy by being completely agnostic about
+Probably because it is so crucial, there are many competing
+implementations. Each has its own passionate group of advocates. It
+might have been nice to see some of the common lifecycle interfaces
+arrive in the JDK (java.lang.Startable).<br>
+</p>
+<p>Pico tries to avoid controversy by being partially agnostic about
 the
-lifecycle/lifecycles that it supports. Pico does have an implementation
+lifecycle/lifecycles that it supports. As detailed previously, Pico
+does have an implementation
 of a simple lifecycle (see org.picocontainer.lifecycle and
-PicoLifecyleAdapter) but this is there
-only as a convenience.</p>
-<p>Instead of mandating a single restrictive lifecycle, Pico provides
-hooks that allow you to plug in almost any concievable lifecycle (or
+PicoLifecyleAdapter) and this is supported in the default container.<br>
+</p>
+<p>Instead of mandating PicoContainer's lifecycle interface, we provide
+a plug-in that should grant compatibility with other lifecycle concept.
+(or
 for that matter any other 'aggregated' behaviour).&nbsp; As it happens
 the PicoLifecycleAdapter uses the getCompositeComponent() feature of
-PicoContainer.<br>
+PicoContainer.&nbsp; <br>
 </p>
 <pre style="margin-left: 40px;">public class Mango implements QuantumLeapable {<br>   public Mango(DependantComp dComp) {<br>      // no wait, I'm fully composed but should wait for further instruction<br>   }<br>&nbsp;&nbsp; public void leap() { <br>      // Oh boy!<br>   }<br>}<br></pre>
+Copying the PicoLifecycleAdapter is advised for custom lifecycle
+situations. (Please choose compatible license, and credit the
+PicoContainer project).<br>
 <p></p>
 <small>Authors: Paul Hammant</small><br>
 </body>

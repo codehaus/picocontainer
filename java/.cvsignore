@@ -1,6 +1,6 @@
 target
 distributions.*
 junit*
-*.log
 *.iws
+*.log
 *.idea

@@ -13,7 +13,7 @@ package org.picocontainer.extras;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AbstractPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -39,7 +39,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter {
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(AbstractPicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(MutablePicoContainer componentRegistry) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return delegate.getComponentInstance(componentRegistry);
     }
 

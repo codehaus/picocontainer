@@ -10,9 +10,7 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.Parameter;
+import org.picocontainer.*;
 import org.picocontainer.defaults.*;
 
 import java.lang.reflect.InvocationHandler;
@@ -40,7 +38,7 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
             super(delegate);
         }
 
-        public Object getComponentInstance(AbstractPicoContainer picoContainer)
+        public Object getComponentInstance(MutablePicoContainer picoContainer)
                 throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             Object component = super.getComponentInstance(picoContainer);
             // TODO: search for all interfaces for component-implementation instead

@@ -1,8 +1,6 @@
 package org.picocontainer.extras;
 
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.*;
 import org.picocontainer.defaults.*;
 
 import java.lang.reflect.Method;
@@ -56,7 +54,7 @@ public class InvokingComponentAdapterFactory extends DecoratingComponentAdapterF
             }
         }
     
-        public Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        public Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             Object result = super.getComponentInstance(picoContainer);
 
             if( method != null ) {

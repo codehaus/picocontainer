@@ -1,15 +1,8 @@
-package org.picocontainer.defaults;
-
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
-
-import java.util.List;
+package org.picocontainer;
 
 /**
  * A component adapter is responsible for instantiating and caching
- * a specific component.
+ * a specific component instance.
  *
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -33,13 +26,13 @@ public interface ComponentAdapter {
      * be caching).
      * <p>
      * This method should also register the instantiated component with the
-     * pico container
+     * pico container.
      *
      * @param picoContainer registries where the adapter can look for
      *  dependent component instances
      * @return the component instance
      * @throws PicoInitializationException if the component couldn't be instantiated
      */
-    Object getComponentInstance(AbstractPicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    Object getComponentInstance(MutablePicoContainer picoContainer) throws PicoInitializationException, PicoIntrospectionException;
 
 }

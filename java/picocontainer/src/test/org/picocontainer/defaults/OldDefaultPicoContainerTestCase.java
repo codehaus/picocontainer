@@ -720,7 +720,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                         return componentImplementation;
                     }
 
-                    public Object getComponentInstance(AbstractPicoContainer componentRegistry)
+                    public Object getComponentInstance(MutablePicoContainer componentRegistry)
                             throws PicoInitializationException {
                         return touchable;
                     }

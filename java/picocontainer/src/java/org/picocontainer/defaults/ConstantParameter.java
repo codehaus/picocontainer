@@ -12,6 +12,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentAdapter;
 
 import java.util.List;
 

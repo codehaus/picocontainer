@@ -1,7 +1,7 @@
 package org.picocontainer.extras;
 
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.Parameter;

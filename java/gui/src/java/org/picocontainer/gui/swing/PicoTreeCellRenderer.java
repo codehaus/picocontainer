@@ -1,7 +1,7 @@
 package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.ComponentTreeNode;
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.*;

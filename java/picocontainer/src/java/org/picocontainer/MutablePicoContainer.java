@@ -10,8 +10,6 @@
 
 package org.picocontainer;
 
-import org.picocontainer.defaults.ComponentAdapter;
-
 /**
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -28,6 +26,6 @@ public interface MutablePicoContainer extends PicoContainer {
 
     void unregisterComponent(Object componentKey);
 
-    ///// This is implementation specific, and should ideally go away
-    public ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+    ComponentAdapter findComponentAdapter(Object componentKey) throws PicoIntrospectionException;
+    void addOrderedComponentInstance(Object componentInstance);
 }

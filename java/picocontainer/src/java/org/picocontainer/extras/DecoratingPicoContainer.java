@@ -10,7 +10,7 @@
 
 package org.picocontainer.extras;
 
-import org.picocontainer.defaults.ComponentAdapter;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AbstractPicoContainer;
 
@@ -34,6 +34,10 @@ import java.util.Iterator;
 public class DecoratingPicoContainer extends AbstractPicoContainer {
 
     private final List delegates = new ArrayList();
+
+    public DecoratingPicoContainer() {
+        super(null);
+    }
 
     public Collection getComponentKeys() {
         List result = new ArrayList();

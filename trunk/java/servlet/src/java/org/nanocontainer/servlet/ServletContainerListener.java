@@ -76,7 +76,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         String className = context.getInitParameter("assembler");
         ContainerComposer result = null;
         try {
-            result = (ContainerComposer) Class.forName(className).newInstance();
+            result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();
         } catch (Exception e) {
             // Don't use exception chaining to be JDK 1.3 compatible
             throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);

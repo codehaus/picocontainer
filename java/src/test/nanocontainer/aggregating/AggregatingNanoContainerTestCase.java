@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package nanocontainer;
+package nanocontainer.aggregating;
 
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.lang.reflect.UndeclaredThrowableException;
 
 import junit.framework.TestCase;
-import nanocontainer.reflect.SequentialInvocationHandler;
+import nanocontainer.aggregating.reflect.SequentialInvocationHandler;
+import nanocontainer.aggregating.AggregatingNanoContainer;
 
 public class AggregatingNanoContainerTestCase extends TestCase {
 

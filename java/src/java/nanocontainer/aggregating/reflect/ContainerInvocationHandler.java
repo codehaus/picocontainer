@@ -8,36 +8,26 @@
  * Original code by Aslak Hellesoy                                           *
  *****************************************************************************/
 
-package nanocontainer.reflect;
+package nanocontainer.aggregating.reflect;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Arrays;
+import picocontainer.PicoContainer;
+import picocontainer.Container;
+
+import java.lang.reflect.InvocationHandler;
 
 /**
  *
  * @author Aslak Hellesoy
- * @version $Revision$
+ * @version $Revision: 1.4 $
  */
-public class NoInvocationTargetException extends Exception {
-    private final Object proxy;
-    private final Method method;
+public abstract class ContainerInvocationHandler implements InvocationHandler {
+    private Container container;
 
-    public NoInvocationTargetException(Object proxy, Method method) {
-        this.proxy = proxy;
-        this.method = method;
+    protected ContainerInvocationHandler( Container container ) {
+        this.container = container;
     }
 
-    public Object getProxy() {
-        return proxy;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public String getMessage() {
-        List interfaces = Arrays.asList(proxy.getClass().getInterfaces());
-        return method.toString() + " doesn't exist in any of the proxy's interfaces: " + interfaces;
+    protected Container getContainer() {
+        return container;
     }
 }

@@ -205,6 +205,17 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         Object o = pico.getComponentInstance("huey/duey/Luis")
         assertNotNull(o)
     }
-
+    
+    public void testComponentInstances() {
+    
+        builder = new NanoGroovyBuilder()
+        pico = builder.container {
+            component(key:"Louis", instance:"Armstrong")
+            component(key:"Duke", instance: "Ellington")
+        }
+	
+    		assertEquals("Armstrong", pico.getComponentInstance("Louis"))
+    		assertEquals("Ellington", pico.getComponentInstance("Duke"))
+	}
 
 }

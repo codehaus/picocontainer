@@ -34,6 +34,7 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
             ClassLoader classLoader,
             List objectsToAggregateCallFor,
             boolean callInReverseOrder,
+            InvocationInterceptor invocationInterceptor,
             Invoker invoker
             ) {
         Class[] interfaces = interfaceFinder.getInterfaces(objectsToAggregateCallFor);
@@ -48,7 +49,7 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
         Object result = Proxy.newProxyInstance(
                 classLoader,
                 interfaces,
-                new AggregatingInvocationHandler(classLoader, objects, invoker)
+                new AggregatingInvocationHandler(classLoader, objects, invocationInterceptor, invoker)
         );
 
         return result;
@@ -58,10 +59,12 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
         private Object[] children;
         private ClassLoader classLoader;
         private final Invoker invoker;
+        private InvocationInterceptor invocationInterceptor;
 
-        public AggregatingInvocationHandler(ClassLoader classLoader, Object[] children, Invoker invoker) {
+        public AggregatingInvocationHandler(ClassLoader classLoader, Object[] children, InvocationInterceptor invocationInterceptor, Invoker invoker) {
             this.classLoader = classLoader;
             this.children = children;
+            this.invocationInterceptor = invocationInterceptor;
             this.invoker = invoker;
         }
 
@@ -88,7 +91,7 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
 
             // Lazily created list holding all results.
             List results = new ArrayList();
-            invoker.invoke(targets, declaringClass, method, args, results);
+            invoker.invoke(targets, declaringClass, method, args, results, invocationInterceptor);
 
             Object result;
             if (results.size() == 1) {
@@ -102,6 +105,7 @@ public class DefaultComponentMulticasterFactory implements ComponentMulticasterF
                         classLoader,
                         results,
                         true,
+                        invocationInterceptor,
                         invoker
                 );
             } else {

@@ -1,6 +1,5 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -27,7 +26,10 @@ public interface ComponentMulticasterAdapter {
      *
      * @param picoContainer the container containing the components to multicast to.
      * @param callInInstantiationOrder true if calls should be done in components' instantiation order.
+     * @param invocationInterceptor intercepts method calls. Can be used for monitoring/logging of calls.
      * @return a multicaster object.
      */
+    public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder, InvocationInterceptor invocationInterceptor);
+
     public Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder);
 }

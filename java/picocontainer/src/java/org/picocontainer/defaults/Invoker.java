@@ -9,5 +9,5 @@ import java.util.List;
  * @version $Revision$
  */
 public interface Invoker {
-    void invoke(Object[] targets, Class declaringClass, Method method, Object[] args, List results) throws IllegalAccessException, InvocationTargetException;
+    void invoke(Object[] targets, Class declaringClass, Method method, Object[] args, List results, InvocationInterceptor invocationInterceptor) throws IllegalAccessException, InvocationTargetException;
 }

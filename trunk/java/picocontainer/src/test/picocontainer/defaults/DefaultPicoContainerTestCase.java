@@ -12,7 +12,7 @@ package picocontainer.defaults;
 
 import junit.framework.TestCase;
 import picocontainer.PicoRegistrationException;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 import picocontainer.defaults.WrongNumberOfConstructorsRegistrationException;
@@ -123,7 +123,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInitializationException {
+    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(PeelableComponent.class);
@@ -145,7 +145,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertFalse(notReallyPeelableComponent.wasPeeled);
     }
 
-    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInitializationException {
+    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -179,7 +179,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInitializationException {
+    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -214,7 +214,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInitializationException {
+    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -244,7 +244,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInitializationException {
+    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -278,7 +278,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
                 !recorder.thingsThatHappened.contains("A.wash()"));
     }
 
-    public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInitializationException {
+    public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -364,7 +364,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
 
-    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, WrongNumberOfConstructorsRegistrationException, PicoInitializationException {
+    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, WrongNumberOfConstructorsRegistrationException, PicoInstantiationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(Recorder.class);
         pico.registerComponent(AppleFactory.class);
@@ -414,7 +414,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-    public void testBasicComponentInteraction() throws PicoInitializationException, PicoRegistrationException
+    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException
     {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 

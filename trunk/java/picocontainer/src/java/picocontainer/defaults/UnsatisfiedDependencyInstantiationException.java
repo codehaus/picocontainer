@@ -8,7 +8,26 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.defaults;
 
-public abstract class PicoInitializationException extends Exception {
+import picocontainer.PicoInstantiationException;
+
+public class UnsatisfiedDependencyInstantiationException extends PicoInstantiationException
+{
+    private Class classThatNeedsDeps;
+
+    public UnsatisfiedDependencyInstantiationException(Class classThatNeedsDeps)
+    {
+        this.classThatNeedsDeps = classThatNeedsDeps;
+    }
+
+    public String getMessage()
+    {
+        return "Class " + classThatNeedsDeps.getName() + " needs unnamed dependencies";
+    }
+
+    public Class getClassThatNeedsDeps()
+    {
+        return classThatNeedsDeps;
+    }
 }

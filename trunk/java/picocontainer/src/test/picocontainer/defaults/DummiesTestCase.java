@@ -11,7 +11,7 @@
 package picocontainer.defaults;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -24,7 +24,7 @@ public class DummiesTestCase extends TestCase {
         assertEquals(0, dc.getComponents().length);
     }
 
-    public void testDefaultComponentFactory() throws PicoInitializationException,
+    public void testDefaultComponentFactory() throws PicoInstantiationException,
                                                      NoSuchMethodException,
                                                      InvocationTargetException,
                                                      IllegalAccessException,

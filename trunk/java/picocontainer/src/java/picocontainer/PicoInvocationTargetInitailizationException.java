@@ -10,7 +10,7 @@
 
 package picocontainer;
 
-public class PicoInvocationTargetInitailizationException extends PicoInitializationException {
+public class PicoInvocationTargetInitailizationException extends PicoInstantiationException {
     private final Throwable cause;
 
     public PicoInvocationTargetInitailizationException(Throwable cause) {

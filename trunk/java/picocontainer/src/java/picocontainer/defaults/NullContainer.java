@@ -11,7 +11,7 @@
 package picocontainer.defaults;
 
 import picocontainer.PicoContainer;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 
 public class NullContainer implements PicoContainer {
     public boolean hasComponent(Class compType) {
@@ -30,7 +30,7 @@ public class NullContainer implements PicoContainer {
         return new Class[0];
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInstantiationException {
     }
 }
 

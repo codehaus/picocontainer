@@ -13,7 +13,7 @@ package picocontainer.aggregated;
 import picocontainer.defaults.DefaultPicoContainer;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInitializationException;
+import picocontainer.PicoInstantiationException;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -90,6 +90,6 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
         return (Class[]) componentTypes.toArray(new Class[containers.length]);
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInstantiationException {
     }
 }

@@ -46,6 +46,34 @@
     </copy>
 
   </target>
+  
+  <target name="site:sshdeploy" depends="make-site" description="Deploy the generated site docs using ssh">
+
+    <!-- This needs to taken from the project properties -->
+    <property name="maven.homepage" value="${pom.siteDirectory}"/>
+
+    <tar tarfile="site.tar" basedir="build"/>
+    <gzip zipfile="site.tar.gz" src="site.tar"/>
+    <delete file="site.tar"/>
+
+    <!-- Make sure the destination directory exists before trying to copy -->
+    <exec dir="." executable="plink">
+      <arg line="codehaus.org -l paul 'mkdir -p /www/picocontainer.codehaus.org'"/>
+    </exec>
+
+    <exec dir="." executable="pscp">
+      <arg value="site.tar.gz"/>
+      <arg value="paul@codehaus.org:/www/picocontainer.codehaus.org"/>
+    </exec>
+
+    <exec dir="." executable="plink">
+      <arg line="codehaus.org -l paul 'cd /www/picocontainer.codehaus.org;gunzip site.tar.gz;tar xUvf site.tar;chmod -R g+u *;rm site.tar'"/>
+    </exec>
+
+    <delete file="site.tar.gz"/>
+
+  </target>
+  
 
 </project>
 

@@ -21,13 +21,13 @@ import com.thoughtworks.proxy.toys.delegate.Delegating;
  * ComponentAdapter, that assimilates a component for a specific type.
  * <p>
  * Allows an instance, or more specifically the <code>componentInstance</code>, to be registered against a
- * <code>componentKey<code> interface that the <code>componentInstance</code>
- * is not assignable from. In other words the componentInstance does NFOT implement the componentKey
- * interface.<p>
- *
- * <p>For Example:</p>
- *
- *<code><pre>
+ * <code>componentKey</code> interface that the <code>componentInstance</code> is not assignable from. In other words the
+ * componentInstance does NOT implement the componentKey interface.
+ * </p>
+ * <p>
+ * For Example:
+ * </p>
+ * <code><pre>
  * public interface Foo {
  *     int size();
  * }
@@ -38,8 +38,9 @@ import com.thoughtworks.proxy.toys.delegate.Delegating;
  *     }
  * }
  * </pre></code>
- *
- * <p>Notice how Bar does not implement the interface Foo. But Bar does have an identical size() method.</p>
+ * <p>
+ * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
+ * </p>
  * @author J&ouml;rg Schaible
  * @author Michael Ward
  * @since 1.0

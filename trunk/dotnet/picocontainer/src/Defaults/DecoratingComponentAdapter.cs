@@ -61,13 +61,18 @@ namespace PicoContainer.Defaults
 			get { return theDelegate.ComponentInstance; }
 		}
 
+		public virtual object GetComponentInstance(IPicoContainer container)
+		{
+			return theDelegate.GetComponentInstance(container);
+		}
+
 		/// <summary>
 		/// Verify that all dependencies for this adapter can be satisifed.
 		/// </summary>
 		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
-		public virtual void Verify()
+		public virtual void Verify(IPicoContainer container)
 		{
-			theDelegate.Verify();
+			theDelegate.Verify(container);
 		}
 
 		/// <summary>

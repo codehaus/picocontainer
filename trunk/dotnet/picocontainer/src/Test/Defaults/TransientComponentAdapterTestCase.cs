@@ -36,7 +36,7 @@ namespace Test.Defaults
 		}
 
 		[Test]
-		public void TestDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientIComponentAdapter()
+		public void DefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientIComponentAdapter()
 		{
 			DefaultPicoContainer picoContainer = new DefaultPicoContainer();
 			picoContainer.RegisterComponentImplementation(typeof (Service));
@@ -65,20 +65,20 @@ namespace Test.Defaults
 
 
 		[Test]
-		public void TestSuccessfulVerificationWithNoDependencies()
+		public void SuccessfulVerificationWithNoDependencies()
 		{
 			InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (A));
-			componentAdapter.Verify();
+			componentAdapter.Verify(componentAdapter.Container);
 		}
 
 		[Test]
-		public void TestFailingVerificationWithUnsatisfiedDependencies()
+		public void FailingVerificationWithUnsatisfiedDependencies()
 		{
 			IComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", typeof (B));
 			componentAdapter.Container = new DefaultPicoContainer();
 			try
 			{
-				componentAdapter.Verify();
+				componentAdapter.Verify(componentAdapter.Container);
 				Assert.Fail();
 			}
 			catch (UnsatisfiableDependenciesException)

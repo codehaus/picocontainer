@@ -8,7 +8,8 @@ namespace Test.Defaults
 	[TestFixture]
 	public class ChildContainerTestCase
 	{
-		public void testParentContainerWithComponentWithEqualKeyShouldBeShadowedByChild()
+		[Test]
+		public void ParentContainerWithComponentWithEqualKeyShouldBeShadowedByChild()
 		{
 			DefaultPicoContainer parent = new DefaultPicoContainer();
 			DefaultPicoContainer child = new DefaultPicoContainer(parent);
@@ -21,7 +22,8 @@ namespace Test.Defaults
 			Assert.AreEqual(typeof (SimpleTouchable), dot.getTouchable().GetType());
 		}
 
-		public void testParentComponentRegisteredAsClassShouldBePreffered()
+		[Test]
+		public void ParentComponentRegisteredAsClassShouldBePreffered()
 		{
 			DefaultPicoContainer parent = new DefaultPicoContainer();
 			DefaultPicoContainer child = new DefaultPicoContainer(parent);
@@ -34,7 +36,8 @@ namespace Test.Defaults
 			Assert.AreEqual(typeof (AlternativeTouchable), dot.getTouchable().GetType());
 		}
 
-		public void testResolveFromParentByType()
+		[Test]
+		public void ResolveFromParentByType()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
@@ -45,7 +48,8 @@ namespace Test.Defaults
 			Assert.IsNotNull(child.GetComponentInstance(typeof (DependsOnTouchable)));
 		}
 
-		public void testResolveFromParentByKey()
+		[Test]
+		public void ResolveFromParentByKey()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
@@ -57,7 +61,8 @@ namespace Test.Defaults
 			Assert.IsNotNull(child.GetComponentInstance(typeof (DependsOnTouchable)));
 		}
 
-		public void testResolveFromGrandParentByType()
+		[Test]
+		public void ResolveFromGrandParentByType()
 		{
 			IMutablePicoContainer grandParent = new DefaultPicoContainer();
 			grandParent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));
@@ -70,7 +75,8 @@ namespace Test.Defaults
 			Assert.IsNotNull(child.GetComponentInstance(typeof (DependsOnTouchable)));
 		}
 
-		public void testResolveFromGrandParentByKey()
+		[Test]
+		public void ResolveFromGrandParentByKey()
 		{
 			IMutablePicoContainer grandParent = new DefaultPicoContainer();
 			grandParent.RegisterComponentImplementation(typeof (ITouchable), typeof (SimpleTouchable));

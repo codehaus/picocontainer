@@ -28,7 +28,12 @@ namespace PicoContainer.Defaults
 			get { return componentInstance; }
 		}
 
-		public override void Verify()
+		public override object GetComponentInstance(IPicoContainer container)
+		{
+			return componentInstance;
+		}
+
+		public override void Verify(IPicoContainer container)
 		{
 		}
 	}

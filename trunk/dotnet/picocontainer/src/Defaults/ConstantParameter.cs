@@ -41,15 +41,32 @@ namespace PicoContainer.Defaults
 			this.constantValue = constantValue;
 		}
 
-		/// <summary>
-		/// Get a component for the parameter.
-		/// </summary>
-		/// <param name="picoContainer">-</param>
-		/// <param name="expectedType">-</param>
-		/// <returns>The component adapter</returns>
-		public IComponentAdapter ResolveAdapter(IPicoContainer picoContainer, Type expectedType)
+		public virtual Object ResolveInstance(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
 		{
-			return new InstanceComponentAdapter(constantValue, constantValue);
+			return constantValue;
+		}
+
+		public virtual bool IsResolvable(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
+		{
+			try
+			{
+				Verify(container, adapter, expectedType);
+				return true;
+			}
+			catch(PicoIntrospectionException)
+			{
+				return false;
+			}
+		}
+
+		public void Verify(IPicoContainer container, IComponentAdapter adapter, Type expectedType)
+		{
+			if (!expectedType.IsInstanceOfType(constantValue))
+			{
+				throw new PicoIntrospectionException(expectedType.FullName 
+					+ " is not assignable from "
+					+ constantValue.GetType().FullName);
+			}
 		}
 	}
 }

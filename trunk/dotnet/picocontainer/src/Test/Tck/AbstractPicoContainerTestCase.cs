@@ -14,7 +14,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Reflection;
 using System.Collections;
 using NUnit.Framework;
 using PicoContainer.Defaults;
@@ -209,23 +208,12 @@ namespace PicoContainer.Tests.Tck
 			}
 			catch (CyclicDependencyException e)
 			{
-				ParameterInfo[] parms = typeof (ComponentD).GetConstructors()[0].GetParameters();
-				Type[] dDependencies = new Type[parms.Length];
-				int x = 0;
-				foreach (ParameterInfo p in parms)
-				{
-					dDependencies[x++] = p.ParameterType;
-				}
-
-				Type[] reportedDependencies = e.Dependencies;
-				for (x = 0; x < reportedDependencies.Length; x++)
-				{
-					Assert.AreEqual(dDependencies[x], reportedDependencies[x]);
-				}
+				Type[] dDependencies = new Type[]{typeof(ComponentD), typeof(ComponentE), typeof(ComponentD)};
+				Assert.AreEqual(dDependencies, e.Dependencies);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				Assert.Fail();
+				Assert.Fail(e.Message);
 			}
 		}
 

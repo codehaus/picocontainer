@@ -10,12 +10,14 @@
  *****************************************************************************/
 
 using System;
-using System.Collections;
+using System.Reflection;
+using PicoContainer.Utils;
 
 namespace PicoContainer.Defaults
 {
 	/// <summary>
-	/// This ComponentAdapter will instantiate a new object for each call to <see cref="PicoContainer.IComponentAdapter.ComponentInstance"/>
+	/// This ComponentAdapter will instantiate a new object for each call to 
+	/// <see cref="PicoContainer.IComponentAdapter.ComponentInstance"/>
 	/// That means that
 	/// when used with a PicoContainer, getComponentInstance will return a new
 	/// object each time.
@@ -23,6 +25,7 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public abstract class InstantiatingComponentAdapter : AbstractComponentAdapter
 	{
+		[NonSerialized] internal VerifyingGuard guard;
 		internal IParameter[] parameters;
 
 		/// <summary>
@@ -44,17 +47,11 @@ namespace PicoContainer.Defaults
 		{
 			get
 			{
-				ArrayList dependencyAdapterList = new ArrayList();
-				object instance = InstantiateComponent(dependencyAdapterList);
-
-				// Now, track the instantiation order
-				foreach (IComponentAdapter dependencyAdapter in dependencyAdapterList)
-				{
-					Container.AddOrderedComponentAdapter(dependencyAdapter);
-				}
-				return instance;
+				return GetComponentInstance(Container);
 			}
 		}
+
+		public abstract override object GetComponentInstance(IPicoContainer container);
 
 		/// <summary>
 		/// Creates default parameters if no parameters are passed in.
@@ -64,26 +61,53 @@ namespace PicoContainer.Defaults
 		protected IParameter[] CreateDefaultParameters(Type[] parameters)
 		{
 			IParameter[] componentParameters = new IParameter[parameters.Length];
-			for (int i = 0; i < parameters.Length; i++)
+			for (int i = 0; i < parameters.Length; i++) 
 			{
-				if (typeof (IPicoContainer).IsAssignableFrom(parameters[i]))
-				{
-					componentParameters[i] = new ConstantParameter(Container);
-				}
-				else
-				{
-					componentParameters[i] = new ComponentParameter();
-				}
+				componentParameters[i] = ComponentParameter.DEFAULT;
 			}
 			return componentParameters;
 		}
 
 		/// <summary>
-		/// Instantiate the object. 
+		/// 
 		/// </summary>
-		/// <param name="adapterDependencies">This list is filled with the dependent adapters of the instance.</param>
-		/// <returns>Returns the new instance.</returns>
-		protected abstract object InstantiateComponent(ArrayList adapterDependencies);
+		[Serializable]
+		internal class VerifyingGuard : ThreadStaticCyclicDependencyGuard
+		{
+			protected IPicoContainer guardedContainer;
+			private InstantiatingComponentAdapter ica;
+
+			public VerifyingGuard(InstantiatingComponentAdapter ica, IPicoContainer container)
+			{
+				this.ica = ica;
+				this.guardedContainer = container;
+			}
+
+			public override object Run()
+			{
+				ConstructorInfo constructor = ica.GetGreediestSatisfiableConstructor(guardedContainer);
+				Type[] parameterTypes = TypeUtils.GetParameterTypes(constructor.GetParameters());
+				IParameter[] currentParameters = ica.parameters != null ? ica.parameters : ica.CreateDefaultParameters(parameterTypes);
+				for (int i = 0; i < currentParameters.Length; i++)
+				{
+					currentParameters[i].Verify(guardedContainer, ica, parameterTypes[i]);
+				}
+
+				return null;
+			}
+		}
+
+		public override void Verify(IPicoContainer container)
+		{
+			if (guard == null) 
+			{
+				guard = new VerifyingGuard(this, container);
+			}
+
+			guard.Observe(ComponentImplementation);
+		}
+
+		protected abstract ConstructorInfo GetGreediestSatisfiableConstructor(IPicoContainer container);
 
 	}
 }

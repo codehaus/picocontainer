@@ -75,11 +75,6 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\Framework\lib\nunit.framework.dll"
-                />
-                <Reference
                     Name = "System.Data"
                     AssemblyName = "System.Data"
                     HintPath = "D:\WIN\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
@@ -94,17 +89,18 @@
                     AssemblyName = "nmock"
                     HintPath = "..\..\lib\nmock.dll"
                 />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll"
+                    AssemblyFolderKey = "hklm\dn\nunit.framework"
+                />
             </References>
         </Build>
         <Files>
             <Include>
                 <File
                     RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Defaults\BeanPropertyComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -119,12 +115,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Defaults\CollectionComponentParameterTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\ComponentKeysTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Defaults\ConstructorInjectionComponentAdapterTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\CyclicDependencyGuardTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -175,6 +181,11 @@
                 />
                 <File
                     RelPath = "Defaults\ImplementationHidingComponentAdapterFactoryTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Defaults\ImplementationHidingComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -40,9 +40,9 @@ namespace PicoContainer.Defaults
 		}
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override void Verify()
+		public override void Verify(IPicoContainer container)
 		{
-			base.Verify();
+			base.Verify(container);
 		}
 	}
 }

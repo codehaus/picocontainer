@@ -45,7 +45,7 @@ namespace PicoContainer.Defaults
 		/// </summary>
 		/// <returns>a component instance</returns>
 		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
-		public override object ComponentInstance
+		/*public override object ComponentInstance
 		{
 			get
 			{
@@ -56,6 +56,15 @@ namespace PicoContainer.Defaults
 				return instanceReference.Get();
 			}
 
+		}*/
+
+		public override object GetComponentInstance(IPicoContainer container)
+		{
+			if (instanceReference.Get() == null)
+			{
+				instanceReference.Set(base.GetComponentInstance(container));
+			}
+			return instanceReference.Get();
 		}
 	}
 }

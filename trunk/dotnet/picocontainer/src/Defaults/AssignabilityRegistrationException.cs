@@ -18,6 +18,7 @@ namespace PicoContainer.Defaults
 	/// <summary>
 	/// An exception thrown when a type could not be assigned.
 	/// </summary>
+	/// TODO hello
 	[Serializable]
 	public class AssignabilityRegistrationException : PicoRegistrationException
 	{

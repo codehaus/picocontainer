@@ -10,49 +10,42 @@
  *****************************************************************************/
 
 using System;
-using System.Runtime.Serialization;
+using System.Collections;
 using PicoContainer;
+using PicoContainer.Utils;
 
 namespace PicoContainer.Defaults
 {
 	[Serializable]
 	public class CyclicDependencyException : PicoInitializationException
 	{
-		private readonly Type[] dependencies;
+		private Stack stack;
 
-		public CyclicDependencyException()
+		public CyclicDependencyException(Type element) : base((Exception)null)
 		{
+			this.stack = new Stack ();
+			Push(element);
+		}
+    
+		public void Push(Type element) 
+		{
+			stack.Push(element);
 		}
 
-		public CyclicDependencyException(Exception ex) : base(ex)
+		public object[] Dependencies
 		{
+			get
+			{
+				return stack.ToArray();
+			} 
 		}
 
-		public CyclicDependencyException(string message) : base(message)
+		public override string Message
 		{
-		}
-
-		public CyclicDependencyException(string message, Exception ex) : base(message, ex)
-		{
-		}
-
-		public CyclicDependencyException(Type[] dependencies)
-		{
-			this.dependencies = dependencies;
-		}
-
-		protected CyclicDependencyException(SerializationInfo info, StreamingContext context) : base(info, context)
-		{
-		}
-
-		public Type[] Dependencies
-		{
-			get { return dependencies; }
-		}
-
-		public override String Message
-		{
-			get { return "Cyclic dependency: (" + Utils.StringUtils.ArrayToString(dependencies) + ")"; }
+			get
+			{
+				return "Cyclic dependency: " + StringUtils.ArrayToString(stack.ToArray());
+			}
 		}
 	}
 }

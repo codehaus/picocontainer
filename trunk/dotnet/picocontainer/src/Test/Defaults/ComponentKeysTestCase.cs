@@ -12,18 +12,17 @@ namespace Test.Defaults
 	public class ComponentKeysTestCase
 	{
 		[Test]
-		public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations()
+		public void ComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations()
 		{
 			DefaultPicoContainer pico = new DefaultPicoContainer();
 			pico.RegisterComponentImplementation("default", typeof (SimpleTouchable));
 
 			/*
-       * By using a class as key, this should take precedence over the other Touchable (Simmpe)
-       */
-			pico.RegisterComponentImplementation(typeof (ITouchable), typeof (DecoratedTouchable), new IParameter[]
-				{
-					new ComponentParameter("default")
-				});
+			 * By using a class as key, this should take precedence over the other Touchable (Simple)
+			 */
+			pico.RegisterComponentImplementation(typeof (ITouchable),
+			                                     typeof (DecoratedTouchable),
+			                                     new IParameter[] {new ComponentParameter("default")});
 
 			ITouchable touchable = (ITouchable) pico.GetComponentInstanceOfType(typeof (ITouchable));
 			Assert.AreEqual(typeof (DecoratedTouchable), touchable.GetType());

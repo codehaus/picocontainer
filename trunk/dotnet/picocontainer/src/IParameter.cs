@@ -26,15 +26,29 @@ namespace PicoContainer
 	public interface IParameter
 	{
 		/// <summary>
-		/// Method the value of the parameter to an object of the required type.
+		/// Retrieve the object from the Parameter that statisfies the expected type.
 		/// </summary>
-		/// <remarks>This method exist only to keep in sync with the java version of the PicoContainer. Primitive types in
-		/// the .Net framework are objects, so no translation is required.</remarks>
-		/// <param name="componentRegistry">picoContainer the container where dependencies are resolved from</param>
-		/// <param name="expectedType">the expected (dependant) type</param>
-		/// <exception cref="PicoContainer.PicoIntrospectionException"></exception>
-		/// <returns>the component adapter that should be used to find the instance to be passed in for this parameter. <remarks>Should
-		/// return <example>null</example> if not suitable adapter can be found.</remarks></returns>
-		IComponentAdapter ResolveAdapter(IPicoContainer componentRegistry, Type expectedType);
+		/// <param name="container">the container from which dependencies are resolved.</param>
+		/// <param name="adapter">the ComponentAdapter that is asking for the instance</param>
+		/// <param name="expectedType">the type that the returned instance needs to match.</param>
+		/// <returns>the instance or <code>null</code> if no suitable instance can be found.</returns>
+		object ResolveInstance(IPicoContainer container, IComponentAdapter adapter, Type expectedType);
+
+		/// <summary>
+		/// Check if the Parameter can statisfy the expected type using the container.
+		/// </summary>
+		/// <param name="container">the container from which dependencies are resolved.</param>
+		/// <param name="adapter">the ComponentAdapter that is asking for the instance</param>
+		/// <param name="expectedType">the type that the returned instance needs to match.</param>
+		/// <returns>true if the component parameter can be resolved.</returns>
+		bool IsResolvable(IPicoContainer container, IComponentAdapter adapter, Type expectedType);
+
+		/// <summary>
+		/// Verify that the Parameter can statisfied the expected type using the container
+		/// </summary>
+		/// <param name="container">the container from which dependencies are resolved.</param>
+		/// <param name="adapter">the ComponentAdapter that is asking for the instance</param>
+		/// <param name="expectedType">the type that the returned instance needs to match.</param>
+		void Verify(IPicoContainer container, IComponentAdapter adapter, Type expectedType);
 	}
 }

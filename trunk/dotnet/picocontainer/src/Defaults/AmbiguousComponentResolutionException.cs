@@ -23,6 +23,7 @@ namespace PicoContainer.Defaults
 	[Serializable]
 	public class AmbiguousComponentResolutionException : PicoIntrospectionException
 	{
+		private Type component;
 		private Type ambiguousType;
 		private readonly object[] ambiguousComponentKeys;
 
@@ -62,13 +63,17 @@ namespace PicoContainer.Defaults
 		{
 			get
 			{
-				StringBuilder msg = new StringBuilder("Ambiguous type ");
-				msg.Append(ambiguousType).Append(", ").Append("resolves to multiple keys [");
+				StringBuilder msg = new StringBuilder(component.ToString())
+					.Append(" has ambiguous dependency on ")
+					.Append(ambiguousType)
+					.Append(", ")
+					.Append("resolves to multiple classes: [");
+
 				foreach (object key in AmbiguousComponentKeys)
 				{
 					msg.Append(key).Append(" ");
 				}
-				msg.Append("resolves to multiple keys ]");
+
 				return msg.ToString();
 			}
 		}
@@ -79,6 +84,11 @@ namespace PicoContainer.Defaults
 		public object[] AmbiguousComponentKeys
 		{
 			get { return ambiguousComponentKeys; }
+		}
+
+		public Type Component
+		{
+			set { component = value; }
 		}
 	}
 }

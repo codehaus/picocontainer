@@ -19,9 +19,8 @@ namespace PicoContainer.Defaults
 	/// Instantiates components using empty constructors and Setter Injection
 	/// <remarks>
 	/// <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
-	/// For easy setting of primitive properties, also <see cref="BeanPropertyComponentAdapter"/>.
-	/// Note that this class doesn't cache instances. If you want caching,
-	/// use a <see cref="CachingComponentAdapter"/> around this one.
+	/// For easy setting of primitive properties.  Note that this class doesn't cache instances. 
+	/// If you want caching, use a <see cref="CachingComponentAdapter"/> around this one.
 	/// </remarks>
 	/// </summary>
 	[Serializable]
@@ -62,6 +61,16 @@ namespace PicoContainer.Defaults
 
 				return result;
 			}
+		}
+
+		public override object GetComponentInstance(IPicoContainer container)
+		{
+			// todo mward implement cyclical guard
+			object result = base.GetComponentInstance(container);
+
+			SetDependencies(result);
+
+			return result;
 		}
 
 		private void SetDependencies(object componentInstance)
@@ -116,13 +125,13 @@ namespace PicoContainer.Defaults
 
 		private object GetDependencyInstanceFromParameters(Type type, IList unsatisfiableDependencyTypes)
 		{
-			for (int i = 0; i < parameters.Length; i++)
+			foreach (IParameter parameter in parameters)
 			{
-				IParameter parameter = parameters[i];
-				IComponentAdapter adapter = parameter.ResolveAdapter(Container, type);
-				if (adapter != null)
+				object instance = parameter.ResolveInstance(Container, this, type);
+
+				if(instance != null)
 				{
-					return adapter.ComponentInstance;
+					return instance;
 				}
 			}
 			unsatisfiableDependencyTypes.Add(type);

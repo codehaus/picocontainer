@@ -115,10 +115,12 @@ namespace PicoContainer.Defaults
 		/// <exception cref="PicoContainer.PicoInitializationException">if the component could not be instantiated.</exception>    
 		public abstract object ComponentInstance { get; }
 
+		public abstract object GetComponentInstance(IPicoContainer container);
+
 		/// <summary>
 		/// Verify that all dependencies for this adapter can be satisifed.
 		/// </summary>
 		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
-		public abstract void Verify();
+		public abstract void Verify(IPicoContainer container);
 	}
 }

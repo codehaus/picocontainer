@@ -114,7 +114,7 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
     private void registerComponent(ComponentSpecification compSpec) {
         componentRegistry.registerComponent(compSpec);
     }
-    
+
     private void checkKeyDuplication(Object componentKey) throws DuplicateComponentKeyRegistrationException {
         for (Iterator iterator = componentRegistry.getComponentSpecifications().iterator(); iterator.hasNext();) {
             Object key = ((ComponentSpecification) iterator.next()).getComponentKey();
@@ -168,6 +168,10 @@ public class DefaultPicoContainer implements RegistrationPicoContainer, Serializ
         registerComponent(componentImplementation, componentImplementation);
     }
 
+    /**
+     * TODO promote to RegistrationPicoContainer, it's all Pauls fault anyway
+     * @param componentKey
+     */
 	public void unregisterComponent(Object componentKey) {
 		componentRegistry.unregisterComponent(componentKey);
 	}

@@ -26,7 +26,7 @@ import java.util.*;
 
 public class DefaultComponentRegistry implements ComponentRegistry, Serializable {
 
-    protected final List registeredComponents;
+    protected final List registeredComponentSpecifications;
 
     // Keeps track of the instantiation order
     protected final List orderedComponents;
@@ -37,7 +37,7 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
 
 
     public DefaultComponentRegistry() {
-        registeredComponents = new ArrayList();
+        registeredComponentSpecifications = new ArrayList();
         orderedComponents = new ArrayList();
         componentKeyToInstanceMap = new HashMap();
         componentToSpec = new HashMap();
@@ -45,22 +45,23 @@ public class DefaultComponentRegistry implements ComponentRegistry, Serializable
 
     public void registerComponent(ComponentSpecification compSpec) {
         componentToSpec.put(compSpec.getComponentImplementation(), compSpec);
-        registeredComponents.add(compSpec);
+        registeredComponentSpecifications.add(compSpec);
     }
     
 	public void unregisterComponent(Object componentKey) {
-		for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = registeredComponentSpecifications.iterator(); iterator.hasNext();) {
 			ComponentSpecification currentCompSpec = (ComponentSpecification) iterator.next();
 			
 			if (currentCompSpec.getComponentKey().equals(componentKey)) {
-				registeredComponents.remove(currentCompSpec);
+				registeredComponentSpecifications.remove(currentCompSpec);
+                componentKeyToInstanceMap.remove(componentKey);
 				break;
 			}
 		}
 	}
 
     public Collection getComponentSpecifications() {
-        return registeredComponents;
+        return registeredComponentSpecifications;
     }
 
     public List getOrderedComponents() {

@@ -10,12 +10,11 @@
 
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import junit.framework.TestCase;
 
 public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
 	private DefaultPicoContainer picoContainer;
@@ -44,7 +43,14 @@ public class DefaultPicoContainerUnregisterComponentTestCase extends TestCase {
 		assertEquals("Container should container 1 component",
 			1, picoContainer.getComponents().size());
 	}
-	
+
+    public void testUnregisterAfterInstantiateComponents() throws NotConcreteRegistrationException, AssignabilityRegistrationException, PicoInitializationException, DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException {
+        picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
+        picoContainer.instantiateComponents();
+        picoContainer.unregisterComponent(Touchable.class);
+        assertNull(picoContainer.getComponent(Touchable.class));
+    }
+
 	public void testReplacedInstantiatedComponentHasCorrectClass() throws DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
 		picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
 		picoContainer.unregisterComponent(Touchable.class);

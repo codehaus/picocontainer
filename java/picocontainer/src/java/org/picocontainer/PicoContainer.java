@@ -10,7 +10,6 @@
 
 package org.picocontainer;
 
-import java.util.Set;
 import java.util.Collection;
 
 /**

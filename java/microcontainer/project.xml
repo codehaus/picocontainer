@@ -69,6 +69,19 @@
             <id>junit</id>
             <version>3.8.1</version>
         </dependency>
+		<dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        </dependency>
+		<!--<dependency>
+     		<groupId>jmock</groupId>
+     		<artifactId>jmock-cglib</artifactId>
+		 	<version>1.0.1</version>
+   		</dependency>
+		<dependency>
+            <id>cglib</id>
+            <version>full-2.0</version>
+        </dependency>-->
     </dependencies>
     
     <build>

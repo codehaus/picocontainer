@@ -2,6 +2,8 @@ package org.microcontainer.impl;
 
 import junit.framework.TestCase;
 
+import java.io.File;
+
 /**
  * @author Mike Ward
  */
@@ -9,6 +11,7 @@ public class ClassLoaderFactoryTestCase extends TestCase {
 
 	public void testIt() throws Exception {
 		ClassLoaderFactory clf = new ClassLoaderFactory();
+        new File("test").mkdir();
 		ClassLoader classLoader = clf.build("test");
 		assertNotNull(classLoader);
 

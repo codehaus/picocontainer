@@ -43,12 +43,10 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 		marDeployer = new MarDeployer();
 	}
 
-	public void deploy(File marFile) {
+	public void deploy(String context, URL marFile) throws DeploymentException {
 		try {
-			// deploy MAR
-			String context = marFile.getName().split(".mar")[0];
-			URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
-			marDeployer.deploy(context, url);
+			// deploy to work folder
+			marDeployer.deploy(context, marFile);
 
 			// build class loader
 			ClassLoader classLoader = classLoaderFactory.build(context);
@@ -68,16 +66,29 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 			parentContainerRef.set(parent);
 			gcb.buildContainer(containerRef, parentContainerRef, context);
 
-			// map the child container
+			// map the child container to the context
         	contextMap.put(context, containerRef.get());
 
 		} catch (IOException e) {
-			// todo clean up or handle gracefully
-        	e.printStackTrace();
+			throw new DeploymentException(e);
 		}
 	}
 
-	public void deploy(URL remoteMarFile) {
+	public void deploy(File marFile) throws DeploymentException {
+		try {
+			String context = marFile.getName().split(".mar")[0];
+			URL url = new URL("jar:file:" + marFile.getCanonicalPath() + "!/");
+			this.deploy(context, url);
+		} catch (IOException e) {
+			throw new DeploymentException(e);
+		}
+	}
+
+	public void deploy(URL remoteMarFile) throws DeploymentException {
+		String[] file = remoteMarFile.getFile().split("/");
+		String context = file[file.length - 1].split("\\.mar")[0];
+
+		deploy(context, remoteMarFile);
 	}
 
 	public void deferredDeploy(File file) {

@@ -18,9 +18,11 @@ import java.net.URL;
  */
 
 public interface Kernel {
-    void deploy(File marFile);
+    void deploy(File marFile) throws DeploymentException;
 
-    void deploy(URL remoteMarFile); // aka lightweight java web start
+    void deploy(URL remoteMarFile) throws DeploymentException; // aka lightweight java web start (context determined from marFile name)
+
+	void deploy(String context, URL marFile) throws DeploymentException; // deploy the marFile to the named context
 
     void deferredDeploy(File file);
 
@@ -30,3 +32,4 @@ public interface Kernel {
 
     void stop(String startableNode); // this concept of paths and nodes has no tests, so far the test could be using opaque strings
 }
+

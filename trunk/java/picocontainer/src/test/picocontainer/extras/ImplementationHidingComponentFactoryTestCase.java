@@ -14,18 +14,33 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.reflect.Constructor;
-import picocontainer.PicoInvocationTargetInitailizationException;
+import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.extras.ImplementationHidingComponentFactory;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 
 public class ImplementationHidingComponentFactoryTestCase extends TestCase {
 
-    public void testBasic() throws NoSuchMethodException, PicoInvocationTargetInitailizationException {
-        ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory();
-        Object o = cf.createComponent(List.class, ArrayList.class, null, null);
+    private static boolean addCalled = false;
+
+    public static class OneConstructorArrayList extends ArrayList {
+        public OneConstructorArrayList() {
+            super();
+        }
+
+        public boolean add(Object o) {
+            addCalled = true;
+            return super.add(o);
+        }
+    }
+
+    public void testBasic() throws NoSuchMethodException, PicoInstantiationException, PicoIntrospectionException {
+        ImplementationHidingComponentFactory cf = new ImplementationHidingComponentFactory(new DefaultComponentFactory());
+        Object o = cf.createComponent(List.class, OneConstructorArrayList.class, null, null);
         assertTrue(o instanceof List);
-        assertFalse(o instanceof ArrayList);
+        assertFalse(o instanceof OneConstructorArrayList);
         ((List) o).add("hello");
+        assertTrue("Add was called", addCalled);
     }
 
 }

@@ -11,12 +11,27 @@
 package picocontainer.defaults;
 
 import picocontainer.ComponentFactory;
-import picocontainer.PicoContainer;
+import picocontainer.ComponentFactory;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
+import picocontainer.ClassRegistrationPicoContainer;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 /**
  * Abstract baseclass for various PicoContainer implementations.
@@ -24,7 +39,7 @@ import java.util.*;
  * @author Aslak Hellesoy
  * @version $Revision: 1.8 $
  */
-public class DefaultPicoContainer implements PicoContainer {
+public class DefaultPicoContainer implements ClassRegistrationPicoContainer {
 
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
@@ -136,10 +151,13 @@ public class DefaultPicoContainer implements PicoContainer {
                 if (isValidType && !exclude) {
                     // It's ok to call the method on this one
                     Object result = method.invoke(components[i], args);
-                    if( results == null ) {
-                        results = new ArrayList();
+                    if (result != null && !result.getClass().isPrimitive()) {
+                        // Only add to the results if the result is not null and isn't a primitive.
+                        if( results == null ) {
+                            results = new ArrayList();
+                        }
+                        results.add(result);
                     }
-                    results.add(result);
                 }
             }
 
@@ -193,9 +211,8 @@ public class DefaultPicoContainer implements PicoContainer {
         return result;
     }
 
-    public void registerComponent(Class componentType, Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
+    public void registerComponent(Class componentType, Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         checkConcrete(componentImplementation);
-        checkConstructor(componentImplementation);
 
         Parameter[] parameters = new Parameter[componentFactory.getDependencies(componentImplementation).length];
         for (int i = 0; i < parameters.length; i++) {
@@ -205,8 +222,7 @@ public class DefaultPicoContainer implements PicoContainer {
         registerComponent(componentImplementation, componentType, parameters);
     }
 
-    public void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters) throws WrongNumberOfConstructorsRegistrationException, NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
-        checkConstructor(componentImplementation);
+    public void registerComponent(Class componentImplementation, Class componentType, Parameter[] parameters) throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException {
         checkConcrete(componentImplementation);
         checkTypeCompatibility(componentType, componentImplementation);
         checkTypeDuplication(componentType);
@@ -218,15 +234,6 @@ public class DefaultPicoContainer implements PicoContainer {
 
     protected Parameter createDefaultParameter() {
         return new ComponentParameter();
-    }
-
-    private void checkConstructor(Class componentImplementation) throws WrongNumberOfConstructorsRegistrationException {
-        // TODO move this check to checkConstructor and rename the exception to
-        // WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException
-        Constructor[] constructors = componentImplementation.getConstructors();
-        if (constructors.length != 1) {
-            throw new WrongNumberOfConstructorsRegistrationException(constructors.length);
-        }
     }
 
     private void checkTypeDuplication(Class componentType) throws DuplicateComponentTypeRegistrationException {
@@ -265,16 +272,16 @@ public class DefaultPicoContainer implements PicoContainer {
         unmanagedComponents.add(component);
     }
 
-    public void addParameterToComponent(Class componentType, Class parameter, Object arg) {
+    public void addParameterToComponent(Class componentType, Class parameter, Object arg) throws PicoIntrospectionException {
         ComponentSpecification componentSpec = ((ComponentSpecification) componentToSpec.get(componentType));
         componentSpec.addConstantParameterBasedOnType(componentType, parameter, arg);
     }
 
-    public void registerComponent(Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, WrongNumberOfConstructorsRegistrationException {
+    public void registerComponent(Class componentImplementation) throws DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
         registerComponent(componentImplementation, componentImplementation);
     }
 
-    public void instantiateComponents() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoInvocationTargetInitailizationException, PicoIntrospectionException {
         if (initialized == false) {
             initializeComponents();
             initialized = true;
@@ -284,14 +291,14 @@ public class DefaultPicoContainer implements PicoContainer {
     }
 
     // This is Lazy and NOT public :-)
-    private void initializeComponents() throws PicoInstantiationException {
+    private void initializeComponents() throws PicoInstantiationException, PicoIntrospectionException {
             for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
                 ComponentSpecification componentSpec = (ComponentSpecification) iterator.next();
                 createComponent(componentSpec);
             }
     }
 
-    private Object createComponent(ComponentSpecification componentSpec) throws PicoInstantiationException {
+    private Object createComponent(ComponentSpecification componentSpec) throws PicoInstantiationException, PicoIntrospectionException {
         if (!componentTypeToInstanceMap.containsKey(componentSpec.getComponentType())) {
 
             Object component = null;
@@ -325,7 +332,7 @@ public class DefaultPicoContainer implements PicoContainer {
         return componentTypeToInstanceMap.get(componentType);
     }
 
-    public Object createComponent(Class componentType) throws PicoInstantiationException {
+    public Object createComponent(Class componentType) throws PicoInstantiationException, PicoIntrospectionException {
         Object comp = getComponent(componentType);
 
         if (comp != null) {
@@ -360,7 +367,7 @@ public class DefaultPicoContainer implements PicoContainer {
         for (Iterator iterator = componentTypeToInstanceMap.entrySet().iterator(); iterator.hasNext();) {
             Map.Entry entry = (Map.Entry) iterator.next();
             if (isOfComponentType((Class) entry.getKey(), componentType)) {
-                found.add((Class) entry.getKey());
+                found.add(entry.getKey());
             }
         }
 

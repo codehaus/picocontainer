@@ -27,14 +27,9 @@ public class DummiesTestCase extends TestCase {
     public void testDefaultComponentFactory() throws PicoInstantiationException,
                                                      NoSuchMethodException,
                                                      InvocationTargetException,
-                                                     IllegalAccessException,
-                                                     InstantiationException {
-        picocontainer.defaults.DefaultComponentFactory dcd = new picocontainer.defaults.DefaultComponentFactory();
+                                                     IllegalAccessException, WrongNumberOfConstructorsException {
+        DefaultComponentFactory dcd = new DefaultComponentFactory();
         Object decorated = dcd.createComponent(Object.class, Object.class, null, null);
         assertNotNull(decorated);
-        //TODO check no methods were called, via proxy ?
-
     }
-
-
 }

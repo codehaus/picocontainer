@@ -10,8 +10,6 @@
 
 package picocontainer;
 
-import picocontainer.defaults.*;
-
 /**
  * PicoContainer - guaranteed to resolve the needs of components
  * as it instantiates them.
@@ -48,5 +46,5 @@ public interface PicoContainer {
     /**
      * Initialize the container.
      */
-    void instantiateComponents() throws PicoInstantiationException;
+    void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException;
 }

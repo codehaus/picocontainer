@@ -10,22 +10,23 @@
 
 package picocontainer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 public interface ComponentFactory {
 
     /**
      * Create a component. Used by the internals of applicable PicoContainers
      * to instantiate a component.
-     * @param compType The component type to instantiate
-     * @param dependencies The constructor to use to create the component.
-     * @param args The arguments to pass in to the constructor
+     * @param componentType the type the component will be registered as.
+     * @param componentImplementation concrete component class.
+     * @param instanceDependencies The component instances the created component will depend on.
      * @return The component
-     * @throws PicoInvocationTargetInitailizationException If a problem creating the component.
+     * @throws picocontainer.defaults.PicoInvocationTargetInitailizationException If a problem creating the component.
      */
-    Object createComponent(Class compType, Class compImplementation, Class[] dependencies, Object[] args) throws PicoInvocationTargetInitailizationException;
+    Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] instanceDependencies) throws PicoInstantiationException, PicoIntrospectionException;
 
-    Class[] getDependencies(Class comp);
-
+    /**
+     * Return the types the componentImplementation component depends on.
+     * @param componentImplementation concrete component class.
+     * @return an array of dependent types.
+     */
+    Class[] getDependencies(Class componentImplementation) throws PicoIntrospectionException;
 }

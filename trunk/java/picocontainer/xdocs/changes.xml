@@ -1,13 +1,5 @@
 <?xml version="1.0"?>
 <document>
-  <!-- 
-   ! TODO generate this file from JIRA with XSL/JSL. CVS will contain 
-   ! too luch garbage to possibly create this log UNLESS we decide on
-   ! special commit messages. This could be done by starting the CVS
-   ! commit message with ADD|FIX|UPDATE and have JIRA automatically
-   ! create new issues of type New Feature|Bug|Improvement. Would be really
-   ! really cool.
-  -->
   <properties>
     <title>Changes</title>
     <author email="rinkrank@codehaus.org">Aslak Hellesoy</author>
@@ -16,6 +8,23 @@
   <body>
 
     <release version="1.0-alpha-2-SNAPSHOT" date="In CVS">
+      <action dev="tirsen" type="update">
+        Refactored the ComponentFactory interface so that IoC type 3
+        (based on constructors) is no longer mandatory.
+      </action>
+
+      <action dev="tirsen" type="add">
+        A Bean-style component factory is provided for components 
+        implemented as Java Beans. (Empty constructors and setXxx 
+        methods taking one argument).
+      </action>
+        
+      <action dev="rinkrank" type="update">
+        ImplementationHindingComponentFactory is now a decorator rather
+        than a subclsss of the default one, making it usable in conjunction
+        with any other ComponentFactory.
+      </action>
+
       <action dev="rinkrank" type="update">
         Improved the getAggregateComponentProxy method so that when a
         method is called on the proxy, the returned value will also

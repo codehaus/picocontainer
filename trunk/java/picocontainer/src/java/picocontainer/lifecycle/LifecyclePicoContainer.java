@@ -13,6 +13,7 @@ package picocontainer.lifecycle;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
@@ -35,7 +36,7 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
         }
     }
 
-    public void instantiateComponents() throws PicoInstantiationException {
+    public void instantiateComponents() throws PicoInstantiationException, PicoIntrospectionException {
         super.instantiateComponents();
         try {
             startableAggregatedComponent = (Startable) getAggregateComponentProxy(true, false);

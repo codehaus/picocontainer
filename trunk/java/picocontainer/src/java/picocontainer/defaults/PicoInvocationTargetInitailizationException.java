@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (Cc) PicoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -10,18 +10,27 @@
 
 package picocontainer.defaults;
 
-import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInstantiationException;
 
-public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
+public class PicoInvocationTargetInitailizationException extends PicoInstantiationException {
+    private final Throwable cause;
 
-    int numOfCtors;
+    public PicoInvocationTargetInitailizationException(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("Cause must not be null");
+        }
+        this.cause = cause;
+    }
 
-    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
-        this.numOfCtors = numOfCtors;
+    public Throwable getCause() {
+        return cause;
     }
 
     public String getMessage() {
-        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
+        return "InvocationTargetException: "
+                + cause.getClass().getName()
+                + " " + cause.getMessage();
     }
+
 
 }

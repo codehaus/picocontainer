@@ -35,7 +35,7 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
      * 
      * @param pico the <code>PicoContainer</code> to retrieve the mixin from.
      * @param mixinComponentKey the component key that will be used to retrieve
-     *        the mixin object from the pico.
+     *        the mixin object from the pico container.
      */
     ContainerSuppliedMixinFactory(PicoContainer pico, Object mixinComponentKey) {
         this.pico = pico;
@@ -43,12 +43,12 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
     }
 
     /**
-     * Manufactures an <code>Mixin</code> by retrieving it from the
+     * Manufactures a <code>Mixin</code> by retrieving it from the
      * <code>PicoContainer</code>.
      * 
      * @param proxy the proxy that the interceptor will wrap.
      * @return the <code>Mixin</code> object.
-     * @throws NullPointerException if the mixin can not be found in the pico.
+     * @throws NullPointerException if the mixin can not be found in the pico container.
      */
     public Object create(Proxy proxy) throws NullPointerException {
         Object mixin = pico.getComponentInstance(mixinComponentKey);

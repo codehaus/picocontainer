@@ -39,7 +39,7 @@ class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
      * @param pico the <code>PicoContainer</code> to retrieve the interceptor
      *        from.
      * @param interceptorComponentKey the component key that will be used to
-     *        retrieve the interceptor from the pico.
+     *        retrieve the interceptor from the pico container.
      */
     ContainerSuppliedInterceptorFactory(PicoContainer pico, Object interceptorComponentKey) {
         this.pico = pico;
@@ -50,10 +50,10 @@ class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
      * Manufactures an <code>Interceptor</code> by retrieving it from the
      * <code>PicoContainer</code>.
      * 
-     * @param proxy the proxy that the interceptor will wrap.
+     * @param proxy not used.
      * @return the <code>Interceptor</code> object.
      * @throws NullPointerException if the interceptor can not be found in the
-     *         pico.
+     *         pico container.
      */
     public Interceptor create(Proxy proxy) throws NullPointerException {
         MethodInterceptor methodInterceptor = (MethodInterceptor) pico.getComponentInstance(interceptorComponentKey);

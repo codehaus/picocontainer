@@ -7,19 +7,33 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
-
-import org.picocontainer.MutablePicoContainer;
+package org.nanocontainer.nanoaop.script.groovy;
 
 /**
- * A <code>org.picocontainer.MutablePicoContainer</code> that supports the
- * application of aspects to components in the container.
- * 
  * @author Stephen Molitor
- * @see <a href='package-summary.html#package_description'>The package
- *      description</a> has a basic overview of how to use the nanoaop package.
  * @version $Revision$
  */
-public interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer {
+public class StringBean {
 
+    private String firstName;
+    private String lastName;
+
+    public StringBean() {
+    }
+    
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }

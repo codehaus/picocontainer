@@ -51,7 +51,7 @@ public class NameMatchesComponentPointcut implements ComponentPointcut {
     /**
      * Tests to see if the component key matches the regular expression passed
      * to the constructor. Always returns false if <code>componentKey</code>
-     * is not an instance of</code> java.lang.String</code>.
+     * is not an instance of <code>java.lang.String</code>.
      * 
      * @param componentKey the component key to match against.
      * @return true if the regular expression passed to the constructor matches

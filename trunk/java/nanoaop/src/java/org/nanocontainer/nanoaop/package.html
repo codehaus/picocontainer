@@ -75,10 +75,36 @@ example above, we could have reversed the two lines and registered the
 interceptor before the component.
 
 <h4>Container Supplied Advice</h4>
-<p>
-Advice objects may themselves be components in the <code>PicoContainer</code>:
+Advice objects may themselves be components in the <code>PicoContainer</code>, with 
+dependencies on other components.  Let's revise our <code>LoggingInterceptor</code>
+to have a dependency on a log object of some sort.  For simplicity, we'll just
+use a <code>StringBuffer</code> as our logger (in real life it might be a log4j or a commons 
+logging object of some sort):
 
 <pre>
+    public class LoggingInterceptor {
+        private final StringBuffer log;
+        
+        public LoggingInterceptor(StringBuffer log) {
+            this.log = log;
+        }
+        
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            log.append("start");
+            Object result = invocation.proceed();
+            log.append("end");
+            return result;
+        }
+    }
+</pre>  
+
+With this in place, we could then register our <code>LoggingInterceptor</code> and
+apply it to a component as follows:
+
+<pre>
+    // register dependency of LoggingInterceptor:
+    pico.registerComponentInstance("log", StringBuffer.log); 
+    
     pico.registerComponentImplementation("logger", LoggingInterceptor.class);
     pico.registerComponentImplementation("myDao", DaoImpl.class);
 
@@ -86,6 +112,9 @@ Advice objects may themselves be components in the <code>PicoContainer</code>:
     pico.registerInterceptor(cuts.component("myDao"), cuts.allMethods(), "logger");
 </pre>
 
+Pico will supply the <code>StringBuffer</code> "log" component to the constructor of the <code>LoggingInterceptor</code>.
+
+<p>
 Mixins are a special case.  While you <i>can</i> register a mixin as an explicit component in the 
 container, you usually don't want to.  Applying the same mixin instance as advice to multiple 
 components would in effect mean that multiple components would share the same base class object - sharing
@@ -97,7 +126,7 @@ dependencies the mixin has from components in the container, using constructor i
 <h4>Pointcuts</h4>
 Notice the use of the {@link org.nanocontainer.nanoaop.PointcutsFactory}, <code>cuts</code>, in the
 first example.  This interface provides methods for producing
-pointcuts that match one class, one method, or that match the class,
+pointcuts that match one class or method, or that match the class,
 method or component name against a regular expressionm, pointcuts that
 pick all instances of a given class, or all classes in a given
 package, etc.  You are not limited to the pointcuts produced
@@ -113,24 +142,6 @@ they are not used for mixins.
 
 <h3>Groovy Configuration</h3>
 To configure aspects using groovy, use {@link org.nanocontainer.nanoaop.script.groovy.NanoAopGroovyContainerBuilder}.  
-A groovy configuration file might look like this:
-
-<pre>
-    logger = new LoggingInterceptor()
-    builder = new NanoAopGroovyContainerBuilder()
-    cuts = builder.pointcuts()
-
-    pico = builder.container() {
-        component(key:Dao, class:DaoImpl) {
-            aspect(methodCut:cuts.allMethods(), interceptor:logger)
-        }
-        component(key:CustomerEntity, class:CustomerEntityImpl)
-        component(key:OrderEntity, class:OrderEntityImpl)
-
-        aspect(classCut:cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
-        aspect(classCut:cuts.packageName('com.mycompany.dao'), methodCut:cuts.signature('save*'), interceptor:logger)
-    }
-</pre>
 
 <h2>Limitations</h2>
 Components that have aspects applied to them must implement an interface. Advice is not applied to components registered 

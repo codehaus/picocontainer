@@ -177,9 +177,6 @@ public class NanoAopGroovyContainerBuilder extends NanoGroovyBuilder {
         if (classCut == null && componentCut == null) {
             throw new PicoBuilderException("classCut or componentCut required for mixin advice");
         }
-        if (mixinClass == null && mixinInterfaces == null) {
-            throw new PicoBuilderException("mixinInterfaces required with mixinKey");
-        }
 
         if (classCut != null) {
             if (mixinInterfaces != null) {

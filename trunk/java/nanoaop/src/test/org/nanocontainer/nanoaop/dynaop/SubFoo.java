@@ -7,31 +7,15 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
-
-import java.io.Serializable;
+package org.nanocontainer.nanoaop.dynaop;
 
 /**
  * @author Stephen Molitor
+ * @version $Revision$
  */
-public class IdentifiableMixin implements Identifiable, AnotherInterface {
-
-    private Serializable id;
-
-    public IdentifiableMixin(IdGenerator generator) {
-        this.id = generator.nextId();
-    }
-
-    public IdentifiableMixin() {
-        this(new IdGeneratorImpl());
-    }
-
-    public Serializable getId() {
-        return id;
-    }
-
-    public void setId(Serializable id) {
-        this.id = id;
+public class SubFoo extends Foo {
+    
+    public void subFooMethod() {
     }
 
 }

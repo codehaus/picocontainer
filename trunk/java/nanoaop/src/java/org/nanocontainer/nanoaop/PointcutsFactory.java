@@ -43,6 +43,13 @@ public interface PointcutsFactory {
     ComponentPointcut componentName(String regex) throws MalformedRegularExpressionException;
 
     /**
+     * Returns a class pointcut that picks all classes.
+     *
+     * @return a <code>ClassPointcut</code> that matches all classes.
+     */
+    ClassPointcut allClasses();
+    
+    /**
      * Returns a class pointcut that picks all instances of a given type.
      * 
      * @param type the base interface or class.
@@ -144,13 +151,30 @@ public interface PointcutsFactory {
     MethodPointcut setMethods();
 
     /**
+     * Returns a method pointcut that picks <code>equals</code>,
+     * <code>hashCode</code>, and <code>toString</code>.
+     * 
+     * @return a <code>MethodPointcut</code> that matches methods declared by
+     *         <code>java.lang.Object</code>.
+     */
+    MethodPointcut objectMethods();
+
+    /**
      * Returns a method pointcut that matches the method signatures with a
      * regular expression. Uses dynaop's signature pointcut. Method signatures
      * follow this pattern:
      * 
      * <pre>
-     *     ReturnType methodName(ArgumentType, ArgumentType, ...) 
-     *         throws ExceptionType, ExceptionType
+     * 
+     *  
+     *   
+     *    
+     *         ReturnType methodName(ArgumentType, ArgumentType, ...) 
+     *             throws ExceptionType, ExceptionType
+     *     
+     *    
+     *   
+     *  
      * </pre>
      * 
      * Omits "java.lang." from classes in java.lang package. The regular
@@ -182,6 +206,29 @@ public interface PointcutsFactory {
      *         <code>classPointcut</code> against the method's return type
      */
     MethodPointcut returnType(ClassPointcut classPointcut);
+
+    /**
+     * Returns a method pointcut that picks a method if the given class pointcut
+     * picks the method's declaring class.
+     * 
+     * @param classPointcut the class pointcut to match against the method's
+     *        declaring class.
+     * @return a <code>MethodPointcut</code> that matches
+     *         <code>classPointcut</code> against the method's declaring
+     *         class.
+     */
+    MethodPointcut declaringClass(ClassPointcut classPointcut);
+
+    /**
+     * Picks methods that are members of the given class (even if the method was
+     * declared in a super class of the given class).
+     * 
+     * @param clazz the class that we will check to see if the method is a
+     *        member of.
+     * @return a <code>MethodPointcut</code> that will check to see if the
+     *         method is a member of <code>clazz</code>.
+     */
+    MethodPointcut membersOf(Class clazz);
 
     /**
      * Returns a method pointcut that is the intersection of two other method

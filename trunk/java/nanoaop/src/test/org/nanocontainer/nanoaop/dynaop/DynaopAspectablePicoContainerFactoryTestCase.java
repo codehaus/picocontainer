@@ -140,7 +140,7 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
         assertTrue(hasMixin1 instanceof Identifiable);
         assertTrue(hasMixin2 instanceof Identifiable);
         assertFalse(noMixin instanceof Identifiable);
-        
+
         assertEquals(new Integer(1), ((Identifiable) hasMixin1).getId());
         assertEquals(new Integer(2), ((Identifiable) hasMixin2).getId());
     }
@@ -174,6 +174,34 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
         AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
         PicoContainer child = containerFactory.createContainer(parent);
         assertEquals("value", child.getComponentInstance("key"));
+    }
+
+    public void testInterfacesWithClassPointcut() {
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        pico.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
+        pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[] { AnotherInterface.class });
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        assertTrue(dao instanceof Identifiable);
+        assertTrue(dao instanceof AnotherInterface);
+    }
+
+    public void testInterfacesWithClassPointcutNoAdvice() {
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[] { AnotherInterface.class });
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+
+        // dynaop doesn't add any interfaces if there's no advice applied to the
+        // object:
+        assertFalse(dao instanceof AnotherInterface);
+    }
+
+    public void testInterfacesWithComponentPointcut() {
+        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        pico.registerMixin(cuts.component(Dao.class), IdentifiableMixin.class);
+        pico.registerInterfaces(cuts.component(Dao.class), new Class[] { AnotherInterface.class });
+        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+        assertTrue(dao instanceof Identifiable);
+        assertTrue(dao instanceof AnotherInterface);
     }
 
 }

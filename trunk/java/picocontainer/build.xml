@@ -175,7 +175,7 @@
       classpath="${cvsgrab.home}/lib/cvs-grab.jar;${cvsgrab.home}/lib/hotsax.jar;${cvsgrab.home}/lib/jcvsii-light.jar"/>
 
     <cvsgrab 
-      destdir="${basedir}"
+      destdir="${basedir}/.."
       rootUrl="http://picocontainer.cvs.codehaus.org/"
       cvsHost="cvs.codehaus.org"
       cvsRoot="/cvsroot/picocontainer"

@@ -6,7 +6,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.UnsatisfiedDependencyInstantiationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

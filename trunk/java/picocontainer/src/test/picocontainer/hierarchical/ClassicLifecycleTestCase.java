@@ -1,9 +1,11 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
-import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.DefaultPicoContainer;
+import picocontainer.lifecycle.Disposable;
+import picocontainer.lifecycle.LifecyclePicoContainer;
+import picocontainer.lifecycle.Startable;
+import picocontainer.lifecycle.Stoppable;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 
@@ -136,20 +138,14 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
 
-    public static interface Startable {
-        void start() throws Exception;
-    }
 
-    public static interface Stoppable {
-        void stop() throws Exception;
-    }
 
-    public static interface Disposable {
-        void dispose() throws Exception;
-    }
 
-    public static interface StartStopDisposable extends Startable, Stoppable, Disposable {
-    }
+
+
+
+//    public static interface StartStopDisposable extends Startable, Stoppable, Disposable {
+  //  }
 
 
 
@@ -209,90 +205,10 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
 
-    public static class ForgivingLifecyclePicoContainer extends DefaultPicoContainer.Default implements Startable, Stoppable, Disposable {
-
-        private Startable startableAggregatedComponent;
-        private Stoppable stoppingAggregatedComponent;
-        private Disposable disposingAggregatedComponent;
-        private boolean started;
-        private boolean disposed;
-
-        public ForgivingLifecyclePicoContainer() {
-        }
-
-
-        public void instantiateComponents() throws PicoInitializationException {
-            try {
-                // contrived StartStopDisposable to prevent ClassCastException on aggregation
-                super.registerComponent(new StartStopDisposable() {
-                    public void start() throws Exception {
-                    }
-                    public void stop() throws Exception {
-                    }
-                    public void dispose() throws Exception {
-                    }
-                });
-            } catch (PicoRegistrationException e) {
-                // won't happen.
-            }
-            super.instantiateComponents();
-            try {
-                startableAggregatedComponent = (Startable) getAggregateComponentProxy(true, false);
-            } catch (ClassCastException e) {
-            }
-            try {
-
-                stoppingAggregatedComponent = (Stoppable) getAggregateComponentProxy(false, false);
-            } catch (ClassCastException e) {
-            }
-            try {
-
-                disposingAggregatedComponent = (Disposable) getAggregateComponentProxy(false, false);
-            } catch (ClassCastException e) {
-            }
-
-        }
-
-        public void start() throws Exception {
-            checkDisposed();
-            if (started) {
-                throw new IllegalStateException("Already started.");
-            }
-            started = true;
-            if (startableAggregatedComponent != null) {
-                startableAggregatedComponent.start();
-            }
-        }
-
-        public void stop() throws Exception {
-            checkDisposed();
-            if (started == false) {
-                throw new IllegalStateException("Already stopped.");
-            }
-            started = false;
-            if (stoppingAggregatedComponent != null) {
-                stoppingAggregatedComponent.stop();
-            }
-        }
-
-        private void checkDisposed() {
-            if (disposed) {
-                throw new IllegalStateException("Components Disposed Of");
-            }
-        }
-
-        public void dispose() throws Exception {
-            checkDisposed();
-            disposed = true;
-            if (disposingAggregatedComponent != null) {
-                disposingAggregatedComponent.dispose();
-            }
-        }
-    }
 
     public void testStartStopStartStopAndDispose() throws Exception {
 
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -311,7 +227,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     public void testStartStartCausingBarf() throws Exception {
 
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -328,7 +244,7 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
     public void testStartStopStopCausingBarf() throws Exception {
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -345,7 +261,7 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
     public void testDisposeDisposeCausingBarf() throws Exception {
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -364,7 +280,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 
 
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -419,7 +335,7 @@ public class ClassicLifecycleTestCase extends TestCase {
     }
 
     public void testStartStopOfDaemonizedThread() throws Exception {
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
@@ -441,7 +357,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     public void testForgivingNatureOfSoNamedContainer() throws Exception {
 
-        ForgivingLifecyclePicoContainer pico = new ForgivingLifecyclePicoContainer();
+        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
 
         // Wilma is not Startable (etc). This container should be able to handle the
         // fact that none of the comps are Startable (etc).

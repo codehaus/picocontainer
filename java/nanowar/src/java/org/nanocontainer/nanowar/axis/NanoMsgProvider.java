@@ -6,12 +6,14 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.axis;
+package org.nanocontainer.nanowar.axis;
 
 import org.apache.axis.MessageContext;
-import org.apache.axis.providers.java.RPCProvider;
+import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
+import org.nanocontainer.nanowar.KeyConstants;
+import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
@@ -21,17 +23,16 @@ import org.picocontainer.defaults.ObjectReference;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Axis provider for RPC-style services that uses the servlet container
+ * Axis provider for message-style services that uses the servlet container
  * hierarchy to instantiate service classes and resolve their dependencies.
  *
  * @author <a href="mailto:evan@bottch.com">Evan Bottcher</a>
  */
-public class NanoRPCProvider extends RPCProvider implements KeyConstants {
+public class NanoMsgProvider extends MsgProvider implements KeyConstants {
 
-    protected Object makeNewServiceObject(
-        MessageContext msgContext,
-        String clsName)
-        throws Exception {
+    protected Object makeNewServiceObject(MessageContext msgContext,
+                                          String clsName)
+            throws Exception {
 
         ClassLoader cl = msgContext.getClassLoader();
         ClassCache cache = msgContext.getAxisEngine().getClassCache();
@@ -43,7 +44,7 @@ public class NanoRPCProvider extends RPCProvider implements KeyConstants {
 
     private Object instantiateService(Class svcClass, MessageContext msgContext) {
 
-        HttpServletRequest request = (HttpServletRequest)msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
+        HttpServletRequest request = (HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
         MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
 

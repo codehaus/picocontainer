@@ -25,6 +25,7 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStartException(e.getCause());
         }
+        System.out.println("Start Gikk bra");
     }
 
     public void stopComponent(Object component) throws PicoStopException {
@@ -33,18 +34,19 @@ public class ReflectionUsingLifecycleManager implements StartableLifecycleManage
         } catch (InvocationTargetException e) {
             throw new PicoInvocationTargetStopException(e.getCause());
         }
+        System.out.println("Stopp Gikk bra");
     }
 
     protected void invokeMethodByName(Object component, String methodName) throws InvocationTargetException {
         try {
+            System.out.println("Getting Method: " + component.getClass().getName() + "." + methodName + "()");
             Method method = component.getClass().getMethod(methodName, NOPARMS);
-            if ((method.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
-                method.invoke(component, NOARGS);
-            }
+            System.out.println("Invoking Method: " + Modifier.toString(method.getModifiers()) + " " + method );
+            method.invoke(component, NOARGS);
         } catch (NoSuchMethodException e) {
             // fine.
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Will never happen!");
+            // fine.
         }
     }
 

@@ -168,7 +168,7 @@
     </echo>    
   </target>
 
-  <target name="cvsgrab">
+  <target name="cvsgrab" description="download sources with CVSGrab">
     <taskdef 
       name="cvsgrab" 
       classname="net.sourceforge.cvsgrab.CVSGrabTask" 

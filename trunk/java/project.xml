@@ -24,8 +24,8 @@
     <siteDirectory>/www/picoextras.codehaus.org</siteDirectory>
     <distributionDirectory>/www/picoextras.codehaus.org/builds/</distributionDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:picoextras</connection>
-        <url>http://picocontainer.cvs.codehaus.org/picoextras/</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
+        <url>http://picocontainer.cvs.codehaus.org/java/</url>
     </repository>
 
     <!--

@@ -26,11 +26,11 @@
     <siteDirectory>/www/nanocontainer.codehaus.org/maven</siteDirectory>
     <distributionDirectory>/www/nanocontainer.codehaus.org/builds/</distributionDirectory>
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:pico</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:pico</developerConnection>
-        <url>http://cvs.nanocontainer.codehaus.org/nano</url>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/picocontainer:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/picocontainer:java</developerConnection>
+        <url>http://cvs.nanocontainer.codehaus.org/java</url>
         <!-- statcvs only works with this one: -->
-        <!--url>http://cvs.codehaus.org/viewcvs.cgi/nano/?cvsroot=nanocontainer</url-->
+        <!--url>http://cvs.codehaus.org/viewcvs.cgi/java/?cvsroot=nanocontainer</url-->
     </repository>
 
     <mailingLists>

@@ -33,13 +33,41 @@ public class ConstantParameter implements Parameter {
     public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws NotConcreteRegistrationException {
         if(!expectedType.isAssignableFrom(value.getClass())) {
             if (expectedType.isPrimitive()) {
-                // TODO Ideally we should verify the types here too.
-                return new InstanceComponentAdapter(value, value);
+                if(!primitiveMatches(expectedType, value.getClass())) {
+                    return null;
+                }
             } else {
                 return null;
             }
-        } else {
-            return new InstanceComponentAdapter(value, value);
         }
+        return new InstanceComponentAdapter(value, value);
+    }
+
+    private boolean primitiveMatches(Class expectedPrimitiveType, Class constantClass) {
+        if(expectedPrimitiveType.equals(Byte.class) || expectedPrimitiveType.equals(Byte.TYPE)) {
+            return constantClass.equals(Byte.class) || constantClass.equals(Byte.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Short.class) || expectedPrimitiveType.equals(Short.TYPE)) {
+            return constantClass.equals(Short.class) || constantClass.equals(Short.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Integer.class) || expectedPrimitiveType.equals(Integer.TYPE)) {
+            return constantClass.equals(Integer.class) || constantClass.equals(Integer.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Long.class) || expectedPrimitiveType.equals(Long.TYPE)) {
+            return constantClass.equals(Long.class) || constantClass.equals(Long.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Float.class) || expectedPrimitiveType.equals(Float.TYPE)) {
+            return constantClass.equals(Float.class) || constantClass.equals(Float.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Double.class) || expectedPrimitiveType.equals(Double.TYPE)) {
+            return constantClass.equals(Double.class) || constantClass.equals(Double.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Boolean.class) || expectedPrimitiveType.equals(Boolean.TYPE)) {
+            return constantClass.equals(Boolean.class) || constantClass.equals(Boolean.TYPE);
+        }
+        if(expectedPrimitiveType.equals(Character.class) || expectedPrimitiveType.equals(Character.TYPE)) {
+            return constantClass.equals(Character.class) || constantClass.equals(Character.TYPE);
+        }
+        return false;
     }
 }

@@ -15,7 +15,7 @@ public class NanningNanoContainer extends AspectSystem {
 
     public NanningNanoContainer() {
         serviceAndAspectContainer = new HierarchicalPicoContainer.Default();
-        componentContainer = new HierarchicalPicoContainer(serviceAndAspectContainer, new NanningComponentFactory(this));
+        componentContainer = new HierarchicalPicoContainer(new NanningComponentFactory(this), serviceAndAspectContainer);
     }
 
     /**

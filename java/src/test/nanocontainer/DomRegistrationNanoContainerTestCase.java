@@ -98,13 +98,8 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
     // really not something you have to do for a real
     // deployment.
     private File getFileForXMLComponentRegistration() {
-        File compilationRoot = FileUtils.getRoot(this.getClass());
-        File nanoRoot = new File(compilationRoot.getAbsolutePath());
-        if (!new File(nanoRoot, "DomTest.xml").exists()) {
-            File f0 = new File(nanoRoot.getParent());
-            File f1 = new File(f0.getParent());
-            nanoRoot = new File(f1, "src" + File.separator + "test");
-        }
-        return new File(nanoRoot, "DomTest.xml");
+        File compilationRoot = FileUtils.getRoot(getClass());
+        // ../../src/DomTest.xml
+        return new File(compilationRoot.getParentFile().getParentFile(), "src/test/DomTest.xml");
     }
 }

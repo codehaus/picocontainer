@@ -13,7 +13,7 @@ package org.nanocontainer.xml;
 import junit.framework.TestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServer;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -35,7 +35,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is).getDocumentElement();
     }
 
-    public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <component impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -47,7 +47,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertNotNull(picoContainer.getComponentInstance(DefaultWebServerConfig.class));
     }
 
-    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <component impl='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -64,7 +64,7 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
         assertNotNull(childContainer.getComponentInstance(WebServer.class));
     }
 
-    public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoConfigurationException {
+    public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -126,12 +126,12 @@ public class DefaultXmlFrontEndTestCase extends TestCase {
                     "<container>" +
                     "</container>"));
             PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
-            fail("Should have thrown a EmptyXmlConfigurationException");
-        } catch (EmptyXmlConfigurationException cnfe) {
+            fail("Should have thrown a EmptyXmlCompositionException");
+        } catch (EmptyXmlCompositionException cnfe) {
         }
     }
 
-    public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "    <pseudocomponent factory='org.nanocontainer.xml.DefaultXmlFrontEndTestCase$TestFactory'>" +

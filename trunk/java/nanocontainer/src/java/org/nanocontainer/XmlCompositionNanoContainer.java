@@ -10,7 +10,7 @@ package org.nanocontainer;
 
 import org.nanocontainer.xml.DefaultXmlFrontEnd;
 import org.nanocontainer.xml.XmlFrontEnd;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -29,25 +29,25 @@ import java.io.Reader;
  * @author Ward Cunningham
  * @version $Revision$
  */
-public class XmlAssemblyNanoContainer extends NanoContainer {
+public class XmlCompositionNanoContainer extends NanoContainer {
 
     private DocumentBuilder documentBuilder;
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerXml)
-            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoConfigurationException {
+    public XmlCompositionNanoContainer(Reader nanoContainerXml)
+            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoCompositionException {
         this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerXml, new ConsoleNanoContainerMonitor());
     }
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerConfig, NanoContainerMonitor monitor)
-            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoConfigurationException {
+    public XmlCompositionNanoContainer(Reader nanoContainerConfig, NanoContainerMonitor monitor)
+            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoCompositionException {
         this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerConfig, monitor);
     }
 
-    public XmlAssemblyNanoContainer(DocumentBuilder documentBuilder, Reader nanoContainerConfig, NanoContainerMonitor monitor)
-            throws ClassNotFoundException, IOException, PicoConfigurationException {
+    public XmlCompositionNanoContainer(DocumentBuilder documentBuilder, Reader composition, NanoContainerMonitor monitor)
+            throws ClassNotFoundException, IOException, PicoCompositionException {
         super(monitor);
         this.documentBuilder = documentBuilder;
-        configure(nanoContainerConfig);
+        compose(composition);
     }
 
     protected Element getRootElement(InputSource inputSource) throws SAXException, IOException {
@@ -55,8 +55,8 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
         return document.getDocumentElement();
     }
 
-    protected void configure(Reader nanoContainerXml)
-            throws IOException, ClassNotFoundException, PicoConfigurationException, SAXConfigurationException {
+    protected void compose(Reader nanoContainerXml)
+            throws IOException, ClassNotFoundException, PicoCompositionException, SAXCompositionException {
         final InputSource is = new InputSource(nanoContainerXml);
         try {
             Element rootElement = getRootElement(is);
@@ -66,9 +66,9 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
                 try {
                     xmlFrontEnd = (XmlFrontEnd) this.getClass().getClassLoader().loadClass(xmlFrontEndClassName).newInstance();
                 } catch (InstantiationException e) {
-                    throw new ClassNotFoundException("InstantiationException in XmlAssemblyNanoContainer - " + e.getMessage());
+                    throw new ClassNotFoundException("InstantiationException in XmlCompositionNanoContainer - " + e.getMessage());
                 } catch (IllegalAccessException e) {
-                    throw new ClassNotFoundException("IllegalAccessException in XmlAssemblyNanoContainer - " + e.getMessage());
+                    throw new ClassNotFoundException("IllegalAccessException in XmlCompositionNanoContainer - " + e.getMessage());
                 }
             } else {
                 xmlFrontEnd = new DefaultXmlFrontEnd();
@@ -77,7 +77,7 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
             instantiateComponentsBreadthFirst(rootContainer);
             startComponentsBreadthFirst();
         } catch (SAXException e) {
-            throw new SAXConfigurationException(e);
+            throw new SAXCompositionException(e);
         }
     }
 
@@ -86,7 +86,7 @@ public class XmlAssemblyNanoContainer extends NanoContainer {
         if (nanoContainerXml == null) {
             nanoContainerXml = "config/nanocontainer.xml";
         }
-        NanoContainer nano = new XmlAssemblyNanoContainer(new FileReader(nanoContainerXml));
+        NanoContainer nano = new XmlCompositionNanoContainer(new FileReader(nanoContainerXml));
         addShutdownHook(nano);
     }
 }

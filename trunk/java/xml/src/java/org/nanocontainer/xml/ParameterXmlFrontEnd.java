@@ -18,7 +18,7 @@ import org.nanocontainer.reflection.ReflectionFrontEnd;
 import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,12 +68,12 @@ public class ParameterXmlFrontEnd implements XmlFrontEnd {
 		componentCount = 0;
 		PicoContainer container = registerContainer(null, rootElement);
 		if (componentCount == 0) {
-			throw new EmptyXmlConfigurationException();
+			throw new EmptyXmlCompositionException();
 		}
 		return container;
 	}
 
-    public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer) throws IOException, SAXException, ClassNotFoundException, PicoConfigurationException {
+    public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer) throws IOException, SAXException, ClassNotFoundException, PicoCompositionException {
         // ignore mutablePicoContainer param for now.
         return createPicoContainer(rootElement);
     }

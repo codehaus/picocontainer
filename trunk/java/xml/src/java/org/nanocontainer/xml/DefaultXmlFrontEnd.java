@@ -14,7 +14,7 @@ import org.nanocontainer.reflection.ReflectionFrontEnd;
 import org.nanocontainer.reflection.DefaultReflectionFrontEnd;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.w3c.dom.Document;
@@ -37,13 +37,13 @@ import java.util.ArrayList;
  */
 public class DefaultXmlFrontEnd implements XmlFrontEnd {
 
-    public PicoContainer createPicoContainer(Element rootElement) throws IOException, SAXException, ClassNotFoundException, PicoConfigurationException {
+    public PicoContainer createPicoContainer(Element rootElement) throws IOException, SAXException, ClassNotFoundException, PicoCompositionException {
         MutablePicoContainer mutablePicoContainer = getMutablePicoContainerFromContainerAttribute(rootElement);
         return createPicoContainer(rootElement, mutablePicoContainer);
     }
 
     public PicoContainer createPicoContainer(Element rootElement, MutablePicoContainer mutablePicoContainer)
-            throws IOException, SAXException, ClassNotFoundException, PicoConfigurationException {
+            throws IOException, SAXException, ClassNotFoundException, PicoCompositionException {
 
         ReflectionFrontEnd rootReflectionFrontEnd = new DefaultReflectionFrontEnd(mutablePicoContainer);
         registerComponentsAndChildContainers(rootReflectionFrontEnd, rootElement);
@@ -51,7 +51,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         return rootReflectionFrontEnd.getPicoContainer();
     }
 
-    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, PicoConfigurationException {
+    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, PicoCompositionException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
@@ -87,7 +87,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
             }
         }
         if (componentCount == 0) {
-            throw new EmptyXmlConfigurationException();
+            throw new EmptyXmlCompositionException();
         }
     }
 
@@ -160,7 +160,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
     }
 
-    private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoConfigurationException {
+    private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
         String factoryClass = componentElement.getAttribute("factory");
 
         if (factoryClass == null || factoryClass.equals("")) {
@@ -185,7 +185,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);
         } catch (final SAXException e) {
-            throw new PicoConfigurationException() {
+            throw new PicoCompositionException() {
                 public String getMessage() {
                     return "SAXException during creation of PseudoComponent :" + e.getMessage();
                 }

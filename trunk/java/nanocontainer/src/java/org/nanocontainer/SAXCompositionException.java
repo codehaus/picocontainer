@@ -7,13 +7,19 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.xml;
+package org.nanocontainer;
 
-public class EmptyXmlConfigurationException extends XmlFrontEndException {
-    public EmptyXmlConfigurationException() {
+import org.picocontainer.PicoCompositionException;
+import org.xml.sax.SAXException;
+
+public class SAXCompositionException extends PicoCompositionException{
+    private final SAXException se;
+
+    public SAXCompositionException(SAXException se) {
+        this.se = se;
     }
 
-    public String getMessage() {
-        return "No components in the XML configuration";
+    public SAXException getSe() {
+        return se;
     }
 }

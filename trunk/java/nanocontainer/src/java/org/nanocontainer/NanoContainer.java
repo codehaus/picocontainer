@@ -8,9 +8,9 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.nanocontainer.xml.EmptyXmlConfigurationException;
+import org.nanocontainer.xml.EmptyXmlCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public abstract class NanoContainer {
         return rootContainer;
     }
 
-    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlConfigurationException {
+    protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlCompositionException {
         if (picoContainer instanceof LifecyclePicoAdapter) {
             lifecycleAdapters.add(picoContainer);
         } else {
@@ -46,7 +46,7 @@ public abstract class NanoContainer {
         }
         List comps = picoContainer.getComponentInstances();
         if (comps.size() == 0) {
-            throw new EmptyXmlConfigurationException();
+            throw new EmptyXmlCompositionException();
         }
         monitor.componentsInstantiated(picoContainer);
         Collection childContainers = picoContainer.getChildContainers();
@@ -92,6 +92,6 @@ public abstract class NanoContainer {
         });
     }
 
-    protected abstract void configure(Reader configuration)
-            throws IOException, ClassNotFoundException, PicoConfigurationException;
+    protected abstract void compose(Reader composition)
+            throws IOException, ClassNotFoundException, PicoCompositionException;
 }

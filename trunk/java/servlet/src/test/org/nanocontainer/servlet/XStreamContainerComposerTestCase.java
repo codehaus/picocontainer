@@ -12,7 +12,6 @@ package org.nanocontainer.servlet;
 import junit.framework.TestCase;
 import org.jmock.C;
 import org.jmock.Mock;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -23,10 +22,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  * test case for XStreamContainerComposer
- * @author Konstantin Pribluda ( konstantin[at]infodesire.com ) 
+ * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com ) 
  * @version $Revision$
  */
-
 public class XStreamContainerComposerTestCase extends TestCase implements KeyConstants {
 	
 	public void testThatProperConfigurationIsRead() throws Exception {

@@ -7,8 +7,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-
 /**
  * A component adapter is responsible for providing a specific component instance. An instance of an implementation of
  * this interface is used inside a {@link PicoContainer} for every registered component or instance.  Each
@@ -73,8 +71,8 @@ public interface ComponentAdapter {
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
      * checking that the associated PicoContainer contains all the needed dependnecies.
      * 
-     * @throws UnsatisfiableDependenciesException
+     * @throws PicoVerificationException
      *          if one or more dependencies cannot be resolved.
      */
-    void verify() throws UnsatisfiableDependenciesException;
+    void verify() throws PicoVerificationException;
 }

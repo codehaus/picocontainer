@@ -79,14 +79,10 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         final Parameter[] componentParameters = getParameters(dependencyContainer);
 
         if (componentParameters.length != mostSatisfiableDependencyAdapters.length) {
-            throw new PicoInitializationException() {
-                public String getMessage() {
-                    return "The number of specified parameters (" +
+            throw new PicoInitializationException("The number of specified parameters (" +
                             componentParameters.length + ") doesn't match the number of arguments in the greediest satisfiable constructor (" +
                             mostSatisfiableDependencyAdapters.length + "). When parameters are explicitly specified, specify them in the correct order, and one for each constructor argument." +
-                            "The greediest satisfiable constructor takes the following arguments: " + Arrays.asList(mostSatisfiableDependencyTypes).toString();
-                }
-            };
+                            "The greediest satisfiable constructor takes the following arguments: " + Arrays.asList(mostSatisfiableDependencyTypes).toString());
         }
         for (int i = 0; i < mostSatisfiableDependencyAdapters.length; i++) {
             mostSatisfiableDependencyAdapters[i] = componentParameters[i].resolveAdapter(dependencyContainer, mostSatisfiableDependencyTypes[i]);

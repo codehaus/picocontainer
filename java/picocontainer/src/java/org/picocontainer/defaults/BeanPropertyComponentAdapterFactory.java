@@ -106,30 +106,18 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
                     final Object propertyValue = propertyValues.get(propertyName);
                     final PropertyDescriptor propertyDescriptor = (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
                     if (propertyDescriptor == null) {
-                        throw new PicoIntrospectionException() {
-                            public String getMessage() {
-                                return "Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName();
-                            }
-                        };
+                        throw new PicoIntrospectionException("Unknown property '" + propertyName + "' in class " + componentInstance.getClass().getName());
                     }
                     Method setter = propertyDescriptor.getWriteMethod();
                     if (setter == null) {
-                        throw new PicoInitializationException() {
-                            public String getMessage() {
-                                return "There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +
+                        throw new PicoInitializationException("There is no public setter method for property " + propertyName + " in " + componentInstance.getClass().getName() +
                                         ". Setter: " + propertyDescriptor.getWriteMethod() +
-                                        ". Getter: " + propertyDescriptor.getReadMethod();
-                            }
-                        };
+                                        ". Getter: " + propertyDescriptor.getReadMethod());
                     }
                     try {
                         setter.invoke(componentInstance, new Object[]{convertType(setter, propertyValue)});
                     } catch (final Exception e) {
-                        throw new PicoInitializationException(e) {
-                            public String getMessage() {
-                                return "Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage();
-                            }
-                        };
+                        throw new PicoInitializationException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
                     }
                 }
             }

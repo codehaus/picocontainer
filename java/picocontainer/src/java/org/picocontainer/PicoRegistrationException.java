@@ -10,11 +10,11 @@
 
 package org.picocontainer;
 
-public abstract class PicoRegistrationException extends PicoException {
+public class PicoRegistrationException extends PicoException {
     protected PicoRegistrationException() {
     }
 
-    protected PicoRegistrationException(String message) {
+    public PicoRegistrationException(String message) {
         super(message);
     }
 

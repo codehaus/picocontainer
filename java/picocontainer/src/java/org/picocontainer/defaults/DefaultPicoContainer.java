@@ -174,11 +174,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         if(componentInstance == this)
-            throw new PicoRegistrationException() {
-                public String getMessage() {
-                    return "Cannot register a container to itself. The container is already implicitly registered.";
-                }
-            };
+            throw new PicoRegistrationException("Cannot register a container to itself. The container is already implicitly registered.");
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;

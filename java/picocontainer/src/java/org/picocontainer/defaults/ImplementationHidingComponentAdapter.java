@@ -50,11 +50,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         swappableAugmentedInterfaces[interfaces.length] = Swappable.class;
         System.arraycopy(interfaces, 0, swappableAugmentedInterfaces, 0, interfaces.length);
         if (interfaces.length == 0) {
-            throw new PicoIntrospectionException() {
-                public String getMessage() {
-                    return "Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.";
-                }
-            };
+            throw new PicoIntrospectionException("Can't hide implementation for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
         }
         final DelegatingInvocationHandler delegatingInvocationHandler = new DelegatingInvocationHandler(this);
         return Proxy.newProxyInstance(getClass().getClassLoader(),

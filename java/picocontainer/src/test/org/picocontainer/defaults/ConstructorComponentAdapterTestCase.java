@@ -12,7 +12,7 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 
-public class TransientComponentAdapterTestCase extends TestCase {
+public class ConstructorComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
         ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter("blah", Object.class);
         Object o1 = componentAdapter.getComponentInstance();

@@ -125,4 +125,20 @@ public class ReflectionUsingLifecycleManagerTestCase extends TestCase {
             fail("Should have stopped just fine");
         }
     }
+
+    public void testInvocationTargetBasics() {
+        try {
+            new PicoInvocationTargetStartException(null);
+        } catch (IllegalArgumentException iae){
+            // expected
+        }
+        try {
+            new PicoInvocationTargetStopException(null);
+        } catch (IllegalArgumentException iae){
+            // expected
+        }
+
+    }
+
+
 }

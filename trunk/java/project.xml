@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+
 <project>
 
   <!-- the version of maven's project object model -->
+  
   <pomVersion>3</pomVersion>
   
   <!-- a unique name for this project -->
@@ -17,14 +19,14 @@
   <!-- details about the organization that 'owns' the project -->
   <organization>
     <name>NanoContainer team</name>
-    <url>TBA</url>
-    <logo>TBA</logo>
+    <url>http://www.nanocontainer.org</url>
+    <logo>http://www.nanocontainer.org/images/logo.gif</logo>
   </organization>
   
   <!-- the year the project started -->
   <inceptionYear>2003</inceptionYear>
   <package>nanocontainer</package>
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  <logo>http://www.nanocontainer.org/images/logo.gif</logo>
   <description>
     A collection of example projects showing how to use maven in different
     situations   
@@ -35,18 +37,18 @@
   </shortDescription>
 
   <!-- the project home page -->
-  <url>http://maven.apache.org/reference/plugins/examples/</url>
-  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/maven.apache.org/reference/plugins/examples/</siteDirectory>
-  <distributionDirectory>/www/maven.apache.org/builds/</distributionDirectory>
+  <url>http://www.nanocontainer.org/examples</url>
+  <issueTrackingUrl>http://jira.codehaus.org</issueTrackingUrl>
+  <siteAddress>www.codehaus.org</siteAddress>
+  <siteDirectory>/www/nanocontainer/examples/</siteDirectory>
+  <distributionDirectory>/www/nanocontainer/builds/</distributionDirectory>
 
   <!-- the version control repository and http url for online access
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:maven/src/plugins-build/examples</connection>
-    <url>http://cvs.apache.org/viewcvs/maven/src/plugins-build/examples/</url>
+    <connection>scm:cvs:pserver:anoncvs@cvs.codehaus.org:/cvshome:nanocontainer/nano/</connection>
+    <url>http://www.codehaus.org/viewcvs/codehaus/nano</url>
   </repository>
 
   <!-- any mailing lists for the project -->
@@ -54,11 +56,20 @@
   
   <!-- who the developers are for the project -->
   <developers>
-   <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jason@zenplex.com</email>
-      <organization>Zenplex</organization>
+    <developer>
+      <name>Paul Hammant</name>
+      <id>paul</id>
+      <email>paul_hammant@yahoo.com</email>
+      <organization>n/a</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Aslak Hellesoy</name>
+      <id>rinkrank</id>
+      <email>rinkrank@codehaus.org</email>
+      <organization>n/a</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -70,13 +81,13 @@
     <dependency>
       <id>picocontainer</id>
       <version>1.0-SNAPSHOT</version>
-      <url>http://tba/</url>
+      <url>http://www.picocontainer.org/</url>
     </dependency>
   </dependencies>
   
   <!-- build information for the project -->
   <build>
-    <nagEmailAddress>turbine-maven-dev@jakarta.apache.org</nagEmailAddress>
+    <nagEmailAddress>nano-dev@codehaus.org</nagEmailAddress>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
 

@@ -21,7 +21,7 @@
     <package>org.picocontainer</package>
     <logo>/images/pico-logo.png</logo>
     <description>
-        Please refer to the main http://picocontainer.org/ website for documentation.    
+            Please refer to the &lt;a href="http://picocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
     </description>
     <shortDescription>Small footprint Dependency Injection container</shortDescription>
     <url>http://www.picocontainer.org/</url>
@@ -87,7 +87,7 @@
         <developer>
             <name>J&ouml;rg Schaible</name>
             <id>joehni</id>
-            <email>NOSPAM.joerg.schaible@gmx.de</email>
+            <email>joerg.schaible@gmx.de</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -223,6 +223,12 @@
             <id>concurrent</id>
             <version>1.3.4</version>
         </dependency>
+        <!-- dependency>
+            <groupId>statcvs</statcvs>
+            <artifactId>maven-statcvs-plugin</artifactId>
+            <version>2.4</version>
+            <type>plugin</type>
+        </dependency -->
 
     </dependencies>
 

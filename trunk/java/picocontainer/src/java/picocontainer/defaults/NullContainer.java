@@ -8,29 +8,25 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer.hierarchical;
+package picocontainer.defaults;
 
-import picocontainer.PicoStartException;
+import picocontainer.PicoContainer;
 
-public class PicoInvocationTargetStartException extends PicoStartException {
-    private final Throwable cause;
-
-    public PicoInvocationTargetStartException(Throwable cause) {
-        if (cause == null) {
-            throw new IllegalArgumentException("Cause must not be null");
-        }
-        this.cause = cause;
+public class NullContainer implements PicoContainer {
+    public boolean hasComponent(Class compType) {
+        return false;
     }
 
-    public Throwable getCause() {
-        return cause;
+    public Object getComponent(Class compType) {
+        return null;
     }
 
-    public String getMessage() {
-        return "InvocationTargetException: "
-                + cause.getClass().getName()
-                + " " + cause.getMessage();
+    public Object[] getComponents() {
+        return new Object[0];
     }
 
-
+    public Class[] getComponentTypes() {
+        return new Class[0];
+    }
 }
+

@@ -10,23 +10,27 @@
 
 package picocontainer;
 
-import picocontainer.PicoContainer;
+import picocontainer.PicoStartException;
 
-public class NullContainer implements PicoContainer {
-    public boolean hasComponent(Class compType) {
-        return false;
+public class PicoInvocationTargetStartException extends PicoStartException {
+    private final Throwable cause;
+
+    public PicoInvocationTargetStartException(Throwable cause) {
+        if (cause == null) {
+            throw new IllegalArgumentException("Cause must not be null");
+        }
+        this.cause = cause;
     }
 
-    public Object getComponent(Class compType) {
-        return null;
+    public Throwable getCause() {
+        return cause;
     }
 
-    public Object[] getComponents() {
-        return new Object[0];
+    public String getMessage() {
+        return "InvocationTargetException: "
+                + cause.getClass().getName()
+                + " " + cause.getMessage();
     }
 
-    public Class[] getComponentTypes() {
-        return new Class[0];
-    }
+
 }
-

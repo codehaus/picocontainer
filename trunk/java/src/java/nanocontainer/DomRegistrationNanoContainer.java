@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import picocontainer.PicoContainer;
 import picocontainer.PicoRegistrationException;
-import picocontainer.NullContainer;
+import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class DomRegistrationNanoContainer extends StringRegistrationNanoContainerImpl

@@ -36,8 +36,10 @@ import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoStopException;
 import picocontainer.PicoDisposalException;
-import picocontainer.NullContainer;
-import picocontainer.DefaultComponentFactory;
+import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.DefaultComponentFactory;
+import picocontainer.defaults.NullLifecycleManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -87,14 +89,14 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
 
     public static class Default extends HierarchicalPicoContainer {
         public Default() {
-            super(new NullContainer(), new NullStartableLifecycleManager(), new DefaultComponentFactory());
+            super(new NullContainer(), new NullLifecycleManager(), new DefaultComponentFactory());
         }
 
     }
 
     public static class WithParentContainer extends HierarchicalPicoContainer {
         public WithParentContainer(PicoContainer parentContainer) {
-            super(parentContainer, new NullStartableLifecycleManager(), new DefaultComponentFactory());
+            super(parentContainer, new NullLifecycleManager(), new DefaultComponentFactory());
         }
     }
 
@@ -106,7 +108,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
 
     public static class WithComponentFactory extends HierarchicalPicoContainer {
         public WithComponentFactory(ComponentFactory componentFactory) {
-            super(new NullContainer(), new NullStartableLifecycleManager(), componentFactory);
+            super(new NullContainer(), new NullLifecycleManager(), componentFactory);
         }
     }
 

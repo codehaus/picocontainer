@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import com.tirsen.nanning.AspectInstance;
 import com.tirsen.nanning.MixinInstance;
 import com.tirsen.nanning.config.AspectSystem;
-import picocontainer.DefaultComponentFactory;
+import picocontainer.defaults.DefaultComponentFactory;
 
 public class NanningComponentFactory extends DefaultComponentFactory {
     private final AspectSystem aspectSystem;

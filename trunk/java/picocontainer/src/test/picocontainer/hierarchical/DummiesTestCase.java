@@ -14,23 +14,23 @@ import junit.framework.TestCase;
 
 import java.lang.reflect.InvocationTargetException;
 
-import picocontainer.NullContainer;
-import picocontainer.hierarchical.NullStartableLifecycleManager;
-import picocontainer.DefaultComponentFactory;
+import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.NullLifecycleManager;
+import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.PicoStartException;
 import picocontainer.PicoStopException;
 
 public class DummiesTestCase extends TestCase {
 
     public void testDummyContainer() {
-        picocontainer.NullContainer dc = new picocontainer.NullContainer();
+        picocontainer.defaults.NullContainer dc = new picocontainer.defaults.NullContainer();
         assertFalse(dc.hasComponent(String.class));
         assertNull(dc.getComponent(String.class));
         assertEquals(0, dc.getComponents().length);
     }
 
     public void testDummyStartableLifecycleManager() throws PicoStartException, PicoStopException {
-        NullStartableLifecycleManager ds = new NullStartableLifecycleManager();
+        picocontainer.defaults.NullLifecycleManager ds = new picocontainer.defaults.NullLifecycleManager();
         Object o = new Object();
         ds.startComponent(o);
         ds.stopComponent(o);
@@ -43,7 +43,7 @@ public class DummiesTestCase extends TestCase {
                                                      InvocationTargetException,
                                                      IllegalAccessException,
                                                      InstantiationException {
-        picocontainer.DefaultComponentFactory dcd = new picocontainer.DefaultComponentFactory();
+        picocontainer.defaults.DefaultComponentFactory dcd = new picocontainer.defaults.DefaultComponentFactory();
         Object decorated = dcd.createComponent(Object.class, Object.class.getConstructor(null), null);
         assertNotNull(decorated);
         //TODO check no methods were called, via proxy ?

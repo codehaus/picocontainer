@@ -16,7 +16,7 @@ import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.PicoStopException;
-import picocontainer.NullContainer;
+import picocontainer.defaults.NullContainer;
 import picocontainer.PicoDisposalException;
 
 import java.util.ArrayList;

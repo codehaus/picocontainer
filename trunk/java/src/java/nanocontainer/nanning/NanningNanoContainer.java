@@ -2,7 +2,7 @@ package nanocontainer.nanning;
 
 import picocontainer.*;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
-import picocontainer.hierarchical.NullStartableLifecycleManager;
+import picocontainer.defaults.NullLifecycleManager;
 import com.tirsen.nanning.config.Aspect;
 import com.tirsen.nanning.config.AspectSystem;
 
@@ -17,7 +17,7 @@ public class NanningNanoContainer extends AspectSystem {
     public NanningNanoContainer() {
         serviceAndAspectContainer = new HierarchicalPicoContainer.Default();
         componentContainer = new HierarchicalPicoContainer(serviceAndAspectContainer,
-                new NullStartableLifecycleManager(), new NanningComponentFactory(this));
+                new picocontainer.defaults.NullLifecycleManager(), new NanningComponentFactory(this));
     }
 
     /**

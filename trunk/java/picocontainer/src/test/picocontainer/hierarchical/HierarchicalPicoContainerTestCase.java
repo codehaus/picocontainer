@@ -36,24 +36,26 @@ import picocontainer.OverriddenStartableLifecycleManager;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoDisposalException;
 import picocontainer.ReflectionUsingLifecycleManager;
+import picocontainer.PicoInvocationTargetStartException;
+import picocontainer.defaults.NullLifecycleManager;
 
 public class HierarchicalPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new HierarchicalPicoContainer(null, new NullStartableLifecycleManager(), new picocontainer.DefaultComponentFactory());
+            new HierarchicalPicoContainer(null, new NullLifecycleManager(), new picocontainer.defaults.DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalPicoContainer(new picocontainer.NullContainer(), null, new picocontainer.DefaultComponentFactory());
+            new HierarchicalPicoContainer(new picocontainer.defaults.NullContainer(), null, new picocontainer.defaults.DefaultComponentFactory());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
         }
         try {
-            new HierarchicalPicoContainer(new picocontainer.NullContainer(), new NullStartableLifecycleManager(), null);
+            new HierarchicalPicoContainer(new picocontainer.defaults.NullContainer(), new NullLifecycleManager(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected

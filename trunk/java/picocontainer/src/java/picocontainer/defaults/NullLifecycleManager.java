@@ -3,20 +3,26 @@
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
- * the license.html file.                                                    *
+ * the LICENSE.txt file.                                                     *
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.defaults;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import picocontainer.LifecycleManager;
+import picocontainer.PicoStartException;
+import picocontainer.PicoStopException;
+import picocontainer.PicoDisposalException;
 
-public class DefaultComponentFactory implements ComponentFactory {
-    public Object createComponent(Class compType, Constructor constructor, Object[] args)
-            throws InvocationTargetException, IllegalAccessException, InstantiationException
-    {
-        return constructor.newInstance(args);
+public class NullLifecycleManager
+        implements LifecycleManager {
+    public void startComponent(Object component) throws PicoStartException {
+    }
+
+    public void stopComponent(Object component) throws PicoStopException {
+    }
+
+    public void disposeOfComponent(Object component) throws PicoDisposalException {
     }
 }

@@ -33,9 +33,9 @@ import java.util.Iterator;
 
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoContainer;
-import picocontainer.hierarchical.PicoInvocationTargetStartException;
+import picocontainer.PicoInvocationTargetStartException;
 import picocontainer.PicoStartException;
-import picocontainer.NullContainer;
+import picocontainer.defaults.NullContainer;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl
@@ -115,7 +115,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 try {
                     installConfiguration(configurationItems, configuree);
                 } catch (InvocationTargetException e) {
-                    throw new PicoInvocationTargetStartException(e);
+                    throw new picocontainer.PicoInvocationTargetStartException(e);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

@@ -16,6 +16,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 /**
  * @author Paul Hammant
@@ -33,6 +35,14 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
 
     public void testDeploymentOfMarFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         kernel.deploy(new File("test.mar"));
+        Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
+        assertNotNull(o);
+        Method m = o.getClass().getMethod("testMe", new Class[0]);
+        assertEquals("hello", m.invoke(o, new Object[0]));
+    }
+
+    public void testDeploymentOfMarFileFromURL() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, MalformedURLException {
+        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/megacontainer/src/remotecomp.mar"));
         Object o = kernel.getComponent("test/org.megacontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
@@ -116,6 +126,15 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
     public void testMarMissingJavaCannotBeDeployed() {
         kernel.deploy(new File("incomplete.mar"));
         // .bogus language not supported
+    }
+
+    public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile()
+    {
+        kernel.deploy(new File("missing.mar"));
+    }
+
+    public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException {
+        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/megacontainer/src/remotecomp.mar.badurl"));
     }
 
     public void testMarWithGroovyScriptErrorResultsInException() {

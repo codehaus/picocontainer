@@ -11,10 +11,13 @@
 package org.nanocontainer.jmx;
 
 import junit.framework.TestCase;
-import org.picocontainer.*;
-import org.picocontainer.defaults.*;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.management.*;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.management.MBeanServerFactory;
+
 
 /**
  * @author Michael Ward

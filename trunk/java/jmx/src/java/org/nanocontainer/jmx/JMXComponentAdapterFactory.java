@@ -14,6 +14,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
@@ -25,6 +26,10 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class JMXComponentAdapterFactory extends DecoratingComponentAdapterFactory implements Serializable {
+
+	public JMXComponentAdapterFactory() {
+		this(new DefaultComponentAdapterFactory());
+	}
 
 	public JMXComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);

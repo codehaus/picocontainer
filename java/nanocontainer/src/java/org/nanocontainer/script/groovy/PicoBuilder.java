@@ -8,7 +8,7 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.nanocontainer.groovy;
+package org.nanocontainer.script.groovy;
 
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;

@@ -1,4 +1,4 @@
-package org.nanocontainer.groovy
+package org.nanocontainer.script.groovy
 
 import org.picocontainer.defaults.UnsatisfiableDependenciesException
 

@@ -8,7 +8,9 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.nanocontainer.groovy;
+package org.nanocontainer.script.groovy;
+
+import org.picocontainer.PicoException;
 
 /**
  * Exception thrown due to invalid GroovyMarkup when creating pico containers
@@ -17,7 +19,7 @@ package org.nanocontainer.groovy;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @version $Revision$
  */
-public class PicoBuilderException extends RuntimeException {
+public class PicoBuilderException extends PicoException {
 
     public PicoBuilderException(String message) {
         super(message);

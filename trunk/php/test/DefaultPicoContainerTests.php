@@ -1,14 +1,20 @@
 <?php
 
-
-
 class DefaultPicoContainerTests extends UnitTestCase {
     function __construct() {
         $this->UnitTestCase();
     }
     
+    function testregisterComponentImplementationWithIncFileName()
+    {
+    	$pico = new DefaultPicoContainer();
+    	$pico->registerComponentImplementationWithIncFileName('any.filename.inc.php','AnyNonIncludedClass');
+    	$ca = $pico->getComponentAdapter('AnyNonIncludedClass');
+    	
+    	$this->assertIsA($ca,'LazyIncludingComponentAdapter');
+    }
 
-	function testGetComponentInstanceReturnsWhenNotRegistered()
+	function testGetComponentInstanceReturnsNullWhenNotRegistered()
 	{
 		$pico = new DefaultPicoContainer();
 		$t = $pico->getComponentInstance('SimpleTouchable');
@@ -68,7 +74,7 @@ class DefaultPicoContainerTests extends UnitTestCase {
     function testConstantParameter()
     {
         $pico = new DefaultPicoContainer();
-        $param_val = 'test parametru';
+        $param_val = 'param test';
         $pico->registerComponent(new ConstructorInjectionComponentAdapter('boykey','BoyWithConstantParam',array('param' => new ConstantParameter($param_val))));        
         $boy = $pico->getComponentInstance('boykey');
         $this->assertNotNull($boy);
@@ -78,10 +84,9 @@ class DefaultPicoContainerTests extends UnitTestCase {
     
     function testBasicComponentParameter()
     {
-        $pico = new DefaultPicoContainer();
-        $param_val = 'test parametru';
+        $pico = new DefaultPicoContainer();        
         $pico->registerComponent(new ConstructorInjectionComponentAdapter('boy','Boy'));
-        $pico->registerComponent(new ConstructorInjectionComponentAdapter('girl','Girl', null, array(new BasicComponentParameter('boy'))));        
+        $pico->registerComponent(new ConstructorInjectionComponentAdapter('girl','Girl', array(new BasicComponentParameter('boy'))));        
         $girl = $pico->getComponentInstance('girl');
         $this->assertNotNull($girl);
     }
@@ -100,11 +105,8 @@ class DefaultPicoContainerTests extends UnitTestCase {
         
         $girl = $pico->getComponentInstance('Girl');        
         $this->assertNotNull($girl);
-        
-        $girl->kissSomeone();                
+ 		$this->assertWantedPattern('/kissed.*girl/i',$girl->kissSomeone());                           
     } 
-    
-    
     
     function testRegisterComponentImplementationWithClassName()
     {
@@ -130,14 +132,7 @@ class DefaultPicoContainerTests extends UnitTestCase {
         $boy1 = $pico->getComponentInstance('Boy');
         $boy2 = $pico->getComponentInstance('Boy');
         
-        if ($boy1 === $boy2)
-        {
-            $this->fail();
-        }
-        else
-        {
-            $this->pass();
-        }                
+        $this->assertCopy($boy1, $boy2);                       
     }                          
     
     function testGetAdapterWithTypeWhereTypeIsSubclass()
@@ -151,7 +146,8 @@ class DefaultPicoContainerTests extends UnitTestCase {
     }
     
     
-	/*         
+    //TODO:
+	/*
     function testUnambiguouSelfDependency() {
         
         $pico = new DefaultPicoContainer();

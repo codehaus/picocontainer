@@ -24,14 +24,7 @@ class ComponentAdapterTests extends UnitTestCase
 {
     function __construct() {
         $this->UnitTestCase();
-    }    
-    
-    function testGetComponentInstanceWithDefaultConstructor()
-    {
-        $class_name = 'ClassWithoutConstructor';
-        $ca = new ConstructorInjectionComponentAdapter($class_name);
-        $this->assertNotNull($ca->getComponentInstance(new DefaultPicoContainer()));        
-    }
+    }        
 
     function testGetComponentInstanceWithConstructorWithDefaultValue()
     {
@@ -70,22 +63,17 @@ class ComponentAdapterTests extends UnitTestCase
         $pc->registerComponent(new ConstructorInjectionComponentAdapter('Girl'));
         
         $girl = $pc->getComponentInstance('Girl');                
-        $girl->kissSomeone();
+        $this->assertNotNull($girl);
+        $this->assertWantedPattern('/kissed.*girl/i',$girl->kissSomeone());
     }
 
 
-/*
+
     function testGetKeyFromClassName()
     {
         $class_name = 'Boy';
         $ca = new ConstructorInjectionComponentAdapter($class_name);               
         $this->assertEqual($ca->getComponentKey(),$class_name);
-    }
-
-    function testComponentAdapterImplementation()
-    {
-        $ca = new ConstructorInjectionComponentAdapter('boyFromInclude','BoyFromInclude','BoyFromInclude.php',array(new ConstantParameter($param_val)));
-        $this->assertEqual($ca->getComponentImplementation(),'BoyFromInclude');
     }
     
     function testDecoratingComponentAdapterGetDelagate()
@@ -103,7 +91,7 @@ class ComponentAdapterTests extends UnitTestCase
         }       
     }
     
-    
+   
     function testCachingComponentAdapter()
     {
         $pico = new DefaultPicoContainer();
@@ -122,8 +110,5 @@ class ComponentAdapterTests extends UnitTestCase
         }
         
     }
-
-
-*/
 }    
 ?>

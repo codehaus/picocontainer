@@ -6,6 +6,39 @@ class ExceptionsTests extends UnitTestCase
         $this->UnitTestCase();
     }
     
+    function testIncludeFileNameNotDefinedRegistrationException()
+    {
+    	$pico = new DefaultPicoContainer();
+    	
+    	try
+    	{
+    		$pico->registerComponentImplementationWithIncFileName('','AnyNonIncludedClass');
+    		$this->fail();
+    	}
+    	catch(IncludeFileNameNotDefinedRegistrationException $e)
+    	{
+    		$this->pass();
+    	}
+    }
+    
+    function testLazyIncludedClassNotDefinedException()
+    {
+    	
+    	$pico = new DefaultPicoContainer();
+    	$ca = new LazyIncludingComponentAdapter(new ConstructorInjectionComponentAdapter('NotDefinedInIncludeFile'),'lazyinclude.empty.inc.php');
+    	
+    	try
+    	{
+    		$ca->getComponentInstance($pico);
+    		$this->fail();
+    	}
+    	catch (LazyIncludedClassNotDefinedException $e) 
+    	{
+    		$this->assertEqual($e->getClassName(),'NotDefinedInIncludeFile');
+    	}
+    	
+    }
+    
     function testDuplicateComponentKeyRegistrationException()
     {
        $pico = new DefaultPicoContainer();
@@ -21,9 +54,7 @@ class ExceptionsTests extends UnitTestCase
             $this->pass();
        } 
     }
-    
-    
-    
+            
     function testFailWithCyclicDependency()
     {        
         $pico = new DefaultPicoContainer();

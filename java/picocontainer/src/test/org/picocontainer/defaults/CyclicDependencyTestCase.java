@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 /**
  * Test the CyclicDependecy.
  */
-public class CyclicDependencyTest
+public class CyclicDependencyTestCase
         extends TestCase {
     private Runner[] runner = new Runner[3];
 

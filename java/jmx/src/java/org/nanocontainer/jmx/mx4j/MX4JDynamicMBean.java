@@ -14,7 +14,7 @@ import mx4j.AbstractDynamicMBean;
 import javax.management.MBeanInfo;
 
 /**
- * The default implementation for MX4J
+ * DynamicMBean implementation based on MX4J.
  *
  * @author James Strachan
  * @author Michael Ward
@@ -22,6 +22,11 @@ import javax.management.MBeanInfo;
  */
 public class MX4JDynamicMBean extends AbstractDynamicMBean {
 
+    /**
+     * Construct a MBean from an instance and a MBeanInfo.
+     * @param componentInstance the instance to expose.
+     * @param mBeanInfo the MBeanInfo for the instance.
+     */
     public MX4JDynamicMBean(Object componentInstance, MBeanInfo mBeanInfo) {
         setResource(componentInstance);
 		setMBeanInfo(mBeanInfo);

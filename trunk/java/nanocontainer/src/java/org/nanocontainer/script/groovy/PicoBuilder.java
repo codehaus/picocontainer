@@ -13,18 +13,25 @@ package org.nanocontainer.script.groovy;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.reflection.ReflectionContainerAdapter;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.File;
 
 /**
- * Builds trees of Pico containers and Pico components using GroovyMarkup
+ * Builds trees of PicoContainers and Pico components using GroovyMarkup
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
+ * @author Paul Hammant
  * @version $Revision$
  */
 public class PicoBuilder extends BuilderSupport {
@@ -33,13 +40,6 @@ public class PicoBuilder extends BuilderSupport {
     }
 
     protected void setParent(Object parent, Object child) {
-        if (parent instanceof MutablePicoContainer) {
-            MutablePicoContainer parentContainer = (MutablePicoContainer) parent;
-            if (child instanceof MutablePicoContainer) {
-                MutablePicoContainer childContainer = (MutablePicoContainer) child;
-                childContainer.setParent(parentContainer);
-            }
-        }
     }
 
     protected Object createNode(Object name) {
@@ -58,69 +58,140 @@ public class PicoBuilder extends BuilderSupport {
     protected Object createNode(Object name, Map attributes) {
         Object parent = getCurrent();
         if (name.equals("container")) {
-            MutablePicoContainer answer = createContainer(attributes);
-            if (parent instanceof MutablePicoContainer) {
-                MutablePicoContainer pico = (MutablePicoContainer) parent;
-                answer.setParent(pico);
-            }
-            return answer;
+            return createContainerNode(parent, attributes);
+        } else if (name.equals("softContainer")) {
+            return createSoftContainerNode(parent, attributes);
+        } else if (parent instanceof MutablePicoContainer) {
+            return createChildOfContainerNode(parent, name, attributes);
+        } else if (parent instanceof ReflectionContainerAdapter) {
+            return createChildOfSoftContainerNode(parent, name, attributes);
         }
-        else {
-            if (parent instanceof MutablePicoContainer) {
-                MutablePicoContainer pico = (MutablePicoContainer) parent;
+        throw new PicoBuilderException("Uknown method: '" + name + "'");
+    }
 
-                if (name.equals("component")) {
-                    Class type = (Class) attributes.remove("class");
-                    if (type != null) {
-                        Object key = attributes.remove("key");
-                        if (key != null) {
-                            pico.registerComponentImplementation(key, type);
-                        }
-                        else {
-                            pico.registerComponentImplementation(type);
-                        }
-                        return name;
-                    }
-                    else {
-                        throw new PicoBuilderException("Must specify a class attribute for a component");
-                    }
-                }
-                else if (name.equals("bean")) {
-                    // lets create a bean
-                    Object answer = createBean(attributes);
-                    pico.registerComponentInstance(answer);
-                    return answer;
-                }
-            }
-            else {
-                throw new PicoBuilderException("method: " + name + " must be a child of a container element");
-            }
+    private Object createChildOfSoftContainerNode(Object parent, Object name, Map attributes) {
+        ReflectionContainerAdapter reflectionContainerAdapter = (ReflectionContainerAdapter) parent;
+        MutablePicoContainer parentContainer = (MutablePicoContainer) reflectionContainerAdapter.getPicoContainer();
+
+        if (name.equals("component")) {
+            return createSoftComponentNode(attributes, reflectionContainerAdapter, name);
+        } else if (name.equals("bean")) {
+            //TODO reflectionize
+            return createBeanNode(attributes, parentContainer);
+        } else if (name.equals("classpathElement")) {
+            return createClassPathElementNode(attributes, reflectionContainerAdapter);
         }
-        throw new PicoBuilderException("uknown method: " + name);
+        throw new PicoBuilderException("Method: '" + name + "' must be a child of a softContainer element");
+    }
+
+    private Object createChildOfContainerNode(Object parent, Object name, Map attributes) {
+        MutablePicoContainer parentContainer = (MutablePicoContainer) parent;
+
+        if (name.equals("component")) {
+            return createComponentNode(attributes, parentContainer, name);
+        } else if (name.equals("bean")) {
+            return createBeanNode(attributes, parentContainer);
+        }
+        throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
+    }
+
+    private Object createContainerNode(Object parent, Map attributes) {
+        PicoContainer parentContainer = null;
+        if (parent instanceof MutablePicoContainer) {
+            parentContainer = (PicoContainer) parent;
+        }
+        MutablePicoContainer answer = createContainer(attributes, parentContainer);
+        return answer;
+    }
+
+    private Object createSoftContainerNode(Object parent, Map attributes) {
+        PicoContainer parentContainer = null;
+        if (parent instanceof MutablePicoContainer) {
+            parentContainer = (PicoContainer) parent;
+        }
+        MutablePicoContainer container = createContainer(attributes, parentContainer);
+        ReflectionContainerAdapter rca = new DefaultReflectionContainerAdapter(container);
+        return rca;
+    }
+
+    private Object createClassPathElementNode(Map attributes, ReflectionContainerAdapter reflectionContainerAdapter) {
+        String path = (String) attributes.remove("path");
+        URL pathURL = null;
+        try {
+            if (path.toLowerCase().startsWith("http://")) {
+                pathURL = new URL(path);
+            } else {
+                pathURL = new File(path).toURL();
+            }
+        } catch (MalformedURLException e) {
+            throw new PicoBuilderException("classpath '" + path + "' malformed ", e);
+        }
+        reflectionContainerAdapter.addClassLoaderURL(pathURL);
+        return null;
+    }
+
+    private Object createBeanNode(Map attributes, MutablePicoContainer pico) {
+        // lets create a bean
+        Object answer = createBean(attributes);
+        pico.registerComponentInstance(answer);
+        return answer;
+    }
+
+    private Object createComponentNode(Map attributes, MutablePicoContainer pico, Object name) {
+        Class type = (Class) attributes.remove("class");
+        if (type != null) {
+            Object key = attributes.remove("key");
+            if (key != null) {
+                pico.registerComponentImplementation(key, type);
+            } else {
+                pico.registerComponentImplementation(type);
+            }
+            return name;
+        } else {
+            throw new PicoBuilderException("Must specify a class attribute for a component");
+        }
+    }
+
+    private Object createSoftComponentNode(Map attributes, ReflectionContainerAdapter rca, Object name) {
+        String impl = (String) attributes.remove("class");
+        if (impl != null) {
+            String key = (String) attributes.remove("key");
+            try {
+                if (key != null) {
+                    rca.registerComponentImplementation(key, impl);
+                } else {
+                    rca.registerComponentImplementation(impl);
+                }
+            } catch (ClassNotFoundException e) {
+                throw new PicoBuilderException("Class not found for key '"+key+"', impl '"+impl+"", e);
+            }
+            return name;
+        } else {
+            throw new PicoBuilderException("Must specify a class attribute for a component");
+        }
     }
 
     protected Object createNode(Object name, Map attributes, Object value) {
         return createNode(name, attributes);
     }
 
-    protected MutablePicoContainer createContainer(Map attributes) {
+    protected MutablePicoContainer createContainer(Map attributes, PicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         if (adapterFactory != null) {
-            return new DefaultPicoContainer(adapterFactory);
-        }
-        else {
-            return new DefaultPicoContainer();
+            return new DefaultPicoContainer(adapterFactory, parent);
+        } else {
+            return new DefaultPicoContainer(parent);
         }
     }
 
     protected Object createBean(Map attributes) {
         Class type = (Class) attributes.remove("beanClass");
         if (type == null) {
-            throw new PicoBuilderException("bean must have a beanClass attribute");
+            throw new PicoBuilderException("Bean must have a beanClass attribute");
         }
         try {
             Object bean = type.newInstance();
-            // now lets set the properties on the bean
+            // now let's set the properties on the bean
             for (Iterator iter = attributes.entrySet().iterator(); iter.hasNext();) {
                 Map.Entry entry = (Map.Entry) iter.next();
                 String name = entry.getKey().toString();
@@ -128,9 +199,10 @@ public class PicoBuilder extends BuilderSupport {
                 InvokerHelper.setProperty(bean, name, value);
             }
             return bean;
-        }
-        catch (Exception e) {
-            throw new PicoBuilderException("Failed to create bean of type: " + type + ". Reason: " + e, e);
+        } catch (IllegalAccessException e) {
+            throw new PicoBuilderException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
+        } catch (InstantiationException e) {
+            throw new PicoBuilderException("Failed to create bean of type " + type + "'. Reason: " + e, e);
         }
     }
 }

@@ -11,7 +11,6 @@
 package org.nanocontainer.jmx;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 
 import javax.management.ObjectName;
 import javax.management.MBeanInfo;
@@ -32,8 +31,7 @@ public class JMXTestFixture {
 	}
 
 	public static ComponentAdapter createJMXComponentAdapter(ObjectName objectName) {
-        return new JMXComponentAdapterFactory(new DefaultComponentAdapterFactory())
-				.createComponentAdapter(objectName, FooBar.class, null);
+        return new JMXComponentAdapterFactory().createComponentAdapter(objectName, FooBar.class, null);
     }
 
 	public static MBeanInfo createMBeanInfo() {

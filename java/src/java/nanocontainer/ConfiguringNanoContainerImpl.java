@@ -36,6 +36,7 @@ import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.defaults.NullContainer;
+import picocontainer.defaults.PicoInvocationTargetInitializationException;
 import nanocontainer.reflection.StringToObjectConverter;
 
 public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContainerImpl
@@ -117,7 +118,7 @@ public class ConfiguringNanoContainerImpl extends StringRegistrationNanoContaine
                 try {
                     installConfiguration(configurationItems, configuree);
                 } catch (InvocationTargetException e) {
-                    throw new picocontainer.defaults.PicoInvocationTargetInitailizationException(e);
+                    throw new PicoInvocationTargetInitializationException(e);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

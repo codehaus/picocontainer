@@ -62,4 +62,13 @@ public interface ReflectionContainerAdapter {
 
     ClassLoader getComponentClassLoader();
 
+    /**
+     * Find a component instance matching the specified type.
+     *
+     * @param componentType the type of the component.
+     * @return the adapter matching the class.
+     */
+    Object getComponentInstanceOfType(String componentType);
+
+
 }

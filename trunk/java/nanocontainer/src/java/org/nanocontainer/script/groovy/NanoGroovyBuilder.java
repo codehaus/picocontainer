@@ -17,6 +17,7 @@ import org.nanocontainer.reflection.ReflectionContainerAdapter;
 import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.SoftCompositionPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -128,9 +129,9 @@ public class NanoGroovyBuilder extends BuilderSupport {
                 }
             } else {
                 if (type instanceof String) {
-                    pico.registerComponentImplementation((String)type);
+                    pico.registerComponentImplementation((String) type);
                 } else {
-                    pico.registerComponentImplementation((Class)type);
+                    pico.registerComponentImplementation((Class) type);
                 }
             }
             return name;
@@ -146,27 +147,42 @@ public class NanoGroovyBuilder extends BuilderSupport {
     protected MutablePicoContainer createContainer(Map attributes, SoftCompositionPicoContainer parent) {
         ComponentAdapterFactory adapterFactory = (ComponentAdapterFactory) attributes.remove("adapterFactory");
         Class containerImpl = (Class) attributes.remove("class");
-        if (containerImpl == null) {
-            // TODO - not used
-            containerImpl = DefaultSoftCompositionPicoContainer.class;
-        }
-
         SoftCompositionPicoContainer softPico = null;
-        if (parent != null) {
-            if (adapterFactory != null) {
-                softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(),adapterFactory, parent);
-            } else {
-                softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), parent);
-            }
-            parent.addChildContainer(softPico);
 
-        } else {
-            if (adapterFactory != null) {
-                softPico = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader(), adapterFactory, null);
+        if (containerImpl != null) {
+            SoftCompositionPicoContainer scpc = null;
+            if (parent != null) {
+                scpc = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader());
+                scpc.registerComponentInstance(ClassLoader.class, parent.getComponentClassLoader());
+                scpc.registerComponentInstance(PicoContainer.class, parent);
             } else {
-                softPico = new DefaultSoftCompositionPicoContainer();
+                scpc = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader());
+                scpc.registerComponentInstance(ClassLoader.class, NanoGroovyBuilder.class.getClassLoader());
+            }
+            if (adapterFactory != null) {
+                scpc.registerComponentInstance(ComponentAdapterFactory.class, adapterFactory);
+            }
+            scpc.registerComponentImplementation(SoftCompositionPicoContainer.class, containerImpl);
+            softPico = (SoftCompositionPicoContainer) scpc.getComponentInstance(SoftCompositionPicoContainer.class);
+        } else {
+
+            if (parent != null) {
+                if (adapterFactory != null) {
+                    softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), adapterFactory, parent);
+                } else {
+                    softPico = new DefaultSoftCompositionPicoContainer(parent.getComponentClassLoader(), parent);
+                }
+                parent.addChildContainer(softPico);
+
+            } else {
+                if (adapterFactory != null) {
+                    softPico = new DefaultSoftCompositionPicoContainer(NanoGroovyBuilder.class.getClassLoader(), adapterFactory, null);
+                } else {
+                    softPico = new DefaultSoftCompositionPicoContainer();
+                }
             }
         }
+
         return softPico;
     }
 

@@ -17,6 +17,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.script.groovy.PicoBuilderException;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -192,4 +193,15 @@ public class DefaultReflectionContainerAdapter implements ReflectionContainerAda
             return foo;
         }
     }
+
+    public Object getComponentInstanceOfType(String componentType) {
+        try {
+            Class compType = getComponentClassLoader().loadClass(componentType);
+            Object componentInstance = picoContainer.getComponentInstanceOfType(compType);
+            return componentInstance;
+        } catch (ClassNotFoundException e) {
+            throw new PicoBuilderException("Can't resolve class as type '" +componentType +"'");
+        }
+    }
+
 }

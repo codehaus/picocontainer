@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
+ * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class ConstantParameter implements Parameter {

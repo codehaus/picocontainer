@@ -11,4 +11,20 @@
 package org.picocontainer;
 
 public abstract class PicoRegistrationException extends PicoException {
+    ///CLOVER:OFF
+    protected PicoRegistrationException() {
+    }
+
+    protected PicoRegistrationException(String message) {
+        super(message);
+    }
+
+    protected PicoRegistrationException(Throwable cause) {
+        super(cause);
+    }
+
+    protected PicoRegistrationException(String message, Exception cause) {
+        super(message, cause);
+    }
+    ///CLOVER:ON
 }

@@ -68,7 +68,7 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
     /**
      * This is now IoC 2.5 compatible.  Multi ctors next.
      * @return
-     * @throws org.picocontainer.defaults.CannotDecideWhatConstructorToUseException
+     * @throws org.picocontainer.defaults.TooManySatisfiableConstructorsException
      */
     private Constructor getConstructor(ComponentRegistry componentRegistry) throws PicoIntrospectionException, NoSatisfiableConstructorsException, AmbiguousComponentResolutionException {
 
@@ -91,7 +91,7 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
             }
         }
         if(!conflicts.isEmpty()) {
-            throw new CannotDecideWhatConstructorToUseException(componentImplementation, conflicts);
+            throw new TooManySatisfiableConstructorsException(componentImplementation, conflicts);
         }
         if (biggestConstructor == null) {
             throw new NoSatisfiableConstructorsException(componentImplementation);
@@ -153,7 +153,7 @@ public class DefaultComponentAdapter implements Serializable, ComponentAdapter {
         return componentInstance;
     }
 
-    private Object createComponent(ComponentAdapter[] adapterDependencies, ComponentRegistry componentRegistry) throws PicoInitializationException, CannotDecideWhatConstructorToUseException {
+    private Object createComponent(ComponentAdapter[] adapterDependencies, ComponentRegistry componentRegistry) throws PicoInitializationException, TooManySatisfiableConstructorsException {
         try {
             Constructor constructor = getConstructor(componentRegistry);
             Object[] parameters = new Object[adapterDependencies.length];

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
@@ -28,6 +29,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.SimpleReference;
 
 /**
  * ScopedContainerComposer is a ContainerComposer which 
@@ -56,7 +58,7 @@ public class ScopedContainerComposer implements ContainerComposer {
      * @throws ClassNotFoundException
      */
     public ScopedContainerComposer() throws ClassNotFoundException {
-    	this(new DefaultPicoContainer());
+    	    this(new DefaultPicoContainer());
     }
     
     /**
@@ -98,6 +100,7 @@ public class ScopedContainerComposer implements ContainerComposer {
         }
         return configurator;
     }
+    
 	private void populateContainer(String resources, ContainerRecorder recorder) throws ClassNotFoundException {
 	    MutablePicoContainer container = recorder.getContainerProxy();
 	    String[] resourcePaths = toCSV(resources);
@@ -116,16 +119,22 @@ public class ScopedContainerComposer implements ContainerComposer {
 	    return (String[])tokens.toArray(new String[tokens.size()]);
 	}
 	
-	private ContainerPopulator createContainerPopulator(Reader reader) throws ClassNotFoundException {
+	private ContainerPopulator createContainerPopulator(Reader reader)
+            throws ClassNotFoundException {
         NanoContainer nano = new DefaultNanoContainer(getClassLoader());
-		Parameter[] parameters = new Parameter[]{new ConstantParameter(reader), new ConstantParameter(getClassLoader())};
-		nano.registerComponentImplementation(containerBuilderClassName, containerBuilderClassName,
-												 parameters);
-        return (ContainerPopulator)nano.getPico().getComponentInstance(containerBuilderClassName);
-	}
+        Parameter[] parameters = new Parameter[] {
+                new ConstantParameter(reader),
+                new ConstantParameter(getClassLoader()) };
+        nano.registerComponentImplementation(containerBuilderClassName,
+                containerBuilderClassName, parameters);
+        ContainerBuilder containerBuilder = (ContainerBuilder) nano
+                .getPico().getComponentInstance(containerBuilderClassName);
+        containerBuilder.buildContainer(new SimpleReference(), null, null, false);
+        return (ContainerPopulator) containerBuilder;
+    }
 
     private Reader getResource(String resource){
-    	return new InputStreamReader(getClassLoader().getResourceAsStream(resource));    	
+        return new InputStreamReader(getClassLoader().getResourceAsStream(resource));    	
     }
 
 	private ClassLoader getClassLoader() {

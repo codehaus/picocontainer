@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.groovy;
+package org.nanocontainer.script.groovy;
 
 import junit.framework.Assert;
 import org.picocontainer.Disposable;

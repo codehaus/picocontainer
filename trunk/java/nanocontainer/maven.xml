@@ -1,4 +1,5 @@
-<project default="binary:install">
+<project  xmlns:j="jelly:core" xmlns:u="jelly:util" default="binary:install">
+
     <goal name="binary:install" prereqs="jar:install"/>
     <goal name="binary:deploy" prereqs="jar:deploy"/>
 
@@ -7,4 +8,23 @@
             <fileset dir="${basedir}/src/test"/>
         </copy>
     </postGoal>
+    
+  <goal name="setclasspath">
+  <path id="test.classpath">
+      <pathelement path="${maven.build.dest}"/>
+      <pathelement path="target/classes"/>
+      <pathelement path="target/test-classes"/>
+      <path refid="maven.dependency.classpath"/>
+  </path>
+  </goal>
+  
+  <goal name="groovy:compile-tests" prereqs="java:compile, setclasspath"
+      description="Compiles the Groovy unit test cases">
+    <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="test.classpath"/> 
+    <groovyc destdir="${basedir}/target/test-classes" srcdir="${basedir}/src/test" listfiles="false">
+      <classpath refid="test.classpath"/>
+    </groovyc>
+  </goal>
+    
+    
 </project>

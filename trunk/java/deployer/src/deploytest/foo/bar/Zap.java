@@ -16,6 +16,7 @@ package foo.bar;
 
 import org.picocontainer.Startable;
 
+
 public class Zap implements Startable {
     private final String hello;
     private String toString = "Not started";

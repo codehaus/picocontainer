@@ -14,8 +14,8 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Startable;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
 
 import java.util.List;
 import java.util.ArrayList;

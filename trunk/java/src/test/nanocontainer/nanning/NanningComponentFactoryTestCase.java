@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
+import picocontainer.PicoInvocationTargetStartException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -47,15 +48,13 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
     private StringBuffer log = new StringBuffer();
 
-    public void testComponentsWithInterfaceAsTypeAreAspected()
-            throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void testComponentsWithInterfaceAsTypeAreAspected() throws PicoInvocationTargetStartException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
         Object component = componentFactory.createComponent(Wilma.class, WilmaImpl.class.getConstructors()[0], null);
         assertTrue(Aspects.isAspectObject(component));
     }
 
-    public void testComponentsWithoutInterfaceAsTypeAreNotAspected()
-            throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void testComponentsWithoutInterfaceAsTypeAreNotAspected() throws PicoInvocationTargetStartException {
         NanningComponentFactory componentFactory = new NanningComponentFactory(new AspectSystem());
         Object component = componentFactory.createComponent(WilmaImpl.class, WilmaImpl.class.getConstructors()[0],
                 null);

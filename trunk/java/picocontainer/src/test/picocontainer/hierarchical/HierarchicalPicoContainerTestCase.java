@@ -649,4 +649,77 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
+    public static final class Donkey implements Animal {
+        private final Wilma wilma;
+        private final String name;
+
+        public Donkey(final Wilma wilma, final String name) {
+            this.wilma = wilma;
+            this.name = name;
+        }
+
+        public String getFood() {
+            return "tin cans";
+        }
+    }
+
+    public static final class Monkey implements Animal {
+        public Monkey() {
+        }
+
+        public String getFood() {
+            return "bananas";
+        }
+    }
+
+    public void testCannotMixLookupTypesWithKeyFirst() throws PicoRegistrationException {
+        //final ClassRegistrationPicoContainer pico = new HierarchicalPicoContainer.Default();
+        //pico.registerComponent(Animal.class, Donkey.class, "donkey");
+        //pico.registerComponent(Wilma.class, WilmaImpl.class);
+        //try {
+            //pico.registerComponent(Animal.class, Monkey.class);
+            //fail("Expected InconsistentLookupTypeRegistrationException");
+        //} catch (InconsistentLookupTypeRegistrationException e) {
+        //}
+    }
+    public void testCannotMixLookupTypesWithTypeFirst() throws PicoRegistrationException {
+        //final PicoContainer pico = new HierarchicalPicoContainer.Default();
+        //pico.registerComponent(Animal.class, Donkey.class);
+        //pico.registerComponent(Wilma.class, WilmaImpl.class);
+        //try {
+            //pico.registerComponent(Animal.class, Monkey.class, "monkey");
+            //fail("Expected InconsistentLookupTypeRegistrationException");
+        //} catch (InconsistentLookupTypeRegistrationException e) {
+        //}
+    }
+
+    public void testKeepingLookupTypesConsistentWorks() throws PicoRegistrationException {
+        //final PicoContainer pico = new HierarchicalPicoContainer.Default();
+        //pico.registerComponent(Animal.class, Donkey.class, "donkey");
+        //pico.registerComponent(Wilma.class, WilmaImpl.class);
+        //pico.registerComponent(Animal.class, Monkey.class, "monkey");
+    }
+
+    public void testCanPassMultipleImplsAsArray() throws PicoRegistrationException, PicoStartException {
+        //final PicoContainer pico = new HierarchicalPicoContainer.Default();
+
+        //pico.registerComponent(Animal.class, Donkey.class, "donkey");
+        //pico.registerComponent(Animal.class, Monkey.class, "monkey");
+        //pico.registerComponent(Wilma.class, WilmaImpl.class);
+        //pico.registerComponent(AnimalConsumer.class);
+        //pico.addParameterToComponent(Donkey.class, String.class,"neddy");
+
+        //pico.start();
+        //final Monkey monkey = (Monkey) pico.getComponent(Animal.class, "monkey");
+        //assertNotNull(monkey);
+        //final Donkey donkey = (Donkey) pico.getComponent(Animal.class, "donkey");
+        //assertNotNull(donkey);
+        //assertNotNull(donkey.wilma);
+        //assertEquals("neddy",donkey.name);
+        //final AnimalConsumer animalConsumer = (AnimalConsumer) pico.getComponent(AnimalConsumer.class);
+        //assertSame(monkey,animalConsumer.getAnimal("monkey"));
+        //assertSame(donkey,animalConsumer.getAnimal("donkey"));
+    }
+
+
 }

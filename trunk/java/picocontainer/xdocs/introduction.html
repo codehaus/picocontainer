@@ -28,7 +28,7 @@ some parameter-reducing extending class to the component in question.<br>
 The parameters in the constructor of a component can be elements of
 configuration as well as other components. The arguments detailing
 configuration need special processing. If is best to read about this on
-the <a href="configuration.html">configuration</a> page.<br>
+the configuration page - see configuration.html.<br>
 <h2>Primitives</h2>
 We also can't allow
 primitives in the constructor (yet). We're not counting
@@ -113,8 +113,8 @@ NanoContainer is not really a single container. It is four
 PicoContainer compatible containers so far.&nbsp; One that takes String
 registration of components, another that takes them via XML. One that
 aggregates components into a single fat (almost) multiple-inheritance
-comp. Another that makes <a href="http://nanning.sourceforge.net/">Nanning</a>
-(the AOP framework) a PicoContainer
+comp. Another that makes Nanning (http://nanning.sourceforge.net/), the
+AOP framework, a PicoContainer
 compatible proposition.<br>
 <br>
 The big difference between PicoContainers and NanoContainers are that
@@ -122,7 +122,7 @@ the former have no XML to lace comps together.&nbsp; Components
 themselves for Pico and NanoContainers should be interchangeable.<br>
 <h2>History</h2>
 <h3>&nbsp; Type 1</h3>
-Apache's <a href="http://avalon.apache.org/">Avalon</a> project has
+Apache's Avalon (http://avalon.apache.org) project has
 been selling the IoC patten for many years
 now.&nbsp; The Avalon-Framework design laces together and configures
 components like
@@ -147,7 +147,7 @@ so:<br>
 <pre>&nbsp;&nbsp;&nbsp; }</pre>
 <pre>}</pre>
 A component has to have service (component) declarations in some
-external file. The popular <a href="http://avalon.apache.org/phoenix/">Phoenix</a>
+external file. The popular Phoenix (http://avalon.apache.org/phoenix/)
 container had .xinfo files for such
 needs.&nbsp; All Avalon container have some mechanism for storing
 configuration and assembly externally to the class.&nbsp; Cross

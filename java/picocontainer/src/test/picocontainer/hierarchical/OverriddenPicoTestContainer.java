@@ -13,6 +13,7 @@ package picocontainer.hierarchical;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
 import picocontainer.LifecycleManager;
+import picocontainer.PicoInvocationTargetStartException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -29,8 +30,7 @@ public class OverriddenPicoTestContainer extends HierarchicalPicoContainer.WithS
         this.wilma = wilma;
     }
 
-    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException
-    {
+    protected Object makeComponentInstance(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
 
         if (constructor.getDeclaringClass() == WilmaImpl.class) {
             return wilma;

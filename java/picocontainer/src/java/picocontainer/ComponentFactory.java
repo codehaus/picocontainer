@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface ComponentFactory {
 
-    Object createComponent(Class compType, Constructor constructor, Object[] args) throws InvocationTargetException, IllegalAccessException, InstantiationException;
-    //Object decorateObejcts(Object[] instances);
+    Object createComponent(Class compType, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException;
 
 }

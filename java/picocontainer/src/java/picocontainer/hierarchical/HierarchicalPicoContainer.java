@@ -224,7 +224,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     }
 
     protected boolean hookEmUp(Class componentImplementation, Class componentType, boolean progress) throws AmbiguousComponentResolutionException, PicoInvocationTargetStartException {
-        try {
             Constructor[] constructors = componentImplementation.getConstructors();
             Constructor constructor = constructors[0];
             Class[] parameters = constructor.getParameterTypes();
@@ -250,13 +249,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
                 progress = true;
             }
 
-        } catch (InvocationTargetException e) {
-            throw new PicoInvocationTargetStartException(e.getCause());
-        } catch (InstantiationException e) {
-            // covered by checkConcrete() in registration
-        } catch (IllegalAccessException e) {
-            // covered by checkConstructor() in registration
-        }
         return progress;
     }
 
@@ -328,8 +320,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         }
     }
 
-    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected Object makeComponentInstance(Class type, Constructor constructor, Object[] args) throws PicoInvocationTargetStartException {
         return componentFactory.createComponent(type, constructor, args);
     }
 

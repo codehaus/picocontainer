@@ -10,32 +10,30 @@ import org.picocontainer.Startable;
  * @version $Revision$
  */
 public class FolderContentPoller implements Startable {
-    private final Object waitLock = new Object();
-
     private FolderContentHandler folderContentHandler;
     private FileObject folder;
 
     private Runnable poller = new Runnable() {
         public void run() {
-            while (shouldRun) {
+            while (!Thread.interrupted()) {
                 try {
                     // Have to "close" the folder to invalidate child cache
                     folder.close();
                     FileObject[] currentChildren = folder.getChildren();
                     folderContentHandler.setCurrentChildren(currentChildren);
-                    synchronized(waitLock) {
-                        waitLock.wait(2000);
+                    synchronized(FolderContentPoller.this) {
+                        FolderContentPoller.this.notify();
+                        FolderContentPoller.this.wait(2000);
                     }
                 } catch (FileSystemException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    thread.interrupt();
                 }
             }
         }
     };
     private Thread thread;
-    private boolean shouldRun;
 
 
     public FolderContentPoller(FolderContentHandler folderChangeNotifier) {
@@ -45,22 +43,11 @@ public class FolderContentPoller implements Startable {
 
     public void start() {
         thread = new Thread(poller);
-        shouldRun = true;
         thread.start();
     }
 
     public void stop() {
-        shouldRun = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Only used from test to make it run faster
-    Object getLock() {
-        return waitLock;
+        thread.interrupt();
     }
 
 }

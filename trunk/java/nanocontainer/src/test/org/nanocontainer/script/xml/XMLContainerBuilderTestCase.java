@@ -125,7 +125,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedComposingLifecy
 
     public void testPseudoComponentCreation() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoAssemblyException {
         Reader script = new StringReader("<container>" +
-                "    <pseudocomponent factory='org.picoextras.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
+                "    <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
                 "      <config-or-whatever/>" +
                 "    </pseudocomponent>" +
                 "</container>");

@@ -16,7 +16,7 @@ import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
 import picocontainer.PicoContainerImpl;
 import picocontainer.PicoStopException;
-import picocontainer.DummyContainer;
+import picocontainer.NullContainer;
 import java.util.ArrayList;
 
 public class StringRegistrationNanoContainerImpl implements StringRegistrationNanoContainer {
@@ -37,7 +37,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public static class Default extends StringRegistrationNanoContainerImpl {
         public Default() {
-            super(new DummyContainer(), StringRegistrationNanoContainerImpl.class.getClassLoader());
+            super(new NullContainer(), StringRegistrationNanoContainerImpl.class.getClassLoader());
         }
     }
 
@@ -49,7 +49,7 @@ public class StringRegistrationNanoContainerImpl implements StringRegistrationNa
 
     public static class WithClassLoader extends StringRegistrationNanoContainerImpl {
         public WithClassLoader(ClassLoader classLoader) {
-            super(new DummyContainer(), classLoader);
+            super(new NullContainer(), classLoader);
         }
     }
 

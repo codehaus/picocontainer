@@ -65,13 +65,13 @@ public class CompositePicoContainer extends DefaultPicoContainer {
         }
     }
 
-    public Object getComponent(Class componentType) {
-        Object answer = super.getComponent(componentType);
+    public Object getComponent(Object componentKey) {
+        Object answer = super.getComponent(componentKey);
         if (answer == null) {
             for (Iterator iter = containers.iterator(); iter.hasNext(); ) {
                 PicoContainer container = (PicoContainer) iter.next();
-                if (container.hasComponent(componentType)) {
-                    return container.getComponent(componentType);
+                if (container.hasComponent(componentKey)) {
+                    return container.getComponent(componentKey);
                 }
             }
         }

@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by                                                          *
+ *****************************************************************************/
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
@@ -23,7 +32,7 @@ import java.util.Map;
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
  * Constructing a container c with a parent p container will cause c to look up components
  * in p if they cannot be found inside c itself.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n

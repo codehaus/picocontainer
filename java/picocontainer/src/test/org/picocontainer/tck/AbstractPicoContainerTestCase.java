@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by                                                          *
+ *****************************************************************************/
 package org.picocontainer.tck;
 
 import junit.framework.Assert;
@@ -114,7 +123,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertSame(picoContainer.getComponentAdapterOfType(DependsOnTouchable.class).getComponentImplementation(), e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
-            
+
             // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
             assertEquals(Collections.singletonList(Touchable.class), unsatisfiableDependencies.iterator().next());
         }
@@ -321,7 +330,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public static class ComponentA {
-        public ComponentA(ComponentB b, ComponentC c) {
+        public ComponentA(ComponentB b, c c) {
             Assert.assertNotNull(b);
             Assert.assertNotNull(c);
         }
@@ -330,7 +339,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public static class ComponentB {
     }
 
-    public static class ComponentC {
+    public static class c {
     }
 
     public static class ComponentD {

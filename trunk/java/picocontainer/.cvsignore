@@ -1,6 +1,5 @@
 target
 *.iws
-test
 *.ipr
 *.iml
 *.log

@@ -8,14 +8,14 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Chris Stevenson*
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.extras;
 
 import java.util.List;
 
 /**
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.1 $
+ * @version $Revision$
  */
 public interface CompositeProxyFactory {
     Object createCompositeProxy(

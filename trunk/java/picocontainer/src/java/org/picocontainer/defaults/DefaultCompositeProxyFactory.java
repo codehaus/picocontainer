@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.extras.CompositeProxyFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;

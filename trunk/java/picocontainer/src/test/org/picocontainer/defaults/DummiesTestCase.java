@@ -17,6 +17,7 @@ import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.internals.ComponentSpecification;
 import org.picocontainer.extras.CompositePicoContainer;
+import org.picocontainer.extras.NullContainer;
 
 import java.lang.reflect.InvocationTargetException;
 

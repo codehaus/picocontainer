@@ -16,7 +16,7 @@ import org.picocontainer.*;
 import org.picocontainer.defaults.DefaultComponentRegistry;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DefaultComponentFactory;
-import org.picocontainer.hierarchical.HierarchicalComponentRegistry;
+import org.picocontainer.extras.HierarchicalComponentRegistry;
 
 import java.io.Serializable;
 import java.util.Collection;

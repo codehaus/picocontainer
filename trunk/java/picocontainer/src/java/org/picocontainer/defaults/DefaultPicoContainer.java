@@ -17,6 +17,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.extras.CompositeProxyFactory;
 import org.picocontainer.internals.ComponentSpecification;
 
 import java.io.Serializable;

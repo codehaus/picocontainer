@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
 
-    private List satisfiableConstructors;
+    private List satisfiableConstructorsCache;
     private Constructor greediestConstructor;
 
     /**
@@ -100,8 +100,8 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
     }
 
     private List getSatisfiableConstructors(List constructors, PicoContainer picoContainer) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (satisfiableConstructors == null) {
-            satisfiableConstructors = new ArrayList();
+        if (satisfiableConstructorsCache == null) {
+            satisfiableConstructorsCache = new ArrayList();
             Set failedDependencies = new HashSet();
             for (Iterator iterator = constructors.iterator(); iterator.hasNext();) {
                 boolean failedDependency = false;
@@ -127,24 +127,24 @@ public class ConstructorComponentAdapter extends InstantiatingComponentAdapter {
                     }
                 }
                 if (!failedDependency) {
-                    satisfiableConstructors.add(constructor);
+                    satisfiableConstructorsCache.add(constructor);
                 }
             }
-            if (satisfiableConstructors.isEmpty()) {
+            if (satisfiableConstructorsCache.isEmpty()) {
                 throw new NoSatisfiableConstructorsException(getComponentImplementation(), failedDependencies);
             }
         }
 
-        return satisfiableConstructors;
+        return satisfiableConstructorsCache;
     }
 
     protected Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, MutablePicoContainer picoContainer) {
-        Object[] parameters = new Object[adapterDependencies.length];
+        Object[] result = new Object[adapterDependencies.length];
         for (int i = 0; i < adapterDependencies.length; i++) {
             ComponentAdapter adapterDependency = adapterDependencies[i];
-            parameters[i] = adapterDependency.getComponentInstance(picoContainer);
+            result[i] = adapterDependency.getComponentInstance(picoContainer);
         }
-        return parameters;
+        return result;
     }
 
     // TODO: remove? Only used from ParameterTestCase

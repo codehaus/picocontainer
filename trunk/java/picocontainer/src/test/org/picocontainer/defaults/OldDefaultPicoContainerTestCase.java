@@ -18,7 +18,6 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
-import java.io.Serializable;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 
@@ -164,7 +163,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                 (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
-        ;
 
         assertFalse(washAndPeel.wasPeeled);
         assertTrue(washAndPeel.wasWashed);
@@ -198,7 +196,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
                 (CoincidentallyPeelableComponent) pico.getComponentInstance(CoincidentallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponentInstance(PeelableAndWashableComponent.class);
- ;
 
         assertFalse(washAndPeel.wasPeeled);
         assertTrue(washAndPeel.wasWashed);

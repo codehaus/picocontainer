@@ -33,11 +33,11 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         handler = new DelegatingInvocationHandler(this);
     }
 
-    public Object getComponentInstance(MutablePicoContainer picoContainer)
+    public Object getComponentInstance(MutablePicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
         if (proxyInstance == null) {
-            this.picoContainer = picoContainer;
+            this.picoContainer = container;
             Class[] interfaces = interfaceFinder.getInterfaces(getDelegate().getComponentImplementation());
             if (interfaces.length == 0) {
                 throw new PicoIntrospectionException() {
@@ -49,7 +49,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             proxyInstance = Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
                     interfaces, handler);
 
-            picoContainer.addOrderedComponentAdapter(this);
+            container.addOrderedComponentAdapter(this);
         }
         return proxyInstance;
     }

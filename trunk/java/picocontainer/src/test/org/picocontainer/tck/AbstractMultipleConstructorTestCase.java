@@ -1,7 +1,6 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
@@ -79,7 +78,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         pico.registerComponentImplementation(Two.class);
 
         try {
-            Multi multi = (Multi) pico.getComponentInstance(Multi.class);
+            pico.getComponentInstance(Multi.class);
             fail();
         } catch (TooManySatisfiableConstructorsException e) {
             assertTrue(e.getMessage().indexOf("Three") == -1);

@@ -14,5 +14,5 @@ package org.picocontainer.testmodel;
  * @author Steve.Freeman@m3p.co.uk
  */
 public interface Touchable {
-    void wasTouched();
+    void touch();
 }

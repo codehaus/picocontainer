@@ -44,12 +44,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
@@ -125,7 +125,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertEquals(1, unsatisfiableDependencies.size());
 
             // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
-            assertEquals(Collections.singletonList(Touchable.class), unsatisfiableDependencies.iterator().next());
+            Object unstaisifed = unsatisfiableDependencies.iterator().next();
+            assertEquals(Collections.singletonList(Touchable.class), unstaisifed);
         }
     }
 
@@ -193,9 +194,21 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             pico.getComponentInstance(ComponentD.class);
         } catch (UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            // The set now contains a list containing the two dependencies in
+            // order. Therefore, we can't use the original code. - mparaz
+
             assertEquals(1, unsatisfiableDependencies.size());
-            assertTrue(e.getMessage().indexOf("class " + ComponentE.class.getName()) != -1);
-            assertTrue(e.getMessage().indexOf("class " + ComponentB.class.getName()) != -1);
+
+            final List expectedList = new ArrayList(2);
+            expectedList.add(ComponentE.class);
+            expectedList.add(ComponentB.class);
+
+            // Convert the Set to a List and assert that its first and only
+            // element is the expected list. This is a stronger check than
+            // contains().
+            // - mparaz
+            assertEquals(new ArrayList(unsatisfiableDependencies).get(0),
+                    expectedList);
         }
     }
 
@@ -233,7 +246,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         picoContainer.registerComponent(c1);
         picoContainer.registerComponent(c2);
         assertEquals("registration order should be maintained",
-                Arrays.asList(new Object[] {c1, c2}), picoContainer.getComponentAdapters());
+                Arrays.asList(new Object[]{c1, c2}), picoContainer.getComponentAdapters());
 
         picoContainer.getComponentInstances(); // create all the instances at once
         assertFalse("instances should be created in same order as adapters are created",
@@ -245,7 +258,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         reversedPicoContainer.registerComponent(c2);
         reversedPicoContainer.registerComponent(c1);
         assertEquals("registration order should be maintained",
-                Arrays.asList(new Object[] {c2, c1}), reversedPicoContainer.getComponentAdapters());
+                Arrays.asList(new Object[]{c2, c1}), reversedPicoContainer.getComponentAdapters());
 
         reversedPicoContainer.getComponentInstances(); // create all the instances at once
         assertTrue("instances should be created in same order as adapters are created",
@@ -376,14 +389,14 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testImplicitPicoContainerInjection(){
+    public void testImplicitPicoContainerInjection() {
         MutablePicoContainer pico = createPicoContainer();
         pico.registerComponentImplementation(ContainerDependency.class);
-        ContainerDependency dep = (ContainerDependency)pico.getComponentInstance(ContainerDependency.class);
+        ContainerDependency dep = (ContainerDependency) pico.getComponentInstance(ContainerDependency.class);
         assertSame(pico, dep.pico);
     }
 
-    public void testSelfRegistryThrowsIllegalArgument(){
+    public void testSelfRegistryThrowsIllegalArgument() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         try {
             pico.registerComponentInstance(pico);

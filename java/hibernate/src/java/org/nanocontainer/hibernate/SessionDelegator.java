@@ -39,11 +39,11 @@ public abstract class SessionDelegator implements Session {
     /**
      * obtain hibernate session.
      */
-    abstract Session getSession();
+    public abstract Session getSession();
     /**
      * perform actions to dispose "burned" session properly
      */
-    abstract void invalidateSession() throws HibernateException;
+    public abstract void invalidateSession() throws HibernateException;
     
     public void flush() throws HibernateException {
         try {

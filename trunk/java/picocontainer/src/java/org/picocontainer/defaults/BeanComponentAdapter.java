@@ -24,8 +24,9 @@ import java.util.HashSet;
 
 /**
  * {@inheritDoc}
- * Instantiates components using <a href="">Setter Injection</a>.
- *
+ * Instantiates components using empty constructors and
+ * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
+ * For easy setting of primitive properties, also see {@link BeanPropertyComponentAdapter}.
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

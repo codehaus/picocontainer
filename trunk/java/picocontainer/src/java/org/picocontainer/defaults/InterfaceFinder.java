@@ -9,14 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.io.Serializable;
 
 /**
  * Helper class for finding implemented interfaces of classes and objects.

@@ -41,15 +41,9 @@ public class ComponentParameter implements Parameter, Serializable {
     }
 
     /**
-     * Expect a parameter any paramter of the appropriate type.
+     * Expect any paramter of the appropriate type.
      */
     public ComponentParameter() {}
-
-    /**
-     * @deprecated Use the empty constructor instead.
-     */
-    public ComponentParameter(Class componentType) {
-    }
 
     public ComponentAdapter resolveAdapter(PicoContainer picoContainer, Class expectedType) throws PicoIntrospectionException {
         ComponentAdapter result;

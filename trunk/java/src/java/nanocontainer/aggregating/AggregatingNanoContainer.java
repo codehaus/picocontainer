@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Arrays;
 
+import nanocontainer.aggregating.reflect.SequentialInvocationHandler;
+
 
 public class AggregatingNanoContainer implements Container {
 
@@ -39,6 +41,13 @@ public class AggregatingNanoContainer implements Container {
         }
     }
 
+    public static class Default extends AggregatingNanoContainer {
+        public Default(Container containerToAggregateComponentsFor) {
+            super(containerToAggregateComponentsFor.getComponents(),
+                    new SequentialInvocationHandler(containerToAggregateComponentsFor));
+        }
+    }
+    
     public boolean hasComponent(Class aClass) {
         return true;
     }

@@ -142,7 +142,7 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
     }
 
     /**
-     * @deprecated since 1.1 - Use accept(new VerifyingVisitor())
+     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
      */
    public void verify() throws PicoVerificationException {
         delegate.verify();

@@ -74,6 +74,7 @@ aspect can be registered before the component it applies to.  In the
 example above, we could have reversed the two lines and registered the
 interceptor before the component.
 
+<h4>Container Supplied Advice</h4>
 <p>
 Advice objects may themselves be components in the <code>PicoContainer</code>:
 
@@ -84,6 +85,14 @@ Advice objects may themselves be components in the <code>PicoContainer</code>:
     // you can specify the component key of the advice object:
     pico.registerInterceptor(cuts.component("myDao"), cuts.allMethods(), "logger");
 </pre>
+
+Mixins are a special case.  While you <i>can</i> register a mixin as an explicit component in the 
+container, you usually don't want to.  Applying the same mixin instance as advice to multiple 
+components would in effect mean that multiple components would share the same base class object - sharing
+the same instances variables, etc.  This is usually not a good thing.   However, you may specify a mixin 
+<i>class</i> that has dependencies on components in the container.  The container will instantiate
+a new mixin object for each component that it applies the mixin to, but will satisfy any 
+dependencies the mixin has from components in the container, using constructor injection.
 
 <h4>Pointcuts</h4>
 Notice the use of the {@link org.nanocontainer.nanoaop.PointcutsFactory}, <code>cuts</code>, in the
@@ -124,7 +133,8 @@ A groovy configuration file might look like this:
 </pre>
 
 <h2>Limitations</h2>
-Components that have aspects applied to them must implement an interface. 
+Components that have aspects applied to them must implement an interface. Advice is not applied to components registered 
+via <code>registerComponentInstance</code>, or for components supplied via a custom <code>ComponentAdapter</code>.
 
 </body>
 </html>

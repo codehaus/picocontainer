@@ -15,9 +15,13 @@ import org.nanocontainer.nanoaop.AspectablePicoContainer;
 import org.nanocontainer.nanoaop.AspectablePicoContainerFactory;
 import org.nanocontainer.nanoaop.Dao;
 import org.nanocontainer.nanoaop.DaoImpl;
+import org.nanocontainer.nanoaop.IdGenerator;
+import org.nanocontainer.nanoaop.IdGeneratorImpl;
 import org.nanocontainer.nanoaop.Identifiable;
 import org.nanocontainer.nanoaop.IdentifiableMixin;
 import org.nanocontainer.nanoaop.LoggingInterceptor;
+import org.nanocontainer.nanoaop.OrderEntity;
+import org.nanocontainer.nanoaop.OrderEntityImpl;
 import org.nanocontainer.nanoaop.PointcutsFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -91,13 +95,21 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
     }
 
     public void testContainerSuppliedMixin() {
-        pico.registerMixin(cuts.instancesOf(Dao.class), new Class[] { Identifiable.class }, IdentifiableMixin.class);
+        pico.registerComponentImplementation(IdGenerator.class, IdGeneratorImpl.class);
+        pico.registerComponentImplementation("order1", OrderEntityImpl.class);
+        pico.registerComponentImplementation("order2", OrderEntityImpl.class);
+        pico.registerMixin(cuts.instancesOf(OrderEntity.class), new Class[] { Identifiable.class },
+                IdentifiableMixin.class);
 
-        pico.registerComponentImplementation(IdentifiableMixin.class);
-        pico.registerComponentImplementation(Dao.class, DaoImpl.class);
+        Identifiable i1 = (Identifiable) pico.getComponentInstance("order1");
+        Identifiable i2 = (Identifiable) pico.getComponentInstance("order2");
 
-        Dao dao = (Dao) pico.getComponentInstance(Dao.class);
-        verifyMixin(dao);
+        assertEquals(new Integer(1), i1.getId());
+        assertEquals(new Integer(2), i2.getId());
+
+        i1.setId(new Integer(3));
+        assertEquals(new Integer(3), i1.getId());
+        assertEquals(new Integer(2), i2.getId());
     }
 
     public void testComponentMixin() {
@@ -115,17 +127,22 @@ public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractNanoao
     }
 
     public void testContainerSuppliedComponentMixin() {
-        pico.registerMixin(cuts.component("hasMixin"), new Class[] { Identifiable.class }, IdentifiableMixin.class);
+        pico.registerComponentImplementation(IdGenerator.class, IdGeneratorImpl.class);
+        pico.registerMixin(cuts.componentName("hasMixin*"), new Class[] { Identifiable.class }, IdentifiableMixin.class);
+        pico.registerComponentImplementation("hasMixin1", OrderEntityImpl.class);
+        pico.registerComponentImplementation("hasMixin2", OrderEntityImpl.class);
+        pico.registerComponentImplementation("noMixin", OrderEntityImpl.class);
 
-        pico.registerComponentImplementation(IdentifiableMixin.class);
-        pico.registerComponentImplementation("hasMixin", DaoImpl.class);
-        pico.registerComponentImplementation("noMixin", DaoImpl.class);
+        OrderEntity hasMixin1 = (OrderEntity) pico.getComponentInstance("hasMixin1");
+        OrderEntity hasMixin2 = (OrderEntity) pico.getComponentInstance("hasMixin2");
+        OrderEntity noMixin = (OrderEntity) pico.getComponentInstance("noMixin");
 
-        Dao hasMixin = (Dao) pico.getComponentInstance("hasMixin");
-        Dao noMixin = (Dao) pico.getComponentInstance("noMixin");
-
-        verifyMixin(hasMixin);
-        verifyNoMixin(noMixin);
+        assertTrue(hasMixin1 instanceof Identifiable);
+        assertTrue(hasMixin2 instanceof Identifiable);
+        assertFalse(noMixin instanceof Identifiable);
+        
+        assertEquals(new Integer(1), ((Identifiable) hasMixin1).getId());
+        assertEquals(new Integer(2), ((Identifiable) hasMixin2).getId());
     }
 
     public void testMixinExplicitInterfaces() {

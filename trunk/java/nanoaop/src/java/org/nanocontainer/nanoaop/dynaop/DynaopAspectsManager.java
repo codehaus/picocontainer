@@ -111,20 +111,21 @@ public class DynaopAspectsManager implements AspectsManager {
     }
 
     public void registerMixin(ClassPointcut classPointcut, Class mixinClass) {
-        containerAspects.mixin(getClassPointcut(classPointcut), Classes.getAllInterfaces(mixinClass),
-                new ContainerSuppliedMixinFactory(container, mixinClass));
+        registerMixin(classPointcut, Classes.getAllInterfaces(mixinClass), mixinClass);
     }
 
     public void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Class mixinClass) {
-        containerAspects.mixin(getClassPointcut(classPointcut), interfaces, mixinClass, null);
+        containerAspects.mixin(getClassPointcut(classPointcut), interfaces, new ContainerSuppliedMixinFactory(
+                container, mixinClass));
     }
 
     public void registerMixin(ComponentPointcut componentPointcut, Class mixinClass) {
-        componentAspects.add(new MixinComponentAspect(componentPointcut, mixinClass));
+        registerMixin(componentPointcut, Classes.getAllInterfaces(mixinClass), mixinClass);
     }
 
     public void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Class mixinClass) {
-        componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces, mixinClass));
+        componentAspects.add(new MixinComponentAspect(componentPointcut, interfaces, new ContainerSuppliedMixinFactory(
+                container, mixinClass)));
     }
 
     public void registerInterfaces(ClassPointcut classPointcut, Class[] interfaces) {

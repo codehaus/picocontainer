@@ -98,6 +98,27 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         dao = pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
+    
+    public void testContainerSuppliedMixin() {
+        pico = builder.container() {
+            component(key:'order1', class:OrderEntityImpl)
+            component(key:'order2', class:OrderEntityImpl)
+            component(key:IdGenerator, class:IdGeneratorImpl)
+            aspect(classCut:cuts.instancesOf(OrderEntity), mixinClass:IdentifiableMixin)
+        }
+        
+        order1 = pico.getComponentInstance('order1')
+        order2 = pico.getComponentInstance('order2')
+        
+        assertTrue(order1 instanceof Identifiable)
+        assertTrue(order2 instanceof Identifiable)
+        assertEquals(new Integer(1), order1.id)
+        assertEquals(new Integer(2), order2.id)
+        
+        order1.id = new Integer(42)
+        assertEquals(new Integer(42), order1.id)
+        assertEquals(new Integer(2), order2.id)
+    }
   
     public void testContainerScopedMixinExplicitInterfaces() {
         pico = builder.container() {

@@ -102,7 +102,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 for (Iterator iterator = parentWeakReferences.iterator(); iterator.hasNext();) {
                     WeakReference wr = (WeakReference) iterator.next();
                     if (wr.get() == null) {
-                        parentWeakReferences.remove(wr);
+                        iterator.remove();
                     } else {
                         MutablePicoContainer delegate = (MutablePicoContainer) wr.get();
                         ComponentAdapter componentAdapter = delegate.findComponentAdapter(componentKey);

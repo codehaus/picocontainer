@@ -4,7 +4,24 @@
     xmlns:util="jelly:util"
     xmlns:ant="jelly:ant"
     xmlns:artifact="artifact"
-    xmlns:deploy="deploy">
+    xmlns:deploy="deploy"
+    xmlns:define="jelly:define"
+    xmlns:sample="sample">
+
+	<j:set var="webapp" value="${maven.build.dir}/${pom.artifactId}"/>
+	<j:set var="maven.war.src" value="${webapp}"/>
+    <define:taglib uri="sample">	    
+        <define:tag name="buildWar">
+	        <j:set var="framework" value="${framework}"/>
+	        <delete dir="${webapp}"/>
+	        <copy todir="${webapp}">
+    	        <fileset dir="${basedir}/src/webapps/${framework}"/>
+        	</copy>
+	        <attainGoal name="war:install"/>
+	   		<ant:copy file="${maven.build.dir}/${pom.artifactId}.war" 
+	   				tofile="${maven.build.dir}/${pom.artifactId}-${framework}.war"/>	
+        </define:tag>
+    </define:taglib>
 
     <goal name="binary:install" prereqs="war:install"/>
     <goal name="binary:deploy" prereqs="war:install">
@@ -16,28 +33,37 @@
             />
     </goal>
 
-   <goal name="tomcat:deploy" prereqs="war:install">
-		<ant:property environment="env"/>
-   		<ant:copy file="${maven.build.dir}/${pom.artifactId}.war" todir="${env.TOMCAT_HOME}/webapps"/>
-		<ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}" failonerror="false"/>
+    <goal name="build">     
+        <sample:buildWar framework="nanoweb"/>
+        <sample:buildWar framework="struts"/>
+        <sample:buildWar framework="webwork"/>
     </goal>
 
+    <goal name="deploy:tomcat" prereqs="build">
+		<ant:property environment="env"/>
+   		<ant:copy todir="${env.TOMCAT_HOME}/webapps">
+   			<ant:fileset dir="${maven.build.dir}">
+   				<ant:include name="${pom.artifactId}-*.war"/>
+   			</ant:fileset>
+   		</ant:copy>
+		<ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-nanoweb" failonerror="false"/>
+		<ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-struts" failonerror="false"/>
+		<ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-webwork" failonerror="false"/>
+ 	</goal>
+ 	   
     <preGoal name="test:test">
-        <copy todir="${basedir}/target/nanocontainer-sample-nanowar/">
-            <fileset dir="${basedir}/src/webapp"/>
-        </copy>
-        <mkdir dir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/classes"/>
-        <copy todir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/classes">
+        <mkdir dir="${webapp}/WEB-INF/classes"/>
+        <copy todir="${webapp}/WEB-INF/classes">
             <fileset dir="${basedir}/target/classes"/>
         </copy>
 
-        <mkdir dir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/lib"/>
+        <mkdir dir="${webapp}/WEB-INF/lib"/>
 
         <j:forEach var="lib" items="${pom.artifacts}">
             <j:set var="dep" value="${lib.dependency}"/>
             <j:if test="${dep.getProperty('war.bundle')=='true'}">
                 <j:if test="${dep.type =='jar'}">
-                    <copy todir="${basedir}/target/nanocontainer-sample-nanowar/WEB-INF/lib" file="${lib.path}"/>
+                    <copy todir="${webapp}/WEB-INF/lib" file="${lib.path}"/>
                 </j:if>
             </j:if>
         </j:forEach>

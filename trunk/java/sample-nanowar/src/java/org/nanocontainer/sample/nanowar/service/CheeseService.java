@@ -21,6 +21,8 @@ public interface CheeseService {
 
     public Collection getCheeses();
 
+    public Cheese find(Cheese example);
+
     public void save(Cheese cheese);
 
 }

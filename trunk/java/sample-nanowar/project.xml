@@ -46,9 +46,8 @@
         </dependency>
         
         <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
-            <version>${pom.currentVersion}</version>
+            <id>xstream</id>
+            <version>1.0.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -85,7 +84,7 @@
 
         <dependency>
             <id>velocity</id>
-            <version>1.4-rc1</version>
+            <version>1.4</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -108,18 +107,18 @@
         </dependency>
 
         <dependency>
-            <id>commons-logging</id>
-            <version>1.0.4</version>
-            <properties>
-                <war.bundle>false</war.bundle>
-            </properties>
-        </dependency>
-
-        <dependency>
             <id>struts</id>
             <version>1.1</version>
             <properties>
                 <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+            <properties>
+                <war.bundle>false</war.bundle>
             </properties>
         </dependency>
         
@@ -146,16 +145,26 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-        
+
         <dependency>
-            <id>xstream</id>
-            <version>1.0.2</version>
+            <groupId>opensymphony</groupId>
+            <artifactId>webwork</artifactId>
+            <version>1.4</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
 
         <!-- For acceptance test only -->
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
 
         <dependency>
             <id>proxytoys</id>

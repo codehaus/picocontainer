@@ -646,4 +646,34 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertEquals(expectedList, visitedList);
     }
 
+    public void testAmbiguousDependencies() throws PicoRegistrationException, PicoInitializationException {
+
+        MutablePicoContainer pico = this.createPicoContainer(null);
+
+        // Register two Touchables that Fred will be confused about
+        pico.registerComponentImplementation(SimpleTouchable.class);
+        pico.registerComponentImplementation(DerivedTouchable.class);
+
+        // Register a confused DependsOnTouchable
+        pico.registerComponentImplementation(DependsOnTouchable.class);
+
+        try {
+            pico.getComponentInstance(DependsOnTouchable.class);
+            fail("DependsOnTouchable should have been confused about the two Touchables");
+        } catch (AmbiguousComponentResolutionException e) {
+            List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());
+            assertTrue(componentImplementations.contains(DerivedTouchable.class));
+            assertTrue(componentImplementations.contains(SimpleTouchable.class));
+
+            assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);
+        }
+    }
+
+    public static class DerivedTouchable extends SimpleTouchable {
+        public DerivedTouchable() {
+        }
+    }
+
+
+
 }

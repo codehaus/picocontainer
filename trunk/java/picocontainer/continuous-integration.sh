@@ -18,11 +18,9 @@
 # Finally, to get the full picture, see maven.xml
 #
 
-cd $HOME/cvs/pico
+cd /usr/local/builds/picocontainer
 
 cvs -d:ext:$USER@cvs.codehaus.org:/cvsroot/picocontainer update -d -P
-# After CVS update, this script isn't +x anymore (?). Simple workaround.
-chmod +x continuous-integration.sh
 
 # Clean old builds and make the target folder. Logs go here too.
 rm -Rf target
@@ -45,9 +43,9 @@ else
     # Deploy site only if compile and tests pass. Logs currently not used.
     # Must be run separately to get the files uploaded in the proper dir
     # on the server.
-    maven jar:deploy &> target/jardeploy.log
-    maven dist:deploy &> target/distdeploy.log
+    maven -Dmaven.username=$USER jar:deploy &> target/jardeploy.log
+    maven -Dmaven.username=$USER dist:deploy &> target/distdeploy.log
   fi
   # We'll deploy the site even if the tests fail. Log currently not used.
-  maven site:deploy &> target/sitedeploy.log
+  maven -Dmaven.username=$USER site:deploy &> target/sitedeploy.log
 fi

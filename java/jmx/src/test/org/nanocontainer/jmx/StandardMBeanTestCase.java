@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import javax.management.ObjectName;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
+import javax.management.NotCompliantMBeanException;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -55,4 +56,27 @@ public class StandardMBeanTestCase extends TestCase {
 		assertTrue(wilma.helloCalled());
 	}
 
+	public void testForceInterfaceImplementation() throws Exception {
+		FooBar fooBar = new FooBar();
+		ComponentAdapter componentAdapter = new StandardMBeanComponentAdapter(objectName, fooBar, FooBarInterface.class);
+		pico.registerComponent(componentAdapter);
+
+		// validate registration
+		assertFalse(mbeanServer.isRegistered(objectName));
+		pico.getComponentInstances();
+		assertTrue(mbeanServer.isRegistered(objectName));
+
+		assertFalse("FooBar should NOT be an instance of FooBarInterface", fooBar instanceof FooBarInterface);
+        assertEquals(new Integer(1), mbeanServer.getAttribute(objectName, "Count"));
+	}
+
+	public void testInvalidMBeanScenario() {
+		FooBar fooBar = new FooBar();
+		try {
+			new StandardMBeanComponentAdapter(objectName, fooBar, ObjectName.class);
+			fail("NotCompliantMBeanException should have been thrown");
+		} catch (NotCompliantMBeanException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -38,7 +38,7 @@ public class JythonContainerAssemblerTestCase extends TestCase {
         try {
             Reader script = new StringReader("" +
                     "rootContainer.registerComponentImplementation('org.picoextras.testmodel.WebServerImpl')\n" +
-                    "childContainer = DefaultReflectionFrontEnd(rootContainer)\n" +
+                    "childContainer = DefaultReflectionContainerAdapter(rootContainer)\n" +
                     "childContainer.registerComponentImplementation('org.picoextras.testmodel.DefaultWebServerConfig')\n");
             PicoContainer pico = assemble(script);
             pico.getComponentInstanceOfType(WebServer.class);
@@ -51,7 +51,7 @@ public class JythonContainerAssemblerTestCase extends TestCase {
         Reader script = new StringReader("" +
                 "rootContainer.registerComponentImplementation('org.picoextras.testmodel.DefaultWebServerConfig')\n" +
                 "rootContainer.registerComponentImplementation('child', 'org.picocontainer.defaults.DefaultPicoContainer')\n" +
-                "childContainer = DefaultReflectionFrontEnd(rootContainer.getPicoContainer().getComponentInstance('child'))\n" +
+                "childContainer = DefaultReflectionContainerAdapter(rootContainer.getPicoContainer().getComponentInstance('child'))\n" +
                 "childContainer.registerComponentImplementation('org.picoextras.testmodel.WebServerImpl')\n");
         PicoContainer pico = assemble(script);
         PicoContainer child = (PicoContainer) pico.getComponentInstance("child");

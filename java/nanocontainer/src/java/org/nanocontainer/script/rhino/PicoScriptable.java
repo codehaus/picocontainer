@@ -17,8 +17,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picoextras.reflection.DefaultReflectionFrontEnd;
-import org.picoextras.reflection.ReflectionFrontEnd;
+import org.picoextras.reflection.DefaultReflectionContainerAdapter;
+import org.picoextras.reflection.ReflectionContainerAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +33,11 @@ import java.util.Stack;
  */
 public class PicoScriptable extends ScriptableObject implements Scriptable {
 
-    private ReflectionFrontEnd reflectionFrontEnd;
+    private ReflectionContainerAdapter reflectionFrontEnd;
     static MutablePicoContainer picoContainer;
 
     public PicoScriptable(PicoScriptable parent) {
-        reflectionFrontEnd = new DefaultReflectionFrontEnd(parent.reflectionFrontEnd);
+        reflectionFrontEnd = new DefaultReflectionContainerAdapter(parent.reflectionFrontEnd);
     }
 
     public PicoScriptable() {
@@ -56,22 +56,22 @@ public class PicoScriptable extends ScriptableObject implements Scriptable {
                 picoScriptable = new PicoScriptable();
                 Object arg = ((NativeJavaObject) args[0]).unwrap();
                 if (arg instanceof MutablePicoContainer) {
-                    picoScriptable.reflectionFrontEnd = new DefaultReflectionFrontEnd(new DefaultPicoContainer((ComponentAdapterFactory) arg));
+                    picoScriptable.reflectionFrontEnd = new DefaultReflectionContainerAdapter(new DefaultPicoContainer((ComponentAdapterFactory) arg));
                 } else if (arg instanceof MutablePicoContainer) {
-                    picoScriptable.reflectionFrontEnd = new DefaultReflectionFrontEnd((MutablePicoContainer) arg);
-                } else if (arg instanceof ReflectionFrontEnd) {
-                    picoScriptable.reflectionFrontEnd = (ReflectionFrontEnd) arg;
+                    picoScriptable.reflectionFrontEnd = new DefaultReflectionContainerAdapter((MutablePicoContainer) arg);
+                } else if (arg instanceof ReflectionContainerAdapter) {
+                    picoScriptable.reflectionFrontEnd = (ReflectionContainerAdapter) arg;
                 } else {
                     List allowed = new ArrayList();
                     allowed.add(ComponentAdapterFactory.class.getName());
                     allowed.add(MutablePicoContainer.class.getName());
-                    allowed.add(ReflectionFrontEnd.class.getName());
+                    allowed.add(ReflectionContainerAdapter.class.getName());
                     throw new IllegalArgumentException("Argument passed in should be one of " + allowed.toString());
                 }
             }
         } else {
             picoScriptable = new PicoScriptable();
-            picoScriptable.reflectionFrontEnd = new DefaultReflectionFrontEnd(picoContainer);
+            picoScriptable.reflectionFrontEnd = new DefaultReflectionContainerAdapter(picoContainer);
         }
         return picoScriptable;
     }

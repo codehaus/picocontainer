@@ -25,13 +25,13 @@ import java.net.MalformedURLException;
 public class DefaultReflectionFrontEndTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServer", "org.picoextras.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.DefaultWebServerConfig");
         reflectionFrontEnd.registerComponentImplementation("org.picoextras.testmodel.WebServerImpl");
 
@@ -40,7 +40,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
         try {
             reflectionFrontEnd.registerComponentImplementation("Ping");
             fail("should have failed");
@@ -50,7 +50,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     }
 
     public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
-        ReflectionFrontEnd reflectionFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter reflectionFrontEnd = new DefaultReflectionContainerAdapter();
         String className = ThingThatTakesParamsInConstructor.class.getName();
 
         reflectionFrontEnd.registerComponentImplementation(
@@ -85,7 +85,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         assertTrue(testCompJar2.isFile());
 
         // Set up parent
-        ReflectionFrontEnd parentFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter parentFrontEnd = new DefaultReflectionContainerAdapter();
         parentFrontEnd.addClassLoaderURL(testCompJar.toURL());
         parentFrontEnd.registerComponentImplementation("parentTestComp", "TestComp");
 
@@ -94,7 +94,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
+        ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(parentFrontEnd);
         childFrontEnd.addClassLoaderURL(testCompJar2.toURL());
         childFrontEnd.registerComponentImplementation("childTestComp", "TestComp2");
 
@@ -115,7 +115,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
     }
 
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException, ClassNotFoundException {
-        ReflectionFrontEnd parentFrontEnd = new DefaultReflectionFrontEnd();
+        ReflectionContainerAdapter parentFrontEnd = new DefaultReflectionContainerAdapter();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -129,7 +129,7 @@ public class DefaultReflectionFrontEndTestCase extends TestCase {
         Object fooWebServerConfig = parentFrontEnd.getPicoContainer().getComponentInstance("foo");
         assertEquals("org.picoextras.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        ReflectionFrontEnd childFrontEnd = new DefaultReflectionFrontEnd(parentFrontEnd);
+        ReflectionContainerAdapter childFrontEnd = new DefaultReflectionContainerAdapter(parentFrontEnd);
         childFrontEnd.addClassLoaderURL(testCompJar.toURL());
         childFrontEnd.registerComponentImplementation("bar", "TestComp");
 

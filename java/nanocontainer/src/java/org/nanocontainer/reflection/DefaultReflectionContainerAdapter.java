@@ -26,13 +26,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * This class is a front-end to {@link MutablePicoContainer} that uses reflection
- * to register components.
- * <p/>
- *
  * @author Aslak Helles&oslash;y
  */
-public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
+public class DefaultReflectionContainerAdapter implements ReflectionContainerAdapter {
     private static final Map primitiveNameToBoxedName = new HashMap();
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -54,24 +50,24 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
 
     // Either supplied specifically or built up by added URLs.
     private ClassLoader classLoader;
-    private ReflectionFrontEnd parent;
+    private ReflectionContainerAdapter parent;
 
-    public DefaultReflectionFrontEnd(ClassLoader classLoader, MutablePicoContainer picoContainer) {
+    public DefaultReflectionContainerAdapter(ClassLoader classLoader, MutablePicoContainer picoContainer) {
         this.classLoader = classLoader;
         this.picoContainer = picoContainer;
     }
 
-    public DefaultReflectionFrontEnd(ClassLoader classLoader) {
+    public DefaultReflectionContainerAdapter(ClassLoader classLoader) {
         this(classLoader,
                 new DefaultPicoContainer());
     }
 
-    public DefaultReflectionFrontEnd(MutablePicoContainer picoContainer) {
-        this((DefaultReflectionFrontEnd) null,
+    public DefaultReflectionContainerAdapter(MutablePicoContainer picoContainer) {
+        this((DefaultReflectionContainerAdapter) null,
                 picoContainer);
     }
 
-    public DefaultReflectionFrontEnd(ReflectionFrontEnd parent, MutablePicoContainer picoContainer) {
+    public DefaultReflectionContainerAdapter(ReflectionContainerAdapter parent, MutablePicoContainer picoContainer) {
         this.parent = parent;
         this.picoContainer = picoContainer;
         if (parent != null) {
@@ -80,12 +76,12 @@ public class DefaultReflectionFrontEnd implements ReflectionFrontEnd {
         }
     }
 
-    public DefaultReflectionFrontEnd(ReflectionFrontEnd parent) {
+    public DefaultReflectionContainerAdapter(ReflectionContainerAdapter parent) {
         this(parent, new DefaultPicoContainer());
     }
 
-    public DefaultReflectionFrontEnd() {
-        this((DefaultReflectionFrontEnd) null,
+    public DefaultReflectionContainerAdapter() {
+        this((DefaultReflectionContainerAdapter) null,
                 new DefaultPicoContainer());
     }
 

@@ -11,7 +11,7 @@ package org.picoextras.servlet;
 import org.picocontainer.defaults.ObjectReference;
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.integrationkit.ContainerBuilder;
-import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.picoextras.integrationkit.LifecycleContainerBuilder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -42,7 +42,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
 
-        containerBuilder = new DefaultLifecycleContainerBuilder();
+        containerBuilder = new LifecycleContainerBuilder();
         builderRef.set(containerBuilder);
 
         containerBuilder.buildContainer(containerRef, null, assembler, context);

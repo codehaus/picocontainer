@@ -9,6 +9,7 @@
  *****************************************************************************/
 
 package org.picoextras.reflection;
+// TODO: move to org.picoextras.script.reflection ?
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -18,13 +19,13 @@ import org.picocontainer.ComponentAdapter;
 import java.net.URL;
 
 /**
- * TODO: rename to ReflectionContainerAdapter?
- * This class is a front-end to {@link MutablePicoContainer} that uses reflection
- * to register components.
- * <p/>
- * This class replaces the former StringRegistrationNanoContainer.
+ * This class adapts a {@link MutablePicoContainer} through a similar API that
+ * is based only on Strings. (It uses reflection to look up classes before registering them
+ * with the adapted container). This adapter API is used primarily by the various scripting
+ * based {@link org.picoextras.integrationkit.ContainerAssembler}s in the org.picoextras.script
+ * package.
  */
-public interface ReflectionFrontEnd {
+public interface ReflectionContainerAdapter {
 
     ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 

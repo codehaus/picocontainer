@@ -26,7 +26,7 @@ public class DefaultLifecycleContainerBuilderTestCase extends TestCase {
     }
 
     public void testBuildContainerCreatesANewChildContainer() {
-        DefaultLifecycleContainerBuilder builder = new DefaultLifecycleContainerBuilder();
+        LifecycleContainerBuilder builder = new LifecycleContainerBuilder();
         Mock containerAssembler = new Mock(ContainerAssembler.class);
         containerAssembler.expect("assembleContainer", C.ANY_ARGS);
 

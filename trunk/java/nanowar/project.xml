@@ -121,8 +121,13 @@
         <dependency>
             <id>struts</id>
             <version>1.1</version>
-        </dependency>            
+        </dependency>
 
+        <dependency>
+            <id>axis</id>
+            <version>1.1</version>
+        </dependency>
+        
     </dependencies>
 
 </project>

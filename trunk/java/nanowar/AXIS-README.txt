@@ -16,18 +16,18 @@ Usage (steps 1 and 2 as per the servlet/webwork integration):
 3. Register your service in your Axis WSDD using the custom provider:
 
 <service name="MyService" provider="Handler">
-  <parameter name="handlerClass" value="org.nanocontainer.axis.NanoRPCProvider"/>
+  <parameter name="handlerClass" value="org.nanocontainer.nanowar.axis.NanoRPCProvider"/>
   <parameter name="className" value="com.company.MyService"/>
   <parameter name="allowedMethods" value="*"/>
 </service>
 
-or if you want to use message-style encoding use org.nanocontainer.axis.NanoMsgProvider.
+or if you want to use message-style encoding use org.nanocontainer.nanowar.axis.NanoMsgProvider.
 
 4. Register the servlet:
 
 <servlet>
   <servlet-name>AxisServlet</servlet-name>
   <display-name>Apache-Axis Servlet</display-name>
-  <servlet-class>org.nanocontainer.axis.NanoAxisServlet</servlet-class>
+  <servlet-class>org.nanocontainer.nanowar.axis.NanoAxisServlet</servlet-class>
 </servlet>
  

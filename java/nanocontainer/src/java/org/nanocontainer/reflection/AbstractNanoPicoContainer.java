@@ -102,8 +102,8 @@ public abstract class AbstractNanoPicoContainer implements NanoPicoContainer, Se
         return makeChildContainer("containers" + namedChildContainers.size());
     }
 
-    public void removeChildContainer(PicoContainer child) {
-        delegate.removeChildContainer(child);
+    public boolean removeChildContainer(PicoContainer child) {
+        boolean result = delegate.removeChildContainer(child);
         Iterator children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
             Map.Entry e = (Map.Entry) children.next();
@@ -112,6 +112,7 @@ public abstract class AbstractNanoPicoContainer implements NanoPicoContainer, Se
                 children.remove();
             }
         }
+        return result;
     }
 
     protected final Map getNamedContainers() {
@@ -243,9 +244,10 @@ public abstract class AbstractNanoPicoContainer implements NanoPicoContainer, Se
         return delegate.getComponentInstancesOfType(type);
     }
 
-    public void addChildContainer(PicoContainer child) {
-        delegate.addChildContainer(child);
+    public boolean addChildContainer(PicoContainer child) {
+        boolean result = delegate.addChildContainer(child);
         namedChildContainers.put("containers" + namedChildContainers.size(), child);
+        return result;
     }
 
     public void addChildContainer(String name, PicoContainer child) {

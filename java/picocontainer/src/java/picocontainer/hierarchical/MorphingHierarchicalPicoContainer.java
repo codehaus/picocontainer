@@ -30,8 +30,6 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.HashSet;
 
-import nanocontainer.servlet.ObjectHolder;
-
 public class MorphingHierarchicalPicoContainer extends HierarchicalPicoContainer {
 
     public static final int REVERSE_INSTANTIATION_ORDER = 11;

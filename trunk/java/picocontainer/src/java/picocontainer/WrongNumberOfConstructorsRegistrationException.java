@@ -10,11 +10,11 @@
 
 package picocontainer;
 
-public class WrongNumberOfConstructorsStartException extends PicoStartException {
+public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
 
     int numOfCtors;
 
-    public WrongNumberOfConstructorsStartException(int numOfCtors) {
+    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
         this.numOfCtors = numOfCtors;
     }
 

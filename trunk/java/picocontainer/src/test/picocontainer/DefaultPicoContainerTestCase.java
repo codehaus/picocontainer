@@ -272,24 +272,14 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public static class Horse {
-        public Horse() {
-        }
-        public Horse(Vector v) {
-        }
-    }
-
     public void testTooManyContructors() throws PicoRegistrationException, PicoStartException {
 
         PicoContainer pico = new PicoContainerImpl.Default();
 
-        pico.registerComponent(Vector.class);
-        pico.registerComponent(Horse.class);
-
         try {
-            pico.start();
-            fail("Should only have one constructor");
-        } catch (WrongNumberOfConstructorsStartException e) {
+            pico.registerComponent(Vector.class);
+            fail("Should fail because there are more than one constructors");
+        } catch (WrongNumberOfConstructorsRegistrationException e) {
             // expected;
         }
 
@@ -339,8 +329,6 @@ public class DefaultPicoContainerTestCase extends TestCase {
         try {
             proxyFoo.setBar("Zap");
         } catch (UndeclaredThrowableException e) {
-            e.printStackTrace();
-            e.getUndeclaredThrowable().printStackTrace();
             throw e;
         }
 

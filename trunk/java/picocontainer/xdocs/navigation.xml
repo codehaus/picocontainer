@@ -1,0 +1,18 @@
+<project name="picocontainer" repository="picocontainer" href="http://picocontainer.codehaus.org">
+
+  <title>PicoContainer</title>
+
+  <body>
+    <links>
+      <item name="NanoContainer"       href="http://nanocontainer.codehaus.org/"/>
+      <item name="Download"            href="/download.html"/>
+    </links>
+
+    <menu name="PicoContainer">
+      <item name="Introduction"        href="/introduction.html"/>
+      <item name="License"             href="/license.html"/>
+      <item name="Download"            href="/download.html"/>
+    </menu>
+  </body>
+
+</project>

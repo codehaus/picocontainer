@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Introduction</h1>
+PicoContainer is very simple container for very simple
+components.&nbsp; It honors the Inversion of control pattern (IoC) in a
+way that we calling it type 3 IoC.&nbsp; See below for types.<br>
+<br>
+PicoContainer components declare their needs in their contructor.&nbsp;
+A PicoContainer resolves needs at time on instantiation of the
+component.&nbsp; We have a restriction in that PicoContainer comps must
+only have one constructor. We don't think thats a bad restriction.
+Especially as the XP "change it when you need to" has not delivered a
+use case that would preclude this design yet.&nbsp; We also can't allow
+primatives in the constructor. In skeletal form, here is the simplest
+possible PicoContainer compatible component :<br>
+<br>
+<pre>&nbsp; public class Shop {
+&nbsp;&nbsp;&nbsp; public Shop(StockManager stockManager) {
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }</pre>
+<br>
+Imagine there were a component that could satisfy that like so :<br>
+<br>
+<pre>&nbsp; public class StockManager {
+&nbsp; }</pre>
+<br>
+We love this design because we see the components being used without a
+container :<br>
+<br>
+<pre>&nbsp; new Shop(new StockManager());</pre>
+<br>
+But also with a PicoContainer :<br>
+<br>
+<pre>&nbsp; PicoContainer pc = SomePicoContainer();
+&nbsp; pc.registerComponent(StockManager.class)
+&nbsp; pc.registerComponent(Shop.class)
+&nbsp; pc.start();</pre>
+<br>
+And perhaps some as yet unwritten PicoContainer :<br>
+<br>
+<pre>&nbsp; MoonscapeContainer mc = new MoonscapeContainer();
+&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
+<br>
+It does not matter how things are laced together. It does not matter
+how tightly bound one PicoContainer is to an individual purpose.&nbsp;
+The important thing is actually the components and how they are laced
+toegether.<br>
+<h2>History</h2>
+<h3>Type 1</h3>
+Apache's Avalon project has been selling the IoC patten for many years
+now.&nbsp; The Avalon-Framework design laces together components like
+so:<br>
+<br>
+<pre>&nbsp; class Shop implements Serviceable {
+&nbsp;&nbsp;&nbsp; StockManager stockManager;
+&nbsp;&nbsp;&nbsp; public void service(ServiceManager sm) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }</pre>
+<br>
+A component has to have service (component) declaratrions in some
+external file. The popular Phoenix container had .xinfo files for such
+needs.<br>
+<h3>Type 2</h3>
+Joe Walnes whist working on a book with other luminaries, started a
+type 2 IoC design. This is marked up with doclet tags (though that is
+not hard and fast) :<br>
+<pre>&nbsp; class Shop {
+&nbsp;&nbsp;&nbsp; StockManager stockManager;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;/**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+&nbsp;&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }</pre>
+<h3>Type 3</h3>
+Rachel Davies, while reviewing Joe's book, left a Fermat-like margin
+note when view a snipped like the above.&nbsp; "Why not use
+constructors ?".&nbsp; Brilliant and simple.<br>
+<pre>&nbsp; class Shop {
+&nbsp;&nbsp;&nbsp; StockManager stockManager;
+&nbsp;&nbsp;&nbsp; public Shop(StockManager stockManager) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }</pre>
+<br>
+Note, for this there is no need to declare needs in any other way. No
+Doclet tags, no external XML.<br>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Message from NanoWeb: ${action.message}
+
+<form action="demo.nano">
+  <input name="message" type="text"/>
+  <input type="submit" value="Set new message"/>
+</form>

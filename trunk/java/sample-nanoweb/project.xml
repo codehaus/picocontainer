@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-sample-nanoweb</id>
+    <name>nanocontainer-sample-nanoweb</name>
+    <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
+
+    <dependencies>
+
+        <dependency>
+            <id>servletapi</id>
+            <version>2.3</version>
+        </dependency>
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>1.0-RC-1-SNAPSHOT</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-servlet</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!--
+        Groovy and ASM only needed if using Groovy to
+        assemble the contaqiner in web.xml
+        -->
+        <dependency>
+            <id>groovy</id>
+            <version>1.0-beta-4-snapshot</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>asm</id>
+            <version>1.4.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>velocity</id>
+            <version>1.4-rc1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>ognl</id>
+            <version>2.5.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+<!-- Uncomment for Servlet containers that don't bundle commons-logging -->
+<!--        <dependency>-->
+<!--            <id>commons-logging</id>-->
+<!--            <version>1.0.2</version>-->
+<!--            <properties>-->
+<!--                <war.bundle>true</war.bundle>-->
+<!--            </properties>-->
+<!--        </dependency>-->
+
+    </dependencies>
+
+</project>

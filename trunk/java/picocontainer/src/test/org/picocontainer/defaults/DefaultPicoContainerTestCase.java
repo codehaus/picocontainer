@@ -14,6 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -36,6 +37,10 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
+    }
+
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
+        return new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager);
     }
 
     // to go to parent testcase ?
@@ -168,6 +173,11 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
             String doc = DependsOnCollection.class.getName();
             assertEquals("class " + doc + " has ambiguous dependency on interface java.util.Collection, resolves to multiple classes: [class java.util.ArrayList, class java.util.LinkedList]", expected.getMessage());
         }
+    }
+
+    public void testMakingOfChildContainerPercolatesLifecycleManager() {
+        super.testMakingOfChildContainerPercolatesLifecycleManager();
+
     }
 
 

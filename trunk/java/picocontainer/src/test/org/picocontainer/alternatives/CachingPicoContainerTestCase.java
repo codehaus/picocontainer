@@ -12,6 +12,7 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -31,6 +32,10 @@ public class CachingPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new CachingPicoContainer(parent);
+    }
+
+    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
+        return new CachingPicoContainer(parent, lifecycleManager);
     }
 
     public void testUsageOfADifferentComponentAdapterFactory() {

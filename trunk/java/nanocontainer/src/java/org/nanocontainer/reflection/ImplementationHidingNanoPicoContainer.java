@@ -11,12 +11,13 @@
 package org.nanocontainer.reflection;
 
 import org.nanocontainer.NanoPicoContainer;
-import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultLifecycleManager;
 import org.picocontainer.defaults.NullComponentMonitor;
 
 import java.io.Serializable;
@@ -37,11 +38,21 @@ import java.io.Serializable;
  * Suggest something with DefaultNanoPicoContainer and its ctor.
  */
 public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoContainer implements NanoPicoContainer, Serializable {
-    private ComponentMonitor componentMonitor;
 
-    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new ImplementationHidingPicoContainer(caf, parent), classLoader);
-        this.componentMonitor = componentMonitor;
+    private LifecycleManager lifecycleManager;
+
+    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
+        super(new ImplementationHidingPicoContainer(caf, parent, lifecycleManager), classLoader);
+        this.lifecycleManager = lifecycleManager;
+    }
+
+    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
+        this(classLoader, caf, parent, new DefaultLifecycleManager());
+    }
+
+
+    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, LifecycleManager lifecycleManager) {
+        super(new ImplementationHidingPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager), classLoader);
     }
 
     public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
@@ -62,7 +73,7 @@ public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoConta
 
     public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = container.getComponentClassLoader();
-        ImplementationHidingNanoPicoContainer child = new ImplementationHidingNanoPicoContainer(currentClassloader, this);
+        ImplementationHidingNanoPicoContainer child = new ImplementationHidingNanoPicoContainer(currentClassloader, this, lifecycleManager);
         getDelegate().addChildContainer(child);
         namedChildContainers.put(name, child);
         return child;

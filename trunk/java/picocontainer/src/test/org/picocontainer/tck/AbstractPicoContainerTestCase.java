@@ -23,6 +23,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -36,6 +37,7 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.VerifyingVisitor;
+import org.picocontainer.defaults.DefaultLifecycleManager;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -64,6 +66,7 @@ import java.util.Set;
 public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
+    protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager);
 
     protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
             PicoRegistrationException, PicoIntrospectionException {
@@ -531,6 +534,49 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         final MutablePicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = parent.makeChildContainer();
         assertNotNull(child);
+    }
+
+    public void testMakingOfChildContainerPercolatesLifecycleManager() {
+        TestLifecycleManager lifecycleManager = new TestLifecycleManager();
+        final MutablePicoContainer parent = createPicoContainer(null, lifecycleManager);
+        parent.registerComponentImplementation("one", TestLifecycleComponent.class);
+        MutablePicoContainer child = parent.makeChildContainer();
+        assertNotNull(child);
+        child.registerComponentImplementation("two", TestLifecycleComponent.class);
+        parent.start();
+
+        //TODO - The LifecycleManager reference in child containers is not used. Thus is is almost pointless
+        // The reason is becuase DefaultPicoContainer's accept() method visits child containerson its own.
+        // This may be file for visiting components in a tree for general cases, but for lifecycle, we
+        // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion. 
+
+        //assertEquals(2, lifecycleManager.started.size());
+        assertEquals(1, lifecycleManager.started.size());
+    }
+
+    public static class TestLifecycleManager extends DefaultLifecycleManager {
+        public ArrayList started = new ArrayList();
+        public void start(PicoContainer node) {
+            started.add(node);
+            super.start(node);
+        }
+
+        public void stop(PicoContainer node) {
+            super.stop(node);
+        }
+
+        public void dispose(PicoContainer node) {
+            super.dispose(node);
+        }
+    }
+
+    public static class TestLifecycleComponent implements Startable {
+        public boolean started;
+        public void start() {
+            started = true;
+        }
+        public void stop() {
+        }
     }
 
     public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {

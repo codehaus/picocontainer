@@ -24,7 +24,7 @@ using System.Security.Permissions;
 [assembly: AssemblyTitle("PicoContainer.NET")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Delta-N")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright (c) 2003, PicoContainer Organization")]
 [assembly: AssemblyTrademark("")]
@@ -44,7 +44,7 @@ using System.Security.Permissions;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.0.0.1")]
+[assembly: AssemblyVersion("0.0.0.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -72,5 +72,4 @@ using System.Security.Permissions;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]

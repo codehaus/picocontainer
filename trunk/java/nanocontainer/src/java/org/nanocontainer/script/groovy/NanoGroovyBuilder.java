@@ -47,19 +47,19 @@ public class NanoGroovyBuilder extends BuilderSupport {
     protected void setParent(Object parent, Object child) {
     }
 
-    protected Object doInvokeMethod(String s, Object name, Object args) {
-        //TODO use setDelegate() from Groovy beta 7
-        Object answer = super.doInvokeMethod(s, name, args);
-        List list = InvokerHelper.asList(args);
-        if (!list.isEmpty()) {
-            Object o = list.get(list.size() - 1);
-            if (o instanceof Closure) {
-                Closure closure = (Closure) o;
-                closure.setDelegate(answer);
-            }
-        }
-        return answer;
-    }
+//    protected Object doInvokeMethod(String s, Object name, Object args) {
+//        //TODO use setDelegate() from Groovy beta 7
+//        Object answer = super.doInvokeMethod(s, name, args);
+//        List list = InvokerHelper.asList(args);
+//        if (!list.isEmpty()) {
+//            Object o = list.get(list.size() - 1);
+//            if (o instanceof Closure) {
+//                Closure closure = (Closure) o;
+//                closure.setDelegate(answer);
+//            }
+//        }
+//        return answer;
+//    }
 
     protected Object createNode(Object name) {
         return createNode(name, Collections.EMPTY_MAP);

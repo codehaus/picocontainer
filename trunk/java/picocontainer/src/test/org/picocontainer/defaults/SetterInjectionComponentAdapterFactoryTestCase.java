@@ -23,7 +23,7 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new SetterInjectionComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
+        return new SetterInjectionComponentAdapterFactory();
     }
 
     public static interface Bean {
@@ -53,16 +53,6 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
         public NoBean(String name) {
             setName(name);
         }
-    }
-
-    public void testContainerIgnoresParameters() {
-        picoContainer.registerComponentImplementation(Bean.class, NamedBean.class, new Parameter[] {
-                new ConstantParameter("Dick")
-                });
-        picoContainer.registerComponentInstance("Tom");
-        NamedBean bean = (NamedBean) picoContainer.getComponentInstance(Bean.class);
-        assertNotNull(bean);
-        assertEquals("Tom", bean.getName());
     }
 
     public void testContainerUsesStandardConstructor() {

@@ -41,8 +41,7 @@ import java.util.Set;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private boolean instantiating;
-    private boolean verifying;
+    private transient boolean instantiating;
     private transient List sortedMatchingConstructors;
 
     /**
@@ -61,23 +60,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     public ConstructorInjectionComponentAdapter(Object componentKey,
                                        Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
-    }
-
-    public void verify() throws UnsatisfiableDependenciesException {
-        try {
-            List adapterDependencies = new ArrayList();
-            getGreediestSatisifableConstructor(adapterDependencies);
-            if (verifying) {
-                throw new CyclicDependencyException(getDependencyTypes(adapterDependencies));
-            }
-            verifying = true;
-            for (int i = 0; i < adapterDependencies.size(); i++) {
-                ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
-                adapterDependency.verify();
-            }
-        } finally {
-            verifying = false;
-        }
     }
 
     protected Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -213,15 +195,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         }
     }
     
-    private Class[] getDependencyTypes(List adapterDependencies) {
-        Class[] result = new Class[adapterDependencies.size()];
-        for (int i = 0; i < adapterDependencies.size(); i++) {
-            ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
-            result[i] = adapterDependency.getComponentImplementation();
-        }
-        return result;
-    }
-
     protected Object[] getConstructorArguments(List adapterDependencies) {
         Object[] result = new Object[adapterDependencies.size()];
         for (int i = 0; i < adapterDependencies.size(); i++) {

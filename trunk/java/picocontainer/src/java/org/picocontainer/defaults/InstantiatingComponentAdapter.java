@@ -15,6 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
  * @version $Revision$
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
+    private transient boolean verifying;
     protected Parameter[] parameters;
 
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -62,6 +64,32 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         return componentParameters;
     }
 
+    public void verify() throws UnsatisfiableDependenciesException {
+        try {
+            List adapterDependencies = new ArrayList();
+            getGreediestSatisifableConstructor(adapterDependencies);
+            if (verifying) {
+                throw new CyclicDependencyException(getDependencyTypes(adapterDependencies));
+            }
+            verifying = true;
+            for (int i = 0; i < adapterDependencies.size(); i++) {
+                ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
+                adapterDependency.verify();
+            }
+        } finally {
+            verifying = false;
+        }
+    }
+
+    private Class[] getDependencyTypes(List adapterDependencies) {
+        Class[] result = new Class[adapterDependencies.size()];
+        for (int i = 0; i < adapterDependencies.size(); i++) {
+            ComponentAdapter adapterDependency = (ComponentAdapter) adapterDependencies.get(i);
+            result[i] = adapterDependency.getComponentImplementation();
+        }
+        return result;
+    }
+
     /**
      * Instantiate the object. 
      * @param adapterInstantiationOrderTrackingList This list is filled with the dependent adapters of the instance.
@@ -72,4 +100,5 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @throws NotConcreteRegistrationException
      */
     protected abstract Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 }

@@ -1,10 +1,9 @@
 package org.picocontainer.doc.introduction;
 
+import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import junit.framework.TestCase;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -13,22 +12,24 @@ import junit.framework.TestCase;
 public class HierarchyTestCase extends TestCase {
     public void testHierarchy() {
         try {
-            // Create a hierarchy of containers
-            MutablePicoContainer a = new DefaultPicoContainer();
-            MutablePicoContainer b = new DefaultPicoContainer(a);
-            MutablePicoContainer c = new DefaultPicoContainer(a);
+            // START SNIPPET: wontwork
+            // Create x hierarchy of containers
+            MutablePicoContainer x = new DefaultPicoContainer();
+            MutablePicoContainer y = new DefaultPicoContainer(x);
+            MutablePicoContainer z = new DefaultPicoContainer(x);
 
             // Assemble components
-            a.registerComponentImplementation(Apple.class);
-            b.registerComponentImplementation(Juicer.class);
-            c.registerComponentImplementation(Peeler.class);
+            x.registerComponentImplementation(Apple.class);
+            y.registerComponentImplementation(Juicer.class);
+            z.registerComponentImplementation(Peeler.class);
 
             // Instantiate components
-            Peeler peeler = (Peeler) c.getComponentInstance(Peeler.class);
+            Peeler peeler = (Peeler) z.getComponentInstance(Peeler.class);
             // WON'T WORK! peeler will be null
-            peeler = (Peeler) a.getComponentInstance(Peeler.class);
+            peeler = (Peeler) x.getComponentInstance(Peeler.class);
             // WON'T WORK! This will throw an exception
-            Juicer juicer = (Juicer) b.getComponentInstance(Juicer.class);
+            Juicer juicer = (Juicer) y.getComponentInstance(Juicer.class);
+            // END SNIPPET: wontwork
         } catch (UnsatisfiableDependenciesException e) {
             e.printStackTrace();
             // expected

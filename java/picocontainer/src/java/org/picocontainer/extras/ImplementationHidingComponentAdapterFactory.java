@@ -22,6 +22,11 @@ import java.lang.reflect.Proxy;
  * @version $Revision$
  */
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+
+    public ImplementationHidingComponentAdapterFactory() {
+        this(new DefaultComponentAdapterFactory());
+    }
+
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
     }
@@ -46,9 +51,18 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
             Object component = super.getComponentInstance(picoContainer);
             // TODO: search for all interfaces for component-implementation instead
             // There is code for this in DefaultComponentMulticasterFactory. Reuse that. (Static? Util class?)
-            Class[] interfaces = new Class[]{(Class) getComponentKey()};
-            return Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
-                    interfaces, new ImplementationHidingProxy(component));
+            Object aClass = getComponentKey();
+            Class[] interfaces = null;
+            if (aClass.getClass() == Class.class && ((Class) aClass).isInterface()) {
+                interfaces = new Class[]{(Class) aClass};
+                return Proxy.newProxyInstance(getComponentImplementation().getClassLoader(),
+                        interfaces, new ImplementationHidingProxy(component));
+            } else {
+                // Not interface/Impl separated form of component.
+                //TODO is there some form of generic dynamic proxy that can be used here ?
+                return component;
+            }
+
         }
 
         private class ImplementationHidingProxy implements InvocationHandler {

@@ -1,11 +1,7 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
-import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.defaults.NullContainer;
 import picocontainer.defaults.DefaultPicoContainer;
-import picocontainer.testmodel.FredImpl;
-import picocontainer.testmodel.WilmaImpl;
 
 import java.util.List;
 import java.util.ArrayList;

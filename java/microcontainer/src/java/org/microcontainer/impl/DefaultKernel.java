@@ -89,7 +89,7 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	public Object getComponent(String relativeComponentPath) {
 		String[] path = relativeComponentPath.split("/");
 		PicoContainer container = (PicoContainer)contextMap.get(path[0]); // context
-		return container.getComponentInstance(path[1]); // class name
+		return container.getComponentInstance(path[1]); // component key
 	}
 
 	public void start(String startableNode) {

@@ -213,7 +213,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // XPath does that, no?
     }
 
-    public void testMultipleKernelsPeaceFullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException
+    public void testMultipleKernelsPeacefullyCoexistInAnEmbeddedEnvironment() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException
     {
         // was an issue with phoenix at times...ie these guys don't claim server sockets...
         Kernel kernel2 = new DefaultKernel();

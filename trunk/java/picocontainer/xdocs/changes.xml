@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<document>
+  <!-- 
+   ! TODO generate this file from JIRA with XSL/JSL. CVS will contain 
+   ! too luch garbage to possibly create this log UNLESS we decide on
+   ! special commit messages. This could be done by starting the CVS
+   ! commit message with ADD|FIX|UPDATE and have JIRA automatically
+   ! create new issues of type New Feature|Bug|Improvement. Would be really
+   ! really cool.
+  -->
+  <properties>
+    <title>Changes</title>
+    <author email="rinkrank@codehaus.org">Aslak Hellesoy</author>
+  </properties>
+
+  <body>
+
+    <release version="1.0-alpha-2-SNAPSHOT" date="In CVS">
+      <action dev="rinkrank" type="update">
+        Improved the getAggregateComponentProxy method so that when a
+        method is called on the proxy, the returned value will also
+        be a proxy that aggregates. This currently only works for
+        interfaces, but work is in progress to make it work with
+        regular classes too. (This will require cglib, and will
+        be provided in an optional package).
+      </action>
+
+      <action dev="paul" type="add">
+        Added optional lifecycle interfaces and LifecyclePicoContainer 
+        in picocontainer.lifecycle. This package is optional, and can be
+        used as inspiration for implementation of other containers that
+        handle lifecycle transparently with extra methods on the container.
+      </action>
+    </release>
+
+    <release version="1.0-alpha-1" date="2003-06-29">
+      <action dev="rinkrank" type="add">
+        First release.
+      </action>
+    </release>
+
+  </body>
+</document>
+

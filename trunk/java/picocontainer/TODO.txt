@@ -47,4 +47,4 @@ Carbon component analysis - ?
 Hibernate componentization advocacy - ?
 HsqlDb componentization advocacy - ? 
 Threadpool (http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html)
-
+Threadpool (http://spice.sourceforge.net/threadpool/index.html)

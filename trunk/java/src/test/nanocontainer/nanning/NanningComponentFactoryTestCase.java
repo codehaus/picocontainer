@@ -15,14 +15,10 @@ import com.tirsen.nanning.MethodInterceptor;
 import com.tirsen.nanning.config.AspectSystem;
 import com.tirsen.nanning.config.InterceptorAspect;
 import junit.framework.TestCase;
-import picocontainer.DuplicateComponentClassRegistrationException;
-import picocontainer.DuplicateComponentTypeRegistrationException;
-import picocontainer.NotConcreteRegistrationException;
 import picocontainer.PicoContainer;
 import picocontainer.HierarchicalPicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
-import picocontainer.WrongNumberOfConstructorsRegistrationException;
 
 import java.util.ArrayList;
 

@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.Parameter;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;

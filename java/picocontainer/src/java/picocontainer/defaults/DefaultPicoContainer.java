@@ -15,6 +15,7 @@ import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.Parameter;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

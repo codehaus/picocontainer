@@ -13,6 +13,7 @@ package picocontainer.defaults;
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInitializationException;
 import picocontainer.PicoIntrospectionException;
+import picocontainer.Parameter;
 
 import java.util.Arrays;
 

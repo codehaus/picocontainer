@@ -2,6 +2,7 @@ package picocontainer.defaults;
 
 import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
+import picocontainer.Parameter;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)

@@ -10,7 +10,6 @@
 
 package picocontainer;
 
-import picocontainer.defaults.Parameter;
 
 public interface RegistrationPicoContainer extends PicoContainer {
 
@@ -65,7 +64,6 @@ public interface RegistrationPicoContainer extends PicoContainer {
      * @param componentImplementation The class of the component to instantiate
      * @throws PicoRegistrationException If a registration problem
      */
-    // TODO: move Parameter to this package. We shouldn't depend on subpackages.
     void registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoRegistrationException;
 

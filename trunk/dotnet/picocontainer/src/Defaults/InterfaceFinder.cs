@@ -10,33 +10,28 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
+using System.Collections;
 
-using csUnit;
+namespace PicoContainer.Defaults {
+  public class InterfaceFinder {
+    public Type[] GetInterfaces(object obj) {
+      ArrayList l = new ArrayList();
+      l.Add(obj);
+      return GetInterfaces(ArrayList.ReadOnly(l));
+    }
 
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+    public Type[] GetInterfaces(ArrayList objects) {
+      Set interfaces = new ListSet();
+      foreach (object o in objects) {
+            
+        Type type = o.GetType();
+        Type[] implemented = type.GetInterfaces();
+        interfaces.AddAll(implemented);
+      }
 
-namespace PicoContainer.Tests
-{
-	
-[TestFixture]
-
-	public class PicoPicoTestCase
-	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+      Type[] result = new Type[interfaces.Count];
+      interfaces.CopyTo(result,0);
+      return result;
+    }
+  }
 }

@@ -10,33 +10,29 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
 
-using csUnit;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests
+namespace PicoContainer.Tests.TestModel
 {
-	
-[TestFixture]
 
-	public class PicoPicoTestCase
+	/// Summary description for SimpleTouchable.
+	/// </summary>
+	public class SimpleTouchable : Touchable
 	{
-		
-		public virtual void  testDefaultPicoContainer()
+		public SimpleTouchable()
 		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+			//
+			// TODO: Add constructor logic here
+			//
+    }
+    #region Touchable Members
+
+    public bool _wasTouched;
+
+    public void wasTouched()
+    {
+      _wasTouched = true;
+    }
+
+    #endregion
+  }
 }

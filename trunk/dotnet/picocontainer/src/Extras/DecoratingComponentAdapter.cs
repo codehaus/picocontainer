@@ -10,33 +10,48 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
-
-using csUnit;
-
+using PicoContainer;
 using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
+using PicoContainer.Lifecycle;
 
-namespace PicoContainer.Tests
+
+namespace PicoContainer.Extras
 {
-	
-[TestFixture]
+  public class DecoratingComponentAdapter : ComponentAdapter
+  {
+    private ComponentAdapter theDelegate;
 
-	public class PicoPicoTestCase
-	{
+    public DecoratingComponentAdapter(ComponentAdapter theDelegate) {
+      this.theDelegate = theDelegate;
+    }
+
+    virtual public object ComponentKey
+    {
+      get {
+        return theDelegate.ComponentKey;
+      }
+    }
+
+    virtual public Type ComponentImplementation
+    {
+      get {
+        return theDelegate.ComponentImplementation;
+      }
+    }
+
+    virtual public ComponentAdapter Delegate
+    {
+      get
+      {
+        return theDelegate;
+      }
+			
+    }
 		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+ 			
+    public virtual object GetComponentInstance(MutablePicoContainer componentRegistry)
+    {
+      return theDelegate.GetComponentInstance(componentRegistry);
+    }
+  }
 }

@@ -15,28 +15,27 @@ using System.Diagnostics;
 using csUnit;
 
 using PicoContainer.Defaults;
+using PicoContainer.Tests.Tck;
 using PicoContainer.Tests.TestModel;
 
-namespace PicoContainer.Tests
-{
-	
-[TestFixture]
 
-	public class PicoPicoTestCase
+namespace PicoContainer.Tests.Defaults
+{
+
+	/// Summary description for DefaultPicoContainerTestCase.
+	/// </summary>
+  [TestFixture]
+  public class DefaultPicoContainerTestCase : AbstractPicoContainerTestCase
 	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    protected override MutablePicoContainer createPicoContainer() {
+      return new DefaultPicoContainer();
+    }
+
+    public override void testBasicInstantiationAndContainment()  {
+    DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependency();
+
+    Assert.True(pico.FindComponentInstance(typeof(Touchable)) is Touchable,"Component should be instance of Touchable");
+                                         }
+
+  }
 }

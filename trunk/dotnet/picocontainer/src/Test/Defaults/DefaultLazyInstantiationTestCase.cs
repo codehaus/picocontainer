@@ -15,28 +15,19 @@ using System.Diagnostics;
 using csUnit;
 
 using PicoContainer.Defaults;
+using PicoContainer.Tests.Tck;
 using PicoContainer.Tests.TestModel;
 
-namespace PicoContainer.Tests
+namespace PicoContainer.Tests.Defaults 
 {
-	
-[TestFixture]
 
-	public class PicoPicoTestCase
+	/// Summary description for DefaultLazyInstantiationTestCase.
+	/// </summary>
+	public class DefaultLazyInstantiationTestCase :AbstractLazyInstantiationTestCase
 	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    protected override MutablePicoContainer createPicoContainer() 
+    {
+      return new DefaultPicoContainer();
+    }
+  }
 }

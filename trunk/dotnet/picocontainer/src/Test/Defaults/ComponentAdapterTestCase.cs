@@ -17,26 +17,23 @@ using csUnit;
 using PicoContainer.Defaults;
 using PicoContainer.Tests.TestModel;
 
-namespace PicoContainer.Tests
+namespace PicoContainer.Tests.Defaults
 {
-	
-[TestFixture]
+  [TestFixture]
+  public class ComponentAdapterTest
+  {
+    
+    public void testEquals()  
+    {
+      ComponentAdapter componentAdapter =
+        createComponentAdapter();
 
-	public class PicoPicoTestCase
-	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+      Assert.Equals(componentAdapter, componentAdapter);
+    }
+
+    private ComponentAdapter createComponentAdapter() 
+    {
+      return new DefaultComponentAdapter(typeof(Touchable), typeof(SimpleTouchable));
+    }
+  }
 }

@@ -10,33 +10,15 @@
  *****************************************************************************/
 
 using System;
-using System.Diagnostics;
+using System.Collections;
 
-using csUnit;
-
-using PicoContainer.Defaults;
-using PicoContainer.Tests.TestModel;
-
-namespace PicoContainer.Tests
+namespace PicoContainer.Extras
 {
-	
-[TestFixture]
-
-	public class PicoPicoTestCase
+	public interface ComponentMulticasterFactory
 	{
-		
-		public virtual void  testDefaultPicoContainer()
-		{
-			
-			MutablePicoContainer pico = new DefaultPicoContainer();
-			pico.RegisterComponentImplementation(typeof(DefaultPicoContainer));
-			
-			MutablePicoContainer hostedPico = (MutablePicoContainer) pico.GetComponentInstance(typeof(DefaultPicoContainer));
-			hostedPico.RegisterComponentImplementation(typeof(DependsOnTouchable));
-			hostedPico.RegisterComponentImplementation(typeof(SimpleTouchable));
-			
-			Assert.True(hostedPico.HasComponent(typeof(DependsOnTouchable)));
-			Assert.True(hostedPico.HasComponent(typeof(SimpleTouchable)));
-		}
-	}
+    Object CreateComponentMulticaster(
+      ArrayList objectsToAggregateCallFor,
+      bool callInReverseOrder
+      );
+  }
 }

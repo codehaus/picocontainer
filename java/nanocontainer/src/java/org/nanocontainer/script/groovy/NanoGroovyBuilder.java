@@ -98,14 +98,13 @@ public class NanoGroovyBuilder extends BuilderSupport {
             return createBeanNode(attributes, parentContainer);
         } else if (name.equals("classpathelement")) {
             return createClassPathElementNode(attributes, parentContainer);
-        } else if (name.equals("doCall")) {
+        } else {
             return processAlternateContainerNodes(parent, name, attributes);
         }
-        throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
     }
 
     protected Object processAlternateContainerNodes(Object parent, Object name, Map attributes) {
-        return null;
+        throw new PicoBuilderException("Method: '" + name + "' must be a child of a container element");
     }
 
     private Object createContainerNode(Object parent, Map attributes) {

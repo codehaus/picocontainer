@@ -1,16 +1,14 @@
-package org.picocontainer.defaults;
+package org.picocontainer.defaults.issues;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 public class Issue0191TestCase extends TestCase {
 
     static int sharkCount = 0 ;
     static int codCount = 0 ;
-
-    public void testFoo() {
-
-    }
 
     /*
       This bug as descripbed in the bug report, cannot be reproduced. Needs work.
@@ -22,8 +20,8 @@ public class Issue0191TestCase extends TestCase {
         pico.registerComponentImplementation(Cod.class);
         try {
             pico.registerComponentImplementation(Bowl.class);
-            fail("Should have barfed here with UnsatisfiableDependenciesException");
             Bowl bowl = (Bowl) pico.getComponentInstance(Bowl.class);
+            fail("Should have barfed here with UnsatisfiableDependenciesException");
             Fish[] fishes = bowl.getFishes( ) ;
             for( int i = 0 ; i < fishes.length ; i++ )
                 System.out.println( "fish["+i+"]="+fishes[i] ) ;
@@ -33,7 +31,7 @@ public class Issue0191TestCase extends TestCase {
     }
 
 
-    class Bowl
+     class Bowl
     {
         private final Fish[] fishes;
         private final Cod[] cods;

@@ -23,7 +23,7 @@ nano = builder.container(parent:parent) {
     component(key:"work.dir", instance:workDir);
 	component(key:"temp.dir", instance:tempDir);
 
-    component(key:ClassLoaderFactory, class:org.microcontainer.impl.DefaultClassLoaderFactory);
+    component(key:ClassLoaderFactory, class:DefaultClassLoaderFactory, parameters:[new ComponentParameter("work.dir")]);
 
     parms = [ new ComponentParameter("work.dir"), new ComponentParameter("temp.dir") ]
     component(key:McaDeployer, class:DefaultMcaDeployer, parameters:parms);

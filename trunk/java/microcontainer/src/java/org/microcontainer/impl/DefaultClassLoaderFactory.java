@@ -10,7 +10,6 @@
 
 package org.microcontainer.impl;
 
-import org.microcontainer.McaDeployer;
 import org.microcontainer.ClassLoaderFactory;
 
 import java.io.File;
@@ -26,11 +25,11 @@ public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 	public static final String PROMOTED_PATH = "/MCA-INF/promoted/";
 	public static final String COMPONENT_PATH = "/MCA-INF/components/";
 	public static final String LIB_PATH = "/MCA-INF/lib/";
-	protected McaDeployer mcaDeployer = null;
+	protected File workDir = null;
 	private DelegatingClassLoader delegatingClassLoader; // promoted classloaders
 
-	public DefaultClassLoaderFactory(McaDeployer mcaDeployer) {
-		this.mcaDeployer = mcaDeployer;
+	public DefaultClassLoaderFactory(File workDir) {
+		this.workDir = workDir;
 		this.delegatingClassLoader = new DelegatingClassLoader(this.getClass().getClassLoader());
 	}
 
@@ -62,7 +61,7 @@ public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 	}
 
 	protected URL[] getURLs(String context, String path) {
-		File dir = new File(mcaDeployer.getWorkingDir(), context + path);
+		File dir = new File(workDir, context + path);
 		File[] files = dir.listFiles();
 
 		if(files == null) {

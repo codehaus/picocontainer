@@ -12,6 +12,7 @@ package picocontainer.defaults;
 
 import picocontainer.ComponentFactory;
 import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 
 import java.util.Arrays;
 
@@ -37,7 +38,7 @@ class ComponentSpecification {
     }
 
     public Object instantiateComponent(DefaultPicoContainer picoContainer)
-            throws PicoInstantiationException {
+            throws PicoInstantiationException, PicoIntrospectionException {
         Class[] dependencyTypes = componentFactory.getDependencies(comp);
         Object[] dependencies = new Object[dependencyTypes.length];
         for (int i = 0; i < dependencies.length; i++) {
@@ -60,7 +61,7 @@ class ComponentSpecification {
         return actual.isAssignableFrom(requested);
     }
 
-    public void addConstantParameterBasedOnType(Class componentType, Class parameter, Object arg) {
+    public void addConstantParameterBasedOnType(Class componentType, Class parameter, Object arg) throws PicoIntrospectionException {
         // TODO this is an ugly hack and the feature should simply be removed
         Class[] dependencies = componentFactory.getDependencies(comp);
         for (int i = 0; i < dependencies.length; i++) {

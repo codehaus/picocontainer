@@ -15,6 +15,7 @@ import picocontainer.ClassRegistrationPicoContainer;
 import picocontainer.PicoContainer;
 import picocontainer.PicoInstantiationException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.hierarchical.HierarchicalPicoContainer;
 import picocontainer.testmodel.WilmaImpl;
 
@@ -22,7 +23,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
     private ClassRegistrationPicoContainer pico;
     private AggregatedContainersContainer.Filter filter;
 
-    public void setUp() throws PicoRegistrationException {
+    public void setUp() throws PicoRegistrationException, PicoIntrospectionException {
         pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(WilmaImpl.class);
         filter = new AggregatedContainersContainer.Filter(pico);

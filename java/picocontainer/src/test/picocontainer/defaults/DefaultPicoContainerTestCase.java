@@ -12,8 +12,9 @@ package picocontainer.defaults;
 
 import junit.framework.TestCase;
 import picocontainer.PicoInstantiationException;
-import picocontainer.PicoInvocationTargetInitailizationException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInstantiationException;
+import picocontainer.PicoIntrospectionException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.Wilma;
 import picocontainer.testmodel.WilmaImpl;
@@ -124,7 +125,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInstantiationException {
+    public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(PeelableComponent.class);
@@ -146,7 +147,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertFalse(notReallyPeelableComponent.wasPeeled);
     }
 
-    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInstantiationException {
+    public void testWorksWithMultipleInterfaces() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -180,7 +181,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInstantiationException {
+    public void testAsCallsAllComponents() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -215,7 +216,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInstantiationException {
+    public void testBespokeLifecycleCallsComponentsInReverseOrder() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -245,7 +246,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInstantiationException {
+    public void testGetAggregateComponentProxyOnlyCallsManagedComponents() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -279,7 +280,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
                 !recorder.thingsThatHappened.contains("Aa.wash()"));
     }
 
-    public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInstantiationException {
+    public void testPeelableAndWashable() throws PicoIntrospectionException, PicoRegistrationException, PicoInstantiationException {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -306,6 +307,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public static interface FoodFactory {
         Food makeFood();
+        int hashCode();
     }
 
     public abstract static class AbstractFoodFactory extends RecordingAware implements FoodFactory {
@@ -365,7 +367,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
     }
 
 
-    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, WrongNumberOfConstructorsRegistrationException, PicoInstantiationException {
+    public void testRecursiveAggregation() throws NotConcreteRegistrationException, AssignabilityRegistrationException, DuplicateComponentTypeRegistrationException, PicoIntrospectionException, PicoInstantiationException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
         pico.registerComponent(Recorder.class);
         pico.registerComponent(AppleFactory.class);
@@ -376,21 +378,33 @@ public class DefaultPicoContainerTestCase extends TestCase {
         // Get the proxy for AppleFactory and OrangeFactory
         FoodFactory foodFactory = (FoodFactory) pico.getAggregateComponentProxy();
 
+// TODO uncomment this
+//        int foodFactoryCode = foodFactory.hashCode();
+//        assertFalse("Should get a real hashCode", Integer.MIN_VALUE == foodFactoryCode);
+
         // Get the proxied Food and eat it. Should eat the orange and apple in one go.
         Food food = foodFactory.makeFood();
         food.eat();
+
+        String s = food.toString();
+        assertNull("toString() should return null", s);
+        // Try to call a method returning a primitive.
+
+// TODO uncomment. Should be tested too
+//        int foodCode = food.hashCode();
 
         // Get the recorder so we can see if the apple and orange were actually eaten
         Recorder recorder = (Recorder) pico.getComponent(Recorder.class);
         assertTrue( "Apple should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Apple eaten" ) );
         assertTrue( "Orange should have been eaten now. Recorded: " + recorder.thingsThatHappened, recorder.thingsThatHappened.contains( "Orange eaten" ) );
+
     }
 
 //    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
 //
 //    }
 
-//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
+//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsException, PicoRegistrationException, PicoStartException {
 //
 //        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
 //                new MorphingHierarchicalPicoContainer(
@@ -415,7 +429,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //
 //    }
 
-    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException
+    public void testBasicComponentInteraction() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException
     {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -429,7 +443,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertTrue("hello should have been called in wilma", wilma.helloCalled());
     }
 
-    public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, WrongNumberOfConstructorsRegistrationException, AmbiguousComponentResolutionException {
+    public void testGetComponentSpecification() throws NotConcreteRegistrationException, DuplicateComponentTypeRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         assertNull(pico.findComponentSpecification(Wilma.class));
@@ -438,7 +452,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
         assertNotNull(pico.findComponentSpecification(Wilma.class));
     }
 
-    public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException {
+    public void testComponentSpecInstantiateComponentWithNoDependencies() throws PicoInstantiationException, PicoIntrospectionException {
         ComponentSpecification componentSpec = new ComponentSpecification(new DefaultComponentFactory(), WilmaImpl.class, WilmaImpl.class, new Parameter[0]);
         Object comp = componentSpec.instantiateComponent(null);
         assertNotNull(comp);
@@ -459,12 +473,11 @@ public class DefaultPicoContainerTestCase extends TestCase {
 //        mockPicoContainer.verify();
 //    }
 
-    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException
+    public void testInstantiateOneComponent() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException
     {
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
         pico.registerComponent(WilmaImpl.class);
-
         pico.instantiateComponents();
 
         WilmaImpl wilma = (WilmaImpl) pico.getComponent(WilmaImpl.class);

@@ -20,7 +20,7 @@ import picocontainer.hierarchical.HierarchicalPicoContainer;
  */
 public class PicoPicoTestCase extends TestCase {
 
-    public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInstantiationException {
+    public void testDefaultPicoContainer() throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         HierarchicalPicoContainer pc = new HierarchicalPicoContainer.Default();
         pc.registerComponent(HierarchicalPicoContainer.Default.class);
@@ -30,7 +30,7 @@ public class PicoPicoTestCase extends TestCase {
 
     }
 
-    private void tryDefaultPicoContainer(HierarchicalPicoContainer pc2) throws PicoRegistrationException, PicoInstantiationException {
+    private void tryDefaultPicoContainer(HierarchicalPicoContainer pc2) throws PicoRegistrationException, PicoInstantiationException, PicoIntrospectionException {
 
         pc2.registerComponent(FredImpl.class);
         pc2.registerComponent(WilmaImpl.class);

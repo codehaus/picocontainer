@@ -22,7 +22,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException If a registration problem
      */
     void registerComponent(Class componentImplementation)
-            throws PicoRegistrationException;
+            throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Alternate way of registering components with additional
@@ -33,7 +33,7 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @throws PicoRegistrationException If a registration problem
      */
     void registerComponent(Class componentType, Class componentImplementation)
-            throws PicoRegistrationException;
+            throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Registers a component that is instantiated and configured outside
@@ -67,6 +67,6 @@ public interface ClassRegistrationPicoContainer extends PicoContainer {
      * @param parameter The parameter it pertains to
      * @param arg The argukemt to pass in.
      */
-    void addParameterToComponent(Class componentType, Class parameter, Object arg);
+    void addParameterToComponent(Class componentType, Class parameter, Object arg) throws PicoIntrospectionException;
 
 }

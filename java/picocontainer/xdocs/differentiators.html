@@ -5,7 +5,7 @@
 <body>
 <h1>Differentiators</h1>
 Pico components (to remind you) are beans with one constructor and
-simple rules for parameters. No meta XML for dependancies.<br>
+simple rules for parameters. No meta XML for dependencies.<br>
 <h2>Sun specified nearly-IoC Containers &amp; Component designs</h2>
 It could be said that Sun have created a few container/component
 designs.<br>
@@ -17,17 +17,17 @@ appllications to WebLogic, WebSphere, Orion and JBoss.&nbsp;
 High use of XML for assembly and configuration. There are some mandated
 parent objects and interfaces for various to extend and/or implement. <br>
 <h3>Servlet</h3>
-Not so obvious - Servlets are container by a servlet container. They
+Not so obvious - Servlets are contained by a servlet container. They
 are generally bundled with (or replaced by) value added propositions
-like JSP, but it is still a container/component design.&nbsp;&nbsp;
+like JSP, but it is still a container/component design.&nbsp;
 High use of XML for assembly and configuration.&nbsp; Servlets have no
 concept of parent container or the conatainer above that (sometimes
 EJB) and&nbsp; its provision of components, which is very unfortunate.
 Servlets have a number of interfaces to honor, none of which is too
 malignent. Servlets typically deal with external (or parent) components
-via RMI or JNDI.&nbsp; In more recent releases of EJB, Local interfaces
+via RMI or JNDI.&nbsp; In more recent releases of EJB, local interfaces
 rather than RMI may be the mechanism for connection the parent
-components.&nbsp; Weblogic have always provided a optimizing mechanism
+components.&nbsp; WebLogic have always provided a optimizing mechanism
 for this interoperation.<br>
 <h3>Applet</h3>
 Applets, though not so often used by people presently, are a good

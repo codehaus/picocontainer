@@ -13,6 +13,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -234,6 +236,18 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
             fail();
         } catch (PicoInitializationException e) {
             assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
+        }
+    }
+
+    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+
+        try {
+            pico.registerComponentImplementation(Runnable.class);
+            fail("Shouldn't be allowed to register abstract classes or interfaces.");
+        } catch (NotConcreteRegistrationException e) {
+            assertEquals(Runnable.class, e.getComponentImplementation());
+            assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
     }
 

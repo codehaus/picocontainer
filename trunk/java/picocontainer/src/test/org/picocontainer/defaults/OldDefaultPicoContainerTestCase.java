@@ -152,66 +152,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
-        MutablePicoContainer pico = new DefaultPicoContainer();
-
-        try {
-            pico.registerComponentImplementation(Runnable.class);
-            fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (NotConcreteRegistrationException e) {
-            assertEquals(Runnable.class, e.getComponentImplementation());
-            assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
-        }
-    }
-
-    public void testWithComponentFactory() throws PicoRegistrationException, PicoInitializationException {
-        final SimpleTouchable touchable = new SimpleTouchable();
-        DefaultPicoContainer pc = new DefaultPicoContainer(new ComponentAdapterFactory() {
-            public ComponentAdapter createComponentAdapter(final Object componentKey,
-                                                           final Class componentImplementation,
-                                                           Parameter[] parameters)
-                    throws PicoIntrospectionException {
-                return new ComponentAdapter() {
-                    public Object getComponentKey() {
-                        return componentKey;
-                    }
-
-                    public Class getComponentImplementation() {
-                        return componentImplementation;
-                    }
-
-                    public Object getComponentInstance(PicoContainer container)
-                            throws PicoInitializationException {
-                        return touchable;
-                    }
-
-                    public void verify(PicoContainer container) {
-                    }
-                    public void accept(PicoVisitor visitor) {
-                    }
-                };
-            }
-        });
-        pc.registerComponentImplementation(SimpleTouchable.class);
-        assertSame(pc.getComponentInstance(SimpleTouchable.class), touchable);
-    }
-
-    public static class Barney {
-        public Barney() {
-            throw new RuntimeException("Whoa!");
-        }
-    }
-
-    public void testInvocationTargetException() throws PicoRegistrationException, PicoInitializationException {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation(Barney.class);
-        try {
-            pico.getComponentInstance(Barney.class);
-        } catch (RuntimeException e) {
-            assertEquals("Whoa!", e.getMessage());
-        }
-    }
-
     interface Animal {
 
         String getFood();

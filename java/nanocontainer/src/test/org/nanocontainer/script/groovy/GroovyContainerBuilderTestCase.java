@@ -22,21 +22,21 @@ import java.io.StringReader;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @version $Revision$
  */
 public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testContainerCanBeBuiltWithParent() {
-        // * imports are not supported by groovy yet, so the GroovyContainerBuilder won't either.
         Reader script = new StringReader("" +
                 "builder = new org.nanocontainer.script.groovy.NanoGroovyBuilder()\n" +
-                "pico2 = builder.container()\n" +
-                "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
-                "pico.registerComponentInstance(\"hello\", \"Groovy\")\n");
+                "pico = builder.container(parent:parent) { \n" +
+                "  component(StringBuffer)\n" +
+                "}");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent);
         assertSame(parent, pico.getParent());
-        assertEquals("Groovy", pico.getComponentInstance("hello"));
+        assertEquals(StringBuffer.class, pico.getComponentInstance(StringBuffer.class).getClass());
     }
 
 }

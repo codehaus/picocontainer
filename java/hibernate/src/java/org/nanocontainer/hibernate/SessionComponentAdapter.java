@@ -28,7 +28,14 @@ import net.sf.hibernate.HibernateException;
 
 import java.util.HashSet;
 
-
+/**
+ * provides instance of hibernate session. this component will open new sessin of every request,
+ * and thus all management shall be done by component.
+ * it's also unvise to cache this session by CachingComponentAdapter, because session may
+ * become invalid due to some exception. 
+ * @author Konstantin Pribluda
+ * @version $Revision$
+ */
 public class SessionComponentAdapter extends AbstractComponentAdapter {
 	
 	Parameter sessionFactoryParameter = null;

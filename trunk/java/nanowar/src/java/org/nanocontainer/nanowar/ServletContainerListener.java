@@ -10,17 +10,15 @@ package org.nanocontainer.nanowar;
 
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.SoftCompositionPicoContainer;
-import org.nanocontainer.nanowar.ApplicationScopeObjectReference;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.reflection.DefaultSoftCompositionPicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
-import org.picocontainer.PicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

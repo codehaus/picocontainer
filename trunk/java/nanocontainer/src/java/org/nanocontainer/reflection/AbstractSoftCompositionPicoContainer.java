@@ -76,33 +76,5 @@ public abstract class AbstractSoftCompositionPicoContainer implements SoftCompos
 
     protected abstract Object getComponentInstanceFromDelegate(Object componentKey);
 
-    public final List getComponentKeys() {
-        ArrayList keys = new ArrayList();
-        Collection cas = getComponentAdapters();
-        for (Iterator iterator = cas.iterator(); iterator.hasNext();) {
-            ComponentAdapter ca = (ComponentAdapter) iterator.next();
-            Object componentKey = ca.getComponentKey();
-            if (componentKey instanceof Class) {
-                keys.add("*" + ((Class) componentKey).getName());
-            } else {
-                keys.add(componentKey.toString());
-            }
-        }
-        Iterator it = getNamedContainers().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String name = (String) entry.getKey();
-            PicoContainer pc = (PicoContainer) entry.getValue();
-            if (pc instanceof SoftCompositionPicoContainer) {
-                List list = ((SoftCompositionPicoContainer) pc).getComponentKeys();
-                for (int i = 0; i < list.size(); i++) {
-                    String key = (String) list.get(i);
-                    keys.add(name + "/" + key);
-                }
-            }
-        }
-        return Collections.unmodifiableList(keys);
-    }
-
     protected abstract Map getNamedContainers();
 }

@@ -11,6 +11,4 @@ import java.util.List;
  */
 public interface SoftCompositionPicoContainer extends MutablePicoContainer, ReflectionContainerAdapter {
 
-    List getComponentKeys();
-
 }

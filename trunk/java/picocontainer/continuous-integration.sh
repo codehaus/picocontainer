@@ -10,7 +10,7 @@
 # That will run this script every day at 1:49 AM. (Off peek, likely to be a quiet period).
 #
 # In order to make this work, you should also set the following in your ~/build.properties:
-# (Don't set maven.test.failure.ignore to true on your developer machine)
+# (Don't set maven.test.failure.ignore to true on your developer machine).
 #
 # maven.username = <yourlogin_on_deploy_machine>
 # maven.test.failure.ignore = true

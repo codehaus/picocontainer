@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public class InterfaceFinderTestCase extends TestCase {
@@ -48,9 +49,14 @@ public class InterfaceFinderTestCase extends TestCase {
         assertEquals(Object.class, i.getClass(new Object[]{new OutputStreamWriter(System.out), new Integer(1)}));
     }
 
-    public void testMostCommonSuperclassEmptyArray() {
+    public void testMostCommonSuperclassForEmptyArray() {
         InterfaceFinder i = new InterfaceFinder();
         assertEquals(Void.class, i.getClass(new Object[]{}));
+    }
+
+    public void testMostCommonSuperclassForNullElements() {
+        InterfaceFinder i = new InterfaceFinder();
+        assertEquals(Void.class, i.getClass(new Object[]{ null, null }));
     }
 
     public void testAllInterfacesOfListShouldBeFound() {

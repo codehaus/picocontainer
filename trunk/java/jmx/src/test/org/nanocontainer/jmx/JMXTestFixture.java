@@ -10,15 +10,12 @@
 
 package org.nanocontainer.jmx;
 
-import org.picocontainer.ComponentAdapter;
-
-import javax.management.ObjectName;
 import javax.management.MBeanInfo;
 import javax.management.MBeanAttributeInfo;
 
 /**
  * @author Michael Ward
- * @version
+ * @version $Revision$
  */
 public class JMXTestFixture {
 
@@ -30,15 +27,7 @@ public class JMXTestFixture {
 		};
 	}
 
-	public static ComponentAdapter createJMXComponentAdapter(ObjectName objectName) {
-        return new MBeanComponentAdapterFactory().createComponentAdapter(objectName, FooBar.class, null);
-    }
-
 	public static MBeanInfo createMBeanInfo() {
 		return new MBeanInfo(FooBar.class.getName(), "description", attributes, null, null, null);
-	}
-
-	public static FooBarMBeanInfo createFooBarMBeanInfo() {
-		return new FooBarMBeanInfo(attributes, null, null, null);
 	}
 }

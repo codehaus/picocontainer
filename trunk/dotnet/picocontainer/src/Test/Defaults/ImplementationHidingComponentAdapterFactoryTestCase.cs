@@ -177,11 +177,11 @@ namespace Test.Defaults {
 
 
     public interface OtherSwappable {
-      object hotSwap(object newSubject);
+      object HotSwap(object newSubject);
     }
 
     public class OtherSwappableImpl : OtherSwappable {
-      public  object hotSwap(object newSubject) {
+      public virtual object HotSwap(object newSubject) {
         return "TADA";
       }
     }
@@ -193,9 +193,9 @@ namespace Test.Defaults {
       OtherSwappable os = (OtherSwappable) pico.GetComponentInstance("os");
       OtherSwappable os2 = new OtherSwappableImpl();
 
-      Assert.AreEqual("TADA", os.hotSwap(os2));
+      Assert.AreEqual("TADA", os.HotSwap(os2));
       ISwappable os_ = (ISwappable) os;
-      //        Assert.AreEqual("TADA", os_.PicoHotSwap(os2));
+      Assert.AreEqual("TADA", os_.HotSwap(os2));
     }
 
 

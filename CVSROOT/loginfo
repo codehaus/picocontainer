@@ -26,3 +26,5 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 ALL /usr/local/despots/cvs/collect_diffs.rb --to scm@picocontainer.codehaus.org %{sVv}
+java cat $CVSROOT/CVSROOT/damagecontrol/picocontainer-java.conf | nc builds.codehaus.org 4711
+ruby cat $CVSROOT/CVSROOT/damagecontrol/picocontainer-ruby.conf | nc builds.codehaus.org 4711

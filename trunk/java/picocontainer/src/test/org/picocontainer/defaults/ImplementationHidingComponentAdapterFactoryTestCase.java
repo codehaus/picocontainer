@@ -33,6 +33,9 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         Man getMan();
     }
 
+    public static interface SuperWoman extends Woman {
+    }
+
     public static class Husband implements Man {
         public final Woman partner;
         private boolean wasKissed;
@@ -54,7 +57,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         }
     }
 
-    public static class Wife implements Woman {
+    public static class Wife implements SuperWoman {
         public final Man partner;
 
         public Wife(Man partner) {
@@ -129,7 +132,20 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         Woman firstWife = (Woman) pico.getComponentInstance(Woman.class);
         Woman secondWife = (Woman) pico.getComponentInstance(Woman.class);
         assertNotSame(firstWife, secondWife);
+
     }
+
+    //TODO we need to be able to control which interfaces are subject to dynamic proxy
+    // we used to have this feature with registerComponentImplementationByType or somesuch.
+
+    public void do_nottestProxiedWifeIsNotSuperWoman() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
+                new ConstructorComponentAdapterFactory()));
+        pico.registerComponentImplementation(Woman.class, Wife.class);
+        Woman wife = (Woman) pico.getComponentInstance(Woman.class);
+        assertFalse("Wife should not be castable to SuperWoman, as she should be proxied to Woman only", wife instanceof SuperWoman);
+    }
+
 
     public static class Bad implements Serializable {
         public Bad() {

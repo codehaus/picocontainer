@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -21,16 +22,24 @@ public class StockTraderTest extends TestCase {
     }
 
     public static interface StockMarket {
+        void sellBid(String ticker); // TODO: is this really called "bid"?
     }
 
     public static class StockMarketStub implements StockMarket {
+        private List currentSellBids = new ArrayList();
+
+        public void sellBid(String ticker) {
+            currentSellBids.add(ticker);
+        }
+
         public List currentSellBids() {
-            return Collections.singletonList("MSFT");
+            return currentSellBids;
         }
     }
 
     public static class StockTrader {
         public StockTrader(StockTicker ticker,  StockMarket market) {
+            market.sellBid("MSFT");
         }
     }
 

@@ -1,6 +1,9 @@
 require 'rico/container'
 
 module Rico
+  #
+  # A simple chained container that implements the GoF Decorator pattern
+  #
   class ChainedContainer < Container
     def initialize parent = Container.new
       super()

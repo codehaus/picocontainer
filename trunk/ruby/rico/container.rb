@@ -2,7 +2,12 @@ require 'rico/exceptions'
 require 'rico/componentspecification'
 require 'rico/multicaster'
 
+
 module Rico
+  #
+  # The base container. You should probably subclass ChainedContainer rather than this
+  # one so that different containers can decorate (chain to) one another.
+  #
   class Container
     def initialize
       @specs = {}

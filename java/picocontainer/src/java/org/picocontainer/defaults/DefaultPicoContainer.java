@@ -175,7 +175,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
                 found.add(componentAdapter);
             }
         }
-        return found;
+        return Collections.unmodifiableList( found );
     }
 
     /**

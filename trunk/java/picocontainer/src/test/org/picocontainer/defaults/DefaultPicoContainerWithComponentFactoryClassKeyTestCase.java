@@ -9,6 +9,9 @@ import org.picocontainer.tck.DependsOnTouchable;
 import org.picocontainer.tck.SimpleTouchable;
 import org.picocontainer.tck.Touchable;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class DefaultPicoContainerWithComponentFactoryClassKeyTestCase extends AbstractBasicClassCompatabilityTestCase {
 
     private ComponentFactory componentFactory = new DefaultComponentFactory();
@@ -31,6 +34,10 @@ public class DefaultPicoContainerWithComponentFactoryClassKeyTestCase extends Ab
     protected void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
         ((DefaultPicoContainer) picoContainer).registerComponent(Touchable.class,SimpleTouchable.class);
     }
+
+    protected void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        ((DefaultPicoContainer) picoContainer).registerComponent(Map.class, new HashMap());
+    }    
 
     // testXXX methods are in superclass.
 

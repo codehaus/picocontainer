@@ -8,6 +8,8 @@ import org.picocontainer.tck.AbstractBasicStringCompatabilityTestCase;
 import org.picocontainer.tck.DependsOnTouchable;
 import org.picocontainer.tck.SimpleTouchable;
 
+import java.util.HashMap;
+
 public class DefaultPicoContainerWithComponentRegistryStringKeyTestCase extends AbstractBasicStringCompatabilityTestCase {
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
@@ -26,6 +28,11 @@ public class DefaultPicoContainerWithComponentRegistryStringKeyTestCase extends 
         defaultPico.registerComponent("dependsOnTouchable", DependsOnTouchable.class);
         return defaultPico;
     }
+
+    protected void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException {
+        ((DefaultPicoContainer) picoContainer).registerComponent("map", new HashMap());
+    }
+    
 
     // testXXX methods are in superclass.
 

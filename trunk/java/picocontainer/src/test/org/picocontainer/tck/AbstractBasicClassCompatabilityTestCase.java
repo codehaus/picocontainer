@@ -14,11 +14,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
+import java.util.HashMap;
 
 public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
         PicoRegistrationException, PicoIntrospectionException;
+
     abstract public PicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
         PicoRegistrationException, PicoIntrospectionException;
 
@@ -30,13 +32,13 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         picoContainer.instantiateComponents();
         assertTrue("Container should have Touchable component",
-                picoContainer.hasComponent(Touchable.class));
+            picoContainer.hasComponent(Touchable.class));
         assertTrue("Container should have DependsOnTouchable component",
-                picoContainer.hasComponent(DependsOnTouchable.class));
+            picoContainer.hasComponent(DependsOnTouchable.class));
         assertTrue("Component should be instance of Touchable",
-                picoContainer.getComponent(Touchable.class) instanceof Touchable);
+            picoContainer.getComponent(Touchable.class) instanceof Touchable);
         assertTrue("Component should be instance of DependsOnTouchable",
-                picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
+            picoContainer.getComponent(DependsOnTouchable.class) instanceof DependsOnTouchable);
         assertTrue("should not have non existent component", !picoContainer.hasComponent(Map.class));
     }
 
@@ -91,8 +93,8 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
 
     protected abstract void addAnotherSimpleTouchable(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
 
-   public void testDuplicateRegistration() throws Exception {
-       PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+    public void testDuplicateRegistration() throws Exception {
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
         try {
             addAnotherSimpleTouchable(picoContainer);
             //picoContainer.instantiateComponents();
@@ -103,5 +105,16 @@ public abstract class AbstractBasicClassCompatabilityTestCase extends TestCase {
         }
     }
 
+    protected abstract void addAHashMapByInstance(PicoContainer picoContainer) throws PicoRegistrationException, PicoIntrospectionException;
+
+    public void testByInstanceRegistration() throws PicoRegistrationException, PicoInitializationException {
+        PicoContainer picoContainer = createPicoContainerWithTouchableAndDependancy();
+        addAHashMapByInstance(picoContainer);
+        picoContainer.instantiateComponents();
+        assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());
+        assertEquals("Key - Map, Impl - HashMap should be in container",HashMap.class, picoContainer.getComponent(Map.class).getClass());
+        //TODO - some way to test hashmap was passed in as an instance ?
+        // should unmanaged side of DefaultPicoContainer be more exposed thru interface?
+    }
 
 }

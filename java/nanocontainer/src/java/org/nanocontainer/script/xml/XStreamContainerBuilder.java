@@ -12,7 +12,7 @@ package org.nanocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.xml.dom.DomXMLReader;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
  * @author Konstantin Pribluda
  * @version $Revision$
  */
-public class XStreamContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+public class XStreamContainerBuilder extends ScriptedContainerBuilder {
     private final Element rootElement;
 
     private final static String IMPLEMENTATION = "implementation";

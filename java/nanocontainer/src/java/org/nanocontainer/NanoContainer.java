@@ -9,22 +9,21 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.NullPicoContainer;
+import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.reflection.DefaultReflectionContainerAdapter;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.NullPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
-import java.io.Reader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
+import java.io.Reader;
 import java.util.HashMap;
+import java.util.Map;
 
 public class NanoContainer {
 
@@ -44,16 +43,16 @@ public class NanoContainer {
         extensionToComposers.put(BEANSHELL, "org.nanocontainer.script.bsh.BeanShellContainerBuilder");
     }
 
-    protected ScriptedComposingLifecycleContainerBuilder containerBuilder;
+    protected ScriptedContainerBuilder containerBuilder;
 
     protected ObjectReference containerRef;
 
     public NanoContainer(File compositionFile, PicoContainer parent, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")) , parent, classLoader);
+        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), parent, classLoader);
     }
 
     public NanoContainer(File compositionFile, PicoContainer parent) throws IOException, ClassNotFoundException {
-        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")) , parent, NanoContainer.class.getClassLoader());
+        this(new FileReader(compositionFile), compositionFile.getCanonicalPath().substring(compositionFile.getCanonicalPath().indexOf(".")), parent, NanoContainer.class.getClassLoader());
     }
 
     public NanoContainer(File compositionFile) throws IOException, ClassNotFoundException {
@@ -80,7 +79,7 @@ public class NanoContainer {
             defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
         }
         ComponentAdapter componentAdapter = defaultReflectionContainerAdapter.registerComponentImplementation(containerAssemblerClassName);
-        containerBuilder = (ScriptedComposingLifecycleContainerBuilder) componentAdapter.getComponentInstance();
+        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance();
         containerRef = new SimpleReference();
         final ObjectReference parentRef = new SimpleReference();
         parentRef.set(parent);
@@ -93,7 +92,7 @@ public class NanoContainer {
         containerBuilder.killContainer(containerRef);
     }
 
-    public ScriptedComposingLifecycleContainerBuilder getContainerBuilder() {
+    public ScriptedContainerBuilder getContainerBuilder() {
         return containerBuilder;
     }
 

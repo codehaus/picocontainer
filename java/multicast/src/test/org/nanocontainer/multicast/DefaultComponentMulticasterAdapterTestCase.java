@@ -14,8 +14,6 @@
 package org.nanocontainer.multicast;
 
 import junit.framework.TestCase;
-import org.jmock.C;
-import org.jmock.Mock;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -25,6 +23,8 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.jmock.Mock;
+import org.jmock.C;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -212,7 +212,7 @@ public class DefaultComponentMulticasterAdapterTestCase extends TestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         Mock mockStartable = new Mock(Startable.class);
-        mockStartable.expect("start");
+        mockStartable.expect("start", C.args());
         pico.registerComponentInstance(mockStartable.proxy());
 
         Mock mockInvocationInterceptor = new Mock(InvocationInterceptor.class);

@@ -21,7 +21,7 @@ import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
@@ -105,7 +105,7 @@ public class Deployer {
         Object compositionScope = null;
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
 
-        ContainerBuilder builder = ScriptedComposingLifecycleContainerBuilder.createBuilder(extension, scriptReader, applicationClassLoader);
+        ContainerBuilder builder = ScriptedContainerBuilder.createBuilder(extension, scriptReader, applicationClassLoader);
         builder.buildContainer(result, parentContainerRef, compositionScope);
 
         return result;

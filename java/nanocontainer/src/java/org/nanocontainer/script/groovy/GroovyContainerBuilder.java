@@ -16,7 +16,7 @@ package org.nanocontainer.script.groovy;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.ScriptedComposingLifecycleContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
@@ -34,7 +34,7 @@ import java.io.Reader;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class GroovyContainerBuilder extends ScriptedComposingLifecycleContainerBuilder {
+public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
     public GroovyContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);

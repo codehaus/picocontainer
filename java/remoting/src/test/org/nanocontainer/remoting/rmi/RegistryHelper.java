@@ -22,7 +22,7 @@ public class RegistryHelper {
             try {
                 registry = LocateRegistry.getRegistry(9877);
             } catch (RemoteException e1) {
-                throw new RuntimeException(e1);
+                throw new RuntimeException(e1.getMessage());
             }
         }
     }

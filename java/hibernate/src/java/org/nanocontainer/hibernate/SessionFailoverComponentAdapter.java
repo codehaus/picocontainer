@@ -11,7 +11,6 @@ package org.nanocontainer.hibernate;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
-
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -72,7 +71,7 @@ public class SessionFailoverComponentAdapter extends DecoratingComponentAdapter 
                                 return retval;
                             } catch(InvocationTargetException ite) {
                                 // we got hibernate exception kill this session
-                                if(ite.getCause() instanceof HibernateException && target != null)  {
+                                if(ite.getTargetException() instanceof HibernateException && target != null)  {
                                     target.clear();
                                     target.close();
                                     target = null;

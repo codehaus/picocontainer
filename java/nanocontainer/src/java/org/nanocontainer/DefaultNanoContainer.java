@@ -132,7 +132,7 @@ public class DefaultNanoContainer implements NanoContainer {
     }
 
     public void addClassLoaderURL(URL url) {
-        if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this ContainerAdapter is locked");
+        if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this instance is locked");
         urls.add(url);
     }
 
@@ -158,7 +158,7 @@ public class DefaultNanoContainer implements NanoContainer {
             try {
                 return super.loadClass(name);
             } catch (ClassNotFoundException e) {
-                throw new ClassNotFoundException(getPrettyURLs(), e);
+                throw new ClassNotFoundException(name + ":" + getPrettyHierarchy(), e);
             }
         }
 
@@ -166,17 +166,28 @@ public class DefaultNanoContainer implements NanoContainer {
             try {
                 return super.findClass(name);
             } catch (ClassNotFoundException e) {
-                throw new ClassNotFoundException(getPrettyURLs(), e);
+                throw new ClassNotFoundException(name + ":" + getPrettyHierarchy(), e);
             }
         }
 
-        private String getPrettyURLs() {
-            String result = "Classloader URLs (classpath):\n";
+        private String getPrettyHierarchy() {
+            ClassLoader classLoader = this;
+            StringBuffer sb = new StringBuffer();
+            while(classLoader != null) {
+                sb.append(classLoader.toString()).append("\n");
+                classLoader = classLoader.getParent();
+            }
+            return sb.toString();
+        }
+
+        public String toString() {
+            String result = super.toString();
             URL[] urls = getURLs();
             for (int i = 0; i < urls.length; i++) {
                 URL url = urls[i];
-                result = result + url.toString() + "\n";
+                result += "\n\t" + url.toString();
             }
+
             return result;
         }
     }

@@ -107,23 +107,20 @@ public class PortableRemoteObjectDelegateMockTest
         try {
             delegate.narrow("Hello", FooHome.class);
             fail("Should have thrown.");
-        } catch (ClassCastException e) {
-            assertNull(e.getCause());
+        } catch (ClassCastException expected) {
         }
 
         try {
             delegate.narrow("Hello", HelloHomeImpl.class);
             fail("Should have thrown.");
-        } catch (ClassCastException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException);
+        } catch (ClassCastException expected) {
         }
 
         narrowMap.put("Hello", HelloHomeImpl.class.getConstructor(new Class[]{String.class}));
         try {
             delegate.narrow("Hello", HelloHome.class);
             fail("Should have thrown.");
-        } catch (ClassCastException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException);
+        } catch (ClassCastException expected) {
         }
         assertNull(delegate.narrow("foo", HelloHome.class));
         
@@ -131,8 +128,7 @@ public class PortableRemoteObjectDelegateMockTest
         try {
             delegate.narrow("Hello", HelloHome.class);
             fail("Should have thrown.");
-        } catch (ClassCastException e) {
-            assertNull(e.getCause());
+        } catch (ClassCastException expected) {
         }
     }
 }

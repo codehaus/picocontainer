@@ -80,7 +80,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         } catch (IOException e) {
             throw new NanoContainerMarkupException("IOException : " + e.getMessage(), e);
         } catch (ParserConfigurationException e) {
-            throw new NanoContainerMarkupException("PArserConfigurationException :" + e.getMessage(), e);
+            throw new NanoContainerMarkupException("ParserConfigurationException :" + e.getMessage(), e);
         }
     }
 

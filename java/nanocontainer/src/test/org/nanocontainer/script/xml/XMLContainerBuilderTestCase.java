@@ -69,7 +69,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull(pico.getComponentInstance(DefaultWebServerConfig.class));
 
         StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
-        assertTrue(sb.indexOf("-WebServerImpl") != -1);
+        assertTrue(sb.toString().indexOf("-WebServerImpl") != -1);
     }
 
     public void XXX_testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, PicoCompositionException {
@@ -109,9 +109,9 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotNull("Container should have a 'foo' component", fooTestComp);
 
         StringBuffer sb = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
-        assertTrue("Container should have instantiated a 'TestComp2' component because it is Startable", sb.indexOf("-TestComp2") != -1);
+        assertTrue("Container should have instantiated a 'TestComp2' component because it is Startable", sb.toString().indexOf("-TestComp2") != -1);
         // We are using the DefaultLifecycleManager, which only instantiates Startable components, and not non-Startable components.
-        assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.indexOf("-NotStartable") == -1);
+        assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.toString().indexOf("-NotStartable") == -1);
     }
 
     public void testUnknownclassThrowsPicoCompositionException() throws SAXException, ParserConfigurationException, IOException {

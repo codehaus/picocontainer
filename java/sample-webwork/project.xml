@@ -107,6 +107,11 @@
             </properties>
         </dependency>
 
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+        </dependency>
+
         <!-- Uncomment for Servlet containers that don't bundle commons-logging -->
         <!--        <dependency>-->
         <!--            <id>commons-logging</id>-->

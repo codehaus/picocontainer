@@ -62,7 +62,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     public void testApplicationScopeContainerIsCreatedWhenServletContextIsInitialisedWithSeparateScript() {
         ServletContainerListener listener = new ServletContainerListener();
 
-        Mock servletContextMock = new Mock(ServletContext.class);
+        Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add("nanocontainer.groovy");
         servletContextMock.expects(once())

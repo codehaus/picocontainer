@@ -34,6 +34,7 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
      * @param componentKeys the ambiguous keys.
      */
     public AmbiguousComponentResolutionException(Class ambiguousClass, Object[] componentKeys) {
+        super("");
         this.ambiguousClass = ambiguousClass;
         this.ambiguousComponentKeys = new Class[componentKeys.length];
         for (int i = 0; i < componentKeys.length; i++) {

@@ -20,16 +20,13 @@ public class TooManySatisfiableConstructorsException extends PicoIntrospectionEx
     private Collection constructors;
 
     public TooManySatisfiableConstructorsException(Class forClass, Collection constructors) {
+        super( "Too many satisfiable constructors:" + constructors.toString());
         this.forClass = forClass;
         this.constructors = constructors;
     }
 
     public Class getForImplementationClass() {
         return forClass;
-    }
-
-    public String getMessage() {
-        return "Too many satisfiable constructors:" + constructors.toString();
     }
 
     public Collection getConstructors() {

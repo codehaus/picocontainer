@@ -20,20 +20,10 @@ import org.picocontainer.PicoRegistrationException;
  * @version $Revision$
  */
 public class MX4JRegistrationException extends PicoRegistrationException {
-    public MX4JRegistrationException() {
-        super();
-    }
 
     public MX4JRegistrationException(String message) {
         super(message);
     }
 
 
-    public MX4JRegistrationException(String message, Exception cause) {
-        super(message, cause);
-    }
-
-    public MX4JRegistrationException(Throwable cause) {
-        super(cause);
-    }
 }

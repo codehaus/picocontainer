@@ -15,6 +15,8 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.util.Collections;
+
 /**
  * @author Thomas Heller
  * @author Aslak Helles&oslash;y
@@ -40,9 +42,8 @@ public class ComponentKeysTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("default", SimpleTouchable.class);
 
-        pico.registerComponentImplementation(Touchable.class, DecoratedTouchable.class, new Parameter[]{
-            new ComponentParameter("default")
-        });
+        // Use the List variant instead, so we get better test coverage.
+        pico.registerComponentImplementation(Touchable.class, DecoratedTouchable.class, Collections.singletonList(new ComponentParameter("default")));
 
         DefaultPicoContainer grandChild = new DefaultPicoContainer(new DefaultPicoContainer(new DefaultPicoContainer(pico)));
 

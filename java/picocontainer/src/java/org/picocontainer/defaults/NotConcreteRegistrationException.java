@@ -20,11 +20,8 @@ public class NotConcreteRegistrationException extends PicoRegistrationException 
     private final Class componentImplementation;
 
     public NotConcreteRegistrationException(Class componentImplementation) {
+        super("Bad Access: '" + componentImplementation.getName() + "' is not instantiable");
         this.componentImplementation = componentImplementation;
-    }
-
-    public String getMessage() {
-        return "Bad Access: '" + componentImplementation.getName() + "' is not instantiable";
     }
 
     public Class getComponentImplementation() {

@@ -1,3 +1,13 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the license.html file.                                                    *
+ *                                                                           *
+ * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
+ *****************************************************************************/
+
 package picocontainer.lifecycle;
 
 import junit.framework.TestCase;
@@ -8,7 +18,7 @@ import picocontainer.testmodel.WilmaImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LifecyclePicoContainerTestCase extends TestCase {
+public class DefaultLifecyclePicoAdaptorTestCase extends TestCase {
 
     public static class One implements Startable, Stoppable, Disposable {
 
@@ -131,18 +141,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     }
 
 
-
-
-
-
-
-
-//    public static interface StartStopDisposable extends Startable, Stoppable, Disposable {
-    //  }
-
-
-
-    public void testOrderOfInstantiation() throws Exception {
+    public void testOrderOfInstantiationWithoutAdaptor() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
 
@@ -176,7 +175,8 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
     public void testStartStopStartStopAndDispose() throws Exception {
 
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
 
         pico.registerComponentByClass(One.class);
         pico.registerComponentByClass(Two.class);
@@ -194,7 +194,7 @@ public class LifecyclePicoContainerTestCase extends TestCase {
         assertEquals("Incorrect Order of Instantiation", "Three", one.getInstantiating().get(2));
         assertEquals("Incorrect Order of Instantiation", "Four", one.getInstantiating().get(3));
 
-        startStopDisposeLifecycleComps(pico, pico, pico, one);
+        startStopDisposeLifecycleComps(lifecycle, lifecycle, lifecycle, one);
 
     }
 
@@ -231,70 +231,88 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
     public void testStartStartCausingBarf() throws Exception {
 
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         pico.registerComponentByClass(FredImpl.class);
         pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
 
-        pico.start();
+        assertTrue(lifecycle.isStopped());
+        lifecycle.start();
+        assertTrue(lifecycle.isStarted());
         try {
-            pico.start();
+            lifecycle.start();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
+            assertTrue(lifecycle.isStarted());
         }
     }
 
     public void testStartStopStopCausingBarf() throws Exception {
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         pico.registerComponentByClass(FredImpl.class);
         pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
-        pico.start();
-        pico.stop();
+        assertTrue(lifecycle.isStopped());
+        lifecycle.start();
+        assertTrue(lifecycle.isStarted());
+        lifecycle.stop();
+        assertTrue(lifecycle.isStopped());
         try {
-            pico.stop();
+            lifecycle.stop();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
+            assertTrue(lifecycle.isStopped());
         }
     }
 
     public void testDisposeDisposeCausingBarf() throws Exception {
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         pico.registerComponentByClass(FredImpl.class);
         pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
-        pico.start();
-        pico.stop();
-        pico.dispose();
+        lifecycle.start();
+        lifecycle.stop();
+        assertFalse(lifecycle.isDisposed());
+        lifecycle.dispose();
+        assertTrue(lifecycle.isDisposed());
         try {
-            pico.dispose();
+            lifecycle.dispose();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
+            assertTrue(lifecycle.isDisposed());
         }
     }
 
 
     public void testStartStopDisposeDisposeCausingBarf() throws Exception {
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         pico.registerComponentByClass(FredImpl.class);
         pico.registerComponentByClass(WilmaImpl.class);
 
         pico.instantiateComponents();
-        pico.start();
-        pico.stop();
-        pico.dispose();
+        lifecycle.start();
+        lifecycle.stop();
+        lifecycle.dispose();
         try {
-            pico.dispose();
+            lifecycle.dispose();
             fail("Should have barfed");
         } catch (IllegalStateException e) {
             // expected;
@@ -339,29 +357,37 @@ public class LifecyclePicoContainerTestCase extends TestCase {
     }
 
     public void testStartStopOfDaemonizedThread() throws Exception {
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         pico.registerComponentByClass(FredImpl.class);
         pico.registerComponentByClass(WilmaImpl.class);
         pico.registerComponentByClass(FooRunnable.class);
 
         pico.instantiateComponents();
-        pico.start();
+        lifecycle.start();
+        assertTrue(lifecycle.isStarted());
         Thread.sleep(100);
-        pico.stop();
+        lifecycle.stop();
+        assertTrue(lifecycle.isStopped());
 
         FooRunnable foo = (FooRunnable) pico.getComponent(FooRunnable.class);
         assertEquals(1, foo.runCount());
-        pico.start();
+        lifecycle.start();
+        assertTrue(lifecycle.isStarted());
         Thread.sleep(100);
-        pico.stop();
+        lifecycle.stop();
+        assertTrue(lifecycle.isStopped());
         assertEquals(2, foo.runCount());
 
     }
 
-    public void testForgivingNatureOfSoNamedContainer() throws Exception {
+    public void testForgivingNatureOfLifecycleAdapter() throws Exception {
 
-        LifecyclePicoContainer pico = new LifecyclePicoContainer.Default();
+        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
+        LifecyclePicoAdaptor lifecycle = new DefaultLifecyclePicoAdaptor(pico);
+
 
         // Wilma is not Startable (etc). This container should be able to handle the
         // fact that none of the comps are Startable (etc).
@@ -369,7 +395,9 @@ public class LifecyclePicoContainerTestCase extends TestCase {
 
         pico.instantiateComponents();
 
-        pico.start();
+        assertTrue(lifecycle.isStopped());
+        lifecycle.start();
+        assertTrue(lifecycle.isStarted());
 
     }
 

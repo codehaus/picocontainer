@@ -10,54 +10,61 @@
 
 package picocontainer.lifecycle;
 
-import picocontainer.ComponentFactory;
 import picocontainer.PicoContainer;
-import picocontainer.PicoInitializationException;
-import picocontainer.defaults.DefaultComponentFactory;
-import picocontainer.defaults.NullContainer;
-import picocontainer.hierarchical.HierarchicalPicoContainer;
 
-public class LifecyclePicoContainer extends HierarchicalPicoContainer implements Lifecycle {
+public class DefaultLifecyclePicoAdaptor implements LifecyclePicoAdaptor {
 
     private Startable startableAggregatedComponent;
     private Stoppable stoppableAggregatedComponent;
     private Disposable disposableAggregatedComponent;
     private boolean started;
     private boolean disposed;
+    private final PicoContainer picoContainer;
 
-    public LifecyclePicoContainer(ComponentFactory componentFactory, PicoContainer parentContainer) {
-        super(componentFactory, parentContainer);
+    public DefaultLifecyclePicoAdaptor(PicoContainer picoContainer) {
+        this.picoContainer = picoContainer;
     }
 
-    public static class Default extends LifecyclePicoContainer {
-        public Default() {
-            super(new DefaultComponentFactory(), new NullContainer());
-        }
+    public boolean isStarted() {
+        return started;
     }
 
-    public void instantiateComponents() throws PicoInitializationException {
-        super.instantiateComponents();
-        try {
-            startableAggregatedComponent = (Startable) getCompositeComponent(true, false);
-        } catch (ClassCastException e) {
-        }
-        try {
+    public boolean isStopped() {
+        return !started;
+    }
 
-            stoppableAggregatedComponent = (Stoppable) getCompositeComponent(false, false);
-        } catch (ClassCastException e) {
+    public boolean isDisposed() {
+        return disposed;
+    }
+
+    private void initializeIfNotInitialized() {
+        if (startableAggregatedComponent == null) {
+            try {
+                startableAggregatedComponent = (Startable) picoContainer.getCompositeComponent(true, false);
+            } catch (ClassCastException e) {
+            }
         }
-        try {
-            //TODO-Aslak broken
-            Object o =  getCompositeComponent(false, false);
-            disposableAggregatedComponent = (Disposable) o;
-        } catch (ClassCastException e) {
-            System.out.println("");
+        if (stoppableAggregatedComponent == null) {
+            try {
+
+                stoppableAggregatedComponent = (Stoppable) picoContainer.getCompositeComponent(false, false);
+            } catch (ClassCastException e) {
+            }
+        }
+        if (disposableAggregatedComponent == null) {
+            try {
+                //TODO-Aslak broken ?
+                Object o = picoContainer.getCompositeComponent(false, false);
+                disposableAggregatedComponent = (Disposable) o;
+            } catch (ClassCastException e) {
+            }
         }
 
     }
 
     public void start() throws Exception {
         checkDisposed();
+        initializeIfNotInitialized();
         if (started) {
             throw new IllegalStateException("Already started.");
         }
@@ -69,6 +76,7 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
 
     public void stop() throws Exception {
         checkDisposed();
+        initializeIfNotInitialized();
         if (started == false) {
             throw new IllegalStateException("Already stopped.");
         }
@@ -80,6 +88,7 @@ public class LifecyclePicoContainer extends HierarchicalPicoContainer implements
 
     public void dispose() throws Exception {
         checkDisposed();
+        initializeIfNotInitialized();
         disposed = true;
         if (disposableAggregatedComponent != null) {
             disposableAggregatedComponent.dispose();

@@ -67,8 +67,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         componentKeyToAdapterMap.put(componentKey, componentAdapter);
     }
 
-    public Object unregisterComponent(Object componentKey) {
-        return componentKeyToAdapterMap.remove(componentKey);
+    public ComponentAdapter unregisterComponent(Object componentKey) {
+        ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.remove(componentKey);
+        if(result != null) {
+            Object instance = result.getComponentInstance(this);
+            componentKeyToAdapterMap.remove(componentKey);
+            instantiantionOrderedComponentAdapters.remove(result);
+            unmanagedComponents.remove(instance);
+        }
+        return result;
     }
 
     public final ComponentAdapter findComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
@@ -96,11 +103,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     private ComponentAdapter findComponentAdapterImpl(Object componentKey) throws AmbiguousComponentResolutionException {
         ComponentAdapter result = (ComponentAdapter) componentKeyToAdapterMap.get(componentKey);
-//        if(result == null && componentKey instanceof Class) {
-//            // see if we find a matching one if the key is a class
-//            Class classKey = (Class) componentKey;
-//            result = findImplementingComponentAdapter(classKey);
-//        }
         if (result == null && componentKey instanceof Class) {
             // see if we find a matching one if the key is a class
             Class classKey = (Class) componentKey;
@@ -109,20 +111,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return result;
     }
 
-    public Object registerComponentInstance(Object component) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object component) throws PicoRegistrationException {
         return registerComponentInstance(component.getClass(), component);
     }
 
-    public Object registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
 
         addOrderedComponentAdapter(componentAdapter);
         unmanagedComponents.add(componentInstance);
-        return componentKey;
+        return componentAdapter;
     }
 
-    public Object registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
         return registerComponentImplementation(componentImplementation, componentImplementation);
     }
 
@@ -151,14 +153,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return getComponentMulticaster(true, false);
     }
 
-    public Object registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return registerComponentImplementation(componentKey, componentImplementation, null);
     }
 
-    public Object registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
         registerComponent(componentAdapter);
-        return componentKey;
+        return componentAdapter;
     }
 
     public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {

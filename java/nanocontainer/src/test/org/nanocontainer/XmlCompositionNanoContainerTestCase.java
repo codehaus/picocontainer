@@ -220,9 +220,8 @@ public class XmlCompositionNanoContainerTestCase extends TestCase {
 
     public void testInstantiateWithHintedComponentResolution() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoCompositionException {
 
-        NanoContainer nano = null;
         try {
-            nano = new XmlCompositionNanoContainer(new StringReader("" +
+            new XmlCompositionNanoContainer(new StringReader("" +
                         "<container>" +
                         "    <component stringkey='one' class='java.util.ArrayList'/>" +
                         "    <component stringkey='two' class='java.util.Vector'/>" +

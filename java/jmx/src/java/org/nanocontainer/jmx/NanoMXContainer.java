@@ -11,6 +11,7 @@
 package org.picoextras.jmx;
 
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.*;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
@@ -57,12 +58,12 @@ public class NanoMXContainer extends DefaultPicoContainer implements Serializabl
      * @param component is the component to be registered
      * @throws PicoRegistrationException
      */
-    public synchronized Object registerComponentInstance(Object key, Object component)
+    public synchronized ComponentAdapter registerComponentInstance(Object key, Object component)
             throws PicoRegistrationException {
 		ObjectName name = null;             	
         try {
             name = NanoMXComponentAdapter.asObjectName(key);
-            Object result = super.registerComponentInstance(key, component);
+            ComponentAdapter result = super.registerComponentInstance(key, component);
 
             Object mbean = NanoMXComponentAdapter.asMBean(component);
             mbeanServer.registerMBean(mbean, name);

@@ -32,14 +32,14 @@ class NanningComponentFactory implements ComponentFactory {
         this.decoratedComponentFactory = decoratedComponentFactory;
     }
 
-    public Object createComponent(Class componentType, Class componentImplementation, Class[] dependencies, Object[] dependencyInstances) throws PicoInitializationException {
+    public Object createComponent(Object componentType, Class componentImplementation, Class[] dependencies, Object[] dependencyInstances) throws PicoInitializationException {
         Object component = decoratedComponentFactory.createComponent(componentType, componentImplementation, dependencies, dependencyInstances);
 
         // Nanning will only aspectify stuff when its type is an interface
-        if (componentType.isInterface()) {
+        if (((Class)componentType).isInterface()) {
             // the trick: set up first mixin manually with the component as target
             AspectInstance aspectInstance = new AspectInstance();
-            MixinInstance mixin = new MixinInstance(componentType, component);
+            MixinInstance mixin = new MixinInstance((Class)componentType, component);
             aspectInstance.addMixin(mixin);
 
             // let the aspects do its work

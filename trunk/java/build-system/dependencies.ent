@@ -1,7 +1,61 @@
+
+<!-- Internal dependencies -->
+
+<!ENTITY dep-picocontainer "
+    <groupId>picocontainer</groupId>
+    <artifactId>picocontainer</artifactId>
+    <version>&ver-picocontainer;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!ENTITY dep-nanocontainer-picometer "
+    <groupId>nanocontainer</groupId>
+    <artifactId>nanocontainer-picometer</artifactId>
+    <version>&ver-nanocontainer-picometer;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!ENTITY dep-nanocontainer-pool "
+    <groupId>nanocontainer</groupId>
+    <artifactId>nanocontainer-pool</artifactId>
+    <version>&ver-nanocontainer-pool;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!ENTITY dep-nanocontainer-pool2 "
+    <groupId>nanocontainer</groupId>
+    <artifactId>nanocontainer-pool2</artifactId>
+    <version>&ver-nanocontainer-pool2;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!ENTITY dep-nanocontainer-testmodel "
+    <groupId>nanocontainer</groupId>
+    <artifactId>nanocontainer-testmodel</artifactId>
+    <version>&ver-nanocontainer-testmodel;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!ENTITY dep-nanocontainer-type3msg "
+    <groupId>nanocontainer</groupId>
+    <artifactId>nanocontainer-type3msg</artifactId>
+    <version>&ver-nanocontainer-type3msg;</version>
+    <url>http://www.picocontainer.org</url>
+">
+
+<!-- External dependencies -->
+
+<!ENTITY dep-asm "
+    <groupId>asm</groupId>
+    <artifactId>asm</artifactId>
+    <version>1.4.1</version>
+">
+
 <!ENTITY dep-jmock "
     <groupId>jmock</groupId>
     <artifactId>jmock</artifactId>
     <version>SNAPSHOT</version>
+    <url>http://www.jmock.org</url>
 ">
 
 <!ENTITY dep-junit "

@@ -96,11 +96,14 @@ public abstract class AbstractComponentAdapterTestCase
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
             visitedElements.add(componentAdapter);
         }
-        public void visitComponentInstance(Object o) {
-            visitedElements.add(o);
-        }
         List getVisitedElements() {
             return visitedElements;
+        }
+        public boolean isBreadthFirstTraversal() {
+            return true;
+        }
+        public boolean isReverseTraversal() {
+            return false;
         }
     }
     

@@ -268,15 +268,17 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         Object foo = new Object();
-        pico.registerComponentInstance(foo);
+        ComponentAdapter componentAdapter = pico.registerComponentInstance(foo);
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
+        fooVisitor.expects(atLeastOnce()).method("isBreadthFirstTraversal").withNoArguments().will(returnValue(true));
+        fooVisitor.expects(atLeastOnce()).method("isReverseTraversal").withNoArguments().will(returnValue(false));
         fooVisitor.expects(once()).method("visitContainer").with(eq(pico));
-        fooVisitor.expects(once()).method("visitComponentInstance").with(same(foo));
+        fooVisitor.expects(once()).method("visitComponentAdapter").with(eq(componentAdapter));
 
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(pico);
 
-        ipc.accept((PicoVisitor) fooVisitor.proxy(), null, true);
+        ipc.accept((PicoVisitor) fooVisitor.proxy());
 
 
     }

@@ -122,9 +122,7 @@ public interface PicoContainer extends Startable, Disposable {
     /**
      * Accepts a visitor that should visit the child containers, component adapters and component instances.
      * @param visitor the visitor
-     * @param componentType the type of components to visit. If null, no components are visited.
-     * @param visitInInstantiationOrder order in which to visit the component instances.
      * @since 1.1
      */
-    void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder);
+    void accept(PicoVisitor visitor);
 }

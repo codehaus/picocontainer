@@ -17,8 +17,6 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.Disposable;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import java.io.Serializable;
@@ -26,10 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
 
 /**
  * <p/>
@@ -373,7 +372,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
-        accept(LifecycleVisitor.STARTER, Startable.class, true);
+        accept(LifecycleVisitor.STARTER);
         started = true;
     }
 
@@ -383,7 +382,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (!started) throw new IllegalStateException("Not started");
-        accept(LifecycleVisitor.STOPPER, Startable.class, false);
+        accept(LifecycleVisitor.STOPPER);
         started = false;
     }
 
@@ -392,7 +391,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");
-        accept(LifecycleVisitor.DISPOSER, Disposable.class, false);
+        accept(LifecycleVisitor.DISPOSER);
         disposed = true;
     }
 
@@ -410,40 +409,41 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         children.remove(child);
     }
 
-    public void accept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
-        visitor.visitContainer(this);
-        List componentInstances = getComponentInstancesOfType(ofType);
-        if(visitInInstantiationOrder) {
-            componentAdaptersAccept(visitor, ofType);
-            visitComponentInstances(componentInstances, visitor);
-            childContainersAccept(visitor, ofType, visitInInstantiationOrder);
-        } else {
-            componentAdaptersAccept(visitor, ofType);
-            Collections.reverse(componentInstances);
-            childContainersAccept(visitor, ofType, visitInInstantiationOrder);
-            visitComponentInstances(componentInstances, visitor);
+    public void accept(PicoVisitor visitor) {
+        boolean widthFirstTraversal = visitor.isBreadthFirstTraversal();
+        boolean reverseTraversal = visitor.isReverseTraversal();
+        if (widthFirstTraversal && !reverseTraversal) {
+            visitor.visitContainer(this);
+            componentAdaptersAccept(visitor);
+        } else if (!widthFirstTraversal && reverseTraversal) {
+            componentAdaptersAccept(visitor);
+            visitor.visitContainer(this);
         }
-    }
-
-    private void childContainersAccept(PicoVisitor visitor, Class ofType, boolean visitInInstantiationOrder) {
-        for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+        final List allChildren = new LinkedList(children);
+        if (reverseTraversal) {
+            Collections.reverse(allChildren);
+        }
+        for (Iterator iterator = allChildren.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            child.accept(visitor, ofType, visitInInstantiationOrder);
+            child.accept(visitor);
+        }
+        if (!widthFirstTraversal && !reverseTraversal) {
+            visitor.visitContainer(this);
+            componentAdaptersAccept(visitor);
+        } else if (widthFirstTraversal && reverseTraversal) {
+            componentAdaptersAccept(visitor);
+            visitor.visitContainer(this);
         }
     }
 
-    private void componentAdaptersAccept(PicoVisitor visitor, Class type) {
-        for (Iterator iterator = getComponentAdaptersOfType(type).iterator(); iterator.hasNext();) {
+    private void componentAdaptersAccept(PicoVisitor visitor) {
+        final List componentAdapters = new LinkedList(getComponentAdapters());
+        if (visitor.isReverseTraversal()) {
+            Collections.reverse(componentAdapters);
+        }
+        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
             ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
             componentAdapter.accept(visitor);
         }
     }
-
-    private void visitComponentInstances(List componentInstances, PicoVisitor visitor) {
-        for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-            Object o = iterator.next();
-            visitor.visitComponentInstance(o);
-        }
-    }
-
 }

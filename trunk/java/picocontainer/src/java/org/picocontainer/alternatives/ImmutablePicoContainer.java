@@ -76,8 +76,8 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentInstancesOfType(type);
     }
 
-    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
-        delegate.accept(visitor, componentType, visitInInstantiationOrder);
+    public void accept(PicoVisitor visitor) {
+        delegate.accept(visitor);
     }
 
     public void start() {

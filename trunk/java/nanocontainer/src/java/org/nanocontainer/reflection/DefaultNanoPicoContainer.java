@@ -231,8 +231,8 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
         return delegate.equals(obj);
     }
 
-    public void accept(PicoVisitor visitor, Class componentType, boolean visitInInstantiationOrder) {
-        delegate.accept(visitor, componentType, visitInInstantiationOrder);
+    public void accept(PicoVisitor visitor) {
+        delegate.accept(visitor);
     }
 
 }

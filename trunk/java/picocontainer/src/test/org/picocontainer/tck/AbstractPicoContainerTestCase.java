@@ -10,8 +10,9 @@
 package org.picocontainer.tck;
 
 import junit.framework.Assert;
-import org.jmock.MockObjectTestCase;
-import org.jmock.Mock;
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -21,9 +22,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
-import org.picocontainer.Startable;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
@@ -31,7 +31,6 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -49,7 +48,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ import java.util.Set;
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
  */
-public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
+public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
@@ -564,30 +565,6 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertTrue(sb.toString().indexOf("-disposed") != -1);
     }
 
-    public void testAcceptShouldIterateOverChildContainersAndAppropriateComponents() {
-        final MutablePicoContainer parent = createPicoContainer(null);
-        final MutablePicoContainer child = parent.makeChildContainer();
-        Map map = new HashMap();
-        ComponentAdapter mapAdapter = new InstanceComponentAdapter("map", map);
-        parent.registerComponent(mapAdapter);
-        child.registerComponentImplementation(ArrayList.class);
-
-        Mock noneVisitor = new Mock(PicoVisitor.class);
-        noneVisitor.expects(once()).method("visitContainer").with(eq(parent));
-        noneVisitor.expects(once()).method("visitContainer").with(eq(child));
-        parent.accept((PicoVisitor) noneVisitor.proxy(), null, true);
-
-        Mock mapVisitor = new Mock(PicoVisitor.class);
-        mapVisitor.expects(once()).method("visitContainer").with(eq(parent));
-        mapVisitor.expects(once()).method("visitContainer").with(eq(child));
-        mapVisitor.expects(once()).method("visitComponentInstance").with(same(map));
-        mapVisitor.expects(once()).method("visitComponentAdapter").with(same(mapAdapter));
-        parent.accept((PicoVisitor) mapVisitor.proxy(), Map.class, true);
-
-        noneVisitor.verify();
-        mapVisitor.verify();
-    }
-
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;
 
@@ -604,6 +581,69 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         public void dispose() {
             sb.append("-disposed");
         }
+    }
+    
+    public static class RecordingStrategyVisitor implements PicoVisitor {
+        
+        private final List list;
+        private final boolean breadthSearch;
+        private final boolean reverse;
+
+        public RecordingStrategyVisitor(List list, boolean breadthSearch, boolean reverse) {
+            this.list = list;
+            this.breadthSearch = breadthSearch;
+            this.reverse = reverse;
+        }
+
+        public void visitContainer(PicoContainer pico) {
+            list.add(pico);
+        }
+
+        public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+            list.add(componentAdapter);
+        }
+
+        public boolean isBreadthFirstTraversal() {
+            return breadthSearch;
+        }
+
+        public boolean isReverseTraversal() {
+            return reverse;
+        }
+        
+    }
+
+    public void testAcceptShouldRespectSearchStrategy() {
+        final MutablePicoContainer parent = createPicoContainer(null);
+        final MutablePicoContainer child = parent.makeChildContainer();
+        ComponentAdapter hashMapAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashMap.class, HashMap.class));
+        ComponentAdapter hashSetAdapter = parent.registerComponent(new ConstructorInjectionComponentAdapter(HashSet.class, HashSet.class));
+        ComponentAdapter arrayListAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class));
+        ComponentAdapter exceptionAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class));
+
+        List expectedList = Arrays.asList(new Object[] {parent, hashMapAdapter, hashSetAdapter, child, arrayListAdapter, exceptionAdapter});
+        List visitedList = new LinkedList();
+        PicoVisitor visitor = new RecordingStrategyVisitor(visitedList, true, false);
+        parent.accept(visitor);
+        assertEquals(expectedList, visitedList);
+
+        Collections.reverse(expectedList);
+        visitedList.clear();
+        visitor = new RecordingStrategyVisitor(visitedList, true, true);
+        parent.accept(visitor);
+        assertEquals(expectedList, visitedList);
+        
+        expectedList = Arrays.asList(new Object[] {child, arrayListAdapter, exceptionAdapter, parent, hashMapAdapter, hashSetAdapter});
+        visitedList.clear();
+        visitor = new RecordingStrategyVisitor(visitedList, false, false);
+        parent.accept(visitor);
+        assertEquals(expectedList, visitedList);
+        
+        Collections.reverse(expectedList);
+        visitedList.clear();
+        visitor = new RecordingStrategyVisitor(visitedList, false, true);
+        parent.accept(visitor);
+        assertEquals(expectedList, visitedList);
     }
 
 }

@@ -90,6 +90,6 @@ public class AggregatedContainersContainer extends DefaultPicoContainer {
         return (Class[]) componentTypes.toArray(new Class[containers.length]);
     }
 
-    public void initializeContainer() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInitializationException {
     }
 }

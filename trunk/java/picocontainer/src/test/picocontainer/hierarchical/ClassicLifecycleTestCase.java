@@ -3,8 +3,8 @@ package picocontainer.hierarchical;
 import junit.framework.TestCase;
 import picocontainer.defaults.DefaultPicoContainer;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClassicLifecycleTestCase extends TestCase {
 
@@ -128,10 +128,10 @@ public class ClassicLifecycleTestCase extends TestCase {
         pico.registerComponent(One.class);
         pico.registerComponent(Three.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
-        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getMultipleInheritanceProxy(true, false);
-        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getMultipleInheritanceProxy(false, false);
+        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getAggregateComponentProxy(true, false);
+        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getAggregateComponentProxy(false, false);
 
         assertTrue("There should have been a 'One' in the container", pico.hasComponent(One.class));
 
@@ -173,7 +173,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 
     }
 
-//  
+//
 //
 //    public void testStartStopStartStopAndDispose() throws Exception {
 //
@@ -182,10 +182,10 @@ public class ClassicLifecycleTestCase extends TestCase {
 //        pico.registerComponent(FredImpl.class);
 //        pico.registerComponent(WilmaImpl.class);
 //
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //
-//        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getMultipleInheritanceProxy(true, false);
-//        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getMultipleInheritanceProxy(false, false);
+//        ClassicStartingUpLifecycle startup = (ClassicStartingUpLifecycle) pico.getAggregateComponentProxy(true, false);
+//        ClassicShuttonDownLifecycle shutdown = (ClassicShuttonDownLifecycle) pico.getAggregateComponentProxy(false, false);
 //
 //
 //        startup.start();
@@ -205,9 +205,9 @@ public class ClassicLifecycleTestCase extends TestCase {
 //        pico.registerComponent(FredImpl.class);
 //        pico.registerComponent(WilmaImpl.class);
 //
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //        try {
-//            pico.initializeContainer();
+//            pico.instantiateComponents();
 //            fail("Should have barfed");
 //        } catch (IllegalStateException e) {
 //            // expected;
@@ -220,7 +220,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 //        pico.registerComponent(FredImpl.class);
 //        pico.registerComponent(WilmaImpl.class);
 //
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //        pico.stop();
 //        try {
 //            pico.stop();
@@ -236,7 +236,7 @@ public class ClassicLifecycleTestCase extends TestCase {
 //        pico.registerComponent(FredImpl.class);
 //        pico.registerComponent(WilmaImpl.class);
 //
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //        pico.stop();
 //        pico.dispose();
 //        try {
@@ -263,9 +263,9 @@ public class ClassicLifecycleTestCase extends TestCase {
 //            return interrupted;
 //        }
 //
-//        public void initializeContainer() {
+//        public void instantiateComponents() {
 //            thread = new Thread(this);
-//            thread.initializeContainer();
+//            thread.instantiateComponents();
 //        }
 //
 //        public void stop() {
@@ -291,12 +291,12 @@ public class ClassicLifecycleTestCase extends TestCase {
 //        pico.registerComponent(WilmaImpl.class);
 //        pico.registerComponent(Foo.class);
 //
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //        Thread.sleep(100);
 //        pico.stop();
 //        Foo foo = (Foo) pico.getComponent(Foo.class);
 //        assertEquals(1, foo.runCount());
-//        pico.initializeContainer();
+//        pico.instantiateComponents();
 //        Thread.sleep(100);
 //        pico.stop();
 //        assertEquals(2, foo.runCount());

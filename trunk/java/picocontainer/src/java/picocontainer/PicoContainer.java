@@ -46,5 +46,5 @@ public interface PicoContainer {
     /**
      * Initialize the container.
      */
-    void initializeContainer() throws PicoInitializationException;
+    void instantiateComponents() throws PicoInitializationException;
 }

@@ -30,7 +30,7 @@ public class NullContainer implements PicoContainer {
         return new Class[0];
     }
 
-    public void initializeContainer() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInitializationException {
     }
 }
 

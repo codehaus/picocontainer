@@ -88,7 +88,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
                 return new Class[] {String.class};
             }
 
-            public void initializeContainer() throws PicoInitializationException {
+            public void instantiateComponents() throws PicoInitializationException {
             }
         };
 
@@ -109,7 +109,7 @@ public class AggregatedContainersContainerTestCase extends TestCase {
                 return new Class[] {Integer.class};
             }
 
-            public void initializeContainer() throws PicoInitializationException {
+            public void instantiateComponents() throws PicoInitializationException {
             }
         };
 

@@ -33,7 +33,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component class=\"nanocontainer.testmodel.DefaultWebServerConfig\"/>" +
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.initializeContainer();
+        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
@@ -42,7 +42,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
         InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();
         File xmlFile = getFileForXMLComponentRegistration();
         nc.registerComponents(new InputSource(new FileReader(xmlFile)));
-        nc.initializeContainer();
+        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
@@ -53,7 +53,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component class=\"nanocontainer.testmodel.ResourceBundleWebServerConfig\"/>" +
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.initializeContainer();
+        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 
@@ -66,7 +66,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "            <param type=\"java.lang.Integer\">99</param>" +
                 "      </component>" +
                 "</components>")));
-        nc.initializeContainer();
+        nc.instantiateComponents();
         ThingThatTakesParamsInConstructor thing = (ThingThatTakesParamsInConstructor) nc.getComponent(ThingThatTakesParamsInConstructor.class);
         assertEquals("a string99", thing.getValue());
     }
@@ -78,7 +78,7 @@ public class DomRegistrationNanoContainerTestCase extends TestCase {
                 "      <component class=\"nanocontainer.testmodel.DigesterWebServerConfig\"/>" +
                 "      <component type=\"nanocontainer.testmodel.WebServer\" class=\"nanocontainer.testmodel.WebServerImpl\"/>" +
                 "</components>")));
-        nc.initializeContainer();
+        nc.instantiateComponents();
         assertTrue(nc.hasComponent(WebServer.class));
     }
 

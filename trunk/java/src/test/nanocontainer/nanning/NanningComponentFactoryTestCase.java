@@ -83,7 +83,7 @@ public class NanningComponentFactoryTestCase extends TestCase {
 
         assertEquals("", log.toString());
 
-        nanningEnabledPicoContainer.initializeContainer();
+        nanningEnabledPicoContainer.instantiateComponents();
 
         // fred says hello to wilma, even the interceptor knows
         assertEquals("hello ", log.toString());

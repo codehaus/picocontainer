@@ -59,7 +59,7 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
         } finally {
             in.close();
         }
-        container.initializeContainer();
+        container.instantiateComponents();
     }
 
     public ObjectInstantiater buildInstantiater(final PicoContainer parentContainer) {
@@ -73,10 +73,10 @@ public class XmlConfiguredNanoFactory implements ContainerFactory {
                     throw new RuntimeException("Could not instantiate " + cls.getName(), e);
                 }
                 try {
-                    container.initializeContainer();
+                    container.instantiateComponents();
                 } catch (PicoInitializationException e) {
                     // TODO: throw a custom exception
-                    throw new RuntimeException("Could not initializeContainer container", e);
+                    throw new RuntimeException("Could not instantiateComponents container", e);
                 }
                 return container.getComponent(cls);
             }

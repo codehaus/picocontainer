@@ -24,7 +24,7 @@ public class PicoPicoTestCase extends TestCase {
 
         HierarchicalPicoContainer pc = new HierarchicalPicoContainer.Default();
         pc.registerComponent(HierarchicalPicoContainer.Default.class);
-        pc.initializeContainer();
+        pc.instantiateComponents();
 
         tryDefaultPicoContainer((HierarchicalPicoContainer) pc.getComponent(HierarchicalPicoContainer.Default.class));
 
@@ -35,7 +35,7 @@ public class PicoPicoTestCase extends TestCase {
         pc2.registerComponent(FredImpl.class);
         pc2.registerComponent(WilmaImpl.class);
 
-        pc2.initializeContainer();
+        pc2.instantiateComponents();
 
         assertTrue( "There should have been a Fred in the container", pc2.hasComponent( FredImpl.class ) );
         assertTrue( "There should have been a Wilma in the container", pc2.hasComponent( WilmaImpl.class ) );

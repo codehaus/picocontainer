@@ -88,7 +88,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         public StringBuffer transactionLog = new StringBuffer();
 
         public Transaction startTransaction() {
-            transactionLog.append("initializeContainer ");
+            transactionLog.append("instantiateComponents ");
 
             return new Transaction() {
                 public void commit() {
@@ -149,7 +149,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         component.doSomethingRequiringATransaction();
 
         LoggingTransactionManager transactionManager = (LoggingTransactionManager) container.getComponent(TransactionManager.class);
-        assertEquals("initializeContainer commit ", transactionManager.transactionLog.toString());
+        assertEquals("instantiateComponents commit ", transactionManager.transactionLog.toString());
     }
 
     public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInitializationException, Exception {
@@ -166,7 +166,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         }
 
         LoggingTransactionManager transactionManager = (LoggingTransactionManager) container.getComponent(TransactionManager.class);
-        assertEquals("initializeContainer rollback ", transactionManager.transactionLog.toString());
+        assertEquals("instantiateComponents rollback ", transactionManager.transactionLog.toString());
     }
 
 }

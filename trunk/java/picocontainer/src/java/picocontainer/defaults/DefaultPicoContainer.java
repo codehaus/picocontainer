@@ -84,11 +84,11 @@ public class DefaultPicoContainer implements PicoContainer {
     }
 
     /**
-     * Shorthand for {@link #getMultipleInheritanceProxy(boolean, boolean)}(true, true).
+     * Shorthand for {@link #getAggregateComponentProxy(boolean, boolean)}(true, true).
      * @return a proxy.
      */
     public Object getMultipleInheritanceProxy() {
-        return getMultipleInheritanceProxy( true, true);
+        return getAggregateComponentProxy( true, true);
     }
 
     /**
@@ -98,11 +98,11 @@ public class DefaultPicoContainer implements PicoContainer {
      * method on all components in the container that implement
      * that interface.
      *
-     * @param callInInstantiationOrder whether to call the methods in the order of instantiation
+     * @param callInInstantiationOrder whether to call the methods in the order of instantiation (true) or reverse (false)
      * @param callInInstantiationOrder whether to exclude components registered with {@link #registerComponent(Class, Object)}
      * or {@link #registerComponent(Object)}
      */
-    public Object getMultipleInheritanceProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
+    public Object getAggregateComponentProxy(boolean callInInstantiationOrder, boolean callUnmanagedComponents) {
         return Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 getComponentInterfaces(),
@@ -249,7 +249,7 @@ public class DefaultPicoContainer implements PicoContainer {
         }
     }
 
-    public void initializeContainer() throws PicoInitializationException {
+    public void instantiateComponents() throws PicoInitializationException {
         if (initialized == false) {
             initializeComponents();
             checkUnsatisfiedDependencies();

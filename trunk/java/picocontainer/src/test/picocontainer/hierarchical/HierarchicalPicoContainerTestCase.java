@@ -58,7 +58,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(WilmaImpl.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertEquals("There should be two comps in the container", 2, pico.getComponents().length);
 
@@ -72,7 +72,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(FredImpl.class);
 
         try {
-            pico.initializeContainer();
+            pico.instantiateComponents();
             fail("should need a wilma");
         } catch (UnsatisfiedDependencyStartupException e) {
             // expected
@@ -90,7 +90,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             pico.registerComponent(List.class, messages);
             pico.registerComponent(Dictionary.class, Webster.class);
             pico.registerComponent(Thesaurus.class, Webster.class);
-            pico.initializeContainer();
+            pico.instantiateComponents();
 
             assertEquals("Should only have one instance of Webster", 1, messages.size());
             Object dictionary = pico.getComponent(Dictionary.class);
@@ -147,7 +147,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(FredImpl.class);
 
         try {
-            pico.initializeContainer();
+            pico.instantiateComponents();
             fail("Fred should have been confused about the two Wilmas");
         } catch (AmbiguousComponentResolutionException e) {
             // expected
@@ -166,7 +166,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(FredImpl.class);
         pico.registerComponent(new WilmaImpl());
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertTrue("There should have been a Fred in the container", pico.hasComponent(FredImpl.class));
         assertTrue("There should have been a Wilma in the container", pico.hasComponent(WilmaImpl.class));
@@ -205,7 +205,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(Wilma.class, WilmaImpl.class);
         pico.registerComponent(FlintstonesImpl.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertTrue("There should have been a FlintstonesImpl in the container", pico.hasComponent(FlintstonesImpl.class));
     }
@@ -220,7 +220,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         // You might have thought that starting the container shouldn't be necessary
         // just to get the types, but it is. The map holding the types->component instances
         // doesn't receive anything until the components are instantiated.
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         List types = Arrays.asList(pico.getComponentTypes());
         assertEquals("There should be 2 types", 2, types.size());
@@ -250,13 +250,13 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
                 return new Class[]{Wilma.class};
             }
 
-            public void initializeContainer() throws PicoInitializationException {
+            public void instantiateComponents() throws PicoInitializationException {
             }
         });
 
         pico.registerComponent(FredImpl.class);
 
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         assertEquals("The parent should return 2 components (one from the parent)", 2, pico.getComponents().length);
         assertTrue("Wilma should have been passed through the parent container", pico.hasComponent(Wilma.class));
@@ -321,7 +321,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             }
         });
         pc.registerComponent(WilmaImpl.class);
-        pc.initializeContainer();
+        pc.instantiateComponents();
         assertEquals(pc.getComponent(WilmaImpl.class), wilma);
     }
 
@@ -335,7 +335,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Barney.class);
         try {
-            pico.initializeContainer();
+            pico.instantiateComponents();
         } catch (PicoInvocationTargetInitailizationException e) {
             assertEquals("Whoa!", e.getCause().getMessage());
             assertTrue(e.getMessage().indexOf("Whoa!") > 0);
@@ -357,7 +357,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             pico.registerComponent(C.class);
             pico.registerComponent(D.class);
 
-            pico.initializeContainer();
+            pico.instantiateComponents();
             fail("Should have gotten a CircularDependencyRegistrationException");
    //     } catch (CircularDependencyRegistrationException e) {
             // ok
@@ -385,7 +385,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Animal.class, Dino.class);
         pico.addParameterToComponent(Dino.class, String.class, "bones");
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -402,7 +402,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         HierarchicalPicoContainer pico = new HierarchicalPicoContainer.Default();
         pico.registerComponent(Animal.class, Dino2.class);
         pico.addParameterToComponent(Dino2.class, Integer.class, new Integer(22));
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -420,7 +420,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(Animal.class, Dino3.class);
         pico.addParameterToComponent(Dino3.class, String.class, "a");
         pico.addParameterToComponent(Dino3.class, String.class, "b");
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -441,7 +441,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.addParameterToComponent(Dino4.class, String.class, "a");
         pico.addParameterToComponent(Dino4.class, Integer.class, new Integer(3));
         pico.addParameterToComponent(Dino4.class, String.class, "b");
-        pico.initializeContainer();
+        pico.instantiateComponents();
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -509,7 +509,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         //pico.registerComponent(AnimalConsumer.class);
         //pico.addParameterToComponent(Donkey.class, String.class,"neddy");
 
-        //pico.initializeContainer();
+        //pico.instantiateComponents();
         //final Monkey monkey = (Monkey) pico.getComponent(Animal.class, "monkey");
         //assertNotNull(monkey);
         //final Donkey donkey = (Donkey) pico.getComponent(Animal.class, "donkey");
@@ -538,7 +538,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
         pico.registerComponent(BB.class);
 
         try {
-            pico.initializeContainer();
+            pico.instantiateComponents();
             fail("Should have barfed");
         } catch (UnsatisfiedDependencyStartupException e) {
             // Neither can be instantiated without the other.

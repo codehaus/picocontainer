@@ -118,7 +118,7 @@ public class HierarchicalComponentRegistry implements ComponentRegistry, Seriali
 
     public boolean hasComponentInstance(Object componentKey) {
         return childRegistry.hasComponentInstance(componentKey)
-            | parentRegistry.hasComponentInstance(componentKey);
+                | parentRegistry.hasComponentInstance(componentKey);
     }
 
     public ComponentSpecification getComponentSpec(Object componentKey) {

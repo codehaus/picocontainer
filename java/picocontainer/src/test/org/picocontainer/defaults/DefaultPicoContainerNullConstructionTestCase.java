@@ -8,6 +8,6 @@ public class DefaultPicoContainerNullConstructionTestCase extends AbstractNullCo
     }
 
     protected Object[] getContainersInstantiationParameters() {
-        return new Object[] {new DefaultComponentFactory(),new DefaultComponentRegistry()};
+        return new Object[]{new DefaultComponentFactory(), new DefaultComponentRegistry()};
     }
 }

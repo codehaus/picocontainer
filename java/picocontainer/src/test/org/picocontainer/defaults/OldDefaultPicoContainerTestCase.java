@@ -726,7 +726,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
             fail("Should fail because there are more than one constructors");
         } catch (NoPicoSuitableConstructorException e) {
             // expected;
-            assertEquals("Should be right class", Vector.class,  e.getForImplementationClass());
+            assertEquals("Should be right class", Vector.class, e.getForImplementationClass());
         }
 
     }

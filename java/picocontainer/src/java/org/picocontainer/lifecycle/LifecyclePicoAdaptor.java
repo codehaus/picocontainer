@@ -13,7 +13,9 @@ package org.picocontainer.lifecycle;
 public interface LifecyclePicoAdaptor extends Lifecycle {
 
     boolean isStarted();
+
     boolean isStopped();
+
     boolean isDisposed();
 
 }

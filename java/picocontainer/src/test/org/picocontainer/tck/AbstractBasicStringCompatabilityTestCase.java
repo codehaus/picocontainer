@@ -18,9 +18,10 @@ import java.util.Map;
 public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase {
 
     abstract public PicoContainer createPicoContainerWithTouchableAndDependancy() throws
-        PicoRegistrationException, PicoIntrospectionException;
+            PicoRegistrationException, PicoIntrospectionException;
+
     abstract public PicoContainer createPicoContainerWithTouchablesDependancyOnly() throws
-        PicoRegistrationException, PicoIntrospectionException;
+            PicoRegistrationException, PicoIntrospectionException;
 
     public void testNotNull() throws PicoRegistrationException, PicoIntrospectionException {
         assertNotNull("Are you calling super.setUp() in your setUp method?", createPicoContainerWithTouchableAndDependancy());
@@ -47,7 +48,7 @@ public abstract class AbstractBasicStringCompatabilityTestCase extends TestCase 
         addAHashMapByInstance(picoContainer);
         picoContainer.instantiateComponents();
         assertEquals("Wrong number of comps in the container", 3, picoContainer.getComponents().size());
-        assertEquals("Key - 'map', Impl - HashMap should be in container",HashMap.class, picoContainer.getComponent("map").getClass());
+        assertEquals("Key - 'map', Impl - HashMap should be in container", HashMap.class, picoContainer.getComponent("map").getClass());
         //TODO - some way to test hashmap was passed in as an instance ?
         // should unmanaged side of DefaultPicoContainer be more exposed thru interface?
     }

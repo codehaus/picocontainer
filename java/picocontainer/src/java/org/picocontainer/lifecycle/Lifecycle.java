@@ -10,6 +10,5 @@
 
 package org.picocontainer.lifecycle;
 
-public interface Lifecycle extends Startable, Stoppable, Disposable
-{
+public interface Lifecycle extends Startable, Stoppable, Disposable {
 }

@@ -30,8 +30,8 @@ public interface ComponentRegistry {
     void putComponent(Object componentKey, Object component);
 
     boolean contains(Object componentKey);
- // was...
- // boolean contains(ComponentSpecification componentSpecification);
+    // was...
+    // boolean contains(ComponentSpecification componentSpecification);
 
     Object getComponentInstance(Object componentKey);
 

@@ -9,17 +9,18 @@ import java.util.Arrays;
 public abstract class AbstractNullConstructionTestCase extends TestCase {
 
     protected abstract Class getContainerClass();
+
     protected abstract Object[] getContainersInstantiationParameters();
 
     public void testContainerInstansiable() throws InvocationTargetException,
-        IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException {
         Class container = getContainerClass();
         Constructor ctor = container.getConstructors()[0];
         ctor.newInstance(getContainersInstantiationParameters());
     }
 
     public void testContainerNotInstansiableWillNullParams() throws InvocationTargetException,
-        IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException {
         Class container = getContainerClass();
         Constructor ctor = container.getConstructors()[0];
         Object[] params = getContainersInstantiationParameters();

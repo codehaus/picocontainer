@@ -16,7 +16,7 @@ import java.util.Map;
 public class DefaultPicoContainerClassKeyTestCase extends AbstractBasicClassCompatabilityTestCase {
 
     public PicoContainer createPicoContainerWithTouchableAndDependancy() throws DuplicateComponentKeyRegistrationException,
-        AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+            AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
 
         DefaultPicoContainer defaultPico = new DefaultPicoContainer.Default();
         defaultPico.registerComponent(Touchable.class, SimpleTouchable.class);

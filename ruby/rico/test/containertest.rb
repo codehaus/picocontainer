@@ -278,4 +278,11 @@ class ContainerTest < Test::Unit::TestCase
     with_prop = rico.component_instance(:with_prop)
     assert_equal("foo", with_prop.foo)
   end
+  
+  def test_simple_intuituve_api
+    rico = Container.new
+    rico.wp = WithProp
+    rico.wp.foo = "hey"
+    assert_equal("hey", rico.wp.foo)
+  end
 end

@@ -14,6 +14,7 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -110,6 +111,40 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
+    }
+    
+    // do not know how to extract parameters off adapter....
+    public void testThatDependencyUsesClassAsKey() {
+        Reader script = new StringReader("" +
+        "<container>" +                                          
+        "   <implementation key='foo' class='org.nanocontainer.script.xml.TestBean'>" +
+        "       <dependency class='java.lang.String'/>" +
+        "       <dependency class='java.lang.Integer'/>" + 
+        "   </implementation>" + 
+        "</container>"
+        );
+        
+       PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
+       DecoratingComponentAdapter adapter = (DecoratingComponentAdapter)pico.getComponentAdapter("foo");
+       
+    }
+    
+    
+    public void testDefaultContsructorRegistration() throws Exception {
+        
+        Reader script = new StringReader(
+        "<container>" + 
+        "   <implementation class='org.nanocontainer.script.xml.TestBean' constructor='default'/>" +
+        "   <instance>" + 
+        "       <string>blurge</string>" + 
+        "   </instance>" + 
+        "</container>"
+         );  
+        
+        
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
+        TestBean bean = (TestBean)pico.getComponentInstanceOfType(TestBean.class);
+        assertEquals("default",bean.getConstructorCalled());
     }
 }
 

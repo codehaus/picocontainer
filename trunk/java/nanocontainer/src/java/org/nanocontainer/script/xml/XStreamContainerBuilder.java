@@ -58,6 +58,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     private final static String KEY = "key";
     private final static String CONSTANT = "constant";
     private final static String DEPENDENCY = "dependency";
+    private final static String CONSTRUCTOR = "constructor";
 
     private final HierarchicalStreamDriver xsdriver;
 
@@ -147,6 +148,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     protected void insertImplementation(MutablePicoContainer container, Element rootElement) throws ClassNotFoundException {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
+        String constructor = rootElement.getAttribute(CONSTRUCTOR);
         if (klass == null || "".equals(klass)) {
             throw new NanoContainerMarkupException("class specification is required for component implementation");
         }
@@ -194,7 +196,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
         // ok , we processed our children. insert implementation
         Parameter[] parameterArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-        if (parameters.size() > 0) {
+        if (parameters.size() > 0 || "default".equals(constructor)) {
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
                 container.registerComponentImplementation(clazz, clazz, parameterArray);

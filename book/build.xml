@@ -25,6 +25,7 @@
             </fileset>
         </copy>
         <replace dir="target/url-replaced" token="@JAVA_MODULE_URL@" value="${java.module.url}"/>
+        <replace dir="target/url-replaced" token="@PICO_TEST_DIR@" value="file:../java/picocontainer/src/test"/>
         
         <mkdir dir="target/slurped"/>
         <slurp dir="target/url-replaced" todir="target/slurped" snippetStartMarkup="```" snippetEndMarkup="```">

@@ -1,6 +1,8 @@
 package org.nanocontainer.xml;
 
-public class EmptyXmlConfigurationException extends Exception {
+import org.picocontainer.PicoConfigurationException;
+
+public class EmptyXmlConfigurationException extends PicoConfigurationException {
     public EmptyXmlConfigurationException() {
     }
 

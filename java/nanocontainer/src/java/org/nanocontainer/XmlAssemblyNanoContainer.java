@@ -8,17 +8,22 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.InputSource;
-import org.nanocontainer.xml.InputSourceFrontEnd;
+import org.nanocontainer.xml.DefaultXmlFrontEnd;
+import org.nanocontainer.xml.XmlFrontEnd;
 import org.nanocontainer.xml.EmptyXmlConfigurationException;
-import org.nanocontainer.xml.DefaultInputSourceFrontEnd;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoConfigurationException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileReader;
-import java.io.Reader;
 import java.io.IOException;
+import java.io.Reader;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -28,20 +33,56 @@ import java.io.IOException;
  */
 public class XmlAssemblyNanoContainer extends NanoContainer {
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerXml) throws Exception, ParserConfigurationException, ClassNotFoundException, SAXException {
-        this(nanoContainerXml, new ConsoleNanoContainerMonitor());
+    private DocumentBuilder documentBuilder;
+
+    public XmlAssemblyNanoContainer(Reader nanoContainerXml)
+            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoConfigurationException {
+        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerXml, new ConsoleNanoContainerMonitor());
     }
 
-    public XmlAssemblyNanoContainer(Reader nanoContainerXml, NanoContainerMonitor monitor) throws Exception, ParserConfigurationException, ClassNotFoundException, SAXException {
-        super(nanoContainerXml, monitor);
+    public XmlAssemblyNanoContainer(Reader nanoContainerConfig, NanoContainerMonitor monitor)
+            throws ParserConfigurationException, ClassNotFoundException, IOException, PicoConfigurationException {
+        this(DocumentBuilderFactory.newInstance().newDocumentBuilder(), nanoContainerConfig, monitor);
     }
 
-    protected void configure(Reader nanoContainerXml) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
-        InputSource is = new InputSource(nanoContainerXml);
-        InputSourceFrontEnd isfe = new DefaultInputSourceFrontEnd();
-        final PicoContainer rootContainer = isfe.createPicoContainer(is);
-        instantiateComponentsBreadthFirst(rootContainer);
-        startComponentsBreadthFirst();
+    public XmlAssemblyNanoContainer(DocumentBuilder documentBuilder, Reader nanoContainerConfig, NanoContainerMonitor monitor)
+            throws ClassNotFoundException, IOException, PicoConfigurationException {
+        super(monitor);
+        this.documentBuilder = documentBuilder;
+        configure(nanoContainerConfig);
+    }
+
+    protected Element getRootElement(InputSource inputSource) throws SAXException, IOException {
+        Document document = documentBuilder.parse(inputSource);
+        return document.getDocumentElement();
+    }
+
+
+    protected void configure(Reader nanoContainerXml)
+            throws IOException, ClassNotFoundException, EmptyXmlConfigurationException, SAXConfigurationException,
+            InstantiationConfigurationException, IllegalAccessConfigurationException {
+        final InputSource is = new InputSource(nanoContainerXml);
+        try {
+            Element rootElement = getRootElement(is);
+            String xmlFrontEndClassName = rootElement.getAttribute("xmlfrontend");
+            XmlFrontEnd xmlFrontEnd = null;
+            if (xmlFrontEndClassName != null && !xmlFrontEndClassName.equals("")) {
+                try {
+                    xmlFrontEnd = (XmlFrontEnd) Class.forName(xmlFrontEndClassName).newInstance();
+                } catch (InstantiationException e) {
+                    throw new InstantiationConfigurationException(e);
+                } catch (IllegalAccessException e) {
+                    throw new IllegalAccessConfigurationException(e);
+                }
+            } else {
+                xmlFrontEnd = new DefaultXmlFrontEnd();
+            }
+            final PicoContainer rootContainer = xmlFrontEnd.createPicoContainer(rootElement);
+            instantiateComponentsBreadthFirst(rootContainer);
+            startComponentsBreadthFirst();
+        } catch (SAXException e) {
+            throw new SAXConfigurationException(e);
+        }
     }
 
     public static void main(String[] args) throws Exception {

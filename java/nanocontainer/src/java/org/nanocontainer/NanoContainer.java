@@ -8,11 +8,12 @@
  *****************************************************************************/
 package org.nanocontainer;
 
+import org.nanocontainer.xml.EmptyXmlConfigurationException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoConfigurationException;
 import org.picocontainer.extras.DefaultLifecyclePicoAdapter;
 import org.picocontainer.lifecycle.LifecyclePicoAdapter;
-import org.nanocontainer.xml.EmptyXmlConfigurationException;
-
+import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 
@@ -24,12 +25,12 @@ import java.util.*;
  * @version $Revision$
  */
 public abstract class NanoContainer {
+
     private final List lifecycleAdapters = new ArrayList();
     private final NanoContainerMonitor monitor;
 
-    public NanoContainer(Reader configuration, NanoContainerMonitor monitor) throws Exception {
+    public NanoContainer(NanoContainerMonitor monitor) {
         this.monitor = monitor;
-        configure(configuration);
     }
 
     protected void instantiateComponentsBreadthFirst(PicoContainer picoContainer) throws EmptyXmlConfigurationException {
@@ -49,7 +50,7 @@ public abstract class NanoContainer {
 
     protected void startComponentsBreadthFirst() {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
-            DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
+            LifecyclePicoAdapter lpa= (LifecyclePicoAdapter) iterator.next();
             lpa.start();
             monitor.componentsLifecycleEvent("started",lpa);
         }
@@ -58,7 +59,7 @@ public abstract class NanoContainer {
 
     public void stopComponentsDepthFirst() {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
-            DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
+            LifecyclePicoAdapter lpa= (LifecyclePicoAdapter) iterator.next();
             lpa.stop();
             monitor.componentsLifecycleEvent("stopped",lpa);
         }
@@ -66,7 +67,7 @@ public abstract class NanoContainer {
 
     public void disposeComponentsDepthFirst() {
         for (Iterator iterator = lifecycleAdapters.iterator(); iterator.hasNext();) {
-            DefaultLifecyclePicoAdapter lpa= (DefaultLifecyclePicoAdapter) iterator.next();
+            LifecyclePicoAdapter lpa= (LifecyclePicoAdapter) iterator.next();
             lpa.dispose();
             monitor.componentsLifecycleEvent("disposed",lpa);
         }
@@ -83,5 +84,6 @@ public abstract class NanoContainer {
         });
     }
 
-    protected abstract void configure(Reader configuration) throws Exception;
+    protected abstract void configure(Reader configuration)
+            throws IOException, ClassNotFoundException, PicoConfigurationException;
 }

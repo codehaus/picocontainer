@@ -34,7 +34,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
     public void testInstantiateXml() throws Exception, SAXException, ParserConfigurationException, IOException {
 
         NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
-                "<container>" +
+                "<container isfe='foo'>" +
                 "      <component classname='org.nanocontainer.Xxx$A'/>" +
                 "      <container>" +
                 "          <component classname='org.nanocontainer.Xxx$C'/>" +
@@ -47,4 +47,22 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         assertEquals("Should match the expression", "<A<B<CC>B>A>!C!B!A", Xxx.componentRecorder);
         assertEquals("Should match the expression", "*A*C+A_started+C_started+C_stopped+A_stopped+C_disposed+A_disposed", MockMonitor.monitorRecorder);
     }
+
+    public void testInstantiateWithBespokeXmlFrontEnd() throws Exception, SAXException, ParserConfigurationException, IOException {
+
+        BespokeXmlFrontEnd.used = false;
+
+        NanoContainer nano = new XmlAssemblyNanoContainer(new StringReader("" +
+                "<container xmlfrontend='org.nanocontainer.BespokeXmlFrontEnd'>" +
+                "      <component classname='org.nanocontainer.Xxx$A'/>" +
+                "</container>"), new MockMonitor());
+        nano.stopComponentsDepthFirst();
+        nano.disposeComponentsDepthFirst();
+
+        ;
+
+        assertTrue("Bespoke Front End (test class) should have been used",BespokeXmlFrontEnd.used);
+    }
+
+
 }

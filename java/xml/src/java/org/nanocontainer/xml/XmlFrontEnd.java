@@ -13,6 +13,7 @@ package org.nanocontainer.xml;
 import org.picocontainer.PicoContainer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
 
@@ -24,8 +25,8 @@ import java.io.IOException;
  * @version $Revision$
  */
 
-public interface InputSourceFrontEnd {
+public interface XmlFrontEnd {
 
-    public PicoContainer createPicoContainer(InputSource inputSource)
+    public PicoContainer createPicoContainer(Element rootElement)
             throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException;
 }

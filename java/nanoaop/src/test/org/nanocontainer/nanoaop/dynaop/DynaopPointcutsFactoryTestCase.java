@@ -37,6 +37,18 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
     private Method isB;
     private Method setA;
     private Method setB;
+    private Method equals;
+    private Method hashCode;
+    private Method toString;
+    private Method subFooMethod;
+
+    public void testAllClasses() {
+        ClassPointcut cut = cuts.allClasses();
+        assertTrue(cut.picks(Object.class));
+        assertTrue(cut.picks(Serializable.class));
+        assertTrue(cut.picks(Foo.class));
+        assertTrue(cut.picks(this.getClass()));
+    }
 
     public void testInstancesOf() {
         ClassPointcut cut = cuts.instancesOf(Serializable.class);
@@ -209,7 +221,7 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         assertFalse(cut.picks(setA));
         assertFalse(cut.picks(setB));
     }
-    
+
     public void testComponent() {
         ComponentPointcut cut = cuts.component(Dao.class);
         assertTrue(cut.picks(Dao.class));
@@ -237,6 +249,65 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         }
     }
 
+    public void testObjectMethods() {
+        MethodPointcut cut = cuts.objectMethods();
+        assertTrue(cut.picks(equals));
+        assertTrue(cut.picks(hashCode));
+        assertTrue(cut.picks(toString));
+        assertFalse(cut.picks(isA));
+        assertFalse(cut.picks(setA));
+    }
+
+    public void testDeclaringClass() {
+        MethodPointcut cut = cuts.declaringClass(cuts.oneClass(Object.class));
+        assertTrue(cut.picks(equals));
+        assertTrue(cut.picks(hashCode));
+        assertTrue(cut.picks(toString));
+        assertFalse(cut.picks(isA));
+        assertFalse(cut.picks(setA));
+    }
+
+    public void testMembersOf() {
+        MethodPointcut cut = cuts.membersOf(Foo.class);
+        assertTrue(cut.picks(apple));
+        assertTrue(cut.picks(equals));
+        assertFalse(cut.picks(subFooMethod));
+    }
+
+    public void testCustomClassPointcuts() {
+        ClassPointcut picksFoo = new ClassPointcut() {
+            public boolean picks(Class clazz) {
+                return clazz.equals(Foo.class);
+            }
+        };
+        ClassPointcut picksBar = new ClassPointcut() {
+            public boolean picks(Class clazz) {
+                return clazz.equals(Bar.class);
+            }
+        };
+        ClassPointcut cut = cuts.union(picksFoo, picksBar);
+        assertTrue(cut.picks(Foo.class));
+        assertTrue(cut.picks(Bar.class));
+        assertFalse(cut.picks(FooBar.class));
+    }
+
+    public void testCustomMethodPointcuts() {
+        MethodPointcut picksApple = new MethodPointcut() {
+            public boolean picks(Method method) {
+                return method.equals(apple);
+            }
+        };
+        MethodPointcut picksApricot = new MethodPointcut() {
+            public boolean picks(Method method) {
+                return method.equals(apricot);
+            }
+        };
+        MethodPointcut cut = cuts.union(picksApple, picksApricot);
+        assertTrue(cut.picks(apple));
+        assertTrue(cut.picks(apricot));
+        assertFalse(cut.picks(banana));
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
         apple = Foo.class.getMethod("apple", new Class[] {});
@@ -249,6 +320,10 @@ public class DynaopPointcutsFactoryTestCase extends TestCase {
         isB = Foo.class.getMethod("isB", new Class[] {});
         setA = Foo.class.getMethod("setA", new Class[] { String.class });
         setB = Foo.class.getMethod("setA", new Class[] { String.class });
+        equals = Object.class.getMethod("equals", new Class[] { Object.class });
+        hashCode = Object.class.getMethod("hashCode", new Class[] {});
+        toString = Object.class.getMethod("toString", new Class[] {});
+        subFooMethod = SubFoo.class.getMethod("subFooMethod", new Class[] {});
     }
 
 }

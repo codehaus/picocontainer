@@ -12,6 +12,7 @@ package org.nanocontainer.nanoaop.script.groovy
 import org.nanocontainer.nanoaop.*
 import org.nanocontainer.nanoaop.script.groovy
 import org.nanocontainer.script.groovy.PicoBuilderException
+import org.picocontainer.defaults.DefaultComponentAdapterFactory
 
 public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
 
@@ -168,7 +169,7 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
     public void testClassCutOrComponentCutRequiredForMixin() {
         shouldFail(PicoBuilderException, {
             builder.container() {
-                aspect(mixinKey:'whoops')
+                aspect(mixinClass:Dao)
             }
         })
     }
@@ -232,6 +233,20 @@ public class NanoAopGroovyContainerBuilderTestCase extends GroovyTestCase {
         before = log.toString()
         order.saveMeToo()
         assertEquals(before + 'startend', log.toString())
+    }
+    
+    public void testScriptSuppliedCaf() {
+        log = new StringBuffer()
+        logger = new LoggingInterceptor(log)
+        caf = new DefaultComponentAdapterFactory()
+        
+        pico = builder.container(adapterFactory:caf) {
+            aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)
+            component(key:Dao, class:DaoImpl)
+        }
+
+        dao = pico.getComponentInstance(Dao)
+        verifyIntercepted(dao, log)
     }
    
     void verifyIntercepted(dao, log) {

@@ -165,10 +165,53 @@ public class UserQuestionTestCase extends TestCase {
     public void testJohnTalOne() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
 
-        picoContainer.registerComponentImplementation("ABC",ABCImpl.class);
-        picoContainer.registerComponentImplementation("DEF",DEFImpl.class);
+        picoContainer.registerComponentImplementation("ABC", ABCImpl.class);
+        picoContainer.registerComponentImplementation("DEF", DEFImpl.class);
 
         assertEquals(ABCImpl.class, picoContainer.getComponentInstance("ABC").getClass());
+    }
+
+    public static interface Foo {
+    }
+
+    public static interface Bar {
+    }
+
+    public static class FooBar implements Foo, Bar {
+    }
+
+    public static class NeedsFoo {
+        private final Foo foo;
+
+        public NeedsFoo(Foo foo) {
+            this.foo = foo;
+        }
+
+        public Foo getFoo() {
+            return foo;
+        }
+    }
+
+    public static class NeedsBar {
+        private final Bar bar;
+
+        public NeedsBar(Bar bar) {
+            this.bar = bar;
+        }
+
+        public Bar getBar() {
+            return bar;
+        }
+    }
+
+    public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation(FooBar.class);
+        pico.registerComponentImplementation(NeedsFoo.class);
+        pico.registerComponentImplementation(NeedsBar.class);
+        NeedsFoo needsFoo = (NeedsFoo) pico.getComponentInstance(NeedsFoo.class);
+        NeedsBar needsBar = (NeedsBar) pico.getComponentInstance(NeedsBar.class);
+        assertSame(needsFoo.getFoo(), needsBar.getBar());
     }
 
 }

@@ -53,9 +53,6 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
     }
 
     public static class NoSuchPropertyException extends PicoInitializationException {
-        public NoSuchPropertyException(String message) {
-            super(message);
-        }
     }
 
     private class Adapter extends DecoratingComponentAdapter {

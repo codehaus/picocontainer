@@ -9,7 +9,7 @@ public class PicoIntrospectionException extends PicoRegistrationException {
     public PicoIntrospectionException() {
     }
 
-    public PicoIntrospectionException(String message) {
+    protected PicoIntrospectionException(String message) {
         super(message);
     }
 

@@ -83,7 +83,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
                 throw new CyclicDependencyException(constructor.getParameterTypes());
             }
             instantiating = true;
-            Object[] parameters = getConstructorArguments(adapterDependencies, dependencyContainer);
+            Object[] parameters = getConstructorArguments(adapterDependencies);
 
             return constructor.newInstance(parameters);
         } catch (InvocationTargetException e) {
@@ -122,5 +122,5 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
 
     protected abstract Constructor getGreediestSatisifableConstructor(PicoContainer dependencyContainer) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
-    protected abstract Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies, PicoContainer dependencyContainer);
+    protected abstract Object[] getConstructorArguments(ComponentAdapter[] adapterDependencies);
 }

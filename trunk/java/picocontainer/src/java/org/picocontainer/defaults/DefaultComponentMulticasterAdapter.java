@@ -5,9 +5,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.extras.ComponentMulticasterFactory;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A default implementation of the {@link ComponentMulticasterAdapter} interface.
@@ -28,12 +26,12 @@ public class DefaultComponentMulticasterAdapter implements ComponentMulticasterA
         this.factory = factory;
     }
 
-    private Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder, boolean callUnmanagedComponents) throws PicoException {
+    private Object getComponentMulticaster(PicoContainer picoContainer, boolean callInInstantiationOrder) throws PicoException {
         List componentsToMulticast = picoContainer.getComponentInstances();
         return factory.createComponentMulticaster(getClass().getClassLoader(), componentsToMulticast, callInInstantiationOrder, new MulticastInvoker());
     }
 
     public Object getComponentMulticaster(PicoContainer picoContainer) throws PicoException {
-        return getComponentMulticaster(picoContainer,true,false);
+        return getComponentMulticaster(picoContainer,true);
     }
 }

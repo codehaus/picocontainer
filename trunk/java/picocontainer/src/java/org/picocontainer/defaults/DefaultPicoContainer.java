@@ -108,6 +108,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
+     * passed to the constructor of this container.
+     */
     public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
         componentAdapter.setContainer(this);
         componentAdapters.add(componentAdapter);
@@ -124,24 +129,47 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         return adapter;
     }
 
+    /**
+     * {@inheritDoc}
+     * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
+     */
     public ComponentAdapter registerComponentInstance(Object component) throws PicoRegistrationException {
         return registerComponentInstance(component.getClass(), component);
     }
 
+    /**
+     * {@inheritDoc}
+     * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
+     */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;
     }
 
+    /**
+     * {@inheritDoc}
+     * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
+     * passed to the container's constructor.
+     */
     public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
         return registerComponentImplementation(componentImplementation, componentImplementation);
     }
 
+    /**
+     * {@inheritDoc}
+     * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
+     * passed to the container's constructor.
+     */
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return registerComponentImplementation(componentKey, componentImplementation, null);
     }
 
+    /**
+     * {@inheritDoc}
+     * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
+     * passed to the container's constructor.
+     */
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
         registerComponent(componentAdapter);
@@ -160,7 +188,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
         if (componentAdapter != null) {
-            PicoContainer adapterOwner = componentAdapter.getContainer();
             return componentAdapter.getComponentInstance();
         } else {
             return null;

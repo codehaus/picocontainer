@@ -40,6 +40,8 @@ public class CollectionComponentParameterTestCase
         containerMock.expects(once()).method("getComponentAdaptersOfType").with(eq(String.class)).will(
                 returnValue(Arrays.asList(new ComponentAdapter[]{
                         new InstanceComponentAdapter("y", "Hello"), new InstanceComponentAdapter("z", "World")})));
+        containerMock.expects(once()).method("getComponentInstance").with(eq("z")).will(returnValue("World"));
+        containerMock.expects(once()).method("getComponentInstance").with(eq("y")).will(returnValue("Hello"));
         containerMock.expects(once()).method("getParent").withNoArguments().will(returnValue(null));
 
         List expected = Arrays.asList(new String[]{"Hello", "World"});

@@ -23,6 +23,7 @@ import java.util.Properties;
  *
  * @author    Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version   $Revision$
+ * @deprecated use SessionFactoryComponentAdapter instead
  */
 public abstract class AbstractPropertyConfiguration extends Configuration implements SessionFactoryProvider {
 	

@@ -16,6 +16,7 @@ import net.sf.hibernate.SessionFactory;
  *
  * @author    Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version   $Revision$
+ * @deprecated since we have SessionFactoryComponentAdapter
  */
 public interface SessionFactoryProvider {
 

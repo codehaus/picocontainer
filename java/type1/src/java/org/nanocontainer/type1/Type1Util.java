@@ -338,15 +338,12 @@ public class Type1Util {
      * @return the proxy wrapped around the provided instance.
      */
     public static Object getActivityLifecycleProxy(final Object instance) {
-        final Class[] workInterfaces = ClassHierarchyIntrospector.getAllInterfaces(instance.getClass());
-        if (workInterfaces.length == 0)
+        final Set allInterfaces = ClassHierarchyIntrospector.getAllInterfaces(instance.getClass());
+        if (allInterfaces.isEmpty())
             throw new PicoLifecycleException("Can't support the type1 lifecycle needs of " + instance.getClass() +
                     ". The class doesn't implement any interfaces so proxying it is not possible.");
 
-        final Set allInterfaces = new HashSet();
-        
-        allInterfaces.addAll(Arrays.asList(workInterfaces));
-        if (instance instanceof org.apache.avalon.framework.activity.Startable)
+         if (instance instanceof org.apache.avalon.framework.activity.Startable)
         {
             allInterfaces.add(org.picocontainer.Startable.class);
             

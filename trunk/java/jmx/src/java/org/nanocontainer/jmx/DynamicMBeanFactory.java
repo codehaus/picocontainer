@@ -31,13 +31,4 @@ public interface DynamicMBeanFactory {
      * @return the {@link DynamicMBean}.
      */
     public DynamicMBean create(Object componentInstance, Class management, MBeanInfo mBeanInfo);
-
-    /**
-     * Create a {@link javax.management.StandardMBean} from the management interface and an instance.
-     * @param componentInstance the instance of the Object being exposed for management.
-     * @param management the interface defining what to should be exposed (may be <code>null</code>).
-     * @param description the description of the MBean.
-     * @return the {@link DynamicMBean}.
-     */
-    public DynamicMBean create(Object componentInstance, Class management, String description);
 }

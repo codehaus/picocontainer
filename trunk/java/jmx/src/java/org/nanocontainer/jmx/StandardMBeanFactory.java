@@ -74,34 +74,6 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
         }
     }
 
-    /**
-     * Create a DynamicMBean for the component with a given description.
-     * @param componentInstance {@inheritDoc}
-     * @param management The management interface. If <code>null</code> the implementation will use the interface complying
-     *                   with the naming convention for management interfaces.
-     * @param description {@inheritDoc}
-     * @return Returns a {@link StandardMBean}. If the description was not null, it is an instance of a
-     *               {@link StandardNanoMBean}.
-     * @see org.nanocontainer.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class, java.lang.String)
-     */
-    public DynamicMBean create(final Object componentInstance, final Class management, final String description) {
-        if (description == null || description.length() == 0) {
-            return create(componentInstance, management, (MBeanInfo)null);
-        } else {
-            try {
-                final Class managementInterface = getManagementInterface(componentInstance.getClass(), management, null);
-                final DynamicMBean mBean = new StandardMBean(componentInstance, managementInterface);
-                final MBeanInfo mBeanInfo = mBean.getMBeanInfo();
-                return create(componentInstance, management, new MBeanInfo(mBeanInfo.getClassName(), description, mBeanInfo
-                        .getAttributes(), mBeanInfo.getConstructors(), mBeanInfo.getOperations(), mBeanInfo.getNotifications()));
-            } catch (final ClassNotFoundException e) {
-                throw new JMXRegistrationException("Cannot load management interface for StandardMBean", e);
-            } catch (final NotCompliantMBeanException e) {
-                throw new JMXRegistrationException("Cannot create StandardMBean", e);
-            }
-        }
-    }
-
     private Class getManagementInterface(final Class type, final Class management, final MBeanInfo mBeanInfo)
             throws ClassNotFoundException {
         final Class managementInterface;

@@ -13,7 +13,6 @@ package org.nanocontainer.jmx;
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.modelmbean.ModelMBeanAttributeInfo;
-import javax.management.modelmbean.ModelMBeanInfo;
 import javax.management.modelmbean.ModelMBeanInfoSupport;
 
 import org.nanocontainer.jmx.testmodel.Person;
@@ -51,19 +50,6 @@ public class StandardMBeanFactoryTestCase extends TestCase {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final DynamicMBean mBean = factory.create(new SimpleTouchable(), Touchable.class, mBeanInfo);
         assertNotNull(mBean);
-    }
-
-    public void testStandardMBeanCeation() {
-        final DynamicMBeanFactory factory = new StandardMBeanFactory();
-        final DynamicMBean mBean = factory.create(new Person(), PersonMBean.class, (String)null);
-        assertNotNull(mBean);
-    }
-
-    public void testStandardMBeanCeationWithDescription() {
-        final DynamicMBeanFactory factory = new StandardMBeanFactory();
-        final DynamicMBean mBean = factory.create(new Person(), PersonMBean.class, "An individual description");
-        assertNotNull(mBean);
-        assertEquals("An individual description", mBean.getMBeanInfo().getDescription());
     }
 
     public void testMBeanCreationFailsWithoutManagementInterface() {

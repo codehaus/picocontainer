@@ -95,17 +95,6 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         assertNotNull(provider.provide(null, new InstanceComponentAdapter("JUnit", person)));
     }
 
-    public void testRegisterWithDescription() {
-        final Person person = new Person();
-
-        dynamicMBeanFactory.expects(once()).method("create").with(same(person), same(PersonMBean.class), eq("Description"));
-
-        final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
-        provider.register(PersonMBean.class, objectName, "Description");
-        assertNotNull(provider.provide(null, new InstanceComponentAdapter(PersonMBean.class, person)));
-    }
-
     public void testUsageOfStandardMBeanFactory() {
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider();
         provider.register(PersonMBean.class, objectName);

@@ -10,8 +10,6 @@
 
 package org.picoextras.testmodel;
 
-import org.picoextras.testmodel.Wilma;
-
 public class WilmaImpl implements Wilma {
 
     private boolean helloCalled;

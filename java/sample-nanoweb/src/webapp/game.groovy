@@ -6,6 +6,7 @@ package org.nanocontainer.sample.nanoweb;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
+// START SNIPPET: class
 public class Game {
     GUESS_NEW_HINT = "Guess a number between 1 and 20"
 
@@ -32,3 +33,4 @@ public class Game {
         return "input"
     }
 }
+// END SNIPPET: class

@@ -56,6 +56,16 @@
             <version>SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -18,50 +18,13 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
 public class NanoWebServletTestCase extends TestCase {
-
-    public static class MyAction {
-        private int year;
-        private String country;
-        private Collection cars;
-
-        public int getYear() {
-            return year;
-        }
-
-        public void setYear(int year) {
-            this.year = year;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public Collection getCars() {
-            return cars;
-        }
-
-        public void setCars(Collection cars) {
-            this.cars = cars;
-        }
-
-        public String execute() {
-            if(year > 2003) {
-                return "success";
-            } else {
-                return "error";
-            }
-        }
-    }
 
     public void testIntegration() throws IOException, ServletException {
         NanoWebServlet nanoServlet = new NanoWebServlet();
@@ -87,6 +50,7 @@ public class NanoWebServletTestCase extends TestCase {
         requestMock.expectAndReturn("getAttribute", C.args(C.eq(KeyConstants.REQUEST_CONTAINER)), requestContainer);
         Map parameterMap = new HashMap();
         parameterMap.put("year", "2004");
+        parameterMap.put("cars", new String[]{"renault", "fiat"});
         requestMock.expectAndReturn("getParameterMap", parameterMap);
 
         Mock requestDispatcherMock = new Mock(RequestDispatcher.class);
@@ -98,6 +62,10 @@ public class NanoWebServletTestCase extends TestCase {
         nanoServlet.init((ServletConfig) servletConfigMock.proxy());
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
+        MyAction action = (MyAction) requestContainer.getComponentInstance("/test.nano");
+        assertEquals(2004, action.getYear());
+        assertEquals(Arrays.asList(new String[]{"renault", "fiat"}), action.getCars());
+
         requestMock.verify();
         responseMock.verify();
         servletContextMock.verify();
@@ -105,13 +73,4 @@ public class NanoWebServletTestCase extends TestCase {
         containerBuilderMock.verify();
         requestDispatcherMock.verify();
     }
-
-    public void testDispatcher() {
-        ChainingDispatcher dispatcher = new ChainingDispatcher();
-        String[] views = dispatcher.getViews("/foo/bar.nano", "success", ".vm");
-        assertEquals( "/foo/bar_success.vm", views[0]);
-        assertEquals( "/foo/success.vm", views[1]);
-        assertEquals( "/success.vm", views[2]);
-    }
-
 }

@@ -127,4 +127,20 @@ class NanoGroovyBuilderTestCase extends GroovyTestCase {
         pico.start()
         pico.dispose()
     }
+
+    void testInstantiateBasicComponentInCustomContainer() {
+
+        Xxx.reset()
+
+        builder = new NanoGroovyBuilder()
+        pico = builder.container(class:TestContainer) {
+            component(Xxx$A)
+        }
+
+        startAndStop(pico)
+        assertEquals("Should match the expression", "<A!A", Xxx.componentRecorder)
+        assertEquals("org.nanocontainer.script.groovy.TestContainer",pico.getClass().getName())
+    }
+
+
 }

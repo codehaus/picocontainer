@@ -67,7 +67,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader(
                 "var pico = new DefaultPicoContainer()\n" +
                 "pico.registerComponentImplementation('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
-                "child = new SoftCompositionPicoContainer(pico)\n" +
+                "child = new DefaultSoftCompositionPicoContainer(pico)\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
                 "child.registerComponentImplementation('childComponent','TestComp')\n" +

@@ -19,6 +19,10 @@ public abstract class Xxx implements Startable, Disposable {
 
     public static String componentRecorder = "";
 
+    public static void reset() {
+        componentRecorder = "";
+    }
+
     public void start() {
         componentRecorder += "<" + code();
     }

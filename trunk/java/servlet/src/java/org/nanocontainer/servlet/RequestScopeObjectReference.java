@@ -10,7 +10,7 @@ package org.picoextras.servlet;
 
 import org.picoextras.integrationkit.ObjectReference;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequest;
 
 /**
  * References an object that lives as an attribute of the
@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class RequestScopeObjectReference implements ObjectReference {
 
-    private HttpServletRequest request;
+    private ServletRequest request;
     private String key;
 
-    public RequestScopeObjectReference(HttpServletRequest request, String key) {
+    public RequestScopeObjectReference(ServletRequest request, String key) {
         this.request = request;
         this.key = key;
     }

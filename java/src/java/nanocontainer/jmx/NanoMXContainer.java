@@ -19,6 +19,7 @@ import javax.management.ObjectName;
 
 import picocontainer.PicoIntrospectionException;
 import picocontainer.PicoRegistrationException;
+import picocontainer.ComponentFactory;
 import picocontainer.defaults.AssignabilityRegistrationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.DefaultPicoContainer;
@@ -38,9 +39,15 @@ public class NanoMXContainer extends DefaultPicoContainer {
 
     private MBeanServer mbeanServer;
 
-    public NanoMXContainer(MBeanServer mbeanServer) {
-        super(new NanoMXComponentFactory(mbeanServer, new DefaultComponentFactory()));
+    public NanoMXContainer(MBeanServer mbeanServer, ComponentFactory componentFactory) {
+        super(new NanoMXComponentFactory(mbeanServer, componentFactory));
         this.mbeanServer = mbeanServer;
+    }
+
+    public static class Default extends NanoMXContainer {
+        public Default(MBeanServer mbeanServer) {
+            super(mbeanServer, new DefaultComponentFactory());
+        }
     }
 
     public MBeanServer getMBeanServer() {

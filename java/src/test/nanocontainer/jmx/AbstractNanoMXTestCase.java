@@ -46,7 +46,7 @@ public abstract class AbstractNanoMXTestCase extends TestCase {
 
 
     protected NanoMXContainer createNanoMXContainer() {
-        return new NanoMXContainer(MBeanServerFactory.newMBeanServer());
+        return new NanoMXContainer.Default(MBeanServerFactory.newMBeanServer());
     }
 
 }

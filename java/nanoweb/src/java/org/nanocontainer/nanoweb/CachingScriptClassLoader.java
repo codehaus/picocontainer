@@ -19,36 +19,43 @@ import groovy.lang.GroovyClassLoader;
  * @version $Revision$
  */
 public class CachingScriptClassLoader {
-    private final Map groovyActionLoadTimestamps = Collections.synchronizedMap(new HashMap());
+    private final Map scriptLoadTimestamps = Collections.synchronizedMap(new HashMap());
     private final Map scriptClasses = Collections.synchronizedMap(new HashMap());
+    private static final Long NEVER = new Long(Long.MIN_VALUE);
 
     public Class getClass(URL scriptURL) throws SyntaxException, IOException {
+        // Find the timestamp of the scriptURL
         String urlAsString = scriptURL.toExternalForm();
-        Class scriptClass = (Class) scriptClasses.get(urlAsString);
         URLConnection urlConnection = scriptURL.openConnection();
-        if(scriptClass == null) {
-            scriptClass = loadGroovyClass(urlConnection, scriptURL);
-            cache(scriptURL, urlConnection, scriptClass);
+        Long lastLoaded = (Long) scriptLoadTimestamps.get(urlAsString);
+        if(lastLoaded == null) {
+            lastLoaded = NEVER;
+        }
+
+        // Reload the class or reuse the cached class if the scriptURL hasn't changed.
+        Class scriptClass;
+        if(lastLoaded.longValue() < urlConnection.getLastModified()) {
+            scriptClass = loadAndCache(scriptURL, urlConnection);
         } else {
-            Long lastLoaded = (Long) groovyActionLoadTimestamps.get(urlAsString);
-            if(lastLoaded.longValue() < urlConnection.getLastModified()) {
-                scriptClass = loadGroovyClass(urlConnection, scriptURL);
-                cache(scriptURL, urlConnection, scriptClass);
-            }
+            scriptClass = (Class) scriptClasses.get(urlAsString);
         }
         return scriptClass;
     }
 
+    private Class loadAndCache(URL scriptURL, URLConnection urlConnection) throws SyntaxException, IOException {
+        Class scriptClass = loadGroovyClass(urlConnection, scriptURL);
+        String urlAsString = scriptURL.toExternalForm();
+        scriptClasses.put(urlAsString, scriptClass);
+        long lastChanged = urlConnection.getLastModified();
+        scriptLoadTimestamps.put(urlAsString, new Long(lastChanged));
+        return scriptClass;
+    }
+
+    // May be factored out to a separate strategy later if we decide to support
+    // other languages than Groovy
     private Class loadGroovyClass(URLConnection urlConnection, URL scriptURL) throws SyntaxException, IOException {
         GroovyClassLoader loader = new GroovyClassLoader(getClass().getClassLoader());
         Class scriptClass = loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
         return scriptClass;
-    }
-
-    private void cache(URL scriptURL, URLConnection urlConnection, Class scriptClass) {
-        String urlAsString = scriptURL.toExternalForm();
-        scriptClasses.put(urlAsString, scriptClass);
-        long lastChanged = urlConnection.getLastModified();
-        groovyActionLoadTimestamps.put(urlAsString, new Long(lastChanged));
     }
 }

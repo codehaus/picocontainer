@@ -57,8 +57,6 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 				return createJmxNode(attributes);
 			} catch (MalformedObjectNameException e) {
 				new NanoContainerMarkupException(e);
-			} catch (ClassNotFoundException e) {
-                new NanoContainerMarkupException(e);
             }
 		}
 
@@ -70,15 +68,13 @@ public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDele
 		currentKey = attributes.get("key");
 	}
 
-	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException, ClassNotFoundException {
+	protected Object createJmxNode(Map attributes) throws MalformedObjectNameException {
         MBeanServer server = getMBeanServer();
         DynamicMBeanFactory factory = getDynamicMBeanFactory();
         String description = (String)attributes.get("description");
 		ObjectName objectName = new ObjectName((String) attributes.remove("key"));
 		List operations = (List) attributes.remove("operations");
 		Class componentImplementation = getComponentImplementation(currentClass);
-//        String managementName = (String)attributes.get("management");
-//        Class management = managementName != null ? componentImplementation.getClassLoader().loadClass(managementName) : null;
         Class management = (Class)attributes.get("management");
 
 		// Build MBeanInfo

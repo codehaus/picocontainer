@@ -9,6 +9,23 @@
     <release version="1.0-beta-1-SNAPSHOT" date="In CVS">
 
       <action dev="paul" type="update">
+        - CompositePicoContainer changed to take ComponentRegistry and no longer 
+        extend DefaultPicoContainer.
+      </action>
+
+      <action dev="paul" type="update">
+        - HierarchicalPicoContainer obsoleted for sake of HierarchicalComponentRegistry
+      </action>
+
+      <action dev="paul" type="update">
+        - Moved findxxx methods from DefaultPicoContainer to ComponentRegistry
+      </action>
+
+      <action dev="paul" type="update">
+        - ComponentRegistry refactored out of DefaultPicoContainer
+      </action>
+
+      <action dev="paul" type="update">
         - Changed nethod signatures from Object[] to java.util.Set.
       </action>
 

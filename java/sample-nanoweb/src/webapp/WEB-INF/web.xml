@@ -7,7 +7,8 @@
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
             if(assemblyScope instanceof javax.servlet.ServletContext) {
-                return org.picocontainer.defaults.DefaultPicoContainer.EMPTY_IMMUTABLE_INSTANCE
+                // we'll have to think of something better than this...
+                com.thoughtworks.proxy.toys.nullobject.Null.object(org.picocontainer.PicoContainer)
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 // Session level components
                 pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)

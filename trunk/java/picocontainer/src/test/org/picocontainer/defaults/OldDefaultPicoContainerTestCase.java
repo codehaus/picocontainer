@@ -620,53 +620,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         assertEquals("Lookup of unknown key should return null", null, pico.getComponent("unknown"));
     }
 
-    public void testHasComponentByKeyForObjectRegistration() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        assertTrue("should not have non existent component", !pico.hasComponent("doesNotExist"));
-
-        pico.registerComponent("foo", new SimpleTouchable());
-
-        assertTrue("has component", pico.hasComponent("foo"));
-    }
-
-    public void testHasComponentByKeyForClassRegistration() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        assertTrue("should not have non existent component", !pico.hasComponent("doesNotExist"));
-
-        pico.registerComponent("foo", SimpleTouchable.class);
-
-        // TODO should this really need to be called to check whether container has component or not
-        pico.instantiateComponents();
-
-        assertTrue("has component", pico.hasComponent("foo"));
-    }
-
-    public void testGetComponentByKeyForObjectRegistration() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        assertTrue("should not have non existent component", pico.getComponent("doesNotExist") == null);
-
-        pico.registerComponent("foo", new SimpleTouchable());
-
-        pico.instantiateComponents();
-
-        assertTrue("has component", pico.getComponent("foo") != null);
-    }
-
-    public void testGetComponentByKeyForClassRegistration() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer.Default();
-
-        assertTrue("should not have non existent component", pico.getComponent("doesNotExist") == null);
-
-        pico.registerComponent("foo", SimpleTouchable.class);
-
-        pico.instantiateComponents();
-
-        assertTrue("has component", pico.getComponent("foo") != null);
-    }
-
     public void testUnmanagedCompsAreNotEligibleForComposite() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer.Default();
@@ -679,22 +632,6 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
         } catch (ClassCastException e) {
             // expected
         }
-    }
-
-    public void testBasicContainerAsserts() {
-        try {
-            new DefaultPicoContainer(new DefaultComponentFactory(), null);
-            fail("Should have had NPE)");
-        } catch (NullPointerException npe) {
-            assertTrue(npe.getMessage().indexOf("childRegistry") >= 0);
-        }
-        try {
-            new DefaultPicoContainer(null, new DefaultComponentRegistry());
-            fail("Should have had NPE)");
-        } catch (NullPointerException npe) {
-            assertTrue(npe.getMessage().indexOf("componentFactory") >= 0);
-        }
-
     }
 
     public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {

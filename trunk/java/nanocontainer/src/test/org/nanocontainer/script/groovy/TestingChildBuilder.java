@@ -1,3 +1,13 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Aslak Hellesoy and Paul Hammant                          *
+ *****************************************************************************/
+
 package org.nanocontainer.script.groovy;
 
 import groovy.util.BuilderSupport;
@@ -11,11 +21,11 @@ import java.util.Map;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SymbolicAOPTestBuilder extends BuilderSupport {
+public class TestingChildBuilder extends BuilderSupport {
 
     MutablePicoContainer toOperateOn;
 
-    public SymbolicAOPTestBuilder(MutablePicoContainer toOperateOn) {
+    public TestingChildBuilder(MutablePicoContainer toOperateOn) {
         this.toOperateOn = toOperateOn;
     }
 

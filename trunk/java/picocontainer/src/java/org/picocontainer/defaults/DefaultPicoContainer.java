@@ -358,7 +358,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated since 1.1 - Use accept(LifecycleVisitor.STARTER)
+     * Start the components of this PicoContainer and all its logical child containers.
+     * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be started.
+     * @see #makeChildContainer()
+     * @see #addChildContainer(PicoContainer)
+     * @see #removeChildContainer(PicoContainer)
      */
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -368,7 +372,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated since 1.1 - Use accept(LifecycleVisitor.STOPPER)
+     * Stop the components of this PicoContainer and all its logical child containers.
+     * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be stopped.
+     * @see #makeChildContainer()
+     * @see #addChildContainer(PicoContainer)
+     * @see #removeChildContainer(PicoContainer)
      */
     public void stop() {
         if (disposed) throw new IllegalStateException("Already disposed");
@@ -378,7 +386,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     /**
-     * @deprecated since 1.1 - Use accept(LifecycleVisitor.DISPOSER)
+     * Dispose the components of this PicoContainer and all its logical child containers.
+     * Any component implementing the lifecycle interface {@link org.picocontainer.Disposable} will be disposed.
+     * @see #makeChildContainer()
+     * @see #addChildContainer(PicoContainer)
+     * @see #removeChildContainer(PicoContainer)
      */
     public void dispose() {
         if (disposed) throw new IllegalStateException("Already disposed");

@@ -27,7 +27,7 @@
     </dependency>
 
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+            <groupId>nanocontainer</groupId>
       <artifactId>nanocontainer-swing</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>

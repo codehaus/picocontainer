@@ -10,13 +10,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+            <groupId>nanocontainer</groupId>
       <artifactId>nanocontainer-testmodel</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+            <groupId>nanocontainer</groupId>
       <artifactId>nanocontainer-reflection</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>

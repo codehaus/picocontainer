@@ -147,6 +147,21 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
 
     }
 
+    public void TODO_testPseudoXMLPseudoComponentFactoryCanBeUsedWithKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <pseudocomponent factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory' key='foo'>" +
+                "    <config-or-whatever/>" +
+                "  </pseudocomponent>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null);
+        assertNotNull(pico.getComponentInstances().get(0));
+        assertTrue(pico.getComponentInstance("foo") instanceof String);
+        assertEquals("Hello", pico.getComponentInstance("foo").toString());
+
+    }
+
     public static class TestFactory implements XMLPseudoComponentFactory {
         public Object makeInstance(Element elem) throws SAXException, ClassNotFoundException {
             return "Hello";

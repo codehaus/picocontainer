@@ -46,7 +46,7 @@
         -->
         <dependency>
             <id>groovy</id>
-            <version>1.0-rc1-snapshot</version>
+            <version>1.0-beta-4</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

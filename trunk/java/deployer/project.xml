@@ -49,7 +49,7 @@
 
         <dependency>
             <id>groovy</id>
-            <version>1.0-beta-4-snapshot</version>
+            <version>1.0-beta-4</version>
         </dependency>
 
         <dependency>

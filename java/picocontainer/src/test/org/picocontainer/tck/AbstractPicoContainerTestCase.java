@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,11 +62,6 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         MutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
         pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         return pico;
-    }
-
-    // TODO: remove? redundant test.
-    public void testNewContainerIsNotNull() throws PicoRegistrationException, PicoIntrospectionException {
-        assertNotNull(createPicoContainerWithTouchableAndDependsOnTouchable());
     }
 
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
@@ -118,7 +114,9 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertSame(picoContainer.getComponentAdapterOfType(DependsOnTouchable.class).getComponentImplementation(), e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
-            assertEquals(Touchable.class, unsatisfiableDependencies.iterator().next());
+            
+            // Touchable.class is now inside a List (the list of unsatisfied parameters) -- mparaz
+            assertEquals(Collections.singletonList(Touchable.class), unsatisfiableDependencies.iterator().next());
         }
     }
 
@@ -186,12 +184,22 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             pico.getComponentInstance(ComponentD.class);
         } catch (UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
-            assertEquals(2, unsatisfiableDependencies.size());
-            assertTrue(unsatisfiableDependencies.contains(ComponentE.class));
-            assertTrue(unsatisfiableDependencies.contains(ComponentB.class));
+            // The set now contains a list containing the two dependencies in
+            // order. Therefore, we can't use the original code. - mparaz
 
-            assertTrue(e.getMessage().indexOf("class " + ComponentE.class.getName()) != -1);
-            assertTrue(e.getMessage().indexOf("class " + ComponentB.class.getName()) != -1);
+            assertEquals(1, unsatisfiableDependencies.size());
+
+            final List expectedList = new ArrayList(2);
+            expectedList.add(ComponentE.class);
+            expectedList.add(ComponentB.class);
+
+            // Convert the Set to a List and assert that its first and only
+            // element is the expected list. This is a stronger check than
+            // contains().
+            // - mparaz
+            assertEquals(
+                new ArrayList(unsatisfiableDependencies).get(0),
+                expectedList);
         }
     }
 

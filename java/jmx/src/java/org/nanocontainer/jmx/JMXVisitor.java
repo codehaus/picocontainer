@@ -115,7 +115,7 @@ public class JMXVisitor extends AbstractPicoVisitor {
 	}
 
 	protected void registerWithMBeanServer(DynamicMBean dynamicMBean, ObjectName objectName) {
-		MBeanServer mBeanServer = (MBeanServer) picoContainer.getComponentInstance(MBeanServer.class);
+		MBeanServer mBeanServer = (MBeanServer) picoContainer.getComponentInstanceOfType(MBeanServer.class);
 
 		if (mBeanServer == null) {
 			throw new JMXRegistrationException("An MBeanServer instance MUST be registered with the container");

@@ -40,7 +40,7 @@ public class JMXVisitorTestCase extends TestCase {
 		mBeanServer = MBeanServerFactory.createMBeanServer();
 		objectName = new ObjectName("domian-name:hello=world");
 
-		picoContainer.registerComponentInstance(MBeanServer.class, mBeanServer);
+		picoContainer.registerComponentInstance(mBeanServer);
 	}
 
 	public void testVisitComponentAdapterForMBeanInfo() throws Exception {

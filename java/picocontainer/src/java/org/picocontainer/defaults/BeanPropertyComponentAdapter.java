@@ -83,7 +83,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         return componentInstance;
     }
 
-    private Object convertType(Method setter, Object propertyValue) throws MalformedURLException {
+    private Object convertType(Method setter, Object propertyValue) throws MalformedURLException, ClassNotFoundException {
         if (propertyValue == null) {
             return null;
         }
@@ -108,6 +108,8 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             return new File(propertyValue.toString());
         } else if (URL.class.isAssignableFrom(type)) {
             return new URL(propertyValue.toString());
+        } else if (Class.class.isAssignableFrom(type)) {
+            return Thread.currentThread().getContextClassLoader().loadClass(propertyValue.toString());
         } else {
 
             // check if the propertyValue is a key of a component in the container

@@ -285,7 +285,7 @@ public class DefaultPicoPool implements PicoPool {
      * @see org.nanocontainer.pool.PicoPool#clearPool()
      */
     public void clearPool() {
-        Iterator iter = pico.getComponentAdapters().iterator();
+        Iterator iter = new ArrayList(pico.getComponentAdapters()).iterator();
         while (iter.hasNext()) {
             final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
             pico.unregisterComponent(componentAdapter.getComponentKey());

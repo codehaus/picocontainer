@@ -59,17 +59,12 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
         final Object key = componentAdapter.getComponentKey();
         final MBeanInfoWrapper wrapper = (MBeanInfoWrapper)registry.get(key);
         if (wrapper != null) {
-            final DynamicMBean mBean;
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
             final Class management = wrapper.getManagementInterface() != null
                                                                              ? wrapper.getManagementInterface()
                                                                              : key instanceof Class ? (Class)key : instance
                                                                                      .getClass();
-            if (wrapper.getMBeanInfo() != null) {
-                mBean = factory.create(instance, management, wrapper.getMBeanInfo());
-            } else {
-                mBean = factory.create(instance, management, wrapper.getDescription());
-            }
+            final DynamicMBean mBean = factory.create(instance, management, wrapper.getMBeanInfo());
             return new JMXRegistrationInfo(wrapper.getObjectName(), mBean);
         }
         return null;
@@ -83,7 +78,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
      * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
-        registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management, null));
+        registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management));
     }
 
     /**
@@ -116,17 +111,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
      * @param objectName The {@link ObjectName} of the MBean.
      */
     public void register(final Object componentKey, final ObjectName objectName) {
-        register(componentKey, objectName, (String)null);
-    }
-
-    /**
-     * Register a specific Pico component by key with an ObjectName and a description for the MBean.
-     * @param componentKey The key of the Pico component.
-     * @param objectName The {@link ObjectName} of the MBean.
-     * @param description The derscription of the MBean.
-     */
-    public void register(final Object componentKey, final ObjectName objectName, final String description) {
-        registry.put(componentKey, new MBeanInfoWrapper(null, objectName, null, description));
+        registry.put(componentKey, new MBeanInfoWrapper(null, objectName, null));
     }
 
     /**
@@ -135,14 +120,12 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     private static class MBeanInfoWrapper {
         private final MBeanInfo mBeanInfo;
         private final ObjectName objectName;
-        private final String description;
         private final Class managementInterface;
 
-        MBeanInfoWrapper(final MBeanInfo mBeanInfo, final ObjectName objectName, final Class management, final String description) {
+        MBeanInfoWrapper(final MBeanInfo mBeanInfo, final ObjectName objectName, final Class management) {
             this.mBeanInfo = mBeanInfo;
             this.objectName = objectName;
             this.managementInterface = management;
-            this.description = description;
         }
 
         MBeanInfo getMBeanInfo() {
@@ -155,10 +138,6 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
 
         Class getManagementInterface() {
             return managementInterface;
-        }
-
-        String getDescription() {
-            return description;
         }
     }
 

@@ -3,7 +3,7 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import junit.framework.Assert;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.lifecycle.Lifecycle;
+import org.picocontainer.Lifecycle;
 
 /**
  * @author Paul Hammant

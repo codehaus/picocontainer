@@ -8,7 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer;
 
-import org.picocontainer.lifecycle.Lifecycle;
+import org.picocontainer.Lifecycle;
+import org.picocontainer.Lifecycle;
 import junit.framework.Assert;
 
 /**

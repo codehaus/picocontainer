@@ -8,7 +8,8 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.lifecycle;
+package org.picocontainer;
 
-public interface Lifecycle extends Startable, Disposable {
+public interface Disposable {
+    void dispose();
 }

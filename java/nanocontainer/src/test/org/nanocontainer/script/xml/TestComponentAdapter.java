@@ -18,24 +18,24 @@ import org.picocontainer.defaults.AbstractComponentAdapter;
  */
 public class TestComponentAdapter extends AbstractComponentAdapter {
 
-	String foo;
-	String blurge;
-	int bar;
-	
-	public TestComponentAdapter(String foo, int bar, String blurge) {
-		super(TestComponentAdapter.class,TestComponentAdapter.class);
-		this.foo = foo;
-		this.bar = bar;
-		this.blurge = blurge;
-	}
-	
-	
-	public void verify(PicoContainer pico) {
-	}
-	
-	public Object getComponentInstance(PicoContainer pico) {
-		return null;
-	}
+    String foo;
+    String blurge;
+    int bar;
+
+    public TestComponentAdapter(String foo, int bar, String blurge) {
+        super(TestComponentAdapter.class, TestComponentAdapter.class);
+        this.foo = foo;
+        this.bar = bar;
+        this.blurge = blurge;
+    }
+
+
+    public void verify(PicoContainer pico) {
+    }
+
+    public Object getComponentInstance(PicoContainer pico) {
+        return null;
+    }
 }
 
 

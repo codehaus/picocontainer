@@ -15,18 +15,26 @@ import dynaop.ProxyFactory;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.nanoaop.AspectablePicoContainer;
-import org.nanocontainer.nanoaop.AspectsApplicator;
-import org.nanocontainer.nanoaop.AspectsContainer;
-import org.nanocontainer.nanoaop.AspectsManager;
-import org.nanocontainer.nanoaop.ClassPointcut;
-import org.nanocontainer.nanoaop.ComponentPointcut;
-import org.nanocontainer.nanoaop.MethodPointcut;
-import org.nanocontainer.nanoaop.PointcutsFactory;
-import org.nanocontainer.nanoaop.defaults.AspectsComponentAdapterFactory;
-import org.nanocontainer.nanoaop.dynaop.DynaopAspectsManager;
-import org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory;
-import org.nanocontainer.nanoaop.dynaop.InstanceMixinFactory;
+import org.nanocontainer.aop.AspectablePicoContainer;
+import org.nanocontainer.aop.AspectsApplicator;
+import org.nanocontainer.aop.AspectsContainer;
+import org.nanocontainer.aop.AspectsManager;
+import org.nanocontainer.aop.AspectsManager;
+import org.nanocontainer.aop.ClassPointcut;
+import org.nanocontainer.aop.ClassPointcut;
+import org.nanocontainer.aop.ComponentPointcut;
+import org.nanocontainer.aop.ComponentPointcut;
+import org.nanocontainer.aop.MethodPointcut;
+import org.nanocontainer.aop.MethodPointcut;
+import org.nanocontainer.aop.PointcutsFactory;
+import org.nanocontainer.aop.PointcutsFactory;
+import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
+import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
+import org.nanocontainer.aop.dynaop.DynaopAspectsManager;
+import org.nanocontainer.aop.dynaop.DynaopPointcutsFactory;
+import org.nanocontainer.aop.dynaop.DynaopPointcutsFactory;
+import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
+import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.nanocontainer.script.groovy.NanoGroovyBuilder;
 import org.nanocontainer.script.groovy.PicoBuilderException;
 import org.picocontainer.MutablePicoContainer;
@@ -52,7 +60,7 @@ public class NanoAopGroovyBuilder extends NanoGroovyBuilder {
 
     /**
      * Creates a new <code>NanoAopGroovyBuilder</code> that will use
-     * a <code>org.nanocontainer.nanoaop.dynaop.DynaopPointcutsFactory</code>.
+     * a <code>org.nanocontainer.aop.dynaop.DynaopPointcutsFactory</code>.
      */
     public NanoAopGroovyBuilder() {
         this(new DynaopPointcutsFactory());

@@ -29,7 +29,7 @@ public class Standalone {
     private static final char NOWAIT_OPT = 'n';
     private static final Options OPTIONS = createOptions();
 
-    private static final Options createOptions(){
+    private static final Options createOptions() {
         Options options = new Options();
         options.addOption(String.valueOf(HELP_OPT), "help", false,
                 "print this message and exit");
@@ -40,31 +40,31 @@ public class Standalone {
         options.addOption(String.valueOf(QUIET_OPT), "quiet", false,
                 "forces ScriptedContainerBuilderFactory to be quiet");
         options.addOption(String.valueOf(NOWAIT_OPT), "nowait", false,
-        		"forces ScriptedContainerBuilderFactory to exit after start");
+                "forces ScriptedContainerBuilderFactory to exit after start");
         return options;
     }
-    
+
     public static void main(String[] args) {
         CommandLine cl = null;
         try {
-            cl = getCommandLine(args );
-        } catch ( ParseException e ) {
-            System.out.println( "Error in parsing arguments: ");
+            cl = getCommandLine(args);
+        } catch (ParseException e) {
+            System.out.println("Error in parsing arguments: ");
             e.printStackTrace();
-            System.exit( -1 );
+            System.exit(-1);
         }
 
-        if ( cl.hasOption(HELP_OPT) ){
+        if (cl.hasOption(HELP_OPT)) {
             printUsage();
             System.exit(0);
         }
-        if ( cl.hasOption(VERSION_OPT) ){
+        if (cl.hasOption(VERSION_OPT)) {
             printVersion();
             System.exit(0);
         }
-        
+
         String composition = cl.getOptionValue(COMPOSITION_OPT);
-        if ( composition == null ) {
+        if (composition == null) {
             printUsage();
             System.exit(0);
         }
@@ -149,7 +149,7 @@ public class Standalone {
             throw new ParseException("No arguments specified");
         }
         CommandLineParser parser = new PosixParser();
-        return parser.parse( OPTIONS, args );
+        return parser.parse(OPTIONS, args);
     }
 
     private static void printUsage() {
@@ -165,7 +165,6 @@ public class Standalone {
     private static void printVersion() {
         System.out.println("1.0");
     }
-
 
 
 }

@@ -6,7 +6,7 @@
 ]>
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
-    <extend>${basedir}/../project.xml</extend>    
+    <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer</id>
     <name>nanocontainer</name>
 
@@ -96,7 +96,7 @@
         </dependency>
 
         <dependency>
-        	<id>commons-cli</id>
+            <id>commons-cli</id>
             <version>1.0</version>
         </dependency>
 
@@ -108,6 +108,27 @@
         <dependency>
             <id>bsh</id>
             <version>2.0b1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-asm</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <id>dynaop</id>
+            <version>1.0-beta</version>
+        </dependency>
+
+        <dependency>
+            <id>aopalliance</id>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <id>oro</id>
+            <version>2.0.8</version>
         </dependency>
 
         <!-- This should ideally not be necessary when ThreadLocalCA is "fixed" -->

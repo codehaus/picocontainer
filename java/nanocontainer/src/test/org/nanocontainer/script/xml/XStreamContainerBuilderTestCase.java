@@ -20,9 +20,9 @@ import java.io.StringReader;
 
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-	public void testContainerBuilding()  {
+    public void testContainerBuilding() {
 
-        Reader script = new StringReader( "" +
+        Reader script = new StringReader("" +
                 "<container>" +
                 "    <instance key='foo'>" +
                 "    	<string>foo bar</string>" +
@@ -32,61 +32,59 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "    </instance>" +
                 "    <instance>" +
                 "    	<org.nanocontainer.testmodel.DefaultWebServerConfig>" +
-				" 			<port>555</port>" +
+                " 			<port>555</port>" +
                 "    	</org.nanocontainer.testmodel.DefaultWebServerConfig>" +
                 "    </instance>" +
-				"	 <implementation class='org.nanocontainer.testmodel.WebServerImpl'>" +
-				"		<dependency class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-				"	 </implementation>" +
-				"	 <implementation key='konstantin needs beer' class='org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor'>" +
-				"		<constant>" +
-				"			<string>it's really late</string>" +
-				"		</constant>" +
-				"		<constant>" +
-				"			<int>239</int>" +
-				"		</constant>" +
-				"	 </implementation>" +
+                "	 <implementation class='org.nanocontainer.testmodel.WebServerImpl'>" +
+                "		<dependency class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "	 </implementation>" +
+                "	 <implementation key='konstantin needs beer' class='org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor'>" +
+                "		<constant>" +
+                "			<string>it's really late</string>" +
+                "		</constant>" +
+                "		<constant>" +
+                "			<int>239</int>" +
+                "		</constant>" +
+                "	 </implementation>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertEquals(5, pico.getComponentInstances().size());
-        assertEquals("foo bar",pico.getComponentInstance("foo"));
-        assertEquals(new Integer(239),pico.getComponentInstance("bar"));
-        assertEquals(555,((DefaultWebServerConfig)pico.getComponentInstance(DefaultWebServerConfig.class)).getPort());
+        assertEquals("foo bar", pico.getComponentInstance("foo"));
+        assertEquals(new Integer(239), pico.getComponentInstance("bar"));
+        assertEquals(555, ((DefaultWebServerConfig) pico.getComponentInstance(DefaultWebServerConfig.class)).getPort());
 
-		assertNotNull(pico.getComponentInstanceOfType(WebServerImpl.class));
-		assertNotNull(pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
-		assertSame(pico.getComponentInstance("konstantin needs beer"),pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
-		assertEquals("it's really late239",((ThingThatTakesParamsInConstructor)pico.getComponentInstance("konstantin needs beer")).getValue());
-	}
+        assertNotNull(pico.getComponentInstanceOfType(WebServerImpl.class));
+        assertNotNull(pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
+        assertSame(pico.getComponentInstance("konstantin needs beer"), pico.getComponentInstanceOfType(ThingThatTakesParamsInConstructor.class));
+        assertEquals("it's really late239", ((ThingThatTakesParamsInConstructor) pico.getComponentInstance("konstantin needs beer")).getValue());
+    }
 
-	public void testComponentAdapterInjection() throws Throwable {
-		Reader script = new StringReader(
-			"<container>" + 
-				"<adapter key='testAdapter'>" +
-					"<instance key='firstString'>" +
-						"<string>bla bla</string>"   + 
-					"</instance>" + 
-					"<instance key='secondString' >" + 
-						"<string>glarch</string>" + 
-					"</instance>" + 
-					"<instance key='justInt'>" + 
-						"<int>777</int>" + 
-					"</instance>" + 
-					"<implementation key='testAdapter' class='org.nanocontainer.script.xml.TestComponentAdapter'>" +
-						"<dependency key='firstString'/>" + 
-						"<dependency key='justInt'/>" + 
-						"<dependency key='secondString'/>" +
-					"</implementation>" + 
-				"</adapter>"  +
-			"</container>" 
-		);
-		
+    public void testComponentAdapterInjection() throws Throwable {
+        Reader script = new StringReader("<container>" +
+                "<adapter key='testAdapter'>" +
+                "<instance key='firstString'>" +
+                "<string>bla bla</string>" +
+                "</instance>" +
+                "<instance key='secondString' >" +
+                "<string>glarch</string>" +
+                "</instance>" +
+                "<instance key='justInt'>" +
+                "<int>777</int>" +
+                "</instance>" +
+                "<implementation key='testAdapter' class='org.nanocontainer.script.xml.TestComponentAdapter'>" +
+                "<dependency key='firstString'/>" +
+                "<dependency key='justInt'/>" +
+                "<dependency key='secondString'/>" +
+                "</implementation>" +
+                "</adapter>" +
+                "</container>");
+
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-		TestComponentAdapter tca = (TestComponentAdapter)pico.getComponentAdapter(TestComponentAdapter.class);
-		assertNotNull(tca);
-	}
-	
+        TestComponentAdapter tca = (TestComponentAdapter) pico.getComponentAdapter(TestComponentAdapter.class);
+        assertNotNull(tca);
+    }
+
     public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -103,13 +101,13 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "	</org.nanocontainer.script.xml.TestBean>" +
                 "  </instance>" +
                 "  <implementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
-				"		<dependency key='bean1'/>" + 
-				"		<dependency key='bean2'/>" +
+                "		<dependency key='bean1'/>" +
+                "		<dependency key='bean2'/>" +
                 "  </implementation>" +
                 "</container>");
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
+        TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }

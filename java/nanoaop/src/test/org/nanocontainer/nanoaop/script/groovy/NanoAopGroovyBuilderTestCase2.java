@@ -15,9 +15,10 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.nanoaop.AspectablePicoContainer;
-import org.nanocontainer.nanoaop.Dao;
-import org.nanocontainer.nanoaop.Identifiable;
+import org.nanocontainer.aop.AspectablePicoContainer;
+import org.nanocontainer.aop.Dao;
+import org.nanocontainer.aop.Identifiable;
+import org.nanocontainer.aop.AspectablePicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.PicoContainer;

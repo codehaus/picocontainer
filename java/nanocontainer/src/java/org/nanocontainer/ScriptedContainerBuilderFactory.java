@@ -82,6 +82,7 @@ public class ScriptedContainerBuilderFactory {
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultReflectionContainerAdapter.getPico());
 
     }
+
     private static File fileExists(File file) {
         if (file.exists()) {
             return file;

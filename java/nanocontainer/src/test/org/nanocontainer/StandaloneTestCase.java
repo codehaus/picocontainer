@@ -22,11 +22,11 @@ public class StandaloneTestCase extends TestCase {
     public void testCommandLineWithNoArgs() throws Exception {
         try {
             Standalone.getCommandLine(new String[]{});
-        } catch ( ParseException e ){
-            assertEquals("Exception message", "No arguments specified", e.getMessage() );
+        } catch (ParseException e) {
+            assertEquals("Exception message", "No arguments specified", e.getMessage());
         }
     }
-    
+
     public void testCommandLineWithHelp() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-h"});
         assertTrue(cl.hasOption('h'));
@@ -44,32 +44,32 @@ public class StandaloneTestCase extends TestCase {
         assertFalse(cl.hasOption('q'));
         assertFalse(cl.hasOption('n'));
     }
-    
+
     public void testCommandLineWithCompostion() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath"});
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
-        assertEquals("path",cl.getOptionValue('c'));
+        assertEquals("path", cl.getOptionValue('c'));
         assertFalse(cl.hasOption('q'));
         assertFalse(cl.hasOption('n'));
     }
 
     public void testCommandLineWithCompositionAndQuiet() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath","-q"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q"});
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
-        assertEquals("path",cl.getOptionValue('c'));
+        assertEquals("path", cl.getOptionValue('c'));
         assertTrue(cl.hasOption('q'));
         assertFalse(cl.hasOption('n'));
     }
 
     public void testCommandLineWithCompositionAndQuietAndNowait() throws Exception {
-        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath","-q","-n"});
+        CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q", "-n"});
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
-        assertEquals("path",cl.getOptionValue('c'));
+        assertEquals("path", cl.getOptionValue('c'));
         assertTrue(cl.hasOption('q'));
         assertTrue(cl.hasOption('n'));
     }
-    
+
 }

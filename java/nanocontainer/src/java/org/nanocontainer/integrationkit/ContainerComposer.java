@@ -25,7 +25,7 @@ public interface ContainerComposer {
      * and configuration (setting primitive arguments) of components.
      *
      * @param container        container to compose
-     @param compositionScope scope of the container. This variable can be used as a hint to determine
+     * @param compositionScope scope of the container. This variable can be used as a hint to determine
      */
     void composeContainer(MutablePicoContainer container, Object compositionScope);
 

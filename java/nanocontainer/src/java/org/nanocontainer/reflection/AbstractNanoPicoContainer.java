@@ -13,17 +13,18 @@ package org.nanocontainer.reflection;
 import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * A base class for SoftCompositionPicoContainers. As well as the functionality indicated by the interface it
  * implements, extenders of this class will have named child component capability.
+ *
  * @author Paul Hammant
  * @version $Revision$
  */

@@ -81,14 +81,14 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     public void populateContainer(MutablePicoContainer container) {
-		populateContainer(container,rootElement);
+        populateContainer(container, rootElement);
     }
 
-	/**
-	 * just a convenience method, so we can work recursively with subcontainers
-	 * for whatever puproses we see cool. 
-	 */
-	private void populateContainer(MutablePicoContainer container, Element rootElement) {
+    /**
+     * just a convenience method, so we can work recursively with subcontainers
+     * for whatever puproses we see cool.
+     */
+    private void populateContainer(MutablePicoContainer container, Element rootElement) {
         NodeList children = rootElement.getChildNodes();
         Node child;
         String name;
@@ -107,38 +107,40 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     }
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
-                } else if(ADAPTER.equals(name)) {
-					insertAdapter(container,(Element)child);
-				}else {
+                } else if (ADAPTER.equals(name)) {
+                    insertAdapter(container, (Element) child);
+                } else {
                     throw new PicoCompositionException("Unsupported element:" + name);
                 }
             }
         }
-		
-	}
-	/**
-	 * process adapter node
-	 */
-	 protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
+
+    }
+
+    /**
+     * process adapter node
+     */
+    protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
-		try {
-			DefaultPicoContainer nested = new DefaultPicoContainer();
-			populateContainer(nested,rootElement);
-			
-			if(key != null) {
-				container.registerComponent((ComponentAdapter)nested.getComponentInstance(key));
-			} else if(klass != null) {
-				Class clazz = classLoader.loadClass(klass);
-				container.registerComponent((ComponentAdapter)nested.getComponentInstanceOfType(clazz));
-			} else {
-				container.registerComponent((ComponentAdapter)nested.getComponentInstanceOfType(ComponentAdapter.class));
-			}
-		} catch(ClassNotFoundException ex) {
-			throw new PicoCompositionException(ex);
-		}
-		
-	 }
+        try {
+            DefaultPicoContainer nested = new DefaultPicoContainer();
+            populateContainer(nested, rootElement);
+
+            if (key != null) {
+                container.registerComponent((ComponentAdapter) nested.getComponentInstance(key));
+            } else if (klass != null) {
+                Class clazz = classLoader.loadClass(klass);
+                container.registerComponent((ComponentAdapter) nested.getComponentInstanceOfType(clazz));
+            } else {
+                container.registerComponent((ComponentAdapter) nested.getComponentInstanceOfType(ComponentAdapter.class));
+            }
+        } catch (ClassNotFoundException ex) {
+            throw new PicoCompositionException(ex);
+        }
+
+    }
+
     /**
      * process implementation node
      */
@@ -192,24 +194,24 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
         // ok , we processed our children. insert implementation
         Parameter[] parameterArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-		if(parameters.size() > 0) {
-			if (key == null || "".equals(key)) {
-				// without  key. clazz is our key
-				container.registerComponentImplementation(clazz, clazz, parameterArray);
-			} else {
-				// with key
-				container.registerComponentImplementation(key, clazz, parameterArray);
-			}
-		} else {
-			if (key == null || "".equals(key)) {
-				// without  key. clazz is our key
-				container.registerComponentImplementation(clazz, clazz);
-			} else {
-				// with key
-				container.registerComponentImplementation(key, clazz);
-			}
-			
-		}
+        if (parameters.size() > 0) {
+            if (key == null || "".equals(key)) {
+                // without  key. clazz is our key
+                container.registerComponentImplementation(clazz, clazz, parameterArray);
+            } else {
+                // with key
+                container.registerComponentImplementation(key, clazz, parameterArray);
+            }
+        } else {
+            if (key == null || "".equals(key)) {
+                // without  key. clazz is our key
+                container.registerComponentImplementation(clazz, clazz);
+            } else {
+                // with key
+                container.registerComponentImplementation(key, clazz);
+            }
+
+        }
     }
 
     /**

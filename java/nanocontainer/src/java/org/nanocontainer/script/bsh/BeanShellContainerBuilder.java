@@ -10,11 +10,12 @@ import java.io.Reader;
 
 /**
  * {@inheritDoc}
- * The script has to assign a "pico" variable with an instance of 
+ * The script has to assign a "pico" variable with an instance of
  * {@link org.picocontainer.PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
+ *
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  * @version $Revision$

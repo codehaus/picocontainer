@@ -25,8 +25,8 @@ import org.picocontainer.defaults.SimpleReference;
 public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
     public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
         final Mock childStartable = mock(Startable.class);
-        childStartable.expects( once() ).method( "start" ).withNoArguments();
-        childStartable.expects( once() ).method( "stop" ).withNoArguments();
+        childStartable.expects(once()).method("start").withNoArguments();
+        childStartable.expects(once()).method("stop").withNoArguments();
 
         ContainerComposer containerComposer = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
@@ -37,7 +37,7 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
 
         ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parent = new DefaultPicoContainer();
-        
+
         Mock parentStartable = mock(Startable.class);
         parent.registerComponentInstance(parentStartable.proxy());
         parentRef.set(parent);

@@ -15,15 +15,17 @@ import org.w3c.dom.Element;
 
 /**
  * Factory that creates instances from DOM Elements
+ *
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
 public interface XMLComponentInstanceFactory {
     /**
      * Creates an instance of an Object from a DOM Element
+     *
      * @param container
-     * @param element the DOM Element
-     * @return An Object instance 
+     * @param element   the DOM Element
+     * @return An Object instance
      * @throws ClassNotFoundException
      */
     Object makeInstance(PicoContainer container, Element element) throws ClassNotFoundException;

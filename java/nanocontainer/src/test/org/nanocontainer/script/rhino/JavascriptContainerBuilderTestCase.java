@@ -64,8 +64,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         assertTrue(testCompJar.isFile());
 
         final String testCompJarPath = testCompJar.getCanonicalPath().replace('\\', '/');
-        Reader script = new StringReader(
-                "var pico = new DefaultNanoPicoContainer()\n" +
+        Reader script = new StringReader("var pico = new DefaultNanoPicoContainer()\n" +
                 "pico.registerComponentImplementation('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
                 "child = new DefaultNanoPicoContainer(pico)\n" +
                 "pico.addChildContainer(child)\n" +

@@ -10,9 +10,9 @@
 
 package org.nanocontainer.reflection;
 
-import org.nanocontainer.NanoPicoContainer;
-import org.nanocontainer.NanoContainer;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -137,8 +137,8 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
         return delegate.registerComponentImplementation(componentKey, componentImplementation);
     }
-    
-        public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
         return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);
     }
 
@@ -202,7 +202,7 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException {
         return container.registerComponentImplementation(key, componentImplementationClassName);
     }
-    
+
     public ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
         return container.registerComponentImplementation(key, componentImplementationClassName, parameters);
     }

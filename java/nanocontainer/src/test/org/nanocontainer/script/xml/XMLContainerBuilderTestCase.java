@@ -165,8 +165,8 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
         assertTrue(instance instanceof TestBean);
-        assertEquals(10, ((TestBean)instance).getFoo());
-        assertEquals("hello", ((TestBean)instance).getBar());
+        assertEquals(10, ((TestBean) instance).getFoo());
+        assertEquals("hello", ((TestBean) instance).getBar());
     }
 
     public void testComponentInstanceWithBeanFactory() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
@@ -184,10 +184,10 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         Object instance = pico.getComponentInstances().get(0);
         assertNotNull(instance);
         assertTrue(instance instanceof TestBean);
-        assertEquals(10, ((TestBean)instance).getFoo());
-        assertEquals("hello", ((TestBean)instance).getBar());
+        assertEquals(10, ((TestBean) instance).getFoo());
+        assertEquals("hello", ((TestBean) instance).getBar());
     }
-    
+
     public void testComponentInstanceWithKey() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -218,7 +218,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertTrue(instance instanceof String);
         assertEquals("Hello", instance.toString());
     }
-    
+
     public static class TestFactory implements XMLComponentInstanceFactory {
         public Object makeInstance(PicoContainer pico, Element elem) throws ClassNotFoundException {
             return "Hello";
@@ -240,7 +240,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertEquals("localhost", config.getHost());
         assertEquals(8080, config.getPort());
     }
-    
+
     public void testInstantiationOfComponentsWithParameterInstancesOfSameComponent() throws Exception {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -261,7 +261,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
+        TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
@@ -286,11 +286,11 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
+        TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
-    
+
     public void testInstantiationOfComponentsWithParameterKeys() throws Exception {
         Reader script = new StringReader("" +
                 "<container>" +
@@ -313,7 +313,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance(TestBeanComposer.class);
+        TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
@@ -340,11 +340,11 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponentInstance("beanKey"));
-        TestBeanComposer composer = (TestBeanComposer)pico.getComponentInstance("beanKey");
+        TestBeanComposer composer = (TestBeanComposer) pico.getComponentInstance("beanKey");
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
-    
+
     // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() throws IOException, ParserConfigurationException, SAXException {
         Reader script = new StringReader("" +

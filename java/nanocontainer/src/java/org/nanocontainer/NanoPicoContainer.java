@@ -10,6 +10,7 @@ import org.picocontainer.PicoContainer;
 public interface NanoPicoContainer extends MutablePicoContainer, NanoContainer {
 
     MutablePicoContainer makeChildContainer(String name);
+
     void addChildContainer(String name, PicoContainer child);
 
 }

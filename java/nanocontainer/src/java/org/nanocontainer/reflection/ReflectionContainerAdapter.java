@@ -10,13 +10,13 @@
 
 package org.nanocontainer.reflection;
 
-import java.net.URL;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+
+import java.net.URL;
 
 /**
  * This class adapts a {@link MutablePicoContainer} through a similar API that
@@ -32,9 +32,9 @@ public interface ReflectionContainerAdapter {
     ComponentAdapter registerComponentImplementation(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
 
     ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName) throws ClassNotFoundException;
-    
+
     ComponentAdapter registerComponentImplementation(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException;
-    
+
 
     ComponentAdapter registerComponentImplementation(Object key,
                                                      String componentImplementationClassName,

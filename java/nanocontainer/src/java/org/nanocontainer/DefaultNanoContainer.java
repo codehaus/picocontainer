@@ -59,7 +59,7 @@ public class DefaultNanoContainer implements NanoContainer {
 
     public DefaultNanoContainer(ClassLoader parentClassLoader, MutablePicoContainer picoContainer) {
         this.parentClassLoader = parentClassLoader;
-        if(picoContainer == null) {
+        if (picoContainer == null) {
             throw new NullPointerException("picoContainer");
         }
         this.picoContainer = picoContainer;

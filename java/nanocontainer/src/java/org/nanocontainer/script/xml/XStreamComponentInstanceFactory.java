@@ -16,13 +16,14 @@ import org.w3c.dom.Element;
 /**
  * Implementation of XMLComponentInstanceFactory that uses XStream to unmarshal
  * DOM elements.
- * 
+ *
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
 public class XStreamComponentInstanceFactory implements XMLComponentInstanceFactory {
     /**
      * {@inheritDoc}
+     *
      * @see XMLComponentInstanceFactory#makeInstance(PicoContainer, Element)
      */
     public Object makeInstance(PicoContainer pico, Element element) throws ClassNotFoundException {

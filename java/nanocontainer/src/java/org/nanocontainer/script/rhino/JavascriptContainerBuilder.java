@@ -27,11 +27,12 @@ import java.io.Reader;
 
 /**
  * {@inheritDoc}
- * The script has to assign a "pico" variable with an instance of 
+ * The script has to assign a "pico" variable with an instance of
  * {@link PicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * PicoContainer.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
@@ -83,7 +84,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             throw e;
         } catch (JavaScriptException e) {
             Object value = e.getValue();
-            if(value instanceof Throwable) {
+            if (value instanceof Throwable) {
                 throw new PicoCompositionException((Throwable) value);
             } else {
                 throw new PicoCompositionException(e);

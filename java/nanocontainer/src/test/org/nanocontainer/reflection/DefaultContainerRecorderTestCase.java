@@ -20,30 +20,30 @@ import java.lang.reflect.InvocationTargetException;
  * @author Aslak Helles&oslash;y
  */
 public class DefaultContainerRecorderTestCase extends TestCase {
-	public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
-		ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoPicoContainer());
-		MutablePicoContainer recorded = recorder.getContainerProxy();
+    public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
+        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoPicoContainer());
+        MutablePicoContainer recorded = recorder.getContainerProxy();
 
-		recorded.registerComponentInstance("fruit", "apple");
-		recorded.registerComponentInstance("int",new Integer(239));
-		recorded.registerComponentImplementation("thing",
-			ThingThatTakesParamsInConstructor.class,
-			new Parameter[] {
-					new ComponentParameter(),
-					new ComponentParameter()
-			});
+        recorded.registerComponentInstance("fruit", "apple");
+        recorded.registerComponentInstance("int", new Integer(239));
+        recorded.registerComponentImplementation("thing",
+                ThingThatTakesParamsInConstructor.class,
+                new Parameter[]{
+                    new ComponentParameter(),
+                    new ComponentParameter()
+                });
 
-		MutablePicoContainer slave = new DefaultPicoContainer();
-		recorder.replay(slave);
-		assertEquals("apple",slave.getComponentInstance("fruit"));
-		assertEquals("apple239",((ThingThatTakesParamsInConstructor)slave.getComponentInstance("thing")).getValue());
+        MutablePicoContainer slave = new DefaultPicoContainer();
+        recorder.replay(slave);
+        assertEquals("apple", slave.getComponentInstance("fruit"));
+        assertEquals("apple239", ((ThingThatTakesParamsInConstructor) slave.getComponentInstance("thing")).getValue());
 
-		// test that we can replay once more
-		MutablePicoContainer anotherSlave = new DefaultPicoContainer();
-		recorder.replay(anotherSlave);
-		assertEquals("apple",anotherSlave.getComponentInstance("fruit"));
-		assertEquals("apple239",((ThingThatTakesParamsInConstructor)anotherSlave.getComponentInstance("thing")).getValue());
-	}
+        // test that we can replay once more
+        MutablePicoContainer anotherSlave = new DefaultPicoContainer();
+        recorder.replay(anotherSlave);
+        assertEquals("apple", anotherSlave.getComponentInstance("fruit"));
+        assertEquals("apple239", ((ThingThatTakesParamsInConstructor) anotherSlave.getComponentInstance("thing")).getValue());
+    }
 
     public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
         ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultPicoContainer());
@@ -52,8 +52,8 @@ public class DefaultContainerRecorderTestCase extends TestCase {
 
         ContainerRecorder serializedRecorder = (ContainerRecorder) serializeAndDeserialize(recorder);
         MutablePicoContainer slave = new DefaultPicoContainer();
-		serializedRecorder.replay(slave);
-		assertEquals("apple",slave.getComponentInstance("fruit"));
+        serializedRecorder.replay(slave);
+        assertEquals("apple", slave.getComponentInstance("fruit"));
     }
 
     private Object serializeAndDeserialize(Object o) throws IOException, ClassNotFoundException {

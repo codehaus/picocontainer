@@ -185,8 +185,8 @@ namespace PicoContainer.Tests.Tck {
                                                                                      
     
     public void testIComponentAdapterRegistrationOrderIsMaintained() {
-      ConstructorComponentAdapter c1 = new ConstructorComponentAdapter("1", typeof(object));
-      ConstructorComponentAdapter c2 = new ConstructorComponentAdapter("2", typeof(MyString));
+      ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", typeof(object));
+      ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", typeof(MyString));
 
       IMutablePicoContainer picoContainer = createPicoContainer();
       picoContainer.RegisterComponent(c1);

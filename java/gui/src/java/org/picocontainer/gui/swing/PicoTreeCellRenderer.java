@@ -4,6 +4,8 @@ import org.picocontainer.gui.model.ComponentNode;
 import org.picocontainer.gui.model.BeanPropertyModel;
 import org.picocontainer.gui.model.ContainerNode;
 import org.picocontainer.gui.model.BeanPropertyTableModel;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -39,12 +41,15 @@ public class PicoTreeCellRenderer extends DefaultTreeCellRenderer {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(tree, e.getStackTrace());
             }
-        } else if(value instanceof ContainerNode) {
+        } else if(value instanceof PicoContainer) {
             label.setText("PicoContainer");
             label.setIcon(picoContainerIcon);
-        } else {
-            BeanPropertyTableModel beanPropertyTableModel = (BeanPropertyTableModel) ((DefaultMutableTreeNode)value).getUserObject();
-            return new JScrollPane( new JTable(beanPropertyTableModel));
+        } else if(value instanceof ComponentAdapter){
+//            BeanPropertyTableModel beanPropertyTableModel = (BeanPropertyTableModel) ((DefaultMutableTreeNode)value).getUserObject();
+//            return new JScrollPane( new JTable(beanPropertyTableModel));
+            ComponentAdapter componentAdapter = (ComponentAdapter) value;
+
+            label.setText(componentAdapter.getComponentImplementation().getName());
         }
         return label;
     }

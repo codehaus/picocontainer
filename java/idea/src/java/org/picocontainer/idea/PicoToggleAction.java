@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.util.*;
 
 import org.picocontainer.gui.swing.PicoGui;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Toggle action for XDoclet Build.
@@ -39,7 +40,7 @@ public class PicoToggleAction extends ToggleAction {
             final ToolWindowManager manager = ToolWindowManager.getInstance(project);
             ToolWindow console = (ToolWindow) consoles.get(project);
             if (isSelected && console == null) {
-                PicoGui picoGui = new PicoGui();
+                PicoGui picoGui = new PicoGui(new DefaultPicoContainer());
 
                 // show window
                 manager.registerToolWindow(PICO_CONTAINER,

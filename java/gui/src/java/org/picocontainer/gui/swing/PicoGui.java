@@ -1,6 +1,9 @@
 package org.picocontainer.gui.swing;
 
 import org.picocontainer.gui.model.*;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import javax.swing.*;
 import javax.swing.text.Document;
@@ -8,6 +11,7 @@ import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.DefaultTreeCellEditor;
+import javax.swing.tree.TreeModel;
 import java.awt.*;
 import java.util.EventObject;
 
@@ -17,15 +21,15 @@ import java.util.EventObject;
  */
 public class PicoGui extends JPanel {
 
-    public PicoGui() {
+    public PicoGui(PicoContainer picoContainer) {
         super(new BorderLayout());
 
-        ContainerNode rootNode = new ContainerNode();
+//        ContainerNode rootNode = new ContainerNode();
 
         JSplitPane split = new JSplitPane();
         JPanel left = new JPanel(new BorderLayout());
 
-        DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
+        TreeModel treeModel = new PicoTreeModel(picoContainer);
         final JTree tree = new JTree(treeModel);
 
         new TreeExpander(tree);
@@ -79,7 +83,12 @@ public class PicoGui extends JPanel {
     }
 
     public static void main(String[] args) {
-        PicoGui gui = new PicoGui();
+        MutablePicoContainer root = new DefaultPicoContainer();
+        MutablePicoContainer child = new DefaultPicoContainer();
+        root.addChild(child);
+        root.registerComponentImplementation(A.class);
+
+        PicoGui gui = new PicoGui(root);
 
         JFrame f = new JFrame();
         f.getContentPane().add(gui);

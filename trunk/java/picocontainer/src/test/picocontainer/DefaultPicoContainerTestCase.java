@@ -26,7 +26,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
 
     public void testBasicContainerAsserts() {
         try {
-            new PicoContainerImpl(null, new DummyStartableLifecycleManagerImpl(), new DummyComponentDecorator());
+            new PicoContainerImpl(null, new DummyStartableLifecycleManager(), new DummyComponentDecorator());
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected
@@ -38,7 +38,7 @@ public class DefaultPicoContainerTestCase extends TestCase {
             // expected
         }
         try {
-            new PicoContainerImpl(new DummyContainer(), new DummyStartableLifecycleManagerImpl(), null);
+            new PicoContainerImpl(new DummyContainer(), new DummyStartableLifecycleManager(), null);
             fail("Should have had NPE)");
         } catch (NullPointerException npe) {
             // expected

@@ -10,7 +10,7 @@
 
 package picocontainer;
 
-public class DummyStartableLifecycleManagerImpl
+public class DummyStartableLifecycleManager
         implements StartableLifecycleManager {
     public void startComponent(Object component) throws PicoStartException {
     }

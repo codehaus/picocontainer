@@ -39,7 +39,7 @@
 
         <dependency>
             <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-script</artifactId>
+            <artifactId>nanocontainer</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>
 

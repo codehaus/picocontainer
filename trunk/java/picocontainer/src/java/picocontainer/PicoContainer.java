@@ -39,7 +39,7 @@ public interface PicoContainer {
 
     /**
      * Get all component types (random order).
-     * @return An Array of component types.
+     * @return an array of component types.
      */
     Class[] getComponentTypes();
 
@@ -47,5 +47,4 @@ public interface PicoContainer {
      * Initialize the container.
      */
     void initializeContainer() throws PicoInitializationException;
-
 }

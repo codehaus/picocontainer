@@ -39,6 +39,7 @@ import picocontainer.defaults.NullContainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,7 +47,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,8 +56,12 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
     private final ComponentFactory componentFactory;
     private List registeredComponents = new ArrayList();
     private Map componentTypeToInstanceMap = new HashMap();
-    // Keeps track of the order in which components should be started
+
+    // Keeps track of the instantiation order
     protected List orderedComponents = new ArrayList();
+
+    // Keeps track of unmanaged components - components instantiated outside this container
+    protected List unmanagedComponents = new ArrayList();
 
     private Map parametersForComponent = new HashMap();
     private boolean initialized;
@@ -139,7 +143,6 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
 
     public void registerComponent(Object component) throws PicoRegistrationException {
         registerComponent(component.getClass(), component);
-        orderedComponents.add(component);
     }
 
     public void registerComponent(Class componentType, Object component) throws PicoRegistrationException {
@@ -147,6 +150,8 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
         checkTypeDuplication(componentType);
         //checkImplementationDuplication(component.getClass());
         componentTypeToInstanceMap.put(componentType, component);
+        orderedComponents.add(component);
+        unmanagedComponents.add(component);
     }
 
     public void addParameterToComponent(Class componentType, Class parameter, Object arg) {
@@ -154,7 +159,7 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Clas
             parametersForComponent.put(componentType, new ArrayList());
         }
         List args = (List) parametersForComponent.get(componentType);
-        args.add(new ParameterSpec(/*parameter,*/ arg));
+        args.add(new ParameterSpec(arg));
     }
 
     private class ParameterSpec {

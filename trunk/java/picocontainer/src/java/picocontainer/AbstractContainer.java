@@ -10,6 +10,19 @@
 
 package picocontainer;
 
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Abstract baseclass for various PicoContainer implementations.
  * 
@@ -18,17 +31,7 @@ package picocontainer;
  */
 public abstract class AbstractContainer implements PicoContainer {
 
-    /**
-     * This returns a list of all components for the component
-     * types the container is hosting.  It may be that some
-     * components from the parent container are listed here.
-     * The order is not guaranteed at all.
-     *
-     * @return A list of components being hosted by the
-     * container.
-     */
-
-    public Object[] getComponents() {
+    public final Object[] getComponents() {
         Class[] componentTypes = getComponentTypes();
         Object[] components = new Object[componentTypes.length];
         for (int i = 0; i < componentTypes.length; i++) {

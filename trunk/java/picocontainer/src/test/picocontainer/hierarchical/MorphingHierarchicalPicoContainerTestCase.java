@@ -11,10 +11,10 @@
 package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
-import picocontainer.PicoInitializationException;
-import picocontainer.PicoRegistrationException;
 import picocontainer.defaults.DefaultComponentFactory;
 import picocontainer.defaults.NullContainer;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoInitializationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +102,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
     public static class B extends RecordingAware implements Washable {
         public B(Recorder recorder, A a) {
             super(recorder);
+            a.toString();
         }
 
         public void wash() {
@@ -112,16 +113,13 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
     public static class C extends RecordingAware implements Washable {
         public C(Recorder recorder, A a, B b) {
             super(recorder);
+            a.toString();
+            b.toString();
         }
 
         public void wash() {
             recorder.record("C.wash()");
         }
-    }
-
-    public void setUp() throws PicoRegistrationException, PicoInitializationException {
-
-
     }
 
     public void testApplyInterfaceMethodsToWholeContainer() throws PicoRegistrationException, PicoInitializationException {
@@ -133,7 +131,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
         assertEquals(2, pico.getComponents().length);
 
-        Peelable myPeelableContainer = (Peelable) pico.as(Peelable.class);
+        Peelable myPeelableContainer = (Peelable) pico.getMultipleInheritanceProxy();
 
         myPeelableContainer.peel();
 
@@ -157,7 +155,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
         pico.initializeContainer();
 
-        Object myPeelableAndWashableContainer = pico.as(new Class[]{Peelable.class, Washable.class});
+        Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
@@ -187,7 +185,8 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
                 new MorphingHierarchicalPicoContainer(new NullContainer(), new DefaultComponentFactory());
 
         //an unmanaged component
-        pico.registerComponent(PeelableComponent.class, new PeelableComponent());
+        PeelableComponent peelableComponent = new PeelableComponent();
+        pico.registerComponent(PeelableComponent.class, peelableComponent);
 
         //some managed ones
         pico.registerComponent(NotReallyPeelableComponent.class);
@@ -195,17 +194,14 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
         pico.initializeContainer();
 
-        Object myPeelableAndWashableContainer = pico.as(new Class[]{Peelable.class, Washable.class});
+        Object myPeelableAndWashableContainer = pico.getMultipleInheritanceProxy();
 
         ((Washable) myPeelableAndWashableContainer).wash();
 
-        PeelableComponent peelableComponent =
-                (PeelableComponent) pico.getComponent(PeelableComponent.class);
         NotReallyPeelableComponent notReallyPeelableComponent =
                 (NotReallyPeelableComponent) pico.getComponent(NotReallyPeelableComponent.class);
         PeelableAndWashableComponent washAndPeel =
                 (PeelableAndWashableComponent) pico.getComponent(PeelableAndWashableComponent.class);
-        ;
 
         assertFalse(washAndPeel.wasPeeled);
         assertTrue(washAndPeel.wasWashed);
@@ -240,7 +236,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.asLifecycle(Washable.class, MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER);
+                pico.getMultipleInheritanceProxy(false,true);
 
         ((Washable) washableContainer).wash();
 
@@ -274,7 +270,7 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         recorder.clear();
 
         Object washableContainer =
-                pico.asLifecycle(Washable.class, MorphingHierarchicalPicoContainer.REVERSE_INSTANTIATION_ORDER);
+                pico.getMultipleInheritanceProxy(false,false);
 
         ((Washable) washableContainer).wash();
 
@@ -283,10 +279,6 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
         assertTrue(
                 "Unmanaged components should not be called by an asLifecycle() proxy",
                 !recorder.thingsThatHappened.contains("A.wash()"));
-    }
-
-    public static interface PeelableAndWashable extends Peelable, Washable {
-
     }
 
     public void testPeelableAndWashable() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoInitializationException {
@@ -299,10 +291,13 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
         pico.initializeContainer();
 
-        PeelableAndWashable paw = (PeelableAndWashable) pico.as(PeelableAndWashable.class);
+        Object proxy = pico.getMultipleInheritanceProxy();
 
-        paw.wash();
-        paw.peel();
+        Peelable peelable = (Peelable) proxy;
+        peelable.peel();
+
+        Washable washable = (Washable) proxy;
+        washable.wash();
 
         PeelableComponent pComp = (PeelableComponent) pico.getComponent(PeelableComponent.class);
         PeelableAndWashableComponent peelNWash = (PeelableAndWashableComponent) pico.getComponent(PeelableAndWashableComponent.class);
@@ -312,36 +307,34 @@ public class MorphingHierarchicalPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testAsCallsChildContainersRecursively() throws PicoRegistrationException, WrongNumberOfConstructorsRegistrationException, DuplicateComponentTypeRegistrationException, NotConcreteRegistrationException, PicoInitializationException {
+//    public static interface PeelableAndWashableContainer extends PeelableAndWashable, ClassRegistrationPicoContainer {
+//
+//    }
 
-        MorphingHierarchicalPicoContainer childContainer = new MorphingHierarchicalPicoContainer(
-                            new NullContainer(),
-                            new DefaultComponentFactory());
+//    public void testPeelableAndWashableContainer() throws WrongNumberOfConstructorsRegistrationException, PicoRegistrationException, PicoStartException {
+//
+//        PeelableAndWashableContainer pawContainer = (PeelableAndWashableContainer)
+//                new MorphingHierarchicalPicoContainer(
+//                        new NullContainer(),
+//                        new NullLifecycleManager(),
+//                        new DefaultComponentFactory())
+//                .as(PeelableAndWashableContainer.class);
+//
+//        pawContainer.registerComponent(PeelableComponent.class);
+//        pawContainer.registerComponent(PeelableAndWashableComponent.class);
+//
+//        pawContainer.initializeContainer();
+//
+//        pawContainer.wash();
+//        pawContainer.peel();
+//
+//        PeelableComponent pComp = (PeelableComponent) pawContainer.getComponent(PeelableComponent.class);
+//        PeelableAndWashableComponent peelNWash = (PeelableAndWashableComponent) pawContainer.getComponent(PeelableAndWashableComponent.class);
+//
+//        assertTrue(pComp.wasPeeled);
+//        assertTrue(peelNWash.wasWashed);
+//
+//    }
 
-        childContainer.registerComponent(PeelableComponent.class);
-        childContainer.registerComponent(PeelableAndWashableComponent.class);
-        childContainer.initializeContainer();
-
-        MorphingHierarchicalPicoContainer parentContainer = new MorphingHierarchicalPicoContainer(
-                            new NullContainer(),
-                            new DefaultComponentFactory());
-
-        parentContainer.registerComponent(MorphingHierarchicalPicoContainer.class, childContainer);
-        parentContainer.initializeContainer();
-
-        ((Washable)parentContainer.as(Washable.class)).wash();
-        ((Peelable)parentContainer.as(Peelable.class)).peel();
-
-        PeelableComponent pComp =
-                (PeelableComponent) childContainer.getComponent(PeelableComponent.class);
-        PeelableAndWashableComponent peelNWash =
-                (PeelableAndWashableComponent) childContainer.getComponent(PeelableAndWashableComponent.class);
-
-        assertNotNull(peelNWash);
-        assertNotNull(pComp);
-        assertTrue(pComp.wasPeeled);
-        assertTrue(peelNWash.wasWashed);
-
-    }
 
 }

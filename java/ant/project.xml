@@ -16,6 +16,11 @@
         </dependency>       
         <dependency>
             <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-reflection</artifactId>
             <version>1.0-alpha-1-SNAPSHOT</version>
         </dependency>

@@ -8,11 +8,11 @@
  *****************************************************************************/
 package org.picoextras.servlet;
 
-import org.nanocontainer.script.jython.JythonContainerBuilder;
-import org.picocontainer.defaults.ObjectReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.script.jython.JythonContainerBuilder;
+import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

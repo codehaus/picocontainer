@@ -10,6 +10,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -17,17 +18,16 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.Startable;
-import org.picocontainer.Disposable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Comparator;
 
 /**
  * <p/>
@@ -69,15 +69,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
-     * <p>
+     * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
      * in a factory that creates {@link CachingComponentAdapter} instances, such as for example
      * {@link CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
+     *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param parent the parent container.
+     * @param parent                  the parent container.
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
         this.componentAdapterFactory = componentAdapterFactory;
@@ -162,7 +163,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
      * passed to the constructor of this container.
      */
-    public void registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
+    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
@@ -170,6 +171,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         componentAdapter.setContainer(this);
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
+        return componentAdapter;
     }
 
     public ComponentAdapter unregisterComponent(Object componentKey) {

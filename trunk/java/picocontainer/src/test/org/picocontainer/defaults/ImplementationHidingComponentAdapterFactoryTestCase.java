@@ -21,17 +21,19 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     private ImplementationHidingComponentAdapterFactory implementationHiddingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory(new DefaultComponentAdapterFactory());
     private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(implementationHiddingComponentAdapterFactory);
 
+    // START SNIPPET: man
     public static interface Man {
         Woman getWoman();
-
         void kiss();
-
         boolean wasKissed();
     }
+    // END SNIPPET: man
 
+    // START SNIPPET: woman
     public static interface Woman {
         Man getMan();
     }
+    // END SNIPPET: woman
 
     public static interface SuperWoman extends Woman {
     }
@@ -150,7 +152,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     public void testIHCAFwithCTORandNoCaching() {
         // http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("l", ArrayList.class)));
+        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
 
         List list1 = (List) pico.getComponentInstance("l");
         List list2 = (List) pico.getComponentInstance("l");
@@ -165,7 +167,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("l", ArrayList.class)));
+        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
         List l = (List) pico.getComponentInstance("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
@@ -188,7 +190,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     public void testInterferingSwapMethodsInComponentMasksHotSwappingFunctionality() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorComponentAdapter("os", OtherSwappableImpl.class)));
+        pico.registerComponent(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("os", OtherSwappableImpl.class)));
         OtherSwappable os = (OtherSwappable) pico.getComponentInstance("os");
         OtherSwappable os2 = new OtherSwappableImpl();
 

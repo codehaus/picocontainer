@@ -51,8 +51,8 @@ public class BeanComponentAdapterTestCase extends TestCase {
     }
 
     public void testDependenciesAreResolved() {
-        BeanComponentAdapter aAdapter = new BeanComponentAdapter("a", A.class, null);
-        BeanComponentAdapter bAdapter = new BeanComponentAdapter("b", B.class, null);
+        BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
+        BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);
@@ -67,8 +67,8 @@ public class BeanComponentAdapterTestCase extends TestCase {
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        BeanComponentAdapter aAdapter = new BeanComponentAdapter("a", A.class, null);
-        BeanComponentAdapter bAdapter = new BeanComponentAdapter("b", B.class, null);
+        BeanComponentAdapter aAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("a", A.class, null));
+        BeanComponentAdapter bAdapter = new BeanComponentAdapter(new ConstructorInjectionComponentAdapter("b", B.class, null));
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);

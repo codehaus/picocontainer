@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 
 public class ConstructorComponentAdapterTestCase extends TestCase {
     public void testNonCachingComponentAdapterReturnsNewInstanceOnEachCallToGetComponentInstance() {
-        ConstructorComponentAdapter componentAdapter = new ConstructorComponentAdapter("blah", Object.class);
+        ConstructorInjectionComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("blah", Object.class);
         Object o1 = componentAdapter.getComponentInstance();
         Object o2 = componentAdapter.getComponentInstance();
         assertNotNull(o1);
@@ -35,7 +35,7 @@ public class ConstructorComponentAdapterTestCase extends TestCase {
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.registerComponentImplementation(Service.class);
-        picoContainer.registerComponent(new ConstructorComponentAdapter(TransientComponent.class, TransientComponent.class));
+        picoContainer.registerComponent(new ConstructorInjectionComponentAdapter(TransientComponent.class, TransientComponent.class));
         TransientComponent c1 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
         TransientComponent c2 = (TransientComponent) picoContainer.getComponentInstance(TransientComponent.class);
         assertNotSame(c1, c2);
@@ -56,12 +56,12 @@ public class ConstructorComponentAdapterTestCase extends TestCase {
     }
 
     public void testSuccessfulVerificationWithNoDependencies() {
-        InstantiatingComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", A.class);
+        InstantiatingComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", A.class);
         componentAdapter.verify();
     }
 
     public void testFailingVerificationWithUnsatisfiedDependencies() {
-        ComponentAdapter componentAdapter = new ConstructorComponentAdapter("foo", B.class);
+        ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter("foo", B.class);
         componentAdapter.setContainer(new DefaultPicoContainer());
         try {
             componentAdapter.verify();

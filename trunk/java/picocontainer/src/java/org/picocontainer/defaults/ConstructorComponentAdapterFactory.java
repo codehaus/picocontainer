@@ -25,6 +25,6 @@ public class ConstructorComponentAdapterFactory implements ComponentAdapterFacto
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorComponentAdapter(componentKey, componentImplementation, parameters);
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters);
     }
 }

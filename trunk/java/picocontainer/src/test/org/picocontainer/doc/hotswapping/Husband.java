@@ -6,10 +6,10 @@ package org.picocontainer.doc.hotswapping;
  */
 // START SNIPPET: class
 public class Husband implements Man {
-    public final Woman partner;
+    public final Woman woman;
 
-    public Husband(Woman partner) {
-        this.partner = partner;
+    public Husband(Woman woman) {
+        this.woman = woman;
     }
 
     public int getEndurance() {

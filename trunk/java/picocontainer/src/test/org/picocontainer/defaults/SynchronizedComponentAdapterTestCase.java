@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.SynchronizedComponentAdapter;
 
@@ -69,7 +69,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
     }
 
     public void testRaceConditionIsHandledBySynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorComponentAdapter("key", Blocker.class));
+        ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("key", Blocker.class));
         SynchronizedComponentAdapter synchronizedComponentAdapter = new SynchronizedComponentAdapter(componentAdapter);
         initTest(synchronizedComponentAdapter);
 
@@ -81,7 +81,7 @@ public class SynchronizedComponentAdapterTestCase extends TestCase {
     }
 
     public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorComponentAdapter("key", Blocker.class));
+        ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter("key", Blocker.class));
         initTest(componentAdapter);
 
         assertTrue(runner1.exception != null || runner2.exception != null);

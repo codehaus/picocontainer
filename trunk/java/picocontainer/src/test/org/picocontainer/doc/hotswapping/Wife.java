@@ -8,14 +8,14 @@ import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactoryTes
  */
 // START SNIPPET: class
 public class Wife implements Woman {
-    public final Man partner;
+    public final Man man;
 
-    public Wife(Man partner) {
-        this.partner = partner;
+    public Wife(Man man) {
+        this.man = man;
     }
 
     public Man getMan() {
-        return partner;
+        return man;
     }
 }
 // END SNIPPET: class

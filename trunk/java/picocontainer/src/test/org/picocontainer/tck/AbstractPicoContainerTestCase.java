@@ -22,7 +22,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.ConstructorComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
@@ -239,8 +239,8 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
      * Important! Nanning really, really depends on this!
      */
     public void testComponentAdapterRegistrationOrderIsMaintained() {
-        ConstructorComponentAdapter c1 = new ConstructorComponentAdapter("1", Object.class);
-        ConstructorComponentAdapter c2 = new ConstructorComponentAdapter("2", String.class);
+        ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", Object.class);
+        ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", String.class);
 
         MutablePicoContainer picoContainer = createPicoContainer(null);
         picoContainer.registerComponent(c1);

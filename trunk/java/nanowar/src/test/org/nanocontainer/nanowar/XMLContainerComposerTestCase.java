@@ -49,11 +49,11 @@ public class XMLContainerComposerTestCase extends MockObjectTestCase {
     public void testCustomConfiguration() throws Exception {
         Map config = new HashMap();
         config.put(XMLContainerComposer.APPLICATION_CONFIG_KEY,
-                new String[]{"nano-application.xml","nano-application-2.xml"});
+                new String[]{"nanowar-application.xml","nanowar/application.xml"});
         config.put(XMLContainerComposer.SESSION_CONFIG_KEY,
-                new String[]{"nano-session.xml","nano-session-2.xml"});
+                new String[]{"nanowar-session.xml","nanowar/session.xml"});
         config.put(XMLContainerComposer.REQUEST_CONFIG_KEY,
-                new String[]{"nano-request.xml","nano-request-2.xml"});
+                new String[]{"nanowar-request.xml","nanowar/request.xml"});
         XMLContainerComposer composer = new XMLContainerComposer(config);
 
         MutablePicoContainer application = new DefaultPicoContainer();

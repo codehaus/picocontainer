@@ -9,32 +9,34 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.reflection.DefaultContainerRecorder;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Configurable ContainerComposer reading from XML files.
- * The ContainerBuilder and the scoped XML files are configurable
+ * XMLContainerComposer is a ContainerComposer which 
+ * can build a PicoContainer for different web context scopes, 
+ * application, session and request. 
+ * The configuration for each scope is contained in one of more 
+ * XML files.
+ * The ContainerBuilder used to build the PicoContainer and the 
+ * names of scoped XML files are configurable
  * via a Map, using the appropriate key.  If any configuration 
- * element is missing, the default is applied.
+ * element is missing, the defaults are applied.   
  * 
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
@@ -47,10 +49,10 @@ public class XMLContainerComposer implements ContainerComposer {
 	public final static String REQUEST_CONFIG_KEY = "requestConfig";   
 	public final static String CONTAINER_BUILDER_KEY = "containerBuilder";   
 
-    public final static String[] DEFAULT_APPLICATION_CONFIG = new String[]{"nano-application.xml"};
-    public final static String[] DEFAULT_SESSION_CONFIG = new String[]{"nano-session.xml"};
-    public final static String[] DEFAULT_REQUEST_CONFIG = new String[]{"nano-request.xml"};
-	public final static String DEFAULT_CONTAINER_BUILDER = "org.nanocontainer.script.xml.XStreamContainerBuilder";   
+    public final static String[] DEFAULT_APPLICATION_CONFIG = new String[]{"nanowar-application.xml"};
+    public final static String[] DEFAULT_SESSION_CONFIG = new String[]{"nanowar-session.xml"};
+    public final static String[] DEFAULT_REQUEST_CONFIG = new String[]{"nanowar-request.xml"};
+	public final static String DEFAULT_CONTAINER_BUILDER = "org.nanocontainer.script.xml.XMLContainerBuilder";   
 
     // scoped container recorders
 	private ContainerRecorder applicationRecorder;

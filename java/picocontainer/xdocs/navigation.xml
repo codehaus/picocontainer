@@ -12,6 +12,7 @@
     <menu name="PicoContainer">
       <item name="Introduction"        href="/introduction.html"/>
       <item name="Configuration"       href="/configuration.html"/>
+      <item name="Lifecycle"           href="/lifecycle.html"/>      
       <item name="Components"          href="/components.html"/>
       <item name="Component Factories" href="/component-factories.html"/>
       <item name="Differentiators"     href="/differentiators.html"/>

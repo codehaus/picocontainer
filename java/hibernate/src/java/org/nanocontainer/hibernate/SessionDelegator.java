@@ -26,10 +26,9 @@ import net.sf.hibernate.Transaction;
 import net.sf.hibernate.type.Type;
 
 /** 
- * component adapter providing transparent session restart and management
- * this adapter serves as kind-of caching component adapter ( original CCA is 
- * unusable due to session invalidation issues ) and invalidates hibernate session
- * on error and closing. new session is obtained lazily. 
+ * abstract base class for session delegators. delegates all calls to session obtained by 
+ * implementing class. error handling is also there. All methods are just delegations to
+ * hibernate session. 
  * 
  * 
  * @author Konstantin Pribluda
@@ -37,12 +36,18 @@ import net.sf.hibernate.type.Type;
  */
 public abstract class SessionDelegator implements Session {
     
+    /**
+     * obtain hibernate session.
+     */
     abstract Session getSession();
-    abstract void invalidateSession();
+    /**
+     * perform actions to dispose "burned" session properly
+     */
+    abstract void invalidateSession() throws HibernateException;
     
     public void flush() throws HibernateException {
         try {
-        getSession().flush();
+            getSession().flush();
         } catch(HibernateException ex)  {
             invalidateSession();
             throw ex;

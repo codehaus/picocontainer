@@ -21,6 +21,7 @@ import junit.framework.TestCase;
  * 
  * @author Konstantin Pribluda
  * @version $Revision$ 
+ * @deprecated together with class to be tested 
  */
 
 public class SessionFailoverComponentAdapterTestCase extends TestCase {

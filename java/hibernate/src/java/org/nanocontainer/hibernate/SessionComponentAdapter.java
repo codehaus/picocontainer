@@ -33,6 +33,8 @@ import java.util.HashSet;
  *
  * @author Konstantin Pribluda
  * @version $Revision$
+ * @deprecated this component adapter requires ugly scripts to set up in nanocontainer, and is deprecated
+ * because of constructable session
  */
 public class SessionComponentAdapter implements ComponentAdapter {
 

@@ -44,6 +44,15 @@ public class AggregatedContainersContainerTestCase extends TestCase {
         }
     }
 
+    public void testNullArrayContainer() {
+        try {
+            AggregatedContainersContainer badOne = new AggregatedContainersContainer(null);
+            fail("Should have failed with an NPE");
+        } catch (NullPointerException e) {
+            // fine
+        }
+    }
+
     public void testGetToFilterFor() {
         assertSame("The Container to filter for should be the one made in setUp", pico, filter.getSubject());
     }

@@ -3,21 +3,175 @@
 <head>
 </head>
 <body>
-PicoContainer is a small, simple container for arbitrary components. It
-is embeddable and extentensible. PicoContainer is designed for server
-and client side, for small and enterprise applications. There are
-already quite a few diverse containers that deliver the PicoContainer
-design. Components can be created for it without importing or extending
-any interfaces or classes outside of the java.* package. Components
-also have no meta-info specification. I.e. no XML. Most importantly of
-all, components for PicoContainer can be used without PicoContainer for
-good old-fashioned hard-coded deployments. Some of PicoContainer's
-greatest assets are its non-intruvesiness, simplicity light weight and
-extendability. Not mentioning that PicoContainer fits perefectly well
-with code developed along the lines of TDD and mock objects. And what's
-in it for you? Code that is more modular (loosely coupled), easy to
-test, easier to configure, and easier to maintain. PicoContainer is
-more than an IoC container. It's a tribute to simple, but controlled
-power.
+<h1>Introduction</h1>
+PicoContainer is very simple container for very simple
+components.&nbsp; It honors the Inversion of control pattern (IoC) in a
+way that we calling it type 3 IoC.&nbsp; See below for types.
+Components are typically going to live inside the same JVM. The idea is
+that this might scale from embedded containers for simple beans to
+enterprise and distributed applications. <br>
+<br>
+PicoContainer components declare their component and configuration
+needs in their
+(single) constructor.&nbsp; One of many types of PicoContainer
+implementations would resolve the needs of the components at time of
+their instantiation.&nbsp; <br>
+<h3>A component must have a single constructor.</h3>
+We have a restriction in that PicoContainer components
+must
+only have one constructor. We don't think that is a bad restriction.
+Especially as the XP "change it when you need to" has not delivered a
+use case that would preclude this design yet.&nbsp; In respect of the
+single constructor, we like the NullObject pattern and use that with
+some parameter-reducing extending class to the component in question.<br>
+<h3>Components and configuration as parameters </h3>
+The parameters in the constructor of a component can be elements of
+configuration as well as other components. The arguments detailing
+configuration need special processing. If is best to read about this on
+the configuration page - see configuration.html.<br>
+<h3>Primitives</h3>
+We also can't allow
+primitives in the constructor (yet). We're not counting
+java.lang.String and java.lang.Integer (etc) as primitives of course.<br>
+<h3>Simple Example</h3>
+In skeletal form, here is the simplest
+possible PicoContainer compatible component :<br>
+<pre>&nbsp;&nbsp; public class Shop {<br>&nbsp;&nbsp;&nbsp;    public Shop(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;   }<br>&nbsp;&nbsp; }</pre>
+Imagine there were a component that could satisfy that like so :<br>
+<pre>&nbsp;&nbsp; public class StockManager {<br>&nbsp;&nbsp; }<span
+ style="font-weight: bold;"><br></span></pre>
+<span style="font-weight: bold;"></span>
+<h3>Use without a container.</h3>
+We love the Pico design because we see the components being used
+without a
+container :<br>
+<pre>&nbsp;&nbsp; new Shop(new StockManager());<br></pre>
+This is particularly good for unit testing. In-container testing being
+one of the most avoided forms of unit testing.&nbsp; This is where
+other container design s and specifications fail.<br>
+<h3>Use with a container</h3>
+With a PicoContainer :<br>
+<pre>&nbsp;&nbsp; PicoContainer pc = SomePicoContainer();<br>&nbsp;&nbsp; pc.registerComponent(StockManager.class)<br>&nbsp;&nbsp; pc.registerComponent(Shop.class)<br>&nbsp;&nbsp; pc.start();</pre>
+And perhaps some as yet unwritten PicoContainer :<br>
+<pre>&nbsp;&nbsp; MoonscapePicoContainer mc = new MoonscapePicoContainer();<br>&nbsp;&nbsp; mc.registerAndStart("Shop.class, StockManager.class"); </pre>
+It does not matter how things are laced together. It does not matter
+how tightly bound one PicoContainer is to an individual purpose.&nbsp;
+The important thing is actually the components and the numerous and
+imaginative deployments for them.<br>
+<h3>Container Interface<br>
+</h3>
+PicoContainer's most basic interface is PicoContainer :
+<br>
+<pre>&nbsp;&nbsp; public interface PicoContainer {<br>&nbsp;&nbsp;&nbsp;&nbsp;   boolean hasComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object getComponent(Class componentType);<br>&nbsp;&nbsp;&nbsp;&nbsp;   Object[] getComponents();<br>&nbsp;&nbsp;&nbsp;&nbsp;   Class[] getComponentTypes();<br>&nbsp;&nbsp;&nbsp;&nbsp;   void instantiateComponents();<br>&nbsp;&nbsp; }</pre>
+Clearly a PicoContainer is mostly a read-only thing. That's
+deliberate.&nbsp;
+We see many
+PicoContainers delivering different visions of component lacing and
+configuration.&nbsp; Some may exist in chains or trees, such that a
+tiering model could exist. Such a tiering model could provide
+hierarchies for reasons of security, kernel hiding or scope
+control.&nbsp; Joe
+has delivered a trinity of PicoContainers to fit inside the Servlet
+model -
+Application, Session and Request scoped PicoContainers.<br>
+<br>
+The PicoContainer interface is only of use to container makers, the
+class
+that instantiates the container and other containers (in the case of
+chaining or directive graphs of containers).&nbsp; It should never be
+exposed to the components that it hosts (though some of the components
+may go on to instantiate their own more-fine-grained containers).<br>
+<h3>ClassRegistrationPicoContainer Interface</h3>
+This interface allows the instantiating class to register components by
+class name or class type and and implementing class name (refer
+Interface/Impl separation)<br>
+<pre>&nbsp; public interface ClassRegistrationPicoContainer extends PicoContainer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentType, Class componentImplementation) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Class componentType, Object component) throws PicoRegistrationException;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void registerComponent(Object component) throws PicoRegistrationException;<br>      // Subject to modification.<br>&nbsp; &nbsp; &nbsp; void addParameterToComponent(Class componentType, Class parameter, Object arg);<br>&nbsp; }<br></pre>
+This interface also allows the registration of pre-instantiated
+components. Given they are pre-instantiated, they need not of course be
+components according to our design at all.&nbsp; People may also use
+this as a way of forwarding something from lower tiers of containers.<br>
+<h3>Sister projects</h3>
+NanoContainer is not really a single container. It is four
+PicoContainer compatible containers so far.&nbsp; One that takes String
+registration of components, another that takes them via XML. One that
+aggregates components into a single fat (almost) multiple-inheritance
+comp. Another that makes Nanning (http://nanning.sourceforge.net/), the
+AOP framework, a PicoContainer
+compatible proposition.<br>
+<br>
+The big difference between PicoContainers and NanoContainers are that
+the former have no XML to lace comps together.&nbsp; Components
+themselves for Pico and NanoContainers should be interchangeable.<br>
+<h3>History</h3>
+<h4>&nbsp; Type 1</h4>
+Apache's Avalon (http://avalon.apache.org) project has
+been selling the IoC patten for many years
+now.&nbsp; The Avalon-Framework design laces together and configures
+components like
+so:<br>
+<pre style="margin-left: 40px;">import org.apache.avalon.framework.*;<br>   public class Shop implements Serviceable, Configurable, Initializable {<br>&nbsp;&nbsp;&nbsp; StockManager stockManager;<br>&nbsp;&nbsp;&nbsp; String shopZipCode;<br>&nbsp;&nbsp;&nbsp; public void service(org.apache.avalon.framework.ServiceManager sm) <br>          throws ServiceException {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void configure( final Configuration configuration ) <br>          throws ConfigurationException {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shopZipCode = configuration.getChild( "zipcode" ).getValue();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; public void initialize() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // all service()ing an config()ing done.<br>&nbsp;&nbsp;&nbsp; }<br>}</pre>
+A component has to have service (component) declarations in some
+external file. The popular Phoenix (http://avalon.apache.org/phoenix/)
+container had .xinfo files for such
+needs.&nbsp; All Avalon container have some mechanism for storing
+configuration and assembly externally to the class.&nbsp; Cross
+referenced against the xinfo files, Phoenix's assembly.xml defines the
+implementations to be used for component types.&nbsp; This all Avalon
+components must be interface/implementation separated. This in itself
+is not a bad thing in my (Paul) opinion.<br>
+<br>
+<span style="font-weight: bold;">Using type 1 components withou a type
+1 container.</span><br style="font-weight: bold;">
+<br>
+The downside of the this design is that components can only be used
+without the container with great difficulty. If at all.&nbsp; This a
+proper container is needed at all times, and you have to choose one for
+different purposes (that not withstanding the efforts of the Avalon
+team to make a single all-purpose container).&nbsp; If you do manage to
+instantiate components without a container, you might miss one of the
+essential service dependencies.&nbsp; The component-using class&nbsp;
+will continue to compile, but at run time it will be apparent that
+there are missing dependencies.<br>
+<h4>&nbsp; Type 2</h4>
+Joe Walnes whist working on a book with other luminaries, started a
+type 2 IoC design. This is marked up with doclet tags (though that is
+not hard and fast) :<br>
+<pre style="margin-left: 40px;">public class Shop {<br>&nbsp;&nbsp; StockManager stockManager;<br>&nbsp;&nbsp; String shopZipCode;<br>&nbsp;&nbsp; /**<br>&nbsp;&nbsp;&nbsp; * @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; *<br>&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;<br>&nbsp;&nbsp; }<br>&nbsp;&nbsp; /**<br>&nbsp;&nbsp;&nbsp; * @config name="shopZipCode"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; */<br>&nbsp;&nbsp; public void setStockManager(String shopZipCode) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.shopZipCode= shopZipCode;<br>&nbsp;&nbsp; }<br>&nbsp;&nbsp; // TODO - Joe - how does type 2 do config ? Same way?<br>&nbsp;&nbsp; public void initialize() {<br>       // all setXXX's done<br>   }<br>}</pre>
+The container use the meta-information to resolve all the
+dependencies.&nbsp; Components need not be interface/impl separated.
+Coder's choice.<br>
+<span style="font-weight: bold;"><br>
+Using type 2 comps without a type 2 container.</span><br
+ style="font-weight: bold;">
+<br>
+Type2 components can be used directly, without any container.&nbsp; The
+component-using class&nbsp; will continue to compile, but at run time
+it will be apparent that there are missing dependencies.&nbsp;
+The downside of this is that a developer may miss a setXXX() method
+invocation if they are using the component directly. That is fairly
+small as a risk as it would clearly be caught in the development
+cycle.&nbsp; Caught in the development cycle, but maybe obscurely as a
+NullPointerException.
+<h4>&nbsp; Type 3</h4>
+Rachel Davies, while reviewing Joe's book, left a Fermat-like margin
+note when view a snippet like the above.&nbsp; "Why not use
+constructors ?".&nbsp; Brilliant and simple.<br>
+<pre style="margin-left: 40px;">public class Shop {<br>&nbsp;&nbsp;&nbsp;&nbsp;StockManager stockManager;<br>&nbsp;&nbsp;  String shopZipCode;<br>&nbsp;&nbsp;&nbsp;&nbsp;public Shop(StockManager stockManager, String shopZipCode) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.stockManager = stockManager;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.shopZipCode = shopZipCode;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;}</pre>
+Note, for this there is no need to declare needs in any other way. No
+interfaces, no doclet tags, no external XML. Just your simple
+component(s)
+and PicoContainer.&nbsp; No need for post assembly/config
+initialization either.&nbsp; If it is constructed (not withstanding
+some
+asserts on nulls) it has its needs satisfied.&nbsp; Components need not
+be interface/implementation separated. This is the coder's choice.<br>
+<br>
+<span style="font-weight: bold;">Using type 3 comps without a type 3
+container.</span><br>
+<br>
+Like type2, the component can be used directly, without any
+container.&nbsp; The missing dependency scenario is not an issue for
+type3. <br>
+<br>
 </body>
 </html>

@@ -11,9 +11,11 @@
 
     <menu name="PicoContainer">
       <item name="Introduction"        href="/introduction.html"/>
+      <item name="Configuration"       href="/configuration.html"/>
       <item name="Components"          href="/components.html"/>
       <item name="Component Factories" href="/component-factories.html"/>
       <item name="License"             href="/license.html"/>
+      <item name="People"              href="/people.html"/>
       <item name="Propaganda"          href="/propaganda.html"/>
       <item name="Related Projects"    href="/related-projects.html"/>
       <item name="Blogs"               href="/blogs.html"/>

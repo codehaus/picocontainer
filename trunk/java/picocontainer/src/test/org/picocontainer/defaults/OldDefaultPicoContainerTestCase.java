@@ -554,7 +554,7 @@ public class OldDefaultPicoContainerTestCase extends TestCase {
 
     public void testRegisterByNameResolvesToInterfaceRegisteredComponents() throws Exception {
         // TODO we should add some kind of findImplementatingComponents() method to PicoContainer!
-        AbstractPicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.registerComponentImplementation("fred", DependsOnTouchable.class);
         pico.registerComponentImplementation("fred2", DependsOnTouchable.class);

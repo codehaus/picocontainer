@@ -27,7 +27,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
         assertNotNull(picoContainer.getComponentInstance(DefaultWebServerConfig.class));
     }
 
-    public void testCreateHierarchicalContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException {
+    public void testPicoInPico() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
                 "      <component classname='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -40,6 +40,7 @@ public class InputSourceFrontEndTestCase extends TestCase {
         PicoContainer rootContainer = inputSourceContainerFactory.createPicoContainer(inputSource);
         assertNotNull(rootContainer.getComponentInstance(DefaultWebServerConfig.class));
 
-//        PicoContainer childContainer = rootContainer.getChildren().iterator().next();
+        PicoContainer childContainer = (PicoContainer) rootContainer.getChildren().iterator().next();
+        assertNotNull(childContainer.getComponentInstance("org.nanocontainer.testmodel.WebServer"));
     }
 }

@@ -25,7 +25,7 @@ public class ParameterTestCase extends TestCase {
     }
 
     public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
-        AbstractPicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         ComponentParameter parameter = new ComponentParameter(Touchable.class);
 

@@ -12,7 +12,7 @@ import org.picocontainer.defaults.*;
  * @version $Revision$
  */
 public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
-    protected AbstractPicoContainer picoContainer;
+    protected DefaultPicoContainer picoContainer;
 
     protected abstract ComponentAdapterFactory createComponentAdapterFactory();
 

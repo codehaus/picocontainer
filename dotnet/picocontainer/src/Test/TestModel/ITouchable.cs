@@ -13,10 +13,13 @@ using System;
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for Touchable.
-	/// </summary>
 	public interface ITouchable
 	{
+		bool WasTouched
+		{
+			get;
+		}
+		
 		void Touch();
 	}
 }

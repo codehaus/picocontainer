@@ -13,6 +13,11 @@ namespace PicoContainer.Tests.TestModel
 			this.theDelegate = theDelegate;
 		}
 
+		public bool WasTouched
+		{
+			get { return theDelegate.WasTouched; }
+		}
+
 		public void Touch()
 		{
 			theDelegate.Touch();

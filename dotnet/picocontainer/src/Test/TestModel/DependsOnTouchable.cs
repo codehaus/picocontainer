@@ -14,8 +14,7 @@ using NUnit.Framework;
 
 namespace PicoContainer.Tests.TestModel
 {
-	/// Summary description for DependsTouchable.
-	/// </summary>
+	[Serializable]
 	public class DependsOnTouchable
 	{
 		private ITouchable touchable;
@@ -31,7 +30,5 @@ namespace PicoContainer.Tests.TestModel
 		{
 			return touchable;
 		}
-
-
 	}
 }

@@ -78,22 +78,36 @@ namespace PicoContainer.Tests.Tck
 		[Test]
 		public void ContainerIsSerializable()
 		{
-			IPicoContainer pico = CreatePicoContainerWithTouchableAndDependsOnTouchable();
+			ITouchable touchable = GetTouchableFromSerializedContainer();
+			Assert.IsTrue(touchable.WasTouched);
+		}
 
-			using(Stream stream = new MemoryStream())
+		private ITouchable GetTouchableFromSerializedContainer()
+		{
+			IMutablePicoContainer pico = CreatePicoContainerWithTouchableAndDependsOnTouchable();
+			// Add a list too, using a constant parameter
+			pico.RegisterComponentImplementation("list", typeof (ArrayList), new IParameter[] {new ConstantParameter(10)});
+
+			using (Stream stream = new MemoryStream())
 			{
 				// Serialize it to memory
 				IFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(stream, pico);
 
 				// De-Serialize from memory
-				stream.Seek(0,0); // reset stream to begining
-				pico = (IPicoContainer)formatter.Deserialize(stream);
+				stream.Seek(0, 0); // reset stream to begining
+				pico = (IMutablePicoContainer) formatter.Deserialize(stream);
 			}
 
-			DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) pico.GetComponentInstance(typeof(DependsOnTouchable));
+			object dependsOnTouchable = pico.GetComponentInstance(typeof (DependsOnTouchable));
 			Assert.IsNotNull(dependsOnTouchable);
-			SimpleTouchable touchable = (SimpleTouchable) pico.GetComponentInstance(typeof(ITouchable));
+			return (ITouchable) pico.GetComponentInstance(typeof (ITouchable));
+		}
+
+		[Test]
+		public virtual void SerializedContainerCanRetrieveImplementation()
+		{
+			SimpleTouchable touchable = (SimpleTouchable)GetTouchableFromSerializedContainer();
 			Assert.IsTrue(touchable.WasTouched);
 		}
 
@@ -408,6 +422,51 @@ namespace PicoContainer.Tests.Tck
 
 			Assert.AreEqual(2, lifecycleManager.started.Count);
 			//assertEquals(1, lifecycleManager.started.size());
+		}
+
+		[Test]
+		public void StartStopAndDisposeNotCascadedtoRemovedChildren() 
+		{
+			IMutablePicoContainer parent = CreatePicoContainer(null);
+			parent.RegisterComponentInstance(new StringBuilder());
+			StringBuilder sb = (StringBuilder) ((IComponentAdapter)parent.GetComponentAdaptersOfType(typeof(StringBuilder))[0]).GetComponentInstance(parent);
+			
+			IMutablePicoContainer child = CreatePicoContainer(parent);
+			Assert.IsTrue(parent.AddChildContainer(child));
+			child.RegisterComponentImplementation(typeof(LifeCycleMonitoring));
+			Assert.IsTrue(parent.RemoveChildContainer(child));
+			parent.Start();
+			Assert.IsTrue(sb.ToString().IndexOf("-started") == -1);
+			parent.Stop();
+			Assert.IsTrue(sb.ToString().IndexOf("-stopped") == -1);
+			parent.Dispose();
+			Assert.IsTrue(sb.ToString().IndexOf("-disposed") == -1);
+		}
+
+		public class LifeCycleMonitoring : IStartable, IDisposable
+		{
+			private StringBuilder sb;
+
+			public LifeCycleMonitoring(StringBuilder sb)
+			{
+				this.sb = sb;
+				sb.Append("-instantiated");
+			}
+
+			public void Start()
+			{
+				sb.Append("-started");
+			}
+
+			public void Stop()
+			{
+				sb.Append("-stopped");
+			}
+
+			public void Dispose()
+			{
+				sb.Append("-disposed");
+			}
 		}
 
 		public class TestLifecycleComponent : IStartable

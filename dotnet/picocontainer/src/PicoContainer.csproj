@@ -154,6 +154,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Alternatives\AbstractDelegatingMutablePicoContainer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\CachingPicoContainer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingCachingPicoContainer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Alternatives\ImplementationHidingPicoContainer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Defaults\AbstractComponentAdapter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.ComponentModel;
 using NMock;
 using NMock.Constraints;
 using NUnit.Framework;
@@ -222,6 +221,11 @@ namespace Test.Defaults
 			public TouchableObserver(ITouchable[] touchables)
 			{
 				this.touchables = touchables;
+			}
+
+			public bool WasTouched
+			{
+				get { return touchables[0].WasTouched; }
 			}
 
 			public void Touch()

@@ -7,25 +7,25 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
+package org.nanocontainer.nanoaop.dynaop;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import dynaop.MixinFactory;
+import junit.framework.TestCase;
 
 /**
  * @author Stephen Molitor
  */
-public interface AspectablePicoContainerFactory {
-
-    AspectablePicoContainer createContainer(Class containerClass, ComponentAdapterFactory componentAdapterFactory,
-            PicoContainer parent);
+public class InstanceMixinFactoryTestCase extends TestCase {
     
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
+    public void testCreate() {
+        Object instance = "foo";
+        MixinFactory factory = new InstanceMixinFactory(instance);
+        assertSame(instance, factory.create(null));
+    }
     
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory);
-    
-    AspectablePicoContainer createContainer(PicoContainer parent);
-
-    AspectablePicoContainer createContainer();
+    public void testPropertiesNotNull() {
+        MixinFactory factory = new InstanceMixinFactory("foo");
+        assertNotNull(factory.getProperties());
+    }
 
 }

@@ -9,21 +9,19 @@
  *****************************************************************************/
 package org.nanocontainer.nanoaop.dynaop;
 
-import java.util.Properties;
-
 import org.nanocontainer.nanoaop.AspectablePicoContainer;
 import org.nanocontainer.nanoaop.AspectablePicoContainerFactory;
 import org.nanocontainer.nanoaop.AspectsContainer;
 import org.nanocontainer.nanoaop.AspectsManager;
 import org.nanocontainer.nanoaop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import dynaop.Aspects;
-import dynaop.MixinFactory;
 import dynaop.Pointcuts;
-import dynaop.Proxy;
 import dynaop.ProxyFactory;
 
 /**
@@ -31,26 +29,47 @@ import dynaop.ProxyFactory;
  */
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 
-    public AspectablePicoContainer createContainer() {
-        final AspectsManager aspectsManager = new DynaopAspectsManager();
-        ComponentAdapterFactory caFactory = new AspectsComponentAdapterFactory(aspectsManager);
-        MutablePicoContainer pico = new DefaultPicoContainer(caFactory);
-        Aspects aspects = new Aspects();
-        aspects.mixin(Pointcuts.ALL_CLASSES, new Class[] { AspectsContainer.class }, new MixinFactory() {
-            public Object create(Proxy proxy) {
-                return aspectsManager;
-            }
+    public AspectablePicoContainer createContainer(Class containerClass,
+            ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
 
-            public Properties getProperties() {
-                return new Properties();
-            }
-        });
+        final AspectsManager aspectsManager = new DynaopAspectsManager();
+        ComponentAdapterFactory aspectsCaFactory = new AspectsComponentAdapterFactory(aspectsManager,
+                componentAdapterFactory);
+        MutablePicoContainer pico = createBasicContainer(containerClass, aspectsCaFactory, parent);
+
+        Aspects aspects = new Aspects();
+        aspects.mixin(Pointcuts.ALL_CLASSES, new Class[] { AspectsContainer.class }, new InstanceMixinFactory(
+                aspectsManager));
         aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[] { AspectablePicoContainer.class });
+
         return (AspectablePicoContainer) ProxyFactory.getInstance(aspects).wrap(pico);
     }
 
-    public AspectablePicoContainer createContainer(MutablePicoContainer delegate) {
-        return null;
+    public AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+        return createContainer(DefaultPicoContainer.class, componentAdapterFactory, parent);
+    }
+
+    public AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory) {
+        return createContainer(componentAdapterFactory, null);
+    }
+
+    public AspectablePicoContainer createContainer(PicoContainer parent) {
+        return createContainer(new DefaultComponentAdapterFactory(), parent);
+    }
+
+    public AspectablePicoContainer createContainer() {
+        return createContainer(new DefaultComponentAdapterFactory());
+    }
+
+    private MutablePicoContainer createBasicContainer(Class containerClass, ComponentAdapterFactory caFactory,
+            PicoContainer parent) {
+        MutablePicoContainer temp = new DefaultPicoContainer();
+        temp.registerComponentImplementation(containerClass);
+        temp.registerComponentInstance(ComponentAdapterFactory.class, caFactory);
+        if (parent != null) {
+            temp.registerComponentInstance(PicoContainer.class, parent);
+        }
+        return (MutablePicoContainer) temp.getComponentInstance(containerClass);
     }
 
 }

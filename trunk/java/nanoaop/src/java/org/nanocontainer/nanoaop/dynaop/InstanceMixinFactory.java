@@ -7,25 +7,32 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.nanoaop;
+package org.nanocontainer.nanoaop.dynaop;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import java.util.Properties;
+
+import dynaop.MixinFactory;
+import dynaop.Proxy;
 
 /**
  * @author Stephen Molitor
  */
-public interface AspectablePicoContainerFactory {
-
-    AspectablePicoContainer createContainer(Class containerClass, ComponentAdapterFactory componentAdapterFactory,
-            PicoContainer parent);
+public class InstanceMixinFactory implements MixinFactory {
     
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
+    private final Object instance;
     
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory);
+    public InstanceMixinFactory(Object instance) {
+        this.instance = instance;
+    }
+
+    public Object create(Proxy proxy) {
+        return instance;
+    }
+
+    public Properties getProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("advice", "instance mixin");
+        return properties;
+    }
     
-    AspectablePicoContainer createContainer(PicoContainer parent);
-
-    AspectablePicoContainer createContainer();
-
 }

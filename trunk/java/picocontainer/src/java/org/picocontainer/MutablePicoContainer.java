@@ -10,8 +10,9 @@
 
 package org.picocontainer;
 
-
 /**
+ * This is the core interface for registration of components.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n

@@ -85,7 +85,7 @@ public class DefaultKernel implements Kernel, Startable, Disposable {
 	}
 
 	public void deploy(URL remoteMarFile) throws DeploymentException {
-		String[] file = remoteMarFile.getFile().split("/");
+		String[] file = remoteMarFile.getFile().split("/|\\\\");
 		String context = file[file.length - 1].split("\\.mar")[0];
 
 		deploy(context, remoteMarFile);

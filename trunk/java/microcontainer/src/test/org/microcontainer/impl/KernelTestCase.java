@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.zip.ZipException;
 
 /**
  * @author Paul Hammant
@@ -43,8 +44,10 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeploymentOfMarFileFromURL() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, MalformedURLException, DeploymentException {
-        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
+    public void testDeploymentOfMarFileFromURL() throws Exception {
+        //kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
+		File testMar = new File("test.mar");
+		kernel.deploy(new URL("jar:file:" + testMar.getCanonicalPath() + "!/"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
@@ -66,8 +69,9 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         kernel.deploy(new File("test.mar"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
-        // these should be two removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), o.getClass().getClassLoader().getParent().getParent());
+		Class interfaceClass = o.getClass().getInterfaces()[0];
+        // the interface should be two removed from each other.
+        assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent().getParent());
 
         // LSD: what kind of number is that, "two"?
         // You're testing that the kernel is two classloaders
@@ -80,7 +84,7 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
 		Class interfaceClass =  o.getClass().getInterfaces()[0];
 
-		// the interface class loader should be one removed from the kernel's class loader
+		// the interface's class loader should be one removed from the kernel's class loader
         assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
@@ -90,23 +94,25 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
         // to the client...that'll make it difficult to change...
     }
 
-    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() throws DeploymentException{
-        kernel.deploy(new File("test.mar"));
+    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() throws Exception {
+		URL url = new URL("jar:file:test.mar!/");
+        kernel.deploy("test", url);
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
-        kernel.deploy(new File("test2.mar"));
-        Object o2 = kernel.getComponent("test2/org.microcontainer.test2.Test2Comp");
+		kernel.deploy("test2", url);
+        Object o2 = kernel.getComponent("test2/org.microcontainer.test.TestComp");
         assertNotNull(o);
         assertNotNull(o2);
         // LSD: this, I like...
         assertNotSame(o.getClass().getClassLoader(), o2.getClass().getClassLoader());
     }
 
-    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
-        kernel.deploy(new File("test.mar"));
+    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws Exception {
+        URL url = new URL("jar:file:test.mar!/");
+        kernel.deploy("test", url);
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
-        kernel.deploy(new File("test2.mar"));
-        Object o2 = kernel.getComponent("test2/org.microcontainer.test2.Test2Comp");
+        kernel.deploy("test2", url);
+        Object o2 = kernel.getComponent("test2/org.microcontainer.test.TestComp");
 
         // unHideImplClassLoader allows us to cater for the fact that the default behavior of Mega
         // is to hide implementations. The method would amount to a logical security flaw if
@@ -133,12 +139,21 @@ public class KernelTestCase extends TestCase { // LSD: extends PicoTCKTestCase o
     }
 
     public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile() throws DeploymentException {
-        kernel.deploy(new File("missing.mar"));
-    }
+		try {
+			kernel.deploy(new File("missing.mar"));
+			fail("DeploymentException should have been thrown");
+		} catch (DeploymentException e) {
+			assertTrue(e.getCause() instanceof ZipException);
+		}
+	}
 
     public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException, DeploymentException {
-        kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
-    }
+		try {
+			kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
+			fail("DeploymentException should have been thrown");
+		} catch (DeploymentException e) {
+		}
+	}
 
     public void testMarWithGroovyScriptErrorResultsInException() {
         // gracefully handle misconfiguration...

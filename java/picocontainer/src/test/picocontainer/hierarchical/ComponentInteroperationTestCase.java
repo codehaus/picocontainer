@@ -8,15 +8,17 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
 import junit.framework.TestCase;
-import picocontainer.HierarchicalPicoContainer;
-import picocontainer.DuplicateComponentTypeRegistrationException;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
+import picocontainer.hierarchical.OverriddenPicoTestContainer;
+import picocontainer.hierarchical.NullStartableLifecycleManager;
+import picocontainer.hierarchical.DuplicateComponentTypeRegistrationException;
 import picocontainer.PicoContainer;
 import picocontainer.PicoRegistrationException;
 import picocontainer.PicoStartException;
-import picocontainer.UnsatisfiedDependencyStartupException;
+import picocontainer.hierarchical.UnsatisfiedDependencyStartupException;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
 

@@ -8,28 +8,20 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-public class ComponentSpecification
-{
-    private final Class compType;
-    private final Class comp;
+import picocontainer.PicoRegistrationException;
 
-    public ComponentSpecification(final Class compType, final Class comp)
-    {
-        this.compType = compType;
-        this.comp = comp;
+public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
+
+    int numOfCtors;
+
+    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
+        this.numOfCtors = numOfCtors;
     }
 
-    public Class getComponentType()
-    {
-        return compType;
+    public String getMessage() {
+        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
     }
-
-    public Class getComponentImplementation()
-    {
-        return comp;
-    }
-
 
 }

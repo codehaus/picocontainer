@@ -13,6 +13,7 @@ package picocontainer;
 import junit.framework.TestCase;
 import picocontainer.testmodel.FredImpl;
 import picocontainer.testmodel.WilmaImpl;
+import picocontainer.hierarchical.HierarchicalPicoContainer;
 
 /**
  * Can Pico host itself ?

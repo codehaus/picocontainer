@@ -8,16 +8,23 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-public class NullStartableLifecycleManager
-        implements StartableLifecycleManager {
-    public void startComponent(Object component) throws PicoStartException {
+import picocontainer.PicoRegistrationException;
+
+public class AssignabilityRegistrationException extends PicoRegistrationException
+{
+    private final Class type;
+    private final Class clazz;
+
+    public AssignabilityRegistrationException(Class type, Class clazz)
+    {
+        this.type = type;
+        this.clazz = clazz;
     }
 
-    public void stopComponent(Object component) throws PicoStopException {
-    }
-
-    public void disposeOfComponent(Object component) throws PicoDisposalException {
+    public String getMessage()
+    {
+        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
     }
 }

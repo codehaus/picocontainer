@@ -8,25 +8,26 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-/**
- *
- * @author Aslak Hellesoy
- * @version $Revision$
- */
-public class NotConcreteRegistrationException extends PicoRegistrationException {
-    private final Class componentImplementation;
+import picocontainer.PicoRegistrationException;
 
-    public NotConcreteRegistrationException(Class componentImplementation) {
-        this.componentImplementation = componentImplementation;
+public class DuplicateComponentTypeRegistrationException extends PicoRegistrationException
+{
+    private Class clazz;
+
+    public DuplicateComponentTypeRegistrationException(Class clazz)
+    {
+        this.clazz = clazz;
     }
 
-    public String getMessage() {
-        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
+    public Class getDuplicateClass()
+    {
+        return clazz;
     }
 
-    public Class getComponentImplementation() {
-        return componentImplementation;
+    public String getMessage()
+    {
+        return "Class " + clazz.getName() + " duplicated";
     }
 }

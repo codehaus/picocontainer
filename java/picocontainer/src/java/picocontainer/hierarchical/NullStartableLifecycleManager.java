@@ -7,25 +7,22 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
-package picocontainer;
 
-public class AmbiguousComponentResolutionException extends PicoStartException {
-    private final Class[] ambiguousClasses;
+package picocontainer.hierarchical;
 
-    public AmbiguousComponentResolutionException(Class[] ambiguousClass) {
-        this.ambiguousClasses = ambiguousClass;
+import picocontainer.StartableLifecycleManager;
+import picocontainer.PicoStartException;
+import picocontainer.PicoStopException;
+import picocontainer.PicoDisposalException;
+
+class NullStartableLifecycleManager
+        implements StartableLifecycleManager {
+    public void startComponent(Object component) throws PicoStartException {
     }
 
-    public String getMessage() {
-        String msg = "Ambiguous Classes:";
-        for (int i = 0; i < ambiguousClasses.length; i++) {
-            Class ambiguousClass = ambiguousClasses[i];
-            msg = msg + " " + ambiguousClass.getName();
-        }
-        return msg;
+    public void stopComponent(Object component) throws PicoStopException {
     }
 
-    public Class[] getAmbiguousClasses() {
-        return ambiguousClasses;
+    public void disposeOfComponent(Object component) throws PicoDisposalException {
     }
 }

@@ -10,6 +10,8 @@
 
 package picocontainer;
 
+import picocontainer.hierarchical.PicoInvocationTargetStartException;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 

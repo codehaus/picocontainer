@@ -8,18 +8,14 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-public class WrongNumberOfConstructorsRegistrationException extends PicoRegistrationException {
+import picocontainer.PicoRegistrationException;
 
-    int numOfCtors;
-
-    public WrongNumberOfConstructorsRegistrationException(int numOfCtors) {
-        this.numOfCtors = numOfCtors;
-    }
-
-    public String getMessage() {
-        return "Wrong Number of Constructors for Pico Component. Expected 1, found" + numOfCtors;
-    }
-
+/**
+ *
+ * @author Aslak Hellesoy
+ * @version $Revision: 0 $
+ */
+public class CircularDependencyRegistrationException extends PicoRegistrationException {
 }

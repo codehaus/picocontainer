@@ -24,12 +24,34 @@ TODO (Aslak):
 
 */
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-import java.util.*;
+
+import picocontainer.AbstractContainer;
+import picocontainer.PicoContainer;
+import picocontainer.Container;
+import picocontainer.StartableLifecycleManager;
+import picocontainer.ComponentFactory;
+import picocontainer.PicoRegistrationException;
+import picocontainer.PicoStartException;
+import picocontainer.PicoStopException;
+import picocontainer.PicoDisposalException;
+import picocontainer.NullContainer;
+import picocontainer.DefaultComponentFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 public class HierarchicalPicoContainer extends AbstractContainer implements PicoContainer {
 
@@ -152,13 +174,10 @@ public class HierarchicalPicoContainer extends AbstractContainer implements Pico
         args.add(new ParameterSpec(/*parameter,*/ arg));
     }
 
-    // TODO (AH): Shouldn't this be a private class????
-    class ParameterSpec {
-//        private Class parameterType;
+    private class ParameterSpec {
         private Object arg;
 
-        ParameterSpec(/*Class parameterType,*/ Object parameter) {
-//            this.parameterType = parameterType;
+        ParameterSpec(Object parameter) {
             this.arg = parameter;
         }
     }

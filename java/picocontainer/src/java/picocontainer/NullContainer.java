@@ -10,6 +10,8 @@
 
 package picocontainer;
 
+import picocontainer.Container;
+
 public class NullContainer implements Container {
     public boolean hasComponent(Class compType) {
         return false;

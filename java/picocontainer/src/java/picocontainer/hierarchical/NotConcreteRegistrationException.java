@@ -8,21 +8,27 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package picocontainer;
+package picocontainer.hierarchical;
 
-public class AssignabilityRegistrationException extends PicoRegistrationException
-{
-    private final Class type;
-    private final Class clazz;
+import picocontainer.PicoRegistrationException;
 
-    public AssignabilityRegistrationException(Class type, Class clazz)
-    {
-        this.type = type;
-        this.clazz = clazz;
+/**
+ *
+ * @author Aslak Hellesoy
+ * @version $Revision: 1.6 $
+ */
+public class NotConcreteRegistrationException extends PicoRegistrationException {
+    private final Class componentImplementation;
+
+    public NotConcreteRegistrationException(Class componentImplementation) {
+        this.componentImplementation = componentImplementation;
     }
 
-    public String getMessage()
-    {
-        return "The type:" + type.getName() + "  was not assignable from the class " + clazz.getName();
+    public String getMessage() {
+        return "Bad Access: '" + componentImplementation.getName() + "' is not instansiable";
+    }
+
+    public Class getComponentImplementation() {
+        return componentImplementation;
     }
 }

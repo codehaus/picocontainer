@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
-<project>
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
   <pomVersion>3</pomVersion>
   <id>picocontainer</id>
   <name>PicoContainer</name>
@@ -52,7 +52,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Aslak Hellesoy</name>
+      <name>Aslak Hellesøy</name>
       <id>rinkrank</id>
       <email>rinkrank@codehaus.org</email>
       <organization></organization>
@@ -105,6 +105,7 @@
     <report>maven-license-plugin</report> 
     <report>maven-checkstyle-plugin</report> 
     <report>maven-pmd-plugin</report> 
+    <report>maven-simian-plugin</report> 
     <report>maven-jdepend-plugin</report> 
     <report>maven-changelog-plugin</report> 
     <report>maven-statcvs-plugin</report>

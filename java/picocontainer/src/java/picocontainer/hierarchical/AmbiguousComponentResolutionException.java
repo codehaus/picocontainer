@@ -7,13 +7,27 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+package picocontainer.hierarchical;
 
-package picocontainer;
+import picocontainer.PicoStartException;
 
-/**
- *
- * @author Aslak Hellesoy
- * @version $Revision: 0 $
- */
-public class CircularDependencyRegistrationException extends PicoRegistrationException {
+public class AmbiguousComponentResolutionException extends PicoStartException {
+    private final Class[] ambiguousClasses;
+
+    public AmbiguousComponentResolutionException(Class[] ambiguousClass) {
+        this.ambiguousClasses = ambiguousClass;
+    }
+
+    public String getMessage() {
+        String msg = "Ambiguous Classes:";
+        for (int i = 0; i < ambiguousClasses.length; i++) {
+            Class ambiguousClass = ambiguousClasses[i];
+            msg = msg + " " + ambiguousClass.getName();
+        }
+        return msg;
+    }
+
+    public Class[] getAmbiguousClasses() {
+        return ambiguousClasses;
+    }
 }

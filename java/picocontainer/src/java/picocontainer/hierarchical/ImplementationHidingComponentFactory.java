@@ -1,4 +1,6 @@
-package picocontainer;
+package picocontainer.hierarchical;
+
+import picocontainer.DefaultComponentFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -7,7 +9,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 
-public class ImplementationHidingComponentFactory extends DefaultComponentFactory {
+public class ImplementationHidingComponentFactory extends picocontainer.DefaultComponentFactory {
     public Object createComponent(Class compType, Constructor constructor, Object[] args)
             throws InvocationTargetException, IllegalAccessException, InstantiationException
     {

@@ -1,4 +1,7 @@
-package picocontainer;
+package picocontainer.aggregated;
+
+import picocontainer.AbstractContainer;
+import picocontainer.Container;
 
 import java.util.Arrays;
 import java.util.Set;

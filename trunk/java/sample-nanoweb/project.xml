@@ -40,6 +40,15 @@
             </properties>
         </dependency>
 
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-nanoweb</artifactId>
+            <version>1.0-beta-1-SNAPSHOT</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
         <!--
         Groovy and ASM only needed if using Groovy to
         assemble the container in web.xml

@@ -1,6 +1,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -99,7 +100,7 @@ public class LifecycleVisitorTestCase
         parent.registerComponentImplementation("recording", StringBuffer.class);
         child.registerComponentImplementation(Four.class);
         parent.registerComponentImplementation(Two.class);
-        parent.registerComponentImplementation(One.class);
+        parent.registerComponentImplementation(One.class, One.class, new Parameter[] { new ComponentParameter() });
         child.registerComponentImplementation(Three.class);
 
         parent.accept(starter);

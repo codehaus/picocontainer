@@ -24,13 +24,13 @@ public interface PicoVisitor {
      * @since 1.1
      */
     void visitComponentAdapter(ComponentAdapter componentAdapter);
-    
     /**
-     * @return <code>true</code> if the visited composite notes should perform 
-     *          a breadth-first search, otherwise it should reralize a depth-first search.
-     * @since 1.1.
+     * Visit a {@link Parameter} that has to accept the visitor.
+     * 
+     * @param parameter the visited Parameter.
+     * @since 1.1
      */
-    boolean isBreadthFirstTraversal();
+    void visitParameter(Parameter parameter);
     
     /**
      * @return <code>true</code> if the visited composite notes should perform

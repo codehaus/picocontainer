@@ -1,5 +1,6 @@
 package org.picocontainer.defaults;
 
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -66,6 +67,9 @@ public class LifecycleVisitor implements PicoVisitor {
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
     }
 
+    public void visitParameter(Parameter parameter) {
+    }
+
     private void visitComponentInstances(List componentInstances) {
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
             Object o = iterator.next();
@@ -79,14 +83,6 @@ public class LifecycleVisitor implements PicoVisitor {
                 throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see org.picocontainer.PicoVisitor#isBreadthFirstTraversal()
-     */
-    public boolean isBreadthFirstTraversal() {
-        return true;
     }
 
     /**

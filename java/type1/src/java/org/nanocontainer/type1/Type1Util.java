@@ -9,20 +9,29 @@
  *****************************************************************************/
 package org.nanocontainer.type1;
 
+// This dependency might be worthwhile getting rid of. Only one method is used. AH.
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 import com.thoughtworks.xstream.XStream;
-import org.apache.avalon.framework.configuration.*;
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.container.ContainerUtil;
 import org.apache.avalon.framework.context.Context;
-import org.apache.avalon.framework.context.Contextualizable;
 import org.apache.avalon.framework.context.ContextException;
-import org.apache.avalon.framework.logger.*;
+import org.apache.avalon.framework.context.Contextualizable;
+import org.apache.avalon.framework.logger.Log4JLogger;
+import org.apache.avalon.framework.logger.LogEnabled;
+import org.apache.avalon.framework.logger.LogKitLogger;
+import org.apache.avalon.framework.logger.Logger;
+import org.apache.avalon.framework.logger.NullLogger;
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.logging.Log;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ClassHierarchyIntrospector;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
@@ -31,7 +40,9 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A utility class containing most of the logic to support handling of the Avalon-Framework semantics within a
@@ -338,7 +349,8 @@ public class Type1Util {
      * @return the proxy wrapped around the provided instance.
      */
     public static Object getActivityLifecycleProxy(final Object instance) {
-        final Set allInterfaces = ClassHierarchyIntrospector.getAllInterfaces(instance.getClass());
+        final Class[] allInterfacesArray = ClassHierarchyIntrospector.getAllInterfaces(instance.getClass());
+        final List allInterfaces = new ArrayList(Arrays.asList(allInterfacesArray));
         if (allInterfaces.isEmpty())
             throw new PicoLifecycleException("Can't support the type1 lifecycle needs of " + instance.getClass() +
                     ". The class doesn't implement any interfaces so proxying it is not possible.");

@@ -14,7 +14,6 @@ import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
-import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -22,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Proxy;
 
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -40,20 +38,19 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-                "var pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory())\n" +
+                "var pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory())\n" +
                 "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
                 "pico.registerComponentImplementation(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null);
 
         Object wsc = pico.getComponentInstanceOfType(WebServerConfig.class);
-        Object ws = pico.getComponentInstanceOfType(WebServer.class);
+        Object ws1 = pico.getComponentInstanceOfType(WebServer.class);
+        Object ws2 = pico.getComponentInstanceOfType(WebServer.class);
 
-        assertTrue(ws instanceof WebServer);
-        assertFalse(ws instanceof WebServerImpl);
-        assertTrue(Proxy.isProxyClass(ws.getClass()));
+        assertNotSame(ws1, ws2);
 
-        assertEquals("ClassLoader should be the same for both components", ws.getClass().getClassLoader(), wsc.getClass().getClassLoader());
+        assertEquals("ClassLoader should be the same for both components", ws1.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
 
     public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
@@ -93,7 +90,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
-                "var pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory())\n" +
+                "var pico = new DefaultPicoContainer()\n" +
                 "pico.registerComponentInstance( new Packages." + FooTestComp.class.getName() + "())\n" +
                 "pico.registerComponentInstance( 'foo', new Packages." + FooTestComp.class.getName() + "())\n");
 

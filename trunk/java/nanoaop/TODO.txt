@@ -10,3 +10,6 @@ TODO list for nanoaop:
 8.  Consider alternate Nanning implementation (org.nanocontainer.nanoaop.nanning)
 9.  Javadoc everything, create package.html, proof-read.
 10. Create doc / user's guide in Confluence
+11. Remove the old nanocontainer.dynaop from CVS if everyone is OK with that.
+12. If and when nanning backend is added to nanoaop, remove nanocontainer.nanning from CVS if everyone is OK with that.
+

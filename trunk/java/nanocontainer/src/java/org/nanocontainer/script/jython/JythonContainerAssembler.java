@@ -1,4 +1,4 @@
-package org.picoextras.script;
+package org.picoextras.script.jython;
 
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.reflection.ReflectionFrontEnd;

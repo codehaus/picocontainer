@@ -16,7 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picoextras.integrationkit.ContainerAssembler;
 import org.picoextras.reflection.DefaultReflectionFrontEnd;
 import org.picoextras.reflection.ReflectionFrontEnd;
-import org.picoextras.script.PicoCompositionException;
+import org.picoextras.integrationkit.PicoAssemblyException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,7 +60,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, PicoCompositionException, SAXException {
+    private void registerComponentsAndChildContainers(ReflectionFrontEnd reflectionFrontEnd, Element containerElement) throws ClassNotFoundException, IOException, SAXException {
 
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
@@ -88,7 +88,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
                     componentCount++;
                 } else if (name.equals("classpath")) {
                 } else {
-                    throw new PicoCompositionException("Unsupported element:" + name);
+                    throw new PicoAssemblyException("Unsupported element:" + name);
                 }
             }
         }
@@ -177,7 +177,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
         }
     }
 
-    private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
+    private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoAssemblyException {
         String factoryClass = componentElement.getAttribute("factory");
 
         if (factoryClass == null || factoryClass.equals("")) {
@@ -202,7 +202,7 @@ public class DefaultXmlFrontEnd implements ContainerAssembler {
             Object pseudoComp = factory.makeInstance(childElement);
             pico.getPicoContainer().registerComponentInstance(pseudoComp);
         } catch (final SAXException e) {
-            throw new PicoCompositionException(e);
+            throw new PicoAssemblyException(e);
         }
     }
 }

@@ -280,7 +280,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // lets keep true to COP principles, shall we?
         DefaultPicoContainer c = new DefaultPicoContainer();
         c.registerComponentImplementation(Kernel.class, DefaultKernel.class);
-        c.registerComponentImplementation(McaDeployer.class);
+        c.registerComponentImplementation(McaDeployer.class, DefaultMcaDeployer.class);
         assertNotNull( c.getComponentInstance(Kernel.class) );
         c.start();
         c.stop();

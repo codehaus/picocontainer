@@ -242,15 +242,30 @@ public abstract class AbstractComponentAdapterTestCase
     // Resolving
     // ============================================
     
+    protected abstract ComponentAdapter prepareTestDependenciesAreResolved(MutablePicoContainer picoContainer);
+
+    public void testDependenciesAreResolved() {
+        if ((getComponentAdapterNature() & RESOLVING) > 0) {
+            final List dependencies = new LinkedList();
+            final Object[] wrapperDependencies = new Object[] { dependencies };
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final ComponentAdapter componentAdapter = prepareTestDependenciesAreResolved(picoContainer);
+            assertSame(getComponentAdapterType(), componentAdapter.getClass());
+            assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
+            final PicoContainer wrappedPicoContainer = wrapComponentInstances(CollectingComponentAdapter.class, picoContainer, wrapperDependencies);
+            final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer);
+            assertNotNull(instance);
+            assertTrue(dependencies.size() > 0);
+        }
+    }
+    
     protected abstract ComponentAdapter prepareTestFailingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer);
 
     public void testFailingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
-            final List wrapperDependencies = new LinkedList();
-            wrapperDependencies.add(cycleInstances);
-            wrapperDependencies.add(cycleCheck);
+            final Object[] wrapperDependencies = new Object[] { cycleInstances, cycleCheck };
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepareTestFailingVerificationWithCyclicDependencyException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -273,9 +288,7 @@ public abstract class AbstractComponentAdapterTestCase
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
-            final List wrapperDependencies = new LinkedList();
-            wrapperDependencies.add(cycleInstances);
-            wrapperDependencies.add(cycleCheck);
+            final Object[] wrapperDependencies = new Object[] { cycleInstances, cycleCheck };
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepareTestFailingInstantiationWithCyclicDependencyException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -305,6 +318,19 @@ public abstract class AbstractComponentAdapterTestCase
         }
     }
     
+    static public class CollectingComponentAdapter extends DecoratingComponentAdapter {
+        final List list;
+        public CollectingComponentAdapter(final ComponentAdapter delegate, final List list) {
+            super(delegate);
+            this.list = list;
+        }
+        public Object getComponentInstance(final PicoContainer container) {
+            final Object result = super.getComponentInstance(container);
+            list.add(result);
+            return result;
+        }
+    }
+    
     static public class CycleDetectorComponentAdapter extends DecoratingComponentAdapter {
         private final Set set;
         private final ObjectReference reference;
@@ -323,16 +349,16 @@ public abstract class AbstractComponentAdapterTestCase
         }
     }
     
-    protected PicoContainer wrapComponentInstances(final Class decoratingComponentAdapterClass, final PicoContainer picoContainer, final List wrapperDependencies) {
+    protected PicoContainer wrapComponentInstances(final Class decoratingComponentAdapterClass, final PicoContainer picoContainer, final Object[] wrapperDependencies) {
         assertTrue(DecoratingComponentAdapter.class.isAssignableFrom(decoratingComponentAdapterClass));
         final MutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
-        final int size = (wrapperDependencies != null ? wrapperDependencies.size() : 0) + 1;
+        final int size = (wrapperDependencies != null ? wrapperDependencies.length : 0) + 1;
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();
         for (final Iterator iter = allComponentAdapters.iterator(); iter.hasNext();) {
             final Parameter[] parameters = new Parameter[size];
             parameters[0] = new ConstantParameter(iter.next());
             for (int i = 1; i < parameters.length; i++) {
-                parameters[i] = new ConstantParameter(wrapperDependencies.get(i-1));
+                parameters[i] = new ConstantParameter(wrapperDependencies[i-1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
             instantiatingPicoContainer.registerComponentImplementation("decorator", decoratingComponentAdapterClass, parameters);

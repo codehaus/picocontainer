@@ -122,6 +122,14 @@ public class InstanceComponentAdapterTestCase
 
     /**
      * {@inheritDoc}
+     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestDependenciesAreResolved(org.picocontainer.MutablePicoContainer)
+     */
+    protected ComponentAdapter prepareTestDependenciesAreResolved(MutablePicoContainer picoContainer) {
+        return null;
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepareTestFailingVerificationWithCyclicDependencyException(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepareTestFailingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {

@@ -172,10 +172,21 @@ public class ImplementationHidingPicoContainer implements MutablePicoContainer, 
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
         delegate.addChildContainer(pc);
         return pc;
+
+    }
+
+    public MutablePicoContainer makeChildContainer(String name) {
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(this);
+        delegate.addChildContainer(name, pc);
+        return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
         delegate.addChildContainer(child);
+    }
+
+    public void addChildContainer(String name, MutablePicoContainer child) {
+        delegate.addChildContainer(name, child);
     }
 
     public void removeChildContainer(MutablePicoContainer child) {

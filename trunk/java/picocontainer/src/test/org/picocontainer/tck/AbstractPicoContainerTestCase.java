@@ -540,11 +540,45 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     }
 
+    public void testNamedChildContainerIsAccessibleForStringKeys() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = parent.makeChildContainer("foo");
+        child.registerComponentImplementation("lcm",LifeCycleMonitoring.class);
+        Object o = parent.getComponentInstance("foo/lcm");
+        assertNotNull(o);
+        assertTrue(sb.toString().indexOf("-instantiated") != -1);
+    }
+
+    public void testNamedChildContainerIsAccessibleForClassKeys() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = parent.makeChildContainer("foo");
+        child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
+        Object o = parent.getComponentInstance("foo/*" + LifeCycleMonitoring.class.getName());
+        assertNotNull(o);
+        assertTrue(sb.toString().indexOf("-instantiated") != -1);
+    }
+
+    public void testFicticiousNamedChildContainerIsNotAccessible() {
+        StringBuffer sb = new StringBuffer();
+        final MutablePicoContainer parent = createPicoContainer(null);
+        parent.registerComponentInstance(sb);
+        final MutablePicoContainer child = parent.makeChildContainer("foo");
+        child.registerComponentImplementation(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
+        Object o = parent.getComponentInstance("bar/*" + LifeCycleMonitoring.class.getName());
+        assertNull(o);
+    }
+
+
     public static class LifeCycleMonitoring implements Startable, Disposable {
         StringBuffer sb;
 
         public LifeCycleMonitoring(StringBuffer sb) {
             this.sb = sb;
+            sb.append("-instantiated");
         }
         public void start() {
             sb.append("-started");

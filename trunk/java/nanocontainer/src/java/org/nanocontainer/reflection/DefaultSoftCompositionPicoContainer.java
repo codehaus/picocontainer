@@ -17,6 +17,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -164,14 +165,22 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
     }
 
     public MutablePicoContainer makeChildContainer() {
+        return makeChildContainer(null);
+    }
+
+    public MutablePicoContainer makeChildContainer(String name) {
         ClassLoader currentClassloader = reflectionAdapter.getComponentClassLoader();
         DefaultSoftCompositionPicoContainer pc = new DefaultSoftCompositionPicoContainer(currentClassloader, this);
-        delegate.addChildContainer(pc);
+        delegate.addChildContainer(name, pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
         delegate.addChildContainer(child);
+    }
+
+    public void addChildContainer(String name, MutablePicoContainer child) {
+        delegate.addChildContainer(name, child);
     }
 
     public void removeChildContainer(MutablePicoContainer child) {
@@ -217,5 +226,4 @@ public class DefaultSoftCompositionPicoContainer implements SoftCompositionPicoC
             componentAdapter.setContainer(DefaultSoftCompositionPicoContainer.this);
         }
     }
-
 }

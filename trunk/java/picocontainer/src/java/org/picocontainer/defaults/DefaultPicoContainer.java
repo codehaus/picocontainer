@@ -70,6 +70,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     private boolean started = false;
     private boolean disposed = false;
     private Set childContainers = new HashSet();
+    private int containerCount;
+    private Map namedChildContainers = new HashMap();
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -297,11 +299,38 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     public Object getComponentInstance(Object componentKey) throws PicoException {
         ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
+        if (componentKey.toString().startsWith("*")) {
+            String candidateClassName = componentKey.toString().substring(1);
+            Collection cas = getComponentAdapters();
+            for (Iterator it = cas.iterator(); it.hasNext();) {
+                ComponentAdapter ca =  (ComponentAdapter) it.next();
+                Object key = ca.getComponentKey();
+                if (key instanceof Class && candidateClassName.equals(((Class)key).getName())) {
+                    componentAdapter = ca;
+                    break;
+                }
+            }
+        }
         if (componentAdapter != null) {
             return componentAdapter.getComponentInstance();
         } else {
-            return null;
+            return getComponentInstanceFromChild(componentKey);
         }
+    }
+
+    private Object getComponentInstanceFromChild(Object componentKey) {
+        String componentKeyPath = componentKey.toString();
+        int ix = componentKeyPath.indexOf('/');
+        if (ix != -1) {
+            String firstElement = componentKeyPath.substring(0,ix);
+            String remainder = componentKeyPath.substring(ix+1,componentKeyPath.length());
+            Object o = namedChildContainers.get(firstElement);
+            if (o != null) {
+                MutablePicoContainer child = (MutablePicoContainer) o;
+                return child.getComponentInstance(remainder);
+            }
+        }
+        return null;
     }
 
     public Object getComponentInstanceOfType(Class componentType) {
@@ -346,14 +375,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         List componentInstances = getComponentInstancesOfTypeWithContainerAdaptersLast(Startable.class);
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
             Startable startable = ((Startable) iterator.next());
-            System.out.println("startable = " + startable);
             startable.start();
         }
         Iterator it = childContainers.iterator();
         while (it.hasNext()) {
             MutablePicoContainer mpc = (MutablePicoContainer) it.next();
             mpc.getComponentInstances();
-            System.out.println("mpc = " + mpc);
             mpc.start();
         }
         started = true;
@@ -411,17 +438,38 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
 
     public MutablePicoContainer makeChildContainer() {
+        return makeChildContainer("containers" + containerCount);
+    }
+
+    public MutablePicoContainer makeChildContainer(String name) {
         DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
-        childContainers.add(pc);
+        addChildContainer(name, pc);
         return pc;
     }
 
     public void addChildContainer(MutablePicoContainer child) {
+        addChildContainer(null, child);
+    }
+
+    public void addChildContainer(String name, MutablePicoContainer child) {
+        if (name == null) {
+            name = "containers" + containerCount;
+        }
         childContainers.add(child);
+        namedChildContainers.put(name, child);
+        containerCount++;
     }
 
     public void removeChildContainer(MutablePicoContainer child) {
         childContainers.remove(child);
+        Iterator children = namedChildContainers.entrySet().iterator();
+        while (children.hasNext()) {
+            Map.Entry e = (Map.Entry) children.next();
+            MutablePicoContainer mpc = (MutablePicoContainer) e.getValue();
+            if (mpc == child) {
+                children.remove();
+            }
+        }
     }
 
     /**

@@ -27,6 +27,7 @@
                      </td>
                  </tr>
              </form>
+             ## START SNIPPET: velocity
              #foreach ( $cheese in $cheeseStore.cheeses )
                 <tr>
                     <td style="vertical-align: top;">
@@ -40,6 +41,7 @@
                     </td>
                 </tr>
             #end
+            ## END SNIPPET: velocity
         </tbody>
     </table>
 </body>

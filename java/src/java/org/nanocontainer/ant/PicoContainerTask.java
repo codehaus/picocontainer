@@ -2,18 +2,15 @@ package org.nanocontainer.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.RegistrationPicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.extras.InvokingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.extras.DecoratingComponentAdapter;
-import org.picocontainer.extras.DecoratingComponentAdapterFactory;
-import org.picocontainer.internals.ComponentAdapter;
 import org.picocontainer.internals.ComponentAdapterFactory;
-import org.picocontainer.internals.ComponentRegistry;
 import org.picocontainer.internals.Parameter;
-import org.nanocontainer.MethodInvoker;
 
 import java.util.*;
 
@@ -39,60 +36,39 @@ import java.util.*;
  * @version $Revision$
  */
 public class PicoContainerTask extends Task {
-    private DefaultPicoContainer picoContainer;
-    private final Map classNameToComponentMap = new HashMap();
-    private SetPropertiesComponentAdapterFactory componentAdapterFactory;
+    private final Map keyToComponentMap = new HashMap();
+
+    private RegistrationPicoContainer picoContainer;
     private Class delegateComponentAdapterFactoryClass = DefaultComponentAdapterFactory.class;
-    private List registeredComponents = new ArrayList();
-
-    public final class SetPropertiesComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-
-        public SetPropertiesComponentAdapterFactory(ComponentAdapterFactory delegate) {
-            super(delegate);
-        }
-
-        public ComponentAdapter createComponentAdapter(Object componentKey,
-                                                       Class componentImplementation,
-                                                       Parameter[] parameters) throws PicoIntrospectionException {
-            ComponentAdapter componentAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
-
-            return new DecoratingComponentAdapter(componentAdapter) {
-                public Object instantiateComponent(ComponentRegistry componentRegistry)
-                        throws PicoInitializationException {
-                    Object comp = super.instantiateComponent(componentRegistry);
-                    Component component = findComponent(comp);
-                    if (component != null) {
-                        component.setPropertiesOn(comp, getProject());
-                    }
-
-                    return comp;
-                }
-            };
-        }
-
-        private Component findComponent(Object instance) {
-            return (Component) classNameToComponentMap.get(instance.getClass().getName());
-        }
-    }
-
 
     public void setComponentAdapterFactoryClass(Class factoryClass) {
         this.delegateComponentAdapterFactoryClass = factoryClass;
     }
 
-    private final ComponentAdapterFactory getComponentAdapterFactory() {
-        if (componentAdapterFactory == null) {
-            ComponentAdapterFactory delegate;
-            try {
-                delegate = (ComponentAdapterFactory) delegateComponentAdapterFactoryClass.newInstance();
-                log("using ComponentAdapterFactory " + delegate);
-                componentAdapterFactory = new SetPropertiesComponentAdapterFactory(delegate);
-            } catch (Exception e) {
-                throw new BuildException(
-                        "Could not instantiate ComponentAdapterFactory " + delegateComponentAdapterFactoryClass, e);
-            }
+    private final ComponentAdapterFactory createComponentAdapterFactory() {
+        // We're nesting several component factories:
+        // - A default one that does instantiation
+        // - A Bean property one that sets properties
+        // - An invoking one that calls execute()
+
+        try {
+            ComponentAdapterFactory instantiator = (ComponentAdapterFactory) delegateComponentAdapterFactoryClass.newInstance();
+            log("using ComponentAdapterFactory " + delegateComponentAdapterFactoryClass.getName());
+
+            AntPropertyComponentAdapterFactory propertySetter =
+                    new AntPropertyComponentAdapterFactory(instantiator, this);
+
+            InvokingComponentAdapterFactory executor = new InvokingComponentAdapterFactory(
+                    propertySetter,
+                    "execute",
+                    null,
+                    null);
+
+            return executor;
+        } catch (Exception e) {
+            throw new BuildException(
+                    "Could not instantiate ComponentAdapterFactory " + delegateComponentAdapterFactoryClass, e);
         }
-        return componentAdapterFactory;
     }
 
     protected DefaultPicoContainer createPicoContainer(ComponentAdapterFactory componentAdapterFactory)
@@ -112,40 +88,32 @@ public class PicoContainerTask extends Task {
     }
 
     public void addConfiguredComponent(Component component) {
-        registeredComponents.add(component);
-        classNameToComponentMap.put(component.getClassname(), component);
+        keyToComponentMap.put(component.getKey(), component);
     }
 
     public final void execute() {
         registerComponentsSpecifiedInAnt();
-        doExecute();
-    }
-
-    protected void doExecute() {
         try {
-            getPicoContainer().getComponents();
-            configureComponents();
+            picoContainer.getComponents();
         } catch (Exception e) {
             throw new BuildException(e);
         }
-
-        new MethodInvoker().invokeMethod("execute", getPicoContainer().getComponentRegistry());
-    }
-
-    protected void configureComponents() throws Exception {
     }
 
     private void registerComponentsSpecifiedInAnt() {
-        for (Iterator iterator = registeredComponents.iterator(); iterator.hasNext();) {
+        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory();
+        picoContainer = new DefaultPicoContainer.WithComponentAdapterFactory(componentAdapterFactory);
+
+        for (Iterator iterator = keyToComponentMap.values().iterator(); iterator.hasNext();) {
             Component componentdef = (Component) iterator.next();
             Parameter[] parameters = componentdef.getParameters();
 
             try {
                 Class aClass = getClassLoader().loadClass(componentdef.getClassname());
                 if (parameters != null) {
-                    getPicoContainer().registerComponent(aClass, aClass, parameters);
+                    picoContainer.registerComponent(componentdef.getKey(), aClass, parameters);
                 } else {
-                    getPicoContainer().registerComponent(aClass, aClass);
+                    picoContainer.registerComponent(componentdef.getKey(), aClass);
                 }
             } catch (PicoRegistrationException e) {
                 throw new BuildException(e);
@@ -165,17 +133,12 @@ public class PicoContainerTask extends Task {
         return classLoader;
     }
 
-    public DefaultPicoContainer getPicoContainer() {
-        if (picoContainer == null) {
-            try {
-                picoContainer = createPicoContainer(getComponentAdapterFactory());
-            } catch (PicoRegistrationException e) {
-                throw new BuildException(e);
-            } catch (PicoIntrospectionException e) {
-                throw new BuildException(e);
-            }
-        }
-
+    public PicoContainer getPicoContainer() {
         return picoContainer;
+    }
+
+    // Callback from the AntPropertyComponentAdaptoerFactory
+    Component findComponent(String componentKey) {
+        return (Component) keyToComponentMap.get(componentKey);
     }
 }

@@ -2,8 +2,6 @@ package org.nanocontainer.ant;
 
 import junit.framework.Assert;
 
-import java.util.ArrayList;
-
 /**
  * 
  * @author Aslak Helles&oslash;y

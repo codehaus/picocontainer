@@ -10,7 +10,7 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
     <name>PicoContainer</name>
-    <currentVersion>1.0</currentVersion>
+    <currentVersion>1.1-SNAPSHOT</currentVersion>
 
     <organization>
         <name>Codehaus</name>
@@ -37,58 +37,6 @@
         <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
         <url>http://cvs.picocontainer.codehaus.org/java/picocontainer/?viewcvs.cgi</url>
     </repository>
-
-    <versions>
-        <version>
-            <id>1.0-alpha-1</id>
-            <name>1.0-alpha-1</name>
-            <tag>PICOCONTAINER_1_0_ALPHA_1</tag>
-        </version>
-        <version>
-            <id>1.0-alpha-2</id>
-            <name>1.0-alpha-2</name>
-            <tag>PICOCONTAINER_1_0_ALPHA_2</tag>
-        </version>
-        <version>
-            <id>1.0-beta-1</id>
-            <name>1.0-beta-1</name>
-            <tag>PICOCONTAINER_1_0_BETA_1</tag>
-        </version>
-        <version>
-            <id>1.0-beta-2</id>
-            <name>1.0-beta-2</name>
-            <tag>PICOCONTAINER_1_0_BETA_2</tag>
-        </version>
-        <version>
-            <id>1.0-beta-3</id>
-            <name>1.0-beta-3</name>
-            <tag>PICOCONTAINER_1_0_BETA_3</tag>
-        </version>
-        <version>
-            <id>1.0-beta-4</id>
-            <name>1.0-beta-4</name>
-            <tag>RELEASE_1_0_BETA_4</tag>
-        </version>
-        <version>
-            <id>1.0-beta-5</id>
-            <name>1.0-beta-5</name>
-            <tag>RELEASE_1_0_BETA_5</tag>
-        </version>
-        <version>
-            <id>1.0-RC-1</id>
-            <name>1.0-RC-1</name>
-            <tag>HEAD</tag>
-        </version>
-        <version>
-            <id>1.0</id>
-            <name>1.0</name>
-            <tag>HEAD</tag>
-        </version>
-    </versions>
-
-    <mailingLists>
-
-    </mailingLists>
 
     <developers>
         <developer>
@@ -269,7 +217,7 @@
         </dependency>
         <dependency>
             <id>xstream</id>
-            <version>1.0</version>
+            <version>1.0.1</version>
         </dependency>
 
     </dependencies>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
+
   <!-- the version of maven's project object model -->
 
   <pomVersion>3</pomVersion>
@@ -17,15 +18,15 @@
   <!-- details about the organization that 'owns' the project -->
 
   <organization>
-    <name>Apache Software Foundation</name>
-    <url>http://www.apache.org/</url>
-    <logo>http://maven.apache.org/images/jakarta-logo-blue.gif</logo>
+    <name>PicoContainer Organisation</name>
+    <url>http://www.picocontainer.org/</url>
+    <logo>http://www.picocontainer.org/images/logo.gif</logo>
   </organization>
   <!-- the year the project started -->
 
-  <inceptionYear>2002</inceptionYear>
+  <inceptionYear>2003</inceptionYear>
   <package>picocontainer</package>
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  <logo>http://www.picocontainer.org/images/logo.gif</logo>
   <description>A collection of example projects showing how to use maven in different situations</description>
   <!-- a short description of what the project does -->
 
@@ -42,8 +43,8 @@
        scm:<system>:<system specific connection string> -->
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:maven/src/plugins-build/examples</connection>
-    <url>http://cvs.apache.org/viewcvs/maven/src/plugins-build/examples/</url>
+    <connection>scm:cvs:pserver:anoncvs@cvs.codehaus.org:/cvshome/:pico</connection>
+    <url>http://cvs.codehaus.org/viewcvs/picocontainer/pico/</url>
   </repository>
   <!-- any mailing lists for the project -->
 
@@ -52,10 +53,19 @@
 
   <developers>
     <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jason@zenplex.com</email>
-      <organization>Zenplex</organization>
+      <name>Paul Hammant</name>
+      <id>paul</id>
+      <email>paul_hammant@yahoo.com</email>
+      <organization>n/a</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Aslak Hellesoy</name>
+      <id>rinkrank</id>
+      <email>rinkrank@codehaus.org</email>
+      <organization>n/a</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -67,7 +77,7 @@
   <!-- build information for the project -->
 
   <build>
-    <nagEmailAddress>turbine-maven-dev@jakarta.apache.org</nagEmailAddress>
+    <nagEmailAddress>pico-dev@codehaus.org</nagEmailAddress>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
     <unitTest>

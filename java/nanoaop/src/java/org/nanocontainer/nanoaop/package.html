@@ -26,7 +26,7 @@ For the following examples, we'll use the
 following logging interceptor:
 
 <pre>
-    public class LoggingInterceptor implements import org.aopalliance.intercept.MethodInterceptor {
+    public class LoggingInterceptor implements org.aopalliance.intercept.MethodInterceptor {
         public Object invoke(MethodInvocation invocation) throws Throwable {
             System.out.println("start");
             Object result = invocation.proceed();
@@ -119,14 +119,12 @@ A groovy configuration file might look like this:
         component(key:OrderEntity, class:OrderEntityImpl)
 
         aspect(classCut:cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
-        aspect(classCut:cuts.packageName('com.mycompany.buggypackage'), methodCut:cuts.signature('save*'), interceptor:logger)
+        aspect(classCut:cuts.packageName('com.mycompany.dao'), methodCut:cuts.signature('save*'), interceptor:logger)
     }
 </pre>
 
 <h2>Limitations</h2>
-Components that have aspects applied to them must implement an
-interface.  Aspects are not applied to components regsistered with the
-container via <code>registerComponentInstance</code>.
+Components that have aspects applied to them must implement an interface. 
 
 </body>
 </html>

@@ -114,6 +114,20 @@ public interface AspectsContainer {
     void registerMixin(ClassPointcut classPointcut, Class[] interfaces, Object mixinComponentKey);
 
     /**
+     * Registers container scoped mixin advice. The interceptor advice object
+     * itself is a component in the container, specified by
+     * <code>mixinComponentKey</code>. The mixin will be added to all
+     * components in the container whose class satisfies the
+     * <code>classPointcut</code>. Use this method when the mixin component
+     * key is a <code>java.lang.Class</code> object.
+     * 
+     * @param classPointcut classes to add mixin to.
+     * @param interfaces interfaces the mixin implements.
+     * @param mixinComponentKey the mixin component key.
+     */
+    void registerMixin(ClassPointcut classPointcut, Class[] interfaces, ComponentKey mixinComponentKey);
+
+    /**
      * Registers component scoped mixin advice. The mixin will be added to all
      * components in the container whose key satisfies the
      * <code>componentPointcut</code>.
@@ -123,6 +137,18 @@ public interface AspectsContainer {
      * @param mixinComponentKey the mixin implementation.
      */
     void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, Object mixinComponentKey);
+
+    /**
+     * Registers component scoped mixin advice. The mixin will be added to all
+     * components in the container whose key satisfies the
+     * <code>componentPointcut</code>. Use this method when the mixin
+     * component key is a <code>java.lang.Class</code> object.
+     * 
+     * @param componentPointcut classes to add mixin to.
+     * @param interfaces interfaces the mixin implements.
+     * @param mixinComponentKey the mixin implementation.
+     */
+    void registerMixin(ComponentPointcut componentPointcut, Class[] interfaces, ComponentKey mixinComponentKey);
 
     /**
      * Registers container scoped mixin advice. The mixin will be added to all
@@ -145,6 +171,22 @@ public interface AspectsContainer {
      * @param mixinClass the mixin implementation.
      */
     void registerMixin(ComponentPointcut componentPointcut, Class mixinClass);
+
+    /**
+     * Adds interfaces to classes picked by the class pointcut.
+     * 
+     * @param classPointcut classes to add interfaces to.
+     * @param interfaces the interfaces to add.
+     */
+    void registerInterfaces(ClassPointcut classPointcut, Class[] interfaces);
+
+    /**
+     * Adds interfaces to components picked by the component pointcut.
+     * 
+     * @param componentPointcut components to add interfaces to.
+     * @param interfaces the interfaces to add.
+     */
+    void registerInterfaces(ComponentPointcut componentPointcut, Class[] interfaces);
 
     /**
      * Produces a pointcuts factory that can be used to create pointcuts to be

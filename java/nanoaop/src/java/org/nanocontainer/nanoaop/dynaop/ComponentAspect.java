@@ -11,6 +11,8 @@ package org.nanocontainer.nanoaop.dynaop;
 
 import org.nanocontainer.nanoaop.ComponentPointcut;
 
+import dynaop.Aspects;
+
 /**
  * Aspect that applies to the set of components matched by a
  * <code>org.nanocontainer.nanoaop.ComponentPointcut</code>.
@@ -33,28 +35,26 @@ abstract class ComponentAspect {
     }
 
     /**
-     * Applies this aspect to a component, if the component is picked by the
-     * pointcut passed to the constructor. Template method that delegates to the
-     * <code>wrap</code> method if the pointcut matches.
+     * Registers this aspect with <code>aspects</code> if the component
+     * pointcut passed to the constructor picks the <code>componentKey</code>.
+     * Template method that calls <code>doRegisterAspect</code> if the
+     * component key matches.
      * 
-     * @param componentKey the component key.
-     * @param component the component instance.
-     * @return the aspected component.
+     * @param componentKey the component key to match against.
+     * @param aspects the <code>dynaop.Aspects</code> collection.
      */
-    final Object applyAspect(Object componentKey, Object component) {
+    final void registerAspect(Object componentKey, Aspects aspects) {
         if (componentPointcut.picks(componentKey)) {
-            return wrap(component);
-        } else {
-            return component;
+            doRegisterAspect(componentKey, aspects);
         }
     }
 
     /**
-     * Called by <code>applyAspect</code> to actually apply the advice to the component.
+     * Called by <code>registerAspect</code> to 
      * 
-     * @param component the component to apply the advice to.
-     * @return the aspected component.
+     * @param componentKey
+     * @param aspects
      */
-    abstract Object wrap(Object component);
+    abstract void doRegisterAspect(Object componentKey, Aspects aspects);
 
 }

@@ -18,7 +18,8 @@ in the Servlet API, or J2SE.<br>
 </ol>
 It would be quite cool, if the servlet container could determine the
 needs of a servlet as a component before instantiation. The servlet was
-allowed to get dependant component instances via its constructor.&nbsp;
+allowed to get dependant component instances via one of its
+constructors.&nbsp;
 The need for servlet developers to break (2) above would be diminished
 because there is some place hier up the container tree for fatter
 components, that can provide services to request oriented
@@ -80,12 +81,9 @@ containers.<br>
 <h2>Enterprise Bean</h2>
 Same story :<br>
 <br>
-<pre>
-public interface StockQuoteService {</pre>
-<pre>
-&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);</pre>
-<pre>
-}</pre>
+<pre>public interface StockQuoteService {</pre>
+<pre>&nbsp;&nbsp;&nbsp; void BigDecimal getQuote(String stockTicker);</pre>
+<pre>}</pre>
 <pre>public class DefaultStockQuoteService implements StockQuoteService {</pre>
 <pre>&nbsp;&nbsp;&nbsp; QuoteRecorder quoteRecorder;</pre>
 <pre>&nbsp;&nbsp;&nbsp; public DefaultStockQuoteService(QuoteRecorderquoteRecorder) {</pre>
@@ -95,8 +93,7 @@ public interface StockQuoteService {</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; quoteRecorder.recordQuote(stockTicker);</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new BigDecimal()// TODO - makereal</pre>
 <pre>&nbsp;&nbsp;&nbsp; }</pre>
-<pre>
-}</pre>
+<pre>}</pre>
 <h2>Desktop Operating System</h2>
 Getting boring now :<br>
 <br>

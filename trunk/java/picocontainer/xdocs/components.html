@@ -8,15 +8,17 @@
 A component is a class that, for PicoContainer at least, is
 characterized in the following ways :<br>
 <br>
-Single constructor<br>
+Doesn't have to implement or extend anything<br>
+Declares one or more constructors where the arguments are the
+component's dependencies.<br>
 Reusable in many different deployments<br>
-<h3>1. Single constructor</h3>
-A single constructor that many have other components as parameters<br>
+<h3>1. Constructors</h3>
+One or more constructor that many have other components as parameters.<br>
 <br>
-The constructor is not mandadatory. If there is must only contain
-arguments that other components can satisfy. This does not include
-primative types (int etc), String itself or other classes that are not
-components.<br>
+The constructor is not mandadatory. PicoContainer will use the
+constructor with the largest number of satisfiable arguments.
+Currently, primitive (int, boolean ets.) types cannot be used, but
+their class counterparts can.<br>
 <h3>2. Reusable in many different deployments</h3>
 The ability to be instantiated in a variety of deployment scenarios
 (root, servlet, applet ClassLoaders etc)<br>

@@ -6,8 +6,10 @@
   </properties>
 
   <body>
+    <release version="1.0-beta-1-SNAPSHOT" date="In CVS">
+    </release>
 
-    <release version="1.0-alpha-2-SNAPSHOT" date="In CVS">
+    <release version="1.0-alpha-2" date="2003-07-10">
       <action dev="tirsen" type="update">
         Factored out logic for creation of aggregating proxy for a
         container's components. This opens up for alternative

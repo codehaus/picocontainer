@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.script.xml;
+package org.nanocontainer.script.xml;
 
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;

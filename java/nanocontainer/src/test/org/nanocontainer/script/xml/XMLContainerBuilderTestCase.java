@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.script.xml;
+package org.nanocontainer.script.xml;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.extras.ImplementationHidingComponentAdapterFactory;

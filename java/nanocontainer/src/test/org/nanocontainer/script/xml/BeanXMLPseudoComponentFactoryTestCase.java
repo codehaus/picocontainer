@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picoextras.script.xml;
+package org.nanocontainer.script.xml;
 
 import junit.framework.TestCase;
 import org.w3c.dom.Document;

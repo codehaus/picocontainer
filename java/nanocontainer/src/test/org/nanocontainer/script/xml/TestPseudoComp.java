@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picoextras.script.xml;
+package org.nanocontainer.script.xml;
 
 public class TestPseudoComp {
     private int foo;

@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.picoextras.script.xml;
+package org.nanocontainer.script.xml;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon

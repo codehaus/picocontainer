@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.picoextras.script.bsh;
+package org.nanocontainer.script.bsh;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;

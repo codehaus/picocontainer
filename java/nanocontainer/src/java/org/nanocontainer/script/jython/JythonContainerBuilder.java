@@ -1,4 +1,4 @@
-package org.picoextras.script.jython;
+package org.nanocontainer.script.jython;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;

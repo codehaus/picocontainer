@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.xstream;
+package org.nanocontainer.xml;
 
 import org.nanocontainer.xml.XmlPseudoComponentFactory;
 import org.w3c.dom.Element;

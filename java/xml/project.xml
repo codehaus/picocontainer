@@ -17,6 +17,14 @@
       <artifactId>picocontainer-reflection</artifactId>
       <version>${pom.currentVersion}</version>
     </dependency>
+    
+    <dependency>
+      <id>xstream</id>
+      <version>0.1</version>
+    </dependency> 
+    
   </dependencies>
+  
+  
 
 </project>

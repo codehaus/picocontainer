@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.xstream;
+package org.nanocontainer.xml;
 
 import junit.framework.TestCase;
 import org.w3c.dom.Document;
@@ -23,16 +23,16 @@ import java.io.StringReader;
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class XStreamXmlPseudoComponentFactoryTestCase extends TestCase {
+public class BeanXmlPseudoComponentFactoryTestCase extends TestCase {
 
     public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
-        XStreamXmlPseudoComponentFactory xsf = new XStreamXmlPseudoComponentFactory();
+        BeanXmlPseudoComponentFactory xsf = new BeanXmlPseudoComponentFactory();
 
                 StringReader sr = new StringReader("" +
-                        "<org.nanocontainer.xstream.TestPseudoComp>" +
+                        "<org.nanocontainer.xml.TestPseudoComp>" +
                           "<foo>10</foo>" +
                           "<bar>hello</bar>" +
-                        "</org.nanocontainer.xstream.TestPseudoComp>"
+                        "</org.nanocontainer.xml.TestPseudoComp>"
                     );
         InputSource is = new InputSource(sr);
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

@@ -1,4 +1,4 @@
-package org.nanocontainer.beanconfig;
+package org.nanocontainer.xml;
 
 public class TestPseudoComp {
     private int foo;

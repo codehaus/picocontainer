@@ -15,7 +15,6 @@
             <url>http://www.picocontainer.org/</url>
         </dependency>    
     
-
         <dependency>
             <id>servletapi</id>
             <version>2.3</version>

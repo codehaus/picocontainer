@@ -127,19 +127,14 @@ been selling the IoC patten for many years
 now.&nbsp; The Avalon-Framework design laces together and configures
 components like
 so:<br>
-<pre>import org.apache.avalon.framework.*;
-</pre>
+<pre>import org.apache.avalon.framework.*;<br></pre>
 <pre>   public class Shop implements Serviceable, Configurable, Initializable {</pre>
-<pre>&nbsp;&nbsp;&nbsp; StockManager stockManager;
-</pre>
-<pre>&nbsp;&nbsp;&nbsp; String shopZipCode;
-</pre>
+<pre>&nbsp;&nbsp;&nbsp; StockManager stockManager;<br></pre>
+<pre>&nbsp;&nbsp;&nbsp; String shopZipCode;<br></pre>
 <pre>&nbsp;&nbsp;&nbsp; public void service(org.apache.avalon.framework.ServiceManager sm) throws ServiceException {</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stockManager = (StockManager) sm.lookup("StockManager");</pre>
-<pre>&nbsp;&nbsp;&nbsp; }
-</pre>
-<pre>&nbsp;&nbsp;&nbsp; public void configure( final Configuration configuration ) throws ConfigurationException {
-</pre>
+<pre>&nbsp;&nbsp;&nbsp; }<br></pre>
+<pre>&nbsp;&nbsp;&nbsp; public void configure( final Configuration configuration ) throws ConfigurationException {<br></pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shopZipCode = configuration.getChild( "zipcode" ).getValue();       </pre>
 <pre>&nbsp;&nbsp;&nbsp; }</pre>
 <pre><br>&nbsp;&nbsp;&nbsp; public void initialize() {</pre>
@@ -172,19 +167,14 @@ there are missing dependencies.<br>
 Joe Walnes whist working on a book with other luminaries, started a
 type 2 IoC design. This is marked up with doclet tags (though that is
 not hard and fast) :<br>
-<pre>public class Shop {
-</pre>
+<pre>public class Shop {<br></pre>
 <pre>&nbsp;&nbsp; StockManager stockManager;</pre>
 <pre>   String shopZipCode;&nbsp;&nbsp; </pre>
-<pre>&nbsp;&nbsp; /**
-</pre>
+<pre>&nbsp;&nbsp; /**<br></pre>
 <pre>&nbsp;&nbsp;&nbsp; * @service name="StockManager"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
-<pre>&nbsp;&nbsp;&nbsp; */
-</pre>
-<pre>&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;
-</pre>
+<pre>&nbsp;&nbsp;&nbsp; */<br></pre>
+<pre>&nbsp;&nbsp; public void setStockManager(StockManager stockManager) {<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.stockManager = stockManager;<br></pre>
 <pre>&nbsp;&nbsp; }</pre>
 <pre><br>&nbsp;&nbsp; /**</pre>
 <pre>&nbsp;&nbsp;&nbsp; * @config name="shopZipCode"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
@@ -216,28 +206,22 @@ NullPointerException.
 Rachel Davies, while reviewing Joe's book, left a Fermat-like margin
 note when view a snippet like the above.&nbsp; "Why not use
 constructors ?".&nbsp; Brilliant and simple.<br>
-<pre>public class Shop {
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;StockManager stockManager;
-</pre>
-<pre>&nbsp;&nbsp;  String shopZipCode;
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;public Shop(StockManager stockManager, String shopZipCode) {
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.stockManager = stockManager;
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.shopZipCode = shopZipCode;
-</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;}
-</pre>
+<pre>public class Shop {<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;StockManager stockManager;<br></pre>
+<pre>&nbsp;&nbsp;  String shopZipCode;<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;public Shop(StockManager stockManager, String shopZipCode) {<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.stockManager = stockManager;<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  this.shopZipCode = shopZipCode;<br></pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;}<br></pre>
 <pre>&nbsp;}</pre>
 Note, for this there is no need to declare needs in any other way. No
-interfaces, no doclet tags, no external XML. Just your simple component
+interfaces, no doclet tags, no external XML. Just your simple
+component(s)
 and PicoContainer.&nbsp; No need for post assembly/config
 initialization either.&nbsp; If it is constructed (not withstanding
 some
 asserts on nulls) it has its needs satisfied.&nbsp; Components need not
-be interface/impl separated. Coder's choice.<br>
+be interface/implementation separated. This is the coder's choice.<br>
 <br>
 <span style="font-weight: bold;">Using type 3 comps without a type 3
 container.</span><br>

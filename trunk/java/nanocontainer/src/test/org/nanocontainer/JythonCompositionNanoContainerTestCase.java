@@ -96,7 +96,7 @@ public class JythonCompositionNanoContainerTestCase extends TestCase {
     public void testInstantiateWithInlineConfiguration() throws IOException, ClassNotFoundException, PicoCompositionException {
 
         NanoContainer nano = new JythonCompositionNanoContainer(new StringReader("" +
-                "from org.nanocontainer.testmodel import WebServerConfigBean\n" +
+                "from org.picoextras.testmodel import WebServerConfigBean\n" +
                 "wsc = WebServerConfigBean()\n" +
                 "wsc.setHost('foobar.com')\n" +
                 "wsc.setPort(4321)\n" +

@@ -9,9 +9,9 @@
 package org.picoextras.servlet;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picoextras.integrationkit.ContainerComposer;
 import org.picoextras.integrationkit.ContainerBuilder;
 import org.picoextras.integrationkit.DefaultLifecycleContainerBuilder;
+import org.picoextras.integrationkit.ContainerComposer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -19,13 +19,15 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 
 /**
  * Servlet listener class that hooks into the underlying servlet
  * container and instantiates, assembles, starts, stores and
  * disposes the appropriate pico containers when
  * applications/sessions start/stop.
- *
+ * <p/>
  * To use, add this as a listener-class to web.xml.
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
@@ -49,7 +51,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
-
         killContainer(containerRef);
     }
 
@@ -62,13 +63,21 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
         ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(assembler);
         containerBuilder.buildContainer(containerRef, parentContainerRef, session);
+
+        session.setAttribute("Session destroyed helper", new HttpSessionBindingListener() {
+            public void valueBound(HttpSessionBindingEvent bindingEvent) {
+            }
+
+            public void valueUnbound(HttpSessionBindingEvent event) {
+                HttpSession session = event.getSession();
+                ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
+                killContainer(containerRef);
+            }
+        });
+
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
-        HttpSession session = event.getSession();
-        ObjectReference containerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
-
-        killContainer(containerRef);
     }
 
     private ContainerComposer loadAssembler(ServletContext context) {
@@ -79,6 +88,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
             result = (ContainerComposer) Class.forName(className, true, Thread.currentThread().getContextClassLoader()).newInstance();
         } catch (Exception e) {
             // Don't use exception chaining to be JDK 1.3 compatible
+            //TODO Use a PicoException derived exception (Paul)?
             throw new RuntimeException("Cannot instanciate container assembler class. Root cause: " + e);
         }
         assemblerRef.set(result);

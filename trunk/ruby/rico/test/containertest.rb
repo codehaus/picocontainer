@@ -299,4 +299,10 @@ class ContainerTest < Test::Unit::TestCase
     assert_equal(has_dependents.needed, rico[:needed])
     assert(has_dependents.also_needed.is_a?(AlsoNeeded))
   end
+  
+  def test_hash_api_should_work_with_instances
+    rico = Container.new  
+    rico[:foo] = "Foo"
+    assert_equal("Foo", rico[:foo])
+  end
 end

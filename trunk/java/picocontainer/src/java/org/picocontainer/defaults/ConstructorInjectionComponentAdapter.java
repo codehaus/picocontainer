@@ -68,7 +68,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         this(componentKey, componentImplementation, null);
     }
 
-    protected Constructor getGreediestSatisifableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(List adapterInstantiationOrderTrackingList) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
@@ -182,7 +182,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
 
     protected Object instantiateComponent(List adapterInstantiationOrderTrackingList) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         try {
-            Constructor constructor = getGreediestSatisifableConstructor(adapterInstantiationOrderTrackingList);
+            Constructor constructor = getGreediestSatisfiableConstructor(adapterInstantiationOrderTrackingList);
             if (instantiating) {
                 throw new CyclicDependencyException(constructor.getParameterTypes());
             }

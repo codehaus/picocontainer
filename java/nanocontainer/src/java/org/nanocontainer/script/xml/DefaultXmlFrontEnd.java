@@ -134,30 +134,23 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
     }
 
-    private void registerComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException {
-        String className = componentElement.getAttribute("impl");
-        String stringKey = componentElement.getAttribute("stringkey");
-        String typeKey = componentElement.getAttribute("typekey");
+    private void registerComponent(ReflectionFrontEnd reflectionFrontEnd, Element componentElement) throws ClassNotFoundException {
+        String className = componentElement.getAttribute("class");
+        String stringKey = componentElement.getAttribute("key");
 
         ArrayList hints = new ArrayList();
         NodeList children = componentElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             if (child.getNodeName() == "hint") {
-                hints.add(((Element) child).getAttribute("stringkey"));
+                hints.add(((Element) child).getAttribute("key"));
             }
         }
 
-
-        //TODO we need to have config elements parsing here, and register with params action...
         if (stringKey == null || stringKey.equals("")) {
             stringKey = className;
         }
-        if (typeKey == null || typeKey.equals("")) {
-            pico.registerComponent(stringKey, className);
-        } else {
-            pico.registerComponentWithClassKey(typeKey,className);
-        }
+        reflectionFrontEnd.registerComponent(stringKey, className);
     }
 
     private void registerPseudoComponent(ReflectionFrontEnd pico, Element componentElement) throws ClassNotFoundException, PicoCompositionException {
@@ -169,7 +162,7 @@ public class DefaultXmlFrontEnd implements XmlFrontEnd {
         }
 
         ReflectionFrontEnd tempContainer = new DefaultReflectionFrontEnd();
-        tempContainer.registerComponentWithClassKey(XmlPseudoComponentFactory.class.getName(), factoryClass);
+        tempContainer.registerComponent(XmlPseudoComponentFactory.class.getName(), factoryClass);
         XmlPseudoComponentFactory factory = (XmlPseudoComponentFactory) tempContainer.getPicoContainer().getComponentInstances().get(0);
 
         NodeList nl = componentElement.getChildNodes();

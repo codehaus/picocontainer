@@ -18,6 +18,16 @@ package picocontainer;
  */
 public abstract class AbstractContainer implements PicoContainer {
 
+    /**
+     * This returns a list of all components for the component
+     * types the container is hosting.  It may be that some
+     * components from the parent container are listed here.
+     * The order is not guaranteed at all.
+     *
+     * @return A list of components being hosted by the
+     * container.
+     */
+
     public Object[] getComponents() {
         Class[] componentTypes = getComponentTypes();
         Object[] components = new Object[componentTypes.length];

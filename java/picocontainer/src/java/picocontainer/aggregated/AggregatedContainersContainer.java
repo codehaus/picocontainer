@@ -17,6 +17,17 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
 
+/**
+ * AggregatedContainersContainer aggregates the the contents of more
+ * than one container together for the sake of a single list of
+ * components. This list may be used as the parent container for
+ * another PicoContainer. This will result in directive graphs of
+ * containers/components rather than just trees.
+ *
+ * It is not in itself, a Pico component (the array in the
+ * constructor puts paid to that).
+ *
+ */
 public class AggregatedContainersContainer extends AbstractContainer {
 
     private final PicoContainer[] containers;

@@ -10,6 +10,11 @@
 
 package picocontainer;
 
+/**
+ * PicoContainer - guaranteed to resolve the needs of components
+ * as it instantiates them.
+ *
+ */
 public interface PicoContainer {
 
     /**

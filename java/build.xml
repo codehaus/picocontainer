@@ -134,7 +134,7 @@
     </javadoc>
   </target>
   <target name="get-deps" unless="noget" depends="init">
-    <get dest="${libdir}/picocontainer-1.0-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://dist.codehaus.org/picocontainer/jars/picocontainer-1.0-SNAPSHOT.jar">
+    <get dest="${libdir}/picocontainer-1.0-SNAPSHOT.jar" usetimestamp="true" ignoreerrors="true" src="http://dist.codehaus.org/picocontainer/jars/picocontainer-1.0-alpha-2-SNAPSHOT.jar">
     </get>
     <get dest="${libdir}/commons-collections-2.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar">
     </get>

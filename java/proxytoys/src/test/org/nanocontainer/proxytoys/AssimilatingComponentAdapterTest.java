@@ -14,6 +14,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 import junit.framework.TestCase;
 
+import org.nanocontainer.proxytoys.tck.CompatibleTouchable;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -25,7 +26,6 @@ import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.io.Serializable;
 import java.lang.reflect.Proxy;
 
 
@@ -33,18 +33,6 @@ import java.lang.reflect.Proxy;
  * @author J&ouml;rg Schaible
  */
 public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTestCase {
-
-    public static class CompatibleTouchable implements Serializable {
-        private boolean wasTouched;
-
-        public void touch() {
-            wasTouched = true;
-        }
-
-        public boolean wasTouched() {
-            return wasTouched;
-        }
-    }
 
     /**
      * Test if an instance can be assimilated.
@@ -88,6 +76,17 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
         final TestCase self = (TestCase) mpc.getComponentInstanceOfType(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
+        assertSame(this, self);
+    }
+
+    /**
+     * Test if proxy generation is omitted, if types are compatible and that the component key is not changed.
+     */
+    public void testAvoidedProxyDoesNotChangeComponentKey() {
+        final MutablePicoContainer mpc = new DefaultPicoContainer();
+        mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this)));
+        final TestCase self = (TestCase) mpc.getComponentInstance(getClass());
+        assertNotNull(self);
         assertSame(this, self);
     }
     

@@ -91,7 +91,7 @@ public class HierarchicalPicoContainerTestCase extends TestCase {
             assertEquals("Should only have one instance of Webster", 1,messages.size());
             Object dictionary = pico.getComponent(Dictionary.class);
             Object thesaurus = pico.getComponent(Thesaurus.class);
-            assertEquals(dictionary, thesaurus);
+            assertSame("The dictionary and the thesaurus should heve been the same object", dictionary, thesaurus);
 
         } catch (PicoRegistrationException e) {
             fail("Should not have barfed with dupe registration");

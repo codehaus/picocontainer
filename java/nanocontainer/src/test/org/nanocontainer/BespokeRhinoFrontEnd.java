@@ -6,13 +6,14 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.rhino;
+package org.nanocontainer;
 
-import org.picocontainer.MutablePicoContainer;
-import org.mozilla.javascript.Scriptable;
+import org.nanocontainer.rhino.DefaultRhinoFrontEnd;
 
-public interface RhinoFrontEnd extends Scriptable {
+public class BespokeRhinoFrontEnd extends DefaultRhinoFrontEnd {
 
-    MutablePicoContainer getPicoContainer();
-
+    public static boolean used;
+    public BespokeRhinoFrontEnd() {
+        used = true;
+    }
 }

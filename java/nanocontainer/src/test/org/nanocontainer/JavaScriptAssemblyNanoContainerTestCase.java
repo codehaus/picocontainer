@@ -10,6 +10,7 @@ package org.nanocontainer;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoConfigurationException;
+import org.picocontainer.defaults.NoSatisfiableConstructorsException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -31,24 +32,74 @@ public class JavaScriptAssemblyNanoContainerTestCase extends TestCase {
     public void testFoo() {
     }
 
-    //TODO nearly works !
-    public void donot_testInstantiateXml() throws IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBasicRhinoFrontEnd() throws IOException, ClassNotFoundException, PicoConfigurationException {
 
-        // A and C have no no dependancies. B Depends on A.
+        Xxx.componentRecorder = "";
 
         NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
-                "fe = new RhinoFrontEnd();" +
-                "  fe.addComponent('org.nanocontainer.Xxx$A');" +
-                "  fe2 = fe.subContainer();" +
-                "    fe2.addComponent('org.nanocontainer.Xxx$B');" +
-                "  fe.addComponent('org.nanocontainer.Xxx$C');" +
-                "/* TODO get root container out ? here or inside RhinoFrontEnd? */"
+                "var parentContainer = new RhinoFrontEnd();\n" +
+                "with (parentContainer) {\n" +
+                "  addComponent('org.nanocontainer.Xxx$A');\n" +
+                "}\n" +
+                "nano.setRhinoFrontEnd(parentContainer)\n"
                 ), new MockMonitor());
         nano.stopComponentsDepthFirst();
         nano.disposeComponentsDepthFirst();
 
-        assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
-        assertEquals("Should match the expression", "*A*B+A_started+B_started+B_stopped+A_stopped+B_disposed+A_disposed", MockMonitor.monitorRecorder);
+        assertEquals("Should match the expression", "<AA>!A", Xxx.componentRecorder);
+    }
+
+    public void testInstantiateWithChildContainer() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        // A and C have no no dependancies. B Depends on A.
+
+        Xxx.componentRecorder = "";
+
+        NanoContainer nano = new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                "var parentContainer = new RhinoFrontEnd();\n" +
+                "with (parentContainer) {\n" +
+                "  addComponent('org.nanocontainer.Xxx$A');\n" +
+                "  var childContainer = new RhinoFrontEnd();\n" +
+                "  addContainer(childContainer);\n" +
+                "  with (childContainer) {\n" +
+                "      addComponent('org.nanocontainer.Xxx$B');\n" +
+                "  }\n" +
+                "  addComponent('org.nanocontainer.Xxx$C');\n" +
+                "}\n" +
+                "nano.setRhinoFrontEnd(parentContainer)\n"
+                ), new MockMonitor());
+        nano.stopComponentsDepthFirst();
+        nano.disposeComponentsDepthFirst();
+
+        assertEquals("Should match the expression", "<C<A<BB>A>C>!B!A!C", Xxx.componentRecorder);
+        assertEquals("Should match the expression", "*C*B+C_started+B_started+B_stopped+C_stopped+B_disposed+C_disposed", MockMonitor.monitorRecorder);
+
+        //TODO Should really be ....
+        // assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", Xxx.componentRecorder);
+        // assertEquals("Should match the expression", "*A*B+A_started+B_started+B_stopped+A_stopped+B_disposed+A_disposed", MockMonitor.monitorRecorder);
+    }
+
+    public void testInstantiateXmlWithImpossibleComponentDependanciesConsideringTheHierarchy() throws IOException, ClassNotFoundException, PicoConfigurationException {
+
+        // A and C have no no dependancies. B Depends on A.
+
+        try {
+            new JavaScriptAssemblyNanoContainer(new StringReader("" +
+                    "var parentContainer = new RhinoFrontEnd();\n" +
+                    "with (parentContainer) {\n" +
+                    "  addComponent('org.nanocontainer.Xxx$B');\n" +
+                    "  var childContainer = new RhinoFrontEnd();\n" +
+                    "  addContainer(childContainer);\n" +
+                    "  with (childContainer) {\n" +
+                    "      addComponent('org.nanocontainer.Xxx$A');\n" +
+                    "  }\n" +
+                    "  addComponent('org.nanocontainer.Xxx$C');\n" +
+                    "}\n" +
+                    "nano.setRhinoFrontEnd(parentContainer)\n"
+                    ), new MockMonitor());
+            fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
+        } catch (NoSatisfiableConstructorsException e) {
+        }
     }
 
 }

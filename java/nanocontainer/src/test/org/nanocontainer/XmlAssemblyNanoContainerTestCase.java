@@ -37,7 +37,7 @@ public class XmlAssemblyNanoContainerTestCase extends TestCase {
         MockMonitor.allComps = new ArrayList();
     }
 
-    public void testInstantiateXml() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
+    public void testInstantiateBasicTree() throws SAXException, ParserConfigurationException, IOException, ClassNotFoundException, PicoConfigurationException {
 
         // A and C have no no dependancies. B Depends on A.
 

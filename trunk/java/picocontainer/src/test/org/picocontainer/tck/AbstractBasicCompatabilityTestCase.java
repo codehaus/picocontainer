@@ -3,8 +3,8 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.nanocontainer.testmodel.FredImpl;
-import org.nanocontainer.testmodel.Wilma;
+import org.picocontainer.testmodel.FredImpl;
+import org.picocontainer.testmodel.Wilma;
 
 public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
 
@@ -14,7 +14,7 @@ public abstract class AbstractBasicCompatabilityTestCase extends TestCase {
         assertNotNull("You need to assign 'picoContainer' in your setup() method", picoContainer);
     }
 
-    public void testBasicInstantiationAndContainment() throws PicoInitializationException {        
+    public void testBasicInstantiationAndContainment() throws PicoInitializationException {
         picoContainer.instantiateComponents();
         assertTrue(picoContainer.hasComponent(Wilma.class));
         assertTrue(picoContainer.hasComponent(FredImpl.class));

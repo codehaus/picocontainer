@@ -1,9 +1,10 @@
 package org.picocontainer.tck;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.nanocontainer.testmodel.WilmaImpl;
-import org.nanocontainer.testmodel.Wilma;
-import org.nanocontainer.testmodel.FredImpl;
+import org.picocontainer.testmodel.Wilma;
+import org.picocontainer.testmodel.FredImpl;
+import org.picocontainer.testmodel.WilmaImpl;
+
 
 public class DemonstrationCompatabilityTestCase extends AbstractBasicCompatabilityTestCase {
 

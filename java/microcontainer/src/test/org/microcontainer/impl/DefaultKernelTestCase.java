@@ -36,26 +36,26 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         kernel = new DefaultKernel();
     }
 
-    public void testDeploymentOfMarFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
-        kernel.deploy(new File("test.mar"));
+    public void testDeploymentOfMcaFile() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
+        kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeploymentOfMarFileFromURL() throws Exception {
-        //kernel.handleDeployForMarFile(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar"));
-		File testMar = new File("test.mar");
-		kernel.deploy(new URL("jar:file:" + testMar.getCanonicalPath() + "!/"));
+    public void testDeploymentOfMcaFileFromURL() throws Exception {
+        //kernel.handleDeployForMcaFile(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mca"));
+		File testMca = new File("test.mca");
+		kernel.deploy(new URL("jar:file:" + testMca.getCanonicalPath() + "!/"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);
         assertEquals("hello", m.invoke(o, new Object[0]));
     }
 
-    public void testDeferredDeploymentOfMarFile() throws Exception {
-        kernel.deferredDeploy(new File("test.mar"));
+    public void testDeferredDeploymentOfMcaFile() throws Exception {
+        kernel.deferredDeploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
 		Method isRunningMethod = o.getClass().getMethod("isRunning", new Class[0]);
 		assertEquals(Boolean.FALSE, isRunningMethod.invoke(o, new Object[0]));
@@ -66,8 +66,8 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertEquals("hello", testMethod.invoke(o, new Object[0]));
     }
 
-    public void testDeployedMarsComponentsAreInDifferentClassloaderToKernel() throws DeploymentException{
-        kernel.deploy(new File("test.mar"));
+    public void testDeployedMcaComponentsAreInDifferentClassloaderToKernel() throws DeploymentException{
+        kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
 		Class interfaceClass = o.getClass().getInterfaces()[0];
@@ -77,11 +77,11 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // LSD: what kind of number is that, "two"?
         // You're testing that the kernel is two classloaders
         // above the component, which is not
-        // testDeployedMarsComponentsAreInDiffClassloaderToKernel()
+        // testDeployedMcasComponentsAreInDiffClassloaderToKernel()
     }
 
     public void testAPIisPromoted() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DeploymentException {
-        kernel.deploy(new File("test.mar"));
+        kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.testapi.TestPromotable");
 		Class interfaceClass =  o.getClass().getInterfaces()[0];
 
@@ -89,14 +89,14 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertEquals(kernel.getClass().getClassLoader(), interfaceClass.getClassLoader().getParent());
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
         ClassLoader implClassLoader = (ClassLoader) m.invoke(o, new Class[0]);
-        // these should be three removed from each other.
-        assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent().getParent());
+        // these should be four removed from each other (cause of FooClassLoader from nano).
+        assertEquals(kernel.getClass().getClassLoader(), implClassLoader.getParent().getParent().getParent().getParent());
         // LSD: those numbers again...you want to expose the classloader architecture
         // to the client...that'll make it difficult to change...
     }
 
-    public void testTwoDeployedMarsComponentAPIsAreInDifferentClassloader() throws Exception {
-		URL url = new URL("jar:file:test.mar!/");
+    public void testTwoDeployedMcaComponentAPIsAreInDifferentClassloader() throws Exception {
+		URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
 		kernel.deploy("test2", url);
@@ -107,8 +107,8 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         assertNotSame(o.getClass().getClassLoader(), o2.getClass().getClassLoader());
     }
 
-    public void testTwoDeployedMarsComponentImplementationsAreInDifferentClassloader() throws Exception {
-        URL url = new URL("jar:file:test.mar!/");
+    public void testTwoDeployedMcaComponentImplementationsAreInDifferentClassloader() throws Exception {
+        URL url = new URL("jar:file:test.mca!/");
         kernel.deploy("test", url);
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("unHideImplClassLoader", new Class[0]);
@@ -129,15 +129,15 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // might be quite hard
     }
 
-    public void testMarWithUnsupportedNanoContainerScriptCannotBeDeployed() throws DeploymentException{
-        kernel.deploy(new File("bogus.mar"));
+    public void testMcaWithUnsupportedNanoContainerScriptCannotBeDeployed() throws DeploymentException{
+        kernel.deploy(new File("bogus.mca"));
         // .bogus language not supported
     }
 
-    public void testMarMissingJavaCannotBeDeployed() throws DeploymentException{
+    public void testMcaMissingJavaCannotBeDeployed() throws DeploymentException{
 		try {
-			kernel.deploy(new File("incomplete.mar"));
-			fail("The file incomplete.mar should NOT be valid, deployment exception should be thrown");
+			kernel.deploy(new File("incomplete.mca"));
+			fail("The file incomplete.mca should NOT be valid, deployment exception should be thrown");
 		} catch (DeploymentException e) {
         	assertTrue(e.getCause() instanceof ZipException);
 		}
@@ -145,30 +145,30 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
 		assertFalse(new File("work/incomplete").exists()); // ensure directory was NOT created
     }
 
-    public void testDeploymentOfMarFileResultsInAProperExceptionOnMissingFile() throws DeploymentException {
+    public void testDeploymentOfMcaFileResultsInAProperExceptionOnMissingFile() throws DeploymentException {
 		try {
-			kernel.deploy(new File("missing.mar"));
+			kernel.deploy(new File("missing.mca"));
 			fail("DeploymentException should have been thrown");
 		} catch (DeploymentException e) {
 			assertTrue(e.getCause() instanceof ZipException);
 		}
 	}
 
-    public void testDeploymentOfMarFileResultsInAProperExceptionOnBadURL() throws MalformedURLException, DeploymentException {
+    public void testDeploymentOfMcaFileResultsInAProperExceptionOnBadURL() throws MalformedURLException, DeploymentException {
 		try {
-			kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mar.badurl"));
+			kernel.deploy(new URL("http://cvs.picocontainer.codehaus.org/java/microcontainer/src/remotecomp.mca.badurl"));
 			fail("DeploymentException should have been thrown");
 		} catch (DeploymentException e) {
 			assertTrue(e.getCause() instanceof FileNotFoundException);
 		}
 	}
 
-    public void testMarWithGroovyScriptErrorResultsInException() {
+    public void testMcaWithGroovyScriptErrorResultsInException() {
         // gracefully handle misconfiguration...
     }
 
-    public void testMarFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
-        kernel.deploy(new File("test.mar"));
+    public void testMcaFileAppCanBeStopped() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
+        kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         Method m = o.getClass().getMethod("isRunning", new Class[0]);
         assertTrue(((Boolean) m.invoke(o, new Object[0])).booleanValue());
@@ -177,13 +177,13 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // of course, any references to any comp will be usable prior to GC, even if the container has stopped.
     }
 
-    public void testKernelImplIsInvisibleFromMarsSandbox() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
+    public void testKernelImplIsInvisibleFromMcaSandbox() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, DeploymentException {
 
         // might not work as IDE is going to fight to keep these at VM classpath level
 
-        kernel.deploy(new File("test.mar"));
+        kernel.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
-        Method m = o.getClass().getMethod("testKernelImplIsInvisibleFromMarsSandbox", new Class[0]);
+        Method m = o.getClass().getMethod("testKernelImplIsInvisibleFromMcaSandbox", new Class[0]);
         m.invoke(o, new Object[0]); // asserts using Junit that certain classes do not exist in classpath
     }
 
@@ -218,9 +218,9 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // was an issue with phoenix at times...ie these guys don't claim server sockets...
         Kernel kernel2 = new DefaultKernel();
 
-        testDeploymentOfMarFile();
+        testDeploymentOfMcaFile();
 
-        kernel2.deploy(new File("test.mar"));
+        kernel2.deploy(new File("test.mca"));
         Object o = kernel.getComponent("test/org.microcontainer.test.TestComp");
         assertNotNull(o);
         Method m = o.getClass().getMethod("testMe", new Class[0]);

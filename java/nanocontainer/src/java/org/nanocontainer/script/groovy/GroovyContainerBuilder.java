@@ -51,6 +51,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         Binding binding = new Binding();
         binding.setVariable("parent", parentContainer);
         binding.setVariable("assemblyScope", assemblyScope);
+		handleBinding(binding);
         groovyScript.setBinding(binding);
 
         // both returning something or defining the variable is ok.
@@ -69,6 +70,15 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
             throw new NanoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }
     }
+
+	/**
+	 * This allows children of this class to add to the default binding.
+	 * Might want to add similar or a more generic implementation of this
+	 * method to support the other scripting languages.
+	 */
+	protected void handleBinding(Binding binding) {
+     	// does nothing but adds flexibility for children
+	}
 
     private void createGroovyScript() {
         try {

@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collection;
 import java.util.List;

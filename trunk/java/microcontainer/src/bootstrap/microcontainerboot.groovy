@@ -1,8 +1,8 @@
 import org.nanocontainer.script.groovy.NanoContainerBuilder
-import org.microcontainer.MicroGroovyBuilder
+import org.microcontainer.jmx.JmxDecorationDelegate
 import javax.management.MBeanServerFactory
 
-builder = new MicroGroovyBuilder()
+builder = new NanoContainerBuilder(new JmxDecorationDelegate())
 
 nano = builder.container(parent:parent) {
   	classpathelement(path:"lib/hidden/microcontainer-impl-0.1-SNAPSHOT.jar");

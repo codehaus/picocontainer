@@ -58,6 +58,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         }
 
         public void advise(AspectInstance instance) {
+            System.out.println("advising");
             transactionPointcut.advise(instance, new MethodInterceptor() {
                 public Object invoke(Invocation invocation) throws Throwable {
                     Transaction transaction = transactionManager.startTransaction();

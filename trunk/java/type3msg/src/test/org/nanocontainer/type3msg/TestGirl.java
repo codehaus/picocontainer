@@ -3,7 +3,7 @@ package org.picoextras.typ3msg;
 public class TestGirl implements Kissable {
     private boolean kissed = false;
 
-    public TestGirl(int id) {
+    public TestGirl() {
     }
 
     public boolean wasKissed() {

@@ -53,9 +53,6 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
         assertSame(parentC, childContainer.getParent());
 
         builder.killContainer(childRef);
-
-        //parentStartable.verify();
-        //childStartable.verify();
     }
 
 }

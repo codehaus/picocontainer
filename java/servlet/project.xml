@@ -2,18 +2,16 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <groupId>nanocontainer</groupId>
     <id>nanocontainer-servlet</id>
     <name>nanocontainer-servlet</name>
 
-
     <dependencies>
-    
+
         <dependency>
             <id>picocontainer</id>
             <version>1.0-final-SNAPSHOT</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>    
+        </dependency>
 
         <dependency>
             <id>servletapi</id>
@@ -40,7 +38,7 @@
             <id>jmock</id>
             <version>1.0.0.RC1</version>
         </dependency>
-        
+
         <dependency>
             <id>xstream</id>
             <version>1.0</version>

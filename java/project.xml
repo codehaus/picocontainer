@@ -12,8 +12,8 @@
     <pomVersion>3</pomVersion>
     <currentVersion>1.0-beta-1-SNAPSHOT</currentVersion>
     <name>NanoContainer</name>
-    <groupId>nancontainer</groupId>
-    <url>http://www.nancontainer.org</url>
+    <groupId>nanocontainer</groupId>
+    <url>http://www.nanocontainer.org</url>
     <organization>
         <name>Codehaus</name>
         <url>http://codehaus.org/</url>

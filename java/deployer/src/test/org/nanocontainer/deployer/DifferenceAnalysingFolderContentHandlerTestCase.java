@@ -28,10 +28,6 @@ public class DifferenceAnalysingFolderContentHandlerTestCase extends MockObjectT
         handler.addFolderListener((FolderListener) folderListenerMock.proxy());
 
         handler.setCurrentChildren(new FileObject[]{addedFolder});
-
-        //folderMock.verify();
-        //addedFolderMock.verify();
-        //folderListenerMock.verify();
     }
 
     public void testRemovedFoldersShouldCauseFolderRemovedEvent() {
@@ -66,10 +62,5 @@ public class DifferenceAnalysingFolderContentHandlerTestCase extends MockObjectT
         handler.addFolderListener((FolderListener) folderListenerMock.proxy());
 
         handler.setCurrentChildren(foldersAfterRemoval);
-
-        //folderMock.verify();
-        //initialFolderOneMock.verify();
-        //initialFolderTwoMock.verify();
-        //folderListenerMock.verify();
     }
 }

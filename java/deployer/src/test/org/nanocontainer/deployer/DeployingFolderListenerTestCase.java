@@ -23,8 +23,6 @@ public class DeployingFolderListenerTestCase extends MockObjectTestCase {
         DeployingFolderListener deployingFolderListener = new DeployingFolderListener(deployer, handler);
 
         deployingFolderListener.folderAdded(folder);
-
-        //deployerMock.verify();
     }
 
 }

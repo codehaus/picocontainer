@@ -1,5 +1,6 @@
 package org.picocontainer.doc;
 
+// START SNIPPET: class
 public class Juicer {
     private final Peelable peelable;
     private final Juicer juicer;
@@ -9,3 +10,4 @@ public class Juicer {
         this.juicer = juicer;
     }
 }
+// END SNIPPET: class

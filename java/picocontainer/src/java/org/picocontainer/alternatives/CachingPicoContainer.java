@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by the committers                                           *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

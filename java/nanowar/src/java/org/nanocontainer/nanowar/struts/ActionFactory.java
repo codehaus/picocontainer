@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
+import org.nanocontainer.nanowar.ServletContainerFinder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -30,6 +31,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class ActionFactory {
 
+    private final ServletContainerFinder containerFinder = new ServletContainerFinder();
+
     /**
      * Gets the <code>Action</code> specified by the mapping type from a Pico
      * container. The action will be instantiated if necessary, and its
@@ -44,14 +47,11 @@ public class ActionFactory {
      * will be thrown. <p/>The action path specified in the mapping is used as
      * the component key for the action.
      * 
-     * @param request
-     *            the HTTP servlet request.
-     * @param mapping
-     *            the Struts mapping object. The type property tells us what
-     *            Action class is required.
-     * @param servlet
-     *            the Struts
-     *            <code>ActionServlet.  The action is configured with this servlet.
+     * @param request the HTTP servlet request.
+     * @param mapping the Struts mapping object. The type property tells us what
+     *        Action class is required.
+     * @param servlet the Struts
+     *        <code>ActionServlet.  The action is configured with this servlet.
      * @return the <code>Action</code> instance.
      * @throws PicoIntrospectionException  if the mapping type does not specify a valid action.
      * @throws PicoInitializationException if no request, session, or application scoped Pico container
@@ -77,26 +77,10 @@ public class ActionFactory {
     private MutablePicoContainer getActionsContainer(HttpServletRequest request) {
         MutablePicoContainer actionsContainer = (MutablePicoContainer) request.getAttribute(KeyConstants.ACTIONS_CONTAINER);
         if (actionsContainer == null) {
-            actionsContainer = new DefaultPicoContainer(getNanoServletContainer(request));
+            actionsContainer = new DefaultPicoContainer(containerFinder.findContainer(request));
             request.setAttribute(KeyConstants.ACTIONS_CONTAINER, actionsContainer);
         }
         return actionsContainer;
-    }
-
-    private MutablePicoContainer getNanoServletContainer(HttpServletRequest request) throws PicoInitializationException {
-        MutablePicoContainer container = (MutablePicoContainer) request.getAttribute(KeyConstants.REQUEST_CONTAINER);
-        if (container == null) {
-            container = (MutablePicoContainer) request.getSession().getAttribute(KeyConstants.SESSION_CONTAINER);
-        }
-        if (container == null) {
-            container = (MutablePicoContainer) request.getSession().getServletContext().getAttribute(
-                    KeyConstants.APPLICATION_CONTAINER);
-        }
-        if (container == null) {
-            throw new PicoInitializationException("Could not find request, session or application container.  "
-                    + "Please make sure you have nano-servlet configured properly");
-        }
-        return container;
     }
 
     private Class getActionClass(String className) throws PicoIntrospectionException {

@@ -1,4 +1,5 @@
 *.suo
+_ReSharper.PicoContainer
 PicoContainer.resharper
 PicoContainer.resharperoptions
 bin

@@ -6,7 +6,8 @@ namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// Summary description for DefaultLifecycleManager.
-	/// </summary>
+	/// </summary
+	[Serializable]
 	public class DefaultLifecycleManager : ILifecycleManager
 	{
 		protected IComponentMonitor componentMonitor;

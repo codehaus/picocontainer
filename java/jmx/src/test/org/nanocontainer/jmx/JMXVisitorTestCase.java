@@ -85,7 +85,9 @@ public class JMXVisitorTestCase extends TestCase {
 	public void testProxyingInterfaceImplementation() throws Exception {
 		PersonBean person = new PersonBean();
         person.setName("John Doe");
-		ComponentAdapter componentAdapter = new AssimilatingComponentAdapter(PersonMBean.class, person);
+		ComponentAdapter componentAdapter = 
+            new AssimilatingComponentAdapter(PersonMBean.class, 
+                    new InstanceComponentAdapter(PersonBean.class, person));
 		picoContainer.registerComponent(componentAdapter);
 
 		JMXVisitor jmxVisitor = new JMXVisitor();

@@ -16,8 +16,14 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
@@ -28,34 +34,77 @@ import java.lang.reflect.Proxy;
  */
 public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTestCase {
 
-    public static interface Foo {
-        int size();
-    }
+    public static class CompatibleTouchable implements Serializable {
+        private boolean wasTouched;
 
-    public static class Bar implements Serializable {
-        public int size() {
-            return 1;
+        public void touch() {
+            wasTouched = true;
+        }
+
+        public boolean wasTouched() {
+            return wasTouched;
         }
     }
 
+    /**
+     * Test if an instance can be assimilated.
+     */
     public void testInstanceIsBorged() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(new AssimilatingComponentAdapter(Foo.class, new Bar()));
-        final Foo foo = (Foo) mpc.getComponentInstanceOfType(Foo.class);
-        assertEquals(1, foo.size());
-        assertTrue(Proxy.isProxyClass(foo.getClass()));
+        final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                CompatibleTouchable.class, CompatibleTouchable.class));
+        mpc.registerComponent(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter
+                .getComponentInstance(mpc);
+        final Touchable touchable = (Touchable) mpc.getComponentInstanceOfType(Touchable.class);
+        assertFalse(compatibleTouchable.wasTouched());
+        touchable.touch();
+        assertTrue(compatibleTouchable.wasTouched());
+        assertTrue(Proxy.isProxyClass(touchable.getClass()));
+    }
+    
+    /**
+     * Test if the component key is preserved if it is not a class type.
+     */
+    public void testComponentKeyIsPreserved() {
+        final MutablePicoContainer mpc = new DefaultPicoContainer();
+        final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                "Touchy", CompatibleTouchable.class));
+        mpc.registerComponent(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter
+                .getComponentInstance(mpc);
+        final Touchable touchable = (Touchable) mpc.getComponentInstance("Touchy");
+        assertFalse(compatibleTouchable.wasTouched());
+        touchable.touch();
+        assertTrue(compatibleTouchable.wasTouched());
+        assertTrue(Proxy.isProxyClass(touchable.getClass()));
     }
 
+    /**
+     * Test if proxy generation is omitted, if types are compatible.
+     */
     public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, this));
+        mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
         final TestCase self = (TestCase) mpc.getComponentInstanceOfType(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
     }
+    
+    /**
+     * Test fail-fast for components without interface.
+     */
+    public void testComponentMustImplementInterface() {
+        try {
+            new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceComponentAdapter(TestCase.class, this));
+            fail("PicoIntrospectionException expected");
+        } catch (final PicoIntrospectionException e) {
+            assertTrue(e.getMessage().endsWith(SimpleTouchable.class.getName()));
+        }
+    }
 
     // -------- TCK -----------
-    
+
     protected Class getComponentAdapterType() {
         return AssimilatingComponentAdapter.class;
     }
@@ -64,52 +113,44 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
-    private ComponentAdapter createComponentAdapterFooBar() {
-        return new AssimilatingComponentAdapter(Foo.class, new Bar());
+    private ComponentAdapter createComponentAdapterWithTouchable() {
+        return new AssimilatingComponentAdapter(Touchable.class, new ConstructorInjectionComponentAdapter(
+                CompatibleTouchable.class, CompatibleTouchable.class));
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
-        return createComponentAdapterFooBar();
+        return createComponentAdapterWithTouchable();
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
-        return createComponentAdapterFooBar();
+        return createComponentAdapterWithTouchable();
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
     protected ComponentAdapter prepDEF_visitable() {
-        return createComponentAdapterFooBar();
+        return createComponentAdapterWithTouchable();
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
-        return new AssimilatingComponentAdapter(Foo.class, new Bar(), new CglibProxyFactory());
+        return new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(
+                CompatibleTouchable.class, new CompatibleTouchable()), new CglibProxyFactory());
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
-        return createComponentAdapterFooBar();
+        return createComponentAdapterWithTouchable();
     }
 }

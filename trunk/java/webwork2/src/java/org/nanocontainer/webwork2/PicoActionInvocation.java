@@ -12,12 +12,12 @@ import com.opensymphony.webwork.WebWorkStatics;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionProxy;
 import com.opensymphony.xwork.DefaultActionInvocation;
+import org.nanocontainer.servlet.KeyConstants;
+import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.nanocontainer.servlet.KeyConstants;
-import org.nanocontainer.servlet.RequestScopeObjectReference;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -42,16 +42,15 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     }
 
     protected void createAction() {
-        // load action
-        try {
-            MutablePicoContainer container = new DefaultPicoContainer(getRequestContainer());
+        Class actionClass = proxy.getConfig().getClazz();
 
-            Class actionClass = proxy.getConfig().getClazz();
-            container.registerComponentImplementation(actionClass);
-            action = (Action) container.getComponentInstance(actionClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Unknown action name: " + e.getMessage());
+        PicoContainer requestContainer = getRequestContainer();
+        action = (Action) requestContainer.getComponentInstance(actionClass);
+        if(action== null) {
+            // The action wasn't registered. Do it ad-hoc here.
+            MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
+            tempContainer.registerComponentImplementation(actionClass);
+            action = (Action) tempContainer.getComponentInstance(actionClass);
         }
     }
 

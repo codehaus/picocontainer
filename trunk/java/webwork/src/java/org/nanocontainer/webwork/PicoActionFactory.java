@@ -11,6 +11,7 @@ package org.nanocontainer.webwork;
 import org.nanocontainer.servlet.KeyConstants;
 import org.nanocontainer.servlet.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import webwork.action.Action;
@@ -63,22 +64,28 @@ public class PicoActionFactory extends ActionFactory implements KeyConstants {
     }
 
     protected Action instantiateAction(Class actionClass) {
-        MutablePicoContainer container = new DefaultPicoContainer(getParentContainer());
-        container.registerComponentImplementation(actionClass);
-        return (Action) container.getComponentInstance(actionClass);
+        PicoContainer requestContainer = getParentContainer();
+        Action result = (Action) requestContainer.getComponentInstance(actionClass);
+        if (result == null) {
+            // The action wasn't registered. Do it ad-hoc here.
+            MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
+            tempContainer.registerComponentImplementation(actionClass);
+            result = (Action) tempContainer.getComponentInstance(actionClass);
+        }
+        return result;
     }
 
-	/**
-	 * obtain parent container. first try in servlet, than in action context
-	 */
-    private MutablePicoContainer getParentContainer() {
+    /**
+     * obtain parent container. first try in servlet, than in action context
+     */
+    private PicoContainer getParentContainer() {
         HttpServletRequest request = ServletActionContext.getRequest();
         ObjectReference ref;
-		if(request != null) {
-			ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
-		} else {
-			ref = new ActionContextScopeObjectReference(REQUEST_CONTAINER);
-		}
-        return (MutablePicoContainer) ref.get();
+        if (request != null) {
+            ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+        } else {
+            ref = new ActionContextScopeObjectReference(REQUEST_CONTAINER);
+        }
+        return (PicoContainer) ref.get();
     }
 }

@@ -17,7 +17,7 @@ import javax.management.ObjectName;
 
 /**
  * An ObjectNameFactory, that uses the type of the DynamicMBean implementation to register. The value of the type is the name of
- * the implementation class without package the package name.
+ * the implementation class without the package name.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */

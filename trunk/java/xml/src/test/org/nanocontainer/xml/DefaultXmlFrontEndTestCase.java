@@ -11,21 +11,28 @@
 package org.nanocontainer.xml;
 
 import junit.framework.TestCase;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.picocontainer.PicoContainer;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.picocontainer.PicoContainer;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.StringReader;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultInputSourceFrontEndTestCase extends TestCase {
+public class DefaultXmlFrontEndTestCase extends TestCase {
+
+    private Element getRootElement(InputSource is) throws ParserConfigurationException, IOException, SAXException {
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is).getDocumentElement();
+    }
+
     public void testCreateSimpleContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, EmptyXmlConfigurationException {
         InputSource inputSource = new InputSource(new StringReader(
                 "<container>" +
@@ -33,8 +40,8 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
                 "    <component key='org.nanocontainer.testmodel.WebServer' classname='org.nanocontainer.testmodel.WebServerImpl'/>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceContainerFactory = new DefaultInputSourceFrontEnd();
-        PicoContainer picoContainer = inputSourceContainerFactory.createPicoContainer(inputSource);
+        XmlFrontEnd inputSourceContainerFactory = new DefaultXmlFrontEnd();
+        PicoContainer picoContainer = inputSourceContainerFactory.createPicoContainer(getRootElement(inputSource));
         assertNotNull(picoContainer.getComponentInstance(DefaultWebServerConfig.class));
     }
 
@@ -47,8 +54,8 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
                 "    </container>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceFrontEnd = new DefaultInputSourceFrontEnd();
-        PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(inputSource);
+        XmlFrontEnd inputSourceFrontEnd = new DefaultXmlFrontEnd();
+        PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(getRootElement(inputSource));
         assertNotNull(rootContainer.getComponentInstance(DefaultWebServerConfig.class));
 
         PicoContainer childContainer = (PicoContainer) rootContainer.getChildContainers().iterator().next();
@@ -58,6 +65,9 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
     public void testClassLoaderHierarchy() throws ParserConfigurationException, ClassNotFoundException, SAXException, IOException, EmptyXmlConfigurationException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
+        // Paul's path to TestComp. PLEASE do not take out.
+        //testcompJarFileName = "D:\\DEV\\nano\\reflection\\src\\test-comp\\TestComp.jar";
+
         assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
@@ -73,8 +83,8 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
                 "    </container>" +
                 "</container>"));
 
-        InputSourceFrontEnd inputSourceFrontEnd = new DefaultInputSourceFrontEnd();
-        PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(inputSource);
+        XmlFrontEnd inputSourceFrontEnd = new DefaultXmlFrontEnd();
+        PicoContainer rootContainer = inputSourceFrontEnd.createPicoContainer(getRootElement(inputSource));
         Object fooTestComp = rootContainer.getComponentInstance("foo");
         assertNotNull(fooTestComp);
 
@@ -92,7 +102,7 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
                     "<container>" +
                     "      <component classname='Foo'/>" +
                     "</container>"));
-            PicoContainer rootContainer = new DefaultInputSourceFrontEnd().createPicoContainer(inputSource);
+            PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
             fail("Should have thrown a ClassNotFoundException");
         } catch (ClassNotFoundException cnfe) {
         }
@@ -105,7 +115,7 @@ public class DefaultInputSourceFrontEndTestCase extends TestCase {
             InputSource inputSource = new InputSource(new StringReader(
                     "<container>" +
                     "</container>"));
-            PicoContainer rootContainer = new DefaultInputSourceFrontEnd().createPicoContainer(inputSource);
+            PicoContainer rootContainer = new DefaultXmlFrontEnd().createPicoContainer(getRootElement(inputSource));
             fail("Should have thrown a EmptyXmlConfigurationException");
         } catch (EmptyXmlConfigurationException cnfe) {
         }

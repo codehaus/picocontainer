@@ -33,22 +33,13 @@ import java.net.URL;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultInputSourceFrontEnd implements InputSourceFrontEnd {
-    private DocumentBuilder documentBuilder;
+public class DefaultXmlFrontEnd implements XmlFrontEnd {
 
-    public DefaultInputSourceFrontEnd(DocumentBuilder documentBuilder) {
-        this.documentBuilder = documentBuilder;
-    }
+    public PicoContainer createPicoContainer(Element rootElement)
+            throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
 
-    public DefaultInputSourceFrontEnd() throws ParserConfigurationException {
-        this(DocumentBuilderFactory.newInstance().newDocumentBuilder());
-    }
-
-    public PicoContainer createPicoContainer(InputSource inputSource) throws IOException, SAXException, ClassNotFoundException, EmptyXmlConfigurationException {
-        Document document = documentBuilder.parse(inputSource);
-        Element containerElement = document.getDocumentElement();
         ReflectionFrontEnd rootReflectionFrontEnd = new ReflectionFrontEnd();
-        registerComponentsAndChildContainers(rootReflectionFrontEnd, containerElement);
+        registerComponentsAndChildContainers(rootReflectionFrontEnd, rootElement);
 
         return rootReflectionFrontEnd.getPicoContainer();
     }

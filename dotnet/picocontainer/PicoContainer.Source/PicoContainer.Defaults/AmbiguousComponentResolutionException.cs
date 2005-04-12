@@ -12,7 +12,7 @@
 using System;
 using System.Text;
 using System.Runtime.Serialization;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Defaults
 {

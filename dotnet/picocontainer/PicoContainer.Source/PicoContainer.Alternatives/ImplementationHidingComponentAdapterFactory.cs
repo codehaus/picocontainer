@@ -10,7 +10,7 @@
  *****************************************************************************/
 
 using System;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace PicoContainer.Alternatives

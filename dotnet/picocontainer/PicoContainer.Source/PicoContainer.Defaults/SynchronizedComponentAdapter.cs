@@ -11,7 +11,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Defaults
 {

@@ -10,7 +10,7 @@
  *****************************************************************************/
 
 using System;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Defaults
 {
@@ -55,7 +55,7 @@ namespace PicoContainer.Defaults
 		/// <summary>
 		/// Verify that all dependencies for this adapter can be satisifed.
 		/// </summary>
-		/// <exception cref="PicoContainer.Core.PicoIntrospectionException">if the verification failed</exception>
+		/// <exception cref="PicoContainer.PicoIntrospectionException">if the verification failed</exception>
 		public virtual void Verify(IPicoContainer container)
 		{
 			theDelegate.Verify(container);

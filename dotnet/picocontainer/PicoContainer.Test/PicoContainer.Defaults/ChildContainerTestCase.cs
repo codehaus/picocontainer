@@ -1,4 +1,4 @@
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using NUnit.Framework;
 using PicoContainer.TestModel;

@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  * C# port by Maarten Grootendorst                                           *
  *****************************************************************************/
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using NUnit.Framework;
 using PicoContainer.TestModel;

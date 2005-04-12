@@ -13,7 +13,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Text;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Utils;
 
 namespace PicoContainer.Defaults

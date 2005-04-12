@@ -12,7 +12,7 @@
 using System;
 using System.Reflection;
 using System.Collections;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Defaults
 {

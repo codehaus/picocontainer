@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Security;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using PicoContainer.Tck;
 using PicoContainer.TestModel;

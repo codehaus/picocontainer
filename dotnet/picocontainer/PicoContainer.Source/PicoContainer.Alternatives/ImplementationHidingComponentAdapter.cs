@@ -11,7 +11,7 @@
 
 using System;
 using Castle.DynamicProxy;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace PicoContainer.Alternatives

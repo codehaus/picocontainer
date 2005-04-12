@@ -16,7 +16,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Collections;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using PicoContainer.TestModel;
 

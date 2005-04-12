@@ -4,7 +4,7 @@ using System.Text;
 using NMock;
 using NMock.Constraints;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace PicoContainer.Defaults

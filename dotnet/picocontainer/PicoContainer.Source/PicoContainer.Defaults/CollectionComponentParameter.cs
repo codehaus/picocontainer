@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Defaults
 {

@@ -32,7 +32,7 @@ namespace NanoContainer.Script.Xml
 		private static readonly string PARAMETER = "parameter";
 		//private static readonly string URL = "url";
 
-		private static readonly string NAMESPACE_IMPORT0 = "PicoContainer.Core";
+		private static readonly string NAMESPACE_IMPORT0 = "PicoContainer";
 		private static readonly string NAMESPACE_IMPORT1 = "PicoContainer.Defaults";
 		private static readonly string COMPOSE_METHOD = "Compose";
 		private static readonly string PARENT_PROPERTY = "Parent";

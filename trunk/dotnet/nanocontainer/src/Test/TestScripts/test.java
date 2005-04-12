@@ -1,5 +1,5 @@
 package test;
-import PicoContainer.Core.*;
+import PicoContainer.*;
 import PicoContainer.Defaults.*;
 
 class test

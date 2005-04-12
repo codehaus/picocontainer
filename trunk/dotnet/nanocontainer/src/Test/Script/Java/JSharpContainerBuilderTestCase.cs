@@ -1,7 +1,7 @@
 using System.Collections;
 using NanoContainer.Script.JSharp;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace Test.Script.Java

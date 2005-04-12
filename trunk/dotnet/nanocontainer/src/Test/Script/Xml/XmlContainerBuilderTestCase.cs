@@ -6,7 +6,7 @@ using NanoContainer.IntegrationKit;
 using NanoContainer.Script.Xml;
 using NanoContainer.Test.TestModel;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace Test.Script.Xml

@@ -1,6 +1,6 @@
 using System.IO;
 using NanoContainer.IntegrationKit;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace NanoContainer.Script
 {

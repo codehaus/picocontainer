@@ -1,4 +1,4 @@
-import PicoContainer.Core;
+import PicoContainer;
 import PicoContainer.Defaults;
 
 class Class1 {

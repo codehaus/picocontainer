@@ -11,10 +11,10 @@
 using System;
 using System.Collections;
 
-namespace PicoContainer.Core
+namespace PicoContainer
 {
 	/// <summary>This is the core interface for PicoContainer. It only has accessor methods.</summary>
-	/// <remarks>In order to register components in a PicoContainer, use a <see cref="PicoContainer.Core.IMutablePicoContainer"/>,
+	/// <remarks>In order to register components in a PicoContainer, use a <see cref="PicoContainer.IMutablePicoContainer"/>,
 	/// such as <see cref="Defaults.DefaultPicoContainer"/>.</remarks>
 	public interface IPicoContainer : IStartable, IDisposable
 	{
@@ -88,7 +88,7 @@ namespace PicoContainer.Core
 		/// <see cref="GetComponentAdaptersOfType(Type)"/> a variant of this method which returns the component adapters inside this
 		/// container that are associated with the specified type.
 		/// </remarks>
-		/// <returns>List of <see cref="PicoContainer.Core.IComponentAdapter"/> all the {@link ComponentAdapter}s inside this container. 
+		/// <returns>List of <see cref="PicoContainer.IComponentAdapter"/> all the {@link ComponentAdapter}s inside this container. 
 		/// The collection will be readonly.</returns>
 		IList ComponentAdapters { get; }
 

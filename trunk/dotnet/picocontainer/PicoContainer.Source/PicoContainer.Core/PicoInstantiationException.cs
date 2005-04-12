@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Core
+namespace PicoContainer
 {
 	/// <summary>
 	/// Exception that is thrown when there is a problem creating an instance of a container or some

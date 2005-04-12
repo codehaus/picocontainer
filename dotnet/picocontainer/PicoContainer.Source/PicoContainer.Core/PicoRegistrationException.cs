@@ -12,7 +12,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace PicoContainer.Core
+namespace PicoContainer
 {
 	/// <summary>
 	/// Exception that is thrown when there is a problem registering a component with the container
@@ -22,7 +22,7 @@ namespace PicoContainer.Core
 	public class PicoRegistrationException : PicoException
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoRegistrationException"/> class.
+		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class.
 		/// </summary>
 		/// <remarks>
 		/// This constructor initializes the Message property of the new instance to a system-supplied message 
@@ -33,7 +33,7 @@ namespace PicoContainer.Core
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoRegistrationException"/> class with a specified error message.
+		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a specified error message.
 		/// </summary>
 		/// <remarks>
 		/// This constructor initializes the Message property of the new instance using the message parameter.
@@ -46,7 +46,7 @@ namespace PicoContainer.Core
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoRegistrationException"/> class with a 
+		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a 
 		/// reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <remarks>
@@ -59,7 +59,7 @@ namespace PicoContainer.Core
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoRegistrationException"/> class with a specified error message 
+		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with a specified error message 
 		/// and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <remarks>
@@ -75,7 +75,7 @@ namespace PicoContainer.Core
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PicoContainer.Core.PicoRegistrationException"/> class with serialized data.
+		/// Initializes a new instance of the <see cref="PicoContainer.PicoRegistrationException"/> class with serialized data.
 		/// </summary>
 		/// <remarks>
 		/// This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.

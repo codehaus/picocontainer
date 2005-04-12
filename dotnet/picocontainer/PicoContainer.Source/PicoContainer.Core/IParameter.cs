@@ -11,7 +11,7 @@
 
 using System;
 
-namespace PicoContainer.Core
+namespace PicoContainer
 {
 	/// <summary>
 	/// This class represents an argument to a constructor. </summary>

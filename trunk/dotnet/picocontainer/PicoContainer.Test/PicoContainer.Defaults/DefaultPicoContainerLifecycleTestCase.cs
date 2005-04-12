@@ -3,7 +3,7 @@ using System.Threading;
 using System.Collections;
 using System.Text;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace PicoContainer.Defaults

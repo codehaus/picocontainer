@@ -1,6 +1,6 @@
 using System.Collections;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Alternatives;
 using PicoContainer.Defaults;
 

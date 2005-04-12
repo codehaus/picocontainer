@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Security;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using NUnit.Framework;
 using PicoContainer.Tck;

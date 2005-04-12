@@ -1,5 +1,5 @@
 using System;
-using PicoContainer.Core;
+using PicoContainer;
 /*****************************************************************************
  * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *

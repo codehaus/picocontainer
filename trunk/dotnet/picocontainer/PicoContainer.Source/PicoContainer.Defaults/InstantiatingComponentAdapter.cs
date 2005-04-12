@@ -11,14 +11,14 @@
 
 using System;
 using System.Reflection;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Utils;
 
 namespace PicoContainer.Defaults
 {
 	/// <summary>
 	/// This ComponentAdapter will instantiate a new object for each call to 
-	/// <see cref="PicoContainer.Core.IComponentAdapter.ComponentInstance"/>
+	/// <see cref="PicoContainer.IComponentAdapter.ComponentInstance"/>
 	/// That means that
 	/// when used with a PicoContainer, getComponentInstance will return a new
 	/// object each time.

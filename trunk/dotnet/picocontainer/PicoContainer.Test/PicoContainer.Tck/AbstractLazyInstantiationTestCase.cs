@@ -11,7 +11,7 @@
 
 using System;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace PicoContainer.Tck
 {

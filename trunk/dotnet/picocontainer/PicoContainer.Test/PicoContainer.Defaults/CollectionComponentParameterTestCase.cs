@@ -3,7 +3,7 @@ using System.Collections;
 using NMock;
 using NMock.Constraints;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 using PicoContainer.TestModel;
 

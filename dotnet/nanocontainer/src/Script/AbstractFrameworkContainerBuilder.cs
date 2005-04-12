@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Script.Compiler;
-using PicoContainer.Core;
+using PicoContainer;
 
 namespace NanoContainer.Script
 {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using NanoContainer.Reflection;
 using NanoContainer.Script;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace NanoContainer

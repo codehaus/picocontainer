@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NanoContainer.Script.CSharp;
 using NUnit.Framework;
-using PicoContainer.Core;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace Test.Script.CSharp

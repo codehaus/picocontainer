@@ -1,4 +1,4 @@
-Imports PicoContainer.Core
+Imports PicoContainer
 Imports PicoContainer.Defaults
 
 Public Class Class1

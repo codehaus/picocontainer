@@ -29,20 +29,9 @@
             <version>2.1.1</version>
         </dependency>
 
-        <dependency>
-            <id>proxytoys</id>
-            <version>0.1</version>
-        </dependency>
-
 	<dependency>
             <id>jmock</id>
             <version>1.0.1</version>
-        </dependency>
-
-	<dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-proxytoys</artifactId>
-            <version>${pom.currentVersion}</version>
         </dependency>
     </dependencies>
 

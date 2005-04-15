@@ -3,13 +3,13 @@
         ProjectType = "Local"
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
-        ProjectGuid = "{23192F9E-4684-40C2-8F6E-8D06E3958D94}"
+        ProjectGuid = "{60B1A189-2ADB-4E4B-9952-B4E8748065BF}"
     >
         <Build>
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "PicoContainer.Test"
+                AssemblyName = "PicoContainer.Tests"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -18,7 +18,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = ""
+                RootNamespace = "PicoContainer.Tests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -67,33 +67,32 @@
                 <Reference
                     Name = "System"
                     AssemblyName = "System"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
                 <Reference
                     Name = "System.Data"
                     AssemblyName = "System.Data"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                    AssemblyName = "System.XML"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "PicoContainer"
+                    Project = "{78D4D840-D376-4FB7-89A6-B24C22E057F7}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
                     Name = "nmock"
                     AssemblyName = "nmock"
-                    HintPath = "..\lib\nmock.dll"
-                />
-                <Reference
-                    Name = "PicoContainer.Source"
-                    Project = "{FEA87CBA-1709-466E-8186-5FFD705DB8A0}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    HintPath = "..\..\lib\nmock.dll"
                 />
                 <Reference
                     Name = "nunit.framework"
                     AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll"
-                    AssemblyFolderKey = "hklm\dn\nunit.framework"
+                    HintPath = "..\..\lib\nunit.framework.dll"
                 />
             </References>
         </Build>
@@ -105,237 +104,237 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\AbstractImplementationHidingPicoContainerTestCase.cs"
+                    RelPath = "Alternatives\AbstractImplementationHidingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\CachingPicoContainerTestCase.cs"
+                    RelPath = "Alternatives\CachingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\ImplementationHidingCachingPicoContainerTestCase.cs"
+                    RelPath = "Alternatives\ImplementationHidingCachingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\ImplementationHidingComponentAdapterTestCase.cs"
+                    RelPath = "Alternatives\ImplementationHidingComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\ImplementationHidingPicoContainerTestCase.cs"
+                    RelPath = "Alternatives\ImplementationHidingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Alternatives\ImplementationHidingWithDefaultPicoContainerTestCase.cs"
+                    RelPath = "Alternatives\ImplementationHidingWithDefaultPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\CachingComponentAdapterFactoryTestCase.cs"
+                    RelPath = "Defaults\CachingComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\ChildContainerTestCase.cs"
+                    RelPath = "Defaults\ChildContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\CollectionComponentParameterTestCase.cs"
+                    RelPath = "Defaults\CollectionComponentParameterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\ComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\ComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\ComponentKeysTestCase.cs"
+                    RelPath = "Defaults\ComponentKeysTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\ConstructorInjectionComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\ConstructorInjectionComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\CyclicDependencyGuardTestCase.cs"
+                    RelPath = "Defaults\CyclicDependencyGuardTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultComponentAdapterFactoryTestCase.cs"
+                    RelPath = "Defaults\DefaultComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultComponentRegistryTestCase.cs"
+                    RelPath = "Defaults\DefaultComponentRegistryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultLazyInstantiationTestCase.cs"
+                    RelPath = "Defaults\DefaultLazyInstantiationTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultLifecycleManagerTestCase.cs"
+                    RelPath = "Defaults\DefaultLifecycleManagerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultMultipleConstructorTestCase.cs"
+                    RelPath = "Defaults\DefaultMultipleConstructorTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultPicoContainerLifecycleTestCase.cs"
+                    RelPath = "Defaults\DefaultPicoContainerLifecycleTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultPicoContainerTestCase.cs"
+                    RelPath = "Defaults\DefaultPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultPicoContainerTreeSerializationTestCase.cs"
+                    RelPath = "Defaults\DefaultPicoContainerTreeSerializationTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DefaultPicoContainerUnregisterComponentTestCase.cs"
+                    RelPath = "Defaults\DefaultPicoContainerUnregisterComponentTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\DelegatingPicoContainerTestCase.cs"
+                    RelPath = "Defaults\DelegatingPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\InstanceComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\InstanceComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\ParameterTestCase.cs"
+                    RelPath = "Defaults\ParameterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\SetterInjectionComponentAdapterFactoryTestCase.cs"
+                    RelPath = "Defaults\SetterInjectionComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\SetterInjectionComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\SetterInjectionComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Defaults\TransientComponentAdapterTestCase.cs"
+                    RelPath = "Defaults\TransientComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Monitors\ConsoleComponentMonitorTestCase.cs"
+                    RelPath = "Monitors\ConsoleComponentMonitorTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Tck\AbstractComponentAdapterFactoryTestCase.cs"
+                    RelPath = "Tck\AbstractComponentAdapterFactoryTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Tck\AbstractComponentAdapterTestCase.cs"
+                    RelPath = "Tck\AbstractComponentAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Tck\AbstractLazyInstantiationTestCase.cs"
+                    RelPath = "Tck\AbstractLazyInstantiationTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Tck\AbstractMultipleConstructorTestCase.cs"
+                    RelPath = "Tck\AbstractMultipleConstructorTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.Tck\AbstractPicoContainerTestCase.cs"
+                    RelPath = "Tck\AbstractPicoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\AlternativeTouchable.cs"
+                    RelPath = "TestModel\AlternativeTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\DecoratedTouchable.cs"
+                    RelPath = "TestModel\DecoratedTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\DependsOnTouchable.cs"
+                    RelPath = "TestModel\DependsOnTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\DependsOnTwoComponents.cs"
+                    RelPath = "TestModel\DependsOnTwoComponents.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\IDictionairy.cs"
+                    RelPath = "TestModel\IDictionairy.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\InaccessibleStartComponent.cs"
+                    RelPath = "TestModel\InaccessibleStartComponent.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\IThesaurus.cs"
+                    RelPath = "TestModel\IThesaurus.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\ITouchable.cs"
+                    RelPath = "TestModel\ITouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\IWashable.cs"
+                    RelPath = "TestModel\IWashable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\PersonBean.cs"
+                    RelPath = "TestModel\PersonBean.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\PurseBean.cs"
+                    RelPath = "TestModel\PurseBean.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\SimpleTouchable.cs"
+                    RelPath = "TestModel\SimpleTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PicoContainer.TestModel\WashableTouchable.cs"
+                    RelPath = "TestModel\WashableTouchable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

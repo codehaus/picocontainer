@@ -131,24 +131,24 @@ namespace Test.Script.Xml
 		[Test]
 		public void TypeLoaderHierarchy()
 		{
-			string testCompDll = "../../../TestComp/bin/Debug/TestComp.dll";
-			string testCompDll2 = "../../../TestComp2/bin/Debug/TestComp2.dll";
-			string notStartableDll = "../../../NotStartable/bin/Debug/NotStartable.dll";
+			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");
+			FileInfo testCompDll2 = new FileInfo("../../../TestComp2/bin/Debug/TestComp2.dll");
+			FileInfo notStartableDll = new FileInfo("../../../NotStartable/bin/Debug/NotStartable.dll");
 
-			Assert.IsTrue(File.Exists(testCompDll));
-			Assert.IsTrue(File.Exists(testCompDll2));
-			Assert.IsTrue(File.Exists(notStartableDll));
+			Assert.IsTrue(testCompDll.Exists);
+			Assert.IsTrue(testCompDll2.Exists);
+			Assert.IsTrue(notStartableDll.Exists);
 			
 			string xmlScript = "" +
 					"<container>" +
 					"  <classpath>" +
-					"    <element file='" + testCompDll + "'/>" +
+					"    <element file='" + testCompDll.FullName + "'/>" +
 					"  </classpath>" +
 					"  <component-implementation key='foo' class='TestComp'/>" +
 					"  <container>" +
 					"    <classpath>" +
-					"      <element file='" + testCompDll2 + "'/>" +
-					"      <element file='" + notStartableDll + "'/>" +
+					"      <element file='" + testCompDll2.FullName + "'/>" +
+					"      <element file='" + notStartableDll.FullName + "'/>" +
 					"    </classpath>" +
 					"    <component-implementation key='bar' class='TestComp2'/>" +
 					"    <component-implementation key='phony' class='NotStartable'/>" +

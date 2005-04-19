@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import java.sql.Connection;
@@ -16,18 +17,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /**
- * Session delegator with failover behaviour in case of hibernate exception. Old
- * session is disposed and new one is obtained transparently. Session creation
- * is done lazily.
+ * Session delegator with failover behaviour in case of hibernate exception. Old session is disposed
+ * and new one is obtained transparently. Session creation is done lazily.
  * 
- * @author Konstantin Pribluda
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision$
  */
 public class FailoverSessionDelegator extends SessionDelegator {
 
     private SessionFactory sessionFactory;
-
     private Session session = null;
 
     public FailoverSessionDelegator(SessionFactory sessionFactory) {
@@ -41,7 +39,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
     /**
      * Obtain hibernate session in lazy way.
      */
-    public Session getSession() {
+    public Session getDelegatedSession() {
         if (this.session == null) {
             try {
                 this.session = this.sessionFactory.openSession();
@@ -55,7 +53,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 
     public Connection close() throws HibernateException {
         try {
-            return this.getSession().close();
+            return this.getDelegatedSession().close();
         } catch (HibernateException ex) {
             this.session = null;
             throw this.handleException(ex);
@@ -64,7 +62,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
         }
     }
 
-    public void invalidateSession() throws HibernateException {
+    public void invalidateDelegatedSession() throws HibernateException {
         if (this.session != null) {
             try {
                 this.session.clear();
@@ -77,4 +75,5 @@ public class FailoverSessionDelegator extends SessionDelegator {
             }
         }
     }
+
 }

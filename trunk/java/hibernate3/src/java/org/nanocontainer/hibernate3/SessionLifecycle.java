@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import org.hibernate.HibernateException;
@@ -14,23 +15,21 @@ import org.hibernate.Session;
 import org.picocontainer.Startable;
 
 /**
- * Component providing session lifecycle to be registered in container
- * containing session in question.
+ * Component providing session lifecycle to be registered in container containing session in
+ * question.
  * 
- * @author Konstantin Pribluda
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision$
  */
 public class SessionLifecycle implements Startable {
-    
+
     private Session session;
 
     public SessionLifecycle(Session session) {
         this.session = session;
     }
 
-    public void start() {
-    }
+    public void start() {}
 
     public void stop() {
         try {
@@ -40,4 +39,5 @@ public class SessionLifecycle implements Startable {
             // swallow it? not sure what to do with it...
         }
     }
+
 }

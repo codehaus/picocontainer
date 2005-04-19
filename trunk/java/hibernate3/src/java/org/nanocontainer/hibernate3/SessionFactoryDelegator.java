@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import java.io.Serializable;
@@ -16,28 +17,23 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 
-import org.hibernate.Databinder;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
-import org.hibernate.exception.SQLExceptionConverter;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
 import org.picocontainer.PicoInitializationException;
 
 /**
- * Delegates everything to session factory obtained from confiuration. this
- * class is necessary because component adapters are really ugly when it comes
- * to scripting.
+ * Delegates everything to session factory obtained from confiuration. this class is necessary
+ * because component adapters are really ugly when it comes to scripting.
  * 
- * @author Konstantin Pribluda
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision$
  */
-
 public class SessionFactoryDelegator implements SessionFactory {
 
     private SessionFactory sessionFactory;
@@ -74,13 +70,20 @@ public class SessionFactoryDelegator implements SessionFactory {
         this.getSessionFactory().evictCollection(roleName, id);
     }
 
+    public void evictEntity(String entityName) throws HibernateException {
+        this.getSessionFactory().evictEntity(entityName);
+    }
+
+    public void evictEntity(String entityName, Serializable id) throws HibernateException {
+        this.getSessionFactory().evictEntity(entityName, id);
+    }
+
     public void evictQueries() throws HibernateException {
         this.getSessionFactory().evictQueries();
     }
 
     public void evictQueries(String cacheRegion) throws HibernateException {
         this.getSessionFactory().evictQueries(cacheRegion);
-
     }
 
     public Map getAllClassMetadata() throws HibernateException {
@@ -107,16 +110,8 @@ public class SessionFactoryDelegator implements SessionFactory {
         return this.getSessionFactory().getReference();
     }
 
-    public SQLExceptionConverter getSQLExceptionConverter() {
-        return this.getSessionFactory().getSQLExceptionConverter();
-    }
-
     public Statistics getStatistics() {
         return this.getSessionFactory().getStatistics();
-    }
-
-    public Databinder openDatabinder() throws HibernateException {
-        return this.getSessionFactory().openDatabinder();
     }
 
     public Session openSession() throws HibernateException {
@@ -134,4 +129,5 @@ public class SessionFactoryDelegator implements SessionFactory {
     public Session openSession(Interceptor interceptor) throws HibernateException {
         return this.getSessionFactory().openSession(interceptor);
     }
+
 }

@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import junit.framework.TestCase;
@@ -19,27 +20,23 @@ import org.nanocontainer.hibernate3.pojo.Pojo;
 /**
  * Test case for failover session delegator
  * 
- * @author Konstantin Pribluda
  * @version $Revision$
  */
 public class FailoverSessionDelegatorTestCase extends TestCase {
 
     public void testSessionCreationAndDisposal() throws Exception {
-
         SessionFactory factory = (new ConstructableConfiguration()).buildSessionFactory();
-
         FailoverSessionDelegator delegator = new FailoverSessionDelegator(factory);
-
-        Session session = delegator.getSession();
+        Session session = delegator.getDelegatedSession();
         assertNotNull(session);
 
-        assertSame(session, delegator.getSession());
+        assertSame(session, delegator.getDelegatedSession());
 
         // test that closing invalidates session
         delegator.close();
-        assertNotSame(session, delegator.getSession());
 
-        session = delegator.getSession();
+        assertNotSame(session, delegator.getDelegatedSession());
+        session = delegator.getDelegatedSession();
 
         // produce error
         try {
@@ -48,7 +45,8 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
         } catch (HibernateException ex) {
             // that's ok
         }
-        assertNotSame(session, delegator.getSession());
 
+        assertNotSame(session, delegator.getDelegatedSession());
     }
+
 }

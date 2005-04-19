@@ -11,10 +11,10 @@ import de.jtec.jobdemo.ProjectManager;
 /**
  * index specified project.
  *
- * @author           kostik
+ * @author           Konstantin Pribluda
  * @created          December 1, 2004
  * @version          $Revision$
- * @webwork.action   name="indexProject" success="/projects/index.vm"
+ * @webwork.action   name="indexProject" success="redirect.action?url=/projects/index.vm"
  *      error="/failure.vm"
  */
 public class IndexProjectAction extends AbstractProjectIndexingAction {

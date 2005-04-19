@@ -78,19 +78,18 @@ public abstract class BaseIndexAction extends ActionSupport {
 
 
     /**
-     * DOCUMENT METHOD
+     * create index for entity. 
      *
      * @param entity         Description of Parameter
      * @exception Exception  Description of Exception
      */
     public void indexEntity(BaseEntity entity) throws Exception {
-        System.err.println("document: " + getFactory().createDocument(entity));
         getIndexer().indexDocument(getFactory().createDocument(entity));
     }
 
 
     /**
-     * DOCUMENT METHOD
+     * remove index for given entity
      *
      * @param entity         Description of Parameter
      * @exception Exception  Description of Exception

@@ -15,7 +15,7 @@ import de.jtec.jobdemo.ProfileManager;
  * @author           kostik
  * @created          November 24, 2004
  * @version          $Revision$
- * @webwork.action   name="removeProfile" success="/profiles/index.vm"
+ * @webwork.action   name="removeProfile" success="redirect.action?url=/profiles/index.vm"
  *      error="/failure.vm" input="/profiles/edit.vm"
  */
 public class RemoveProfileAction extends BaseProfileAction implements CommandDriven {

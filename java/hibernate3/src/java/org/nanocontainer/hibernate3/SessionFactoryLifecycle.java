@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import org.hibernate.HibernateException;
@@ -16,27 +17,24 @@ import org.picocontainer.Startable;
 /**
  * Component organising lifecycle for session factory.
  * 
- * @author Konstantin Pribluda
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision$ 
+ * @version $Revision$
  */
 public class SessionFactoryLifecycle implements Startable {
-	SessionFactory sessionFactory;
-	
-	public SessionFactoryLifecycle(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-	
-	public void start() {
-	}
-	
-	public void stop() {
-		try {
-		sessionFactory.close();
-		} catch(HibernateException ex) {
-			//swallow it? not sure what to do with it...
-		}
-	}
+
+    private SessionFactory sessionFactory;
+
+    public SessionFactoryLifecycle(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public void start() {}
+
+    public void stop() {
+        try {
+            sessionFactory.close();
+        } catch (HibernateException ex) {
+            // swallow it? not sure what to do with it...
+        }
+    }
 }
-
-

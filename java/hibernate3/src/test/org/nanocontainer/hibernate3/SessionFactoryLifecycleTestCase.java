@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import org.hibernate.SessionFactory;
@@ -16,7 +17,6 @@ import org.jmock.MockObjectTestCase;
 /**
  * Test that lifecycle closes session factory
  * 
- * @author Konstantin Pribluda
  * @version $Revision$
  */
 public class SessionFactoryLifecycleTestCase extends MockObjectTestCase {
@@ -24,8 +24,8 @@ public class SessionFactoryLifecycleTestCase extends MockObjectTestCase {
     public void testThatLifecycleCallsClose() throws Exception {
         Mock sessionFactoryMock = mock(SessionFactory.class);
         sessionFactoryMock.expects(once()).method("close").withNoArguments();
-
         SessionFactoryLifecycle sfl = new SessionFactoryLifecycle((SessionFactory) sessionFactoryMock.proxy());
         sfl.stop();
     }
+
 }

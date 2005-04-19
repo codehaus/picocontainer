@@ -7,27 +7,24 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.hibernate3;
 
-import org.nanocontainer.hibernate3.ConstructableConfiguration;
+package org.nanocontainer.hibernate3;
 
 import junit.framework.TestCase;
 
 /**
- * @author Konstantin Pribluda
  * @version $Revision$
  */
 public class ConstructableConfigurationTestCase extends TestCase {
-	
-	public void testDefaultConstruction() throws Exception {
-		ConstructableConfiguration config = new ConstructableConfiguration();
-		assertNotNull(config);
-	}
-	
-	public void testResourceConstruction()  throws Exception {
-		ConstructableConfiguration config = new ConstructableConfiguration("/hibernate.cfg.xml");
-		assertNotNull(config);
-	}
-}
-	
 
+    public void testDefaultConstruction() throws Exception {
+        ConstructableConfiguration config = new ConstructableConfiguration();
+        assertNotNull(config);
+    }
+
+    public void testResourceConstruction() throws Exception {
+        ConstructableConfiguration config = new ConstructableConfiguration("/hibernate.cfg.xml");
+        assertNotNull(config);
+    }
+
+}

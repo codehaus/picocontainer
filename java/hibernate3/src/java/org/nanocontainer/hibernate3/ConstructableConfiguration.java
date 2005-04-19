@@ -7,6 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3;
 
 import java.io.File;
@@ -17,31 +18,32 @@ import org.hibernate.cfg.Configuration;
 import org.w3c.dom.Document;
 
 /**
- * Constructable hibernate configuration. not a rocket science, just a wrapper aroung
- * various configure() methods... see respective hibernate javadocs.
+ * Constructable hibernate configuration. not a rocket science, just a wrapper aroung various
+ * configure() methods... see respective hibernate javadocs.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision$
  */
 public class ConstructableConfiguration extends Configuration {
-	
-	public ConstructableConfiguration() throws HibernateException {
-		this.configure();
-	}
-	
-	public ConstructableConfiguration(URL url) throws HibernateException {
-		this.configure(url);
-	}
-	public ConstructableConfiguration(String resource) throws HibernateException {
-		this.configure(resource);
-	}
-	
-	public ConstructableConfiguration(File configFile) throws HibernateException {
-		this.configure(configFile);
-	}
-	
-	public ConstructableConfiguration(Document document)  throws HibernateException {
-		this.configure(document);
-	}
+
+    public ConstructableConfiguration() throws HibernateException {
+        this.configure();
+    }
+
+    public ConstructableConfiguration(URL url) throws HibernateException {
+        this.configure(url);
+    }
+
+    public ConstructableConfiguration(String resource) throws HibernateException {
+        this.configure(resource);
+    }
+
+    public ConstructableConfiguration(File configFile) throws HibernateException {
+        this.configure(configFile);
+    }
+
+    public ConstructableConfiguration(Document document) throws HibernateException {
+        this.configure(document);
+    }
 
 }

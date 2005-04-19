@@ -2,35 +2,33 @@
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-hibernate3</id>
     <name>nanocontainer-hibernate3</name>
-
     <dependencies>
         <dependency>
-			<groupId>picocontainer</groupId>
+            <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
-
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
-
         <dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock</artifactId>
             <version>1.0.1</version>
         </dependency>
-        
         <!--
+
             hibernate likes those
+
         -->
         <dependency>
             <groupId>hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-            <version>3.0beta1</version>
+            <artifactId>hibernate</artifactId>
+            <version>3.0</version>
         </dependency>
         <dependency>
             <id>commons-logging</id>
@@ -62,15 +60,9 @@
             <artifactId>geronimo-spec-jta</artifactId>
             <version>1.0.1B-rc2</version>
         </dependency>
-        <!--dependency>
-            <id>jta</id>
-            <version>1.0.1B</version>
-        </dependency-->
         <dependency>
             <id>xml-apis</id>
             <version>1.0.b2</version>
         </dependency>
-       
     </dependencies>
-
 </project>

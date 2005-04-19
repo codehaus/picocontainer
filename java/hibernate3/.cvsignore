@@ -1,8 +1,16 @@
 build.properties
+
 *.ipr
+
 *.iws
+
 *.log
+
 target
+
 cachedir
+
 .classpath
+
 .project
+

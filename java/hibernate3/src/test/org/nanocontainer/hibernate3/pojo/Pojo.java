@@ -7,32 +7,32 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
+
 package org.nanocontainer.hibernate3.pojo;
 
 /**
- * Just a pojo to make hibernate happy. 
+ * Just a pojo to make hibernate happy.
+ * 
  * @author Konstantin Pribluda
  * @version $Revision$
  */
-
 public class Pojo {
-	
-	Integer id;
-	String foo;
-	
-	public Pojo() {
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	
-	public String getFoo() {
-		return foo;
-	}
-	
-	public void setFoo(String foo) {
-		this.foo = foo;
-	}
+
+    private Integer id;
+    private String foo;
+
+    public Pojo() {}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getFoo() {
+        return foo;
+    }
+
+    public void setFoo(String foo) {
+        this.foo = foo;
+    }
+
 }

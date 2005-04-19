@@ -59,11 +59,11 @@ public class RequestProjectActionTest extends AbstractTestBase {
 
 
     /**
-     * A unit test for JUnit
+     * test that incorrect project bombs
      *
      * @exception Exception  Description of Exception
      */
-    public void testThatINcorrectInputDataProducessError() throws Exception {
+    public void testThatIncorrectInputDataProducessError() throws Exception {
         RequestProjectAction action = new RequestProjectAction(getProjectManager(), getProfileManager(), getRequestManager());
         assertEquals(Action.ERROR, action.execute());
     }

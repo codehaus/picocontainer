@@ -14,7 +14,7 @@ import de.jtec.jobdemo.ProfileManager;
  * @author           kostik
  * @created          December 1, 2004
  * @version          $Revision$
- * @webwork.action   name="indexProfile" success="/profiles/index.vm"
+ * @webwork.action   name="indexProfile" success="redirect.action?url=/profiles/index.vm"
  */
 public class IndexProfileAction extends AbstractProfileIndexingAction {
 

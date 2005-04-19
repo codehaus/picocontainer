@@ -15,7 +15,7 @@ import de.jtec.jobdemo.beans.Project;
  * @author           kostik
  * @created          November 23, 2004
  * @version          $Revision$
- * @webwork.action   name="removeProject" success="/projects/index.vm"
+ * @webwork.action   name="removeProject" success="redirect.action?url=/projects/index.vm"
  *      error="/failure.vm" input="/projects/edit.vm"
  *      forwards="show=/projects/show.vm"
  */

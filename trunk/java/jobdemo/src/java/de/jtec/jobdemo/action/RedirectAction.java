@@ -28,10 +28,8 @@ public class RedirectAction  extends ActionSupport {
         bean.setResponse(ServletActionContext.getResponse());
         bean.setPage(getUrl());
         String target = ServletActionContext.getResponse().encodeRedirectURL(bean.toString());
-        System.err.println("target: "  + target);
 
         ServletActionContext.getResponse().sendRedirect(target);
-        System.err.println("redirected....");
         return NONE;
     }
 

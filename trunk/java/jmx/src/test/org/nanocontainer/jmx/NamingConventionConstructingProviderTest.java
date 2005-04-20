@@ -10,19 +10,12 @@
 
 package org.nanocontainer.jmx;
 
-import javax.management.DynamicMBean;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-import javax.management.StandardMBean;
-
 import org.nanocontainer.jmx.testmodel.OtherPerson;
 import org.nanocontainer.jmx.testmodel.Person;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.nanocontainer.jmx.testmodel.PersonMBean;
 
-import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.util.Dummy;
 
 
 /**
@@ -30,15 +23,10 @@ import org.jmock.MockObjectTestCase;
  */
 public class NamingConventionConstructingProviderTest extends MockObjectTestCase {
 
-    private Mock mockObjectNameFactory;
-    private ObjectName objectName;
-    private MutablePicoContainer pico;
+    private ObjectNameFactory nameFactory;
 
     protected void setUp() throws Exception {
-        super.setUp();
-        mockObjectNameFactory = mock(ObjectNameFactory.class);
-        objectName = new ObjectName(":type=JUnit");
-        pico = new DefaultPicoContainer();
+        nameFactory = (ObjectNameFactory)Dummy.newDummy(ObjectNameFactory.class);
     }
 
     public void testObjectNameFactoryMustNotBeNull() {
@@ -49,69 +37,39 @@ public class NamingConventionConstructingProviderTest extends MockObjectTestCase
         }
     }
 
-    public void testManagementInterfaceIsDeterminedFromMBeanInfo() {
-        mockObjectNameFactory.expects(once()).method("create").with(same(OtherPerson.class), isA(DynamicMBean.class)).will(
-                returnValue(objectName));
-
-        final ComponentAdapter componentAdapter = pico.registerComponentImplementation(OtherPerson.class);
-        pico.registerComponentInstance(OtherPerson.class.getName() + "MBeanInfo", Person.createMBeanInfo());
-        final DynamicMBeanProvider provider = new NamingConventionConstructingProvider((ObjectNameFactory)mockObjectNameFactory
-                .proxy());
-
-        final JMXRegistrationInfo info = provider.provide(pico, componentAdapter);
-        assertNotNull(info);
-        assertTrue(((StandardMBean)info.getMBean()).getImplementation() instanceof OtherPerson);
+    public void testGivenObjectNameFactoryIsProvided() {
+        final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
+        assertSame(nameFactory, provider.getObjectNameFactory());
     }
 
-    public void testManagementInterfaceIsDeterminedWithoutMBeanInfo() {
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                returnValue(objectName));
-
-        final ComponentAdapter componentAdapter = pico.registerComponentImplementation(Person.class);
-        final DynamicMBeanProvider provider = new NamingConventionConstructingProvider((ObjectNameFactory)mockObjectNameFactory
-                .proxy());
-
-        final JMXRegistrationInfo info = provider.provide(pico, componentAdapter);
-        assertNotNull(info);
-        assertTrue(((StandardMBean)info.getMBean()).getImplementation() instanceof Person);
+    public void testReusesMBeanFactory() {
+        final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
+        final DynamicMBeanFactory beanFactory = provider.getMBeanFactory();
+        assertNotNull(beanFactory);
+        assertSame(beanFactory, provider.getMBeanFactory());
     }
 
-    public void testNoInstanceIsCreatedIfManagementInterfaceIsMissing() {
-        final Mock mockComponentAdapter = mock(ComponentAdapter.class);
-        mockComponentAdapter.stubs().method("getComponentKey").will(returnValue(OtherPerson.class));
-        mockComponentAdapter.stubs().method("getComponentImplementation").will(returnValue(OtherPerson.class));
-
-        final ComponentAdapter componentAdapter = pico.registerComponentImplementation(OtherPerson.class);
-        final DynamicMBeanProvider provider = new NamingConventionConstructingProvider((ObjectNameFactory)mockObjectNameFactory
-                .proxy());
-
-        assertNull(provider.provide(pico, componentAdapter));
+    public void testUsesNamingConventionMBeanInfoProvidersInRightSequence() {
+        final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
+        final MBeanInfoProvider[] infoProviders = provider.getMBeanInfoProviders();
+        assertNotNull(infoProviders);
+        assertEquals(2, infoProviders.length);
+        assertTrue(infoProviders[0] instanceof ComponentKeyConventionMBeanInfoProvider);
+        assertTrue(infoProviders[1] instanceof ComponentTypeConventionMBeanInfoProvider);
+        assertSame(infoProviders, provider.getMBeanInfoProviders());
     }
 
-    public void testObjectNameMustBeGiven() {
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                returnValue(null));
-
-        final ComponentAdapter componentAdapter = pico.registerComponentImplementation(Person.class);
-        final DynamicMBeanProvider provider = new NamingConventionConstructingProvider((ObjectNameFactory)mockObjectNameFactory
-                .proxy());
-
-        assertNull(provider.provide(pico, componentAdapter));
+    public void testFindsManagementInterfaceAccordingNamingConventions() throws ClassNotFoundException {
+        final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
+        assertSame(PersonMBean.class, provider.getManagementInterface(Person.class, null));
     }
 
-    public void testMalformedObjectNameThrowsJMXRegistrationException() {
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                throwException(new MalformedObjectNameException("JUnit")));
-
-        final ComponentAdapter componentAdapter = pico.registerComponentImplementation(Person.class);
-        final DynamicMBeanProvider provider = new NamingConventionConstructingProvider((ObjectNameFactory)mockObjectNameFactory
-                .proxy());
-
+    public void testThrowsClassNotFoundExceptionIfNoManagementInterfaceCanBeFound() {
+        final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         try {
-            provider.provide(pico, componentAdapter);
-            fail("JMXRegistrationException expected");
-        } catch (final JMXRegistrationException e) {
-            assertEquals("JUnit", e.getCause().getMessage());
+            provider.getManagementInterface(OtherPerson.class, null);
+            fail("ClassNotFoundException expected");
+        } catch (final ClassNotFoundException e) {
         }
     }
 }

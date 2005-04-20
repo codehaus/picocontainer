@@ -10,95 +10,76 @@
 
 package org.nanocontainer.jmx;
 
-import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 
 
 /**
- * A DynamicMBeanProvider that constructs StandardMBean instances that follow the JMX naming conventions.
+ * A DynamicMBeanProvider that constructs StandardMBean instances that follow the JMX naming conventions. The name of the
+ * management interface must follow the naming conventions with an <em>MBean</em> appended to the MBean's type. The
+ * implementation will use the registered MBeanInfoProvider instances of type {@link ComponentKeyConventionMBeanInfoProvider}
+ * and {@link ComponentTypeConventionMBeanInfoProvider} to provide a {@link MBeanInfo} for the component's MBean. If a
+ * {@link MBeanInfo} was found, the MBean's type is used from the MBeanInfo otherwise the type is the implementation class of
+ * the component.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class NamingConventionConstructingProvider implements DynamicMBeanProvider {
+public class NamingConventionConstructingProvider extends AbstractConstructingProvider {
 
-    private final StandardMBeanFactory mBeanFactory;
     private final ObjectNameFactory objectNameFactory;
-    private final MBeanInfoProvider[] mBeanInfoProviders;
-
-    private static MBeanInfoProvider[] defaultMBeanInfoProvider = new MBeanInfoProvider[]{
-            new ComponentKeyConventionMBeanInfoProvider(), new ComponentTypeConventionMBeanInfoProvider()};
+    private final MBeanInfoProvider[] mBeanProviders;
+    private final StandardMBeanFactory mBeanFactory;
 
     /**
-     * Construct a NamingConventionConstructingProvider that uses default MBeanInfoProvider instances. Following
-     * MBeaninfoProviders are registered with this constructor:
+     * Construct a NamingConventionConstructingProvider. Following {@link MBeanInfoProvider} instances are registered with this
+     * constructor:
      * <ul>
      * <li>{@link ComponentKeyConventionMBeanInfoProvider}</li>
      * <li>{@link ComponentTypeConventionMBeanInfoProvider}</li>
      * </ul>
      * @param factory The ObjectNameFactory used to name the created MBeans.
-     * @since 1.0
      */
     public NamingConventionConstructingProvider(final ObjectNameFactory factory) {
-        this(factory, defaultMBeanInfoProvider);
-    }
-
-    /**
-     * Construct a NamingConventionConstructingProvider.
-     * @param factory The ObjectNameFactory used to name the created MBeans.
-     * @param mBeanInfoProviders The providers for a matching MBeanInfo for a certain component.
-     * @since 1.0
-     */
-    public NamingConventionConstructingProvider(final ObjectNameFactory factory, final MBeanInfoProvider[] mBeanInfoProviders) {
         if (factory == null) {
-            throw new NullPointerException("ObjectFactoryName is null");
+            throw new NullPointerException("ObjectNameFactory is null");
         }
-        objectNameFactory = factory;
         mBeanFactory = new StandardMBeanFactory();
-        this.mBeanInfoProviders = mBeanInfoProviders != null ? mBeanInfoProviders : new MBeanInfoProvider[0];
+        objectNameFactory = factory;
+        mBeanProviders = new MBeanInfoProvider[]{
+                new ComponentKeyConventionMBeanInfoProvider(), new ComponentTypeConventionMBeanInfoProvider()};
     }
 
     /**
-     * Create a StandardMBean from the component provided by the ComponentAdapter. The name of the management interface must
-     * follow the naming conventions with an <em>MBean</em> appended to the MBean's type. The implementation will use the
-     * registered MBeanInfoProvider instances to provide a {@link MBeanInfo} for the component's MBean. If a {@link MBeanInfo}
-     * was found, the MBean's type is used from the MBeanInfo otherwise the type is the implementation class of the component.
-     * <p>
-     * Note: An instance of the component is only created, if a management interface is available.
-     * </p>
-     * @see org.nanocontainer.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter)
+     * Return a {@link StandardMBeanFactory}.
+     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getMBeanFactory()
      */
-    public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {
+    protected DynamicMBeanFactory getMBeanFactory() {
+        return mBeanFactory;
+    }
 
-        // locate MBeanInfo
-        MBeanInfo mBeanInfo = null;
-        for (int i = 0; i < mBeanInfoProviders.length && mBeanInfo == null; ++i) {
-            mBeanInfo = mBeanInfoProviders[i].provide(picoContainer, componentAdapter);
-        }
+    /**
+     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getObjectNameFactory()
+     */
+    public ObjectNameFactory getObjectNameFactory() {
+        return objectNameFactory;
+    }
 
-        // create MBean
-        try {
-            // thows CNF if not successful
-            final Class management = mBeanFactory.getDefaultManagementInterface(
-                    componentAdapter.getComponentImplementation(), mBeanInfo);
-            final DynamicMBean mBean = mBeanFactory.create(
-                    componentAdapter.getComponentInstance(picoContainer), management, mBeanInfo);
-            final ObjectName objectName = objectNameFactory.create(componentAdapter.getComponentKey(), mBean);
-            if (objectName != null) {
-                return new JMXRegistrationInfo(objectName, mBean);
-            }
-        } catch (final MalformedObjectNameException e) {
-            throw new JMXRegistrationException("Cannot create ObjectName for component '"
-                    + componentAdapter.getComponentKey()
-                    + "'", e);
-        } catch (final ClassNotFoundException e) {
-            // No management interface available
-        }
-        return null;
+    /**
+     * Return an array with an instance of type {@link ComponentKeyConventionMBeanInfoProvider} and
+     * {@link ComponentTypeConventionMBeanInfoProvider}.
+     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getMBeanInfoProviders()
+     */
+    public MBeanInfoProvider[] getMBeanInfoProviders() {
+        return mBeanProviders;
+    }
+
+    /**
+     * Determin the default management interface using naming convetions of the JMX specification.
+     * @param implementation The type of the component's implementation.
+     * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be <code>null</code>.
+     * @return Returns the management interface.
+     * @throws ClassNotFoundException Thrown if no interface can be determined.
+     */
+    protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo) throws ClassNotFoundException {
+        return mBeanFactory.getDefaultManagementInterface(implementation, mBeanInfo);
     }
 }

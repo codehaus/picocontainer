@@ -62,7 +62,6 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
     }
 
     public void testMBeanInfoIsDeterminedIfKeyIsString() {
-
         final ComponentAdapter componentAdapter = pico.registerComponentImplementation("JUnit", Person.class);
         pico.registerComponentInstance("JUnitMBeanInfo", Person.createMBeanInfo());
 

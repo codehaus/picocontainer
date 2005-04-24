@@ -1,5 +1,5 @@
 This Subversion repository was migrated from CVS on April 23, 2005 - without branches and tags.
 
-Archaeologists can access the old (read-only) CVS repository by following these instructions:
+Archaeologists can access the old (read-only) CVS repository by following these instructions: 
 
 cvs -d :pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm loginFor Java PicoContainer, NanoContainer plus extras:cvs -z3 -d :pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm co javaFor .Net PicoContainer and initial port of NanoContainer:cvs -z3 -d :pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm co dotnetFor Ruby PicoContainer:cvs -z3 -d :pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm co rubyFor PHP PicoContainer:cvs -z3 -d :pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm co php

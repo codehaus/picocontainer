@@ -1,7 +1,0 @@
-*.ipr
-*.iws
-*.log
-*.iml
-target
-.classpath
-.project

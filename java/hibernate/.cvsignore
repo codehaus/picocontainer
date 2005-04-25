@@ -1,8 +1,0 @@
-*.ipr
-*.iws
-*.log
-target
-cachedir
-
-.classpath
-.project

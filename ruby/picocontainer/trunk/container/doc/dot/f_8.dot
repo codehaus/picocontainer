@@ -1,0 +1,158 @@
+digraph TopLevel {
+    compound = true
+    bgcolor = lightcyan1
+    fontname = Arial
+    fontsize = 8
+    label = "rico/interceptingcontainer.rb"
+    node [
+        fontname = Arial,
+        fontsize = 8,
+        color = black
+    ]
+
+    RuntimeError [
+        URL = "classes/RuntimeError.html",
+        label = "RuntimeError"
+    ]
+
+    RuntimeError -> Rico__ContainerNotStartedError [
+
+    ]
+
+    Rico__Container -> Rico__ChainedContainer [
+
+    ]
+
+    RuntimeError -> Rico__NonexistentComponentError [
+
+    ]
+
+    Rico__ChainedContainer -> Rico__InterceptingContainer [
+
+    ]
+
+    RuntimeError -> Rico__ContainerNotStoppedError [
+
+    ]
+
+    Rico__ComponentSpecification -> Rico__InterceptingComponentSpecification [
+
+    ]
+
+    subgraph cluster_Rico {
+        fillcolor = palegreen1
+        URL = "classes/Rico.html"
+        fontname = Arial
+        color = blue
+        label = "Rico"
+        style = filled
+        Rico [
+            shape = plaintext,
+            height = 0.01,
+            width = 0.01,
+            label = ""
+        ]
+
+        Rico__Container [
+            fontcolor = black,
+            URL = "classes/Rico/Container.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "Container"
+        ]
+
+        Rico__ContainerNotStartedError [
+            fontcolor = black,
+            URL = "classes/Rico/ContainerNotStartedError.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "ContainerNotStartedError"
+        ]
+
+        Rico__ChainedContainer [
+            fontcolor = black,
+            URL = "classes/Rico/ChainedContainer.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "ChainedContainer"
+        ]
+
+        Rico__NonexistentComponentError [
+            fontcolor = black,
+            URL = "classes/Rico/NonexistentComponentError.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "NonexistentComponentError"
+        ]
+
+        Rico__InterceptingContainer [
+            fontcolor = black,
+            URL = "classes/Rico/InterceptingContainer.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "InterceptingContainer"
+        ]
+
+        Rico__Multicaster [
+            fontcolor = black,
+            URL = "classes/Rico/Multicaster.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "Multicaster"
+        ]
+
+        Rico__ComponentSpecification [
+            fontcolor = black,
+            URL = "classes/Rico/ComponentSpecification.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "ComponentSpecification"
+        ]
+
+        Rico__ContainerNotStoppedError [
+            fontcolor = black,
+            URL = "classes/Rico/ContainerNotStoppedError.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "ContainerNotStoppedError"
+        ]
+
+        Rico__Interceptor [
+            fontcolor = black,
+            URL = "classes/Rico/Interceptor.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "Interceptor"
+        ]
+
+        Rico__ConstantComponentSpecification [
+            fontcolor = black,
+            URL = "classes/Rico/ConstantComponentSpecification.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "ConstantComponentSpecification"
+        ]
+
+        Rico__InterceptingComponentSpecification [
+            fontcolor = black,
+            URL = "classes/Rico/InterceptingComponentSpecification.html",
+            shape = ellipse,
+            color = palegoldenrod,
+            style = filled,
+            label = "InterceptingComponentSpecification"
+        ]
+
+    }
+
+}
+

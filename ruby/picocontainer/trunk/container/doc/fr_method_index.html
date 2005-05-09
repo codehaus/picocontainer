@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Methods</title>
+<style type="text/css">
+<!--
+  body {
+background-color: #ddddff;
+     font-family: Verdana, Arial, Helvetica, sans-serif; 
+       font-size: 11px; 
+      font-style: normal;
+     line-height: 14px; 
+           color: #000040;
+  }
+div.banner {
+  background: #0000aa;
+  color:      white;
+  padding: 1;
+  margin: 0;
+  font-size: 90%;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: center;
+  width: 100%;
+}
+
+A.xx { color: white; font-weight: bold; }
+-->
+</style>
+<base target="docwin">
+</head>
+<body>
+<div class="banner"><a href="files/util/agilerox_rb.html" class="xx">Methods</a></div>
+<a href="classes/ContainerTest.html#M000018">build_rico_with_dependent_components (ContainerTest)</a><br />
+<a href="classes/Rico/ConstantComponentSpecification.html#M000059">component (Rico::ConstantComponentSpecification)</a><br />
+<a href="classes/Rico/ComponentSpecification.html#M000055">component (Rico::ComponentSpecification)</a><br />
+<a href="classes/Rico/Container.html#M000043">component (Rico::Container)</a><br />
+<a href="classes/Rico/Container.html#M000040">component_class (Rico::Container)</a><br />
+<a href="classes/Rico/ChainedContainer.html#M000047">component_count (Rico::ChainedContainer)</a><br />
+<a href="classes/Rico/Container.html#M000037">component_count (Rico::Container)</a><br />
+<a href="classes/Rico/Container.html#M000042">component_specification (Rico::Container)</a><br />
+<a href="classes/Rico/ComponentSpecification.html#M000054">create_component (Rico::ComponentSpecification)</a><br />
+<a href="classes/Rico/InterceptingComponentSpecification.html#M000061">create_component (Rico::InterceptingComponentSpecification)</a><br />
+<a href="classes/Rico/InterceptingContainer.html#M000050">create_component_specification (Rico::InterceptingContainer)</a><br />
+<a href="classes/Rico/Container.html#M000041">dependencies (Rico::Container)</a><br />
+<a href="classes/Test/Unit/TestCase.html#M000062">inherited (Test::Unit::TestCase)</a><br />
+<a href="classes/Rico/Container.html#M000038">is_empty? (Rico::Container)</a><br />
+<a href="classes/Rico/Interceptor.html#M000057">method_missing (Rico::Interceptor)</a><br />
+<a href="classes/Rico/Multicaster.html#M000052">method_missing (Rico::Multicaster)</a><br />
+<a href="classes/Rico/ChainedContainer.html#M000048">multicast (Rico::ChainedContainer)</a><br />
+<a href="classes/Rico/Container.html#M000044">multicast (Rico::Container)</a><br />
+<a href="classes/Rico/Container.html#M000045">multicaster (Rico::Container)</a><br />
+<a href="classes/ChainedContainerTest/Washable.html#M000014">new (ChainedContainerTest::Washable)</a><br />
+<a href="classes/Rico/Multicaster.html#M000051">new (Rico::Multicaster)</a><br />
+<a href="classes/Rico/ComponentSpecification.html#M000053">new (Rico::ComponentSpecification)</a><br />
+<a href="classes/Rico/Interceptor.html#M000056">new (Rico::Interceptor)</a><br />
+<a href="classes/Rico/ChainedContainer.html#M000046">new (Rico::ChainedContainer)</a><br />
+<a href="classes/Rico/ConstantComponentSpecification.html#M000058">new (Rico::ConstantComponentSpecification)</a><br />
+<a href="classes/Rico/InterceptingContainer.html#M000049">new (Rico::InterceptingContainer)</a><br />
+<a href="classes/Rico/InterceptingComponentSpecification.html#M000060">new (Rico::InterceptingComponentSpecification)</a><br />
+<a href="classes/Rico/Container.html#M000036">new (Rico::Container)</a><br />
+<a href="classes/ContainerTest/Thing1.html#M000029">new (ContainerTest::Thing1)</a><br />
+<a href="classes/ContainerTest/HasDependents.html#M000030">new (ContainerTest::HasDependents)</a><br />
+<a href="classes/ContainerTest/AlsoWashable.html#M000031">new (ContainerTest::AlsoWashable)</a><br />
+<a href="classes/ContainerTest/ComponentWithDependentAndConstant.html#M000035">new (ContainerTest::ComponentWithDependentAndConstant)</a><br />
+<a href="classes/ContainerTest/Higher.html#M000033">new (ContainerTest::Higher)</a><br />
+<a href="classes/ContainerTest/Washable.html#M000034">new (ContainerTest::Washable)</a><br />
+<a href="classes/ContainerTest/Thing2.html#M000032">new (ContainerTest::Thing2)</a><br />
+<a href="classes/InterceptingContainerTest/Pusher.html#M000004">push_own_result (InterceptingContainerTest::Pusher)</a><br />
+<a href="classes/Rico/Container.html#M000039">register_component (Rico::Container)</a><br />
+<a href="classes/InterceptingContainerTest.html#M000001">setup (InterceptingContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000008">test_chained_container_counts_parents_components (ChainedContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000006">test_chained_container_finds_own_component (ChainedContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000007">test_chained_container_finds_parents_component (ChainedContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000010">test_chained_container_multicasts_to_parent (ChainedContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000013">test_chained_container_with_no_parent_is_consistent (ChainedContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000009">test_child_component_masks_parent_component (ChainedContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000028">test_dependencies_can_be_constant_values (ContainerTest)</a><br />
+<a href="classes/XmlConfiguratorTest.html#M000005">test_empty_config_creates_empty_container (XmlConfiguratorTest)</a><br />
+<a href="classes/ContainerTest.html#M000016">test_get_nonexistent_component_details_fails (ContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000011">test_gets_component_across_multiple_levels_of_container (ChainedContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000023">test_gets_component_with_dependencies (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000024">test_gets_component_with_multiple_levels_of_dependencies (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000021">test_gets_component_with_no_dependencies (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000022">test_getting_component_twice_gives_same_component (ContainerTest)</a><br />
+<a href="classes/InterceptingContainerTest.html#M000003">test_intercepted_component_pretends_to_have_original_components_class (InterceptingContainerTest)</a><br />
+<a href="classes/InterceptingContainerTest.html#M000002">test_intercepts_entry_to_component_method_call (InterceptingContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000027">test_multicast_delivers_message_to_all_components (ContainerTest)</a><br />
+<a href="classes/ChainedContainerTest.html#M000012">test_multicasts_across_containers (ChainedContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000015">test_new_container_is_empty (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000020">test_registering_component_with_missing_dependencies_fails (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000019">test_registers_component_with_dependencies (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000017">test_registers_component_with_no_dependencies (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000026">test_two_components_get_different_instances_for_different_tags (ContainerTest)</a><br />
+<a href="classes/ContainerTest.html#M000025">test_two_components_get_the_same_instance_for_the_same_tag (ContainerTest)</a><br />
+</body></html>

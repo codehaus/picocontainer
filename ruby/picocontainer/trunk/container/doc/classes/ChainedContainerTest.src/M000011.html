@@ -1,0 +1,26 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>test_gets_component_across_multiple_levels_of_container (ChainedContainerTest)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File rico/test/chainedcontainertest.rb, line 61</span>
+  <span class="kw">def</span> test_gets_component_across_multiple_levels_of_container
+    inner = Container.new
+    inner.register_component :inner_washable, Washable
+    
+    middle = ChainedContainer.new inner
+    middle.register_component :middle_washable, Washable
+    
+    outer = ChainedContainer.new middle
+    outer.register_component :outer_washable, Washable
+    
+    assert_not_nil outer.component(:inner_washable), <span class="str">&quot;inner component should be found&quot;</span>
+    assert_not_nil outer.component(:middle_washable), <span class="str">&quot;middle component should be found&quot;</span>
+    assert_not_nil outer.component(:middle_washable), <span class="str">&quot;outer component should be found&quot;</span>
+  <span class="kw">end</span></pre>
+</body>
+</html>

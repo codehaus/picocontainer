@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Frequently Asked Questions</title>
+</head>
+<body>
+<div id="bodycol">
+<div class="app">
+<div class="h3">
+<h3> <a name="Frequently Asked Questions">Frequently Asked Questions</a>
+</h3>
+<p> <strong> General </strong> </p>
+<ol>
+  <li> <a href="http://www.picocontainer.org/faq.html#when-pico"> When
+should I use PicoContainer </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#why-another">
+Why another IoC framework? </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#uber-pico"> Is a
+single Uber|Super|BorgCollectivePicoContainer in development? Something
+that can do all things for all people in all deployment situations? </a>
+  </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#required-pico">
+Do I have to use PicoContainer to manage or use components designed for
+it? </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#tdd"> Is it true
+that PicoContainer is developed along the principles of Test Driven
+Development (TDD)? </a> </li>
+</ol>
+<p> <strong> Component Design </strong> </p>
+<ol>
+  <li> <a
+ href="http://www.picocontainer.org/faq.html#many-constructors"> Can my
+component use multiple constructors? </a> </li>
+  <li> <a
+ href="http://www.picocontainer.org/faq.html#constructor-resolution">
+How does PicoContainer decide what constructor to use? </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#multiple-impls">
+If I register a component with a registry key that is not a
+java.lang.Class, I realise I can have multiple instances registered
+with different names. How are these dependencies automatically resolved
+for a new component that needs this named instance passed to its
+constructor? </a> </li>
+  <li> <a
+ href="http://www.picocontainer.org/faq.html#comp-dep-non-comp"> What
+if my component depend on non-component objects (such as configuration,
+ints and strings)? </a> </li>
+</ol>
+<p> <strong> Competition </strong> </p>
+<ol>
+  <li> <a href="http://www.picocontainer.org/faq.html#avalon"> How
+does PicoContainer framework compare to Avalon? </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#avalon"> How
+does PicoContainer compare to EJB? </a> </li>
+</ol>
+<p> <strong> Installation And Deployment </strong> </p>
+<ol>
+  <li> <a href="http://www.picocontainer.org/faq.html#how-install">
+How do I install PicoContainer? </a> </li>
+  <li> <a href="http://www.picocontainer.org/faq.html#where-use"> Can
+I use PicoContainer in EJB, Servlets, Applets, Portlets, Mailets,
+Beans, Classes, Another ComponentFrameworks? </a> </li>
+</ol>
+</div>
+<div class="h3">
+<h3> <a name="General">General</a> </h3>
+<dl>
+  <dt> <a name="when-pico"> When should I use PicoContainer </a> </dt>
+  <dd>
+    <p> We recommend using PicoContainer when your application consists
+of many different classes (components) that are related to each other.
+Instantiating and lacing/connecting a lot of objects can be difficult
+task. Further, if your classes know what other objects they need in
+order to be a <a href="http://www.picocontainer.org/faq.html"> good
+citizen </a> </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="why-another"> Why another IoC framework? </a> </dt>
+  <dd>
+    <p> After a long period of watching IoC frameworks, and for some of
+us avoiding them because of their cumbersome nature, we got together to
+write what we believe is the simplest possible IoC design. One perhaps
+that considers the so-design component as more important that the
+container. </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="uber-pico"> Is a single
+Uber|Super|BorgCollectivePicoContainer in development? Something that
+can do all things for all people in all deployment situations? </a> </dt>
+  <dd>
+    <p> No. We are delivering small interoperable containers and
+components of containers. There will never be a quest for the
+BorgContainer. We encourage diversity and compatibility with the
+essential idea here - components designed along the PicoContainer
+principles (dependencies and config in constructors). </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="required-pico"> Do I have to use PicoContainer to
+manage or use components designed for it? </a> </dt>
+  <dd>
+    <p> No. Components are instantiable and configurable without useing
+PicoContainer. This was one of the design goals. </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="tdd"> Is it true that PicoContainer is developed along
+the principles of Test Driven Development (TDD)? </a> </dt>
+  <dd>
+    <p> Yes for the most part. We're not perfect though, and our
+coverage reports have sometimes shown that we are making/committing
+untested code. At those rare moments we switch some attention to test
+coverage and whip out the electric cattle prod to reprimand the
+offender (usually Paul). </p>
+  </dd>
+</dl>
+</div>
+<div class="h3">
+<h3> <a name="Component Design">Component Design</a> </h3>
+<dl>
+  <dt> <a name="many-constructors"> Can my component use multiple
+constructors? </a> </dt>
+  <dd>
+    <p> Yes. </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="constructor-resolution"> How does PicoContainer decide
+what constructor to use? </a> </dt>
+  <dd>
+    <p> PicoContainer will instantiate a given component using the
+"greediest" satisfiable constructor. By greedy, we mean the constructor
+that takes the most parameters. By satisfiable, we mean constructors
+where all arguments can be satisfied by other registered components. </p>
+    <p> If you register a component with no satisfiable constructors,
+or two or more ambiguous "largest" constructors, a RuntimeException
+will be thrown when you ask for the component instance with </p>
+    <pre>      <br>    <a
+ href="http://www.picocontainer.org/apidocs/org/picocontainer/PicoContainer.html#getComponentInstance%28java.lang.Object%29"><br>     getComponentInstance(java.lang.Object)<br>   </a><br>  <br>    </pre>
+.
+    <p> We recommend, for the sake of predictablility, that
+PicoContainer compatible components use only one constructor (see <a
+ href="http://www.picocontainer.org/good-citizens.html"> Good Citizens </a>
+), although this is by no means a requirement. </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="multiple-impls"> If I register a component with a
+registry key that is not a java.lang.Class, I realise I can have
+multiple instances registered with different names. How are these
+dependencies automatically resolved for a new component that needs this
+named instance passed to its constructor? </a> </dt>
+  <dd>
+    <p> These dependencies need to be manually bound at configuration
+time by doing </p>
+    <div id="source">
+    <pre>pico.registerComponentInstance(<br>    SomeComponent.class, <br>    new Parameter[] { <br>        new ComponentParameter(keyUsedToRegisterSomeOtherCompoent) <br>    }<br>);<br>        <br>          When doing this, you must specify parameters (in correct order) for all parameters in the desired constructor.<br>        <br>        </pre>
+    </div>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="comp-dep-non-comp"> What if my component depend on
+non-component objects (such as configuration, ints and strings)? </a> </dt>
+  <dd>
+    <p> Yes great. Configuration values/objects should also be passed
+in via constructors. This is not the simplest mode of operation of the
+default PicoContainer, but it is by no means hard. Just use a
+ConstantParameter for Strings, Integers and Foos. </p>
+  </dd>
+</dl>
+</div>
+<div class="h3">
+<h3> <a name="Competition">Competition</a> </h3>
+<dl>
+  <dt> <a name="avalon"> How does PicoContainer framework compare to
+Avalon? </a> </dt>
+  <dd>
+    <p> Avalon's Serviceable, Configurable and Initializable interfaces
+are eliminated. A component writer does not have to implement anything
+like those. For Startable we have a replacement design in our lifecycle
+package. We're not precious though and suggest that you may prefer to
+use your own lifecycle interfaces which may be more than just start()
+and stop(). </p>
+    <p> PicoContainer supports any imaginary lifecycle scheme via its </p>
+    <pre>      <br>    <a
+ href="http://www.picocontainer.org/apidocs/org/picocontainer/PicoContainer.html#getComponentMulticaster%28%29"><br>     getComponentMulticaster()<br>   </a><br>  <br>    </pre>
+method. </dd>
+</dl>
+<dl>
+  <dt> <a name="avalon"> How does PicoContainer compare to EJB? </a> </dt>
+  <dd>
+    <p> Oh blimey, it is rather different. EJB has loads of things you
+must extend, implement, provide and throw. It is also not an IoC
+design. It is close i n that components are managed by a container, but
+the cumbersome and static nature of the JNDI lookups ensure that it is
+not actually IoC. PicoContainer is not a superset of EJB though, as it
+provides no remoting capability. At least the PicoContainer compatible
+components hosted in this project do not. </p>
+  </dd>
+</dl>
+</div>
+<div class="h3">
+<h3> <a name="Installation And Deployment">Installation And Deployment</a>
+</h3>
+<dl>
+  <dt> <a name="how-install"> How do I install PicoContainer? </a> </dt>
+  <dd>
+    <p> Like any other library that comes in a jar. Just make sure it's
+on your application's classpath. </p>
+  </dd>
+</dl>
+<dl>
+  <dt> <a name="where-use"> Can I use PicoContainer in EJB, Servlets,
+Applets, Portlets, Mailets, Beans, Classes, AnotherComponentFrameworks?
+    </a> </dt>
+  <dd>
+    <p> Yes. </p>
+  </dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

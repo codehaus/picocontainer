@@ -1,0 +1,137 @@
+Constructor Dependency Injection, with PicoContainer
+Inverison of Control
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
+
+= Inversion of Control =
+
+Inversion of Control is about the management of components in an application.  It refers to the fact that in a haorball design of an
+application components control their own destiny too much. This means they do too much configuration and dependency resolution. They
+also potentially start threads for themselves or launch into daemon life at moment convenient to the developer of the component in
+question.  The feeling is that this is way too chaotic for an application comprised of many components.  Inverting the control back
+to a container is felt to be the best way out of this mess by the proponents of IoC.
+
+Thus, the need for a container becomes apparent. In its purest sense, this could be any class, custom or general that manages the
+loading and starting of the components of an application.  It is not dissimilar in concept to a bootstrap. The bootstrap, however,
+could be a static main method whereas the container hints at some design, single purpose and possibility for reuse.
+
+== Not A Pattern In itself ==
+
+Design Patterns are ususally names after the term that alludes to a solution.  e.g. Singleton very crudely hints at the fact that
+there is a single instance of an class exists for an application. The problem that Singleton solved was a situation where it was too
+hard for various parts of an application to access a common resource. The hardness manifests itself as some probably heavy resource
+being done more than once during the lifetime of an application, when it only needed to be done one (and stored).
+
+Factory and Proxy as similarly named as solutions to problems.
+
+Inversion of Control, as a term, is more of a maxim (some would say cause or cult) than a design pattern. It is a collection of
+design elements that ensure (to the cult member) that control is inverted.
+
+== In the beginning ==
+
+Inversion of Control, as a term, was coined in 1998 by Stefano Mazzocchi as conseqnece of trying to engineer a "Java Server
+Framework" for the growing set of server side Java components and tools.  Sun were just starting to protect the word Java when used
+for branding/naming of software and computing functions, so Apache had to look for alternative names. Avalon was chosen as a project
+name (queue images of Arthurian legend).
+
+To the Avalon team, it was clear that components receiving various aspects of assembly and configuration was far superior to those
+components going at getting these aspects themseves.
+
+In itself, Inversion of Control as a concept was not entirely new.  Parts of it been talked about before as Dependency Inversion
+Principle and the "Hollywood Pattern" (don't call us, we'll call you).
+
+It is also important to point out that The Open Services Gateway initiative was also invented around the same time.
+
+Here is the simplest, two dependency, Avalon-style component:
+
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/Type1Component.java|lineNumbers=false}
+
+And here is an example of the manifest that may accompany it:
+
+{snippet:id=xml|url=@BOOK_MODULE_URL@/java/cdibook/ioc/Type1Component.xml|lineNumbers=false}
+
+Latterly this type of IoC has been given a new name. Contextulaized Dependency Lookup is that name.
+
+== Type 2 IoC ==
+
+Joe Walnes, Mike Cannon Brookes and others found themselves writing XWork and WebWork2 to support their forthcoming book, "Java Open
+Source Programming". Joe pointed out that the concepts were very much like those from IoC/Avlaon that Paul had been trying to
+convince Joe to adopt for a couple of years, but that dependencies were passed into the component via setters. The need for those
+dependencies was declared in some accompanying XML.
+
+Paul who worked with Joe at an Energy Trading Company in London, suggested this was "type 2" Inversion of Control. Avalon's design
+(and similar) being type 1.
+
+Here is the simplest, two dependency, SDI component:
+
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDIComponent.java|lineNumbers=false}
+
+The manifest that would accompamy an SDI component would look the same as that for Avalon-style ones.:
+
+{snippet:id=xml|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDIComponent.xml|lineNumbers=false}
+
+Martin Fowler has suggested that it may be better to have such depenendency resolving methods prefixed with init rather than setter.
+With init or set prefixes to dependency recieving methods, a container could automatically assemble SDI components without the
+manifest. SDI, under container control, works best with the manifest though.  Without a container, SDI Components are very much like
+simple Java beans to use:
+
+{snippet:id=block|url=@BOOK_MODULE_URL@/java/cdibook/ioc/SDINoContainer.java|lineNumbers=false}
+
+A downside of direct bean user of an SDI component is that it is possible to instantiate a component without setting all the
+dependencies.  As mistakes, these should be quite quick to catch post-compile with a simple test of that application.  Months later
+though, when a jar of components is replaced in an application with a leter version of the same, a new dependency may be missed, and
+a non-functioning application may be shipped to live. Again, that could be caught with diligent testing.
+
+== Type 3 IoC ==
+
+Rachel Davies, as one of the entusiastic reviewers of Joe's book, left a margin note for the paragraphs that disussed the elegence
+of type 2. The Margin note simply suggested that resolving dependencies by contructor was more elegent. Lattery we are inclined to
+agree. Paul suggested that this was type 3. At that moment in time (the summer of 2002) there were no implementation of the type 3
+idea, so it seemed logical for the pair to kick off the project. That project was PicoContainer, and type 3 was later known as
+Constructor Dependency Injection (CDI)
+
+A CDI component, in its simplest form for two dependencies looks like:
+
+{snippet:id=class|url=@BOOK_MODULE_URL@/java/cdibook/ioc/CDIComponent.java|lineNumbers=false}
+
+As with SDI Components, CDI ones are very simple to use:
+
+{snippet:id=block|url=@BOOK_MODULE_URL@/java/cdibook/ioc/CDINoContainer.java|lineNumbers=false}
+
+The added advantage is that CDI Components cannot be instantiated with missing dependencies. Thus the compiler or IDE will catch
+mismatches between any contstructor and the parameters passed into the class on instantiation.
+
+TODO - ATG Dynamo similarities ...
+
+== December 2003 Meeting ==
+
+Rod Johnson of the Spring Framework team, Paul Hammant (former Avaloner, and co-lead of PicoContainer), Mike Royle, with Martin
+Fowler (by email) say down and played with some of the language of Martin's forthcoming article. Martin had drafted this article
+entirely independantly of this team but had be kind enough to show a draft to them.  The problem the team had was with the naming of
+the patterns related to Inversion of Control, and the examples of use that Martin had shown. ... MORE
+
+== Characterized ==
+
+The loading of an IoC component is fairly simple. It is instantiated, initialised, has its component dependencies resolved, is
+configured and may be started if it has some form of daemon life. ... MORE
+
+=== Component Instantiation ===
+
+Component Instantiation is
+
+=== Initialisation ===
+=== Dependency Resolution ===
+=== Configuration ===
+=== Lifecycle ===
+
+
+
+
+
+
+
+
+
+
+
+
+

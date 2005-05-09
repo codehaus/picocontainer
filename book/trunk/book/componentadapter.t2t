@@ -1,0 +1,18 @@
+Constructor Dependency Injection, with PicoContainer
+Container Hierarchies
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
+
+= Component Adapter =
+
+== Basics ==
+
+PC.registerComponentIxxx use internally a CA.
+
+== Component Adapter Factory ==
+
+What are they used for?
+
+== Fun with Component Adapters ==
+
+Hehe - nest as nest can.
+

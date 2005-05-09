@@ -1,0 +1,14 @@
+Constructor Dependency Injection, with PicoContainer
+Domain Driven Design
+By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
+
+= Domain Driven Design =
+
+TODO Kraig ..... 
+
+{snippet:id=one|url=@BOOK_MODULE_URL@/java/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
+
+more....
+
+{snippet:id=two|url=@BOOK_MODULE_URL@/java/cdibook/ddd/AccountingServiceTestCase.java|lineNumbers=false}
+

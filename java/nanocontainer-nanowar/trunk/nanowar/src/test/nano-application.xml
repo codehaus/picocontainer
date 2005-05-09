@@ -1,0 +1,5 @@
+<container>
+    <instance key="applicationScopedInstance">
+        <string>foo bar</string>
+    </instance>
+</container>

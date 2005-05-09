@@ -1,0 +1,15 @@
+<project
+    default="binary:install"
+    xmlns:deploy="deploy"
+    xmlns:j="jelly:core">
+
+    <goal name="binary:install">
+		<attainGoal name="multiproject:install"/>
+    </goal>
+
+    <goal name="binary:deploy">
+        <attainGoal name="multiproject:deploy"/>
+    </goal>
+
+
+</project>

@@ -5,8 +5,10 @@
  */
 package de.jtec.jobdemo.search;
 import junit.framework.TestCase;
+
 import org.apache.velocity.app.VelocityEngine;
-import org.nanocontainer.util.ConstructableProperties;
+import org.picocontainer.gems.util.ConstructableProperties;
+
 /**
  * abstract base class for search system testing
  *

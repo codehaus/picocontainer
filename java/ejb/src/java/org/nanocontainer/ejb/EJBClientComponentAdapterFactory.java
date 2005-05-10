@@ -16,12 +16,12 @@ import java.util.Hashtable;
 
 import javax.naming.InitialContext;
 
-import org.nanocontainer.proxytoys.ThreadLocalComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.gems.ThreadLocalComponentAdapter;
 
 
 /**

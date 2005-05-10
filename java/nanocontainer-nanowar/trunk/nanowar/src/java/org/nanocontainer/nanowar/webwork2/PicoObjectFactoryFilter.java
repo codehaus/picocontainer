@@ -18,8 +18,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.nanocontainer.proxytoys.ThreadLocalReference;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.gems.ThreadLocalReference;
 
 import com.opensymphony.xwork.ObjectFactory;
 

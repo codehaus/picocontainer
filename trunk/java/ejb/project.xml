@@ -12,15 +12,9 @@
 
         <dependency>
             <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
+            <artifactId>picocontainer-gems</artifactId>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-proxytoys</artifactId>
-            <version>${pom.currentVersion}</version>
         </dependency>
 
         <dependency>
@@ -35,6 +29,12 @@
             <version>2.1-rc2</version>
         </dependency>
         <!-- test dependencies -->
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
         <dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock</artifactId>

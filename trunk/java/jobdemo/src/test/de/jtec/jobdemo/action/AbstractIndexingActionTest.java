@@ -4,6 +4,7 @@
  * any use except demostration is prohibited
  */
 package de.jtec.jobdemo.action;
+
 import de.jtec.jobdemo.AbstractTestBase;
 import de.jtec.jobdemo.search.DirectoryInitializer;
 import de.jtec.jobdemo.search.DocumentFactory;
@@ -12,7 +13,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.velocity.app.VelocityEngine;
-import org.nanocontainer.util.ConstructableProperties;
+import org.picocontainer.gems.util.ConstructableProperties;
 
 /**
  * abatract base class for actions performing search

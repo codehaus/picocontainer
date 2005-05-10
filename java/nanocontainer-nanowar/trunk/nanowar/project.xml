@@ -11,6 +11,13 @@
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
+        
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-gems</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
 
         <dependency>
             <groupId>picocontainer</groupId>
@@ -27,12 +34,6 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer</artifactId>
-            <version>${nanocontainer.version}</version>
-        </dependency>
- 
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-proxytoys</artifactId>
             <version>${nanocontainer.version}</version>
         </dependency>
         

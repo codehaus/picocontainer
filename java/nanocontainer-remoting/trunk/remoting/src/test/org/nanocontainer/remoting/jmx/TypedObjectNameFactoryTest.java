@@ -8,13 +8,13 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import org.nanocontainer.jmx.testmodel.DynamicMBeanPerson;
+import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 
 import junit.framework.TestCase;
 

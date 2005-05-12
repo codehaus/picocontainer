@@ -2,7 +2,7 @@
  * Copyright (C) 2004 Elsag-Solutions AG.
  * Created on 25.11.2004 by Jörg Schaible.
  */
-package org.nanocontainer.ejb;
+package org.nanocontainer.remoting.ejb;
 
 import org.picocontainer.PicoException;
 

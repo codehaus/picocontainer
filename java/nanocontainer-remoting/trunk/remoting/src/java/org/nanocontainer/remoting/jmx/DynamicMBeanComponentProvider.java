@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.MalformedObjectNameException;
@@ -48,7 +48,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
 
     /**
      * Provide the component itself as {@link DynamicMBean} if it is one and if an {@link ObjectName} can be created.
-     * @see org.nanocontainer.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
+     * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
      *           org.picocontainer.ComponentAdapter)
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {

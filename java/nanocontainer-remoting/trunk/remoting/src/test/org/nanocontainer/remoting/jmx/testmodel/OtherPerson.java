@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx.testmodel;
+package org.nanocontainer.remoting.jmx.testmodel;
 
 
 public final class OtherPerson implements PersonMBean {

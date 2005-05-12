@@ -8,13 +8,13 @@
  * Original code by Michael Ward                                             *
  *****************************************************************************/
 
-package org.nanocontainer.jmx.mx4j;
+package org.nanocontainer.remoting.jmx.mx4j;
 
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
-import org.nanocontainer.jmx.DynamicMBeanFactory;
-import org.nanocontainer.jmx.testmodel.Person;
+import org.nanocontainer.remoting.jmx.DynamicMBeanFactory;
+import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.picocontainer.testmodel.SimpleTouchable;
 
 import junit.framework.TestCase;

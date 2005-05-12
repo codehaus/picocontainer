@@ -8,11 +8,11 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
-import org.nanocontainer.jmx.testmodel.OtherPerson;
-import org.nanocontainer.jmx.testmodel.Person;
-import org.nanocontainer.jmx.testmodel.PersonMBean;
+import org.nanocontainer.remoting.jmx.testmodel.OtherPerson;
+import org.nanocontainer.remoting.jmx.testmodel.Person;
+import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 
 import org.jmock.MockObjectTestCase;
 import org.jmock.util.Dummy;

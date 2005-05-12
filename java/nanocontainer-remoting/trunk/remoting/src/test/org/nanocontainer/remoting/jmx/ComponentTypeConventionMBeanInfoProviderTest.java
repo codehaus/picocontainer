@@ -8,12 +8,12 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.MBeanInfo;
 
-import org.nanocontainer.jmx.testmodel.Person;
-import org.nanocontainer.jmx.testmodel.PersonMBeanInfo;
+import org.nanocontainer.remoting.jmx.testmodel.Person;
+import org.nanocontainer.remoting.jmx.testmodel.PersonMBeanInfo;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;

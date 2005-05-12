@@ -21,6 +21,14 @@
             <artifactId>picocontainer</artifactId>
             <version>${picocontainer.version}</version>
         </dependency>
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <id>cglib</id>
+            <version>full-2.0</version>
+        </dependency>
 
         <!-- test time only -->
         <dependency>

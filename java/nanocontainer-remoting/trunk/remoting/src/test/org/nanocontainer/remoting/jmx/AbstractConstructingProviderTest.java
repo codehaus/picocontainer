@@ -8,16 +8,16 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.nanocontainer.jmx.testmodel.OtherPerson;
-import org.nanocontainer.jmx.testmodel.Person;
-import org.nanocontainer.jmx.testmodel.PersonMBean;
+import org.nanocontainer.remoting.jmx.testmodel.OtherPerson;
+import org.nanocontainer.remoting.jmx.testmodel.Person;
+import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;

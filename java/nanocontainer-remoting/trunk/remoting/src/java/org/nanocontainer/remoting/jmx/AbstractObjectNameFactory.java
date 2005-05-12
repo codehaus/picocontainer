@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 /**
  * An abstract ObjectNameFactory that offers functionality to handle the domain part of the object name.

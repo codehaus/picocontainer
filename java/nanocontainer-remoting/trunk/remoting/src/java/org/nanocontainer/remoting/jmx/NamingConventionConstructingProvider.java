@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.MBeanInfo;
 
@@ -50,14 +50,14 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
 
     /**
      * Return a {@link StandardMBeanFactory}.
-     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getMBeanFactory()
+     * @see org.nanocontainer.remoting.jmx.AbstractConstructingProvider#getMBeanFactory()
      */
     protected DynamicMBeanFactory getMBeanFactory() {
         return mBeanFactory;
     }
 
     /**
-     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getObjectNameFactory()
+     * @see org.nanocontainer.remoting.jmx.AbstractConstructingProvider#getObjectNameFactory()
      */
     public ObjectNameFactory getObjectNameFactory() {
         return objectNameFactory;
@@ -66,7 +66,7 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
     /**
      * Return an array with an instance of type {@link ComponentKeyConventionMBeanInfoProvider} and
      * {@link ComponentTypeConventionMBeanInfoProvider}.
-     * @see org.nanocontainer.jmx.AbstractConstructingProvider#getMBeanInfoProviders()
+     * @see org.nanocontainer.remoting.jmx.AbstractConstructingProvider#getMBeanInfoProviders()
      */
     public MBeanInfoProvider[] getMBeanInfoProviders() {
         return mBeanProviders;

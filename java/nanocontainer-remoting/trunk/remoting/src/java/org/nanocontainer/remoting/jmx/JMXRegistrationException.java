@@ -8,7 +8,7 @@
  * Original code by Michael Ward                                    		 *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import org.picocontainer.PicoRegistrationException;
 

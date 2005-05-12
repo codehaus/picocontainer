@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.ejb.testmodel;
+package org.nanocontainer.remoting.ejb.testmodel;
 
 import javax.ejb.EJBHome;
 import javax.ejb.EJBObject;

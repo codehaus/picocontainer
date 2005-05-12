@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.ejb;
+package org.nanocontainer.remoting.ejb;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

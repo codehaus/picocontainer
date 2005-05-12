@@ -8,7 +8,7 @@
  * Original code by Michael Ward                                    		 *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;

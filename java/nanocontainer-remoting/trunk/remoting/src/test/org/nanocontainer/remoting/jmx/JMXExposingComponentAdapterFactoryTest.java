@@ -1,15 +1,20 @@
-/*
- * Copyright (C) 2005 Elsag-Solutions AG.
- * Created on 12.04.2005 by Jörg Schaible.
- */
-package org.nanocontainer.jmx;
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Joerg Schaible                                           *
+ *****************************************************************************/
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import org.nanocontainer.jmx.testmodel.DynamicMBeanPerson;
-import org.nanocontainer.jmx.testmodel.PersonMBean;
+import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
+import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;

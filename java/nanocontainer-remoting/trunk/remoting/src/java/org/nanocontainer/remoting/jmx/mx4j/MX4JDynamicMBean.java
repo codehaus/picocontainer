@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by James Strachan                                           *
  *****************************************************************************/
-package org.nanocontainer.jmx.mx4j;
+package org.nanocontainer.remoting.jmx.mx4j;
 
 import mx4j.AbstractDynamicMBean;
 

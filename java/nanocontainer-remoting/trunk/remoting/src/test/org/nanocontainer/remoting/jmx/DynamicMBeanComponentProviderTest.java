@@ -8,14 +8,14 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.jmx;
+package org.nanocontainer.remoting.jmx;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 
-import org.nanocontainer.jmx.testmodel.DynamicMBeanPerson;
-import org.nanocontainer.jmx.testmodel.Person;
-import org.nanocontainer.jmx.testmodel.PersonMBean;
+import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
+import org.nanocontainer.remoting.jmx.testmodel.Person;
+import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
 import org.jmock.Mock;

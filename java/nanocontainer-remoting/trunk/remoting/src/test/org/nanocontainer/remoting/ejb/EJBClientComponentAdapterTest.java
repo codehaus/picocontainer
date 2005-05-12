@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.ejb;
+package org.nanocontainer.remoting.ejb;
 
 import java.net.SocketTimeoutException;
 import java.rmi.NoSuchObjectException;
@@ -29,14 +29,14 @@ import junit.framework.Test;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.nanocontainer.ejb.testmodel.BarHomeImpl;
-import org.nanocontainer.ejb.testmodel.FooBar;
-import org.nanocontainer.ejb.testmodel.FooBarHome;
-import org.nanocontainer.ejb.testmodel.FooHomeImpl;
-import org.nanocontainer.ejb.testmodel.Hello;
-import org.nanocontainer.ejb.testmodel.HelloHome;
-import org.nanocontainer.ejb.testmodel.HelloHomeImpl;
-import org.nanocontainer.ejb.testmodel.HelloImpl;
+import org.nanocontainer.remoting.ejb.testmodel.BarHomeImpl;
+import org.nanocontainer.remoting.ejb.testmodel.FooBar;
+import org.nanocontainer.remoting.ejb.testmodel.FooBarHome;
+import org.nanocontainer.remoting.ejb.testmodel.FooHomeImpl;
+import org.nanocontainer.remoting.ejb.testmodel.Hello;
+import org.nanocontainer.remoting.ejb.testmodel.HelloHome;
+import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
+import org.nanocontainer.remoting.ejb.testmodel.HelloImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;

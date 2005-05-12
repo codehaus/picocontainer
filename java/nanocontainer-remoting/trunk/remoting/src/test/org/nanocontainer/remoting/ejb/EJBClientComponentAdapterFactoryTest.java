@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.ejb;
+package org.nanocontainer.remoting.ejb;
 
 import java.util.Hashtable;
 import java.util.Properties;
@@ -19,8 +19,8 @@ import junit.framework.Test;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.nanocontainer.ejb.testmodel.Hello;
-import org.nanocontainer.ejb.testmodel.HelloHomeImpl;
+import org.nanocontainer.remoting.ejb.testmodel.Hello;
+import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.ComponentAdapterFactory;

@@ -1,10 +1,6 @@
 package org.nanocontainer.remoting.rmi;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import org.nanocontainer.remoting.ByRefKey;
-import org.nanocontainer.remoting.Invocation;
-import org.nanocontainer.remoting.KeyHolder;
-import org.nanocontainer.remoting.NanoNamingImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 

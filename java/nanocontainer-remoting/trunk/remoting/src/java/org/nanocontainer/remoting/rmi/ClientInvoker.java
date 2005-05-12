@@ -1,7 +1,6 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi;
 
 import com.thoughtworks.proxy.Invoker;
-import org.nanocontainer.remoting.rmi.RemoteInterceptorImpl;
 
 import java.lang.reflect.Method;
 

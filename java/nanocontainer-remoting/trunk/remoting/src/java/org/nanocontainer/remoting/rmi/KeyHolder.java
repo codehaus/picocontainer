@@ -1,4 +1,4 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi;
 
 /**
  * @author Aslak Helles&oslash;y

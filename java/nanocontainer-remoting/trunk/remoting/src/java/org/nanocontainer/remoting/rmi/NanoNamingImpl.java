@@ -1,7 +1,6 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import org.nanocontainer.remoting.rmi.RemoteInterceptorImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 

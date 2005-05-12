@@ -1,4 +1,4 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

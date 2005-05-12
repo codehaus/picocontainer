@@ -1,6 +1,5 @@
 package org.nanocontainer.remoting.rmi;
 
-import org.nanocontainer.remoting.RemotingInterceptor;
 
 import java.rmi.Remote;
 

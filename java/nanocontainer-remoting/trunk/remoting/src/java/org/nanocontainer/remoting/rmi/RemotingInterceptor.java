@@ -1,4 +1,4 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi;
 
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;

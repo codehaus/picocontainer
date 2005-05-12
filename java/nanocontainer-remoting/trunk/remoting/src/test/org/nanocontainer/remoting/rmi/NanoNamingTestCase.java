@@ -6,8 +6,8 @@ import junit.framework.TestCase;
 import org.nanocontainer.remoting.ByRefKey;
 import org.nanocontainer.remoting.NanoNaming;
 import org.nanocontainer.remoting.NanoNamingImpl;
-import org.nanocontainer.remoting.Thang;
-import org.nanocontainer.remoting.Thing;
+import org.nanocontainer.remoting.rmi.testmodel.Thang;
+import org.nanocontainer.remoting.rmi.testmodel.Thing;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

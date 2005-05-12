@@ -1,4 +1,4 @@
-package org.nanocontainer.remoting;
+package org.nanocontainer.remoting.rmi.testmodel;
 
 import java.io.Serializable;
 

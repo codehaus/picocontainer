@@ -1,8 +1,0 @@
-Constructor Dependency Injection, with PicoContainer 
-NanoContainer & Groovy
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Draft edition of %%date(%c)
-
-= NanoContainer & Groovy=
-
-NanoContainer comes with built-in support for Groovy. Here is how you would assemble an application with Groovy markup:
-

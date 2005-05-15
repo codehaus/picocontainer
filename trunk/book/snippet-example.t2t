@@ -1,7 +1,0 @@
-Constructor Dependency Injection, with PicoContainer 
-NanoContainer
-By the PicoContainer Committers and friends, (c) the PicoContainer committers. Edition of %%date(%c)
-
-= Example of using snippets =
-
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/org/picocontainer/doc/introduction/Juicer.java|lineNumbers=true}

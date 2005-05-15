@@ -1,0 +1,22 @@
+#url( $url ) 
+<html>
+    <head>
+        <title>
+            Confirm removal of profile $profile.firstName $profile.lastName
+        </title>
+    </head>
+    <body>
+        <p>
+            You are about to delete profile of  <b>$profile.firstName $profile.lastName</b>
+            Are you sure?
+            <ul>
+                <li>
+                    <a href="$url.setPage('unindexProfile.action').addParameter('profileId',$profile.id)">Yes, remove it</a>
+                </li>
+                <li>
+                    <a href="$url.setPage('/profiles/profiles.vm')">No, I do not like this idea</a>
+                </li>
+            </ul>
+        </p>
+    </body>
+</html>

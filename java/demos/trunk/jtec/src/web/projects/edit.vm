@@ -1,0 +1,14 @@
+#url( $url ) 
+<html>
+    <head>
+        <title>
+            Create Project
+        </title>
+    </head>
+    <body>
+        <form method="post" action="$url.setPage('updateProject.action')">
+            <input type="hidden" name="projectId" value="$projectId"/>
+            #parse( '/projects/project_form.vm')
+        </form>
+    </body>
+</html>

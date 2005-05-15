@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+#url( $url )
+
+<html>
+    <head>
+        <link rel="stylesheet" href=" $url.setPage('/styles/styles.css') " type="text/css">
+        <title>
+            J Tec Team demo : #sitemesh_title()
+        </title>
+    </head>
+
+    <body>
+        <table width="750">
+            <tr>
+                <td  class="tblgrid">
+                    <table width="100%" cellspacing="1" cellpadding="10">
+                        <tr>
+                            <td class="menubar">#parse( '/layout/top.vm' )</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#d38a2c">
+                                <h3>#sitemesh_title()</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="main">
+                                #sitemesh_body()
+                            </td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#ddddff" align="center">
+                                <small>
+                                    Copyrigt by <a href="$url.setPage('http://www.j-tec-team.de/')">J Tec Team</a> 2004. All rights reserved. Use only for demo puproses.
+                                </small>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

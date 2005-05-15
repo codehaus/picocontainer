@@ -1,0 +1,69 @@
+#macro(action $action_name $name)
+   #set ($name = $webwork.action($action_name))
+#end
+
+#macro(execute $name)
+  #set ($result = $webwork.execute($name))
+#end
+
+#macro(bean $bean_name $name)
+   #set ($name = $webwork.bean($bean_name))
+#end
+
+#macro(includeservlet $name)
+  $webwork.include($name,$req,$res)
+#end
+
+#macro (url $name)
+   #set ($name = $webwork.bean("webwork.view.velocity.URLBean"))
+   $name.setRequest($req)
+   $name.setResponse($res)
+#end
+
+#macro ( generateSelectBox $name $options $selectedValue)
+  <select name="$name">
+
+    #foreach( $option in $options )
+        <option value="$option"
+            #if ($selectedValue == $option)
+            selected="selected"
+            #end
+        >$option</option>
+    #end
+   </select>
+#end
+
+#macro ( error_message $message ) 
+    #if ( $errors.get( $message ) ) 
+    <div class="errormessage">
+        <p class="errormessage">$errors.get ( $message )</p>
+    </div>
+    #end
+#end 
+
+#macro ( sitemesh_title )
+    $req.getAttribute('__sitemesh__page').title
+#end
+
+
+
+
+##provide sitemesh page head
+#macro ( sitemesh_head )
+    #set ( $_writer = $webwork.bean('java.io.StringWriter') )
+    $req.getAttribute('__sitemesh__page').writeHead( $_writer )
+    $_writer
+#end
+
+##provide sitemesh page body
+#macro ( sitemesh_body )
+    #set ( $_writer = $webwork.bean('java.io.StringWriter') )
+    $req.getAttribute('__sitemesh__page').writeBody( $_writer )
+    $_writer
+#end
+
+## provide sitemesh page object
+#macro ( sitemesh_page $page )
+    #set ( $page =  $req.getAttribute('__sitemesh__page') )
+#end
+

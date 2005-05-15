@@ -1,0 +1,44 @@
+#url($url)
+<html>
+    <head>
+        <title>
+            Using this application
+        </title>
+    </head>
+    <body>
+        <p>
+            This is small application demonstrating management of <a href="$url.setPage('/profiles/')">user profiles</a>
+            and <a href="$url.setPage('/projects/')">project descriptions</a>. They can be created, 
+            shown, updated, removed and listed. From profile display you can request project, 
+            or cancel project requests. Those requests will be seen from respective project display
+            page. You can also cancel them.
+        </p>
+        <p>
+            This is very simple data model, but it uses ternary relations between project, 
+            profile and request. ( Corresponds to <b>java.util.Map</b> keyed by Project / Profile
+            and containing request objects ).
+        </p>
+        <p>
+            Most intersting part is full text search system  used to match 
+            projects to profiles. Each entity is indexed upon creation/updating,
+            and this index can be searched with ull text of profile or
+            project description as a query, to find most suitable projects 
+            for profile and vice versa. This search is available from 
+            <a href="$url.setPage('/projects/projects.vm')">project</a> or 
+            <a href="$url.setPage('/profiles/profiles.vm')">profile</a> listing pages.
+            ( Look for <b>FInd Projects</b> / <b>Find profiles</b> links. )
+        </p>
+        <p>
+            This search is only a demonstration, and is intentionally made not 
+            very accurate. Real workd use would require some fine tuning. Size 
+            of profiles / projects is also an issue - it  will fail for long 
+            profiles and projects
+        </p>
+        <p>
+            This demo application does not store anything on hard disk or 
+            external database, and will lose all the data upon servelt container
+            restart, or redeployment. Neither is it multiuser capable. 
+            We made this intentionally - it's only demo...  
+        </p>
+    </body>
+</html>

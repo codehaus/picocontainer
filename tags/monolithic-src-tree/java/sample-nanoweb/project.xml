@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-sample-nanoweb</id>
+    <name>nanocontainer-sample-nanoweb</name>
+
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <id>servletapi</id>
+            <version>2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-nanowar</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!--
+        Groovy and ASM only needed if using Groovy to
+        assemble the container in web.xml
+        -->
+        <dependency>
+            <id>groovy</id>
+            <version>1.0-beta-7</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>asm</id>
+            <version>1.4.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>1.4.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>velocity</id>
+            <version>1.4-rc1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>velocity-tools</id>
+            <version>view-1.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>ognl</id>
+            <version>2.5.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- For acceptance test only -->
+
+        <dependency>
+            <id>xmlunit</id>
+            <version>1.0</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>jetty</id>
+            <version>4.2.9</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>jasper-compiler</artifactId>
+            <version>5.0.18</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>jasper-runtime</artifactId>
+            <version>5.0.18</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+        </dependency>
+    </dependencies>
+
+</project>

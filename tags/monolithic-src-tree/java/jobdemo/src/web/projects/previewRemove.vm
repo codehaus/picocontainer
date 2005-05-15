@@ -1,0 +1,22 @@
+#url( $url ) 
+<html>
+    <head>
+        <title>
+            Confirm removal of project $project.name
+        </title>
+    </head>
+    <body>
+        <p>
+            You are about to delete project $project.name
+            Are you sure?
+            <ul>
+                <li>
+                    <a href="$url.setPage('unindexProject.action').addParameter('projectId',$project.id)">Yes, remove it</a>
+                </li>
+                <li>
+                    <a href="$url.setPage('/projects/projects.vm')">No, I do not like this idea</a>
+                </li>
+            </ul>
+        </p>
+    </body>
+</html>

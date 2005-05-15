@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+
+<project name="PicoSite" default="make-site" basedir=".">  
+
+  <target name="-init">
+    <available file="lib/servlet.jar" property="how.often.does.servlet.jar.change"/>
+  </target>
+
+  <target name="get-jars" depends="-init" unless="how.often.does.servlet.jar.change">
+    <get dest="lib/servlet.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.3.jar"/>
+  </target>
+  
+  <target name="clean">
+    <delete dir="build" />
+    <delete file="site.tar.gz" />
+    <delete file="site.tar" />
+  </target>
+
+  <target name="make-site" depends="get-jars">
+    <taskdef name="sitemesh"
+      classname="com.opensymphony.module.sitemesh.staticmesh.ant.StaticMeshTask">
+      <classpath>
+        <pathelement location="lib/staticmesh.jar"/>
+        <pathelement location="lib/servlet.jar"/>
+        <pathelement location="docs/WEB-INF/classes/"/>
+        <pathelement location="docs/WEB-INF/lib/sitemesh.jar"/>
+        <pathelement location="docs/WEB-INF/lib/velocity-dep-1.3-dev.jar"/>
+      </classpath>
+    </taskdef>
+
+    <mkdir dir="build"/>
+
+    <sitemesh dest="build" base="docs" decorator="docs/decorators/decorator.html">
+      <fileset dir="docs">
+        <include name="*.html"/>
+      </fileset>
+    </sitemesh>
+
+    <sitemesh dest="build" base="docs" decorator="docs/decorators/rico-decorator.html">
+       <fileset dir="docs">
+          <include name="rico/*.html"/>
+       </fileset>
+    </sitemesh>
+    
+    <copy todir="build">
+      <fileset dir="docs">
+        <include name="*.jpg"/>
+        <include name="*.png"/>
+        <include name="*.gif"/>
+        <include name="*.css"/>
+      </fileset>
+    </copy>
+
+    <copy todir="build/presentations">
+      <fileset dir="presentations">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+
+  </target>
+  
+  <target name="site:sshdeploy" depends="make-site" description="Deploy the generated site docs using ssh">
+    <!-- assume user has a ~/build.properties file with maven.username=unixuser -->
+    <property file="${user.home}/build.properties"/>
+
+    <tar tarfile="site.tar" basedir="build"/>
+    <gzip zipfile="site.tar.gz" src="site.tar"/>
+    <delete file="site.tar"/>
+
+    <!-- Make sure the destination directory exists before trying to copy -->
+    <exec dir="." executable="${maven.ssh.executable}">
+      <arg line="codehaus.org -l ${maven.username} 'mkdir -p /www/picocontainer.codehaus.org'"/>
+    </exec>
+
+    <exec dir="." executable="${maven.scp.executable}">
+      <arg value="site.tar.gz"/>
+      <arg value="${maven.username}@codehaus.org:/www/picocontainer.codehaus.org"/>
+    </exec>
+
+    <exec dir="." executable="${maven.ssh.executable}">
+      <arg line="codehaus.org -l ${maven.username} 'cd /www/picocontainer.codehaus.org;gunzip site.tar.gz;tar xUvf site.tar;chmod -R g+u *;rm site.tar'"/>
+    </exec>
+
+    <delete file="site.tar.gz"/>
+
+  </target>
+  
+
+</project>
+

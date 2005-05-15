@@ -1,0 +1,17 @@
+<project name="nanocontainer" repository="nanocontainer" href="http://nanocontainer.codehaus.org">
+
+    <title>NanoContainer</title>
+
+    <body>
+        <links>
+            <item name="NanoContainer main site" href="http://www.nanocontainer.org"/>
+            <item name="PicoContainer" href="http://www.picocontainer.org/"/>
+        </links>
+
+        <menu name="NanoContainer">
+            <item name="Overview" href="/index.html"/>
+            <item name="License" href="/license.html"/>
+        </menu>
+    </body>
+
+</project>

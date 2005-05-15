@@ -1,0 +1,40 @@
+<project default="binary:install"
+    xmlns:j="jelly:core"
+    xmlns:license="license"
+    xmlns:util="jelly:util"
+    xmlns:ant="jelly:ant"
+    xmlns:artifact="artifact"
+    xmlns:deploy="deploy">
+
+    <goal name="binary:install" prereqs="war:install"/>
+    <goal name="binary:deploy" prereqs="war:install">
+        <deploy:artifact
+            artifact="${maven.build.dir}/${pom.artifactId}.war"
+            type="war"
+            assureDirectoryCommand="mkdir -p"
+            siteCommand="cd @deployDirectory@"
+            />
+    </goal>
+
+    <preGoal name="test:test">
+        <copy todir="${basedir}/target/nanocontainer-sample-nanoweb/">
+            <fileset dir="${basedir}/src/webapp"/>
+        </copy>
+        <mkdir dir="${basedir}/target/nanocontainer-sample-nanoweb/WEB-INF/classes"/>
+        <copy todir="${basedir}/target/nanocontainer-sample-nanoweb/WEB-INF/classes">
+            <fileset dir="${basedir}/target/classes"/>
+        </copy>
+
+        <mkdir dir="${basedir}/target/nanocontainer-sample-nanoweb/WEB-INF/lib"/>
+
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            <j:if test="${dep.getProperty('war.bundle')=='true'}">
+                <j:if test="${dep.type =='jar'}">
+                    <copy todir="${basedir}/target/nanocontainer-sample-nanoweb/WEB-INF/lib" file="${lib.path}"/>
+                </j:if>
+            </j:if>
+        </j:forEach>
+    </preGoal>
+
+</project>

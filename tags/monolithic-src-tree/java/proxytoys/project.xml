@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-proxytoys</id>
+    <name>nanocontainer-proxytoys</name>
+
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-full</artifactId>
+            <!-- will fail with 2.0.1 and 2.0.2 -->
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <id>xstream</id>
+            <version>1.0.2</version>
+        </dependency>
+
+        <dependency>
+            <id>xpp3</id>
+            <version>1.1.3.4-RC8_min</version>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

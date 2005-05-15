@@ -1,0 +1,33 @@
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-idea</id>
+    <name>nanocontainer-idea</name>
+
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-swing</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
+            <id>openapi</id>
+            <version></version>
+            <url>http://www.intellij.net/</url>
+        </dependency>
+    </dependencies>
+
+</project>

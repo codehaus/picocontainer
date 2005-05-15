@@ -1,0 +1,254 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+    <!ENTITY ouml "&#246;">
+]>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <pomVersion>3</pomVersion>
+    <id>picocontainer</id>
+    <name>PicoContainer</name>
+    <currentVersion>1.2-SNAPSHOT</currentVersion>
+
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2003</inceptionYear>
+    <package>org.picocontainer</package>
+    <logo>/images/pico-logo.png</logo>
+    <description>
+        Please refer to the &lt;a href="http://picocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
+    </description>
+    <shortDescription>Small footprint Dependency Injection container</shortDescription>
+    <url>http://www.picocontainer.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/PICO</issueTrackingUrl>
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/picocontainer/public_html/versions/${pom.currentVersion}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
+        <url>http://cvs.picocontainer.codehaus.org/viewrep/picocontainer/java/picocontainer</url>
+    </repository>
+
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>NOSPAM.paul_hammant@yahoo.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Helles&oslash;y</name>
+            <id>rinkrank</id>
+            <email>NOSPAM.rinkrank@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Jon Tirs&eacute;n</name>
+            <id>tirsen</id>
+            <email>NOSPAM.tirsen@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Chris Stevenson</name>
+            <id>skizz</id>
+            <email>NOSPAM.skizz@codehaus.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Thomas Heller</name>
+            <id>maniax</id>
+            <email>NOSPAM.th.heller@mx4k.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>J&ouml;rg Schaible</name>
+            <id>joehni</id>
+            <email>joerg.schaible@gmx.de</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Konstantin Pribluda</name>
+            <id>ko5tik</id>
+            <email>NOSPAM.kpribluda@j-tec-team.de</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Leo Simons</name>
+            <id>lsimons</id>
+            <email>NOSPAM.lsimons@jicarilla.org</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Joe Walnes</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mike Hogan</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>James Strachan</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Steve Freeman</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Stacy Curl</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Zohar Melamed</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Dan North</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Rafal Krzewski</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Paulo Silvera</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Michael Rettig</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mirco Novakovic</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Laurent Etiemble</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Mathias Bogaert</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Vincent Tence</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Rao Chejarla</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Aapo Laakkonen</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Kevin O'Neill</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Jeppe Cramon</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Adam Rosien</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Gilles Philippart</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Calvin Yu</name>
+            <email/>
+        </contributor>
+        <contributor>
+            <name>Matt Ho</name>
+            <email/>
+        </contributor>
+    </contributors>
+
+    <dependencies>
+
+        <!-- test time only -->
+        <!--dependency>
+            <id>ashcroft</id>
+            <version>0.1</version>
+        </dependency-->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <id>xstream</id>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <id>xpp3</id>
+            <version>1.1.3.4-RC8_min</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*</exclude>
+            </excludes>
+        </unitTest>
+    </build>
+
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-simian-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-clover-plugin</report>
+        <report>maven-junit-report-plugin</report>        
+    </reports>
+
+</project>

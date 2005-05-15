@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>About J Tec Team</title>
+    </head>
+    <body>
+        <p>
+            We are small software consulting company based in Wiesbaden. We offer consulting, 
+            software development, quality  and release management
+            Latest project is portal for construction industry, which  can be seen 
+            <a href="$url.setPage('http://www.unitracc.de')">here</a>
+        </p>
+        <p>
+            We are active in several Open Source Projects:
+            <ul>
+                <li>
+                    Pico/Nanocontainer
+                </li>
+                <li>
+                    XDoclet 1&amp;2 as well plugins
+                </li>
+            </ul>
+        </p>
+    </body>
+</html>

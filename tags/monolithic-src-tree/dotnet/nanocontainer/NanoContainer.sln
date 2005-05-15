@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoContainer", "src\NanoContainer\NanoContainer.csproj", "{10C07279-0C4B-49AC-8DA5-54062116C2ED}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoContainer.Tests", "src\NanoContainer.Tests\NanoContainer.Tests.csproj", "{75EDDB10-3AE4-4210-BF96-A90AE79BBDD7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestComp", "src\TestComp\TestComp.csproj", "{3630FF34-E9CF-43A9-8B36-E08829EFF539}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestComp2", "src\TestComp2\TestComp2.csproj", "{394C494B-D2EB-47EC-9149-B522F11778C4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotStartable", "src\NotStartable\NotStartable.csproj", "{331078E9-335D-461C-A88B-6EE8A92A6C58}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{10C07279-0C4B-49AC-8DA5-54062116C2ED}.Debug.ActiveCfg = Debug|.NET
+		{10C07279-0C4B-49AC-8DA5-54062116C2ED}.Debug.Build.0 = Debug|.NET
+		{10C07279-0C4B-49AC-8DA5-54062116C2ED}.Release.ActiveCfg = Release|.NET
+		{10C07279-0C4B-49AC-8DA5-54062116C2ED}.Release.Build.0 = Release|.NET
+		{75EDDB10-3AE4-4210-BF96-A90AE79BBDD7}.Debug.ActiveCfg = Debug|.NET
+		{75EDDB10-3AE4-4210-BF96-A90AE79BBDD7}.Debug.Build.0 = Debug|.NET
+		{75EDDB10-3AE4-4210-BF96-A90AE79BBDD7}.Release.ActiveCfg = Release|.NET
+		{75EDDB10-3AE4-4210-BF96-A90AE79BBDD7}.Release.Build.0 = Release|.NET
+		{3630FF34-E9CF-43A9-8B36-E08829EFF539}.Debug.ActiveCfg = Debug|.NET
+		{3630FF34-E9CF-43A9-8B36-E08829EFF539}.Debug.Build.0 = Debug|.NET
+		{3630FF34-E9CF-43A9-8B36-E08829EFF539}.Release.ActiveCfg = Release|.NET
+		{3630FF34-E9CF-43A9-8B36-E08829EFF539}.Release.Build.0 = Release|.NET
+		{394C494B-D2EB-47EC-9149-B522F11778C4}.Debug.ActiveCfg = Debug|.NET
+		{394C494B-D2EB-47EC-9149-B522F11778C4}.Debug.Build.0 = Debug|.NET
+		{394C494B-D2EB-47EC-9149-B522F11778C4}.Release.ActiveCfg = Release|.NET
+		{394C494B-D2EB-47EC-9149-B522F11778C4}.Release.Build.0 = Release|.NET
+		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Debug.ActiveCfg = Debug|.NET
+		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Debug.Build.0 = Debug|.NET
+		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Release.ActiveCfg = Release|.NET
+		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

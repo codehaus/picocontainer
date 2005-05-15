@@ -1,0 +1,160 @@
+#url ( $url ) 
+
+body {
+   background-color:#ffffff;
+   color:#2e2e2e;
+}
+p {
+  color:#2e2e2e;
+
+}
+td {
+   font-style:normal;
+   color: #2e2e2e;
+}
+img{
+   border:0px;
+}
+
+
+.main {
+   background-color:#ffffff;
+   color:#2e2e2e;
+   text-decoration: none;
+}
+/*Links*/
+/***************************/
+/*
+a:link {
+   color:#50502e;
+   text-decoration: none;
+}
+a:visited {
+   color:#2e2e2e;
+   text-decoration: none;
+}
+a:hover {
+   color: #d38a2c;
+   text-decoration: underline;
+}
+a:active {
+   color: #5e5e5e;
+   text-decoration: none;
+}
+
+*/
+
+
+
+.error {
+   color:#d38a2c;
+}
+
+
+/*Schaltflächen und Eingabeelemente*/
+/***************************/
+.btn_doSubmit {
+     height:20px;
+     border-style:solid;
+     border-width:1px;
+     border-color:#717171;
+     color:#2e2e2e;
+}
+
+.menubar {
+         font-weight:800;
+         height:40px;
+         background-color:ddddff; padding:3px;
+         color: #ffffff; 
+}
+
+/*Tabellenkopf*/
+.tblhead {
+         font-weight:600;
+         height:21px;
+         background-color:A4A3A3; 
+         padding:5px;
+         color: #ffffff; 
+}
+.tblbody {
+         padding:5px;
+         background-color:FFFFFF;}
+.tblbody_odd {
+         padding:5px;
+         background-color:eeeeee;}
+        
+/*Äußere Umrandung der Tabelle (insbes. für NS 4.x)*/
+.tblgrid {
+         background-color:000000;
+         padding:1px;
+}
+/*Spaltenkopf*/
+.colhead  {
+         font-weight:600;
+         color:#ffffff;
+         height:22px;
+         background-color:B76116;
+         border-right:2px solid white;
+         border-bottom:2px solid white;
+         }
+.colhead_adv_end {
+         font-weight:600;
+         color:#ffffff;
+         height:22px;
+         background-color:B76116;
+         border-bottom:2px solid white;
+         }
+/*Tabellenkörper*/
+.datatbl_adv {
+          font-weight:500;
+          background-color:ffffff; }
+/*Tabellenzelle Variante 1 (standard)*/
+.tbody1 {
+          font-weight:500;
+          background-color:F7f7f7;
+          border-right:2px solid white;
+          border-bottom:2px solid white;
+          }
+
+/*Tabellenzelle Variante 2 (Linkfelder)*/
+.tbody2 {
+         font-weight:500;
+         background-color:F1F1F1;
+         border-right:2px solid white;
+         border-bottom:2px solid white;
+         }
+
+
+
+/*Sonstige formatierte Objekte*/
+/***************************/
+li {
+     font-family: Verdana, Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+     font-size:13px;
+     list-style-image:url($url.setPage('/images/arrow.gif'));
+     margin:5px;
+     padding-bottom:5px;
+     color:#2e2e2e;
+}
+ul{
+   padding-left:0px;
+   margin-left:20px;
+}
+fieldset {
+     padding:10px;
+}
+
+.input_head {
+            background-color:#E1E1E1;
+            padding:5px;
+
+}
+.input_body{
+            background-color:#EEEEEE;
+            padding:5px;
+}
+.input_action{
+            background-color:#EEEEdd;
+            padding:5px;
+}
+

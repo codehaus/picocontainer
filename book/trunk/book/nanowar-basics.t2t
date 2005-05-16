@@ -47,19 +47,19 @@ web.xml (for Tomcat) and the MVC frameworks configuration files
 To enable NanoWar in your webapp, you need to configure a Listener and a Componser
 in the web.xml
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/listener.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/listener.xml|lineNumbers=false}
 
 === Scoped Composer configuration ===
 
 The ServletContainerListener uses a ScopedContainerComposer to compose
 the containers for the differents scopes: application/session/request.
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer.xml|lineNumbers=false}
 
 The ScopedContainerComposer is configurable via any NanoContainer file which 
 instantiates a ScopedContainerConfigurator.  Eg in XML the configuration would look like:
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer-config.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/scoped-composer-config.xml|lineNumbers=false}
 
 The configurator allows to define the ContainerBuilder used by
 the composer and the NanoContainer scripts holding the components.
@@ -80,7 +80,7 @@ The ServletContainerListener is also configurable via a single NanoContainer scr
 provided the script language supports flow control syntax to distinguish among the 
 different assembly scopes.  For example, in groovy it would be 
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/nanocontainer.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/nanocontainer.xml|lineNumbers=false}
 
 The context-param name must be 'nanocontainer.<language>' where language 
 is any of the supported NanoContainer script languages.  
@@ -97,7 +97,7 @@ of the different frameworks.
 NanoWar's Struts support is configured in struts-config.xml in an extremely simple
 and elegant manner.  All is required is to configure a different controller.
  
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/struts-config.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/struts-config.xml|lineNumbers=false}
 
 Using the PicoRequestProcessor as the Struts controller allows the Struts
 Actions to be created using CDI.  PicoRequestProcessor will look up the 
@@ -112,7 +112,7 @@ NanoWar container configuration has not be properly setup.
 If tiles are used, exactly the same arguments apply except that 
 a different controller needs to be defined.
 
-{snippet:id=xml|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/tiles-struts-config.xml|lineNumbers=false}
+{snippet:id=xml|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/tiles-struts-config.xml|lineNumbers=false}
 
 === Nanowar and Webwork 1.x ===
 
@@ -125,7 +125,7 @@ request scope, but also session or application. After action setup it receives
 request parameters and is executed the same way as any webwork action. 
 WebworkActionFactory can be activated either through webwork.properties:
 
-{snippet:id=properties|url=@JAVA_MODULE_URL@/nanowar/src/test/cdibook/webwork.properties|lineNumbers=false}
+{snippet:id=properties|url=@JAVA_NANOWAR_MODULE_URL@/nanowar/src/test/cdibook/webwork.properties|lineNumbers=false}
 
 In this case standart webwork servlet dispatcher van be used. Or by using **PicoServletDispatcher**
 instead. 
@@ -133,14 +133,14 @@ instead.
 Nanowar's **WebworkVelocityServlet** integrates webwork action context to container 
 hierarchy, and allows direct access to components registered with a string keys
 
-{snippet:id=velocity|url=@JAVA_MODULE_URL@/sample-nanowar/src/webapps/webwork/index.vm|lineNumbers=false}
+{snippet:id=velocity|url=@JAVA_NANOWAR_MODULE_URL@/nanowar-sample/src/webapps/webwork/index.vm|lineNumbers=false}
 
 Webwork Actions can be easily unit tested standalone (by creating them via constructor ) 
 and performinng necessary unit tests, as well with while container hierarchy using TestContainerMocker,
 or by just setting up ActionContextScopeObjectReference to configured picocontainer and 
 then instantiating actions via webwork's ActionFactory:
 
-{snippet:id=testcase|url=@JAVA_MODULE_URL@/sample-nanowar/src/test/org/nanocontainer/sample/nanowar/webwork/CheeseActionTest.java|lineNumbers=true}
+{snippet:id=testcase|url=@JAVA_NANOWAR_MODULE_URL@/nanowar-sample/src/test/org/nanocontainer/sample/nanowar/webwork/CheeseActionTest.java|lineNumbers=true}
 
 
 

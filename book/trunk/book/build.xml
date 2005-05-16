@@ -4,7 +4,9 @@
      ! Override this with -D on the command line if the java module 
      ! is not checked out as a sibling to the book module.
     -->
-    <property name="java.module.url" value="file:../java"/>
+    <property name="java.module.url" value="file:../../../java"/>
+    <property name="picocontainer.trunk.path" value="/picocontainer/trunk"/>
+    <property name="nanowar.trunk.path" value="/nanocontainer-nanowar/trunk"/>
     <property name="format" value="html"/>
     
     <target name="clean">
@@ -24,8 +26,8 @@
                 <include name="*.t2t"/>
             </fileset>
         </copy>
-        <replace dir="target/url-replaced" token="@JAVA_MODULE_URL@" value="${java.module.url}"/>
-        <replace dir="target/url-replaced" token="@PICO_TEST_DIR@" value="file:../java/picocontainer/src/test"/>
+        <replace dir="target/url-replaced" token="@JAVA_PICOCONTAINER_MODULE_URL@" value="${java.module.url}/${picocontainer.trunk.path}"/>
+        <replace dir="target/url-replaced" token="@JAVA_NANOWAR_MODULE_URL@" value="${java.module.url}/${nanowar.trunk.path}"/>
         <replace dir="target/url-replaced" token="@BOOK_MODULE_URL@" value="file:./"/>
         
         <mkdir dir="target/slurped"/>

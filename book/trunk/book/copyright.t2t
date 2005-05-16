@@ -7,11 +7,16 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. D
 ==PicoContainer Committers writing this book==
 
 For the purposes of this document, the list of individuals below are the subset of PicoContainer committers who are active in
-writing this book...
+writing this book:
 
 Paul Hammant (co-lead of PicoContainer)
+
 Aslak Hellesoy (co-lead of PicoContainer)
-Konstantin Pribluda ( comiter of PicoContainer ) 
+
+Konstantin Pribluda (committer of PicoContainer) 
+
+Mauro Talevi (committer of PicoContainer)
+
 (add yourselves guys)
 
 They are henceforth known as the CDI-Book-Owners. The order of committers above implies no leadership for creation of the book, the

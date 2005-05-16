@@ -4,4 +4,4 @@ By the PicoContainer Committers and friends, (c) the PicoContainer committers. E
 
 = Example of using snippets =
 
-{snippet:id=class|url=@JAVA_MODULE_URL@/picocontainer/src/test/org/picocontainer/doc/introduction/Juicer.java|lineNumbers=true}
+{snippet:id=class|url=@JAVA_PICOCONTAINER_MODULE_URL@/container/src/test/org/picocontainer/doc/introduction/Juicer.java|lineNumbers=true}

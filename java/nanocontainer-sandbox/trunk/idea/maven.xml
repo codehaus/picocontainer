@@ -1,7 +1,4 @@
-<project default="binary:install" xmlns:j="jelly:core" xmlns:u="jelly:util">
-
-    <goal name="binary:install" prereqs="jar:install"/>
-    <goal name="binary:deploy" prereqs="jar:deploy"/>
+<project default="jar:install" xmlns:j="jelly:core" xmlns:u="jelly:util">
 
     <postGoal name="java:compile">
         <unjar

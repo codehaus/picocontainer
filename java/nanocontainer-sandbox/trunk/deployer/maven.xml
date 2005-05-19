@@ -1,7 +1,7 @@
-<project default="binary:install"
+<project default="jar:install"
     xmlns:j="jelly:core">
 
-    <goal name="binary:install" prereqs="jar:install">
+    <postGoal name="jar:install">
         <mkdir dir="${maven.build.dir}/dist/lib"/>
 
         <copy
@@ -29,7 +29,6 @@
         </copy>
 
         <mkdir dir="${maven.build.dir}/dist/apps"/>
-    </goal>
+    </postGoal>
 
-    <goal name="binary:deploy" prereqs="jar:deploy"/>
 </project>

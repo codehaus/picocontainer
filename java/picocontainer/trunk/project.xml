@@ -33,9 +33,9 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:cvs:pserver:anonymous@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</connection>
-        <developerConnection>scm:cvs:ext:${maven.username}@cvs.picocontainer.codehaus.org:/home/projects/picocontainer/scm:java</developerConnection>
-        <url>http://cvs.picocontainer.codehaus.org/viewrep/picocontainer/java/picocontainer</url>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/picocontainer</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/picocontainer</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer</url>
     </repository>
 
     <developers>

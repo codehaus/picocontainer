@@ -28,9 +28,9 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer</connection>
-        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer</developerConnection>
-        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer</url>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-nanowar</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-nanowar</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar</url>
     </repository>
 
     <!--

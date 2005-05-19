@@ -1,4 +1,4 @@
-<project default="binary:install"
+<project default="war:install"
     xmlns:j="jelly:core"
     xmlns:license="license"
     xmlns:util="jelly:util"
@@ -17,9 +17,10 @@
             <copy todir="${webapp}">
                 <fileset dir="${basedir}/src/webapps/${framework}"/>
             </copy>
-            <attainGoal name="war:install"/>
-            <ant:copy file="${maven.build.dir}/${pom.artifactId}.war"
-                tofile="${maven.build.dir}/${pom.artifactId}-${framework}.war"/>
+            <attainGoal name="war:webapp"/>
+		   <jar jarfile="${maven.build.dir}/${pom.artifactId}-${framework}.war">
+            	   <fileset dir="${pom.getPluginContext('maven-war-plugin').getVariable('maven.war.webapp.dir')}"/>
+	       </jar>
         </define:tag>
         <define:tag name="deployWar">
             <j:set var="framework" value="${framework}"/>
@@ -32,19 +33,19 @@
         </define:tag>
     </define:taglib>
 
-    <goal name="binary:install">
+    <postGoal name="war:install">
         <sample:installWar framework="nanoweb"/>
         <sample:installWar framework="struts"/>
         <sample:installWar framework="webwork"/>
-    </goal>
+    </postGoal>
 
-    <goal name="binary:deploy" prereqs="binary:install">
+    <postGoal name="war:deploy">    		
         <sample:deployWar framework="nanoweb"/>
         <sample:deployWar framework="struts"/>
         <sample:deployWar framework="webwork"/>
-    </goal>
+    </postGoal>
 
-    <goal name="deploy:tomcat" prereqs="binary:install">
+    <goal name="deploy:tomcat" prereqs="war:install">
         <ant:property environment="env"/>
         <ant:copy todir="${env.TOMCAT_HOME}/webapps">
             <ant:fileset dir="${maven.build.dir}">

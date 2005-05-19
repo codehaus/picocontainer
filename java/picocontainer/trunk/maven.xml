@@ -1,15 +1,11 @@
-<project
-    default="binary:install"
-    xmlns:deploy="deploy"
-    xmlns:j="jelly:core">
+<project default="pico:install">
 
-    <goal name="binary:install">
+    <goal name="pico:install">
 		<attainGoal name="multiproject:install"/>
     </goal>
 
-    <goal name="binary:deploy">
+    <goal name="pico:deploy">
         <attainGoal name="multiproject:deploy"/>
     </goal>
-
 
 </project>

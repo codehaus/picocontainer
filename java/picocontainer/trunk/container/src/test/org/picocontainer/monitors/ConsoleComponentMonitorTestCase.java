@@ -1,13 +1,13 @@
 package org.picocontainer.monitors;
 
-import junit.framework.TestCase;
-import org.picocontainer.defaults.ComponentMonitor;
-import org.picocontainer.defaults.ComponentMonitor;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.defaults.ComponentMonitor;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -15,7 +15,6 @@ import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestC
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.VerifyingVisitor;
-import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 
 import java.util.ArrayList;

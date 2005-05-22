@@ -10,12 +10,7 @@
 
 package org.picocontainer.alternatives;
 
-import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.alternatives.RootVisitingLifecycleManager;
 
 /**
  * @author Paul Hammant

@@ -1,5 +1,9 @@
 package org.picocontainer.doc.advanced;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
@@ -8,13 +12,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CollectionComponentParameter;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.CollectionComponentParameterTestCase.Bowl;
-import org.picocontainer.defaults.CollectionComponentParameterTestCase.Cod;
-import org.picocontainer.defaults.CollectionComponentParameterTestCase.Shark;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
 
 
 /**

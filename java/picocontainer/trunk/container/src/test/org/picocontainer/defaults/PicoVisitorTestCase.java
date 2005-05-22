@@ -15,8 +15,6 @@ import org.picocontainer.PicoVisitor;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import java.lang.reflect.UndeclaredThrowableException;
-
 
 /**
  * Test general PicoVisitor behaviour.

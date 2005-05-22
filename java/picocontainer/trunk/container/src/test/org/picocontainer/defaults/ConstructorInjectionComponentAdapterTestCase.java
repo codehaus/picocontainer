@@ -21,7 +21,6 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.awt.event.ActionEvent;

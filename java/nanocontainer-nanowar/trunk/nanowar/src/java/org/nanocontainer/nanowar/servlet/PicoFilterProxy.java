@@ -84,7 +84,7 @@ public class PicoFilterProxy implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (delegate == null || !lookupOnlyOnce) {            
-            lookupDelegate((HttpServletRequest) request);
+            delegate = lookupDelegate((HttpServletRequest) request);
             if (initTypeValue == INIT_CONTEXT) {
                 initDelegate();
             }
@@ -119,29 +119,42 @@ public class PicoFilterProxy implements Filter {
         return i.intValue();
     }
 
-    private void lookupDelegate(HttpServletRequest request) throws ServletException {
+    /**
+     * Looks up delegate Filter in PicoContainer found in any of the web scopes.
+     * @param request the HttpServletRequest used to find the PicoContainer
+     * @return A Filter 
+     * @throws ServletException
+     */
+    private Filter lookupDelegate(HttpServletRequest request) throws ServletException {
         PicoContainer pico = findContainer(request);
-        
         String delegateClassName = filterConfig.getInitParameter("delegate-class");
         String delegateKey = filterConfig.getInitParameter("delegate-key");
+        Filter filter = null;
         if (delegateClassName != null) {
             try {
                 Class delegateClass = getClassLoader().loadClass(delegateClassName);
-                delegate = (Filter) pico.getComponentInstanceOfType(delegateClass);
+                filter = (Filter) pico.getComponentInstanceOfType(delegateClass);
             } catch (ClassNotFoundException e) {
                 throw new PicoInitializationException("Cannot load " + delegateClassName, e);
             }
         } else if (delegateKey != null) {
-            delegate = (Filter) pico.getComponentInstance(delegateKey);
+            filter = (Filter) pico.getComponentInstance(delegateKey);
         } else {
             throw new PicoInitializationException("You must specify one of delegate-class or delegate-key in the filter config, and you must register the corresponding component in your PicoContainer");
         }
 
-        if (delegate == null) {
+        if (filter == null) {
             throw new PicoInitializationException("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey);
         }
+        return filter;
     }
 
+    /**
+     * Finds PicoContainer via the ServletContainerFinder 
+     * @param request the HttpServletRequest
+     * @return A PicoContainer 
+     * @see ServletContainerFinder
+     */
     private PicoContainer findContainer(HttpServletRequest request) {
         if (containerFinder == null) {
             // lazy initialisation

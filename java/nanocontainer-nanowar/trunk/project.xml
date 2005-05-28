@@ -47,6 +47,12 @@
             <url>http://junit.org</url>
         </dependency>
 
+        <dependency>
+            <id>httpunit</id>
+            <version>1.6</version>
+            <url>http://httpunit.org</url>
+        </dependency>
+        
     </dependencies>
 
     <build>

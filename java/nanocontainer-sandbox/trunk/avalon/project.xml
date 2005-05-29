@@ -3,7 +3,7 @@
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-avalon</id>
-    <name>nanocontainer-avalon</name>
+    <name>Nanocontainer Avalon</name>
 
     <developers>
         <developer>
@@ -18,18 +18,6 @@
     </developers>
 
     <dependencies>
-        <dependency>
-            <id>picocontainer</id>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
 
         <!-- It might be worthwhile to get rid of this dependency.
         Only needed in one line of code in AvalonUtil. AH. -->
@@ -70,10 +58,6 @@
         </dependency>
 
         <!-- test time only -->
-        <dependency>
-            <id>junit</id>
-            <version>3.8.1</version>
-        </dependency>
         <dependency>
             <id>easymock</id>
             <version>1.0.1b</version>

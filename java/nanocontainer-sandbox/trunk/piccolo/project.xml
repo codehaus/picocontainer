@@ -3,22 +3,9 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-piccolo</id>
-    <name>nanocontainer-piccolo</name>
+    <name>Nanocontainer Piccolo</name>
 
     <dependencies>
-        <dependency>
-            <id>picocontainer</id>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
         <dependency>
             <id>piccolo</id>
             <version>1.0</version>
@@ -32,12 +19,6 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-swing</artifactId>
-            <version>${pom.currentVersion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
 

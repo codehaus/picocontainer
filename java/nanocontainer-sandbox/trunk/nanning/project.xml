@@ -3,22 +3,9 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-nanning</id>
-    <name>nanocontainer-nanning</name>
+    <name>Nanocontainer Nanning</name>
 
     <dependencies>
-        <dependency>
-            <id>picocontainer</id>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
         <dependency>
             <id>nanning</id>
             <version>0.9</version>

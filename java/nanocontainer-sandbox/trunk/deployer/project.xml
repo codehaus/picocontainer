@@ -3,34 +3,9 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-deployer</id>
-    <name>nanocontainer-deployer</name>
+    <name>Nanocontainer Deployer</name>
 
     <dependencies>
-        <dependency>
-            <id>picocontainer</id>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer</artifactId>
-            <version>${pom.currentVersion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-testmodel</artifactId>
-            <version>${pom.currentVersion}</version>
-        </dependency>
-
         <dependency>
             <id>commons-vfs</id>
             <version>20030518103800</version>
@@ -61,11 +36,6 @@
             <groupId>asm</groupId>
             <artifactId>asm-util</artifactId>
             <version>1.4.3</version>
-        </dependency>
-
-        <dependency>
-            <id>jmock</id>
-            <version>1.0.1</version>
         </dependency>
 
     </dependencies>

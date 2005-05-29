@@ -16,161 +16,152 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.reflection.DefaultContainerRecorder;
-import org.nanocontainer.script.xml.XStreamContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.SimpleReference;
 
 /**
- * build container chains from servlet path. cache container recorders for later
- * use
+ * <p>
+ * ServletChainBuilder builds ContainerChains from servlet path and caches 
+ * container recorders for later use.
+ * </p>
  * 
  * @author Kontantin Pribluda
- * @version $Revision:$
+ * @author Mauro Talevi
  */
 public class ServletChainBuilder {
 
-	/**
-	 * Description of the Field
-	 */
-	public final static String CONTAINER = "nano.xml";
-
-	/**
-	 * Description of the Field
-	 */
-	public final static String EMPTY_CONTAINER = "<container></container>";
-
-	private HashMap recorderCache = new HashMap();
-
+	private Map recorderCache;
 	private ServletContext context;
+    private String containerBuilderClassName;
+    private String containerScriptName;
+    private String emptyContainerScript;
 
 	/**
 	 * Constructor for the ServletChainBuilder object
 	 * 
-	 * @param context
-	 *            Description of Parameter
+	 * @param context the ServletContext
+     * @param containerBuilderClassName the class name of the ContainerBuilder
+     * @param containerScriptName the name of the container script resource
+     * @param emptyContainerScript the script for empty container if the container config is not found
 	 */
-	public ServletChainBuilder(ServletContext context) {
-		setContext(context);
-	}
-
-	/**
-	 * Gets the Context attribute of the ServletChainBuilder object
-	 * 
-	 * @return The Context value
-	 */
-	public ServletContext getContext() {
-		return context;
-	}
-
-	/**
-	 * give access to recorder cache
-	 * 
-	 * @return The RecorderCache value
-	 */
-	HashMap getRecorderCache() {
-		return recorderCache;
-	}
-
-	/**
-	 * obtain reader from servlet context path ( if possible ). appends
-	 * CONTAINER to string, and checks whether this can be obtained. if not,
-	 * return empty container instead.
-	 * 
-	 * @param path
-	 *            path in servlet context
-	 * @return corresponding reader or empty container.
-	 */
-	Reader obtainReader(String path) {
-		InputStream is = getContext().getResourceAsStream(path + CONTAINER);
-		if (is != null) {
-			return new InputStreamReader(is);
-		} else {
-			return new StringReader(EMPTY_CONTAINER);
-		}
+	public ServletChainBuilder(ServletContext context, String containerBuilderClassName, String containerScriptName, String emptyContainerScript) {
+        this.context = context;
+        this.containerBuilderClassName = containerBuilderClassName;
+        this.containerScriptName = containerScriptName;
+        this.emptyContainerScript = emptyContainerScript;
+        this.recorderCache = new HashMap();
 	}
 
 	/**
 	 * populate container for given path. cache result in container recorders
 	 * 
-	 * @param container
-	 *            Description of Parameter
-	 * @param path
-	 *            Description of Parameter
+	 * @param container the MutablePicoContainer used by the recorder
+	 * @param path the String representing the servlet path used as key for the recorder cache
+	 * @throws ClassNotFoundException if the container builder class is not found
 	 */
 	public void populateContainerForPath(MutablePicoContainer container,
-			String path) {
+			String path) throws ClassNotFoundException {
 		ContainerRecorder recorder;
-		synchronized (getRecorderCache()) {
-			recorder = (ContainerRecorder) getRecorderCache().get(path);
+		synchronized (recorderCache) {
+			recorder = (ContainerRecorder) recorderCache.get(path);
 			if (recorder == null) {
-				recorder = new DefaultContainerRecorder(
-						new DefaultPicoContainer());
-
-				getRecorderCache().put(path, recorder);
-
-				XStreamContainerBuilder builder = new XStreamContainerBuilder(
-						obtainReader(path), Thread.currentThread()
-								.getContextClassLoader());
-				builder.populateContainer(recorder.getContainerProxy());
+				recorder = new DefaultContainerRecorder(new DefaultPicoContainer());
+				recorderCache.put(path, recorder);
+				ContainerPopulator populator = createContainerPopulator(containerBuilderClassName,
+                                    obtainReader(path), Thread.currentThread().getContextClassLoader());
+				populator.populateContainer(recorder.getContainerProxy());
 			}
 		}
 		recorder.replay(container);
 	}
 
 	/**
-	 * build container chain for path elements
+	 * Build ContainerChain for path elements
 	 * 
-	 * @param parent
-	 *            parent container or null
-	 * @param pathElements
-	 *            array of path elements. Those elements serve as keys for
+	 * @param pathElements an array of Objects used as keys for
 	 *            selecting Application objects
-	 * @return configured container chain
+     * @param parent the parent PicoContainer or <code>null</code>
+	 * @return The configured ContainerChain
+	 * @throws ClassNotFoundException
 	 */
-	public ContainerChain buildChain(Object[] pathElements, PicoContainer parent) {
+	public ContainerChain buildChain(Object[] pathElements, PicoContainer parent) throws ClassNotFoundException {
 		ContainerChain chain = new ContainerChain();
-		populateRecursive(chain, parent, Arrays.asList(pathElements).iterator());
+		populateRecursively(chain, parent, Arrays.asList(pathElements).iterator());
 		return chain;
 	}
 
 	/**
-	 * create containers in recursive way
+	 * Create and populate containers in recursive way
 	 * 
-	 * @param pathElements
-	 *            Description of Parameter
-	 * @param parent
-	 *            Description of Parameter
-	 * @param chain
-	 *            Description of Parameter
+     * @param chain the ContainerChain to which the containers are added
+	 * @param parent the parent PicoContainer
+     * @param pathElements the Iterator on the path elements
+	 * @throws ClassNotFoundException
 	 */
-	public void populateRecursive(ContainerChain chain, PicoContainer parent,
-			Iterator pathElements) {
+	public void populateRecursively(ContainerChain chain, PicoContainer parent,
+			Iterator pathElements) throws ClassNotFoundException {
 		if (pathElements.hasNext()) {
 			Object key = pathElements.next();
 			DefaultPicoContainer container = new DefaultPicoContainer(parent);
 
 			populateContainerForPath(container, key.toString());
 			chain.addContainer(container);
-			populateRecursive(chain, container, pathElements);
-
+			populateRecursively(chain, container, pathElements);
 		}
-
 	}
 
-	/**
-	 * Sets the Context attribute of the ServletChainBuilder object
-	 * 
-	 * @param context
-	 *            The new Context value
-	 */
-	public void setContext(ServletContext context) {
-		this.context = context;
-	}
+    /**
+     * Instantiates ContainerPopulator for container builder
+     * 
+     * @param containerBuilderClassName the class name of the builder implementing ContainerPopulator
+     * @param reader the Reader for the builder
+     * @param classLoader the ClassLoader for the builder
+     * @return An instance of ContainerPopulator
+     * @throws ClassNotFoundException
+     */
+    private ContainerPopulator createContainerPopulator(String containerBuilderClassName, Reader reader, ClassLoader classLoader)
+            throws ClassNotFoundException {
+        NanoContainer nano = new DefaultNanoContainer(classLoader);
+        Parameter[] parameters = new Parameter[] {
+                new ConstantParameter(reader),
+                new ConstantParameter(classLoader) };
+        nano.registerComponentImplementation(containerBuilderClassName,
+                containerBuilderClassName, parameters);
+        ContainerBuilder containerBuilder = (ContainerBuilder) nano.getPico()
+                .getComponentInstance(containerBuilderClassName);
+        containerBuilder.buildContainer(new SimpleReference(), null, null,
+                false);
+        return (ContainerPopulator) containerBuilder;
+    }
+    
+    /**
+     * Obtain reader from servlet context path, by appending container script name to path.
+     * If not found, returns reader for empty container instead.
+     * 
+     * @param path the String representing the path in servlet context
+     * @return A Reader for corresponding script or for empty container if script not found
+     */
+    private Reader obtainReader(String path) {
+        InputStream is = context.getResourceAsStream(path + containerScriptName);
+        if (is != null) {
+            return new InputStreamReader(is);
+        } else {
+            return new StringReader(emptyContainerScript);
+        }
+    }
 
 }

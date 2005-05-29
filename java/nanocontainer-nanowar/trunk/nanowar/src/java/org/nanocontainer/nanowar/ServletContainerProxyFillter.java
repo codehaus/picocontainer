@@ -1,8 +1,6 @@
 package org.nanocontainer.nanowar;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -49,19 +47,12 @@ import org.picocontainer.PicoInitializationException;
 * @author Mauro Talevi
 */
 public class ServletContainerProxyFillter implements Filter {
-    private static final int INIT_CONTEXT = 1;
-    private static final int INIT_REQUEST = 4;
-    private static final int INIT_NEVER = 7;
-    private static final Map contextTypes = new HashMap();
 
-    static {
-        contextTypes.put(null, new Integer(INIT_CONTEXT));
-        contextTypes.put("context", new Integer(INIT_CONTEXT));
-        contextTypes.put("request", new Integer(INIT_REQUEST));
-        contextTypes.put("never", new Integer(INIT_NEVER));
-    };
+    private static final String CONTEXT_INIT_TYPE = "context";
+    private static final String REQUEST_INIT_TYPE = "request";
+    private static final String NEVER_INIT_TYPE = "never";
 
-    private int initTypeValue;
+    private String initType;
     private boolean lookupOnlyOnce;
     private FilterConfig filterConfig;
     private Filter delegate;
@@ -73,7 +64,10 @@ public class ServletContainerProxyFillter implements Filter {
      */
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
-        initTypeValue = toInitTypeValue(filterConfig.getInitParameter("init-type"));        
+        initType = filterConfig.getInitParameter("init-type");        
+        if ( initType == null ){
+            initType = CONTEXT_INIT_TYPE;
+        }
         lookupOnlyOnce = new Boolean(filterConfig.getInitParameter("lookup-only-once")).booleanValue();
     }
 
@@ -84,11 +78,11 @@ public class ServletContainerProxyFillter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (delegate == null || !lookupOnlyOnce) {            
             delegate = lookupDelegate((HttpServletRequest) request);
-            if (initTypeValue == INIT_CONTEXT) {
+            if (initType.equals(CONTEXT_INIT_TYPE) ) {
                 initDelegate();
             }
         }
-        if (initTypeValue == INIT_REQUEST) {
+        if (initType.equals(REQUEST_INIT_TYPE)) {
             initDelegate();
         }
         delegate.doFilter(request, response, filterChain);
@@ -104,20 +98,6 @@ public class ServletContainerProxyFillter implements Filter {
         }
     }
     
-    /**
-     * Converts 'init-type' param to an int value
-     * @param initType
-     * @return An int representing the init type value
-     * @throws ServletException
-     */
-    private int toInitTypeValue(String initType) throws ServletException {
-        Integer i = (Integer) contextTypes.get(initType);
-        if (i == null) {
-            throw new ServletException("Valid values for init-type are " + contextTypes.keySet());
-        }
-        return i.intValue();
-    }
-
     /**
      * Looks up delegate Filter in PicoContainer found in any of the web scopes.
      * @param request the HttpServletRequest used to find the PicoContainer

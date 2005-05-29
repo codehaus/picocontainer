@@ -1,0 +1,87 @@
+<project default="jar:install"
+    xmlns:deploy="deploy"
+    xmlns:j="jelly:core">
+
+    <postGoal name="jar:install">
+        <attainGoal name="pico:tck-install"/>
+    </postGoal>
+
+    <postGoal name="jar:deploy">
+        <attainGoal name="pico:tck-deploy"/>
+        <attainGoal name="site:deploy"/>
+	    	<!-- Not yet enabled. The intent is to have jars with the build label.   	
+        <attainGoal name="dc:labeled-deploy"/-->
+
+        <!-- if a release deploy distribution -->
+        <j:if test="${!pom.currentVersion.endsWith('SNAPSHOT')}">
+            <attainGoal name="dist:deploy"/>
+        </j:if>
+    </postGoal>
+
+    <goal name="pico:tck-jar" prereqs="test:compile">
+        <jar jarfile="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar">
+            <fileset dir="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}"/>
+        </jar>
+    </goal>
+
+    <goal name="pico:tck-install" prereqs="pico:tck-jar">
+        <property name="jardir__" value="${maven.repo.local}/${pom.artifactDirectory}/jars"/>
+        <mkdir dir="${jardir__}"/>
+        <copy
+            file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            todir="${jardir__}"
+            overwrite="true"
+            />
+    </goal>
+
+    <goal name="pico:tck-deploy" prereqs="pico:tck-jar">
+        <deploy:artifact
+            artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            type="jars"
+            />
+    </goal>
+
+    <goal name="dc:labeled-deploy">
+        <property environment="env"/>
+        <j:if test="${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL') != null}">
+            <copy file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.jar"
+                  tofile="${maven.build.dir}/${pom.artifactId}-BUILD-${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL')}.jar"/>
+            <deploy:artifact
+                artifact="${maven.build.dir}/${pom.artifactId}-BUILD-${context.getVariable('env.DAMAGECONTROL_BUILD_LABEL')}.jar"
+                type="jars"
+                />
+        </j:if>
+    </goal>
+
+    <postGoal name="xdoc:transform">
+        <attainGoal name="site-massage"/>
+    </postGoal>
+
+    <goal name="site-massage">
+        <unzip
+            src="${basedir}/site/picosite.zip"
+            dest="${basedir}/target/docs"
+            />
+
+        <exec dir="${basedir}/target/docs" executable="ruby">
+            <arg line="${basedir}/massage_site.rb"/>
+        </exec>
+
+    </goal>
+
+    <goal name="guantanamo">
+        <taskdef name="guantanamo" classname="org.codehaus.guantanamo.ant.GuantanamoTask">
+            <classpath>
+                <pathelement location="C:\scm\guantanamo\target\guantanamo.jar"/>
+                <pathelement location="C:\scm\guantanamo\lib\xpp3-1.1.2a.jar"/>
+            </classpath>
+        </taskdef>
+
+        <mkdir dir="target/guantanamo"/>
+
+        <guantanamo
+            cloverxml="target/clover.xml"
+            dest="target/guantanamo"/>
+    </goal>
+    
+</project>

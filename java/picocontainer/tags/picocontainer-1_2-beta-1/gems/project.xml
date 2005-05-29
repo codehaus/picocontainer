@@ -1,0 +1,51 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <!--
+        Use NanoContainer project as base for now until we have Mauro's
+        proposal for the CVS restructuring in place.
+    -->
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>picocontainer</groupId>
+    <id>picocontainer-gems</id>
+    <name>picocontainer-gems</name>
+    <currentVersion>${picocontainer.version}</currentVersion>
+
+    <inceptionYear>2004</inceptionYear>
+    <package>org.picocontainer.gems</package>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/PICO</issueTrackingUrl>
+
+    <dependencies>
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>${picocontainer.version}</version>
+        </dependency>
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <id>cglib</id>
+            <version>full-2.0</version>
+        </dependency>
+
+        <!-- test time only -->
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <id>xstream</id>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+    </dependencies>
+
+</project>

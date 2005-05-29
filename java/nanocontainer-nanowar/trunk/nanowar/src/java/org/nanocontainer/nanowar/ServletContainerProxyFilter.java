@@ -46,7 +46,7 @@ import org.picocontainer.PicoInitializationException;
 * @author Grégory Joseph
 * @author Mauro Talevi
 */
-public class ServletContainerProxyFillter implements Filter {
+public class ServletContainerProxyFilter implements Filter {
 
     private static final String CONTEXT_INIT_TYPE = "context";
     private static final String REQUEST_INIT_TYPE = "request";

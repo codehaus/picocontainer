@@ -1,0 +1,5 @@
+<container>
+    <component-instance key='requestScope'>
+    	<string>request</string>
+    </component-instance>
+</container>

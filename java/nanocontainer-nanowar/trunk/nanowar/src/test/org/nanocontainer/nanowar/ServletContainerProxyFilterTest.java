@@ -6,20 +6,22 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.servlet;
+package org.nanocontainer.nanowar;
+
+import org.nanocontainer.nanowar.ServletContainerProxyFillter;
 
 /**
  * @author Grégory Joseph
  */
-public class PicoFilterProxyTest extends AbstractServletTestCase {
+public class ServletContainerProxyFilterTest extends AbstractServletTestCase {
     protected void tearDown() throws Exception {
         FooFilter.resetInitCounter();
     }
 
     public void testSimplestCaseWithClassRegistration() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, FooFilter.class, null, null, false);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, FooFilter.class, null, null, false);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation(org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         String res = doTest();
         assertEquals("zip-empty-zap", res);
@@ -27,9 +29,9 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testSimplestCaseWithKeyRegistration() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", null, false);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", null, false);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         String res = doTest();
         assertEquals("zip-empty-zap", res);
@@ -37,10 +39,10 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterRegisteredAtRequestScope() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", null, false);
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", null, false);
         initTest("", "",
-                "pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+                "pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 f);
         String res = doTest();
         assertEquals("zip-empty-zap", res);
@@ -48,9 +50,9 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookup() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", null, true);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", null, true);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         doTest();
         doTest();
@@ -60,9 +62,9 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookupWhichMakesItEachTimeIfLookupNotSetToOnlyOnce() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", null, false);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", null, false);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         doTest();
         doTest();
@@ -72,9 +74,9 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterWithInitSetToRequestShouldCallInitAtEachRequest() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", "request", false);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", "request", false);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         doTest();
         doTest();
@@ -85,9 +87,9 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterRegisteredAtContextScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", "never", false);
-        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", "never", false);
+        initTest("pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 "", "", f);
         doTest();
         doTest();
@@ -97,10 +99,10 @@ public class PicoFilterProxyTest extends AbstractServletTestCase {
     }
 
     public void testFilterRegisteredAtRequestScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
-        FilterDef f = new FilterDef("pico-filter", PicoFilterProxy.class, null, "foo-filter", "never", false);
+        FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFillter.class, null, "foo-filter", "never", false);
         initTest("", "",
-                "pico.registerComponentImplementation(org.nanocontainer.nanowar.servlet.Foo)\n" +
-                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.servlet.FooFilter)\n",
+                "pico.registerComponentImplementation(org.nanocontainer.nanowar.Foo)\n" +
+                "pico.registerComponentImplementation('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
                 f);
         doTest();
         doTest();

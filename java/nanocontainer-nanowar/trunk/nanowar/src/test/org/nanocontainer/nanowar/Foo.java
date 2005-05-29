@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.servlet;
+package org.nanocontainer.nanowar;
 /**
  * 
  * @author Grégory Joseph

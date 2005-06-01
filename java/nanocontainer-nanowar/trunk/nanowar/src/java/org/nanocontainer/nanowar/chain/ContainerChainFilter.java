@@ -148,7 +148,6 @@ public class ContainerChainFilter implements Filter {
 			httpRequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
 			// obtain pico container for chaining
 			PicoContainer container = obtainContainer(httpRequest);
-            
             try {
 				String originalUrl = httpRequest.getServletPath();
                  monitor.filteringURL(originalUrl);

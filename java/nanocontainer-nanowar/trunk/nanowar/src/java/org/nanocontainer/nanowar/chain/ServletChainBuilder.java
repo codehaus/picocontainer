@@ -31,7 +31,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.SimpleReference;
 
 /**
  * <p>
@@ -143,8 +142,8 @@ public class ServletChainBuilder {
                 containerBuilderClassName, parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano.getPico()
                 .getComponentInstance(containerBuilderClassName);
-        containerBuilder.buildContainer(new SimpleReference(), null, null,
-                false);
+        //containerBuilder.buildContainer(new SimpleReference(), null, null,
+        //        false);
         return (ContainerPopulator) containerBuilder;
     }
     

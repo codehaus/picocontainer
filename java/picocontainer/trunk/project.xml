@@ -33,16 +33,25 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/picocontainer</connection>
-        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/picocontainer</developerConnection>
-        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer</url>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</url>
     </repository>
 
+	<dependencies>
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <type>plugin</type>
+            <version>1.5-beta-3</version>
+        </dependency>		
+	</dependencies>
+	
     <developers>
         <developer>
             <name>Paul Hammant</name>
             <id>paul</id>
-            <email>NOSPAM.paul_hammant@yahoo.com</email>
+            <email>paul_hammant_@_yahoo.com</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -51,7 +60,7 @@
         <developer>
             <name>Aslak Helles&oslash;y</name>
             <id>rinkrank</id>
-            <email>NOSPAM.rinkrank@codehaus.org</email>
+            <email>rinkrank_@_codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -60,7 +69,7 @@
         <developer>
             <name>Jon Tirs&eacute;n</name>
             <id>tirsen</id>
-            <email>NOSPAM.tirsen@codehaus.org</email>
+            <email>tirsen_@_codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -69,7 +78,7 @@
         <developer>
             <name>Chris Stevenson</name>
             <id>skizz</id>
-            <email>NOSPAM.skizz@codehaus.org</email>
+            <email>skizz_@_codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -78,7 +87,7 @@
         <developer>
             <name>Thomas Heller</name>
             <id>maniax</id>
-            <email>NOSPAM.th.heller@mx4k.com</email>
+            <email>th.heller_@_mx4k.com</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -87,7 +96,7 @@
         <developer>
             <name>J&ouml;rg Schaible</name>
             <id>joehni</id>
-            <email>joerg.schaible@gmx.de</email>
+            <email>joerg.schaible_@_gmx.de</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -96,7 +105,7 @@
         <developer>
             <name>Konstantin Pribluda</name>
             <id>ko5tik</id>
-            <email>NOSPAM.kpribluda@j-tec-team.de</email>
+            <email>kpribluda_@_j-tec-team.de</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -105,7 +114,7 @@
         <developer>
             <name>Leo Simons</name>
             <id>lsimons</id>
-            <email>NOSPAM.lsimons@jicarilla.org</email>
+            <email>lsimons_@_jicarilla.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>
@@ -114,7 +123,7 @@
         <developer>
             <name>Mauro Talevi</name>
             <id>mauro</id>
-            <email>NOSPAM.mauro@codehaus.org</email>
+            <email>mauro_@_codehaus.org</email>
             <organization></organization>
             <roles>
                 <role>Java Developer</role>

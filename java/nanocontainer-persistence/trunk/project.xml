@@ -28,18 +28,20 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-persistence</connection>
-        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-persistence</developerConnection>
-        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-persistence</url>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk</url>
     </repository>
 
-    <!--
-     ! Common dependencies.
-     ! Please place sub project-specific dependencies in the sub project's
-     ! project.xml
-    -->
     <dependencies>
 
+       <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <type>plugin</type>
+            <version>1.5-beta-3</version>
+        </dependency>		
+        
         <!-- Build/Test time only -->
         <dependency>
             <id>junit</id>

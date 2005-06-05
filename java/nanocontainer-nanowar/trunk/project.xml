@@ -28,17 +28,19 @@
     <distributionDirectory>/dist</distributionDirectory>
 
     <repository>
-        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-nanowar</connection>
-        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-nanowar</developerConnection>
-        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar</url>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</url>
     </repository>
 
-    <!--
-     ! Common dependencies.
-     ! Please place sub project-specific dependencies in the sub project's
-     ! project.xml
-    -->
     <dependencies>
+
+       <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <type>plugin</type>
+            <version>1.5-beta-3</version>
+        </dependency>		
 
         <!-- Build/Test time only -->
         <dependency>

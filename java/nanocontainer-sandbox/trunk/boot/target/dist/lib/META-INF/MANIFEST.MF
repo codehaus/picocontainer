@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.5.3 
+Created-By: Apache Maven
+Built-By: paul
+Package: org.nanocontainer
+Build-Jdk: 1.4.2_05
+Extension-Name: nanocontainer
+Specification-Title: NanoContainer
+Specification-Vendor: Codehaus
+Implementation-Title: org.nanocontainer
+Implementation-Vendor: Codehaus
+Implementation-Version: 1.0-SNAPSHOT
+

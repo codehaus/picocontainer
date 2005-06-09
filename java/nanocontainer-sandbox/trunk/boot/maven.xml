@@ -1,0 +1,68 @@
+<project default="jar:install"
+    xmlns:j="jelly:core">
+
+    <goal name="setup:demo" prereqs="java:compile, test:compile, jar:jar, jar:testComps">
+        <mkdir dir="${maven.build.dir}/dist/lib"/>
+
+        <copy
+            todir="${maven.build.dir}/dist"
+            file="${maven.build.dir}/${maven.final.name}.jar"/>
+
+        <copy
+            todir="${maven.build.dir}/dist/lib"
+            file="${maven.build.dir}/api.jar"/>
+        <copy
+            todir="${maven.build.dir}/dist/lib"
+            file="${maven.build.dir}/bearimpl.jar"/>
+        <copy
+            todir="${maven.build.dir}/dist/lib"
+            file="${maven.build.dir}/honeyimpl.jar"/>
+        <copy
+            todir="${maven.build.dir}/dist"
+            file="src/test/composition.groovy"/>
+
+
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <copy
+                todir="${maven.build.dir}/dist/lib"
+                file="${lib.path}"/>
+        </j:forEach>
+        <delete>
+            <fileset dir="${maven.build.dir}/dist/">
+                <include name="**/jmock*.jar"/>
+                <include name="**/js*.jar"/>
+                <include name="**/junit*.jar"/>
+                <include name="**/nanocontainer-testmodel*.jar"/>
+
+            </fileset>
+        </delete>
+
+        <mkdir dir="${maven.build.dir}/dist/apps"/>
+    </goal>
+
+    <goal name="jar:testComps">
+    
+        <jar jarfile="${maven.build.dir}/api.jar">
+            <fileset dir="${maven.build.dir}/test-classes/">
+                <include name="**/Bear.class"/>
+                <include name="**/Honey.class"/>
+            </fileset>
+        </jar>
+
+        <jar jarfile="${maven.build.dir}/bearimpl.jar">
+            <fileset dir="${maven.build.dir}/test-classes/">
+                <include name="**/BrownBear.class"/>
+            </fileset>
+        </jar>
+
+        <jar jarfile="${maven.build.dir}/honeyimpl.jar">
+            <fileset dir="${maven.build.dir}/test-classes/">
+                <include name="**/BeeHiveHoney.class"/>
+            </fileset>
+        </jar>
+
+    </goal>
+
+
+
+</project>

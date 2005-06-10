@@ -1,8 +1,7 @@
-import org.nanocontainer.reflection.ImplementationHidingSoftCompositionPicoContainer
 
 builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()
 
-parent = builder.container(parent:parent,class:ImplementationHidingSoftCompositionPicoContainer) {
+parent = builder.container(parent:parent,class:ImplementationHidingNanoPicoContainer) {
     classpathelement(path:"lib/api.jar")
         classpathelement(path:"lib/bearimpl.jar")
         classpathelement(path:"lib/honeyimpl.jar")

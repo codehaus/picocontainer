@@ -11,3 +11,4 @@ parent = builder.container(parent:parent,class:ImplementationHidingNanoPicoConta
 }
 pico = parent.getPico()
 pico.getComponentInstances()
+System.out.println("--> " + parent)

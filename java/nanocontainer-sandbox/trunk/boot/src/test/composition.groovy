@@ -1,3 +1,4 @@
+import org.nanocontainer.reflection.ImplementationHidingNanoPicoContainer
 
 builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()
 

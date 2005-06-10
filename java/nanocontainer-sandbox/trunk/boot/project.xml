@@ -38,7 +38,12 @@
         <dependency>
             <id>commons-cli</id>
             <version>1.0</version>
-        </dependency>        
+        </dependency>
+
+        <dependency>
+            <id>antlr</id>
+            <version>2.7.5</version>
+        </dependency>
 
 
     </dependencies>

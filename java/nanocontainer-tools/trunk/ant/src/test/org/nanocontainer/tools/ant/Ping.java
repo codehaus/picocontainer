@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.nanocontainer.ant;
+package org.nanocontainer.tools.ant;
 
 import junit.framework.Assert;
 

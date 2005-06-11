@@ -8,7 +8,7 @@
         <attainGoal name="multiproject:deploy"/>
     </goal>
 
-    <goal name="nano:clean ">
+    <goal name="nano:clean">
         <attainGoal name="multiproject:clean"/>
     </goal>
     

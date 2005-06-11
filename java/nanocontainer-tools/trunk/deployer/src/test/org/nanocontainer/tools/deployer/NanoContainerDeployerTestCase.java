@@ -1,5 +1,4 @@
-
-package org.nanocontainer.deployer;
+package org.nanocontainer.tools.deployer;
 
 import junit.framework.TestCase;
 import org.apache.commons.vfs.FileObject;
@@ -8,6 +7,8 @@ import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
 import org.apache.commons.vfs.provider.zip.ZipFileProvider;
+import org.nanocontainer.tools.deployer.Deployer;
+import org.nanocontainer.tools.deployer.NanoContainerDeployer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 

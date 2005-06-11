@@ -1,4 +1,4 @@
-package org.nanocontainer.deployer;
+package org.nanocontainer.tools.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;

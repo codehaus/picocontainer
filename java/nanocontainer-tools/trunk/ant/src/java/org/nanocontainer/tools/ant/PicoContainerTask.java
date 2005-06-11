@@ -36,7 +36,7 @@ import java.util.List;
  * The antSpecifiedComponents's start() method (if it exists) will be invoked
  * in the order of instantiation.
  * <p/>
- * &lt;taskdef name="pico" classname="org.nanocontainer.ant.PicoContainerTask"/&gt;
+ * &lt;taskdef name="pico" classname="org.nanocontainer.tools.ant.PicoContainerTask"/&gt;
  * <p/>
  * &lt;pico&gt;
  * &lt;component classname="foo.Bar" someprop="somevalue"/&gt;

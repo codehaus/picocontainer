@@ -1,10 +1,7 @@
-<project default="binary:install"
+<project default="jar:install"
 	xmlns:ant="jelly:ant"
 	xmlns:j="jelly:core"
 	xmlns:u="jelly:util" >
-
-    <goal name="binary:install" prereqs="jar:install"/>
-    <goal name="binary:deploy" prereqs="jar:deploy"/>
 
     <preGoal name="test:test" >
         <echo>Building test.mca file for use with unit tests </echo>

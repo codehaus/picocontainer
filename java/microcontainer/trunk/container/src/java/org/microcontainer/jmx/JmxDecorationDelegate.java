@@ -12,9 +12,9 @@ package org.microcontainer.jmx;
 
 import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import org.nanocontainer.jmx.DynamicMBeanFactory;
-import org.nanocontainer.jmx.JMXRegistrationException;
-import org.nanocontainer.jmx.StandardMBeanFactory;
+import org.nanocontainer.remoting.jmx.DynamicMBeanFactory;
+import org.nanocontainer.remoting.jmx.JMXRegistrationException;
+import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 

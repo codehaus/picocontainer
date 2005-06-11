@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.nanocontainer.ant;
+package org.nanocontainer.tools.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;

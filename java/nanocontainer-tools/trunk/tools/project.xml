@@ -2,8 +2,8 @@
 
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>nanocontainer-ant</id>
-    <name>Nanocontainer Ant</name>
+    <id>nanocontainer-tools</id>
+    <name>Nanocontainer Tools</name>
 
     <dependencies>
         <dependency>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns:j="jelly:core">
+
+    <pomVersion>3</pomVersion>
+    <currentVersion>${tools.version}</currentVersion>
+    <name>NanoContainer Tools</name>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-tools</id>
+    <url>http://www.nanocontainer.org/tools</url>
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2003</inceptionYear>
+    <package>org.nanocontainer.remoting</package>
+    <description>
+        Please refer to the &lt;a href="http://nanocontainer.org/tools"&gt;main website&lt;/a&gt; for documentation.    
+    </description>
+    <shortDescription>NanoContainer Tools</shortDescription>
+
+    <issueTrackingUrl>http://jira.codehaus.org/browse/NANOTOOLS</issueTrackingUrl>
+
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/${maven.multiproject.aggregateDir}${pom.artifactId}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-tools/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-tools/trunk</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-sandbox/trunk</url>
+    </repository>
+
+    <!--
+     ! Common dependencies.
+     ! Please place sub project-specific dependencies in the sub project's
+     ! project.xml
+    -->
+    <dependencies>
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer-tck</artifactId>
+            <version>${picocontainer.version}</version>
+            <url>http://www.picocontainer.org/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>${nanocontainer.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${nanocontainer.version}</version>
+        </dependency>
+
+        <!-- Build/Test time only -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+            <url>http://junit.org</url>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+            <url>http://jmock.org</url>
+        </dependency>
+        
+    </dependencies>
+
+    <build>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>       
+        <!-- Resources tat are packaged up inside the JAR file -->
+        <resources>
+            <resource>
+                <directory>${basedir}/src/java</directory>
+                <includes>
+                    <include>**/*.dtd</include>
+                    <include>**/*.xsd</include>
+                    <include>**/*.xhtml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.png</include>
+                    <include>**/*.jpg</include>
+                    <include>**/*.gif</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*Test.*</include>
+                <include>**/*TestCase.*</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*.*</exclude>
+                <exclude>**/NanoContainerDeployerTestCase.*</exclude>
+            </excludes>
+            <resources>
+                <resource>
+                    <directory>${basedir}/src/test</directory>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+    </build>
+
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-simian-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-clover-plugin</report>
+        <report>maven-junit-report-plugin</report>        
+    </reports>
+
+</project>
+

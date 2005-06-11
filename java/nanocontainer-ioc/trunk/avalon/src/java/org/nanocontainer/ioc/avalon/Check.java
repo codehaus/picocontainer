@@ -7,30 +7,26 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
-
-import org.apache.avalon.framework.context.Context;
-import org.apache.avalon.framework.context.ContextException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
+package org.nanocontainer.ioc.avalon;
 
 /**
+ * A utility class for data validation.
+ * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Revision$
  */
-public class PicoContainerBasedContext implements Context {
-    private final PicoContainer delegate;
-
-    public PicoContainerBasedContext(final PicoContainer delegate) {
-        Check.argumentNotNull("delegate", delegate);
-        this.delegate = delegate;
-    }
-
-    public Object get(final Object o) throws ContextException {
-        try {
-            return delegate.getComponentInstance(o);
-        } catch (PicoException pe) {
-            throw new ContextException("No component available by that key", pe);
+class Check {
+    /**
+     * Ensure that the provided argument is not null. If it is null, an exception will be thrown, for which the
+     * argumentName will be used to provide further details about which argument was not allowed to be null. 
+     * 
+     * @param argumentName the name of the argument to be used in the exception detail message.
+     * @param argument the actual argument.
+     * @throws NullArgumentException if the provided argument is null.
+     */ 
+    static void argumentNotNull(final String argumentName, final Object argument) throws NullArgumentException {
+        if (argument == null) {
+            throw new NullArgumentException(argumentName + " may not be null!");
         }
     }
 }

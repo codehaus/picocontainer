@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

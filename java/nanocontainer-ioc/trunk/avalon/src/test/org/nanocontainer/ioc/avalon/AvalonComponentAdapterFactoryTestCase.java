@@ -7,13 +7,13 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.nanocontainer.avalon.AvalonComponentAdapter;
-import org.nanocontainer.avalon.AvalonComponentAdapterFactory;
+import org.nanocontainer.ioc.avalon.AvalonComponentAdapter;
+import org.nanocontainer.ioc.avalon.AvalonComponentAdapterFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;

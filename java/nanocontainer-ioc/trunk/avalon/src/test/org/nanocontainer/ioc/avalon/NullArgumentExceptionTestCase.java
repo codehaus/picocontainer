@@ -7,11 +7,11 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.TestCase;
 
-import org.nanocontainer.avalon.NullArgumentException;
+import org.nanocontainer.ioc.avalon.NullArgumentException;
 
 /**
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>

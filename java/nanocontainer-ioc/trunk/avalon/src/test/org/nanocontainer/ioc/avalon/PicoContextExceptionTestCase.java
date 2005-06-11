@@ -7,22 +7,23 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
+
+import junit.framework.TestCase;
+import org.apache.avalon.framework.context.ContextException;
+
+import org.nanocontainer.ioc.avalon.PicoContextException;
 
 /**
- * An {@link PicoAvalonContractException} that is thrown when there's a problem related to the
- * {@link org.apache.avalon.framework.configuration Avalon-Framework Configuration contracts}.
- * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
- * @version $Revision$
+ * @version $Id$
  */
-public class PicoConfigurationException extends PicoAvalonContractException {
-    /**
-     * {@inheritDoc}
-     * 
-     * @param e the exception that caused this one
-     */ 
-    public PicoConfigurationException(final Throwable e) {
-        super(e);
+public class PicoContextExceptionTestCase extends TestCase {
+    final ContextException parent = new ContextException("blah");
+    
+    public void testEverything()
+    {
+        final PicoContextException e = new PicoContextException(parent);
+        assertEquals( parent, e.getCause() );
     }
 }

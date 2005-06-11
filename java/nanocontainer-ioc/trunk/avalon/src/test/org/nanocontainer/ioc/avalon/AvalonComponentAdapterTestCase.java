@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -16,11 +16,11 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.context.ContextException;
 import org.apache.avalon.framework.service.ServiceException;
 
-import org.nanocontainer.avalon.PicoConfigurationException;
-import org.nanocontainer.avalon.PicoContextException;
-import org.nanocontainer.avalon.PicoServiceException;
-import org.nanocontainer.avalon.PicoAvalonContractException;
-import org.nanocontainer.avalon.AvalonComponentAdapter;
+import org.nanocontainer.ioc.avalon.AvalonComponentAdapter;
+import org.nanocontainer.ioc.avalon.PicoAvalonContractException;
+import org.nanocontainer.ioc.avalon.PicoConfigurationException;
+import org.nanocontainer.ioc.avalon.PicoContextException;
+import org.nanocontainer.ioc.avalon.PicoServiceException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;

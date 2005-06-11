@@ -7,23 +7,32 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
-import junit.framework.TestCase;
-import org.apache.avalon.framework.service.ServiceException;
-
-import org.nanocontainer.avalon.PicoServiceException;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
+ * A subclass of {@link PicoIntrospectionException} that is the superclass of the errors thrown from
+ * {@link org.nanocontainer.ioc.avalon this package}.
+ * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
- * @version $Id$
+ * @version $Revision$
  */
-public class PicoServiceExceptionTestCase extends TestCase {
-    final ServiceException parent = new ServiceException("blah","blah");
-    
-    public void testEverything()
-    {
-        final PicoServiceException e = new PicoServiceException(parent);
-        assertEquals( parent, e.getCause() );
+public class PicoAvalonContractException extends PicoIntrospectionException {
+    /**
+     * {@inheritDoc}
+     * 
+     * @param e {@inheritDoc}
+     */ 
+    public PicoAvalonContractException(final Throwable e) {
+        super(e);
+    }
+    /**
+     * {@inheritDoc}
+     * 
+     * @param s {@inheritDoc}
+     */ 
+    public PicoAvalonContractException(final String s) {
+        super(s);
     }
 }

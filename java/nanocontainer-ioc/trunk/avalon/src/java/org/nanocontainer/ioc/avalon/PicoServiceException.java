@@ -7,32 +7,24 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
-import org.picocontainer.PicoIntrospectionException;
+import org.apache.avalon.framework.service.ServiceException;
 
 /**
- * A subclass of {@link PicoIntrospectionException} that is the superclass of the errors thrown from
- * {@link org.nanocontainer.avalon this package}.
+ * An {@link PicoAvalonContractException} that is thrown when there's a problem related to the
+ * {@link org.apache.avalon.framework.service Avalon-Framework Service contracts}.
  * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Revision$
  */
-public class PicoAvalonContractException extends PicoIntrospectionException {
+public class PicoServiceException extends PicoAvalonContractException {
     /**
      * {@inheritDoc}
      * 
-     * @param e {@inheritDoc}
+     * @param e the exception that caused this one.
      */ 
-    public PicoAvalonContractException(final Throwable e) {
+    public PicoServiceException(final ServiceException e) {
         super(e);
-    }
-    /**
-     * {@inheritDoc}
-     * 
-     * @param s {@inheritDoc}
-     */ 
-    public PicoAvalonContractException(final String s) {
-        super(s);
     }
 }

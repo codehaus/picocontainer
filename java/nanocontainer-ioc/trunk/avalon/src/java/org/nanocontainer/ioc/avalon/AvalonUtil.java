@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 // This dependency might be worthwhile getting rid of. Only one method is used. AH.
 import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;

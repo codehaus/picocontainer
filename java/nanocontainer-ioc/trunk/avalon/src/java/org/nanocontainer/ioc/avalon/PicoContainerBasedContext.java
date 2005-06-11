@@ -7,24 +7,30 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
+import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.ContextException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 
 /**
- * An {@link PicoAvalonContractException} that is thrown when there's a problem related to the
- * {@link org.apache.avalon.framework.context Avalon-Framework Context contracts}.
- * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Revision$
  */
-public class PicoContextException extends PicoAvalonContractException {
-    /**
-     * {@inheritDoc}
-     * 
-     * @param e the exception that caused this one.
-     */ 
-    public PicoContextException(final ContextException e) {
-        super(e);
+public class PicoContainerBasedContext implements Context {
+    private final PicoContainer delegate;
+
+    public PicoContainerBasedContext(final PicoContainer delegate) {
+        Check.argumentNotNull("delegate", delegate);
+        this.delegate = delegate;
+    }
+
+    public Object get(final Object o) throws ContextException {
+        try {
+            return delegate.getComponentInstance(o);
+        } catch (PicoException pe) {
+            throw new ContextException("No component available by that key", pe);
+        }
     }
 }

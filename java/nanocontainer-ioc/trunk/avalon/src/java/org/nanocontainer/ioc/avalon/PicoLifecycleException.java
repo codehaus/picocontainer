@@ -7,21 +7,22 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 /**
- * A subclass of {@link IllegalArgumentException} that can be thrown when an argument is null and that is not allowed.
+ * An {@link PicoAvalonContractException} that is thrown when there's a problem related to the
+ * {@link org.apache.avalon.framework.activity Avalon-Framework activity contracts}.
  * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Revision$
  */
-public class NullArgumentException extends IllegalArgumentException {
+public class PicoLifecycleException extends PicoAvalonContractException {
     /**
      * {@inheritDoc}
      * 
-     * @param s {@inheritDoc}
+     * @param s {@inheritDoc} 
      */ 
-    public NullArgumentException(final String s) {
+    public PicoLifecycleException(final String s) {
         super(s);
     }
 }

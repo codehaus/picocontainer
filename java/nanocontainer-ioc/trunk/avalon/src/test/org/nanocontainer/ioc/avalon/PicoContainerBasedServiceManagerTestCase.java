@@ -7,15 +7,15 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.TestCase;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.DefaultServiceManager;
 import org.easymock.MockControl;
-import org.nanocontainer.avalon.NullArgumentException;
-import org.nanocontainer.avalon.PicoContainerBasedServiceManager;
+import org.nanocontainer.ioc.avalon.NullArgumentException;
+import org.nanocontainer.ioc.avalon.PicoContainerBasedServiceManager;
 import org.picocontainer.*;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;

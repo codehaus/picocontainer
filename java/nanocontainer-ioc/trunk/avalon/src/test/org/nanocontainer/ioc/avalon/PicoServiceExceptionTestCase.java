@@ -7,22 +7,23 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.TestCase;
+import org.apache.avalon.framework.service.ServiceException;
 
-import org.nanocontainer.avalon.PicoConfigurationException;
+import org.nanocontainer.ioc.avalon.PicoServiceException;
 
 /**
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Id$
  */
-public class PicoConfigurationExceptionTestCase extends TestCase {
-    final Exception parent = new Exception("blah");
+public class PicoServiceExceptionTestCase extends TestCase {
+    final ServiceException parent = new ServiceException("blah","blah");
     
     public void testEverything()
     {
-        final PicoConfigurationException e = new PicoConfigurationException(parent);
+        final PicoServiceException e = new PicoServiceException(parent);
         assertEquals( parent, e.getCause() );
     }
 }

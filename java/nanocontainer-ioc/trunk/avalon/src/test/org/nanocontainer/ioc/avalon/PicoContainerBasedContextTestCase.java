@@ -7,10 +7,10 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
-import org.nanocontainer.avalon.NullArgumentException;
-import org.nanocontainer.avalon.PicoContainerBasedContext;
+import org.nanocontainer.ioc.avalon.NullArgumentException;
+import org.nanocontainer.ioc.avalon.PicoContainerBasedContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;

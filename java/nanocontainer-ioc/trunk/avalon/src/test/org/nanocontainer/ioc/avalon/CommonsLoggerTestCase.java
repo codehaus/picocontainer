@@ -7,15 +7,15 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.TestCase;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easymock.MockControl;
-import org.nanocontainer.avalon.CommonsLogger;
-import org.nanocontainer.avalon.NullArgumentException;
+import org.nanocontainer.ioc.avalon.CommonsLogger;
+import org.nanocontainer.ioc.avalon.NullArgumentException;
 
 /**
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>

@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
+package org.nanocontainer.ioc.avalon;
 
 import junit.framework.TestCase;
 import org.apache.avalon.framework.activity.Initializable;
@@ -22,9 +22,9 @@ import org.apache.avalon.framework.service.Serviceable;
 import org.apache.commons.logging.impl.NoOpLog;
 import org.easymock.AbstractMatcher;
 import org.easymock.MockControl;
-import org.nanocontainer.avalon.CommonsLogger;
-import org.nanocontainer.avalon.PicoLifecycleException;
-import org.nanocontainer.avalon.AvalonUtil;
+import org.nanocontainer.ioc.avalon.AvalonUtil;
+import org.nanocontainer.ioc.avalon.CommonsLogger;
+import org.nanocontainer.ioc.avalon.PicoLifecycleException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

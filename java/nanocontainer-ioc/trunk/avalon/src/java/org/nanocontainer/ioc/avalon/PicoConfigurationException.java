@@ -7,24 +7,22 @@
  *                                                                           *
  * Original code by Leo Simons                                               *
  *****************************************************************************/
-package org.nanocontainer.avalon;
-
-import org.apache.avalon.framework.service.ServiceException;
+package org.nanocontainer.ioc.avalon;
 
 /**
  * An {@link PicoAvalonContractException} that is thrown when there's a problem related to the
- * {@link org.apache.avalon.framework.service Avalon-Framework Service contracts}.
+ * {@link org.apache.avalon.framework.configuration Avalon-Framework Configuration contracts}.
  * 
  * @author <a href="lsimons at jicarilla dot org">Leo Simons</a>
  * @version $Revision$
  */
-public class PicoServiceException extends PicoAvalonContractException {
+public class PicoConfigurationException extends PicoAvalonContractException {
     /**
      * {@inheritDoc}
      * 
-     * @param e the exception that caused this one.
+     * @param e the exception that caused this one
      */ 
-    public PicoServiceException(final ServiceException e) {
+    public PicoConfigurationException(final Throwable e) {
         super(e);
     }
 }

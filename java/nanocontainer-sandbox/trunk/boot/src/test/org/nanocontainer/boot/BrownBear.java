@@ -12,13 +12,25 @@ public class BrownBear {
     } catch (ClassNotFoundException cnfe) {
     }
     System.out.println("BrownBear: Can see class for BeeHiveHoney ? - " + (clazz != null) );
-    Method nonInterfaceMethod = honey.getClass().getMethod("nonInterfaceMethod", new Class[0]);
-    System.out.println("BrownBear: Can see honey instance's 'nonInterfaceMethod'? - " + (nonInterfaceMethod != null) );
-    nonInterfaceMethod = clazz.getMethod("nonInterfaceMethod", new Class[0]);
-    System.out.println("BrownBear: Can see HoneyBeeHoney class' 'nonInterfaceMethod'? - " + (nonInterfaceMethod != null) );
+    System.out.println("BrownBear: honey's class type - " + honey.getClass() );
+    Method nonInterfaceMethod = null;
+    try {
+        nonInterfaceMethod = honey.getClass().getMethod("nonInterfaceMethod", new Class[0]);
+    } catch (NoSuchMethodException exception) {
+    }
+      System.out.println("BrownBear: Can see honey instance's 'nonInterfaceMethod'? - " + (nonInterfaceMethod != null) );
     boolean invoked = false;
     try {
-      nonInterfaceMethod.invoke(honey, new Object[0]);
+        nonInterfaceMethod.invoke(honey, new Object[0]);
+        invoked = true;
+    } catch (Exception e) {
+    }
+    System.out.println("BrownBear: Can invoke honey instance's 'nonInterfaceMethod'? - " + invoked );
+    nonInterfaceMethod = clazz.getMethod("nonInterfaceMethod", new Class[0]);
+    System.out.println("BrownBear: Can see HoneyBeeHoney.nonInterfaceMethod()? - " + (nonInterfaceMethod != null) );
+    invoked = false;
+    try {
+        nonInterfaceMethod.invoke(honey, new Object[0]);
         invoked = true;
     } catch (Exception e) {}
     System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey instance? - " + invoked );

@@ -61,11 +61,11 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
 
         Class[] interfaces = verifyInterfacesOnly(classes);
-        return createProxy(interfaces, container);
+        return createProxy(interfaces, container, getDelegate().getComponentImplementation().getClassLoader());
     }
 
-    private Object createProxy(Class[] interfaces, final PicoContainer container) {
-        return Proxy.newProxyInstance(getClass().getClassLoader(),
+    private Object createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+        return Proxy.newProxyInstance(classLoader,
                 interfaces, new InvocationHandler() {
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)

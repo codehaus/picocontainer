@@ -1,4 +1,5 @@
 import org.nanocontainer.reflection.ImplementationHidingNanoPicoContainer
+import org.nanocontainer.ClassName
 
 builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()
 
@@ -7,8 +8,7 @@ parent = builder.container(parent:parent,class:ImplementationHidingNanoPicoConta
         classpathelement(path:"lib/bearimpl.jar")
         classpathelement(path:"lib/honeyimpl.jar")
         component(class:"org.nanocontainer.boot.BrownBear")
-        component(class:"org.nanocontainer.boot.BeeHiveHoney")
+        component(key:new ClassName("org.nanocontainer.boot.Honey"), class:"org.nanocontainer.boot.BeeHiveHoney")
 }
 pico = parent.getPico()
 pico.getComponentInstances()
-System.out.println("--> " + parent)

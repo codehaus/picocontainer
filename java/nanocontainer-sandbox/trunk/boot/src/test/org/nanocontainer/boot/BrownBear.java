@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 public class BrownBear {
     public BrownBear(Honey honey) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        System.out.println("BrownBear: I have eaten " + honey.eatSome() + " calories of Honey");
+        System.out.println("BrownBear: I have eaten " + honey.eatSome() + " calories of Honey (of unknown type)");
         Class clazz = null;
         try {
             clazz = this.getClass().getClassLoader().loadClass("org.nanocontainer.boot.BeeHiveHoney");

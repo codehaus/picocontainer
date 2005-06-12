@@ -27,12 +27,12 @@ public class NanoContainerBooter {
             URL fileURL = file.toURL();
             ClassLoader classLoader = new URLClassLoader(new URL[]{fileURL}, NanoContainerBooter.class.getClassLoader());
 
-            look(classLoader, fileURL, "org.apache.commons.cli.CommandLine", 0, "Commons CLI");
-            look(classLoader, fileURL, "org.nanocontainer.NanoContainer", 1, "NanoContainer");
-            look(classLoader, fileURL, "groovy.lang.Range", 2, "Groovy");
-            look(classLoader, fileURL, "org.objectweb.asm.ClassVisitor", 3, "ASM");
-            look(classLoader, fileURL, "org.objectweb.asm.util.PrintClassVisitor", 4, "ASM Util");
-            look(classLoader, fileURL, "antlr.CharFormatter", 5, "Antlr");
+            checkForClass(classLoader, fileURL, "org.apache.commons.cli.CommandLine", 0, "Commons CLI");
+            checkForClass(classLoader, fileURL, "org.nanocontainer.NanoContainer", 1, "NanoContainer");
+            checkForClass(classLoader, fileURL, "groovy.lang.Range", 2, "Groovy");
+            checkForClass(classLoader, fileURL, "org.objectweb.asm.ClassVisitor", 3, "ASM");
+            checkForClass(classLoader, fileURL, "org.objectweb.asm.util.PrintClassVisitor", 4, "ASM Util");
+            checkForClass(classLoader, fileURL, "antlr.CharFormatter", 5, "Antlr");
 
             if (file.getName().startsWith("picocontainer")) {
                 if (picoURL != null) {
@@ -44,19 +44,19 @@ public class NanoContainerBooter {
             }
         }
 
-        err(picoURL, "PicoContainer");
+        errorIfNull(picoURL, "PicoContainer");
 
         URLClassLoader baseClassLoader = new URLClassLoader(
                         new URL[]{picoURL},
                         NanoContainerBooter.class.getClassLoader().getParent()
                 );
 
-        err(urls[0], "Commons CLI");
-        err(urls[1], "NanoContainer");
-        err(urls[2], "Groovy");
-        err(urls[3], "ASM");
-        err(urls[4], "ASM Util");
-        err(urls[5], "Antlr");
+        errorIfNull(urls[0], "Commons CLI");
+        errorIfNull(urls[1], "NanoContainer");
+        errorIfNull(urls[2], "Groovy");
+        errorIfNull(urls[3], "ASM");
+        errorIfNull(urls[4], "ASM Util");
+        errorIfNull(urls[5], "Antlr");
 
         URLClassLoader hiddenClassLoader = new URLClassLoader(
                         urls,
@@ -71,7 +71,7 @@ public class NanoContainerBooter {
 
     }
 
-    private void err(URL url, String msg) {
+    private void errorIfNull(URL url, String msg) {
         if (url == null) {
             System.err.println(msg + " jar missing from lib directory");
             System.exit(10);
@@ -79,7 +79,7 @@ public class NanoContainerBooter {
 
     }
 
-    private void look(ClassLoader classLoader, URL url, String className, int ix, String type) throws ClassNotFoundException {
+    private void checkForClass(ClassLoader classLoader, URL url, String className, int ix, String type) throws ClassNotFoundException {
         boolean classFound = false;
         try {
             classLoader.loadClass(className);

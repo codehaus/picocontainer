@@ -8,11 +8,11 @@
  * *
  * ***************************************************************************
  */
-package org.nanocontainer.sample.nanowar.dao;
+package org.nanocontainer.nanowar.sample.dao;
 
 import java.util.Collection;
 
-import org.nanocontainer.sample.nanowar.model.Cheese;
+import org.nanocontainer.nanowar.sample.model.Cheese;
 
 /**
  * @author Stephen Molitor

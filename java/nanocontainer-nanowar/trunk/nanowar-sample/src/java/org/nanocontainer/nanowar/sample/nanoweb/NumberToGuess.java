@@ -1,4 +1,4 @@
-package org.nanocontainer.sample.nanowar.nanoweb;
+package org.nanocontainer.nanowar.sample.nanoweb;
 
 import java.io.Serializable;
 import java.util.Random;

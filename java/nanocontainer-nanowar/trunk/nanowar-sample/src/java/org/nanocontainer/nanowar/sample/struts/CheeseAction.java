@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.struts;
+package org.nanocontainer.nanowar.sample.struts;
 
 import java.util.Collection;
 
@@ -17,8 +17,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.nanocontainer.sample.nanowar.model.Cheese;
-import org.nanocontainer.sample.nanowar.service.CheeseService;
+import org.nanocontainer.nanowar.sample.model.Cheese;
+import org.nanocontainer.nanowar.sample.service.CheeseService;
 
 
 /**

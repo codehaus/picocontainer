@@ -6,10 +6,11 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.webwork;
+package org.nanocontainer.nanowar.sample.webwork;
 
-import org.nanocontainer.sample.nanowar.model.Cheese;
-import org.nanocontainer.sample.nanowar.service.CheeseService;
+import org.nanocontainer.nanowar.sample.model.Cheese;
+import org.nanocontainer.nanowar.sample.service.CheeseService;
+
 import webwork.action.ActionSupport;
 import webwork.action.CommandDriven;
 

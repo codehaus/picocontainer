@@ -1,8 +1,9 @@
-package org.nanocontainer.nanowar.struts;
+package org.nanocontainer.nanowar.sample.struts;
 
 import junit.framework.TestCase;
-import org.nanocontainer.sample.nanowar.dao.CheeseDao;
-import org.nanocontainer.sample.nanowar.service.CheeseService;
+
+import org.nanocontainer.nanowar.sample.dao.CheeseDao;
+import org.nanocontainer.nanowar.sample.service.CheeseService;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.xml.XStreamContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -32,11 +33,11 @@ public class ActionsContainerTestCase extends TestCase {
     public void testContainerBuildingWithXmlConfig() {
 
         Reader script = new StringReader("<container>"
-                + "	 <implementation type='org.nanocontainer.sample.nanowar.dao.CheeseDao'"
-                + "					class='org.nanocontainer.sample.nanowar.dao.simple.MemoryCheeseDao'> "
+                + "	 <implementation type='org.nanocontainer.nanowar.sample.dao.CheeseDao'"
+                + "					class='org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao'> "
                 + "  </implementation>"
-                + "	 <implementation type='org.nanocontainer.sample.nanowar.service.CheeseService'"
-                + " 				class='org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService'>"
+                + "	 <implementation type='org.nanocontainer.nanowar.sample.service.CheeseService'"
+                + " 				class='org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService'>"
                 + "  </implementation>"
                 + " </container>");
 

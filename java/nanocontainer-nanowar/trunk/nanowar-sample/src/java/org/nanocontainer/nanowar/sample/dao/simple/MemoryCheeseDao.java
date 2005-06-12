@@ -6,15 +6,15 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.dao.simple;
+package org.nanocontainer.nanowar.sample.dao.simple;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nanocontainer.sample.nanowar.dao.CheeseDao;
-import org.nanocontainer.sample.nanowar.model.Cheese;
+import org.nanocontainer.nanowar.sample.dao.CheeseDao;
+import org.nanocontainer.nanowar.sample.model.Cheese;
 
 /**
  * @author Stephen Molitor

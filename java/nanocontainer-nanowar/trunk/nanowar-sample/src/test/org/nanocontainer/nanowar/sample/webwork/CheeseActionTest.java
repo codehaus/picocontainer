@@ -6,15 +6,13 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.webwork;
+package org.nanocontainer.nanowar.sample.webwork;
 
-import org.nanocontainer.sample.nanowar.model.Cheese;
-import org.nanocontainer.sample.nanowar.service.CheeseService;
-import org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService;
-import org.nanocontainer.sample.nanowar.dao.simple.MemoryCheeseDao;
-import webwork.action.ActionSupport;
-import webwork.action.CommandDriven;
 import junit.framework.TestCase;
+
+import org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao;
+import org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService;
+import org.nanocontainer.nanowar.sample.webwork.CheeseAction;
 /**
  * Simple test case to demonstrate webwork action testing
  * @author Konstantin Pribluda
@@ -33,12 +31,12 @@ public class CheeseActionTest extends TestCase {
         action.getCheese().setName("gouda");
         action.getCheese().setCountry("Netherlands");
         action.setCommand("save");
-        assertEquals(action.SUCCESS,action.execute());
+        assertEquals(CheeseAction.SUCCESS,action.execute());
         
         assertEquals(1, service.getCheeses().size());
         
         action.setCommand("remove");
-        assertEquals(action.SUCCESS,action.execute());
+        assertEquals(CheeseAction.SUCCESS,action.execute());
         
         assertEquals(0, service.getCheeses().size());
         

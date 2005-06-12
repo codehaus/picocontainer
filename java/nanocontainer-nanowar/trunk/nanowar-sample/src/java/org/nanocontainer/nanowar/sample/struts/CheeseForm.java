@@ -6,53 +6,32 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.model;
+package org.nanocontainer.nanowar.sample.struts;
 
-import java.io.Serializable;
+import org.apache.struts.action.ActionForm;
 
 /**
  * @author Stephen Molitor
- * @author Mauro Talevi
  */
-public class Cheese implements Serializable {
+public class CheeseForm extends ActionForm {
 
     private String name;
     private String country;
-
-
-    public Cheese() {
-        // default constructor used by some frameworks
-    }
-
-    public Cheese(String name, String country) {
-        this.name = name;
-        this.country = country;
-        if (name == null) {
-            throw new NullPointerException("name");
-        }
-        if (country == null) {
-            throw new NullPointerException("country");
-        }
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getCountry() {
         return country;
     }
-    
-    public void setCountry( String country ) {
-        this.country = country;
-    }
 
-    public String toString() {
-        return "[Cheese name=" + name + ", country=" + country + "]";
+    public void setCountry(String country) {
+        this.country = country;
     }
 
 }

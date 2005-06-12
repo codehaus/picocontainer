@@ -6,11 +6,11 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.service;
+package org.nanocontainer.nanowar.sample.service;
 
 import java.util.Collection;
 
-import org.nanocontainer.sample.nanowar.model.Cheese;
+import org.nanocontainer.nanowar.sample.model.Cheese;
 
 /**
  * This is a service which is independent of any MVC framework.

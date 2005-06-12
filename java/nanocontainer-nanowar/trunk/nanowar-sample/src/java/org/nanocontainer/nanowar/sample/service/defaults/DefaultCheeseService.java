@@ -6,13 +6,13 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.sample.nanowar.service.defaults;
+package org.nanocontainer.nanowar.sample.service.defaults;
 
 import java.util.Collection;
 
-import org.nanocontainer.sample.nanowar.dao.CheeseDao;
-import org.nanocontainer.sample.nanowar.model.Cheese;
-import org.nanocontainer.sample.nanowar.service.CheeseService;
+import org.nanocontainer.nanowar.sample.dao.CheeseDao;
+import org.nanocontainer.nanowar.sample.model.Cheese;
+import org.nanocontainer.nanowar.sample.service.CheeseService;
 
 /**
  * Default implementation of CheeseService. Typically it will be used a proxy to

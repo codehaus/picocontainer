@@ -30,6 +30,7 @@
         <delete>
             <fileset dir="${maven.build.dir}/dist/">
                 <include name="**/jmock*.jar"/>
+                <include name="**/*tck*.jar"/>
                 <include name="**/js*.jar"/>
                 <include name="**/junit*.jar"/>
                 <include name="**/nanocontainer-testmodel*.jar"/>

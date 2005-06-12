@@ -1,6 +1,7 @@
 package org.nanocontainer.boot;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -15,14 +16,9 @@ public class NanoContainerBooter {
         new NanoContainerBooter(args);
     }
 
-    public NanoContainerBooter(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, MalformedURLException {
+    public NanoContainerBooter(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
 
-        URLClassLoader baseClassLoader = new URLClassLoader(
-                        new URL[]{
-                                    new File("lib/picocontainer-1.2-beta-1.jar").toURL()
-                            },
-                        NanoContainerBooter.class.getClassLoader().getParent()
-                );
+        URL picoURL = null;
 
         File lib = new File("lib");
         File[] libs = lib.listFiles();
@@ -31,13 +27,29 @@ public class NanoContainerBooter {
             URL fileURL = file.toURL();
             ClassLoader classLoader = new URLClassLoader(new URL[]{fileURL}, NanoContainerBooter.class.getClassLoader());
 
-            look(classLoader, fileURL, "org.apache.commons.cli.CommandLine", 0, "ASM");
-            look(classLoader, fileURL, "org.nanocontainer.NanoContainer", 1, "ASM");
-            look(classLoader, fileURL, "groovy.lang.Range", 2, "ASM");
+            look(classLoader, fileURL, "org.apache.commons.cli.CommandLine", 0, "Commons CLI");
+            look(classLoader, fileURL, "org.nanocontainer.NanoContainer", 1, "NanoContainer");
+            look(classLoader, fileURL, "groovy.lang.Range", 2, "Groovy");
             look(classLoader, fileURL, "org.objectweb.asm.ClassVisitor", 3, "ASM");
-            look(classLoader, fileURL, "org.objectweb.asm.util.PrintClassVisitor", 4, "ASM");
-            look(classLoader, fileURL, "antlr.CharFormatter", 5, "ASM");
+            look(classLoader, fileURL, "org.objectweb.asm.util.PrintClassVisitor", 4, "ASM Util");
+            look(classLoader, fileURL, "antlr.CharFormatter", 5, "Antlr");
+
+            if (file.getName().startsWith("picocontainer")) {
+                if (picoURL != null) {
+                    System.err.println("There is more than one jar in the lib dir that contains PicoContainer classes");
+                    System.exit(10);
+                }
+                picoURL = fileURL;
+
+            }
         }
+
+        err(picoURL, "PicoContainer");
+
+        URLClassLoader baseClassLoader = new URLClassLoader(
+                        new URL[]{picoURL},
+                        NanoContainerBooter.class.getClassLoader().getParent()
+                );
 
         err(urls[0], "Commons CLI");
         err(urls[1], "NanoContainer");

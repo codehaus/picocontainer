@@ -12,7 +12,7 @@ public class BrownBear {
     } catch (ClassNotFoundException cnfe) {
     }
     System.out.println("BrownBear: Can see class for BeeHiveHoney ? - " + (clazz != null) );
-    System.out.println("BrownBear: honey's class type - " + honey.getClass() );
+    System.out.println("BrownBear: honey instance's class type - " + honey.getClass() );
     Method nonInterfaceMethod = null;
     try {
         nonInterfaceMethod = honey.getClass().getMethod("nonInterfaceMethod", new Class[0]);
@@ -33,7 +33,7 @@ public class BrownBear {
         nonInterfaceMethod.invoke(honey, new Object[0]);
         invoked = true;
     } catch (Exception e) {}
-    System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey instance? - " + invoked );
+    System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey's instance? - " + invoked );
     boolean cast = false;
     System.out.println("BrownBear: Can cast honey instance to HoneyBeeHoney class? - " + (honey instanceof BeeHiveHoney) );
     System.out.println("BrownBear: Can leverage any implementation detail from honey instance? - false" );

@@ -69,6 +69,11 @@
         </dependency>
 
         <dependency>
+            <id>httpunit</id>
+            <version>1.6</version>
+        </dependency>
+
+        <dependency>
             <id>jmock</id>
             <version>1.0.1</version>
         </dependency>

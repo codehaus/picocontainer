@@ -8,6 +8,7 @@
  * Original code by Leo Simmons & Jörg Schaible                              *
  *****************************************************************************/
 package org.picocontainer.gems;
+
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -17,12 +18,12 @@ import org.picocontainer.defaults.AbstractComponentAdapter;
 
 /**
  * Component adapter that wrapps a static factory with the help of {@link StaticFactory}.
+ * 
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  * @since 1.1
  */
-public class StaticFactoryComponentAdapter
-        extends AbstractComponentAdapter {
+public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
     private StaticFactory staticFactory;
 
     /**
@@ -37,9 +38,10 @@ public class StaticFactoryComponentAdapter
     }
 
     /**
-     * Construct a ComponentAdapter accessing a static factory creating the component 
-     * using a special key for component registration.
+     * Construct a ComponentAdapter accessing a static factory creating the component using a special key for component
+     * registration.
      * 
+     * @param componentKey The key of the created component.
      * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
@@ -58,6 +60,7 @@ public class StaticFactoryComponentAdapter
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
      */
     public void verify(PicoContainer container) throws PicoVerificationException {

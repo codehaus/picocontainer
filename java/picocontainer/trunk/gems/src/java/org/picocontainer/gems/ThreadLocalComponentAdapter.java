@@ -31,14 +31,13 @@ import java.lang.reflect.Proxy;
 /**
  * A {@link ComponentAdapter}that realizes a {@link ThreadLocal}component instance.
  * <p>
- * The adapter creates proxy instances, that will create the necessary instances on-the-fly
- * invoking the methods of the instance. Use this adapter, if you are instantiating your
- * components in a single thread, but should be different when accessed from different threads.
- * See {@link org.nanocontainer.proxytoys.ThreadLocalComponentAdapterFactory}for details.
+ * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
+ * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
+ * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory}for details.
  * </p>
  * <p>
- * Note: Because this implementation uses a {@link Proxy}, you can only access the methods
- * exposed by the implemented interfaces of your component.
+ * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
+ * interfaces of your component.
  * </p>
  * 
  * @author J&ouml;rg Schaible
@@ -53,8 +52,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      * 
      * @param delegate The {@link ComponentAdapter}to delegate.
      * @param proxyFactory The {@link ProxyFactory}to use.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any
-     *                     interface.
+     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoIntrospectionException {
@@ -67,8 +65,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      * Construct a ThreadLocalComponentAdapter using {@link Proxy}instances.
      * 
      * @param delegate The {@link ComponentAdapter}to delegate.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any
-     *                     interface.
+     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
         this(new CachingComponentAdapter(delegate, new ThreadLocalReference()), new StandardProxyFactory());
@@ -93,8 +90,8 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
     final private Class[] getInterfaces() {
         final Object componentKey = getComponentKey();
         final Class[] interfaces;
-        if (componentKey instanceof Class && ((Class) componentKey).isInterface()) {
-            interfaces = new Class[]{(Class) componentKey};
+        if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
+            interfaces = new Class[]{(Class)componentKey};
         } else {
             interfaces = ClassHierarchyIntrospector.getAllInterfaces(getComponentImplementation());
         }
@@ -117,8 +114,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
         }
 
         /**
-         * @see com.thoughtworks.proxy.Invoker#invoke(java.lang.Object,
-         *           java.lang.reflect.Method, java.lang.Object[])
+         * @see com.thoughtworks.proxy.Invoker#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
          */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             final Object delegatedInstance = delegate.getComponentInstance(pico);

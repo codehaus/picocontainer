@@ -24,7 +24,7 @@ public class PicoMeterClassVisitor implements ClassVisitor {
         this.codeVisitor = codeVisitor;
     }
 
-    public void visit(int access, String name, String superName, String[] interfaces, String sourceFile) {
+    public void visit(int version, int access, String name, String superName, String[] interfaces, String sourceFile) {
     }
 
     public void visitInnerClass(String name, String outerName, String innerName, int access) {

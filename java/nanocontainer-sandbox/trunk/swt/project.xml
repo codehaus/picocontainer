@@ -12,24 +12,35 @@
             <artifactId>nanocontainer-swing</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
+        
         <dependency>
-            <id>swt</id>
-            <version></version>
+        	<groupId>swt</groupId>
+            <artifactId>swt-linux-gtk</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
         <dependency>
-            <id>boot</id>
-            <version></version>
+        	<groupId>swt</groupId>
+            <artifactId>swt-linux-gtk-pi</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
         <dependency>
-            <id>jface</id>
-            <version></version>
+        	<groupId>swt</groupId>
+            <artifactId>osgi</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
         <dependency>
-            <id>runtime</id>
-            <version></version>
+        	<groupId>swt</groupId>
+            <artifactId>jface</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>runtime</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
     </dependencies>

@@ -7,6 +7,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer</artifactId>
+            <version>${nanocontainer.version}</version>
+        </dependency>
+
+        <dependency>
             <id>commons-vfs</id>
             <version>20030518103800</version>
         </dependency>

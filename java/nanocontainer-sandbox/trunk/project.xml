@@ -54,12 +54,6 @@
 
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer</artifactId>
-            <version>${nanocontainer.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-testmodel</artifactId>
             <version>${nanocontainer.version}</version>
         </dependency>

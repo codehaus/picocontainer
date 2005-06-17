@@ -214,13 +214,15 @@
             <properties>
                 <war.bundle>false</war.bundle>
             </properties>
-
-            <dependency>
-                <id>xml-apis</id>
-                <version>1.0.b2</version>
-            </dependency>
         </dependency>
 
+        <dependency>
+            <id>xml-apis</id>
+            <version>1.0.b2</version>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
     </dependencies>
 
 </project>

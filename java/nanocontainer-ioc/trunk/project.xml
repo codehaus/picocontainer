@@ -51,12 +51,6 @@
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer</artifactId>
-            <version>${nanocontainer.version}</version>
-        </dependency>
         
         <dependency>
             <groupId>nanocontainer</groupId>

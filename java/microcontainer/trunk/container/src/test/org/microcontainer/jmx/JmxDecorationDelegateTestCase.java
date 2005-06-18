@@ -101,7 +101,7 @@ public class JmxDecorationDelegateTestCase extends TestCase {
                 "builder = new NanoContainerBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
-                "   component(key:'wilma', class:org.microcontainer.jmx.JmxDecorationDelegateTestCase$WilmaFlintstone) {\n" +
+                "   component(key:'wilma', class:org.microcontainer.jmx.JmxDecorationDelegateTestCase.WilmaFlintstone) {\n" +
                 "       jmx(key:'domain:wilma=default', operations:['helloCalled'], description:'jmx description text')\n" +
                 "   }\n" +
                 "}");

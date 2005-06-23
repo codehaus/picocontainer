@@ -10,7 +10,6 @@
 package org.nanocontainer.picometer;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.PicoMeterCodeVisitor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +33,7 @@ public class PicoMeterClass {
         this.clazz = clazz;
         this.source = source;
         ClassReader reader = new ClassReader(getClassAsStream(clazz));
-        reader.accept(new PicoMeterClassVisitor(new PicoMeterCodeVisitor(instantiations, this)), false);
+        reader.accept(new PicoMeterClassVisitor(new PicoMeterMethodVisitor(instantiations, this)), false);
     }
 
     private InputStream getClassAsStream(Class clazz) {

@@ -9,38 +9,38 @@
  *****************************************************************************/
 
 // The class is in this package only to be able to access package private members from Label.
-package org.objectweb.asm;
+package org.nanocontainer.picometer;
 
-import org.nanocontainer.picometer.Instantiation;
-import org.nanocontainer.picometer.PicoMeterClass;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Visits code and records instantiations of new objects.
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @version $Revision: 1570 $
  */
-public class PicoMeterCodeVisitor implements CodeVisitor {
+public class PicoMeterMethodVisitor implements MethodVisitor {
     private final Collection instantiations;
     private final PicoMeterClass picoMeterClass;
 
-    private final Map labelToInstantiationsMap = new HashMap();
-
     private String lastType;
-    private Label currentLabel;
+    private int currentLine = -1;
 
-    public PicoMeterCodeVisitor(Collection instantiations, PicoMeterClass picoMeterClass) {
+    public PicoMeterMethodVisitor(Collection instantiations, PicoMeterClass picoMeterClass) {
         this.instantiations = instantiations;
         this.picoMeterClass = picoMeterClass;
     }
 
     public void visitTypeInsn(int opcode, String desc) {
-        if (Constants.NEW == opcode) {
+        if (Opcodes.NEW == opcode) {
             lastType = desc;
         } else {
             lastType = null;
@@ -49,28 +49,24 @@ public class PicoMeterCodeVisitor implements CodeVisitor {
 
 
     public void visitMethodInsn(int opcode, String owner, String name, String desc) {
-        boolean isNew = (Constants.INVOKESPECIAL == opcode) && owner.equals(lastType) && "<init>".equals(name);
+        boolean isNew = (Opcodes.INVOKESPECIAL == opcode) && owner.equals(lastType) && "<init>".equals(name);
         if (isNew) {
             String className = owner.replace('/', '.');
             final Instantiation instantiation = new Instantiation(className, picoMeterClass);
-            labelToInstantiationsMap.put(currentLabel, instantiation);
+            try {
+                instantiation.setBytecodeLine(currentLine);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
             instantiations.add(instantiation);
         }
     }
 
     public void visitLabel(Label label) {
-        currentLabel = label;
     }
 
     public void visitLineNumber(int line, Label start) {
-        Instantiation instantiation = (Instantiation) labelToInstantiationsMap.get(start);
-        if (instantiation != null) {
-            try {
-                instantiation.setBytecodeLine(line);
-            } catch (IOException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
+        currentLine = line;
     }
 
     public void visitAttribute(Attribute attribute) {
@@ -112,6 +108,24 @@ public class PicoMeterCodeVisitor implements CodeVisitor {
     public void visitMaxs(int maxStack, int maxLocals) {
     }
 
-    public void visitLocalVariable(String name, String desc, Label start, Label end, int index) {
+    public void visitLocalVariable(String name, String desc, String sig, Label start, Label end, int index) {
+    }
+
+    public AnnotationVisitor visitAnnotationDefault() {
+        return null;
+    }
+
+    public AnnotationVisitor visitAnnotation(String arg0, boolean arg1) {
+        return null;
+    }
+
+    public AnnotationVisitor visitParameterAnnotation(int arg0, String arg1, boolean arg2) {
+        return null;
+    }
+
+    public void visitCode() {
+    }
+
+    public void visitEnd() {
     }
 }

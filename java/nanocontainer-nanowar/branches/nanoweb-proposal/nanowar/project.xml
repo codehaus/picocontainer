@@ -1,167 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project>
     <extend>${basedir}/../project.xml</extend>
-    <id>nanocontainer-nanowar</id>
-    <name>nanocontainer-nanowar</name>
-
+    <artifactId>nanocontainer-nanowar</artifactId>
     <dependencies>
         <dependency>
-            <id>picocontainer</id>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-        
-        <dependency>
             <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-gems</artifactId>
+            <artifactId>picocontainer</artifactId>
             <version>${picocontainer.version}</version>
             <url>http://www.picocontainer.org/</url>
         </dependency>
-
         <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
-            <url>http://www.picocontainer.org/</url>
-        </dependency>
-
-        <dependency>
-            <id>servletapi</id>
-            <version>2.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer</artifactId>
-            <version>${nanocontainer.version}</version>
-        </dependency>
-        
-        <dependency>
-            <id>groovy</id>
-            <version>1.0-beta-7</version>
-        </dependency>
-
-        <dependency>
-            <id>asm</id>
-            <version>1.4.3</version>
-        </dependency>
-
-        <dependency>
+			<groupId>picocontainer</groupId>
+			<artifactId>picocontainer-gems</artifactId>
+			<version>${picocontainer.version}</version>
+			<url>http://www.picocontainer.org/</url>
+		</dependency>
+		<dependency>
+			<groupId>picocontainer</groupId>
+			<artifactId>picocontainer-tck</artifactId>
+			<version>${picocontainer.version}</version>
+			<url>http://www.picocontainer.org/</url>
+		</dependency>
+		<dependency>
+			<groupId>nanocontainer</groupId>
+			<artifactId>nanocontainer</artifactId>
+			<version>${nanocontainer.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>all-1.0-jsr-02</version>
+			<url>http://groovy.codehaus.org</url>
+		</dependency>
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+		<dependency>
             <groupId>asm</groupId>
             <artifactId>asm-util</artifactId>
             <version>1.4.3</version>
         </dependency>
-
         <dependency>
-            <id>ognl</id>
+            <groupId>ognl</groupId>
+            <artifactId>ognl</artifactId>
             <version>2.5.1</version>
         </dependency>
-
         <dependency>
-            <id>velocity</id>
-            <version>1.4-rc1</version>
+            <groupId>velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.4</version>
         </dependency>
-
         <dependency>
-            <id>velocity-tools</id>
-            <version>view-1.0</version>
+            <groupId>velocity-tools</groupId>
+            <artifactId>velocity-tools-view</artifactId>
+            <version>1.0</version>
         </dependency>
-
-        <dependency>
-            <id>httpunit</id>
-            <version>1.6</version>
-        </dependency>
-
-        <dependency>
-            <id>jmock</id>
-            <version>1.0.1</version>
-        </dependency>
-
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-full</artifactId>
             <version>2.0</version>
         </dependency>
-
         <dependency>
-            <groupId>jmock</groupId>
-            <artifactId>jmock-cglib</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-
-        <dependency>
-            <id>commons-logging</id>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
             <version>1.0.4</version>
-            <url>http://jakarta.apache.org/commons/logging.html</url>
+            <url>http://jakarta.apache.org/commons/logging/</url>
         </dependency>
-
         <dependency>
-            <id>commons-beanutils</id>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
             <version>1.6.1</version>
-            <url>http://jakarta.apache.org/</url>
+            <url>http://jakarta.apache.org/commons/beanutils/</url>
         </dependency>
-
         <dependency>
-            <id>commons-collections</id>
-            <version>2.1.1</version>
-            <url>http://jakarta.apache.org/</url>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.1</version>
+            <url>http://jakarta.apache.org/commons/collections/</url>
         </dependency>
-
         <dependency>
-            <id>commons-digester</id>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
             <version>1.4.1</version>
             <url>http://jakarta.apache.org/commons/digester/</url>
         </dependency>
-
         <dependency>
-            <id>log4j</id>
-            <version>1.2.8</version>
-        </dependency>
-
-        <dependency>
-            <id>xstream</id>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
             <version>1.0.2</version>
         </dependency>
-
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>webwork</artifactId>
             <version>1.4</version>
         </dependency>
-
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>xwork</artifactId>
             <version>1.0.1</version>
         </dependency>
-
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>webwork2</artifactId>
             <version>2.1</version>
         </dependency>
-
         <dependency>
-            <id>struts</id>
+            <groupId>struts</groupId>
+            <artifactId>struts</artifactId>
             <version>1.1</version>
         </dependency>
-
         <dependency>
-            <id>axis</id>
-            <version>1.2-beta-3</version>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.2</version>
         </dependency>
-
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis-jaxrpc</artifactId>
-            <version>1.2-beta-3</version>
+            <version>1.2</version>
         </dependency>
-        
         <dependency>
-            <id>xml-apis</id>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
             <version>1.0.b2</version>
-        </dependency>
+        </dependency>	
     </dependencies>
-
 </project>

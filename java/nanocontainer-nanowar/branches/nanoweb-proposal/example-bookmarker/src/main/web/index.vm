@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			function remove(id) {
+				if (confirm('Are you sure?')) {
+					document.location = BASE_HREF + 'remove.nwa?item=' + id;
+				}
+				
+				return false;
+			}
+		</script>
+	</head>
+	<body>
+		#foreach( $item in $items )
+			<table class="item-data" cellspadding="0" cellspacing="0" border="0">
+				<tr>
+					<td rowspan="3" width="86"><a href="${item.url}" class="item-thumnail"><img src="resource/image/nopic.png" width="80" height="60" alt=""/></a></td>
+					<td><a href="save.nwa?item=${item.id}" class="item-action"><img src="resource/image/edit.png" width="47" height="7" alt="edit"/></a><a href="" onclick="return remove(${item.id});" class="item-action"><img src="resource/image/remove.png" width="47" height="7" alt="remove"/></a><a href="${item.url}" class="item-name">${item.name}</a></td>
+				</tr>
+				<tr>
+					<td><a href="${item.url}" class="item-description">${item.description}</a></td>
+				</tr>
+			</table>
+		#end
+	</body>
+</html>
+	

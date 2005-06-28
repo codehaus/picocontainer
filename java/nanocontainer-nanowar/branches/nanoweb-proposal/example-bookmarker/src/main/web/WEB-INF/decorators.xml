@@ -1,0 +1,5 @@
+<decorators defaultdir="/WEB-INF/decorator">
+	<decorator name="main" page="default.vdec">
+		<pattern>*.nwa</pattern>
+	</decorator>
+</decorators>

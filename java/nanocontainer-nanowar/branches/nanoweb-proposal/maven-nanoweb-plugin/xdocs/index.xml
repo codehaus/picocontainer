@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <author email="juze at codehaus.org">Jose Peleteiro</author>
+        <title>Index</title>
+    </properties>
+    <body>
+        <section name="What is it?">
+            <p>Maven NanoWeb plugin is a utility to increse productivity. Its features:</p>
+            <ul>
+                <li>Start a Web container running your project directly from the sources. 
+				No previous mount or war generation. So, just change your template or your NanoWeb's action 
+				(if its a dynamic flavor) and refresh your browser.</li>
+                <li>Generates a project skeleton using NanoWeb, Hibernate, Velocity and SiteMesh for you speeding 
+				up your project configuration time. (TODO)</li>
+            </ul>
+        </section>
+		<section name="TODOs">
+            <ul>
+                <li>Create a swing small window where it will be possible to start/stop/restart the web container and see log.</li>
+				<li>Do the project template.</li>
+            </ul>
+		</section>
+    </body>
+</document>

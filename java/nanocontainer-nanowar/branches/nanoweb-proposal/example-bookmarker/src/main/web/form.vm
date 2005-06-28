@@ -1,0 +1,21 @@
+<html>
+	<head>
+	</head>
+	<body>
+		#if( $item )
+			<h1>Edit bookmark</h1>
+		#else
+			<h1>New bookmark</h1>
+		#end
+		<form action="save.do.nwa">
+			<input type="hidden" name="item" value="$!{item.id}"/>
+			<label for="item.name">Name:</label>
+			<input type="text" name="item.name" value="$!{item.name}"/>
+			<label for="item.url">URL:</label>
+			<input type="text" name="item.url" value="$!{item.url}"/>
+			<label for="item.description">Name:</label>
+			<textarea name="item.description">$!{item.description}</textarea>
+			<input type="submit" class="submit" value="Save"/>
+		</form>
+	</body>
+</html>

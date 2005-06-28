@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<base href="${link.contextURL}/"/>
+		<meta name="robots" content="none"/>
+		#if( $title )
+			<title>Bookmarker - $title</title>
+		#else
+			<title>Bookmarker</title>
+		#end
+		<script language="JavaScript">
+			var BASE_HREF = '${link.contextURL}/';
+		</script>
+		<link href="resource/default/style.css" rel="stylesheet" type="text/css">
+		${head}
+	</head>
+	<body>
+		<table id="container" cellspacing="0" cellpadding="0">
+			<tr>
+				<td id="container_top_left"></td>
+				<td id="container_top"></td>
+				<td id="container_top_rigth"></td>
+			</tr>
+			<tr>
+				<td id="container_left"></td>
+				<td id="area">
+					<div id="header">
+						<a href="index.nwa"><img src="resource/default/header-logo.png" width="300" height="57"/></a>
+						<div id="header_menu">
+							<a href="index.nwa"><img src="resource/default/header-button-list.png" width="104" height="24" alt="List Bookmarks"/></a>
+							<a href="save.nwa"><img src="resource/default/header-button-new.png" width="104" height="24" alt="New Bookmark"/></a>
+						</div>
+					</div>
+					<div id="content">
+						${body}
+					</div>
+				</td>
+				<td id="container_rigth"></td>
+			</tr>
+			<tr>
+				<td id="container_bottom_left"></td>
+				<td id="container_bottom"></td>
+				<td id="container_bottom_rigth"></td>
+			</tr>
+		</table>
+	</body>
+</html>

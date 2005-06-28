@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!-- Version: $Id: hibernate.cfg.xml 13 2005-06-15 23:47:57Z juze $ -->
+<hibernate-configuration>
+    <session-factory>
+		<mapping class="org.nanocontainer.nanoweb.example.bookmarker.hb3.BookmarkImpl"/>
+    </session-factory>
+</hibernate-configuration>

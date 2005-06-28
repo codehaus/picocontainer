@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant" xmlns:x="jelly:xml">
+
+	<goal name="nanoweb:run:config" description="Generate the Jetty configuration file">
+
+		<j:file name="${maven.build.dir}/jetty.xml" prettyPrint="true" xmlns="jetty">
+			<x:doctype name="Configure" publicId="-//Mort Bay Consulting//DTD Configure 1.2//EN" systemId="http://jetty.mortbay.org/configure_1_2.dtd"/>
+
+			<Configure class="org.mortbay.jetty.Server">
+				<Call name="addListener">
+					<Arg>
+						<New class="org.mortbay.http.SocketListener">
+							<Set name="Port">${maven.jetty.port}</Set>
+						</New>
+					</Arg>
+				</Call>
+
+				<Call name="addWebApplication">
+					<Arg>/</Arg>
+					<j:set var="webdir" value="${pom.getPluginContext('maven-war-plugin').getVariable('maven.war.src')}"/>
+					<Arg>${webdir}</Arg>
+
+					<Call name="addClassPath">
+						<Arg>${maven.build.dest}</Arg>
+					</Call>
+
+					<j:forEach var="lib" items="${pom.artifacts}">
+						<j:set var="dep" value="${lib.dependency}"/>      
+						<j:if test="${dep.getProperty('war.bundle')=='true'}">
+							<j:if test="${dep.type == 'jar'}">
+								<Call name="addClassPath">
+									<Arg>${lib.path}</Arg>
+								</Call>
+							</j:if>
+						</j:if>
+					</j:forEach>
+				</Call>
+			</Configure>
+		</j:file>
+	</goal>
+
+	<goal name="nanoweb:run" description="Run Jetty" prereqs="java:compile,nanoweb:run:config">
+		<ant:java classname="org.mortbay.jetty.Server" fork="true">
+			<ant:arg value="${maven.build.dir}/jetty.xml"/>
+			<ant:classpath>
+				<ant:pathelement path="${plugin.dependencyClasspath}"/> 
+			</ant:classpath>
+		</ant:java>
+	</goal>
+
+</project>

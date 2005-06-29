@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.tools.hb3.impl;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.impl;
 
 import java.util.Iterator;
 

@@ -1,8 +1,8 @@
-package org.nanocontainer.nanoweb.tools.hb3;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3;
 
-import org.nanocontainer.nanoweb.tools.hb3.FieldBuilder;
-import org.nanocontainer.nanoweb.tools.hb3.test.util.Dummy;
-import org.nanocontainer.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.FieldBuilder;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.Dummy;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
 
 public class FieldBuilderTestCase extends HB3AbstractTestCase {
 

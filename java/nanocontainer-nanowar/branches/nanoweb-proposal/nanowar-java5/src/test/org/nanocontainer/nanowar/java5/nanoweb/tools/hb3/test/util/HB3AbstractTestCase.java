@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.tools.hb3.test.util;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;

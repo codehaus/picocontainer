@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.tools.hb3;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3;
 
 import java.io.StringWriter;
 
@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.hibernate.cfg.Configuration;
-import org.nanocontainer.nanoweb.tools.hb3.impl.FieldInfo;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.impl.FieldInfo;
 
 public class FieldBuilder {
 

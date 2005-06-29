@@ -1,11 +1,11 @@
-package org.nanocontainer.nanoweb.tools.hb3;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3;
 
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.nanocontainer.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
 
 public class HowToGetMetadataTestCase extends HB3AbstractTestCase {
 

@@ -1,9 +1,9 @@
-package org.nanocontainer.nanoweb.tools.hb3.impl;
+package org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.impl;
 
 
-import org.nanocontainer.nanoweb.tools.hb3.impl.FieldInfo;
-import org.nanocontainer.nanoweb.tools.hb3.test.util.Dummy;
-import org.nanocontainer.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.impl.FieldInfo;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.Dummy;
+import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.HB3AbstractTestCase;
 
 
 public class FieldInfoTestCase extends HB3AbstractTestCase {

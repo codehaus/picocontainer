@@ -4,7 +4,7 @@
   <groupId>nanocontainer</groupId>
   <artifactId>maven-nanoweb-plugin</artifactId>
   <name>NanoWeb Maven Plugin</name>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <currentVersion>1.1-PROPOSAL-SNAPSHOT</currentVersion>
   <developers>
     <developer>
       <name>Jose Peleteiro</name>

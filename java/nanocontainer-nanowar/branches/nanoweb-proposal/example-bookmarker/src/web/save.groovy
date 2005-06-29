@@ -1,4 +1,4 @@
-import org.nanocontainer.nanoweb.example.bookmarker.spi.*;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.*;
 
 class Action {
 	

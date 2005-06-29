@@ -10,7 +10,7 @@
 				<Call name="addListener">
 					<Arg>
 						<New class="org.mortbay.http.SocketListener">
-							<Set name="Port">${maven.jetty.port}</Set>
+							<Set name="Port">8080</Set>
 						</New>
 					</Arg>
 				</Call>
@@ -19,21 +19,6 @@
 					<Arg>/</Arg>
 					<j:set var="webdir" value="${pom.getPluginContext('maven-war-plugin').getVariable('maven.war.src')}"/>
 					<Arg>${webdir}</Arg>
-
-					<Call name="addClassPath">
-						<Arg>${maven.build.dest}</Arg>
-					</Call>
-
-					<j:forEach var="lib" items="${pom.artifacts}">
-						<j:set var="dep" value="${lib.dependency}"/>      
-						<j:if test="${dep.getProperty('war.bundle')=='true'}">
-							<j:if test="${dep.type == 'jar'}">
-								<Call name="addClassPath">
-									<Arg>${lib.path}</Arg>
-								</Call>
-							</j:if>
-						</j:if>
-					</j:forEach>
 				</Call>
 			</Configure>
 		</j:file>
@@ -44,7 +29,16 @@
 			<ant:arg value="${maven.build.dir}/jetty.xml"/>
 			<ant:classpath>
 				<ant:pathelement path="${plugin.dependencyClasspath}"/> 
-			</ant:classpath>
+				<ant:pathelement path="${maven.build.dest}"/> 
+                <j:forEach var="lib" items="${pom.artifacts}">
+                    <j:set var="dep" value="${lib.dependency}"/>      
+                    <j:if test="${dep.getProperty('war.bundle')=='true'}">
+                        <j:if test="${dep.type == 'jar'}">
+            				<ant:pathelement path="${lib.path}"/> 
+                        </j:if>
+                    </j:if>
+                </j:forEach>
+            </ant:classpath>
 		</ant:java>
 	</goal>
 

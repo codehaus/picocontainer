@@ -9,17 +9,17 @@ create table tb_bookmark (
 -- initial data
 
 insert into tb_bookmark (id, url, name, description)
-	values (1, 'http://www.foo.com', 'The best ever site', 'This site is nice to look for something that you realy dont know what is, and you can always find at google.');
+	values (1, 'http://www.codehaus.org', 'The CodeHaus', 'The Codehaus is an open-source project repository with a strong emphasis on Java, focussed on quality components that meet real world needs. We believe in open source as a pragmatic approach to software development, and all our projects are business-friendly in terms of licensing. Enjoy your stay at the haus!');
 
 insert into tb_bookmark (id, url, name, description)
-	values (2, 'http://www.foo.com', 'The best ever site', 'This site is nice to look for something that you realy dont know what is, and you can always find at google.');
+	values (2, 'http://www.google.com', 'Gooooogle', 'The world most famous website ever.');
 
 insert into tb_bookmark (id, url, name, description)
-	values (3, 'http://www.foo.com', 'The best ever site', 'This site is nice to look for something that you realy dont know what is, and you can always find at google.');
+	values (3, 'http://www.thumbshots.org', 'Thumbshots.org', 'The one who provide those thumbnails.');
 
 insert into tb_bookmark (id, url, name, description)
-	values (4, 'http://www.foo.com', 'The best ever site', 'This site is nice to look for something that you realy dont know what is, and you can always find at google.');
+	values (4, 'http://www.picocontainer.org', 'PicoContainer', 'PicoContainer is a lightweight embeddable container for components that honour Dependency Injection.');
 
 insert into tb_bookmark (id, url, name, description)
-	values (5, 'http://www.foo.com', 'The best ever site', 'This site is nice to look for something that you realy dont know what is, and you can always find at google.');
+	values (5, 'http://www.nanocontainer.org', 'NanoContainer', 'Components from the NanoContainer project supplement PicoContainer, and gives it more capability. These can either be adaptions in various guises that give a by-class-name rather than by-class capability for composition, or adaptations to external components bringing them closer to the Dependency Injection (particularly CDI) ideal.');
 

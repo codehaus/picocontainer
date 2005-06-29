@@ -31,7 +31,7 @@
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/velocity-tools/jars/velocity-tools-view-1.0.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-full-2.0.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-2.1.1.jar">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar">
   </classpathentry>

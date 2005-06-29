@@ -14,33 +14,38 @@
 		${head}
 	</head>
 	<body>
-		<table id="container" cellspacing="0" cellpadding="0">
-			<tr>
-				<td id="container_top_left"></td>
-				<td id="container_top"></td>
-				<td id="container_top_rigth"></td>
-			</tr>
-			<tr>
-				<td id="container_left"></td>
-				<td id="area">
-					<div id="header">
-						<a href="index.nwa"><img src="resource/default/header-logo.png" width="300" height="57"/></a>
-						<div id="header_menu">
-							<a href="index.nwa"><img src="resource/default/header-button-list.png" width="104" height="24" alt="List Bookmarks"/></a>
-							<a href="save.nwa"><img src="resource/default/header-button-new.png" width="104" height="24" alt="New Bookmark"/></a>
-						</div>
-					</div>
-					<div id="content">
-						${body}
-					</div>
-				</td>
-				<td id="container_rigth"></td>
-			</tr>
-			<tr>
-				<td id="container_bottom_left"></td>
-				<td id="container_bottom"></td>
-				<td id="container_bottom_rigth"></td>
-			</tr>
-		</table>
+		<div style="width: 100%; text-align: center;">
+    		<table id="container" cellspacing="0" cellpadding="0">
+    			<tr>
+    				<td id="container_top_left"></td>
+    				<td id="container_top"></td>
+    				<td id="container_top_rigth"></td>
+    			</tr>
+    			<tr>
+    				<td id="container_left"></td>
+    				<td id="area">
+    					<div id="header">
+    						<a href="index.nwa"><img src="resource/default/header-logo.png" width="300" height="57"/></a>
+    						<div id="header_menu">
+    							<a href="index.nwa"><img src="resource/default/header-button-list.png" width="104" height="24" alt="List Bookmarks"/></a>
+    							<a href="save.nwa"><img src="resource/default/header-button-new.png" width="104" height="24" alt="New Bookmark"/></a>
+    						</div>
+    					</div>
+    					<div id="content">
+    						${body}
+    					</div>
+    				</td>
+    				<td id="container_rigth"></td>
+    			</tr>
+    			<tr>
+    				<td id="container_bottom_left"></td>
+    				<td id="container_bottom"></td>
+    				<td id="container_bottom_rigth"></td>
+    			</tr>
+    		</table>
+    		<div id="propaganda-container">
+    			<a href="http://learn.thumbshots.com/" target="_blank" title="Free thumbnail preview by Thumbshots.org">Thumbnail preview by Thumbshots.org</a>
+    		</div>
+		</div>
 	</body>
 </html>

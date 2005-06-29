@@ -266,7 +266,16 @@
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
-        </dependency>		
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1-beta-6</version>
+            <url>http://www.jaxen.org</url>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
 		<!-- /velocity -->
 		<!-- 
 			

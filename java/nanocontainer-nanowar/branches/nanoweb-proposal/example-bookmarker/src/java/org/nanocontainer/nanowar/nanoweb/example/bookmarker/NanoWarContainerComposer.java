@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.example.bookmarker;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -7,14 +7,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.nanoweb.ActionFactory;
-import org.nanocontainer.nanoweb.ConverterComponentAdapter;
-import org.nanocontainer.nanoweb.NanoWebServletComponent;
-import org.nanocontainer.nanoweb.defaults.GroovyActionFactory;
-import org.nanocontainer.nanoweb.example.bookmarker.hb3.BookmarkDAOImpl;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.Bookmark;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.BookmarkDAO;
-import org.nanocontainer.nanoweb.example.bookmarker.webaplication.BookmarkConverter;
+import org.nanocontainer.nanowar.nanoweb.ActionFactory;
+import org.nanocontainer.nanowar.nanoweb.ConverterComponentAdapter;
+import org.nanocontainer.nanowar.nanoweb.NanoWebServletComponent;
+import org.nanocontainer.nanowar.nanoweb.defaults.GroovyActionFactory;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.hb3.BookmarkDAOImpl;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.Bookmark;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.BookmarkDAO;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.webaplication.BookmarkConverter;
 import org.nanocontainer.persistence.hibernate.FailoverSessionDelegator;
 import org.nanocontainer.persistence.hibernate.SessionFactoryDelegator;
 import org.nanocontainer.persistence.hibernate.SessionFactoryLifecycle;

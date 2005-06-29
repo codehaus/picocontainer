@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <classpath>
+  <classpathentry excluding="" kind="src" path="src/java">
+  </classpathentry>
   <classpathentry output="target/test-classes" kind="src" path="src/test">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar">
@@ -8,6 +10,8 @@
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
   </classpathentry>
   <classpathentry kind="src" path="/nanocontainer-nanowar">
+  </classpathentry>
+  <classpathentry kind="src" path="/nanocontainer-nanowar-java5">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-1.2-SNAPSHOT.jar">
   </classpathentry>

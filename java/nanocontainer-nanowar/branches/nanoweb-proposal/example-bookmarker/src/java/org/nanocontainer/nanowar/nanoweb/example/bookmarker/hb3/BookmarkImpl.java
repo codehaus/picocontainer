@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.example.bookmarker.hb3;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker.hb3;
 
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.Bookmark;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.Bookmark;
 
 @Entity(access = AccessType.PROPERTY)
 @Table(name = "tb_bookmark")

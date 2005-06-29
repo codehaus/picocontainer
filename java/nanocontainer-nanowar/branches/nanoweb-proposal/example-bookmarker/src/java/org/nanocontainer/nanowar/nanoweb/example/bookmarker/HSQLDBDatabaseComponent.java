@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.example.bookmarker;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

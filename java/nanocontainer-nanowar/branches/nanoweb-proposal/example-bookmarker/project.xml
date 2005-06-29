@@ -7,16 +7,25 @@
 		<dependency>
 			<groupId>nanocontainer</groupId>
 			<artifactId>nanocontainer-nanowar</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${pom.currentVersion}</version>
             <properties>
                 <war.bundle>true</war.bundle>
 				<eclipse.dependency>true</eclipse.dependency>
             </properties>
 		</dependency>
 		<dependency>
+			<groupId>nanocontainer</groupId>
+			<artifactId>nanocontainer-nanowar-java5</artifactId>
+			<version>${pom.currentVersion}</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+				<eclipse.dependency>true</eclipse.dependency>
+            </properties>
+		</dependency>
+        		<dependency>
 			<groupId>picocontainer</groupId>
 			<artifactId>picocontainer</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>${picocontainer.version}</version>
 			<url>http://www.picocontainer.org</url>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -25,7 +34,7 @@
 		<dependency>
 			<groupId>picocontainer</groupId>
 			<artifactId>picocontainer-gems</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>${picocontainer.version}</version>
 			<url>http://www.picocontainer.org</url>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -34,7 +43,7 @@
 		<dependency>
 			<groupId>nanocontainer</groupId>
 			<artifactId>nanocontainer</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${nanocontainer.version}</version>
 			<url>http://www.nanocontainer.org</url>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -43,7 +52,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-persistence</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${persistence.version}</version>
             <type>jar</type>
             <url>http://nanocontainer.codehaus.org</url>
             <properties>

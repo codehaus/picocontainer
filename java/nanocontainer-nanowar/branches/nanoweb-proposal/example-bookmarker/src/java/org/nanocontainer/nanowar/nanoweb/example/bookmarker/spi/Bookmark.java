@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.example.bookmarker.spi;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi;
 
 
 public interface Bookmark {

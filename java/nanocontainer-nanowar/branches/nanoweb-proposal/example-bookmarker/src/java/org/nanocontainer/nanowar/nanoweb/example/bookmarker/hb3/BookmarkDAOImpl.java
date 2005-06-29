@@ -1,10 +1,10 @@
-package org.nanocontainer.nanoweb.example.bookmarker.hb3;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker.hb3;
 
 import java.util.Collection;
 
 import org.hibernate.Session;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.Bookmark;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.BookmarkDAO;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.Bookmark;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.BookmarkDAO;
 
 public class BookmarkDAOImpl implements BookmarkDAO {
 

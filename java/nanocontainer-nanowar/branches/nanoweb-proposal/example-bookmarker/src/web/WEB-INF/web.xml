@@ -2,14 +2,14 @@
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
     <context-param>
         <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
-        <param-value>org.nanocontainer.nanoweb.example.bookmarker.NanoWarContainerComposer</param-value>
+        <param-value>org.nanocontainer.nanowar.nanoweb.example.bookmarker.NanoWarContainerComposer</param-value>
     </context-param>
     <listener>
         <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
     </listener>
     <servlet>
         <servlet-name>notfound</servlet-name>
-        <servlet-class>org.nanocontainer.nanoweb.NotFoundServlet</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.nanoweb.NotFoundServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>notfound</servlet-name>
@@ -17,7 +17,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>nanoweb</servlet-name>
-        <servlet-class>org.nanocontainer.nanoweb.NanoWebServlet</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.nanoweb.NanoWebServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

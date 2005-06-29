@@ -1,8 +1,8 @@
-package org.nanocontainer.nanoweb.example.bookmarker.webaplication;
+package org.nanocontainer.nanowar.nanoweb.example.bookmarker.webaplication;
 
-import org.nanocontainer.nanoweb.Converter;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.Bookmark;
-import org.nanocontainer.nanoweb.example.bookmarker.spi.BookmarkDAO;
+import org.nanocontainer.nanowar.nanoweb.Converter;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.Bookmark;
+import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.BookmarkDAO;
 
 public class BookmarkConverter implements Converter {
 

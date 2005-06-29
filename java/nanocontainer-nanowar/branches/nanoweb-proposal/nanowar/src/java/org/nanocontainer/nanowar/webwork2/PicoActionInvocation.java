@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author Chris Sturm
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @version $Revision: 1657 $
  */
 public class PicoActionInvocation extends DefaultActionInvocation implements KeyConstants {
 

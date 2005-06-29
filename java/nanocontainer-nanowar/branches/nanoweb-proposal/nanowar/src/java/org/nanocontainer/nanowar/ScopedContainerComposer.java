@@ -42,7 +42,7 @@ import org.picocontainer.defaults.SimpleReference;
  * 
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
+ * @version $Revision: 1886 $
  */
 public class ScopedContainerComposer implements ContainerComposer {
 

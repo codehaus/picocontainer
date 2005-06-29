@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb;
+package org.nanocontainer.nanowar.nanoweb;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.nanowar.ServletContainerFinder;
-import org.nanocontainer.nanoweb.defaults.OgnlExpressionEvaluator;
-import org.nanocontainer.nanoweb.impl.ParameterComparator;
+import org.nanocontainer.nanowar.nanoweb.defaults.OgnlExpressionEvaluator;
+import org.nanocontainer.nanowar.nanoweb.impl.ParameterComparator;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -111,7 +111,7 @@ public class NanoWebServletComponent {
                 Method readMethod = propDescriptor.getReadMethod();
                 if (readMethod != null) {
                     try {
-                        httpServletRequest.setAttribute(propDescriptor.getName(), readMethod.invoke(action));
+                        httpServletRequest.setAttribute(propDescriptor.getName(), readMethod.invoke(action, null));
                     } catch (IllegalArgumentException e) {
                         // Do nothing, just an getAnyThink which has parameters. Its just
                         // ignored.
@@ -161,8 +161,8 @@ public class NanoWebServletComponent {
 
     private String execute(Object action) throws ServletException {
         try {
-            Method execute = action.getClass().getMethod("execute");
-            String view = (String) execute.invoke(action);
+            Method execute = action.getClass().getMethod("execute", null);
+            String view = (String) execute.invoke(action, null);
             return view;
         } catch (Exception e) {
             e.printStackTrace();

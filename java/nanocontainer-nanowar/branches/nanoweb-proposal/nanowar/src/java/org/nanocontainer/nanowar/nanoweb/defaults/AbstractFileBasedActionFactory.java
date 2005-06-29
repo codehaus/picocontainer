@@ -1,10 +1,10 @@
-package org.nanocontainer.nanoweb.defaults;
+package org.nanocontainer.nanowar.nanoweb.defaults;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nanocontainer.nanoweb.ScriptException;
+import org.nanocontainer.nanowar.nanoweb.ScriptException;
 
 public abstract class AbstractFileBasedActionFactory extends AbstractActionFactory {
 
@@ -23,7 +23,6 @@ public abstract class AbstractFileBasedActionFactory extends AbstractActionFacto
 
     protected abstract Class getClass(final File actionFile) throws Exception;
 
-    @Override
     protected final Class getClass(final String path) throws ScriptException {
         File actionFile = new File(rootPath + path + "." + extension);
 

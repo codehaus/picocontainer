@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb;
+package org.nanocontainer.nanowar.nanoweb;
 
 public interface Converter {
 

@@ -1,6 +1,6 @@
-package org.nanocontainer.nanoweb.defaults;
+package org.nanocontainer.nanowar.nanoweb.defaults;
 
-import org.nanocontainer.nanoweb.ScriptException;
+import org.nanocontainer.nanowar.nanoweb.ScriptException;
 
 public class JavaActionFactory extends AbstractActionFactory {
 

@@ -1,9 +1,8 @@
-package org.nanocontainer.nanoweb.impl;
+package org.nanocontainer.nanowar.nanoweb.impl;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,34 +18,70 @@ import ognl.OgnlException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.nanocontainer.nanoweb.Converter;
-import org.nanocontainer.nanoweb.defaults.OgnlExpressionEvaluator;
+import org.nanocontainer.nanowar.nanoweb.CollectionTypeResolver;
+import org.nanocontainer.nanowar.nanoweb.Converter;
+import org.nanocontainer.nanowar.nanoweb.defaults.OgnlExpressionEvaluator;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.ObjectReference;
 
 /**
- * @version $Id: OgnlTypeConverterAdapter.java 8 2005-05-27 07:45:55Z juze $
+ * @version $Id$
  */
 public class OgnlTypeConverterAdapter extends DefaultTypeConverter {
 
     private final transient Log log = LogFactory.getLog(Converter.class); // Yes, Its converter.
 
-    private final PicoContainer pico;
+    private final ObjectReference picoReference;
 
-    public OgnlTypeConverterAdapter(final PicoContainer pico) {
-        this.pico = pico;
+    private CollectionTypeResolver collectionTypeResolver;
+
+    public OgnlTypeConverterAdapter(final ObjectReference picoReference, final CollectionTypeResolver collectionTypeResolver) {
+        this.picoReference = picoReference;
+        this.collectionTypeResolver = collectionTypeResolver;
     }
 
     public Object convertValue(Map ctx, Object target, Member member, String propertyName, Object value, Class toType) {
 
         if (Collection.class.isAssignableFrom(toType) && (member instanceof Method)) {
-            return doCollection(ctx, target, member, propertyName, (String[]) value, toType);
+            return toCollection(ctx, target, member, propertyName, (String[]) value, toType);
+        }
+
+        if (toType.isArray()) {
+            return toArray(ctx, target, member, propertyName, value, toType);
+        }
+
+        if (value.getClass().isArray()) {
+            if (Array.getLength(value) > 0) {
+                return this.convertValue(ctx, target, member, propertyName, Array.get(value, 0), toType);
+            }
+
+            return null;
         }
 
         return super.convertValue(ctx, target, member, propertyName, value, toType);
     }
 
-    private Object doCollection(Map ctx, Object target, Member member, String propertyName, String[] value, Class toType) {
-        Class collectionType = getGenericType((Method) member);
+    private Object toArray(Map ctx, Object target, Member member, String propertyName, Object value, Class toType) {
+        Object values;
+        if (value.getClass().isArray()) {
+            values = value;
+        } else {
+            values = Array.newInstance(value.getClass(), 1);
+            Array.set(values, 1, value);
+        }
+
+        int size = Array.getLength(values);
+        Object arrayValue = Array.newInstance(toType.getComponentType(), size);
+        for (int i = 0; i < size; i++) {
+            Array.set(arrayValue, i, this.convertValue(ctx, target, member, propertyName, Array.get(values, i), toType.getComponentType()));
+        }
+
+        return arrayValue;
+    }
+
+    private Object toCollection(Map ctx, Object target, Member member, String propertyName, String[] value, Class toType) {
+        Class collectionType = collectionTypeResolver.getType(member);
+
         if (collectionType == null) {
             log.warn("Impossible to determine collection member type for " + member.getName() + ".");
             return null;
@@ -85,14 +120,6 @@ public class OgnlTypeConverterAdapter extends DefaultTypeConverter {
 
         log.debug("Begining to perform a conversion from \"" + value + "\" to \"" + toType + "\".");
 
-        if ((value instanceof String[]) && (((String[]) value).length != 1)) {
-            super.convertValue(ctx, value, toType);
-        }
-
-        if ((value instanceof String[]) && (((String[]) value).length == 1)) {
-            value = ((String[]) value)[0];
-        }
-
         try {
             Class converterType;
             if (value instanceof String) {
@@ -101,7 +128,7 @@ public class OgnlTypeConverterAdapter extends DefaultTypeConverter {
                 converterType = value.getClass();
             }
 
-            Converter converter = Helper.getConverterFor(converterType, pico);
+            Converter converter = Helper.getConverterFor(converterType, (PicoContainer) picoReference.get());
 
             Object ret = null;
             if (converter != null) {
@@ -124,16 +151,6 @@ public class OgnlTypeConverterAdapter extends DefaultTypeConverter {
         finally {
             log.debug("Ending to perfor a conversion from \"" + value + "\" to \"" + toType + "\".");
         }
-    }
-
-    private Class getGenericType(Method member) {
-        Type[] types = member.getGenericParameterTypes();
-        if ((types.length != 1) || (!(types[0] instanceof ParameterizedType))) {
-            return null;
-        }
-
-        ParameterizedType type = (ParameterizedType) types[0];
-        return (Class) type.getActualTypeArguments()[0];
     }
 
     private void addValueIfNotNull(Collection collection, Map ctx, String value, Class toType) {

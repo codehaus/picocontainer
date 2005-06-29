@@ -1,9 +1,9 @@
-package org.nanocontainer.nanoweb.impl;
+package org.nanocontainer.nanowar.nanoweb.impl;
 
 import java.util.Iterator;
 
-import org.nanocontainer.nanoweb.Converter;
-import org.nanocontainer.nanoweb.ConverterComponentAdapter;
+import org.nanocontainer.nanowar.nanoweb.Converter;
+import org.nanocontainer.nanowar.nanoweb.ConverterComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 

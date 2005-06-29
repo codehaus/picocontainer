@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb;
+package org.nanocontainer.nanowar.nanoweb;
 
 import org.picocontainer.PicoContainer;
 

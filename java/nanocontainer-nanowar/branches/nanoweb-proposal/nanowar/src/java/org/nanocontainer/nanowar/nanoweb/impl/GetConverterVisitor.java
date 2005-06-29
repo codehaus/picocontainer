@@ -1,6 +1,6 @@
-package org.nanocontainer.nanoweb.impl;
+package org.nanocontainer.nanowar.nanoweb.impl;
 
-import org.nanocontainer.nanoweb.ConverterComponentAdapter;
+import org.nanocontainer.nanowar.nanoweb.ConverterComponentAdapter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;

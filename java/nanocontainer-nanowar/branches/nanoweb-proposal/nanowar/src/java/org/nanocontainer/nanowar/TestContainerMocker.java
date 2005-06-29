@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  * supplied class shall be  instance of ContainerComposer, or IAE will be thrown
  *
  * @author Konstantin Pribluda
- * @version $Revision$
+ * @version $Revision: 1629 $
  */
 public class TestContainerMocker implements KeyConstants {
 

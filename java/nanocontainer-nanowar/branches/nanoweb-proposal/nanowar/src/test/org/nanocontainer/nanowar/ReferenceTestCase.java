@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @version $Revision: 1629 $
  */
 public class ReferenceTestCase extends MockObjectTestCase {
     private final String key = "foo";

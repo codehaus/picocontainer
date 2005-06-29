@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.defaults;
+package org.nanocontainer.nanowar.nanoweb.defaults;
 
 import groovy.lang.GroovyClassLoader;
 

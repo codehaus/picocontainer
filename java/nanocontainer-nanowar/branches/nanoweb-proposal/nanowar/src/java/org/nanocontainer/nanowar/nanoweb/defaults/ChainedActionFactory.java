@@ -1,7 +1,7 @@
-package org.nanocontainer.nanoweb.defaults;
+package org.nanocontainer.nanowar.nanoweb.defaults;
 
-import org.nanocontainer.nanoweb.ActionFactory;
-import org.nanocontainer.nanoweb.ScriptException;
+import org.nanocontainer.nanowar.nanoweb.ActionFactory;
+import org.nanocontainer.nanowar.nanoweb.ScriptException;
 import org.picocontainer.PicoContainer;
 
 public class ChainedActionFactory implements ActionFactory {

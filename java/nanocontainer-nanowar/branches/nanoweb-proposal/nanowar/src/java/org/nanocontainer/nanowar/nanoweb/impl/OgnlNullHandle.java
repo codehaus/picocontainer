@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.impl;
+package org.nanocontainer.nanowar.nanoweb.impl;
 
 import java.beans.IntrospectionException;
 import java.util.List;
@@ -8,7 +8,7 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import ognl.OgnlRuntime;
 
-import org.nanocontainer.nanoweb.Converter;
+import org.nanocontainer.nanowar.nanoweb.Converter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.ObjectReference;

@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
  * nano-application.xml , nano-session.xml and nano-request.xml
  *
  * @author Konstantin Pribluda ( konstantin[at]infodesire.com )
- * @version $Revision$
+ * @version $Revision: 1629 $
  */
 public class XStreamContainerComposer implements ContainerComposer {
 

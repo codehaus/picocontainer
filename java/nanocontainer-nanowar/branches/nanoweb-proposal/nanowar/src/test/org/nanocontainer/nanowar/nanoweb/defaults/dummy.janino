@@ -1,0 +1,11 @@
+
+public String assertCtor = "Ctor not called";
+
+public Action() {
+	assertCtor = "Ctor called";
+}
+
+public String execute() {
+	return "Yes! Its me, Janino!";
+}
+

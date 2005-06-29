@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb;
+package org.nanocontainer.nanowar.nanoweb;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.nanocontainer.nanowar.ServletContainerFinder;
 import org.picocontainer.PicoContainer;
 
 /**
- * @version $Id: NanoWebServlet.java 5 2005-05-17 03:23:21Z juze $
+ * @version $Id$
  */
 public class NanoWebServlet extends HttpServlet {
 

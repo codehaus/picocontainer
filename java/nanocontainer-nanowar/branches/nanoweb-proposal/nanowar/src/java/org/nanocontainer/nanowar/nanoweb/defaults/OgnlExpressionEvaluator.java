@@ -1,4 +1,4 @@
-package org.nanocontainer.nanoweb.defaults;
+package org.nanocontainer.nanowar.nanoweb.defaults;
 
 import java.util.Map;
 
@@ -8,9 +8,10 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import ognl.OgnlRuntime;
 
-import org.nanocontainer.nanoweb.ExpressionEvaluator;
-import org.nanocontainer.nanoweb.impl.OgnlNullHandle;
-import org.nanocontainer.nanoweb.impl.OgnlTypeConverterAdapter;
+import org.nanocontainer.nanowar.nanoweb.ExpressionEvaluator;
+import org.nanocontainer.nanowar.nanoweb.impl.AlwaysNullCollectionTypeResolver;
+import org.nanocontainer.nanowar.nanoweb.impl.OgnlNullHandle;
+import org.nanocontainer.nanowar.nanoweb.impl.OgnlTypeConverterAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.gems.ThreadLocalReference;
@@ -26,13 +27,15 @@ public class OgnlExpressionEvaluator implements ExpressionEvaluator {
     private final transient ObjectReference picoReference = new ThreadLocalReference();
 
     private final transient OgnlNullHandle ognlNullHandle = new OgnlNullHandle(picoReference);
+    
+    private final OgnlTypeConverterAdapter converterAdapter = new OgnlTypeConverterAdapter(picoReference, new AlwaysNullCollectionTypeResolver());
 
     public void set(PicoContainer pico, Object root, String expression, Object value) throws Exception {
         try {
             picoReference.set(pico);
             Map ctx = Ognl.createDefaultContext(root);
             OgnlRuntime.setNullHandler(Object.class, ognlNullHandle);
-            Ognl.setTypeConverter(ctx, new OgnlTypeConverterAdapter(pico));
+            Ognl.setTypeConverter(ctx, converterAdapter);
 
             if (expression.endsWith("+")) {
                 ctx.put(CTX_KEY_COLLECTION_OPERATION, COLLECTION_OPERATION_ADD);

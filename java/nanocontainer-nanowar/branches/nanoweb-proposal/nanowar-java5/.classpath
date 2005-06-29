@@ -11,13 +11,13 @@
   </classpathentry>
   <classpathentry kind="src" path="/nanocontainer-nanowar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-1.2-beta-1.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-1.2-SNAPSHOT.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-gems-1.2-beta-1.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-gems-1.2-SNAPSHOT.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-tck-1.2-beta-1.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/picocontainer/jars/picocontainer-tck-1.2-SNAPSHOT.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/nanocontainer/jars/nanocontainer-1.0-RC-1.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/nanocontainer/jars/nanocontainer-1.0-SNAPSHOT.jar">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar">
   </classpathentry>

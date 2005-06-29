@@ -8,8 +8,8 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import ognl.OgnlRuntime;
 
+import org.nanocontainer.nanowar.nanoweb.CollectionTypeResolver;
 import org.nanocontainer.nanowar.nanoweb.ExpressionEvaluator;
-import org.nanocontainer.nanowar.nanoweb.impl.AlwaysNullCollectionTypeResolver;
 import org.nanocontainer.nanowar.nanoweb.impl.OgnlNullHandle;
 import org.nanocontainer.nanowar.nanoweb.impl.OgnlTypeConverterAdapter;
 import org.picocontainer.PicoContainer;
@@ -27,8 +27,16 @@ public class OgnlExpressionEvaluator implements ExpressionEvaluator {
     private final transient ObjectReference picoReference = new ThreadLocalReference();
 
     private final transient OgnlNullHandle ognlNullHandle = new OgnlNullHandle(picoReference);
-    
-    private final OgnlTypeConverterAdapter converterAdapter = new OgnlTypeConverterAdapter(picoReference, new AlwaysNullCollectionTypeResolver());
+
+    private final OgnlTypeConverterAdapter converterAdapter;
+
+    public OgnlExpressionEvaluator() {
+        this(new AlwaysNullCollectionTypeResolver());
+    }
+
+    public OgnlExpressionEvaluator(CollectionTypeResolver collectionTypeResolver) {
+        converterAdapter = new OgnlTypeConverterAdapter(picoReference, collectionTypeResolver);
+    }
 
     public void set(PicoContainer pico, Object root, String expression, Object value) throws Exception {
         try {

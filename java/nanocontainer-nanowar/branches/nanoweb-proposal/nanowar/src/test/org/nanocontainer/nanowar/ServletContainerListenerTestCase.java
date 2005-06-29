@@ -29,7 +29,7 @@ import java.util.Vector;
 /**
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
+ * @version $Revision: 1832 $
  */
 public class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
 

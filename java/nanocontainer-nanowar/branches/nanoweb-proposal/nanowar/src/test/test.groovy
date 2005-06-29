@@ -2,7 +2,7 @@ package org.nanocontainer.dynaweb;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @version $Revision: 1570 $
  */
 public class MyGroovyAction {
 

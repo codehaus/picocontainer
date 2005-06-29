@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  * test case for TestContainerMock
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
+ * @version $Revision: 1629 $
  */
 public class TestContainerMockerTestCase extends TestCase implements KeyConstants {
 

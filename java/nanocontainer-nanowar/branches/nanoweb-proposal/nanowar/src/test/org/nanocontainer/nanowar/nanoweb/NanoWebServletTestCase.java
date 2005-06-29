@@ -21,7 +21,7 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
- * @version $Id: NanoWebServletTestCase.java 10 2005-05-27 15:50:24Z juze $
+ * @version $Id$
  */
 public class NanoWebServletTestCase extends MockObjectTestCase {
 

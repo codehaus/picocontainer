@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  * test case for XStreamContainerComposer
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
+ * @version $Revision: 1629 $
  */
 public class XStreamContainerComposerTestCase extends MockObjectTestCase implements KeyConstants {
 

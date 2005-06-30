@@ -15,86 +15,86 @@ import org.picocontainer.defaults.ObjectReference;
 
 public class OgnlNullHandle implements ognl.NullHandler {
 
-    private ObjectReference picoReference;
+	private ObjectReference picoReference;
 
-    public OgnlNullHandle(ObjectReference picoReference) {
-        this.picoReference = picoReference;
-    }
+	public OgnlNullHandle(ObjectReference picoReference) {
+		this.picoReference = picoReference;
+	}
 
-    public Object nullMethodResult(Map context, Object target, String methodName, List args) {
-        return null;
-    }
+	public Object nullMethodResult(Map context, Object target, String methodName, List args) {
+		return null;
+	}
 
-    public Object nullPropertyValue(Map context, Object target, Object property) {
-        if ((target == null) || (property == null)) {
-            return null;
-        }
+	public Object nullPropertyValue(Map context, Object target, Object property) {
+		if ((target == null) || (property == null)) {
+			return null;
+		}
 
-        String propName = property.toString();
-        Class type;
-        try {
-            type = OgnlRuntime.getPropertyDescriptor(target.getClass(), propName).getPropertyType();
-        } catch (IntrospectionException e) {
-            // Nothing to do...
-            return null;
-        }
+		String propName = property.toString();
+		Class type;
+		try {
+			type = OgnlRuntime.getPropertyDescriptor(target.getClass(), propName).getPropertyType();
+		} catch (IntrospectionException e) {
+			// Nothing to do...
+			return null;
+		}
 
-        Object value = tryToGet(type);
+		Object value = tryToGet(type);
 
-        if (value != null) {
-            try {
-                Ognl.setValue(propName, context, target, value);
-            } catch (OgnlException e) {
-                return null;
-            }
-        }
+		if (value != null) {
+			try {
+				Ognl.setValue(propName, context, target, value);
+			} catch (OgnlException e) {
+				return null;
+			}
+		}
 
-        return value;
-    }
+		return value;
+	}
 
-    private Object tryToGet(Class type) {
-        Object value = usingConverter(type);
-        if (value != null) {
-            return value;
-        }
+	private Object tryToGet(Class type) {
+		Object value = usingConverter(type);
+		if (value != null) {
+			return value;
+		}
 
-        value = usingPico(type);
-        if (value != null) {
-            return value;
-        }
+		value = usingPico(type);
+		if (value != null) {
+			return value;
+		}
 
-        return usingClassNewInstance(type);
-    }
+		return usingClassNewInstance(type);
+	}
 
-    private Object usingConverter(Class type) {
-        PicoContainer pico = (PicoContainer) picoReference.get();
+	private Object usingConverter(Class type) {
+		PicoContainer pico = (PicoContainer) picoReference.get();
 
-        Converter converter = Helper.getConverterFor(type, pico);
+		Converter converter = Helper.getConverterFor(type, pico);
 
-        if (converter == null) {
-            return null;
-        }
+		if (converter == null) {
+			return null;
+		}
 
-        return converter.fromString("");
-    }
+		return converter.fromString("");
+	}
 
-    private Object usingPico(Class type) {
-        PicoContainer pico = (PicoContainer) picoReference.get();
-        try {
-            return pico.getComponentInstanceOfType(type);
-        } catch (AmbiguousComponentResolutionException e) {
-            return null;
-        }
-    }
+	private Object usingPico(Class type) {
+		PicoContainer pico = (PicoContainer) picoReference.get();
+		try {
+			return pico.getComponentInstanceOfType(type);
+		} catch (AmbiguousComponentResolutionException e) {
+			return null;
+		}
+	}
 
-    private Object usingClassNewInstance(Class type) {
-        try {
-            return type.newInstance();
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
-            return null;
-        }
-    }
+	private Object usingClassNewInstance(Class type) {
+		try {
+			return type.newInstance();
+		} catch (InstantiationException e) {
+			return null;
+		} catch (IllegalAccessException e) {
+			return null;
+		}
+	}
 
 }

@@ -1,70 +1,67 @@
-
 package org.nanocontainer.nanowar.chain;
 
+import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import junit.framework.TestCase;
-
 /**
  * test capabilities of container chains
+ * 
  * @author Konstantin Pribluda
  */
 public class ContainerChainTest extends TestCase {
 
-	
 	/**
-	 * empty chain shall 
+	 * empty chain shall
+	 * 
 	 * @throws Exception
 	 */
-	public void testEmptyChain()  {
+	public void testEmptyChain() {
 		ContainerChain chain = new ContainerChain();
 		assertNull(chain.getLast());
 	}
-	
-	
+
 	public void testAddingContainerSetsItToLast() {
 		ContainerChain chain = new ContainerChain();
 		PicoContainer container = new DefaultPicoContainer();
-		
+
 		chain.addContainer(container);
-		
-		assertSame(container,chain.getLast());
-		
+
+		assertSame(container, chain.getLast());
+
 	}
-	
-	
+
 	public void testStartStopPropagation() {
 		ContainerChain chain = new ContainerChain();
 		MutablePicoContainer first = new DefaultPicoContainer();
-	
+
 		first.registerComponentInstance(new MockStartable());
 		chain.addContainer(first);
-		
+
 		MutablePicoContainer second = new DefaultPicoContainer();
 		second.registerComponentInstance(new MockStartable());
-		
+
 		chain.addContainer(second);
-		
+
 		chain.start();
 		chain.stop();
-		
-		
+
 		MockStartable startable = (MockStartable) first.getComponentInstanceOfType(MockStartable.class);
 		assertTrue(startable.isStarted());
 		assertTrue(startable.isStopped());
-		
+
 		startable = (MockStartable) second.getComponentInstanceOfType(MockStartable.class);
 		assertTrue(startable.isStarted());
 		assertTrue(startable.isStopped());
-		
+
 	}
-	
+
 	class MockStartable implements Startable {
 		boolean started = false;
+
 		boolean stopped = false;
 
 		public void start() {
@@ -74,25 +71,28 @@ public class ContainerChainTest extends TestCase {
 		public void stop() {
 			setStopped(true);
 		}
-		
+
 		/**
 		 * @return Returns the started.
 		 */
 		public boolean isStarted() {
 			return started;
 		}
+
 		/**
 		 * @param started The started to set.
 		 */
 		public void setStarted(boolean started) {
 			this.started = started;
 		}
+
 		/**
 		 * @return Returns the stopped.
 		 */
 		public boolean isStopped() {
 			return stopped;
 		}
+
 		/**
 		 * @param stopped The stopped to set.
 		 */

@@ -8,17 +8,16 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * Uses Pico to produce Actions and inject dependencies into them.  Only use this class if you are using
- * Struts 1.0.  If you are using Struts 1.1, use {@link PicoRequestProcessor} or {@link PicoTilesRequestProcessor}
- * instead.
- *
+ * Uses Pico to produce Actions and inject dependencies into them. Only use this class if you are using Struts 1.0. If
+ * you are using Struts 1.1, use {@link PicoRequestProcessor} or {@link PicoTilesRequestProcessor} instead.
+ * 
  * @author Stephen Molitor
  * @see ActionFactory
  * @see PicoRequestProcessor
@@ -26,21 +25,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PicoActionServlet extends ActionServlet {
 
-    private final ActionFactory actionFactory = new ActionFactory();
+	private final ActionFactory actionFactory = new ActionFactory();
 
-    /**
-     * Creates or retrieves the action instance.  The action is retrieved from the actions
-     * Pico container, using the mapping path as the component key.  If no such action exists,
-     * a new one will be instantiated and placed in the actions container, thus injecting
-     * its dependencies.
-     *
-     * @param mapping the action mapping.
-     * @param request the HTTP request.
-     * @return the action instance.
-     */
-    protected Action processActionCreate(ActionMapping mapping,
-                                         HttpServletRequest request) {
-        return actionFactory.getAction(request, mapping, this);
-    }
+	/**
+	 * Creates or retrieves the action instance. The action is retrieved from the actions Pico container, using the
+	 * mapping path as the component key. If no such action exists, a new one will be instantiated and placed in the
+	 * actions container, thus injecting its dependencies.
+	 * 
+	 * @param mapping the action mapping.
+	 * @param request the HTTP request.
+	 * @return the action instance.
+	 */
+	protected Action processActionCreate(ActionMapping mapping, HttpServletRequest request) {
+		return actionFactory.getAction(request, mapping, this);
+	}
 
 }

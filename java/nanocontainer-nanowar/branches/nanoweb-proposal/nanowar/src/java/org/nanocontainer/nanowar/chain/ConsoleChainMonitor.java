@@ -15,25 +15,25 @@ package org.nanocontainer.nanowar.chain;
  */
 public class ConsoleChainMonitor implements ChainMonitor {
 
-    /**
-     * @see org.nanocontainer.nanowar.chain.ChainMonitor#filteringURL(java.lang.String)
-     */
-    public void filteringURL(String originalUrl) {
-        System.err.println("Filtering "+originalUrl);
-    }
+	/**
+	 * @see org.nanocontainer.nanowar.chain.ChainMonitor#filteringURL(java.lang.String)
+	 */
+	public void filteringURL(String originalUrl) {
+		System.err.println("Filtering " + originalUrl);
+	}
 
-    /**
-     * @see org.nanocontainer.nanowar.chain.ChainMonitor#exceptionOccurred(java.lang.Exception)
-     */
-    public void exceptionOccurred(Exception e) {
-        e.printStackTrace();
-    }
+	/**
+	 * @see org.nanocontainer.nanowar.chain.ChainMonitor#exceptionOccurred(java.lang.Exception)
+	 */
+	public void exceptionOccurred(Exception e) {
+		e.printStackTrace();
+	}
 
-    /**
-     * @see org.nanocontainer.nanowar.chain.ChainMonitor#pathAdded(java.lang.String, java.lang.String)
-     */
-    public void pathAdded(String path, String url) {
-        System.err.println("Added path "+path+" from URL "+url);
-    }
+	/**
+	 * @see org.nanocontainer.nanowar.chain.ChainMonitor#pathAdded(java.lang.String, java.lang.String)
+	 */
+	public void pathAdded(String path, String url) {
+		System.err.println("Added path " + path + " from URL " + url);
+	}
 
 }

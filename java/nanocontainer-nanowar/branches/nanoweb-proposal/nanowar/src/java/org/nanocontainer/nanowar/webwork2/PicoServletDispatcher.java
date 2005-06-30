@@ -18,28 +18,27 @@ import com.opensymphony.webwork.dispatcher.ServletDispatcher;
 import com.opensymphony.xwork.ActionProxyFactory;
 
 /**
- * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request
- * scope for each request and disposes of it correctly at the end of the request.
- * <p/>
- * To use, replace the WebWork ServletDispatcher in web.xml with this.
- *
+ * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request scope for each
+ * request and disposes of it correctly at the end of the request. <p/> To use, replace the WebWork ServletDispatcher in
+ * web.xml with this.
+ * 
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public class PicoServletDispatcher extends ServletDispatcher {
 
-    public PicoServletDispatcher() {
-        super();
-        ActionProxyFactory.setFactory(new PicoActionProxyFactory());
-    }
+	public PicoServletDispatcher() {
+		super();
+		ActionProxyFactory.setFactory(new PicoActionProxyFactory());
+	}
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
-        try {
-            containerLauncher.startContainer();
-            // process the servlet using webwork2
-            super.service(request, response);
-        } finally {
-            containerLauncher.killContainer();
-        }
-    }
+	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
+		try {
+			containerLauncher.startContainer();
+			// process the servlet using webwork2
+			super.service(request, response);
+		} finally {
+			containerLauncher.killContainer();
+		}
+	}
 }

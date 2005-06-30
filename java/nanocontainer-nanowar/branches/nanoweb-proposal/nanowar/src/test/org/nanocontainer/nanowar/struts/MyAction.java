@@ -14,14 +14,14 @@ import org.apache.struts.action.Action;
  * @author Stephen Molitor
  */
 public class MyAction extends Action {
-    private final MyDao dao;
+	private final MyDao dao;
 
-    public MyAction(MyDao dao) {
-        this.dao = dao;
-    }
+	public MyAction(MyDao dao) {
+		this.dao = dao;
+	}
 
-    public MyDao getDao() {
-        return dao;
-    }
+	public MyDao getDao() {
+		return dao;
+	}
 
 }

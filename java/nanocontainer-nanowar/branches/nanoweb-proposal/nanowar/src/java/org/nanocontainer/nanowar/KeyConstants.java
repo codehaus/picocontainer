@@ -12,8 +12,11 @@ package org.nanocontainer.nanowar;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public interface KeyConstants {
-    String APPLICATION_CONTAINER = "nanocontainer.application";
-    String SESSION_CONTAINER = "nanocontainer.session";
-    String REQUEST_CONTAINER = "nanocontainer.request";
-    String BUILDER = "nanocontainer.builder";
+	String APPLICATION_CONTAINER = "nanocontainer.application";
+
+	String SESSION_CONTAINER = "nanocontainer.session";
+
+	String REQUEST_CONTAINER = "nanocontainer.request";
+
+	String BUILDER = "nanocontainer.builder";
 }

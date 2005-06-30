@@ -8,45 +8,50 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts.action.ActionMapping;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Stephen Molitor
  */
 public abstract class AbstractTestCase extends MockObjectTestCase {
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
-    protected ActionMapping mapping;
-    protected MyDao dao;
+	protected HttpServletRequest request;
 
-    private Mock requestMock;
-    private Mock responseMock;
-    private MutablePicoContainer container;
+	protected HttpServletResponse response;
 
-    protected void setUp() {
-        requestMock = mock(HttpServletRequest.class);
-        request = (HttpServletRequest) requestMock.proxy();
+	protected ActionMapping mapping;
 
-        responseMock = mock(HttpServletResponse.class);
-        response = (HttpServletResponse) responseMock.proxy();
+	protected MyDao dao;
 
-        String actionType = MyAction.class.getName();
-        mapping = new ActionMapping();
-        mapping.setPath("/myPath1");
-        mapping.setType(actionType);
+	private Mock requestMock;
 
-        dao = new MyDao();
-        container = new DefaultPicoContainer();
-        container.registerComponentInstance(MyDao.class, dao);
+	private Mock responseMock;
 
-        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
-    }
+	private MutablePicoContainer container;
+
+	protected void setUp() {
+		requestMock = mock(HttpServletRequest.class);
+		request = (HttpServletRequest) requestMock.proxy();
+
+		responseMock = mock(HttpServletResponse.class);
+		response = (HttpServletResponse) responseMock.proxy();
+
+		String actionType = MyAction.class.getName();
+		mapping = new ActionMapping();
+		mapping.setPath("/myPath1");
+		mapping.setType(actionType);
+
+		dao = new MyDao();
+		container = new DefaultPicoContainer();
+		container.registerComponentInstance(MyDao.class, dao);
+
+		requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
+	}
 
 }

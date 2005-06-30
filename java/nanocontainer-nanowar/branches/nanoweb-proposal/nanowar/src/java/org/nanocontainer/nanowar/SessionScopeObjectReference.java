@@ -8,38 +8,39 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.defaults.ObjectReference;
-
-import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
+import javax.servlet.http.HttpSession;
+
+import org.picocontainer.defaults.ObjectReference;
+
 /**
- * References an object that lives as an attribute of the
- * HttpSession.
- *
+ * References an object that lives as an attribute of the HttpSession.
+ * 
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public class SessionScopeObjectReference implements ObjectReference, Serializable {
 
-    //The only reason this class is Serializable and the 'session' field is transient
-    //is so that if this class is used as a key in a PicoContainer (as it is in the
-    //nanocontainer servlet framework), it won't break serializability of the
-    //container. The deserialized class won't be reused for its actual purpose, but
-    //discarded. As such, there is no need to resurrect the transient session field
-    private transient HttpSession session;
-    private String key;
+	// The only reason this class is Serializable and the 'session' field is transient
+	// is so that if this class is used as a key in a PicoContainer (as it is in the
+	// nanocontainer servlet framework), it won't break serializability of the
+	// container. The deserialized class won't be reused for its actual purpose, but
+	// discarded. As such, there is no need to resurrect the transient session field
+	private transient HttpSession session;
 
-    public SessionScopeObjectReference(HttpSession session, String key) {
-        this.session = session;
-        this.key = key;
-    }
+	private String key;
 
-    public void set(Object item) {
-        session.setAttribute(key, item);
-    }
+	public SessionScopeObjectReference(HttpSession session, String key) {
+		this.session = session;
+		this.key = key;
+	}
 
-    public Object get() {
-        return session.getAttribute(key);
-    }
+	public void set(Object item) {
+		session.setAttribute(key, item);
+	}
+
+	public Object get() {
+		return session.getAttribute(key);
+	}
 
 }

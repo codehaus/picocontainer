@@ -9,27 +9,27 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class AbstractActionFactoryTestCase extends TestCase {
 
-    public void testBasic() throws Exception {
-        PicoContainer pico = new DefaultPicoContainer();
+	public void testBasic() throws Exception {
+		PicoContainer pico = new DefaultPicoContainer();
 
-        TestingAbstractActionFactory factory = new TestingAbstractActionFactory();
+		TestingAbstractActionFactory factory = new TestingAbstractActionFactory();
 
-        factory.klass = MyAction.class;
-        assertTrue(factory.getInstance(pico, "foo") instanceof MyAction);
+		factory.klass = MyAction.class;
+		assertTrue(factory.getInstance(pico, "foo") instanceof MyAction);
 
-        factory.klass = null;
-        assertNull(factory.getInstance(pico, "foo"));
-    }
+		factory.klass = null;
+		assertNull(factory.getInstance(pico, "foo"));
+	}
 
-    class TestingAbstractActionFactory extends AbstractActionFactory {
+	class TestingAbstractActionFactory extends AbstractActionFactory {
 
-        public Class klass;
+		public Class klass;
 
-        protected Class getClass(String path) throws ScriptException {
-            assertEquals("foo", path);
-            return klass;
-        }
+		protected Class getClass(String path) throws ScriptException {
+			assertEquals("foo", path);
+			return klass;
+		}
 
-    }
+	}
 
 }

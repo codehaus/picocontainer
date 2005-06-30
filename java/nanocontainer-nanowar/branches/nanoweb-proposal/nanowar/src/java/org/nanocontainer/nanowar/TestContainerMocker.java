@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.jmock.Mock;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
@@ -18,126 +22,122 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.SimpleReference;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 /**
- * create test container mocker for specified container composer class
- * supplied class shall be  instance of ContainerComposer, or IAE will be thrown
- *
+ * create test container mocker for specified container composer class supplied class shall be instance of
+ * ContainerComposer, or IAE will be thrown
+ * 
  * @author Konstantin Pribluda
  * @version $Revision: 1629 $
  */
 public class TestContainerMocker implements KeyConstants {
 
-    private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
-    /**
-     * application level container
-     */
-    MutablePicoContainer application;
-    /**
-     * sesison level container
-     */
-    MutablePicoContainer session;
-    /**
-     * request level container
-     */
-    MutablePicoContainer request;
+	private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
-    ContainerBuilder containerBuilder;
+	/**
+	 * application level container
+	 */
+	MutablePicoContainer application;
 
-    public TestContainerMocker(Class containerComposerClass) {
-        try {
-            containerBuilder = new DefaultLifecycleContainerBuilder((ContainerComposer) containerComposerClass.newInstance());
-        } catch (Exception ex) {
-            throw new PicoCompositionException(ex);
-        }
-    }
+	/**
+	 * sesison level container
+	 */
+	MutablePicoContainer session;
 
-    /**
-     * fake application start
-     */
-    public void startApplication() {
-        SimpleReference ref = new SimpleReference();
-        containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
-        application = (MutablePicoContainer) ref.get();
-    }
+	/**
+	 * request level container
+	 */
+	MutablePicoContainer request;
 
-    /**
-     * fake application stop
-     */
-    public void stopApplication() {
-        SimpleReference ref = new SimpleReference();
-        ref.set(application);
-        containerKiller.killContainer(ref);
+	ContainerBuilder containerBuilder;
 
-        // and reset all the containers
-        application = null;
-        session = null;
-        request = null;
-    }
+	public TestContainerMocker(Class containerComposerClass) {
+		try {
+			containerBuilder = new DefaultLifecycleContainerBuilder((ContainerComposer) containerComposerClass.newInstance());
+		} catch (Exception ex) {
+			throw new PicoCompositionException(ex);
+		}
+	}
 
-    /**
-     * fake new session
-     */
-    public void startSession() {
-        SimpleReference ref = new SimpleReference();
-        SimpleReference parent = new SimpleReference();
-        parent.set(application);
-        containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()), false);
-        session = (MutablePicoContainer) ref.get();
+	/**
+	 * fake application start
+	 */
+	public void startApplication() {
+		SimpleReference ref = new SimpleReference();
+		containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
+		application = (MutablePicoContainer) ref.get();
+	}
 
-    }
+	/**
+	 * fake application stop
+	 */
+	public void stopApplication() {
+		SimpleReference ref = new SimpleReference();
+		ref.set(application);
+		containerKiller.killContainer(ref);
 
-    /**
-     * fake session invalidation
-     */
-    public void stopSession() {
-        SimpleReference ref = new SimpleReference();
-        ref.set(session);
-        containerKiller.killContainer(ref);
+		// and reset all the containers
+		application = null;
+		session = null;
+		request = null;
+	}
 
-        session = null;
-        request = null;
-    }
+	/**
+	 * fake new session
+	 */
+	public void startSession() {
+		SimpleReference ref = new SimpleReference();
+		SimpleReference parent = new SimpleReference();
+		parent.set(application);
+		containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()), false);
+		session = (MutablePicoContainer) ref.get();
 
+	}
 
-    /**
-     * fake request start
-     */
-    public void startRequest() {
+	/**
+	 * fake session invalidation
+	 */
+	public void stopSession() {
+		SimpleReference ref = new SimpleReference();
+		ref.set(session);
+		containerKiller.killContainer(ref);
 
-        SimpleReference ref = new SimpleReference();
-        SimpleReference parent = new SimpleReference();
-        parent.set(session);
-        containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy(), false);
-        request = (MutablePicoContainer) ref.get();
+		session = null;
+		request = null;
+	}
 
-    }
+	/**
+	 * fake request start
+	 */
+	public void startRequest() {
 
-    /**
-     * fake request stop
-     */
-    public void stopRequest() {
+		SimpleReference ref = new SimpleReference();
+		SimpleReference parent = new SimpleReference();
+		parent.set(session);
+		containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy(), false);
+		request = (MutablePicoContainer) ref.get();
 
-        SimpleReference ref = new SimpleReference();
-        ref.set(request);
-        containerKiller.killContainer(ref);
-        request = null;
-    }
+	}
 
+	/**
+	 * fake request stop
+	 */
+	public void stopRequest() {
 
-    public PicoContainer getApplicationContainer() {
-        return application;
-    }
+		SimpleReference ref = new SimpleReference();
+		ref.set(request);
+		containerKiller.killContainer(ref);
+		request = null;
+	}
 
+	public PicoContainer getApplicationContainer() {
+		return application;
+	}
 
-    public PicoContainer getSessionContainer() {
-        return session;
-    }
+	public PicoContainer getSessionContainer() {
+		return session;
+	}
 
-    public PicoContainer getRequestContainer() {
-        return request;
-    }
+	public PicoContainer getRequestContainer() {
+		return request;
+	}
 }

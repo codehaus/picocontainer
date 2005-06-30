@@ -23,24 +23,24 @@ import webwork.action.factory.PrepareActionFactoryProxy;
  */
 public class WebWorkActionFactory extends ActionFactory {
 
-    private ActionFactory factory;
+	private ActionFactory factory;
 
-    public WebWorkActionFactory() {
-        // replace standard JavaActionFactory with PicoActionFactory
-        factory = new PicoActionFactory();
-        // the rest are the standard webwork ActionFactoryProxies
-        factory = new PrefixActionFactoryProxy(factory);
-        factory = new CommandActionFactoryProxy(factory);
-        factory = new AliasingActionFactoryProxy(factory);
-        factory = new CommandActionFactoryProxy(factory);
-        factory = new ContextActionFactoryProxy(factory);
-        factory = new PrepareActionFactoryProxy(factory);
-        factory = new ParametersActionFactoryProxy(factory);
-        factory = new ChainingActionFactoryProxy(factory);
-    }
+	public WebWorkActionFactory() {
+		// replace standard JavaActionFactory with PicoActionFactory
+		factory = new PicoActionFactory();
+		// the rest are the standard webwork ActionFactoryProxies
+		factory = new PrefixActionFactoryProxy(factory);
+		factory = new CommandActionFactoryProxy(factory);
+		factory = new AliasingActionFactoryProxy(factory);
+		factory = new CommandActionFactoryProxy(factory);
+		factory = new ContextActionFactoryProxy(factory);
+		factory = new PrepareActionFactoryProxy(factory);
+		factory = new ParametersActionFactoryProxy(factory);
+		factory = new ChainingActionFactoryProxy(factory);
+	}
 
-    public Action getActionImpl(String actionName) throws Exception {
-        return factory.getActionImpl(actionName);
-    }
+	public Action getActionImpl(String actionName) throws Exception {
+		return factory.getActionImpl(actionName);
+	}
 
 }

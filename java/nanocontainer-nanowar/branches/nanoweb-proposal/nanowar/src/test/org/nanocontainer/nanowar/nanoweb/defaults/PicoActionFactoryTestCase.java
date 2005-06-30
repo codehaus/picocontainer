@@ -7,14 +7,14 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class PicoActionFactoryTestCase extends TestCase {
 
-    public void testBasic() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation("/it/should/exist", MyAction.class);
+	public void testBasic() throws Exception {
+		DefaultPicoContainer pico = new DefaultPicoContainer();
+		pico.registerComponentImplementation("/it/should/exist", MyAction.class);
 
-        PicoActionFactory factory = new PicoActionFactory();
+		PicoActionFactory factory = new PicoActionFactory();
 
-        assertNull(factory.getInstance(pico, "/it/should/not/exist"));
-        assertNotNull(factory.getInstance(pico, "/it/should/exist"));
-    }
+		assertNull(factory.getInstance(pico, "/it/should/not/exist"));
+		assertNotNull(factory.getInstance(pico, "/it/should/exist"));
+	}
 
 }

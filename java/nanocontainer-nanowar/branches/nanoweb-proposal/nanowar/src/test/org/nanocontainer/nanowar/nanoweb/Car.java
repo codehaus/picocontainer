@@ -2,48 +2,48 @@ package org.nanocontainer.nanowar.nanoweb;
 
 public class Car {
 
-    private String name;
+	private String name;
 
-    public Car(String name) {
-        this.name = name;
-    }
+	public Car(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String toString() {
-        return "Car[" + name + "]";
-    }
+	public String toString() {
+		return "Car[" + name + "]";
+	}
 
-    public boolean equals(Object o) {
-        if (!(o instanceof Car)) {
-            return false;
-        }
+	public boolean equals(Object o) {
+		if (!(o instanceof Car)) {
+			return false;
+		}
 
-        Car c = (Car) o;
+		Car c = (Car) o;
 
-        if ((name == null) && (c.getName() == null)) {
-            return true;
-        }
+		if ((name == null) && (c.getName() == null)) {
+			return true;
+		}
 
-        if (name == null) {
-            return false;
-        }
+		if (name == null) {
+			return false;
+		}
 
-        return name.equals(c.getName());
-    }
+		return name.equals(c.getName());
+	}
 
-    public int hashCode() {
-        if (name == null) {
-            return 0;
-        }
+	public int hashCode() {
+		if (name == null) {
+			return 0;
+		}
 
-        return this.name.hashCode();
-    }
+		return this.name.hashCode();
+	}
 
 }

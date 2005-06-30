@@ -15,11 +15,11 @@ import java.io.IOException;
  */
 public class PicoRequestProcessorTestCase extends AbstractTestCase {
 
-    public void testProcessActionCreate() throws IOException {
-        PicoRequestProcessor requestProcessor = new PicoRequestProcessor();
-        MyAction action = (MyAction) requestProcessor.processActionCreate(request, response, mapping);
-        assertNotNull(action);
-        assertSame(dao, action.getDao());
-    }
+	public void testProcessActionCreate() throws IOException {
+		PicoRequestProcessor requestProcessor = new PicoRequestProcessor();
+		MyAction action = (MyAction) requestProcessor.processActionCreate(request, response, mapping);
+		assertNotNull(action);
+		assertSame(dao, action.getDao());
+	}
 
 }

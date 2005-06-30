@@ -6,20 +6,20 @@ import java.beans.PropertyDescriptor;
 
 public class GetAllPropertiesPlay {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        try {
-            BeanInfo bi = Introspector.getBeanInfo(MyAction.class);
-            PropertyDescriptor[] pd = bi.getPropertyDescriptors();
+		try {
+			BeanInfo bi = Introspector.getBeanInfo(MyAction.class);
+			PropertyDescriptor[] pd = bi.getPropertyDescriptors();
 
-            for (int i = 0; i < pd.length; i++) {
-                System.out.println(pd[i].getName());
-            }
+			for (int i = 0; i < pd.length; i++) {
+				System.out.println(pd[i].getName());
+			}
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
 }

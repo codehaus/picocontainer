@@ -7,16 +7,16 @@
  *                                                                           *
  *****************************************************************************/
 package org.nanocontainer.nanowar;
+
 /**
- * 
  * @author Grégory Joseph
  */
 public class Foo {
-    public String peek() {
-        return "zip";
-    }
+	public String peek() {
+		return "zip";
+	}
 
-    public String poke() {
-        return "zap";
-    }
+	public String poke() {
+		return "zap";
+	}
 }

@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,7 +20,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:hoju@visi.com">Jacob Kjome</a>
@@ -26,38 +27,37 @@ import java.io.IOException;
  * @author Konstantin Pribluda
  */
 public class ServletRequestContainerFilter implements Filter {
-    private ServletContext context;
+	private ServletContext context;
 
-    private final static String ALREADY_FILTERED_KEY = "nanocontainer_request_filter_already_filtered";
+	private final static String ALREADY_FILTERED_KEY = "nanocontainer_request_filter_already_filtered";
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest hrequest = (HttpServletRequest) request;
-        HttpServletResponse hresponse = (HttpServletResponse) response;
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest hrequest = (HttpServletRequest) request;
+		HttpServletResponse hresponse = (HttpServletResponse) response;
 
-        if (hrequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
-            // we were not here, filter
-            hrequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
-            ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, hrequest);
+		if (hrequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
+			// we were not here, filter
+			hrequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
+			ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, hrequest);
 
-            try {
-                launcher.startContainer();
-                chain.doFilter(hrequest, hresponse);
-            } finally {
-                launcher.killContainer();
-            }
+			try {
+				launcher.startContainer();
+				chain.doFilter(hrequest, hresponse);
+			} finally {
+				launcher.killContainer();
+			}
 
+		} else {
+			// do not filter, passthrough
+			chain.doFilter(hrequest, hresponse);
+		}
+	}
 
-        } else {
-            // do not filter, passthrough
-            chain.doFilter(hrequest, hresponse);
-        }
-    }
+	public void init(FilterConfig config) throws ServletException {
+		this.context = config.getServletContext();
+	}
 
-    public void init(FilterConfig config) throws ServletException {
-        this.context = config.getServletContext();
-    }
-
-    public void destroy() {
-    }
+	public void destroy() {
+	}
 
 }

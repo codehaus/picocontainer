@@ -29,6 +29,7 @@ import com.opensymphony.xwork.ObjectFactory;
 public class PicoObjectFactory extends ObjectFactory {
 
 	private ServletContainerFinder containerFinder;
+
 	private ObjectReference objectReference;
 
 	public PicoObjectFactory(ObjectReference objectReference) {
@@ -51,7 +52,7 @@ public class PicoObjectFactory extends ObjectFactory {
 			bean = tempContainer.getComponentInstance(clazz);
 		}
 		if (bean == null) {
-			//TODO check the exception type (should it subclass PicoException)
+			// TODO check the exception type (should it subclass PicoException)
 			throw new NullPointerException("No component instance found for " + clazz);
 		}
 		return bean;
@@ -60,9 +61,8 @@ public class PicoObjectFactory extends ObjectFactory {
 	/**
 	 * <p>
 	 * As {@link ObjectFactory#buildBean(java.lang.String)}does not delegate to
-	 * {@link ObjectFactory#buildBean(java.lang.Class)}but directly calls
-	 * <code>clazz.newInstance()</code>, overwrite this method to call
-	 * <code>buildBean()</code>
+	 * {@link ObjectFactory#buildBean(java.lang.Class)}but directly calls <code>clazz.newInstance()</code>,
+	 * overwrite this method to call <code>buildBean()</code>
 	 * </p>
 	 * 
 	 * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)

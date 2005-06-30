@@ -8,14 +8,14 @@
  * Original code by                                                          *
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
+
 import junit.framework.TestCase;
 import webwork.action.ActionContext;
 
 public class ActionContextScopeObjectReferenceTestCase extends TestCase {
-    
-    
-    public void testReferenceCanBeFound() throws Exception {
-        ActionContext.getContext().put("foo","bar");
-        assertEquals("bar",(new ActionContextScopeObjectReference("foo")).get());
-    }
+
+	public void testReferenceCanBeFound() throws Exception {
+		ActionContext.getContext().put("foo", "bar");
+		assertEquals("bar", (new ActionContextScopeObjectReference("foo")).get());
+	}
 }

@@ -17,7 +17,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
 /**
- * Represents chain of containers, which can be started and stopped at once. 
+ * Represents chain of containers, which can be started and stopped at once.
  * 
  * @author Konstantin Pribluda
  */
@@ -48,7 +48,7 @@ public class ContainerChain implements Startable {
 
 	/**
 	 * start each container in the chain
-     */
+	 */
 	public void start() {
 		for (Iterator iter = chain.iterator(); iter.hasNext();) {
 			((Startable) iter.next()).start();
@@ -56,7 +56,7 @@ public class ContainerChain implements Startable {
 	}
 
 	/**
-     * stop each container in the chain
+	 * stop each container in the chain
 	 */
 	public void stop() {
 		for (int i = chain.size() - 1; i >= 0; i--) {

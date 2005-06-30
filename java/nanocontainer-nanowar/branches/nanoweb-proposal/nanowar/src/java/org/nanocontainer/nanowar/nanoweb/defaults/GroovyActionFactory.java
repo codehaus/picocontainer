@@ -11,17 +11,17 @@ import java.io.File;
  */
 public class GroovyActionFactory extends AbstractFileBasedActionFactory {
 
-    public GroovyActionFactory(String rootPath, String extension) {
-        super(rootPath, extension);
-    }
+	public GroovyActionFactory(String rootPath, String extension) {
+		super(rootPath, extension);
+	}
 
-    public GroovyActionFactory(String rootPath) {
-        super(rootPath, "groovy");
-    }
+	public GroovyActionFactory(String rootPath) {
+		super(rootPath, "groovy");
+	}
 
-    protected Class getClass(File actionFile) throws Exception {
-        GroovyClassLoader loader = new GroovyClassLoader(getClass().getClassLoader());
-        return loader.parseClass(actionFile);
-    }
+	protected Class getClass(File actionFile) throws Exception {
+		GroovyClassLoader loader = new GroovyClassLoader(getClass().getClassLoader());
+		return loader.parseClass(actionFile);
+	}
 
 }

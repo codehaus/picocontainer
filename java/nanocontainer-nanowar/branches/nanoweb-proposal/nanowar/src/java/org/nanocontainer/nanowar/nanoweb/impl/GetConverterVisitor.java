@@ -8,27 +8,30 @@ import org.picocontainer.defaults.AbstractPicoVisitor;
 
 public class GetConverterVisitor extends AbstractPicoVisitor {
 
-    private Class type;
-    private ComponentAdapter converterCA;
+	private Class type;
 
-    public GetConverterVisitor(Class type) {
-        this.type = type;
-    }
+	private ComponentAdapter converterCA;
 
-    public void visitContainer(PicoContainer pico) {}
+	public GetConverterVisitor(Class type) {
+		this.type = type;
+	}
 
-    public void visitComponentAdapter(ComponentAdapter ca) {
-        if (ca instanceof ConverterComponentAdapter) {
-            if (((ConverterComponentAdapter) ca).getType().isAssignableFrom(type)) {
-                converterCA = ca;
-            }
-        }
-    }
+	public void visitContainer(PicoContainer pico) {
+	}
 
-    public void visitParameter(Parameter param) {}
+	public void visitComponentAdapter(ComponentAdapter ca) {
+		if (ca instanceof ConverterComponentAdapter) {
+			if (((ConverterComponentAdapter) ca).getType().isAssignableFrom(type)) {
+				converterCA = ca;
+			}
+		}
+	}
 
-    public ComponentAdapter getConverterCA() {
-        return this.converterCA;
-    }
+	public void visitParameter(Parameter param) {
+	}
+
+	public ComponentAdapter getConverterCA() {
+		return this.converterCA;
+	}
 
 }

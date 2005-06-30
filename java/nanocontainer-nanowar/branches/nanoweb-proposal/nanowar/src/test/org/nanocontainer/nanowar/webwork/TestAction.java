@@ -8,21 +8,20 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-
 import webwork.action.Action;
 
-
 public class TestAction implements Action {
-    String foo;
-    public TestAction(String foo) {
-        this.foo = foo;
-    }
-    
-    public String getFoo() {
-        return foo;
-    }
-    
-    public String execute() {
-        return foo;
-    }
+	String foo;
+
+	public TestAction(String foo) {
+		this.foo = foo;
+	}
+
+	public String getFoo() {
+		return foo;
+	}
+
+	public String execute() {
+		return foo;
+	}
 }

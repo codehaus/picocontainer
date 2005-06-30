@@ -15,12 +15,12 @@ import java.io.IOException;
  */
 public class PicoActionServletTestCase extends AbstractTestCase {
 
-    public void testProcessActionCreate() throws IOException {
-        PicoActionServlet servlet = new PicoActionServlet();
-        MyAction action = (MyAction) servlet.processActionCreate(mapping, request);
-        assertNotNull(action);
-        assertSame(dao, action.getDao());
-        assertSame(servlet, action.getServlet());
-    }
+	public void testProcessActionCreate() throws IOException {
+		PicoActionServlet servlet = new PicoActionServlet();
+		MyAction action = (MyAction) servlet.processActionCreate(mapping, request);
+		assertNotNull(action);
+		assertSame(dao, action.getDao());
+		assertSame(servlet, action.getServlet());
+	}
 
 }

@@ -12,8 +12,8 @@ public class NotFoundServlet extends HttpServlet {
 	private static final long serialVersionUID = 3257288019681031220L;
 
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        res.sendError(HttpServletResponse.SC_NOT_FOUND);
-        return;
-    }
+		res.sendError(HttpServletResponse.SC_NOT_FOUND);
+		return;
+	}
 
 }

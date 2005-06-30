@@ -8,10 +8,10 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import com.opensymphony.webwork.WebWorkStatics;
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionProxy;
-import com.opensymphony.xwork.DefaultActionInvocation;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
@@ -20,8 +20,10 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import com.opensymphony.webwork.WebWorkStatics;
+import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionProxy;
+import com.opensymphony.xwork.DefaultActionInvocation;
 
 /**
  * @author Chris Sturm
@@ -30,39 +32,40 @@ import java.util.Map;
  */
 public class PicoActionInvocation extends DefaultActionInvocation implements KeyConstants {
 
-    public PicoActionInvocation(ActionProxy proxy) throws Exception {
-        super(proxy);
-    }
+	public PicoActionInvocation(ActionProxy proxy) throws Exception {
+		super(proxy);
+	}
 
-    public PicoActionInvocation(ActionProxy proxy, Map extraContext) throws Exception {
-        super(proxy, extraContext);
-    }
+	public PicoActionInvocation(ActionProxy proxy, Map extraContext) throws Exception {
+		super(proxy, extraContext);
+	}
 
-    public PicoActionInvocation(ActionProxy proxy, Map extraContext, boolean pushAction) throws Exception {
-        super(proxy, extraContext, pushAction);
-    }
+	public PicoActionInvocation(ActionProxy proxy, Map extraContext, boolean pushAction) throws Exception {
+		super(proxy, extraContext, pushAction);
+	}
 
-    protected void createAction() {
-        Class actionClass = proxy.getConfig().getClass();// changed from getClazz() as of XWork 1.0
+	protected void createAction() {
+		Class actionClass = proxy.getConfig().getClass();// changed from getClazz() as of XWork 1.0
 
-        PicoContainer requestContainer = getRequestContainer();
-        Object actionInstance = requestContainer.getComponentInstance(actionClass);
-        if (actionInstance == null) {
-            // The action wasn't registered. Do it ad-hoc here.
-            MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
-            tempContainer.registerComponentImplementation(actionClass);
-            actionInstance = tempContainer.getComponentInstance(actionClass);
-        }
-        try {
-	        action = (Action) actionInstance;
-		} catch(ClassCastException e) {
-			throw new PicoIntrospectionException("The action of class " + actionInstance.getClass().getName() + " is not assignable to type " + Action.class.getName() + ".", e);
+		PicoContainer requestContainer = getRequestContainer();
+		Object actionInstance = requestContainer.getComponentInstance(actionClass);
+		if (actionInstance == null) {
+			// The action wasn't registered. Do it ad-hoc here.
+			MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
+			tempContainer.registerComponentImplementation(actionClass);
+			actionInstance = tempContainer.getComponentInstance(actionClass);
 		}
-    }
+		try {
+			action = (Action) actionInstance;
+		} catch (ClassCastException e) {
+			throw new PicoIntrospectionException("The action of class " + actionInstance.getClass().getName()
+					+ " is not assignable to type " + Action.class.getName() + ".", e);
+		}
+	}
 
-    private PicoContainer getRequestContainer() {
-        HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
-        ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
-        return (PicoContainer) ref.get();
-    }
+	private PicoContainer getRequestContainer() {
+		HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
+		ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+		return (PicoContainer) ref.get();
+	}
 }

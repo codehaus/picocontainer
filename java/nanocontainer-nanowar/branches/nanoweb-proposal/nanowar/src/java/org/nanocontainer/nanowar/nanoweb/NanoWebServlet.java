@@ -15,20 +15,22 @@ import org.picocontainer.PicoContainer;
  */
 public class NanoWebServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 3257844398468446514L;
+	private static final long serialVersionUID = 3257844398468446514L;
 
-    private final transient ServletContainerFinder containerFinder = new ServletContainerFinder();
+	private final transient ServletContainerFinder containerFinder = new ServletContainerFinder();
 
-    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        PicoContainer nanowarContainer = containerFinder.findContainer(httpServletRequest);
+	protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException,
+			IOException {
+		PicoContainer nanowarContainer = containerFinder.findContainer(httpServletRequest);
 
-        NanoWebServletComponent component = (NanoWebServletComponent) nanowarContainer.getComponentInstanceOfType(NanoWebServletComponent.class);
+		NanoWebServletComponent component = (NanoWebServletComponent) nanowarContainer
+				.getComponentInstanceOfType(NanoWebServletComponent.class);
 
-        if (component == null) {
-            throw new ServletException("NanoWebServletComponent not found. Please, check your nanowar configuration.");
-        }
+		if (component == null) {
+			throw new ServletException("NanoWebServletComponent not found. Please, check your nanowar configuration.");
+		}
 
-        component.service(httpServletRequest, httpServletResponse);
-    }
+		component.service(httpServletRequest, httpServletResponse);
+	}
 
 }

@@ -4,7 +4,6 @@ import java.lang.reflect.Member;
 
 import org.nanocontainer.nanowar.nanoweb.CollectionTypeResolver;
 
-
 /**
  * Implementation of CollectionTypeResolver which always return null as collection.
  * 
@@ -12,11 +11,11 @@ import org.nanocontainer.nanowar.nanoweb.CollectionTypeResolver;
  */
 public class AlwaysNullCollectionTypeResolver implements CollectionTypeResolver {
 
-    /**
-     * @return null
-     */
-    public Class getType(Member member) {
-        return null;
-    }
+	/**
+	 * @return null
+	 */
+	public Class getType(Member member) {
+		return null;
+	}
 
 }

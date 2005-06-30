@@ -13,23 +13,26 @@ package org.nanocontainer.nanowar.chain;
  */
 public interface ChainMonitor {
 
-    /**
-     * Filtering the original URL
-     * @param originalUrl
-     */
-    void filteringURL(String originalUrl);
+	/**
+	 * Filtering the original URL
+	 * 
+	 * @param originalUrl
+	 */
+	void filteringURL(String originalUrl);
 
-    /**
-     * An exception occurred in the filter chain
-     * @param e
-     */
-    void exceptionOccurred(Exception e);
+	/**
+	 * An exception occurred in the filter chain
+	 * 
+	 * @param e
+	 */
+	void exceptionOccurred(Exception e);
 
-    /**
-     * A path has been added from the original URL
-     * @param path
-     * @param url
-     */
-    void pathAdded(String path, String url);
+	/**
+	 * A path has been added from the original URL
+	 * 
+	 * @param path
+	 * @param url
+	 */
+	void pathAdded(String path, String url);
 
 }

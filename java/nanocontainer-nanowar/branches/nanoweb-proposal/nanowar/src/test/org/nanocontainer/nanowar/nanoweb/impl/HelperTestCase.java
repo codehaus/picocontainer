@@ -14,35 +14,36 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class HelperTestCase extends TestCase {
 
-    public void testGetConverterForWhenItsInTheLastNode() throws Exception {
-        MutablePicoContainer pico1 = new DefaultPicoContainer();
-        MutablePicoContainer pico2 = new DefaultPicoContainer(pico1);
+	public void testGetConverterForWhenItsInTheLastNode() throws Exception {
+		MutablePicoContainer pico1 = new DefaultPicoContainer();
+		MutablePicoContainer pico2 = new DefaultPicoContainer(pico1);
 
-        pico1.registerComponentImplementation(MyAction.class);
-        pico2.registerComponentImplementation(Car.class);
+		pico1.registerComponentImplementation(MyAction.class);
+		pico2.registerComponentImplementation(Car.class);
 
-        // register
-        pico2.registerComponent(new ConverterComponentAdapter(Car.class, new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(CarConverter.class, CarConverter.class))));
+		// register
+		pico2.registerComponent(new ConverterComponentAdapter(Car.class, new CachingComponentAdapter(
+				new ConstructorInjectionComponentAdapter(CarConverter.class, CarConverter.class))));
 
-        Converter converter = Helper.getConverterFor(Car.class, pico2);
-        assertNotNull(converter);
-        assertTrue(converter instanceof CarConverter);
-    }
+		Converter converter = Helper.getConverterFor(Car.class, pico2);
+		assertNotNull(converter);
+		assertTrue(converter instanceof CarConverter);
+	}
 
-    public void testGetConverterForWhenItsInTheParentContaner() throws Exception {
-        MutablePicoContainer pico1 = new DefaultPicoContainer();
-        MutablePicoContainer pico2 = new DefaultPicoContainer(pico1);
+	public void testGetConverterForWhenItsInTheParentContaner() throws Exception {
+		MutablePicoContainer pico1 = new DefaultPicoContainer();
+		MutablePicoContainer pico2 = new DefaultPicoContainer(pico1);
 
-        pico1.registerComponentImplementation(MyAction.class);
-        pico2.registerComponentImplementation(Car.class);
-        
-        // register
-        pico1.registerComponent(new ConverterComponentAdapter(Car.class, new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(CarConverter.class, CarConverter.class))));
+		pico1.registerComponentImplementation(MyAction.class);
+		pico2.registerComponentImplementation(Car.class);
 
-        Converter converter = Helper.getConverterFor(Car.class, pico2);
-        assertNotNull(converter);
-        assertTrue(converter instanceof CarConverter);
-    }
+		// register
+		pico1.registerComponent(new ConverterComponentAdapter(Car.class, new CachingComponentAdapter(
+				new ConstructorInjectionComponentAdapter(CarConverter.class, CarConverter.class))));
 
+		Converter converter = Helper.getConverterFor(Car.class, pico2);
+		assertNotNull(converter);
+		assertTrue(converter instanceof CarConverter);
+	}
 
 }

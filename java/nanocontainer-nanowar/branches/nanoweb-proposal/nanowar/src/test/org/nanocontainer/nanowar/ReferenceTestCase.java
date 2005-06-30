@@ -9,56 +9,53 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.picocontainer.defaults.ObjectReference;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.defaults.ObjectReference;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1629 $
  */
 public class ReferenceTestCase extends MockObjectTestCase {
-    private final String key = "foo";
-    private final Object value = new Object();
+	private final String key = "foo";
 
-    public void testRequestScope() throws UnsupportedEncodingException {
-        Mock mock = createMock(ServletRequest.class);
-        RequestScopeObjectReference ref = new RequestScopeObjectReference((ServletRequest) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
-    }
+	private final Object value = new Object();
 
-    public void testApplicationScope() {
-        Mock mock = createMock(ServletContext.class);
-        ApplicationScopeObjectReference ref = new ApplicationScopeObjectReference((ServletContext) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
-    }
+	public void testRequestScope() throws UnsupportedEncodingException {
+		Mock mock = createMock(ServletRequest.class);
+		RequestScopeObjectReference ref = new RequestScopeObjectReference((ServletRequest) mock.proxy(), key);
+		setGetAndVerify(ref, mock);
+	}
 
-    public void testSessionScope() {
-        Mock mock = createMock(HttpSession.class);
-        SessionScopeObjectReference ref = new SessionScopeObjectReference((HttpSession) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
-    }
+	public void testApplicationScope() {
+		Mock mock = createMock(ServletContext.class);
+		ApplicationScopeObjectReference ref = new ApplicationScopeObjectReference((ServletContext) mock.proxy(), key);
+		setGetAndVerify(ref, mock);
+	}
 
-    private void setGetAndVerify(ObjectReference ref, Mock mock) {
-        ref.set(value);
-        assertEquals(value, ref.get());
-    }
+	public void testSessionScope() {
+		Mock mock = createMock(HttpSession.class);
+		SessionScopeObjectReference ref = new SessionScopeObjectReference((HttpSession) mock.proxy(), key);
+		setGetAndVerify(ref, mock);
+	}
 
-    private Mock createMock(final Class clazz) {
-        Mock mock = mock(clazz);
-        mock.expects(once())
-                .method("setAttribute")
-                .with(eq(key), eq(value));
-        mock.expects(once())
-                .method("getAttribute")
-                .with(eq(key))
-                .will(returnValue(value));
-        return mock;
-    }
+	private void setGetAndVerify(ObjectReference ref, Mock mock) {
+		ref.set(value);
+		assertEquals(value, ref.get());
+	}
+
+	private Mock createMock(final Class clazz) {
+		Mock mock = mock(clazz);
+		mock.expects(once()).method("setAttribute").with(eq(key), eq(value));
+		mock.expects(once()).method("getAttribute").with(eq(key)).will(returnValue(value));
+		return mock;
+	}
 
 }

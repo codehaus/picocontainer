@@ -8,6 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.axis;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.RPCProvider;
 import org.apache.axis.transport.http.HTTPConstants;
@@ -18,38 +20,33 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * Axis provider for RPC-style services that uses the servlet container
- * hierarchy to instantiate service classes and resolve their dependencies.
- *
+ * Axis provider for RPC-style services that uses the servlet container hierarchy to instantiate service classes and
+ * resolve their dependencies.
+ * 
  * @author <a href="mailto:evan@bottch.com">Evan Bottcher</a>
  */
 public class NanoRPCProvider extends RPCProvider implements KeyConstants {
 
-    protected Object makeNewServiceObject(
-        MessageContext msgContext,
-        String clsName)
-        throws Exception {
+	protected Object makeNewServiceObject(MessageContext msgContext, String clsName) throws Exception {
 
-        ClassLoader cl = msgContext.getClassLoader();
-        ClassCache cache = msgContext.getAxisEngine().getClassCache();
-        Class svcClass = cache.lookup(clsName, cl).getJavaClass();
+		ClassLoader cl = msgContext.getClassLoader();
+		ClassCache cache = msgContext.getAxisEngine().getClassCache();
+		Class svcClass = cache.lookup(clsName, cl).getJavaClass();
 
-        return instantiateService(svcClass, msgContext);
+		return instantiateService(svcClass, msgContext);
 
-    }
+	}
 
-    private Object instantiateService(Class svcClass, MessageContext msgContext) {
+	private Object instantiateService(Class svcClass, MessageContext msgContext) {
 
-        HttpServletRequest request = (HttpServletRequest)msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-        ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
-        MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
+		HttpServletRequest request = (HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
+		ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+		MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
 
-        MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
-        container.registerComponentImplementation(svcClass);
-        return container.getComponentInstance(svcClass);
-    }
+		MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
+		container.registerComponentImplementation(svcClass);
+		return container.getComponentInstance(svcClass);
+	}
 
 }

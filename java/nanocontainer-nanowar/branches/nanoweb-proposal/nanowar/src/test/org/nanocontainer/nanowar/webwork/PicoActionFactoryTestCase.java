@@ -9,6 +9,7 @@
 package org.nanocontainer.nanowar.webwork;
 
 import junit.framework.TestCase;
+
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -20,17 +21,14 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class PicoActionFactoryTestCase extends TestCase {
 
 	/**
-	 * test that action is instantiated and receives construtor parameters from
-	 * container
+	 * test that action is instantiated and receives construtor parameters from container
 	 */
 	public void testActionInstantiation() throws Exception {
 		PicoActionFactory factory = new PicoActionFactory();
 		DefaultPicoContainer container = new DefaultPicoContainer();
 		container.registerComponentInstance("foo");
-		(new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-				.set(container);
-		TestAction action = (TestAction) factory
-				.getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+		(new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER)).set(container);
+		TestAction action = (TestAction) factory.getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
 		assertNotNull(action);
 		assertEquals("foo", action.getFoo());
 	}

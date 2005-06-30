@@ -6,22 +6,22 @@ import org.picocontainer.PicoContainer;
 
 public class ChainedActionFactory implements ActionFactory {
 
-    private final ActionFactory[] actionFactories;
+	private final ActionFactory[] actionFactories;
 
-    public ChainedActionFactory(ActionFactory[] actionFactories) {
-        this.actionFactories = actionFactories;
-    }
+	public ChainedActionFactory(ActionFactory[] actionFactories) {
+		this.actionFactories = actionFactories;
+	}
 
-    public Object getInstance(PicoContainer pico, String path) throws ScriptException {
-        Object action;
-        for (int i = 0; i < actionFactories.length; i++) {
-            action = actionFactories[i].getInstance(pico, path);
-            if (action != null) {
-                return action;
-            }
-        }
+	public Object getInstance(PicoContainer pico, String path) throws ScriptException {
+		Object action;
+		for (int i = 0; i < actionFactories.length; i++) {
+			action = actionFactories[i].getInstance(pico, path);
+			if (action != null) {
+				return action;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

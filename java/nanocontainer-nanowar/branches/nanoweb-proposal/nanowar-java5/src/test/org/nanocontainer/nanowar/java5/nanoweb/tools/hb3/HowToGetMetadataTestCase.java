@@ -9,27 +9,27 @@ import org.nanocontainer.nanowar.java5.nanoweb.tools.hb3.test.util.HB3AbstractTe
 
 public class HowToGetMetadataTestCase extends HB3AbstractTestCase {
 
-    public void testHow() throws Exception {
+	public void testHow() throws Exception {
 
-        PersistentClass info = configuration.getClassMapping("org.nanocontainer.nanoweb.hb3.test.util.Dummy");
-        assertNotNull(info);
+		PersistentClass info = configuration.getClassMapping("org.nanocontainer.nanoweb.hb3.test.util.Dummy");
+		assertNotNull(info);
 
-        Property p = info.getProperty("name");
-        assertNotNull(p);
+		Property p = info.getProperty("name");
+		assertNotNull(p);
 
-        Column col = getColumn(p);
-        assertNotNull(col);
+		Column col = getColumn(p);
+		assertNotNull(col);
 
-        assertEquals(123, col.getLength());
-    }
+		assertEquals(123, col.getLength());
+	}
 
-    private static Column getColumn(Property p) {
-        Iterator i = p.getColumnIterator();
-        if (i.hasNext()) {
-            return (Column) i.next();
-        }
+	private static Column getColumn(Property p) {
+		Iterator i = p.getColumnIterator();
+		if (i.hasNext()) {
+			return (Column) i.next();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

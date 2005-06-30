@@ -8,49 +8,52 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(access = AccessType.PROPERTY)
-@Table(name="dummy")
+@Table(name = "dummy")
 public class Dummy {
 
-    private Integer id;
-    private String name;
-    private String bigString;;
-    private String blobString;;
+	private Integer id;
 
-    @Id(generate=GeneratorType.IDENTITY)
-    @Column(name="id")
-    public Integer getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(Integer value) {
-        id = value;
-    }
+	private String bigString;;
 
-    @Column(name="name", length=123)
-    public String getName() {
-        return name;
-    }
+	private String blobString;;
 
-    public void setName(String value) {
-        name = value;
-    }
-    
-    @Column(name="bigString", length=2000)
-    public String getBigString() {
-        return bigString;
-    }
-    
-    public void setBigString(String value) {
-        this.bigString = value;
-    }
+	@Id(generate = GeneratorType.IDENTITY)
+	@Column(name = "id")
+	public Integer getId() {
+		return id;
+	}
 
-    @Column(name="blobString", length=100000)
-    public String getBlobString() {
-        return this.blobString;
-    }
-    
-    public void setBlobString(String blobString) {
-        this.blobString = blobString;
-    }
+	public void setId(Integer value) {
+		id = value;
+	}
+
+	@Column(name = "name", length = 123)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String value) {
+		name = value;
+	}
+
+	@Column(name = "bigString", length = 2000)
+	public String getBigString() {
+		return bigString;
+	}
+
+	public void setBigString(String value) {
+		this.bigString = value;
+	}
+
+	@Column(name = "blobString", length = 100000)
+	public String getBlobString() {
+		return this.blobString;
+	}
+
+	public void setBlobString(String blobString) {
+		this.blobString = blobString;
+	}
 
 }

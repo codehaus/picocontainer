@@ -7,18 +7,18 @@ import org.nanocontainer.nanowar.nanoweb.Car;
 
 public class MyJava5Action {
 
-    private List<Car> cars = new ArrayList<Car>();
+	private List<Car> cars = new ArrayList<Car>();
 
-    public List<Car> getCars() {
-        return cars;
-    }
+	public List<Car> getCars() {
+		return cars;
+	}
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
+	public void setCars(List<Car> cars) {
+		this.cars = cars;
+	}
 
-    public String execute() {
-        return "Im a Java5 action";
-    }
+	public String execute() {
+		return "Im a Java5 action";
+	}
 
 }

@@ -9,10 +9,7 @@
 	<category name="org.hibernate">
 		<priority value="ERROR"/>
 	</category>
-	<category name="org.nanocontainer.nanoweb.hb3.test.util.HSQLDBDatabaseComponent">
-		<priority value="ERROR"/>
-	</category>
-	<category name="org.nanocontainer.nanoweb">
+	<category name="org.nanocontainer.nanowar">
 		<priority value="DEBUG"/>
 	</category>
 	<root>

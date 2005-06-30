@@ -10,36 +10,35 @@ import org.nanocontainer.nanowar.nanoweb.Car;
 
 public class GetACollectionTypeTestCase extends TestCase {
 
-    public Collection<Car> getCars() {
-        return null;
-    }
+	public Collection<Car> getCars() {
+		return null;
+	}
 
-    public void setCars(Collection<Car> value) {
-    }
+	public void setCars(Collection<Car> value) {
+	}
 
-    public void testUsingGetter() throws Exception {
-        Class k = this.getClass();
+	public void testUsingGetter() throws Exception {
+		Class k = this.getClass();
 
-        Method getter = k.getMethod("getCars");
-        assertTrue(getter.getGenericReturnType() instanceof ParameterizedType);
+		Method getter = k.getMethod("getCars");
+		assertTrue(getter.getGenericReturnType() instanceof ParameterizedType);
 
-        ParameterizedType type = (ParameterizedType) getter.getGenericReturnType();
-        assertEquals(1, type.getActualTypeArguments().length);
-        assertTrue(type.getActualTypeArguments()[0] instanceof Class);
-        assertTrue(Car.class.isAssignableFrom((Class) type.getActualTypeArguments()[0]));
-    }
+		ParameterizedType type = (ParameterizedType) getter.getGenericReturnType();
+		assertEquals(1, type.getActualTypeArguments().length);
+		assertTrue(type.getActualTypeArguments()[0] instanceof Class);
+		assertTrue(Car.class.isAssignableFrom((Class) type.getActualTypeArguments()[0]));
+	}
 
-    public void testUsingSetter() throws Exception {
-        Class k = this.getClass();
+	public void testUsingSetter() throws Exception {
+		Class k = this.getClass();
 
-        Method setter = k.getMethod("setCars", Collection.class);
-        assertTrue(setter.getGenericParameterTypes()[0] instanceof ParameterizedType);
+		Method setter = k.getMethod("setCars", Collection.class);
+		assertTrue(setter.getGenericParameterTypes()[0] instanceof ParameterizedType);
 
-        ParameterizedType type = (ParameterizedType) setter.getGenericParameterTypes()[0];
-        assertEquals(1, type.getActualTypeArguments().length);
-        assertTrue(type.getActualTypeArguments()[0] instanceof Class);
-        assertTrue(Car.class.isAssignableFrom((Class) type.getActualTypeArguments()[0]));
-    }
-    
+		ParameterizedType type = (ParameterizedType) setter.getGenericParameterTypes()[0];
+		assertEquals(1, type.getActualTypeArguments().length);
+		assertTrue(type.getActualTypeArguments()[0] instanceof Class);
+		assertTrue(Car.class.isAssignableFrom((Class) type.getActualTypeArguments()[0]));
+	}
 
 }

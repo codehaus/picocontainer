@@ -9,26 +9,28 @@ import org.hibernate.mapping.Property;
 
 public class FieldInfo {
 
-    public PersistentClass persistentClass;
-    public Property property;
-    public Column column;
+	public PersistentClass persistentClass;
 
-    public FieldInfo(Configuration configuration, Class type, Object bean, String name) {
-        this(configuration.getClassMapping(type.getName()), bean, name);
-    }
+	public Property property;
 
-    public FieldInfo(PersistentClass persistentClass, Object bean, String name) {
-        this.persistentClass = persistentClass;
-        property = persistentClass.getProperty(name);
-        column = getColumn(property);
-    }
+	public Column column;
 
-    private static Column getColumn(Property p) {
-        Iterator i = p.getColumnIterator();
-        if (i.hasNext()) {
-            return (Column) i.next();
-        }
+	public FieldInfo(Configuration configuration, Class type, Object bean, String name) {
+		this(configuration.getClassMapping(type.getName()), bean, name);
+	}
 
-        return null;
-    }
+	public FieldInfo(PersistentClass persistentClass, Object bean, String name) {
+		this.persistentClass = persistentClass;
+		property = persistentClass.getProperty(name);
+		column = getColumn(property);
+	}
+
+	private static Column getColumn(Property p) {
+		Iterator i = p.getColumnIterator();
+		if (i.hasNext()) {
+			return (Column) i.next();
+		}
+
+		return null;
+	}
 }

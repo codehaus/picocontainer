@@ -8,30 +8,30 @@ import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.BookmarkDAO;
 
 public class BookmarkDAOImpl implements BookmarkDAO {
 
-    private Session s;
+	private Session s;
 
-    public BookmarkDAOImpl(Session s) {
-        this.s = s;
-    }
+	public BookmarkDAOImpl(Session s) {
+		this.s = s;
+	}
 
-    public Bookmark create() {
-        return new BookmarkImpl();
-    }
+	public Bookmark create() {
+		return new BookmarkImpl();
+	}
 
-    public void delete(Bookmark value) {
-        s.delete(value);
-    }
+	public void delete(Bookmark value) {
+		s.delete(value);
+	}
 
-    public void save(Bookmark value) {
-        s.saveOrUpdate(value);
-    }
+	public void save(Bookmark value) {
+		s.saveOrUpdate(value);
+	}
 
-    public Bookmark findById(Integer id) {
-        return (Bookmark) s.load(BookmarkImpl.class, id);
-    }
+	public Bookmark findById(Integer id) {
+		return (Bookmark) s.load(BookmarkImpl.class, id);
+	}
 
-    public Collection<Bookmark> findAll() {
-        return s.createCriteria(BookmarkImpl.class).list();
-    }
+	public Collection<Bookmark> findAll() {
+		return s.createCriteria(BookmarkImpl.class).list();
+	}
 
 }

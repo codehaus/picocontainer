@@ -4,14 +4,14 @@ import java.util.Collection;
 
 public interface BookmarkDAO {
 
-    public Bookmark create();
+	public Bookmark create();
 
-    public Bookmark findById(Integer id);
+	public Bookmark findById(Integer id);
 
-    public Collection<Bookmark> findAll();
+	public Collection<Bookmark> findAll();
 
-    public void delete(Bookmark value);
+	public void delete(Bookmark value);
 
-    public void save(Bookmark value);
+	public void save(Bookmark value);
 
 }

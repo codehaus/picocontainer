@@ -6,30 +6,30 @@ import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.BookmarkDAO;
 
 public class BookmarkConverter implements Converter {
 
-    private BookmarkDAO dao;
+	private BookmarkDAO dao;
 
-    public BookmarkConverter(BookmarkDAO dao) {
-        this.dao = dao;
-    }
+	public BookmarkConverter(BookmarkDAO dao) {
+		this.dao = dao;
+	}
 
-    public Object fromString(String value) {
-        if ((value == null) || value.equals("")) {
-            return dao.create();
-        }
+	public Object fromString(String value) {
+		if ((value == null) || value.equals("")) {
+			return dao.create();
+		}
 
-        try {
-            return dao.findById(Integer.valueOf(value));
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+		try {
+			return dao.findById(Integer.valueOf(value));
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
 
-    public String toString(Object value) {
-        if (!(value instanceof Bookmark)) {
-            return null;
-        }
+	public String toString(Object value) {
+		if (!(value instanceof Bookmark)) {
+			return null;
+		}
 
-        return ((Bookmark) value).getId().toString();
-    }
+		return ((Bookmark) value).getId().toString();
+	}
 
 }

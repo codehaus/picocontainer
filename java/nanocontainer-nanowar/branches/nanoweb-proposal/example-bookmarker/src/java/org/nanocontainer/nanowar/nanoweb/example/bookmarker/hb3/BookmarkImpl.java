@@ -16,74 +16,78 @@ import org.nanocontainer.nanowar.nanoweb.example.bookmarker.spi.Bookmark;
 @Table(name = "tb_bookmark")
 public class BookmarkImpl implements Bookmark {
 
-    private Integer id;
-    private String url;
-    private String name;
-    private String description;
+	private Integer id;
 
-    // ---- PK
+	private String url;
 
-    @Id(generate = GeneratorType.IDENTITY)
-    @Column(name = "id")
-    public Integer getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private String description;
 
-    // ---- Fields
+	// ---- PK
 
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
+	@Id(generate = GeneratorType.IDENTITY)
+	@Column(name = "id")
+	public Integer getId() {
+		return id;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
+	// ---- Fields
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Column(name = "description")
+	public String getDescription() {
+		return description;
+	}
 
-    @Column(name = "url")
-    public String getUrl() {
-        return url;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	@Column(name = "name")
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public boolean equals(final Object o) {
-        if (!(o instanceof Bookmark)) {
-            return false;
-        }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-        Bookmark value = (Bookmark) o;
-        return ObjectUtils.equals(getId(), value.getId());
-    }
+	@Column(name = "url")
+	public String getUrl() {
+		return url;
+	}
 
-    @Override
-    public int hashCode() {
-        if (getId() == null) {
-            return 0;
-        }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-        return getId().hashCode();
-    }
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Bookmark)) {
+			return false;
+		}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", id).append("url", url).append("name", name).append("description", description).toString();
-    }
+		Bookmark value = (Bookmark) o;
+		return ObjectUtils.equals(getId(), value.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		if (getId() == null) {
+			return 0;
+		}
+
+		return getId().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", id).append("url", url).append("name", name).append(
+				"description", description).toString();
+	}
 
 }

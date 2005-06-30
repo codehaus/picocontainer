@@ -27,31 +27,34 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 
 public class NanoWarContainerComposer implements ContainerComposer {
 
-    // It supports two kind of scope value for each scope to help on testing.
-    public static final String APPLICATION_SCOPE = "APPLICATION_SCOPE";
-    public static final String REQUEST_SCOPE = "REQUEST_SCOPE";
+	// It supports two kind of scope value for each scope to help on testing.
+	public static final String APPLICATION_SCOPE = "APPLICATION_SCOPE";
 
-    public void composeContainer(MutablePicoContainer pico, Object scope) {
-        if ((scope instanceof ServletContext) || (APPLICATION_SCOPE.equals(scope))) {
-            pico.registerComponentInstance(new HSQLDBDatabaseComponent());
+	public static final String REQUEST_SCOPE = "REQUEST_SCOPE";
 
-            // Nanoweb
-            pico.registerComponentImplementation(NanoWebServletComponent.class, NanoWebServletComponent.class);
-            pico.registerComponentImplementation(ActionFactory.class, GroovyActionFactory.class, new Parameter[] { new ConstantParameter(((ServletContext) scope).getRealPath("/")) });
+	public void composeContainer(MutablePicoContainer pico, Object scope) {
+		if ((scope instanceof ServletContext) || (APPLICATION_SCOPE.equals(scope))) {
+			pico.registerComponentInstance(new HSQLDBDatabaseComponent());
 
-            // Hibernate stufs
-            pico.registerComponentImplementation(Configuration.class, ConstructableAnnotationConfiguration.class);
-            pico.registerComponentImplementation(SessionFactory.class, SessionFactoryDelegator.class);
-            pico.registerComponentImplementation(SessionFactoryLifecycle.class, SessionFactoryLifecycle.class);
+			// Nanoweb
+			pico.registerComponentImplementation(NanoWebServletComponent.class, NanoWebServletComponent.class);
+			pico.registerComponentImplementation(ActionFactory.class, GroovyActionFactory.class, new Parameter[] { new ConstantParameter(
+					((ServletContext) scope).getRealPath("/")) });
 
-        } else if ((scope instanceof ServletRequest) || (REQUEST_SCOPE.equals(scope))) {
-            // Hibernate stuffs
-            pico.registerComponentImplementation(Session.class, FailoverSessionDelegator.class);
-            pico.registerComponentImplementation(SessionLifecycle.class, SessionLifecycle.class);
+			// Hibernate stufs
+			pico.registerComponentImplementation(Configuration.class, ConstructableAnnotationConfiguration.class);
+			pico.registerComponentImplementation(SessionFactory.class, SessionFactoryDelegator.class);
+			pico.registerComponentImplementation(SessionFactoryLifecycle.class, SessionFactoryLifecycle.class);
 
-            // Daos
-            pico.registerComponentImplementation(BookmarkDAO.class, BookmarkDAOImpl.class);
-            pico.registerComponent(new ConverterComponentAdapter(Bookmark.class, new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(BookmarkConverter.class, BookmarkConverter.class))));
-        }
-    }
+		} else if ((scope instanceof ServletRequest) || (REQUEST_SCOPE.equals(scope))) {
+			// Hibernate stuffs
+			pico.registerComponentImplementation(Session.class, FailoverSessionDelegator.class);
+			pico.registerComponentImplementation(SessionLifecycle.class, SessionLifecycle.class);
+
+			// Daos
+			pico.registerComponentImplementation(BookmarkDAO.class, BookmarkDAOImpl.class);
+			pico.registerComponent(new ConverterComponentAdapter(Bookmark.class, new CachingComponentAdapter(
+					new ConstructorInjectionComponentAdapter(BookmarkConverter.class, BookmarkConverter.class))));
+		}
+	}
 }

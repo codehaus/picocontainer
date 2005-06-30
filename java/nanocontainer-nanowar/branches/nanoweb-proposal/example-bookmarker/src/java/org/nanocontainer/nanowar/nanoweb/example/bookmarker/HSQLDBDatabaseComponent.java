@@ -10,30 +10,30 @@ import org.picocontainer.Disposable;
 
 public class HSQLDBDatabaseComponent implements Disposable {
 
-    private transient Log log = LogFactory.getLog(HSQLDBDatabaseComponent.class);
+	private transient Log log = LogFactory.getLog(HSQLDBDatabaseComponent.class);
 
-    public transient Connection conn;
+	public transient Connection conn;
 
-    public HSQLDBDatabaseComponent() {
-        try {
-            long inicio = System.currentTimeMillis();
-            Class.forName("org.hsqldb.jdbcDriver");
-            this.conn = DriverManager.getConnection("jdbc:hsqldb:mem:test");
-            this.conn.createStatement().execute(IOUtils.toString(HSQLDBDatabaseComponent.class.getResourceAsStream("database.sql")));
+	public HSQLDBDatabaseComponent() {
+		try {
+			long inicio = System.currentTimeMillis();
+			Class.forName("org.hsqldb.jdbcDriver");
+			this.conn = DriverManager.getConnection("jdbc:hsqldb:mem:test");
+			this.conn.createStatement().execute(IOUtils.toString(HSQLDBDatabaseComponent.class.getResourceAsStream("database.sql")));
 
-            log.info("Test Database created in " + (System.currentTimeMillis() - inicio) + "ms.");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+			log.info("Test Database created in " + (System.currentTimeMillis() - inicio) + "ms.");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public void dispose() {
-        try {
-            this.conn.createStatement().execute("SHUTDOWN");
-            log.info("Test Database ended.");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public void dispose() {
+		try {
+			this.conn.createStatement().execute("SHUTDOWN");
+			log.info("Test Database ended.");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

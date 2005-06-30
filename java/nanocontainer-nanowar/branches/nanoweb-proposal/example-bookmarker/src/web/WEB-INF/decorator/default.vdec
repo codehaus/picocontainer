@@ -28,7 +28,7 @@
     						<a href="index.nwa"><img src="resource/default/header-logo.png" width="300" height="57"/></a>
     						<div id="header_menu">
     							<a href="index.nwa"><img src="resource/default/header-button-list.png" width="104" height="24" alt="List Bookmarks"/></a>
-    							<a href="save.nwa"><img src="resource/default/header-button-new.png" width="104" height="24" alt="New Bookmark"/></a>
+    							<a href="item!edit.nwa"><img src="resource/default/header-button-new.png" width="104" height="24" alt="New Bookmark"/></a>
     						</div>
     					</div>
     					<div id="content">

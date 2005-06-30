@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4" relativePaths="true" type="JAVA_MODULE">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/book/trunk/book/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/demos/trunk/jtec/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/demos/trunk/jtec/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/microcontainer/trunk/container/example/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/microcontainer/trunk/container/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/microcontainer/trunk/container/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/microcontainer/trunk/container/src/test2comp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/microcontainer/trunk/container/src/testcomp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-nanowar/trunk/nanowar-sample/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-nanowar/trunk/nanowar-sample/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-nanowar/trunk/nanowar/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-nanowar/trunk/nanowar/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-nanowar/trunk/nanowar/target/test-classes" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-persistence/trunk/persistence/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-persistence/trunk/persistence/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-remoting/trunk/remoting/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-remoting/trunk/remoting/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/ant/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/ant/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/avalon/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/avalon/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/boot/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/boot/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/deployer/src/deploytest" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/deployer/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/deployer/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/idea/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/nanning/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/nanning/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/piccolo/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/piccolo/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/picometer/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/picometer/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/pool/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/pool/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/pool2/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/pool2/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/swing/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/swing/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/swt/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer-sandbox/trunk/swt/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer/trunk/container/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer/trunk/container/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer/trunk/container/src/test-comp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/nanocontainer/trunk/testmodel/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/picocontainer/trunk/container/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/picocontainer/trunk/container/src/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/picocontainer/trunk/gems/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/java/picocontainer/trunk/gems/src/test" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntryProperties />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ACTIVE_VCS_NAME" value="svn" />
+    <option name="USE_PROJECT_VCS" value="false" />
+  </component>
+</module>
+

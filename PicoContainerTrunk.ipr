@@ -180,6 +180,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer/trunk/NanoContainer.iml" filepath="$PROJECT_DIR$/java/nanocontainer/trunk/NanoContainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-nanowar/NanoContainer-NanoWar.iml" filepath="$PROJECT_DIR$/java/nanocontainer-nanowar/NanoContainer-NanoWar.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" filepath="$PROJECT_DIR$/java/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/picocontainer/PicoContainer.iml" filepath="$PROJECT_DIR$/java/picocontainer/PicoContainer.iml" />
     </modules>

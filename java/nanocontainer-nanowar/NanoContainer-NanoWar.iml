@@ -9,6 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/trunk/nanowar-sample/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/nanowar/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/nanowar/src/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/branches" />
+      <excludeFolder url="file://$MODULE_DIR$/tags" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/nanowar/target" />
     </content>
     <orderEntry type="inheritedJdk" />

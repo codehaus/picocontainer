@@ -4,13 +4,13 @@ import org.nanocontainer.ClassNameKey
 builder = new org.nanocontainer.script.groovy.NanoContainerBuilder()
 
 parent = builder.container(parent:parent,class:ImplementationHidingNanoPicoContainer) {
-    classpathelement(path:"lib/api.jar")
+    classPathElement(path:"lib/api.jar")
     classloader {
-        classpathelement(path:"lib/honeyimpl.jar")
-        component(key:new ClassNameKey("org.nanocontainer.boot.Honey"), class:"org.nanocontainer.boot.BeeHiveHoney")
+        classPathElement(path:"lib/honeyimpl.jar")
+        component(classNameKey:"org.nanocontainer.boot.Honey", class:"org.nanocontainer.boot.BeeHiveHoney")
     }
     classloader {
-        classpathelement(path:"lib/bearimpl.jar")
+        classPathElement(path:"lib/bearimpl.jar")
         component(class:"org.nanocontainer.boot.BrownBear")
     }
 }

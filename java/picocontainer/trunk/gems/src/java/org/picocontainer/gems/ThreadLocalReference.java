@@ -10,34 +10,15 @@
 
 package org.picocontainer.gems;
 
-
 import org.picocontainer.defaults.ObjectReference;
 
 import java.io.Serializable;
 
 
 /**
- * Implementation of an {@link org.picocontainer.defaults.ObjectReference} as
- * {@link ThreadLocal}.
- *
+ * An {@link org.picocontainer.defaults.ObjectReference} based on a {@link ThreadLocal}.
+ * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalReference
-        implements ObjectReference, Serializable {
-
-    private transient ThreadLocal instance = new ThreadLocal();
-
-    /**
-     * @see org.picocontainer.defaults.ObjectReference#get()
-     */
-    public Object get() {
-        return instance.get();
-    }
-
-    /**
-     * @see org.picocontainer.defaults.ObjectReference#set(java.lang.Object)
-     */
-    public void set(Object item) {
-        instance.set(item);
-    }
+public class ThreadLocalReference extends ThreadLocal implements ObjectReference, Serializable {
 }

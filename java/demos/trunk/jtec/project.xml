@@ -76,7 +76,7 @@
         </dependency>
         <dependency>
             <id>commons-lang</id>
-            <version>2.0</version>
+            <version>2.1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -123,7 +123,7 @@
         </dependency-->
         <dependency>
             <id>commons-collections</id>
-            <version>2.1.1</version>
+            <version>3.1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -153,7 +153,8 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-        
+
+
        <!--
             pico nano dependecies
         -->

@@ -179,11 +179,15 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/java/demos/Demos.iml" filepath="$PROJECT_DIR$/java/demos/Demos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/microcontainer/MicroContainer.iml" filepath="$PROJECT_DIR$/java/microcontainer/MicroContainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer/trunk/NanoContainer.iml" filepath="$PROJECT_DIR$/java/nanocontainer/trunk/NanoContainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-ioc/NanoContainer-IoC.iml" filepath="$PROJECT_DIR$/java/nanocontainer-ioc/NanoContainer-IoC.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-nanowar/NanoContainer-NanoWar.iml" filepath="$PROJECT_DIR$/java/nanocontainer-nanowar/NanoContainer-NanoWar.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-persistence/NanoContainer-Persistence.iml" filepath="$PROJECT_DIR$/java/nanocontainer-persistence/NanoContainer-Persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-remoting/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/java/nanocontainer-remoting/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" filepath="$PROJECT_DIR$/java/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/nanocontainer-tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/java/nanocontainer-tools/NanoContainer-Tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/picocontainer/PicoContainer.iml" filepath="$PROJECT_DIR$/java/picocontainer/PicoContainer.iml" />
     </modules>
   </component>

@@ -60,7 +60,7 @@
 
         <dependency>
             <id>velocity</id>
-            <version>1.4-rc1</version>
+            <version>1.4</version>
         </dependency>
 
         <dependency>
@@ -104,7 +104,7 @@
 
         <dependency>
             <id>commons-collections</id>
-            <version>2.1.1</version>
+            <version>3.1</version>
             <url>http://jakarta.apache.org/</url>
         </dependency>
 

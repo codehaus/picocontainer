@@ -7,7 +7,7 @@
         <mkdir dir="${maven.build.dir}/dist/comps/"/>
 
         <copy
-            todir="${maven.build.dir}/dist"
+            todir="${maven.build.dir}/dist/lib"
             file="${maven.build.dir}/${maven.final.name}.jar"/>
 
         <copy
@@ -22,7 +22,12 @@
         <copy
             todir="${maven.build.dir}/dist"
             file="src/test/composition.groovy"/>
-
+        <copy
+            todir="${maven.build.dir}/dist"
+            file="src/nanocontainer.sh"/>
+        <copy
+            todir="${maven.build.dir}/dist/lib"
+            file="src/boot.policy"/>
 
         <j:forEach var="lib" items="${pom.artifacts}">
             <copy

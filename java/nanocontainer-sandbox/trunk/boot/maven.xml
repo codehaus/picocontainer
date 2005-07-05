@@ -2,20 +2,22 @@
     xmlns:j="jelly:core">
 
     <goal name="setup:demo" prereqs="java:compile, test:compile, jar:jar, jar:testComps">
-        <mkdir dir="${maven.build.dir}/dist/lib"/>
+        <mkdir dir="${maven.build.dir}/dist/lib/common"/>
+        <mkdir dir="${maven.build.dir}/dist/lib/hidden"/>
+        <mkdir dir="${maven.build.dir}/dist/comps/"/>
 
         <copy
             todir="${maven.build.dir}/dist"
             file="${maven.build.dir}/${maven.final.name}.jar"/>
 
         <copy
-            todir="${maven.build.dir}/dist/lib"
+            todir="${maven.build.dir}/dist/comps"
             file="${maven.build.dir}/api.jar"/>
         <copy
-            todir="${maven.build.dir}/dist/lib"
+            todir="${maven.build.dir}/dist/comps"
             file="${maven.build.dir}/bearimpl.jar"/>
         <copy
-            todir="${maven.build.dir}/dist/lib"
+            todir="${maven.build.dir}/dist/comps"
             file="${maven.build.dir}/honeyimpl.jar"/>
         <copy
             todir="${maven.build.dir}/dist"
@@ -24,21 +26,35 @@
 
         <j:forEach var="lib" items="${pom.artifacts}">
             <copy
-                todir="${maven.build.dir}/dist/lib"
+                todir="${maven.build.dir}/dist/lib/common"
                 file="${lib.path}"/>
         </j:forEach>
+
         <delete>
-            <fileset dir="${maven.build.dir}/dist/">
+            <fileset dir="${maven.build.dir}/dist/lib/common">
+                <exclude name="**/picocontainer-1*.jar"/>
+            </fileset>
+        </delete>
+
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <copy
+                todir="${maven.build.dir}/dist/lib/hidden"
+                file="${lib.path}"/>
+        </j:forEach>
+
+        <delete>
+            <fileset dir="${maven.build.dir}/dist/lib/hidden">
                 <include name="**/jmock*.jar"/>
                 <include name="**/*tck*.jar"/>
                 <include name="**/js*.jar"/>
                 <include name="**/junit*.jar"/>
                 <include name="**/nanocontainer-testmodel*.jar"/>
+                <include name="**/picocontainer*.jar"/>
+                <include name="**/maven-javaapp-plugin-*.jar"/>
 
             </fileset>
         </delete>
 
-        <mkdir dir="${maven.build.dir}/dist/apps"/>
     </goal>
 
     <goal name="jar:testComps">

@@ -14,6 +14,9 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.nanocontainer.persistence.hibernate.HibernateExceptionHandler;
+
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.FlushMode;
 import net.sf.hibernate.HibernateException;
@@ -25,462 +28,589 @@ import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Transaction;
 import net.sf.hibernate.type.Type;
 
-/** 
- * abstract base class for session delegators. delegates all calls to session obtained by 
- * implementing class. error handling is also there. All methods are just delegations to
- * hibernate session. 
- * 
+/**
+ * abstract base class for session delegators. delegates all calls to session obtained by implementing class. error
+ * handling is also there. All methods are just delegations to hibernate session.
  * 
  * @author Konstantin Pribluda
- * @version $Revision$ 
+ * @version $Id$
  */
 public abstract class SessionDelegator implements Session {
-    
-    /**
-     * obtain hibernate session.
-     */
-    public abstract Session getSession();
-    /**
-     * perform actions to dispose "burned" session properly
-     */
-    public abstract void invalidateSession() throws HibernateException;
-    
-    public void flush() throws HibernateException {
-        try {
-            getSession().flush();
-        } catch(HibernateException ex)  {
-            invalidateSession();
-            throw ex;
-        }
-    }
-    
-    public void setFlushMode(FlushMode flushMode) {
-        getSession().setFlushMode(flushMode);
-    }
-    
-    public FlushMode getFlushMode() {
-        return getSession().getFlushMode();
-    }
-    
-    public SessionFactory getSessionFactory() {
-        return getSession().getSessionFactory();
-    }
-    
-    public Connection connection() throws HibernateException {
-        try {
-            return getSession().connection();
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }
-    }
-    
-    public Connection disconnect() throws HibernateException {
-       try {
-            return getSession().disconnect();
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }
-    }
-    
-    public void reconnect() throws HibernateException {
-       try {
-            getSession().reconnect();
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }   
-    }
-    
-    public void reconnect(Connection connection) throws HibernateException {
-       try {
-            getSession().reconnect(connection);
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }   
-    }
-    
-    public Connection close() throws HibernateException {
-       try {
-            return getSession().close();
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }   
-    }
-    
-    public void cancelQuery() throws HibernateException {
-       try {
-            getSession().cancelQuery();
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }   
-    }
-    
-    public boolean isOpen() {
-        return getSession().isOpen();
-    }
-    
-    public boolean isConnected() {
-        return getSession().isConnected();
-    }
-    
-    public boolean isDirty() throws HibernateException {
-       try {
-            return getSession().isDirty();
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }   
-    }
-    
-    
-    public Serializable getIdentifier(Object object) throws HibernateException {
-        try {
-            return getSession().getIdentifier(object);
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }          
-    }
-    
-    public boolean contains(Object object) {
-        return getSession().contains(object);
-    }
-    
-    public void evict(Object object) throws HibernateException {
-       try {
-             getSession().evict(object);
-       } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-       }          
-    }
-    
-    public Object load(Class theClass, Serializable id, LockMode lockMode) throws HibernateException {
-        try {
-            return getSession().load(theClass,id,lockMode);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    public Object load(Class theClass, Serializable id) throws HibernateException {
-        try {
-            return getSession().load(theClass,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void load(Object object, Serializable id) throws HibernateException {
-        try {
-            getSession().load(object,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void replicate(Object object, ReplicationMode replicationMode) throws HibernateException {
-        try {
-            getSession().replicate(object,replicationMode);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public Serializable save(Object object) throws HibernateException {
-        try {
-            return getSession().save(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void save(Object object, Serializable id) throws HibernateException {
-        try {
-             getSession().save(object,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void saveOrUpdate(Object object) throws HibernateException {
-        try {
-             getSession().saveOrUpdate(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void update(Object object) throws HibernateException {
-        try {
-             getSession().update(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void update(Object object, Serializable id) throws HibernateException {
-        try {
-             getSession().update(object,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public Object saveOrUpdateCopy(Object object) throws HibernateException  {
-        try {
-             return getSession().saveOrUpdateCopy(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public Object saveOrUpdateCopy(Object object, Serializable id) throws HibernateException {
-        try {
-             return getSession().saveOrUpdateCopy(object,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public void delete(Object object) throws HibernateException {
-        try {
-              getSession().delete(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public List find(String query) throws HibernateException {
-        try {
-             return getSession().find(query);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public List find(String query, Object value, Type type) throws HibernateException {
-        try {
-             return getSession().find(query,value,type);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public List find(String query, Object[] values, Type[] types) throws HibernateException {
-        try {
-             return getSession().find(query,values,types);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Iterator iterate(String query) throws HibernateException {
-        try {
-             return getSession().iterate(query);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }          
-    }
-    
-    public Iterator iterate(String query, Object value, Type type) throws HibernateException {
-        try {
-             return getSession().iterate(query,value,type);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Iterator iterate(String query, Object[] values, Type[] types) throws HibernateException {
-        try {
-             return getSession().iterate(query,values,types);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Collection filter(Object collection, String filter) throws HibernateException {
-        try {
-             return getSession().filter(collection,filter);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Collection filter(Object collection, String filter, Object value, Type type) throws HibernateException {
-        try {
-             return getSession().filter(collection,filter,value,type);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    
-    public Collection filter(Object collection, String filter, Object[] values, Type[] types) throws HibernateException {
-        try {
-             return getSession().filter(collection,filter,values,types);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public int delete(String query) throws HibernateException {
-        try {
-             return getSession().delete(query);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public int delete(String query, Object value, Type type) throws HibernateException {
-        try {
-             return getSession().delete(query,value,type);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-        
-    }
-    
-    public int delete(String query, Object[] values, Type[] types) throws HibernateException {
-        try {
-             return getSession().delete(query,values,types);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public void lock(Object object, LockMode lockMode) throws HibernateException {
-        try {
-              getSession().lock(object,lockMode);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public void refresh(Object object) throws HibernateException {
-        try {
-              getSession().refresh(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public void refresh(Object object, LockMode lockMode) throws HibernateException {
-        try {
-              getSession().refresh(object,lockMode);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
 
-    public LockMode getCurrentLockMode(Object object) throws HibernateException {
-        try {
-              return getSession().getCurrentLockMode(object);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Transaction beginTransaction() throws HibernateException {
-        try {
-              return getSession().beginTransaction();
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Criteria createCriteria(Class persistentClass) {
-        return getSession().createCriteria(persistentClass);
-    }
-    
-    public Query createQuery(String queryString) throws HibernateException {
-        try {
-              return getSession().createQuery(queryString);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-        
-    
-    public Query createFilter(Object collection, String queryString) throws HibernateException {
-        try {
-              return getSession().createFilter(collection,queryString);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Query getNamedQuery(String queryName) throws HibernateException {
-        try {
-              return getSession().getNamedQuery(queryName);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Query createSQLQuery(String sql, String returnAlias, Class returnClass) {
-        return getSession().createSQLQuery(sql,returnAlias,returnClass);        
-    }
-    
-    public Query createSQLQuery(String sql, String[] returnAliases, Class[] returnClasses) {
-        return getSession().createSQLQuery(sql,returnAliases,returnClasses);
-    }
-    
-    public void clear() {
-        getSession().clear();
-    }
-    
-    public Object get(Class clazz, Serializable id) throws HibernateException {
-        try {
-            return getSession().get(clazz,id);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-    }
-    
-    public Object get(Class clazz, Serializable id, LockMode lockMode) throws HibernateException {
-      try {
-            return getSession().get(clazz,id,lockMode);
-        } catch(HibernateException ex) {
-            invalidateSession();
-            throw ex;
-        }                  
-     }
+	private HibernateExceptionHandler exceptionHandler;
+
+	public SessionDelegator() {
+		exceptionHandler = null;
+	}
+
+	public SessionDelegator(HibernateExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
+
+	/**
+	 * obtain hibernate session.
+	 */
+	protected abstract Session getDelegatedSession();
+
+	/**
+	 * perform actions to dispose "burned" session properly
+	 */
+	protected abstract void invalidateDelegatedSession() throws HibernateException;
+
+	/**
+	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
+	 * a {@link HibernateExceptionHandler} if it's available otherwise throws the <code>cause</code> back.
+	 */
+	protected RuntimeException handleException(HibernateException cause) throws HibernateException {
+		try {
+			invalidateDelegatedSession();
+		} catch (HibernateException e) {
+			// Do nothing, the only original cause should be reported.
+		}
+
+		if (exceptionHandler == null) {
+			throw cause;
+		}
+
+		return exceptionHandler.handle(cause);
+	}
+
+	/**
+	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
+	 * a {@link HibernateExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
+	 */
+	protected RuntimeException handleException(RuntimeException cause) {
+		try {
+			invalidateDelegatedSession();
+		} catch (HibernateException e) {
+			// Do nothing, the only original cause should be reported.
+		}
+
+		if (exceptionHandler == null) {
+			return cause;
+		}
+
+		return exceptionHandler.handle(cause);
+	}
+
+	public void flush() throws HibernateException {
+		try {
+			getDelegatedSession().flush();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void setFlushMode(FlushMode flushMode) {
+		try {
+			getDelegatedSession().setFlushMode(flushMode);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public FlushMode getFlushMode() {
+		try {
+			return getDelegatedSession().getFlushMode();
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public SessionFactory getSessionFactory() {
+		try {
+			return getDelegatedSession().getSessionFactory();
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Connection connection() throws HibernateException {
+		try {
+			return getDelegatedSession().connection();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Connection disconnect() throws HibernateException {
+		try {
+			return getDelegatedSession().disconnect();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void reconnect() throws HibernateException {
+		try {
+			getDelegatedSession().reconnect();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void reconnect(Connection connection) throws HibernateException {
+		try {
+			getDelegatedSession().reconnect(connection);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Connection close() throws HibernateException {
+		try {
+			return getDelegatedSession().close();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void cancelQuery() throws HibernateException {
+		try {
+			getDelegatedSession().cancelQuery();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public boolean isOpen() {
+		try {
+			return getDelegatedSession().isOpen();
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public boolean isConnected() {
+		try {
+			return getDelegatedSession().isConnected();
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public boolean isDirty() throws HibernateException {
+		try {
+			return getDelegatedSession().isDirty();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Serializable getIdentifier(Object object) throws HibernateException {
+		try {
+			return getDelegatedSession().getIdentifier(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public boolean contains(Object object) {
+		try {
+			return getDelegatedSession().contains(object);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void evict(Object object) throws HibernateException {
+		try {
+			getDelegatedSession().evict(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object load(Class theClass, Serializable id, LockMode lockMode) throws HibernateException {
+		try {
+			return getDelegatedSession().load(theClass, id, lockMode);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object load(Class theClass, Serializable id) throws HibernateException {
+		try {
+			return getDelegatedSession().load(theClass, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void load(Object object, Serializable id) throws HibernateException {
+		try {
+			getDelegatedSession().load(object, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void replicate(Object object, ReplicationMode replicationMode) throws HibernateException {
+		try {
+			getDelegatedSession().replicate(object, replicationMode);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Serializable save(Object object) throws HibernateException {
+		try {
+			return getDelegatedSession().save(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void save(Object object, Serializable id) throws HibernateException {
+		try {
+			getDelegatedSession().save(object, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void saveOrUpdate(Object object) throws HibernateException {
+		try {
+			getDelegatedSession().saveOrUpdate(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void update(Object object) throws HibernateException {
+		try {
+			getDelegatedSession().update(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void update(Object object, Serializable id) throws HibernateException {
+		try {
+			getDelegatedSession().update(object, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object saveOrUpdateCopy(Object object) throws HibernateException {
+		try {
+			return getDelegatedSession().saveOrUpdateCopy(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object saveOrUpdateCopy(Object object, Serializable id) throws HibernateException {
+		try {
+			return getDelegatedSession().saveOrUpdateCopy(object, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void delete(Object object) throws HibernateException {
+		try {
+			getDelegatedSession().delete(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public List find(String query) throws HibernateException {
+		try {
+			return getDelegatedSession().find(query);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public List find(String query, Object value, Type type) throws HibernateException {
+		try {
+			return getDelegatedSession().find(query, value, type);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public List find(String query, Object[] values, Type[] types) throws HibernateException {
+		try {
+			return getDelegatedSession().find(query, values, types);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Iterator iterate(String query) throws HibernateException {
+		try {
+			return getDelegatedSession().iterate(query);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Iterator iterate(String query, Object value, Type type) throws HibernateException {
+		try {
+			return getDelegatedSession().iterate(query, value, type);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Iterator iterate(String query, Object[] values, Type[] types) throws HibernateException {
+		try {
+			return getDelegatedSession().iterate(query, values, types);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Collection filter(Object collection, String filter) throws HibernateException {
+		try {
+			return getDelegatedSession().filter(collection, filter);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Collection filter(Object collection, String filter, Object value, Type type) throws HibernateException {
+		try {
+			return getDelegatedSession().filter(collection, filter, value, type);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Collection filter(Object collection, String filter, Object[] values, Type[] types) throws HibernateException {
+		try {
+			return getDelegatedSession().filter(collection, filter, values, types);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public int delete(String query) throws HibernateException {
+		try {
+			return getDelegatedSession().delete(query);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public int delete(String query, Object value, Type type) throws HibernateException {
+		try {
+			return getDelegatedSession().delete(query, value, type);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+
+	}
+
+	public int delete(String query, Object[] values, Type[] types) throws HibernateException {
+		try {
+			return getDelegatedSession().delete(query, values, types);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void lock(Object object, LockMode lockMode) throws HibernateException {
+		try {
+			getDelegatedSession().lock(object, lockMode);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void refresh(Object object) throws HibernateException {
+		try {
+			getDelegatedSession().refresh(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void refresh(Object object, LockMode lockMode) throws HibernateException {
+		try {
+			getDelegatedSession().refresh(object, lockMode);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public LockMode getCurrentLockMode(Object object) throws HibernateException {
+		try {
+			return getDelegatedSession().getCurrentLockMode(object);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Transaction beginTransaction() throws HibernateException {
+		try {
+			return getDelegatedSession().beginTransaction();
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Criteria createCriteria(Class persistentClass) {
+		try {
+			return getDelegatedSession().createCriteria(persistentClass);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Query createQuery(String queryString) throws HibernateException {
+		try {
+			return getDelegatedSession().createQuery(queryString);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Query createFilter(Object collection, String queryString) throws HibernateException {
+		try {
+			return getDelegatedSession().createFilter(collection, queryString);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Query getNamedQuery(String queryName) throws HibernateException {
+		try {
+			return getDelegatedSession().getNamedQuery(queryName);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Query createSQLQuery(String sql, String returnAlias, Class returnClass) {
+		try {
+			return getDelegatedSession().createSQLQuery(sql, returnAlias, returnClass);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Query createSQLQuery(String sql, String[] returnAliases, Class[] returnClasses) {
+		try {
+			return getDelegatedSession().createSQLQuery(sql, returnAliases, returnClasses);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public void clear() {
+		try {
+			getDelegatedSession().clear();
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object get(Class clazz, Serializable id) throws HibernateException {
+		try {
+			return getDelegatedSession().get(clazz, id);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public Object get(Class clazz, Serializable id, LockMode lockMode) throws HibernateException {
+		try {
+			return getDelegatedSession().get(clazz, id, lockMode);
+		} catch (HibernateException ex) {
+			throw handleException(ex);
+		} catch (RuntimeException ex) {
+			throw handleException(ex);
+		}
+	}
 }

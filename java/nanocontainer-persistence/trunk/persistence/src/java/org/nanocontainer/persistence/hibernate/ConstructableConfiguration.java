@@ -22,7 +22,7 @@ import org.w3c.dom.Document;
  * configure() methods... see respective hibernate javadocs.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class ConstructableConfiguration extends Configuration {
 

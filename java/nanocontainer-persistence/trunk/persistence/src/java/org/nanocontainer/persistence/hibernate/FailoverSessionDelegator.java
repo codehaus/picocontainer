@@ -21,7 +21,7 @@ import org.hibernate.SessionFactory;
  * and new one is obtained transparently. Session creation is done lazily.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class FailoverSessionDelegator extends SessionDelegator {
 
@@ -33,45 +33,45 @@ public class FailoverSessionDelegator extends SessionDelegator {
     }
 
     public SessionFactory getSessionFactory() {
-        return this.sessionFactory;
+        return sessionFactory;
     }
 
     /**
      * Obtain hibernate session in lazy way.
      */
     public Session getDelegatedSession() {
-        if (this.session == null) {
+        if (session == null) {
             try {
-                this.session = this.sessionFactory.openSession();
-            } catch (HibernateException ex) {
-                throw this.handleException(ex);
+                session = sessionFactory.openSession();
+            } catch (RuntimeException ex) {
+                throw handleException(ex);
             }
         }
 
-        return this.session;
+        return session;
     }
 
     public Connection close() throws HibernateException {
         try {
-            return this.getDelegatedSession().close();
+            return getDelegatedSession().close();
         } catch (HibernateException ex) {
-            this.session = null;
-            throw this.handleException(ex);
+            session = null;
+            throw handleException(ex);
         } finally {
-            this.session = null;
+            session = null;
         }
     }
 
     public void invalidateDelegatedSession() throws HibernateException {
         if (this.session != null) {
             try {
-                this.session.clear();
-                this.session.close();
+                session.clear();
+                session.close();
             } catch (HibernateException ex) {
-                this.session = null;
-                throw this.handleException(ex);
+                session = null;
+                throw handleException(ex);
             } finally {
-                this.session = null;
+                session = null;
             }
         }
     }

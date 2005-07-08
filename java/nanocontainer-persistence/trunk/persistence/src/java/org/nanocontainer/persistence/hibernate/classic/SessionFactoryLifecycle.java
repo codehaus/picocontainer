@@ -17,7 +17,7 @@ import org.picocontainer.Startable;
 /**
  * component organising lifecycle for session factory 
  * @author Konstanti Pribluda
- * @version $Revision$ 
+ * @version $Revision: 2043 $ 
  */
 public class SessionFactoryLifecycle implements Startable {
 	SessionFactory sessionFactory;

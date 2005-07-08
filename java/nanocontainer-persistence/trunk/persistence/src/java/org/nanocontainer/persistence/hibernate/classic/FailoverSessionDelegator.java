@@ -20,7 +20,7 @@ import org.picocontainer.PicoInitializationException;
  * session creation is done lazily. 
  * 
  * @author Konstantin Pribluda
- * @version $Revision$ 
+ * @version $Revision: 2043 $ 
  */
 public class FailoverSessionDelegator extends SessionDelegator {
     
@@ -42,7 +42,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
     /**
      * obtain hibernate session in lazy way
      */ 
-    public Session getSession()  {
+    public Session getDelegatedSession()  {
         if(session == null) {
             try {
             session = sessionFactory.openSession();
@@ -57,7 +57,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
     public Connection close()  throws HibernateException {
         Connection retval = null;
         try {
-            retval = getSession().close();
+            retval = getDelegatedSession().close();
         } catch(HibernateException ex) {
             session = null;
             throw ex;
@@ -68,7 +68,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
         return retval;
     }
     
-    public void invalidateSession() throws HibernateException {
+    public void invalidateDelegatedSession() throws HibernateException {
         if(session != null) {
             try {
                 session.clear();

@@ -18,7 +18,7 @@ import org.picocontainer.Startable;
  * component providing session lifecycle to be registered in container containing session 
  * in question
  * @author Konstantin Pribluda
- * @version $Revision$ 
+ * @version $Revision: 2043 $ 
  */
 public class SessionLifecycle implements Startable {
 	Session session;

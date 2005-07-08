@@ -16,7 +16,7 @@ import net.sf.hibernate.Session;
  * implementors provide session session  management.
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public interface SessionProvider {
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.exception.SQLExceptionConverter;
 import net.sf.hibernate.Databinder;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Interceptor;
@@ -30,12 +31,12 @@ import org.picocontainer.PicoInitializationException;
  * 
  * 
  * @author Konstantin Pribluda
- * @version $Revision$ 
+ * @version $Revision: 2043 $ 
  */
 
 public class SessionFactoryDelegator implements SessionFactory {
     
-    SessionFactory delegate;
+    private SessionFactory delegate;
     
     public SessionFactoryDelegator(Configuration configuration) {
         try {
@@ -119,4 +120,8 @@ public class SessionFactoryDelegator implements SessionFactory {
     public Reference getReference() throws NamingException {
         return delegate.getReference();
     }
+
+	public SQLExceptionConverter getSQLExceptionConverter() {
+		return delegate.getSQLExceptionConverter();
+	}
 }

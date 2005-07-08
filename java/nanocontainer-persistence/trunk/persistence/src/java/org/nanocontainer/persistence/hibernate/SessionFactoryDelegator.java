@@ -31,8 +31,7 @@ import org.picocontainer.PicoInitializationException;
  * Delegates everything to session factory obtained from confiuration. this class is necessary
  * because component adapters are really ugly when it comes to scripting.
  * 
- * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision$
+ * @version $Id$
  */
 public class SessionFactoryDelegator implements SessionFactory {
 
@@ -46,88 +45,96 @@ public class SessionFactoryDelegator implements SessionFactory {
         }
     }
 
-    public SessionFactory getSessionFactory() {
+    public SessionFactory getDelegatedSessionFactory() {
         return this.sessionFactory;
     }
 
     public void close() throws HibernateException {
-        this.getSessionFactory().close();
+        this.getDelegatedSessionFactory().close();
     }
 
     public void evict(Class persistentClass) throws HibernateException {
-        this.getSessionFactory().evict(persistentClass);
+        this.getDelegatedSessionFactory().evict(persistentClass);
     }
 
     public void evict(Class persistentClass, Serializable id) throws HibernateException {
-        this.getSessionFactory().evict(persistentClass, id);
+        this.getDelegatedSessionFactory().evict(persistentClass, id);
     }
 
     public void evictCollection(String roleName) throws HibernateException {
-        this.getSessionFactory().evictCollection(roleName);
+        this.getDelegatedSessionFactory().evictCollection(roleName);
     }
 
     public void evictCollection(String roleName, Serializable id) throws HibernateException {
-        this.getSessionFactory().evictCollection(roleName, id);
+        this.getDelegatedSessionFactory().evictCollection(roleName, id);
     }
 
     public void evictEntity(String entityName) throws HibernateException {
-        this.getSessionFactory().evictEntity(entityName);
+        this.getDelegatedSessionFactory().evictEntity(entityName);
     }
 
     public void evictEntity(String entityName, Serializable id) throws HibernateException {
-        this.getSessionFactory().evictEntity(entityName, id);
+        this.getDelegatedSessionFactory().evictEntity(entityName, id);
     }
 
     public void evictQueries() throws HibernateException {
-        this.getSessionFactory().evictQueries();
+        this.getDelegatedSessionFactory().evictQueries();
     }
 
     public void evictQueries(String cacheRegion) throws HibernateException {
-        this.getSessionFactory().evictQueries(cacheRegion);
+        this.getDelegatedSessionFactory().evictQueries(cacheRegion);
     }
 
     public Map getAllClassMetadata() throws HibernateException {
-        return this.getSessionFactory().getAllClassMetadata();
+        return this.getDelegatedSessionFactory().getAllClassMetadata();
     }
 
     public Map getAllCollectionMetadata() throws HibernateException {
-        return this.getSessionFactory().getAllCollectionMetadata();
+        return this.getDelegatedSessionFactory().getAllCollectionMetadata();
     }
 
     public ClassMetadata getClassMetadata(Class persistentClass) throws HibernateException {
-        return this.getSessionFactory().getClassMetadata(persistentClass);
+        return this.getDelegatedSessionFactory().getClassMetadata(persistentClass);
     }
 
     public ClassMetadata getClassMetadata(String entityName) throws HibernateException {
-        return this.getSessionFactory().getClassMetadata(entityName);
+        return this.getDelegatedSessionFactory().getClassMetadata(entityName);
     }
 
     public CollectionMetadata getCollectionMetadata(String roleName) throws HibernateException {
-        return this.getSessionFactory().getCollectionMetadata(roleName);
+        return this.getDelegatedSessionFactory().getCollectionMetadata(roleName);
     }
 
+	public Session getCurrentSession() throws HibernateException {
+		return this.getDelegatedSessionFactory().getCurrentSession();
+	}
+
     public Reference getReference() throws NamingException {
-        return this.getSessionFactory().getReference();
+        return this.getDelegatedSessionFactory().getReference();
     }
 
     public Statistics getStatistics() {
-        return this.getSessionFactory().getStatistics();
+        return this.getDelegatedSessionFactory().getStatistics();
     }
 
+	public boolean isClosed() {
+		return this.getDelegatedSessionFactory().isClosed();
+	}
+
     public Session openSession() throws HibernateException {
-        return this.getSessionFactory().openSession();
+        return this.getDelegatedSessionFactory().openSession();
     }
 
     public Session openSession(Connection connection) {
-        return this.getSessionFactory().openSession(connection);
+        return this.getDelegatedSessionFactory().openSession(connection);
     }
 
     public Session openSession(Connection connection, Interceptor interceptor) {
-        return this.getSessionFactory().openSession(connection, interceptor);
+        return this.getDelegatedSessionFactory().openSession(connection, interceptor);
     }
 
     public Session openSession(Interceptor interceptor) throws HibernateException {
-        return this.getSessionFactory().openSession(interceptor);
+        return this.getDelegatedSessionFactory().openSession(interceptor);
     }
 
 }

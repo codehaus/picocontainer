@@ -20,7 +20,7 @@ import org.w3c.dom.Document;
  * constructable hibernate configuration. not a rocket science, just a wrapper aroung
  * various configure() methods... see respective hibernate javadocs.
  * @author Konstantin Pribluda
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class ConstructableConfiguration extends Configuration {
 	

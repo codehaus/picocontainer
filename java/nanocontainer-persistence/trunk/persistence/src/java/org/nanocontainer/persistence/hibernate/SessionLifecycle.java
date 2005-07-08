@@ -19,7 +19,7 @@ import org.picocontainer.Startable;
  * question.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class SessionLifecycle implements Startable {
 

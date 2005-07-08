@@ -22,7 +22,7 @@ import org.nanocontainer.persistence.hibernate.pojo.Pojo;
 /**
  * Test case for failover session delegator
  * 
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class FailoverSessionDelegatorTestCase extends TestCase {
 

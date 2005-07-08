@@ -19,7 +19,7 @@ import net.sf.hibernate.SessionFactory;
 /**
  * test that lifecycle closes session factory
  * @author Konstantin Pribluda
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class SessionFactoryLifecycleTestCase  extends MockObjectTestCase  {
 

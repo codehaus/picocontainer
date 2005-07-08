@@ -14,7 +14,7 @@ package org.nanocontainer.persistence.hibernate.pojo;
  * Just a pojo to make hibernate happy.
  * 
  * @author Konstantin Pribluda
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class Pojo {
 

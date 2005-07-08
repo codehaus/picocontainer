@@ -15,7 +15,7 @@ import org.nanocontainer.persistence.hibernate.ConstructableConfiguration;
 import junit.framework.TestCase;
 
 /**
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class ConstructableConfigurationTestCase extends TestCase {
 

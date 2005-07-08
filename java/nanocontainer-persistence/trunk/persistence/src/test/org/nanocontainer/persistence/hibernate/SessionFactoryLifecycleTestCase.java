@@ -18,7 +18,7 @@ import org.nanocontainer.persistence.hibernate.SessionFactoryLifecycle;
 /**
  * Test that lifecycle closes session factory
  * 
- * @version $Revision$
+ * @version $Revision: 2043 $
  */
 public class SessionFactoryLifecycleTestCase extends MockObjectTestCase {
 

@@ -19,7 +19,7 @@ import org.nanocontainer.persistence.hibernate.pojo.Pojo;
 /**
  * test case for session delegator
  * @author Konstantin Pribluda
- * @version $Revision$
+ * @version $Revision: 2043 $
  * @deprecated together with class to be tested
  */
 public class FailoverSessionDelegatorTestCase extends TestCase {
@@ -31,17 +31,17 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
         
         FailoverSessionDelegator delegator = new FailoverSessionDelegator(factory);
         
-        Session session = delegator.getSession();
+        Session session = delegator.getDelegatedSession();
         assertNotNull(session);
         
-        assertSame(session,delegator.getSession());
+        assertSame(session,delegator.getDelegatedSession());
         
         // test that closing invalidates session
         delegator.close();
         assertNull(delegator.session);
-        assertNotSame(session,delegator.getSession());
+        assertNotSame(session,delegator.getDelegatedSession());
         
-        session = delegator.getSession();
+        session = delegator.getDelegatedSession();
         
         // produce error
         try {
@@ -50,7 +50,7 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
         } catch(HibernateException ex) {
             // that's ok
         }
-        assertNotSame(session,delegator.getSession());      
+        assertNotSame(session,delegator.getDelegatedSession());      
                      
     }
 }

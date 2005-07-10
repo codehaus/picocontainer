@@ -11,74 +11,97 @@ package org.nanocontainer.persistence.hibernate.classic;
 
 import java.sql.Connection;
 import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Interceptor;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import org.picocontainer.PicoInitializationException;
-/** 
- * session delegator with failover behaviour in case of hibernate exception.
- * old session is disposed  and new one is obtained transparently. 
- * session creation is done lazily. 
+
+/**
+ * session delegator with failover behaviour in case of hibernate exception. old session is disposed and new one is
+ * obtained transparently. session creation is done lazily.
  * 
  * @author Konstantin Pribluda
- * @version $Revision: 2043 $ 
+ * @version $Revision: 2043 $
  */
 public class FailoverSessionDelegator extends SessionDelegator {
-    
-    SessionFactory sessionFactory;
-    Session session = null;
-    
-    public FailoverSessionDelegator(SessionFactory sessionFactory) {
-        setSessionFactory(sessionFactory);
-    }
-    
-    
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-    
-    /**
-     * obtain hibernate session in lazy way
-     */ 
-    public Session getDelegatedSession()  {
-        if(session == null) {
-            try {
-            session = sessionFactory.openSession();
-            } catch(HibernateException ex) {
-                throw new PicoInitializationException(ex);
-            }
-        }
-        
-        return session;
-    }
-    
-    public Connection close()  throws HibernateException {
-        Connection retval = null;
-        try {
-            retval = getDelegatedSession().close();
-        } catch(HibernateException ex) {
-            session = null;
-            throw ex;
-        } finally {
-            session = null;
-        }
-        
-        return retval;
-    }
-    
-    public void invalidateDelegatedSession() throws HibernateException {
-        if(session != null) {
-            try {
-                session.clear();
-                session.close();
-            } catch(HibernateException ex) {
-                session = null;
-                throw ex;
-            } finally {
-                session = null;
-            }
-        }
-    }
+
+	Interceptor interceptor = null;
+	Session session = null;
+	SessionFactory sessionFactory;
+
+	/**
+	 * @param sessionFactory session factory to obtain session from 
+	 */
+	public FailoverSessionDelegator(SessionFactory sessionFactory) {
+		setSessionFactory(sessionFactory);
+	}
+
+	/**
+	 * @param sessionFactory sessionf actory to obtain session from
+	 * @param interpceptor interceptor to use with created session
+	 */
+	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor intr) {
+		this(sessionFactory);
+		setInterceptor(intr);
+	}
+
+	public Connection close() throws HibernateException {
+		Connection retval = null;
+		try {
+			retval = getDelegatedSession().close();
+		} catch (HibernateException ex) {
+			session = null;
+			throw ex;
+		} finally {
+			session = null;
+		}
+
+		return retval;
+	}
+
+	/**
+	 * obtain hibernate session in lazy way. use interceptor if configured
+	 */
+	public Session getDelegatedSession() {
+		if (session == null) {
+			try {
+
+				session = interceptor == null ? sessionFactory.openSession() : sessionFactory.openSession(interceptor);
+			} catch (HibernateException ex) {
+				throw new PicoInitializationException(ex);
+			}
+		}
+
+		return session;
+	}
+
+	public Interceptor getInterceptor() {
+		return interceptor;
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void invalidateDelegatedSession() throws HibernateException {
+		if (session != null) {
+			try {
+				session.clear();
+				session.close();
+			} catch (HibernateException ex) {
+				session = null;
+				throw ex;
+			} finally {
+				session = null;
+			}
+		}
+	}
+
+	public void setInterceptor(Interceptor interceptor) {
+		this.interceptor = interceptor;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 }

@@ -27,7 +27,7 @@
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-full-2.0.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-2.1.1.jar">
+  <classpathentry kind="var" path="MAVEN_REPO/commons-collections/jars/commons-collections-3.1.jar">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/hsqldb/jars/hsqldb-1.7.3.0.jar">
   </classpathentry>

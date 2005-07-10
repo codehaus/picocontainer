@@ -283,6 +283,7 @@ public abstract class SessionDelegator implements Session {
 
 	public Serializable save(Object object) throws HibernateException {
 		try {
+
 			return getDelegatedSession().save(object);
 		} catch (HibernateException ex) {
 			throw handleException(ex);

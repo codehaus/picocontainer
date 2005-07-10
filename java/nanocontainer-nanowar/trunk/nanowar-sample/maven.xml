@@ -24,12 +24,22 @@
         </define:tag>
         <define:tag name="deployWar">
             <j:set var="framework" value="${framework}"/>
+            <!--
             <deploy:artifact
                 artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
                 type="wars"
                 assureDirectoryCommand="mkdir -p"
                 siteCommand="cd @deployDirectory@"
                 />
+
+                -->
+            <artifact:artifact-deploy
+                project="nanocontainer"
+                type="wars"
+                artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
+
+            />
+            <!--typeHandler="${typeHandler}" from above ... -->
         </define:tag>
     </define:taglib>
 

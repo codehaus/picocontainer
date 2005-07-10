@@ -35,9 +35,17 @@
     </goal>
 
     <goal name="pico:tck-deploy" prereqs="pico:tck-jar">
+        <!-- does not work with local deploy mechanism
         <deploy:artifact
             artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
             type="jars"
+            />
+            -->
+        <artifact:artifact-deploy
+                project="picocontainer"
+                type="jars"
+                artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+
             />
     </goal>
 

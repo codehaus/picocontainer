@@ -34,8 +34,8 @@
 
                 -->
         <copy
-            file="${maven.build.dir}/${pom.artifactId}-${framework}-${pom.currentVersion}.war"
-            todir="${maven.repo.CruiseControl}/nanocontainer/wars"
+            file="${maven.build.dir}/${pom.artifactId}-sample.war"
+            todir="${maven.repo.CruiseControl}/nanocontainer/wars/${pom.artifactId}-${framework}-sample-${pom.currentVersion}.war"
             overwrite="true"
             />
         </define:tag>

@@ -34,7 +34,7 @@
 
                 -->
         <copy
-            file="${maven.build.dir}/${pom.artifactId}-${framework}.war"
+            file="${maven.build.dir}/${pom.artifactId}-${framework}-${pom.currentVersion}.war"
             todir="${maven.repo.CruiseControl}/nanocontainer/wars"
             overwrite="true"
             />

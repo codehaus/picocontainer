@@ -33,13 +33,11 @@
                 />
 
                 -->
-            <artifact:artifact-deploy
-                project="nanocontainer"
-                type="wars"
-                artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
-
+        <copy
+            file="${maven.build.dir}/${pom.artifactId}-${framework}.war"
+            todir="${maven.repo.CruiseControl}/nanocontainer/wars"
+            overwrite="true"
             />
-            <!--typeHandler="${typeHandler}" from above ... -->
         </define:tag>
     </define:taglib>
 

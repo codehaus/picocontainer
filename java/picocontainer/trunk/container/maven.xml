@@ -41,11 +41,10 @@
             type="jars"
             />
             -->
-        <artifact:artifact-deploy
-                project="picocontainer"
-                type="jars"
-                artifact="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
-
+        <copy
+            file="${maven.build.dir}/${pom.artifactId}-tck-${pom.currentVersion}.jar"
+            todir="${maven.repo.CruiseControl}/picocontainer/jars/"
+            overwrite="true"
             />
     </goal>
 

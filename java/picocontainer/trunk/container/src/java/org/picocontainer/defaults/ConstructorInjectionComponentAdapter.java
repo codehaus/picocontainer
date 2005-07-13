@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * Instantiates components using Constructor Injection.
@@ -195,11 +197,15 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
 
     private List getSortedMatchingConstructors() {
         List matchingConstructors = new ArrayList();
-        Constructor[] allConstructors = getComponentImplementation().getDeclaredConstructors();
-        // filter out all constructors that will definately not match 
-        Constructor constructor;
+        Constructor[] allConstructors =
+                (Constructor[]) AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        return getComponentImplementation().getDeclaredConstructors();
+                    }
+                });
+        // filter out all constructors that will definately not match
         for (int i = 0; i < allConstructors.length; i++) {
-            constructor = allConstructors[i];
+            Constructor constructor = allConstructors[i];
             if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
                     && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);

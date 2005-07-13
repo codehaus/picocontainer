@@ -18,7 +18,6 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Interceptor;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.tool.hbm2ddl.SchemaExport;
 import net.sf.hibernate.type.Type;
 
 import org.nanocontainer.persistence.hibernate.pojo.Pojo;

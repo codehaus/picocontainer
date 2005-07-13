@@ -11,6 +11,8 @@ import org.picocontainer.PicoVisitor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * Abstract PicoVisitor implementation. A generic traverse method is implemented, that 
@@ -24,11 +26,29 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractPicoVisitor implements PicoVisitor {
     private boolean traversal;
-    
-    public Object traverse(Object node) {
+
+    public Object traverse(final Object node) {
         traversal = true;
+        Object retval =
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        System.out.println("--> bar");
+                        try {
+                            Method method = node.getClass().getMethod("accept", new Class[]{PicoVisitor.class});
+                            return method;
+                        } catch (NoSuchMethodException e) {
+                            return e;
+                        } catch (Throwable t) {
+                            System.out.println("--> foo");
+                            return null;
+                        }
+                    }
+                });
         try {
-            final Method accept = node.getClass().getMethod("accept", new Class[]{PicoVisitor.class});
+            if (retval instanceof NoSuchMethodException) {
+                throw (NoSuchMethodException) retval;
+            }
+            Method accept = (Method) retval;
             accept.invoke(node, new Object[]{this});
             return Void.TYPE;
         } catch (NoSuchMethodException e) {

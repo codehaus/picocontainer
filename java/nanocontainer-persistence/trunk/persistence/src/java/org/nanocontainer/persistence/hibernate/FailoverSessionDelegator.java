@@ -13,6 +13,7 @@ package org.nanocontainer.persistence.hibernate;
 import java.sql.Connection;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -27,11 +28,16 @@ public class FailoverSessionDelegator extends SessionDelegator {
 
     private SessionFactory sessionFactory;
     private Session session = null;
-
+    private Interceptor interceptor = null;
+    
     public FailoverSessionDelegator(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor) {
+    	this(sessionFactory);
+    	setInterceptor(interceptor);
+    }
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
@@ -42,7 +48,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
     public Session getDelegatedSession() {
         if (session == null) {
             try {
-                session = sessionFactory.openSession();
+            	session = interceptor == null ? sessionFactory.openSession() : sessionFactory.openSession(interceptor);
             } catch (RuntimeException ex) {
                 throw handleException(ex);
             }
@@ -75,5 +81,13 @@ public class FailoverSessionDelegator extends SessionDelegator {
             }
         }
     }
+
+	public Interceptor getInterceptor() {
+		return interceptor;
+	}
+
+	public void setInterceptor(Interceptor interceptor) {
+		this.interceptor = interceptor;
+	}
 
 }

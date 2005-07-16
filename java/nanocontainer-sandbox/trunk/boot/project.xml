@@ -9,7 +9,7 @@
 
         <dependency>
             <id>groovy</id>
-            <version>1.0-jsr-02</version>
+            <version>1.0-jsr-03-SNAPSHOT</version>
         </dependency>
 
         <dependency>

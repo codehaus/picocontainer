@@ -1,10 +1,36 @@
 package org.nanocontainer.boot;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.Socket;
+import java.net.URL;
+import java.security.AccessControlException;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 
 public class BrownBear {
-    public BrownBear(Honey honey) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public BrownBear(Honey honey, Class klass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        try {
+            new Socket("google.com", 80);
+            System.out.println("BrownBear: 'socket open' NOT blocked to google.com:80 (wrong)");
+        } catch (AccessControlException e) {
+            System.out.println("BrownBear: 'socket open' blocked to google.com:80 (correct)");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            klass.getClassLoader();
+            System.out.println("BrownBear: Can access classloader of class *not* in BrownBear's tree (wrong)");
+        } catch (AccessControlException e) {
+            System.out.println("BrownBear: Can't access classloader of class *not* in BrownBear's tree (correct)");
+        }
+
+        this.getClass().getClassLoader();
+        System.out.println("BrownBear: Can access classloader of this class (correct)");
+
         System.out.println("BrownBear: I have eaten " + honey.eatSome() + " calories of Honey (of unknown type)");
         Class clazz = null;
         try {
@@ -39,5 +65,6 @@ public class BrownBear {
         }
         System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey's instance? - " + invoked);
         System.out.println("BrownBear: Can leverage any implementation detail from honey instance? - false");
+
     }
 }

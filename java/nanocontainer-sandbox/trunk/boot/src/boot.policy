@@ -13,17 +13,3 @@ grant codeBase "file:lib${/}common${/}*" {
     permission java.lang.RuntimePermission "getClassLoader";
 };
 
-grant codeBase "file:groovyGeneratedForNanoContainer" {
-	permission java.lang.RuntimePermission "accessDeclaredMembers";
-    permission java.util.PropertyPermission "user.dir", "read";
-    permission java.io.FilePermission "comps${/}*", "read";
-    permission java.lang.RuntimePermission "createClassLoader";
-    permission java.lang.RuntimePermission "getClassLoader";
-};
-
-// Without AccessController.doPrivileged in appropriate places, these have to be uncommented.
-//grant {
-//	permission java.lang.RuntimePermission "accessDeclaredMembers";
-//  permission java.lang.RuntimePermission "getClassLoader";
-//};
-

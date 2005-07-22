@@ -48,21 +48,21 @@ public class FailoverSessionDelegator extends SessionDelegator {
 
 	/**
 	 * @param sessionFactory sessionf actory to obtain session from
-	 * @param interpceptor interceptor to use with created session
+	 * @param interceptor interceptor to use with created session
 	 */
-	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interpceptor) {
+	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor) {
 		this(sessionFactory);
-		setInterceptor(interpceptor);
+		setInterceptor(interceptor);
 	}
 
 	/**
 	 * @param sessionFactory sessionf actory to obtain session from
-	 * @param interpceptor interceptor to use with created session
+	 * @param interceptor interceptor to use with created session
 	 * @param exceptionHandler Exception handler component to use with created session
 	 */
-	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interpceptor, HibernateExceptionHandler exceptionHandler) {
+	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor, HibernateExceptionHandler exceptionHandler) {
 		this(sessionFactory, exceptionHandler);
-		setInterceptor(interpceptor);
+		setInterceptor(interceptor);
 	}
 
 	public Connection close() throws HibernateException {

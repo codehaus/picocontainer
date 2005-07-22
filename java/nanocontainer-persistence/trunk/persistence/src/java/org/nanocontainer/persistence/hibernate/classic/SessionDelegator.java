@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.nanocontainer.persistence.hibernate.HibernateExceptionHandler;
+import org.nanocontainer.persistence.hibernate.classic.HibernateExceptionHandler;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.FlushMode;
@@ -33,6 +33,7 @@ import net.sf.hibernate.type.Type;
  * handling is also there. All methods are just delegations to hibernate session.
  * 
  * @author Konstantin Pribluda
+ * @author Jose Peleteiro
  * @version $Id$
  */
 public abstract class SessionDelegator implements Session {
@@ -43,6 +44,9 @@ public abstract class SessionDelegator implements Session {
 		exceptionHandler = null;
 	}
 
+	/**
+	 * @param exceptionHandler Exception handler component to use with created session
+	 */
 	public SessionDelegator(HibernateExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler;
 	}

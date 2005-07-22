@@ -21,6 +21,7 @@ import org.picocontainer.PicoInitializationException;
  * obtained transparently. session creation is done lazily.
  * 
  * @author Konstantin Pribluda
+ * @author Jose Peleteiro
  * @version $Revision: 2043 $
  */
 public class FailoverSessionDelegator extends SessionDelegator {
@@ -37,12 +38,31 @@ public class FailoverSessionDelegator extends SessionDelegator {
 	}
 
 	/**
+	 * @param sessionFactory session factory to obtain session from 
+	 * @param exceptionHandler Exception handler component to use with created session
+	 */
+	public FailoverSessionDelegator(SessionFactory sessionFactory, HibernateExceptionHandler exceptionHandler) {
+		super(exceptionHandler);
+		setSessionFactory(sessionFactory);
+	}
+
+	/**
 	 * @param sessionFactory sessionf actory to obtain session from
 	 * @param interpceptor interceptor to use with created session
 	 */
-	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor intr) {
+	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interpceptor) {
 		this(sessionFactory);
-		setInterceptor(intr);
+		setInterceptor(interpceptor);
+	}
+
+	/**
+	 * @param sessionFactory sessionf actory to obtain session from
+	 * @param interpceptor interceptor to use with created session
+	 * @param exceptionHandler Exception handler component to use with created session
+	 */
+	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interpceptor, HibernateExceptionHandler exceptionHandler) {
+		this(sessionFactory, exceptionHandler);
+		setInterceptor(interpceptor);
 	}
 
 	public Connection close() throws HibernateException {
@@ -65,7 +85,6 @@ public class FailoverSessionDelegator extends SessionDelegator {
 	public Session getDelegatedSession() {
 		if (session == null) {
 			try {
-
 				session = interceptor == null ? sessionFactory.openSession() : sessionFactory.openSession(interceptor);
 			} catch (HibernateException ex) {
 				throw new PicoInitializationException(ex);

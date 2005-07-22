@@ -15,6 +15,9 @@ public class NanoContainerBooter {
     private List hiddenURLs = new ArrayList();
 
     public static void main(String[] args) throws Exception {
+        System.out.println("--> Type something, press return to continue booting.");
+        System.in.read();
+        System.out.println("--> Continuing booting");
         new NanoContainerBooter(args);
     }
 

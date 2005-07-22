@@ -13,3 +13,7 @@ grant codeBase "file:lib${/}common${/}*" {
     permission java.lang.RuntimePermission "getClassLoader";
 };
 
+// For PicoContainer and others in lib/common
+//grant {
+//	permission java.security.AllPermission;
+//};

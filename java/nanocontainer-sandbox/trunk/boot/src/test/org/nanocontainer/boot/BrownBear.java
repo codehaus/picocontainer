@@ -21,6 +21,38 @@ public class BrownBear {
             e.printStackTrace();
         }
 
+
+//        ClassLoader cl = this.getClass().getClassLoader();
+//        System.out.println("--> cl1 " + cl);
+//        cl = cl.getParent();
+//        if (cl != null) {
+//            System.out.println("--> cl2 " + cl);
+//            cl = cl.getParent();
+//            if (cl != null) {
+//                System.out.println("--> cl3 " + cl);
+//                cl = cl.getParent();
+//                if (cl != null) {
+//                    System.out.println("--> cl4 " + cl);
+//                    cl = cl.getParent();
+//                    if (cl != null) {
+//                        System.out.println("--> cl5 " + cl);
+//                        cl = cl.getParent();
+//                        if (cl != null) {
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        try {
+            new Socket("yahoo.com", 80);
+            System.out.println("BrownBear: 'socket open' NOT blocked to yahoo.com:80 (correct)");
+        } catch (AccessControlException e) {
+            System.out.println("BrownBear: 'socket open' blocked to yahoo.com:80 (wrong)");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             klass.getClassLoader();
             System.out.println("BrownBear: Can access classloader of class *not* in BrownBear's tree (wrong)");

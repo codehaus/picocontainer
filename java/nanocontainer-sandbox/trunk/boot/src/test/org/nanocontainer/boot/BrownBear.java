@@ -1,5 +1,7 @@
 package org.nanocontainer.boot;
 
+import org.picocontainer.Startable;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,7 +11,7 @@ import java.security.AccessControlException;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
-public class BrownBear {
+public class BrownBear implements Startable {
     public BrownBear(Honey honey, Class klass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         try {
@@ -99,5 +101,11 @@ public class BrownBear {
         System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey's instance? - " + invoked);
         System.out.println("BrownBear: Can leverage any implementation detail from honey instance? - false");
 
+    }
+
+    public void start() {
+    }
+
+    public void stop() {
     }
 }

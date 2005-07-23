@@ -9,12 +9,7 @@ grant codeBase "file:lib${/}nanocontainer-boot-1.0-SNAPSHOT.jar" {
 
 // For PicoContainer and others in lib/common
 grant codeBase "file:lib${/}common${/}*" {
-	permission java.lang.RuntimePermission "accessDeclaredMembers";
-    permission java.lang.RuntimePermission "getClassLoader";
-    permission java.net.SocketPermission "yahoo.com:80", "connect";
+	permission java.security.AllPermission;
 };
 
-grant codeBase "file:groovyGeneratedForNanoContainer" {
-    permission java.net.SocketPermission "yahoo.com:80", "connect";
-};
 

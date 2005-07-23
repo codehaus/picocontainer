@@ -1,6 +1,9 @@
 package org.nanocontainer.boot;
 
 import org.picocontainer.Startable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -10,8 +13,13 @@ import java.net.URL;
 import java.security.AccessControlException;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BrownBear implements Startable {
+
+    private MutablePicoContainer subContainer;
+
     public BrownBear(Honey honey, Class klass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         try {
@@ -22,29 +30,6 @@ public class BrownBear implements Startable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-//        ClassLoader cl = this.getClass().getClassLoader();
-//        System.out.println("--> cl1 " + cl);
-//        cl = cl.getParent();
-//        if (cl != null) {
-//            System.out.println("--> cl2 " + cl);
-//            cl = cl.getParent();
-//            if (cl != null) {
-//                System.out.println("--> cl3 " + cl);
-//                cl = cl.getParent();
-//                if (cl != null) {
-//                    System.out.println("--> cl4 " + cl);
-//                    cl = cl.getParent();
-//                    if (cl != null) {
-//                        System.out.println("--> cl5 " + cl);
-//                        cl = cl.getParent();
-//                        if (cl != null) {
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         try {
             new Socket("yahoo.com", 80);
@@ -101,11 +86,19 @@ public class BrownBear implements Startable {
         System.out.println("BrownBear: Can invoke HoneyBeeHoney class' 'nonInterfaceMethod' against honey's instance? - " + invoked);
         System.out.println("BrownBear: Can leverage any implementation detail from honey instance? - false");
 
+        subContainer = new DefaultPicoContainer();
+        subContainer.registerComponentImplementation(Map.class, HashMap.class);
+        subContainer.registerComponentImplementation(PicoContainer.class, DefaultPicoContainer.class);
+
+
     }
 
     public void start() {
+        subContainer.start();
+        System.out.println("BrownBear:  Started Sub-Container? - " + subContainer.getComponentInstanceOfType(PicoContainer.class));
     }
 
     public void stop() {
+        subContainer.stop();
     }
 }

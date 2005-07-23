@@ -48,6 +48,7 @@ public class BrownBear {
             new Socket("yahoo.com", 80);
             System.out.println("BrownBear: 'socket open' NOT blocked to yahoo.com:80 (correct)");
         } catch (AccessControlException e) {
+            e.printStackTrace();
             System.out.println("BrownBear: 'socket open' blocked to yahoo.com:80 (wrong)");
         } catch (IOException e) {
             e.printStackTrace();

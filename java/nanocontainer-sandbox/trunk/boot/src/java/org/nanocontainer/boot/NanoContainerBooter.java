@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Aslak Hellesoy and Paul Hammant                          *
+ *****************************************************************************/
 package org.nanocontainer.boot;
 
 import java.io.File;
@@ -11,13 +20,10 @@ import java.util.ArrayList;
 
 public class NanoContainerBooter {
 
-    private List commonURLs = new ArrayList();
-    private List hiddenURLs = new ArrayList();
+    private List commonClassLoaderURLs = new ArrayList();
+    private List hiddenClassLoaderURLs = new ArrayList();
 
     public static void main(String[] args) throws Exception {
-        System.out.println("--> Type something, press return to continue booting.");
-        System.in.read();
-        System.out.println("--> Continuing booting");
         new NanoContainerBooter(args);
     }
 
@@ -27,31 +33,31 @@ public class NanoContainerBooter {
         for (int i = 0; i < libs.length; i++) {
             File file = libs[i];
             URL fileURL = file.toURL();
-            commonURLs.add(fileURL);
+            commonClassLoaderURLs.add(fileURL);
         }
 
         libs = new File("lib/hidden").listFiles();
         for (int i = 0; i < libs.length; i++) {
             File file = libs[i];
             URL fileURL = file.toURL();
-            hiddenURLs.add(fileURL);
+            hiddenClassLoaderURLs.add(fileURL);
         }
 
-        URL[] common = new URL[commonURLs.size()];
-        commonURLs.toArray(common);
+        URL[] common = new URL[commonClassLoaderURLs.size()];
+        commonClassLoaderURLs.toArray(common);
 
         URLClassLoader baseClassLoader = new URLClassLoader(common,
                         NanoContainerBooter.class.getClassLoader().getParent() );
 
-        URL[] hidden = new URL[hiddenURLs.size()];
-        hiddenURLs.toArray(hidden);
+        URL[] hidden = new URL[hiddenClassLoaderURLs.size()];
+        hiddenClassLoaderURLs.toArray(hidden);
 
         URLClassLoader hiddenClassLoader = new URLClassLoader(
                         hidden, baseClassLoader );
 
         Class nanoStandalone = hiddenClassLoader.loadClass("org.nanocontainer.Standalone");
         Constructor ctor = nanoStandalone.getConstructors()[0];
-        System.out.println("NanoContainer-Boot: Booting.");
+        System.out.println("NanoContainer-Boot: Booting...");
         ctor.newInstance(new Object[]{args});
         System.out.println("NanoContainer-Boot: Booted.");
 

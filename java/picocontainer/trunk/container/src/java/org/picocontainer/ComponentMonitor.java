@@ -27,7 +27,7 @@ public interface ComponentMonitor {
 
     void instantiating(Constructor constructor);
 
-    void instantiated(Constructor constructor, long beforeTime, long duration);
+    void instantiated(Constructor constructor, long duration);
 
     void instantiationFailed(Constructor constructor, Exception e);
 

@@ -175,7 +175,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         componentMonitor.instantiating(constructor);
                         long startTime = System.currentTimeMillis();
                         Object inst = newInstance(constructor, parameters);
-                        componentMonitor.instantiated(constructor, startTime, System.currentTimeMillis() - startTime);
+                        componentMonitor.instantiated(constructor, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
                         componentMonitor.instantiationFailed(constructor, e);

@@ -165,7 +165,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                         long startTime = System.currentTimeMillis();                            
                         componentMonitor.instantiating(constructor);
                         componentInstance = newInstance(constructor, null);
-                        componentMonitor.instantiated(constructor, startTime,  System.currentTimeMillis() - startTime);
+                        componentMonitor.instantiated(constructor, System.currentTimeMillis() - startTime);
                     } catch (InvocationTargetException e) {
                         componentMonitor.instantiationFailed(constructor, e);
                         if (e.getTargetException() instanceof RuntimeException) {

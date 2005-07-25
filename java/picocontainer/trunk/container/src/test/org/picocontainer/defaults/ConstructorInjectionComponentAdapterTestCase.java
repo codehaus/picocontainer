@@ -285,7 +285,7 @@ public class ConstructorInjectionComponentAdapterTestCase
                 return stringBuffer.append("The endTime wasn't after the startTime");
             }
         };
-        monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), startIsAfterBegin, durationIsGreaterThanOrEqualToZero);
+        monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), durationIsGreaterThanOrEqualToZero);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(Map.class, HashMap.class,
                 new Parameter[0], false, new DefaultComponentMonitorStrategy((ComponentMonitor) monitor.proxy()));
         cica.getComponentInstance(null);

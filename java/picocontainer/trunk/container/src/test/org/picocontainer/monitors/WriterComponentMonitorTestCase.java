@@ -34,7 +34,7 @@ public class WriterComponentMonitorTestCase extends TestCase {
     }
 
     public void testShouldTraceInstantiated() throws NoSuchMethodException {
-        componentMonitor.instantiated(constructor, 1234, 543);
+        componentMonitor.instantiated(constructor, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}) +NL,  out.toString());
     }
 

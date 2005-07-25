@@ -38,7 +38,7 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
         out.println(format(INSTANTIATING, new Object[]{constructor}));
     }
 
-    public void instantiated(Constructor constructor, long beforeTime, long duration) {
+    public void instantiated(Constructor constructor, long duration) {
         out.println(format(INSTANTIATED, new Object[]{constructor, new Long(duration)}));
     }
 

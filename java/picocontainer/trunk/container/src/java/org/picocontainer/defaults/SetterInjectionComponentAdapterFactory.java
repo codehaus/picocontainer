@@ -14,8 +14,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
-import java.io.Serializable;
-
 
 /**
  * A {@link ComponentAdapterFactory} for JavaBeans.
@@ -24,7 +22,7 @@ import java.io.Serializable;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class SetterInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class SetterInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private final boolean allowNonPublicClasses;
 
     public SetterInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
@@ -54,6 +52,6 @@ public class SetterInjectionComponentAdapterFactory implements ComponentAdapterF
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitorStrategy());
     }
 }

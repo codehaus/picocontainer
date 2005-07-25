@@ -8,16 +8,20 @@
  * Original code by Paul Hammant & Obie Fernandez & Aslak                    *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
+ * A component monitor is responsible for monitoring the component instantiation and method invocation.
+ * 
  * @author Paul Hammant
  * @author Obie Fernandez
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  * @version $Revision$
+ * @since 1.2
  */
 public interface ComponentMonitor {
 

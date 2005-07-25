@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-
-
 /**
  * This is the core interface used for registration of components with a container. It is possible to register {@link
  * #registerComponentImplementation(Object,Class) an implementation class}, {@link #registerComponentInstance(Object) an
@@ -161,4 +159,23 @@ public interface MutablePicoContainer extends PicoContainer {
      * @since 1.1
      */
     boolean removeChildContainer(PicoContainer child);
+
+
+    /**
+     * Changes monitor used by the container.  
+     * This monitor is used to create a new default instance of the {@link ComponentMonitorStrategy}.
+     * 
+     * @param monitor the ComponentMonitor
+     * @since 1.2
+     */
+    void changeMonitor(ComponentMonitor monitor);
+    
+    /**
+     * Changes monitor strategy used by the container.
+     * 
+     * @param monitorStrategy the ComponentMonitorStrategy
+     * @since 1.2
+     */
+    void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy);
+
 }

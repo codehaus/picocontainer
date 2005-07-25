@@ -10,17 +10,26 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
 /**
+ * <p>
  * A component adapter factory is responsible for creating
- * {@link ComponentAdapter component adapters}. The main use of the component adapter factory is
+ * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
  * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentAdapterFactory)}, where it can
  * be used to customize the default component adapter that is used when none is specified
  * explicitly.
+ * </p>
+ * 
+ * <p>
+ * A factory also controls the monitoring strategy by setting the {@link ComponentMonitorStrategy} used
+ * by the component adapter it creates.
+ * </p>
  * 
  * @author Jon Tirs&eacute;n
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public interface ComponentAdapterFactory {
@@ -50,4 +59,13 @@ public interface ComponentAdapterFactory {
     ComponentAdapter createComponentAdapter(Object componentKey,
                                             Class componentImplementation,
                                             Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+
+
+    /**
+     * Changes the component monitor strategy
+     * @param monitorStrategy the ComponentMonitorStrategy
+     * @since 1.2
+     */
+    void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy);
+
 }

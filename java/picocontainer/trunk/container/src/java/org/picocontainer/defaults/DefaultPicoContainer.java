@@ -10,6 +10,8 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -56,6 +58,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  * @author Thomas Heller
+ * @author Mauro Talevi
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
@@ -85,7 +88,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
      * @param parent                  the parent container (used for component dependency lookups).
-     * @param lifecycleManager        the liftcycle manager used to handle start/stop etc.
+     * @param lifecycleManager        the lifecycle manager used to handle start/stop etc.
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent,
                                 LifecycleManager lifecycleManager) {
@@ -130,6 +133,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
         this(componentAdapterFactory, null);
     }
 
+    /**
+     * Creates a new container with the DefaultComponentAdapterFactory using a
+     * custom ComponentMonitorStrategy
+     *
+     * @param componentMonitorStrategy the ComponentMonitorStrategy to use.
+     */
+    public DefaultPicoContainer(ComponentMonitorStrategy componentMonitorStrategy) {
+        this(new DefaultComponentAdapterFactory(componentMonitorStrategy), null);
+    }
+    
     /**
      * Creates a new container with a custom LifecycleManger and no parent container.
      *
@@ -465,4 +478,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             child.accept(visitor);
         }
     }
+    
+    public void changeMonitor(ComponentMonitor monitor){
+        this.componentAdapterFactory.changeMonitorStrategy(new DefaultComponentMonitorStrategy(monitor));
+    }
+    
+    public void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy){
+        this.componentAdapterFactory.changeMonitorStrategy(monitorStrategy);
+    }
+
 }

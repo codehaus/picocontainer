@@ -1,13 +1,13 @@
 package org.picocontainer.alternatives;
 
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentMonitor;
 import org.picocontainer.defaults.LifecycleVisitor;
-import org.picocontainer.defaults.NullComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.reflect.Method;
 
@@ -66,7 +66,7 @@ public class RootVisitingLifecycleManager implements LifecycleManager {
     }
 
     /**
-     * Creates a lifecycle manager with default visitors using a {@link org.picocontainer.defaults.NullComponentMonitor}.
+     * Creates a lifecycle manager with default visitors using a {@link org.picocontainer.monitors.NullComponentMonitor}.
      */
     public RootVisitingLifecycleManager() {
         this(new NullComponentMonitor());

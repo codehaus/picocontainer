@@ -11,27 +11,25 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-
-import java.io.Serializable;
 
 /**
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class ConstructorInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private final boolean allowNonPublicClasses;
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitorStrategy componentMonitorStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitorStrategy componentMonitorStrategy) {
         this.allowNonPublicClasses = allowNonPublicClasses;
-        this.componentMonitor = componentMonitor;
+        this.changeMonitorStrategy(componentMonitorStrategy);
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
         this.allowNonPublicClasses = allowNonPublicClasses;
-        this.componentMonitor = NullComponentMonitor.getInstance();
     }
 
     public ConstructorInjectionComponentAdapterFactory() {
@@ -42,6 +40,6 @@ public class ConstructorInjectionComponentAdapterFactory implements ComponentAda
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor);
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitorStrategy());
     }
 }

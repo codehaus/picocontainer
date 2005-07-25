@@ -13,9 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
-import java.io.Serializable;
-
-public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class DecoratingComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private ComponentAdapterFactory delegate;
 
     public DecoratingComponentAdapterFactory(ComponentAdapterFactory delegate) {

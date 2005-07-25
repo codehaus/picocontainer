@@ -12,7 +12,7 @@ package org.picocontainer.defaults;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.ComponentMonitor;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
@@ -285,10 +285,9 @@ public class ConstructorInjectionComponentAdapterTestCase
                 return stringBuffer.append("The endTime wasn't after the startTime");
             }
         };
-
         monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), startIsAfterBegin, durationIsGreaterThanOrEqualToZero);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(Map.class, HashMap.class,
-                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
+                new Parameter[0], false, new DefaultComponentMonitorStrategy((ComponentMonitor) monitor.proxy()));
         cica.getComponentInstance(null);
     }
 
@@ -312,7 +311,7 @@ public class ConstructorInjectionComponentAdapterTestCase
 
         monitor.expects(once()).method("instantiationFailed").with(eq(barfingActionListenerCtor), isITE);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(ActionListener.class, BarfingActionListener.class,
-                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
+                new Parameter[0], false, new DefaultComponentMonitorStrategy((ComponentMonitor) monitor.proxy()));
         try {
             cica.getComponentInstance(null);
             fail("Should barf");

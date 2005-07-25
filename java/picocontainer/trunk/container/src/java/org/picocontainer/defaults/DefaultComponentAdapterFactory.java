@@ -11,10 +11,9 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-
-import java.io.Serializable;
 
 /**
  * Creates instances of {@link ConstructorInjectionComponentAdapter} decorated by
@@ -24,19 +23,17 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
-    private ComponentMonitor componentMonitor;
-
-    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
-        this.componentMonitor = componentMonitor;
+    public DefaultComponentAdapterFactory(ComponentMonitorStrategy componentMonitorStrategy) {
+        changeMonitorStrategy(componentMonitorStrategy);
     }
 
     public DefaultComponentAdapterFactory() {
-        this.componentMonitor = NullComponentMonitor.getInstance();
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, componentMonitor));
+        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitorStrategy()));
     }
+    
 }

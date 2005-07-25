@@ -10,6 +10,8 @@
 package org.picocontainer.alternatives;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -132,6 +134,14 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public void accept(PicoVisitor visitor) {
         delegate.accept(visitor);
+    }
+
+    public void changeMonitor(ComponentMonitor monitor) {
+        delegate.changeMonitor(monitor);
+    }
+
+    public void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy) {
+        delegate.changeMonitorStrategy(monitorStrategy);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {

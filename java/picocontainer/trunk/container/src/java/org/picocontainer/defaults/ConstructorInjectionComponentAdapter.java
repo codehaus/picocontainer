@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
@@ -40,12 +42,13 @@ import java.security.PrivilegedAction;
  * @author Jon Tirs&eacute;n
  * @author Zohar Melamed
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient List sortedMatchingConstructors;
     private transient Guard instantiationGuard;
-    private ComponentMonitor componentMonitor;
+    private ComponentMonitorStrategy componentMonitorStrategy;
 
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
         protected PicoContainer guardedContainer;
@@ -56,24 +59,41 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     /**
-     * Explicitly specifies parameters. If parameters are null, default parameters
-     * will be used.
+     * Creates a ConstructorInjectionComponentAdapter 
+     * 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters the parameters to use for the initialization
+     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @param componentMonitorStrategy the component monitor strategy used by this adapter
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
      */
     public ConstructorInjectionComponentAdapter(final Object componentKey,
                                                 final Class componentImplementation,
                                                 Parameter[] parameters,
                                                 boolean allowNonPublicClasses,
-                                                ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                                ComponentMonitorStrategy componentMonitorStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-        this.componentMonitor = componentMonitor;
-    }
-
-    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        this(componentKey, componentImplementation, parameters, false, NullComponentMonitor.getInstance());
+        this.componentMonitorStrategy = componentMonitorStrategy;
     }
 
     /**
-     * Use default parameters.
+     * Creates a ConstructorInjectionComponentAdapter with key, implementation and parameters
+     *
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters the parameters to use for the initialization
+     */
+    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+        this(componentKey, componentImplementation, parameters, false, new DefaultComponentMonitorStrategy());
+    }
+
+    /**
+     * Creates a ConstructorInjectionComponentAdapter with key and implementation
+     * 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
      */
     public ConstructorInjectionComponentAdapter(Object componentKey,
                                                 Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -149,6 +169,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
+                    ComponentMonitor componentMonitor = componentMonitorStrategy.currentMonitor();
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
                         componentMonitor.instantiating(constructor);

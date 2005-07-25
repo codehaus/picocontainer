@@ -9,18 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DefaultComponentMonitorStrategy;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -38,10 +41,17 @@ import java.lang.reflect.Proxy;
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
     private final boolean strict;
+    private ComponentMonitorStrategy componentMonitorStrategy;
 
-    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict, 
+                                                ComponentMonitorStrategy componentMonitorStrategy) {
         super(delegate);
         this.strict = strict;
+        this.componentMonitorStrategy = componentMonitorStrategy;
+    }
+    
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
+        this(delegate, strict, new DefaultComponentMonitorStrategy());
     }
 
     public Object getComponentInstance(final PicoContainer container)
@@ -70,10 +80,16 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)
                             throws Throwable {
+                        ComponentMonitor monitor = componentMonitorStrategy.currentMonitor();
+                        Object componentInstance = getDelegate().getComponentInstance(container);
                         try {
-                            Object componentInstance = getDelegate().getComponentInstance(container);
-                            return method.invoke(componentInstance, args);
+                            monitor.invoking(method, componentInstance);
+                            long startTime = System.currentTimeMillis();
+                            Object object = method.invoke(componentInstance, args);
+                            monitor.invoked(method, componentInstance, System.currentTimeMillis() - startTime);
+                            return object;
                         } catch (final InvocationTargetException ite) {
+                            monitor.invocationFailed(method, componentInstance, ite);
                             throw ite.getTargetException();
                         }
                     }

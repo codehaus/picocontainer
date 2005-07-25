@@ -7,13 +7,14 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
-import org.picocontainer.defaults.ComponentMonitor;
+import org.picocontainer.ComponentMonitor;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  * @version $Revision$
  */
-public class ConsoleComponentMonitorTestCase extends TestCase {
+public class WriterComponentMonitorTestCase extends TestCase {
     private Writer out;
     private ComponentMonitor componentMonitor;
     private static final String NL = System.getProperty("line.separator");
@@ -24,37 +25,37 @@ public class ConsoleComponentMonitorTestCase extends TestCase {
         out = new StringWriter();
         constructor = getClass().getConstructor(null);
         method = getClass().getDeclaredMethod("setUp", null);
-        componentMonitor = new ConsoleComponentMonitor(out);
+        componentMonitor = new WriterComponentMonitor(out);
     }
 
     public void testShouldTraceInstantiating() throws NoSuchMethodException {
         componentMonitor.instantiating(constructor);
-        assertEquals("PicoContainer: instantiating public org.picocontainer.monitors.ConsoleComponentMonitorTestCase()" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATING, new Object[]{constructor}) +NL,  out.toString());
     }
 
     public void testShouldTraceInstantiated() throws NoSuchMethodException {
         componentMonitor.instantiated(constructor, 1234, 543);
-        assertEquals("PicoContainer: instantiated public org.picocontainer.monitors.ConsoleComponentMonitorTestCase() [543ms]" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}) +NL,  out.toString());
     }
 
     public void testShouldTraceInstantiationFailed() throws NoSuchMethodException {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
-        assertEquals("PicoContainer: instantiation failed: public org.picocontainer.monitors.ConsoleComponentMonitorTestCase(), reason: 'doh'" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}) +NL,  out.toString());
     }
 
     public void testShouldTraceInvoking() throws NoSuchMethodException {
         componentMonitor.invoking(method, this);
-        assertEquals("PicoContainer: invoking protected void org.picocontainer.monitors.ConsoleComponentMonitorTestCase.setUp() throws java.lang.Exception on Blah" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKING, new Object[]{method, this}) +NL,  out.toString());
     }
 
     public void testShouldTraceInvoked() throws NoSuchMethodException {
         componentMonitor.invoked(method, this, 543);
-        assertEquals("PicoContainer: invoked protected void org.picocontainer.monitors.ConsoleComponentMonitorTestCase.setUp() throws java.lang.Exception on Blah [543ms]" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}) +NL,  out.toString());
     }
 
     public void testShouldTraceInvocatiationFailed() throws NoSuchMethodException {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertEquals("PicoContainer: invocation failed: protected void org.picocontainer.monitors.ConsoleComponentMonitorTestCase.setUp() throws java.lang.Exception on Blah, reason: 'doh'" + NL, out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}) +NL,  out.toString());
     }
 
     public String toString() {

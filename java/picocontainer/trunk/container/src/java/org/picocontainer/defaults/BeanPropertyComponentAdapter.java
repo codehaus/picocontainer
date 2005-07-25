@@ -1,10 +1,5 @@
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -12,6 +7,13 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * Decorating component adapter that can be used to set additional properties
@@ -34,9 +36,10 @@ import java.util.Set;
 public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private Map properties;
     private transient Map setters = null;
-
+    private ComponentMonitorStrategy componentMonitorStrategy;
+    
     /**
-     * Construct a BeanProeprtyComponentAdapter.
+     * Construct a BeanPropertyComponentAdapter.
      *
      * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoInitializationException {@inheritDoc}
@@ -45,6 +48,18 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         super(delegate);
     }
 
+    /**
+     * Construct a BeanProeprtyComponentAdapter.
+     *
+     * @param delegate the wrapped {@link ComponentAdapter}
+     * @param monitorStrategy the MonitorStrategy
+     * @throws PicoInitializationException {@inheritDoc}
+     */
+    public BeanPropertyComponentAdapter(ComponentAdapter delegate, ComponentMonitorStrategy monitorStrategy) throws PicoInitializationException {
+        this(delegate);
+        this.componentMonitorStrategy = monitorStrategy;
+    }
+    
     /**
      * Get a component instance and set given property values.
      *
@@ -63,6 +78,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             setters = new SetterIntrospector().getSetters(getComponentImplementation());
         }
 
+        ComponentMonitor monitor = componentMonitorStrategy.currentMonitor();
         if (properties != null) {
             Set propertyNames = properties.keySet();
             for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
@@ -76,8 +92,12 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
                     throw new PicoInvocationTargetInitializationException(e);
                 }
                 try {
+                    monitor.invoking(setter, componentInstance);
+                    long startTime = System.currentTimeMillis();                                   
                     setter.invoke(componentInstance, new Object[]{value});
+                    monitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
+                    monitor.invocationFailed(setter, componentInstance, e);
                     throw new PicoInitializationException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
                 }
             }

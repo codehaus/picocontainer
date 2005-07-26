@@ -29,6 +29,14 @@
             <id>cglib</id>
             <version>full-2.0</version>
         </dependency>
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+        </dependency>
 
         <!-- test time only -->
         <dependency>

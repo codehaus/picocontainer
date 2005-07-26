@@ -253,6 +253,14 @@
             <excludes>
                 <exclude>**/Abstract*</exclude>
             </excludes>
+            <resources>
+                <resource>
+                    <directory>${basedir}/src/test</directory>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                </resource>
+            </resources>
         </unitTest>
     </build>
 

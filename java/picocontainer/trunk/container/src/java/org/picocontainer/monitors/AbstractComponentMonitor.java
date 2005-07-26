@@ -25,10 +25,10 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor, Seri
 
     protected final static String INSTANTIATING = "PicoContainer: instantiating {0}";
     protected final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";
-    protected final static String INSTANTIATION_FAILED = "PicoContainer: instantiation failed: {0}, reason '{1}'";
+    protected final static String INSTANTIATION_FAILED = "PicoContainer: instantiation failed: {0}, reason: {1}";
     protected final static String INVOKING = "PicoContainer: invoking {0} on {1}";
     protected final static String INVOKED = "PicoContainer: invoked {0} on {1} [{2} ms]";
-    protected final static String INVOCATION_FAILED = "PicoContainer: invocation failed: {0} on {1}, reason '{2}'";
+    protected final static String INVOCATION_FAILED = "PicoContainer: invocation failed: {0} on {1}, reason: {2}";
 
     protected static String format(String template, Object[] arguments) {
         return MessageFormat.format(template, arguments);

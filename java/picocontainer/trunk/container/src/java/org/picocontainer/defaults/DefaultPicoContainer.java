@@ -9,21 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.Disposable;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +18,20 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 /**
  * <p/>
@@ -135,12 +134,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
 
     /**
      * Creates a new container with the DefaultComponentAdapterFactory using a
-     * custom ComponentMonitorStrategy
-     *
-     * @param componentMonitorStrategy the ComponentMonitorStrategy to use.
+     * custom ComponentMonitor
+     * @param componentMonitor the ComponentMonitor
      */
-    public DefaultPicoContainer(ComponentMonitorStrategy componentMonitorStrategy) {
-        this(new DefaultComponentAdapterFactory(componentMonitorStrategy), null);
+    public DefaultPicoContainer(ComponentMonitor componentMonitor) {
+        this(new DefaultComponentAdapterFactory(componentMonitor), null);
     }
     
     /**
@@ -480,11 +478,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
     }
     
     public void changeMonitor(ComponentMonitor monitor){
-        this.componentAdapterFactory.changeMonitorStrategy(new DefaultComponentMonitorStrategy(monitor));
+        this.componentAdapterFactory.changeMonitor(monitor);
     }
     
-    public void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy){
-        this.componentAdapterFactory.changeMonitorStrategy(monitorStrategy);
-    }
-
 }

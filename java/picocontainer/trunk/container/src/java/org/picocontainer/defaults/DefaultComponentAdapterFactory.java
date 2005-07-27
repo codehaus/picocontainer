@@ -11,7 +11,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -25,15 +25,15 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
-    public DefaultComponentAdapterFactory(ComponentMonitorStrategy componentMonitorStrategy) {
-        changeMonitorStrategy(componentMonitorStrategy);
+    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
+        changeMonitor(componentMonitor);
     }
 
     public DefaultComponentAdapterFactory() {
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitorStrategy()));
+        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitor()));
     }
     
 }

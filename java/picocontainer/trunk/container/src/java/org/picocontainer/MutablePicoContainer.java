@@ -160,22 +160,12 @@ public interface MutablePicoContainer extends PicoContainer {
      */
     boolean removeChildContainer(PicoContainer child);
 
-
     /**
      * Changes monitor used by the container.  
-     * This monitor is used to create a new default instance of the {@link ComponentMonitorStrategy}.
      * 
      * @param monitor the ComponentMonitor
      * @since 1.2
      */
     void changeMonitor(ComponentMonitor monitor);
     
-    /**
-     * Changes monitor strategy used by the container.
-     * 
-     * @param monitorStrategy the ComponentMonitorStrategy
-     * @since 1.2
-     */
-    void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy);
-
 }

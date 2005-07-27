@@ -52,6 +52,6 @@ public class SetterInjectionComponentAdapterFactory extends MonitoringComponentA
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitorStrategy());
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitor());
     }
 }

@@ -16,13 +16,12 @@ import java.lang.reflect.Proxy;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DefaultComponentMonitorStrategy;
+import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -41,17 +40,17 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
     private final boolean strict;
-    private ComponentMonitorStrategy componentMonitorStrategy;
+    private ComponentMonitor componentMonitor;
 
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict, 
-                                                ComponentMonitorStrategy componentMonitorStrategy) {
+                                                ComponentMonitor componentMonitor) {
         super(delegate);
         this.strict = strict;
-        this.componentMonitorStrategy = componentMonitorStrategy;
+        this.componentMonitor = componentMonitor;
     }
     
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
-        this(delegate, strict, new DefaultComponentMonitorStrategy());
+        this(delegate, strict, new DelegatingComponentMonitor());
     }
 
     public Object getComponentInstance(final PicoContainer container)
@@ -80,16 +79,15 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)
                             throws Throwable {
-                        ComponentMonitor monitor = componentMonitorStrategy.currentMonitor();
                         Object componentInstance = getDelegate().getComponentInstance(container);
                         try {
-                            monitor.invoking(method, componentInstance);
+                            componentMonitor.invoking(method, componentInstance);
                             long startTime = System.currentTimeMillis();
                             Object object = method.invoke(componentInstance, args);
-                            monitor.invoked(method, componentInstance, System.currentTimeMillis() - startTime);
+                            componentMonitor.invoked(method, componentInstance, System.currentTimeMillis() - startTime);
                             return object;
                         } catch (final InvocationTargetException ite) {
-                            monitor.invocationFailed(method, componentInstance, ite);
+                            componentMonitor.invocationFailed(method, componentInstance, ite);
                             throw ite.getTargetException();
                         }
                     }

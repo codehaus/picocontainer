@@ -5,48 +5,48 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
+ * Original code by Mauro Talevi                                             *
  *****************************************************************************/
 package org.picocontainer.defaults;
 
 import java.io.Serializable;
 
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitor;
 
 /**
- * Abstract {@link ComponentAdapterFactory} supporting different {@linkComponentMonitorStrategy}
+ * Abstract {@link ComponentAdapterFactory} supporting different {@link ComponentMonitor}
  * 
  * @author Mauro Talevi
  * @since 1.2
  */
 public abstract class MonitoringComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
-    private ComponentMonitorStrategy componentMonitorStrategy;
+    private ComponentMonitor componentMonitor;
 
     /**
-     * Creates a MonitoringComponentAdapterFactory with a custom monitor strategy
-     * @param monitorStrategy the ComponentMonitorStrategy
+     * Creates a MonitoringComponentAdapterFactory with a custom monitor 
+     * @param monitor the ComponentMonitor used by the factory
      */
-    public MonitoringComponentAdapterFactory(ComponentMonitorStrategy monitorStrategy) {
-        this.componentMonitorStrategy = monitorStrategy;
+    public MonitoringComponentAdapterFactory(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
     }
 
     /**
-     * Creates a  MonitoringComponentAdapterFactory with default monitor strategy
+     * Creates a  MonitoringComponentAdapterFactory with default monitor
      */
     public MonitoringComponentAdapterFactory() {
-        this(new DefaultComponentMonitorStrategy());
+        this(new DelegatingComponentMonitor());
     }
     
-    public void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy) {
-        this.componentMonitorStrategy = monitorStrategy;
+    public void changeMonitor(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
     }
 
     /**
-     * Allow subclasses to get hold of current monitor strategy 
-     * @return The ComponentMonitorStrategy currently used
+     * Retur the monitor currently used
+     * @return The ComponentMonitor currently used
      */
-    protected ComponentMonitorStrategy currentMonitorStrategy(){
-        return componentMonitorStrategy;
+    protected ComponentMonitor currentMonitor(){
+        return componentMonitor;
     }
 
 }

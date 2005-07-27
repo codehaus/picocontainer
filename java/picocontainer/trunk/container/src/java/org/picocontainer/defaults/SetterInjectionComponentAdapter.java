@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
@@ -45,7 +44,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     private transient List setters;
     private transient List setterNames;
     private transient Class[] setterTypes;
-    protected ComponentMonitorStrategy componentMonitorStrategy;
+    protected ComponentMonitor componentMonitor;
 
     /**
      * Constructs a SetterInjectionComponentAdapter
@@ -54,7 +53,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @param componentMonitorStrategy the component monitor strategy
+     * @param componentMonitor the component monitor used by this adapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
      */
@@ -62,9 +61,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                                            final Class componentImplementation,
                                            Parameter[] parameters,
                                            boolean allowNonPublicClasses,
-                                           ComponentMonitorStrategy componentMonitorStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                           ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-        this.componentMonitorStrategy = componentMonitorStrategy;        
+        this.componentMonitor = componentMonitor;        
     }
     
     /**
@@ -79,7 +78,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                                            final Class componentImplementation,
                                            Parameter[] parameters,
                                            boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DefaultComponentMonitorStrategy());
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DelegatingComponentMonitor());
     }
 
     /**
@@ -159,7 +158,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             instantiationGuard = new Guard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    ComponentMonitor componentMonitor = componentMonitorStrategy.currentMonitor();
                     Object componentInstance = null;
                     try {
                         long startTime = System.currentTimeMillis();                            

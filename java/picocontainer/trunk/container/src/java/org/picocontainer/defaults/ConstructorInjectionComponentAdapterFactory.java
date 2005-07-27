@@ -11,7 +11,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -21,11 +21,10 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private final boolean allowNonPublicClasses;
-    private ComponentMonitorStrategy componentMonitorStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitorStrategy componentMonitorStrategy) {
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
         this.allowNonPublicClasses = allowNonPublicClasses;
-        this.changeMonitorStrategy(componentMonitorStrategy);
+        this.changeMonitor(componentMonitor);
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
@@ -40,6 +39,6 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitorStrategy());
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitor());
     }
 }

@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -191,29 +190,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testDefaultPicoContainerCanChangeMonitor() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
-        MutablePicoContainer pico = new DefaultPicoContainer(new DefaultComponentMonitorStrategy(monitor1));        
+        MutablePicoContainer pico = new DefaultPicoContainer(monitor1);        
         pico.registerComponentImplementation("t1", SimpleTouchable.class);
         Touchable t1 = (Touchable)pico.getComponentInstance("t1");
         assertTrue("writer not empty", writer1.toString().length() > 0 );
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
         pico.changeMonitor(monitor2);
-        pico.registerComponentImplementation("t2", SimpleTouchable.class);
-        Touchable t2 = (Touchable)pico.getComponentInstance("t2");
-        assertTrue("writer not empty", writer2.toString().length() > 0 );
-        assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length() );
-    }
-
-    public void testDefaultPicoContainerCanChangeMonitorStrategy() {
-        StringWriter writer1 = new StringWriter();
-        ComponentMonitorStrategy strategy1 = new DefaultComponentMonitorStrategy(new WriterComponentMonitor(writer1));        
-        MutablePicoContainer pico = new DefaultPicoContainer(strategy1);        
-        pico.registerComponentImplementation("t1", SimpleTouchable.class);
-        Touchable t1 = (Touchable)pico.getComponentInstance("t1");
-        assertTrue("writer not empty", writer1.toString().length() > 0 );
-        StringWriter writer2 = new StringWriter();
-        ComponentMonitorStrategy strategy2 = new DefaultComponentMonitorStrategy(new WriterComponentMonitor(writer2));        
-        pico.changeMonitorStrategy(strategy2);
         pico.registerComponentImplementation("t2", SimpleTouchable.class);
         Touchable t2 = (Touchable)pico.getComponentInstance("t2");
         assertTrue("writer not empty", writer2.toString().length() > 0 );

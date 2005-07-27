@@ -287,7 +287,7 @@ public class ConstructorInjectionComponentAdapterTestCase
         };
         monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), durationIsGreaterThanOrEqualToZero);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(Map.class, HashMap.class,
-                new Parameter[0], false, new DefaultComponentMonitorStrategy((ComponentMonitor) monitor.proxy()));
+                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
         cica.getComponentInstance(null);
     }
 
@@ -311,7 +311,7 @@ public class ConstructorInjectionComponentAdapterTestCase
 
         monitor.expects(once()).method("instantiationFailed").with(eq(barfingActionListenerCtor), isITE);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(ActionListener.class, BarfingActionListener.class,
-                new Parameter[0], false, new DefaultComponentMonitorStrategy((ComponentMonitor) monitor.proxy()));
+                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
         try {
             cica.getComponentInstance(null);
             fail("Should barf");

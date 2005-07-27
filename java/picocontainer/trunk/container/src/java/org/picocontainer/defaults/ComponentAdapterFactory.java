@@ -10,7 +10,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -24,7 +24,7 @@ import org.picocontainer.PicoIntrospectionException;
  * </p>
  * 
  * <p>
- * A factory also controls the monitoring strategy by setting the {@link ComponentMonitorStrategy} used
+ * A factory also controls the monitoring strategy by setting the {@link ComponentMonitor} used
  * by the component adapter it creates.
  * </p>
  * 
@@ -62,10 +62,10 @@ public interface ComponentAdapterFactory {
 
 
     /**
-     * Changes the component monitor strategy
-     * @param monitorStrategy the ComponentMonitorStrategy
+     * Changes the monitor used by the factory.
+     * @param monitor the new ComponentMonitor used.
      * @since 1.2
      */
-    void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy);
+    void changeMonitor(ComponentMonitor monitor);
 
 }

@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A {@link ComponentAdapterFactory} that creates 
@@ -41,7 +41,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
-        BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter, currentMonitorStrategy());
+        BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter, currentMonitor());
         adapterCache.put(componentKey, propertyAdapter);
         return propertyAdapter;
     }

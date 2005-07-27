@@ -9,9 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -19,10 +22,6 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Paul Hammant
@@ -138,10 +137,6 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public void changeMonitor(ComponentMonitor monitor) {
         delegate.changeMonitor(monitor);
-    }
-
-    public void changeMonitorStrategy(ComponentMonitorStrategy monitorStrategy) {
-        delegate.changeMonitorStrategy(monitorStrategy);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {

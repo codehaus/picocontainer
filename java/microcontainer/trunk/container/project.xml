@@ -11,8 +11,8 @@
     <name>microcontainer</name>
 
     <dependencies>
-
-        <dependency>
+    
+       <dependency>
             <id>groovy</id>
             <version>1.0-jsr-02</version>
         </dependency>

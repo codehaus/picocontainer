@@ -326,7 +326,6 @@ public class CollectionComponentParameter
             for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
                 final Map.Entry entry = (Map.Entry) iterator.next();
                 final Object key = entry.getKey();
-                final ComponentAdapter componentAdapter = (ComponentAdapter) entry.getValue();
                 result.put(key, container.getComponentInstance(key));
             }
             return result;

@@ -47,7 +47,6 @@ import org.picocontainer.PicoIntrospectionException;
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient List sortedMatchingConstructors;
     private transient Guard instantiationGuard;
-    private ComponentMonitor componentMonitor;
 
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
         protected PicoContainer guardedContainer;
@@ -73,8 +72,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                                                 Parameter[] parameters,
                                                 boolean allowNonPublicClasses,
                                                 ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-        this.componentMonitor = componentMonitor;
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses,componentMonitor);
     }
 
     /**
@@ -168,6 +166,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
+                    ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
                         componentMonitor.instantiating(constructor);

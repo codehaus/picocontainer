@@ -9,14 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -51,17 +52,31 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @param componentMonitor the component monitor used by this ComponentAdapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
      */
-    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
-        super(componentKey, componentImplementation);
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses,
+            ComponentMonitor componentMonitor) {
+        super(componentKey, componentImplementation, componentMonitor);
 		checkConcrete();
-
         this.parameters = parameters;
         this.allowNonPublicClasses = allowNonPublicClasses;
     }
 
+    /**
+     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters the parameters to use for the initialization
+     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     */
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DelegatingComponentMonitor());
+    }
+    
     private void checkConcrete() throws NotConcreteRegistrationException {
         // Assert that the component class is concrete.
         boolean isAbstract = (getComponentImplementation().getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;

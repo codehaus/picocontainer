@@ -44,7 +44,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     private transient List setters;
     private transient List setterNames;
     private transient Class[] setterTypes;
-    protected ComponentMonitor componentMonitor;
 
     /**
      * Constructs a SetterInjectionComponentAdapter
@@ -62,8 +61,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                                            Parameter[] parameters,
                                            boolean allowNonPublicClasses,
                                            ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-        this.componentMonitor = componentMonitor;        
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor);
     }
     
     /**
@@ -158,6 +156,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             instantiationGuard = new Guard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
+                    ComponentMonitor componentMonitor = currentMonitor();
                     Object componentInstance = null;
                     try {
                         long startTime = System.currentTimeMillis();                            

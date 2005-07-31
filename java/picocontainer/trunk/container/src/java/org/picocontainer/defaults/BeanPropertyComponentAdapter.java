@@ -35,18 +35,7 @@ import org.picocontainer.PicoIntrospectionException;
 public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private Map properties;
     private transient Map setters = null;
-    private ComponentMonitor componentMonitor;
     
-    /**
-     * Construct a BeanPropertyComponentAdapter.
-     *
-     * @param delegate the wrapped {@link ComponentAdapter}
-     * @throws PicoInitializationException {@inheritDoc}
-     */
-    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
-        super(delegate);
-    }
-
     /**
      * Construct a BeanPropertyComponentAdapter.
      *
@@ -55,8 +44,17 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      * @throws PicoInitializationException {@inheritDoc}
      */
     public BeanPropertyComponentAdapter(ComponentAdapter delegate, ComponentMonitor componentMonitor) throws PicoInitializationException {
-        this(delegate);
-        this.componentMonitor = componentMonitor;
+        super(delegate, componentMonitor);
+    }
+
+    /**
+     * Construct a BeanPropertyComponentAdapter.
+     *
+     * @param delegate the wrapped {@link ComponentAdapter}
+     * @throws PicoInitializationException {@inheritDoc}
+     */
+    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
+        this(delegate, new DelegatingComponentMonitor());
     }
     
     /**
@@ -78,6 +76,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         }
 
         if (properties != null) {
+            ComponentMonitor componentMonitor = currentMonitor();
             Set propertyNames = properties.keySet();
             for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
                 final String propertyName = (String) iterator.next();

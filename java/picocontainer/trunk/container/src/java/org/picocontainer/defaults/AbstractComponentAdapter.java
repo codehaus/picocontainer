@@ -9,10 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
-
-import java.io.Serializable;
 
 /**
  * Base class for a ComponentAdapter with general functionality.
@@ -27,7 +25,7 @@ import java.io.Serializable;
  * @version $Revision$
  * @since 1.0
  */
-public abstract class AbstractComponentAdapter implements ComponentAdapter, Serializable {
+public abstract class AbstractComponentAdapter extends MonitoringComponentAdapter {
     private Object componentKey;
     private Class componentImplementation;
 
@@ -38,6 +36,18 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      */
     protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
+        this(componentKey, componentImplementation, new DelegatingComponentMonitor());
+    }
+
+    /**
+     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param componentMonitor the component monitor used by this ComponentAdapter
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     */
+    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+        super(componentMonitor);
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }
@@ -85,4 +95,5 @@ public abstract class AbstractComponentAdapter implements ComponentAdapter, Seri
     public void accept(PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
     }
+    
 }

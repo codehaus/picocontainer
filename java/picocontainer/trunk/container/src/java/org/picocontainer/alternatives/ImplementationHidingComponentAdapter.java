@@ -29,26 +29,36 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * of a real subject (behind a proxy) provided the key is an interface.
  * <p/>
  * This class exists here, because a) it has no deps on external jars, b) dynamic proxy is quite easy.
- * The user is prompted to look at nanocontainer-proxytoys for alternate and bigger implementations.
+ * The user is prompted to look at picocontainer-gems for alternate and bigger implementations.
  *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @version $Revision$
- * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapter for a more feature-rich version of this class.
- * @see org.nanocontainer.proxytoys.HotSwappingComponentAdapterFactory
+ * @see org.picocontainer.gems.HotSwappingComponentAdapter for a more feature-rich version of this class.
+ * @see org.picocontainer.gems.HotSwappingComponentAdapterFactory
  * @since 1.1
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
     private final boolean strict;
-    private ComponentMonitor componentMonitor;
 
-    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict, 
+    /**
+     * Creates an ImplementationHidingComponentAdapter with a delegate and a monitor
+     * @param delegate the component adapter to which this adapter delegates
+     * @param strictMode the scrict mode boolean
+     * @param componentMonitor the component monitor used by this adapter
+     */
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strictMode, 
                                                 ComponentMonitor componentMonitor) {
-        super(delegate);
-        this.strict = strict;
-        this.componentMonitor = componentMonitor;
+        super(delegate, componentMonitor);
+        this.strict = strictMode;
     }
     
+    /**
+     * Creates an ImplementationHidingComponentAdapter with a delegate and a monitor
+     * @param delegate the component adapter to which this adapter delegates
+     * @param strictMode the scrict mode boolean
+     * @param componentMonitor the component monitor used by this adapter
+     */
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
         this(delegate, strict, new DelegatingComponentMonitor());
     }
@@ -80,6 +90,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
                                          final Object[] args)
                             throws Throwable {
                         Object componentInstance = getDelegate().getComponentInstance(container);
+                        ComponentMonitor componentMonitor = currentMonitor();
                         try {
                             componentMonitor.invoking(method, componentInstance);
                             long startTime = System.currentTimeMillis();

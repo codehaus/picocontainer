@@ -11,24 +11,28 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-
-import java.io.Serializable;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @author Aslak Hellesoy
  * @version $Revision$
  */
-public class DecoratingComponentAdapter implements ComponentAdapter, Serializable {
+public class DecoratingComponentAdapter extends MonitoringComponentAdapter {
 
     private ComponentAdapter delegate;
 
-    public DecoratingComponentAdapter(ComponentAdapter delegate) {
+    public DecoratingComponentAdapter(ComponentAdapter delegate, ComponentMonitor monitor) {
+        super(monitor);
         this.delegate = delegate;
+    }
+    
+    public DecoratingComponentAdapter(ComponentAdapter delegate) {
+        this(delegate, new DelegatingComponentMonitor());
     }
 
     public Object getComponentKey() {

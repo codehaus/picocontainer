@@ -212,7 +212,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertTrue(l.contains("something"));
     }
 
-    public void testUnsatisfiedComponentsExceptionGivesVerboseEnoughErrorMessage() {
+    public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponentImplementation(ComponentD.class);
 
@@ -232,6 +232,49 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
 
+    public void testUnsatisfiableDependenciesExceptionGivesUnsatisfiedDependencyTypes() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        // D depends on E and B
+        pico.registerComponentImplementation(ComponentD.class);
+
+        // first - do not register any dependency
+        // should yield first unsatisfied dependency
+        try {
+            pico.getComponentInstance(ComponentD.class);
+        } catch (UnsatisfiableDependenciesException e) {
+            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            assertEquals(1, unsatisfiableDependencies.size());
+            List list = (List) unsatisfiableDependencies.iterator().next();
+            final List expectedList = new ArrayList(2);
+            expectedList.add(ComponentE.class);
+            expectedList.add(ComponentB.class);
+            assertEquals(expectedList, list);
+
+            Class unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
+            assertNotNull(unsatisfiedDependencyType);
+            assertEquals(ComponentE.class, unsatisfiedDependencyType);
+        }
+        
+        // now register only first dependency
+        // should yield second unsatisfied dependency
+        pico.registerComponentImplementation(ComponentE.class);
+        try {
+            pico.getComponentInstance(ComponentD.class);
+        } catch (UnsatisfiableDependenciesException e) {
+            Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
+            assertEquals(1, unsatisfiableDependencies.size());
+            List list = (List) unsatisfiableDependencies.iterator().next();
+            final List expectedList = new ArrayList(2);
+            expectedList.add(ComponentE.class);
+            expectedList.add(ComponentB.class);
+            assertEquals(expectedList, list);
+
+            Class unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
+            assertNotNull(unsatisfiedDependencyType);
+            assertEquals(ComponentB.class, unsatisfiedDependencyType);
+        }        
+    }
+    
     public void testCyclicDependencyThrowsCyclicDependencyException() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponentImplementation(ComponentB.class);

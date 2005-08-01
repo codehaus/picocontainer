@@ -105,6 +105,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
         int lastSatisfiableConstructorSize = -1;
+        Class unsatisfiedDependencyType = null;
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
             boolean failedDependency = false;
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
@@ -118,6 +119,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                unsatisfiedDependencyType = parameterTypes[j];
                 failedDependency = true;
                 break;
             }
@@ -142,7 +144,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
-            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
+            throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes);
         } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out 
             final Set nonMatching = new HashSet();

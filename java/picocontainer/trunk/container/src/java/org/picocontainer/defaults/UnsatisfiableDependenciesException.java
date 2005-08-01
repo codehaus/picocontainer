@@ -15,26 +15,44 @@ import org.picocontainer.PicoIntrospectionException;
 import java.util.Set;
 
 /**
+ * Exception thrown when some of the component's dependencies are not satisfiable.
+ * 
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  * @version $Revision$
  */
 public class UnsatisfiableDependenciesException extends PicoIntrospectionException {
 
     private final ComponentAdapter instantiatingComponentAdapter;
-    private final Set failedDependencies;
+    private final Set unsatisfiableDependencies;
+    private final Class unsatisfiedDependencyType;
 
-    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Set failedDependencies) {
-        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: " + failedDependencies);
+    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Set unsatisfiableDependencies) {
+        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: " + unsatisfiableDependencies);
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
-        this.failedDependencies = failedDependencies;
+        this.unsatisfiableDependencies = unsatisfiableDependencies;
+        this.unsatisfiedDependencyType = null;
     }
 
+    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Class unsatisfiedDependencyType, Set unsatisfiableDependencies) {
+        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
+                +" among unsatisfiable dependencies: "+unsatisfiableDependencies);
+        this.instantiatingComponentAdapter = instantiatingComponentAdapter;
+        this.unsatisfiableDependencies = unsatisfiableDependencies;
+        this.unsatisfiedDependencyType = unsatisfiedDependencyType;
+    }
+    
     public ComponentAdapter getUnsatisfiableComponentAdapter() {
         return instantiatingComponentAdapter;
     }
 
     public Set getUnsatisfiableDependencies() {
-        return failedDependencies;
+        return unsatisfiableDependencies;
     }
 
+    public Class getUnsatisfiedDependencyType() {
+        return unsatisfiedDependencyType;
+    }
+
+    
 }

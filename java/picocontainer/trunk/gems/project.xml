@@ -8,7 +8,7 @@
     <extend>${basedir}/../project.xml</extend>
     <groupId>picocontainer</groupId>
     <id>picocontainer-gems</id>
-    <name>picocontainer-gems</name>
+    <name>PicoContainer Gems</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
     <inceptionYear>2004</inceptionYear>

@@ -4,7 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <groupId>picocontainer</groupId>
     <id>picocontainer-tck</id>
-    <name>Picocontainer TCK</name>
+    <name>PicoContainer TCK</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
     <dependencies>

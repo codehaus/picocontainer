@@ -4,7 +4,7 @@
     <extend>${basedir}/../project.xml</extend>
     <groupId>picocontainer</groupId>
     <id>picocontainer</id>
-    <name>picocontainer</name>
+    <name>PicoContainer</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
 	<!-- Commented until it is deployed in dist.codehaus.org 

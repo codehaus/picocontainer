@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant" xmlns:artifact="artifact" xmlns:license="license" xmlns:util="jelly:util">
+
+     <!--=================================================================-->
+    <!-- Default goal: Runs guantanamo                                    -->
+    <!--==================================================================-->
+    <goal name="guantanamo" prereqs="guantanamo:run" description="Runs guantanamo"/>
+
+    <!--==================================================================-->
+    <!-- Setup Task			                                            -->
+    <!--==================================================================-->
+    <goal name="guantanamo:init" prereqs="guantanamo:init" description="Setup Task">
+        <ant:taskdef name="guantanamo" classname="org.codehaus.guantanamo.ant.GuantanamoTask">
+            <ant:classpath>
+                <ant:pathelement path="${plugin.dir}/plugin-resources/lib/guantanamo.jar"/>
+                <ant:pathelement path="${plugin.dir}/plugin-resources/lib/xpp3-1.1.2a.jar"/>
+            </ant:classpath>
+        </ant:taskdef>
+    </goal>
+
+    <!--==================================================================-->
+    <!-- Run Guantanamo		                                            -->
+    <!--==================================================================-->
+    <goal name="guantanamo:run" prereqs="guantanamo:init" description="Run Guantanamo Task">
+        <mkdir dir="${maven.guantanamo.build.dir}"/>
+        <guantanamo cloverxml="${maven.guantanamo.cloverxml}"
+            dest="${maven.guantanamo.build.dir}"/>
+    </goal>
+
+</project>

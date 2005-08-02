@@ -43,10 +43,10 @@
             <groupId>maven</groupId>
             <artifactId>maven-scm-plugin</artifactId>
             <type>plugin</type>
-            <version>1.5-beta-3</version>
+            <version>1.5</version>
         </dependency>		
 	</dependencies>
-	
+
     <developers>
         <developer>
             <name>Paul Hammant</name>

@@ -3,18 +3,20 @@
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <extend>${basedir}/../project.xml</extend>
     <groupId>picocontainer</groupId>
-    <id>picocontainer</id>
-    <name>picocontainer</name>
+    <id>picocontainer-tck</id>
+    <name>Picocontainer TCK</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
-	<!-- Commented until it is deployed in dist.codehaus.org 
-	<dependencies>
-        <dependency>
+    <dependencies>
+    		<dependency>
             <groupId>picocontainer</groupId>
-            <artifactId>picodocs-maven-plugin</artifactId>
-            <type>plugin</type>
+            <artifactId>picocontainer</artifactId>
             <version>${picocontainer.version}</version>
-        </dependency>		
-	</dependencies>
-	-->
+        </dependency>
+    </dependencies>
+    
+	<build>
+        <sourceDirectory>${basedir}/target/tck/java</sourceDirectory>
+    </build>
+
 </project>

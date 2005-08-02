@@ -1,0 +1,11 @@
+<project default="jar:install"
+    xmlns:ant="jelly:ant">
+
+    <preGoal name="java:compile">
+        <ant:copy todir="target/tck/java" verbose="yes">
+        		<ant:fileset dir="${basedir}/../container/src/test"
+        			includes="org/picocontainer/tck/**,org/picocontainer/testmodel/**"/>
+        </ant:copy>
+    </preGoal>
+    
+</project>

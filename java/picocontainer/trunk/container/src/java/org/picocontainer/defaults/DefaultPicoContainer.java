@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Disposable;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
@@ -60,7 +61,7 @@ import org.picocontainer.alternatives.ImmutablePicoContainer;
  * @author Mauro Talevi
  * @version $Revision: 1.8 $
  */
-public class DefaultPicoContainer implements MutablePicoContainer, Serializable {
+public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
 
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
@@ -476,9 +477,22 @@ public class DefaultPicoContainer implements MutablePicoContainer, Serializable 
             child.accept(visitor);
         }
     }
-    
+
+    /**
+     * Changes monitor in the ComponentAdapterFactory and the child containers
+     * if these support a ComponentMonitorStrategy.
+     * 
+     * @see ComponentMonitorStrategy#changeMonitor(ComponentMonitor)
+     */
     public void changeMonitor(ComponentMonitor monitor){
-        this.componentAdapterFactory.changeMonitor(monitor);
-    }
-    
+        if ( componentAdapterFactory instanceof ComponentMonitorStrategy ){
+            ((ComponentMonitorStrategy)this.componentAdapterFactory).changeMonitor(monitor);
+        }
+        for ( Iterator i = children.iterator(); i.hasNext(); ){
+            Object child = i.next();
+            if ( child instanceof ComponentMonitorStrategy ) {
+                ((ComponentMonitorStrategy)child).changeMonitor(monitor);
+            }
+        }
+     }
 }

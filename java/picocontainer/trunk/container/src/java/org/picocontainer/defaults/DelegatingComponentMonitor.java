@@ -15,15 +15,25 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
- * A {@link ComponentMonitor} which delegates to another monitor 
+ * <p>
+ * A {@link ComponentMonitor monitor} which delegates to another monitor.
+ * It provides a {@link NullComponentMonitor default ComponentMonitor},
+ * but does not allow to use <code>null</code> for the delegate.
+ * </p>
+ * <p>
+ * It also supports a {@link ComponentMonitorStrategy monitor strategy} 
+ * that allows to change the delegate.
+ * </p>
  * 
  * @author Mauro Talevi
  * @version $Revision: $
+ * @since 1.2
  */
-public class DelegatingComponentMonitor implements ComponentMonitor, Serializable {
+public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 
     private  ComponentMonitor delegate;
     
@@ -32,6 +42,7 @@ public class DelegatingComponentMonitor implements ComponentMonitor, Serializabl
      * @param delegate the ComponentMonitor to which this monitor delegates
      */
     public DelegatingComponentMonitor(ComponentMonitor delegate) {
+        checkMonitor(delegate);
         this.delegate = delegate;
     }
 
@@ -65,6 +76,27 @@ public class DelegatingComponentMonitor implements ComponentMonitor, Serializabl
 
     public void invocationFailed(Method method, Object instance, Exception e) {
         delegate.invocationFailed(method, instance, e);
+    }
+
+    /**
+     * If the delegate supports a {@link ComponentMonitorStrategy monitor strategy},
+     * this is used to changed the monitor while keeping the same delegate.
+     * Else the delegate is replaced by the new monitor.
+     * {@inheritDoc}
+     */
+    public void changeMonitor(ComponentMonitor monitor) {
+        checkMonitor(monitor);
+        if ( delegate instanceof ComponentMonitorStrategy ){
+            ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
+        } else {
+            delegate = monitor;
+        }
+    }
+
+    private void checkMonitor(ComponentMonitor monitor) {
+        if ( monitor == null ){
+            throw new NullPointerException("monitor");
+        }
     }
 
 }

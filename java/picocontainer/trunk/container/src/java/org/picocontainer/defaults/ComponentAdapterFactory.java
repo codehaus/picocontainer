@@ -10,7 +10,6 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -23,16 +22,12 @@ import org.picocontainer.PicoIntrospectionException;
  * explicitly.
  * </p>
  * 
- * <p>
- * A factory also controls the monitoring strategy by setting the {@link ComponentMonitor} used
- * by the component adapter it creates.
- * </p>
- * 
  * @author Jon Tirs&eacute;n
  * @author Mauro Talevi
  * @version $Revision$
  */
 public interface ComponentAdapterFactory {
+    
     /**
      * Create a new component adapter based on the specified arguments.
      *
@@ -60,12 +55,5 @@ public interface ComponentAdapterFactory {
                                             Class componentImplementation,
                                             Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
-
-    /**
-     * Changes the monitor used by the factory.
-     * @param monitor the new ComponentMonitor used.
-     * @since 1.2
-     */
-    void changeMonitor(ComponentMonitor monitor);
 
 }

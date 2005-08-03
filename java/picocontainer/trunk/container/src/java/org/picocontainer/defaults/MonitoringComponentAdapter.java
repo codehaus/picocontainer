@@ -13,38 +13,52 @@ import java.io.Serializable;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 
 /**
- * Base class for all monitoring ComponentAdapters.
+ * Abstract {@link ComponentAdapter ComponentAdapter} supporting a 
+ * {@link ComponentMonitorStrategy ComponentMonitorStrategy}.
  * It provides a {@link DelegatingComponentMonitor default ComponentMonitor},
  * but does not allow to use <code>null</code> for the component monitor.
  *  
  * @author Mauro Talevi
  * @version $Revision: $
+ * @see ComponentAdapter
+ * @see ComponentMonitorStrategy
  * @since 1.2
  */
-public abstract class MonitoringComponentAdapter implements ComponentAdapter, Serializable {
+public abstract class MonitoringComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, Serializable {
     private ComponentMonitor componentMonitor;
 
     /**
-     * Constructs a MonitoringComponentAdapter with an instance of {@link DelegatingComponentMonitor}
+     * Constructs a MonitoringComponentAdapter with a custom monitor
+     * @param monitor the component monitor used by this ComponentAdapter
+     */
+    protected MonitoringComponentAdapter(ComponentMonitor monitor) {
+        if (monitor == null){
+            throw new NullPointerException("componentMonitor");
+        }
+        this.componentMonitor = monitor;
+    }
+
+    /**
+     * Constructs a MonitoringComponentAdapter with a {@link DelegatingComponentMonitor default monitor}.
      */
     protected MonitoringComponentAdapter() {
         this(new DelegatingComponentMonitor());
     }
 
-    /**
-     * Constructs a MonitoringComponentAdapter with a given monitor
-     * @param componentMonitor the component monitor used by this ComponentAdapter
-     */
-    protected MonitoringComponentAdapter(ComponentMonitor componentMonitor) {
-        if (componentMonitor == null){
-            throw new NullPointerException("componentMonitor");
-        }
-        this.componentMonitor = componentMonitor;
-    }
 
+    public void changeMonitor(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
+    }
+    
+    /**
+     * Returns the monitor currently used
+     * @return The ComponentMonitor currently used
+     */
     protected ComponentMonitor currentMonitor(){
         return componentMonitor;
     }
+
 }

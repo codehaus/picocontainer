@@ -190,15 +190,37 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testDefaultPicoContainerCanChangeMonitor() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
-        MutablePicoContainer pico = new DefaultPicoContainer(monitor1);        
+        DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);        
         pico.registerComponentImplementation("t1", SimpleTouchable.class);
         Touchable t1 = (Touchable)pico.getComponentInstance("t1");
+        assertNotNull(t1);
         assertTrue("writer not empty", writer1.toString().length() > 0 );
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
         pico.changeMonitor(monitor2);
         pico.registerComponentImplementation("t2", SimpleTouchable.class);
         Touchable t2 = (Touchable)pico.getComponentInstance("t2");
+        assertNotNull(t2);
+        assertTrue("writer not empty", writer2.toString().length() > 0 );
+        assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length() );
+    }
+
+    public void testDefaultPicoContainerCanChangeMonitorOfChildContainers() {
+        StringWriter writer1 = new StringWriter();
+        ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer(monitor1);        
+        parent.addChildContainer(child);
+        child.registerComponentImplementation("t1", SimpleTouchable.class);
+        Touchable t1 = (Touchable)child.getComponentInstance("t1");
+        assertNotNull(t1);
+        assertTrue("writer not empty", writer1.toString().length() > 0 );
+        StringWriter writer2 = new StringWriter();
+        ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
+        parent.changeMonitor(monitor2);
+        child.registerComponentImplementation("t2", SimpleTouchable.class);
+        Touchable t2 = (Touchable)child.getComponentInstance("t2");
+        assertNotNull(t2);
         assertTrue("writer not empty", writer2.toString().length() > 0 );
         assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length() );
     }

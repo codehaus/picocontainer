@@ -159,13 +159,5 @@ public interface MutablePicoContainer extends PicoContainer {
      * @since 1.1
      */
     boolean removeChildContainer(PicoContainer child);
-
-    /**
-     * Changes monitor used by the container.  
-     * 
-     * @param monitor the ComponentMonitor
-     * @since 1.2
-     */
-    void changeMonitor(ComponentMonitor monitor);
     
 }

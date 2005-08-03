@@ -12,28 +12,37 @@ package org.picocontainer.defaults;
 import java.io.Serializable;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
 
 /**
- * Abstract {@link ComponentAdapterFactory} supporting different {@link ComponentMonitor}
- * 
+ * Abstract {@link ComponentAdapterFactory ComponentAdapterFactory} supporting a 
+ * {@link ComponentMonitorStrategy ComponentMonitorStrategy}.
+ * It provides a {@link DelegatingComponentMonitor default ComponentMonitor},
+ * but does not allow to use <code>null</code> for the component monitor.
+ *  
  * @author Mauro Talevi
+ * @see ComponentAdapterFactory
+ * @see ComponentMonitorStrategy
  * @since 1.2
  */
-public abstract class MonitoringComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public abstract class MonitoringComponentAdapterFactory implements ComponentAdapterFactory, ComponentMonitorStrategy, Serializable {
     private ComponentMonitor componentMonitor;
 
     /**
-     * Creates a MonitoringComponentAdapterFactory with a custom monitor 
+     * Constructs a MonitoringComponentAdapterFactory with a custom monitor 
      * @param monitor the ComponentMonitor used by the factory
      */
-    public MonitoringComponentAdapterFactory(ComponentMonitor monitor) {
+    protected MonitoringComponentAdapterFactory(ComponentMonitor monitor) {
+        if (monitor == null){
+            throw new NullPointerException("componentMonitor");
+        }
         this.componentMonitor = monitor;
     }
 
     /**
-     * Creates a  MonitoringComponentAdapterFactory with default monitor
+     * Constructs a  MonitoringComponentAdapterFactory with a {@link DelegatingComponentMonitor default monitor}.
      */
-    public MonitoringComponentAdapterFactory() {
+    protected MonitoringComponentAdapterFactory() {
         this(new DelegatingComponentMonitor());
     }
     
@@ -42,7 +51,7 @@ public abstract class MonitoringComponentAdapterFactory implements ComponentAdap
     }
 
     /**
-     * Retur the monitor currently used
+     * Returns the monitor currently used
      * @return The ComponentMonitor currently used
      */
     protected ComponentMonitor currentMonitor(){

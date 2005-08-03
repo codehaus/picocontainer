@@ -1,6 +1,5 @@
-package org.picocontainer.defaults;
+package org.picocontainer.tck;
 
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;

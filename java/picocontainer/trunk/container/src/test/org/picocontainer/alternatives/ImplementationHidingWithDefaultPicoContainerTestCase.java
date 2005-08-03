@@ -11,10 +11,10 @@ package org.picocontainer.alternatives;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**
  * This is a demonstration that functionality equivalent to {@link ImplementationHidingPicoContainer}

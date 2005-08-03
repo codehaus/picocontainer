@@ -13,11 +13,11 @@ package org.picocontainer.alternatives;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.AbstractImplementationHidingPicoContainerTestCase;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 import java.util.List;
 import java.util.ArrayList;

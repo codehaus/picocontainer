@@ -15,7 +15,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**

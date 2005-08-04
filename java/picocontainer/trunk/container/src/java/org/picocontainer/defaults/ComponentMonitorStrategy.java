@@ -7,7 +7,11 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.defaults;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoContainer;
 
 /**
  * <p>

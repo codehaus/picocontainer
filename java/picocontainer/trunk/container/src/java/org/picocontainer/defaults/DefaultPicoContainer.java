@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Disposable;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
@@ -49,9 +48,13 @@ import org.picocontainer.alternatives.ImmutablePicoContainer;
  * registered with a {@link java.lang.Class} key of the corresponding type, this component
  * will take precedence over other components during type resolution.
  * </p>
- * <p/>
+ * <p>
  * Another place where keys that are classes make a subtle difference is in
  * {@link org.picocontainer.alternatives.ImplementationHidingComponentAdapter}.
+ * </p>
+ * <p>
+ * This implementation of {@link MutablePicoContainer} also supports
+ * {@link ComponentMonitorStrategy}.
  * </p>
  *
  * @author Paul Hammant

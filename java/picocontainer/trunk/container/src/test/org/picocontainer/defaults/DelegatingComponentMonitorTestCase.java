@@ -3,7 +3,6 @@ package org.picocontainer.defaults;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 
 /**
  * @author Mauro Talevi

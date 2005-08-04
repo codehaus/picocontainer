@@ -13,7 +13,6 @@ import java.io.Serializable;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 
 /**
  * Abstract {@link ComponentAdapter ComponentAdapter} supporting a 

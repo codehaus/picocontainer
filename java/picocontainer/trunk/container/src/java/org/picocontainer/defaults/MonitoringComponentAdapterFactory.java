@@ -12,7 +12,6 @@ package org.picocontainer.defaults;
 import java.io.Serializable;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 
 /**
  * Abstract {@link ComponentAdapterFactory ComponentAdapterFactory} supporting a 

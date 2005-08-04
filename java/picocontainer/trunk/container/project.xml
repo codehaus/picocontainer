@@ -7,14 +7,4 @@
     <name>PicoContainer</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
-	<!-- Commented until it is deployed in dist.codehaus.org 
-	<dependencies>
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picodocs-maven-plugin</artifactId>
-            <type>plugin</type>
-            <version>${picocontainer.version}</version>
-        </dependency>		
-	</dependencies>
-	-->
 </project>

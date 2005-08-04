@@ -10,91 +10,32 @@
 
 package org.picocontainer.defaults;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.picocontainer.Disposable;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Startable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
+import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
+import org.picocontainer.testmodel.RecordingLifecycle.Four;
+import org.picocontainer.testmodel.RecordingLifecycle.One;
+import org.picocontainer.testmodel.RecordingLifecycle.Three;
+import org.picocontainer.testmodel.RecordingLifecycle.Two;
+
 /**
+ * This class tests the lifecycle aspects of DefaultPicoContainer.
+ * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Ward Cunningham
  * @version $Revision$
  */
-
-/**
- * This class tests the lifecycle aspects of DefaultPicoContainer.
- */
 public class DefaultPicoContainerLifecycleTestCase extends TestCase {
 
-    public abstract static class RecordingLifecycle implements Startable, Disposable {
-        private final StringBuffer recording;
-
-        protected RecordingLifecycle(StringBuffer recording) {
-            this.recording = recording;
-        }
-
-        public void start() {
-            recording.append("<" + code());
-        }
-
-        public void stop() {
-            recording.append(code() + ">");
-        }
-
-        public void dispose() {
-            recording.append("!" + code());
-        }
-
-        private String code() {
-            String name = getClass().getName();
-            return name.substring(name.indexOf('$') + 1);
-        }
-    }
-
-    public static class One extends RecordingLifecycle {
-        public One(StringBuffer sb) {
-            super(sb);
-        }
-    }
-
-    public static class Two extends RecordingLifecycle {
-        public Two(StringBuffer sb, One one) {
-            super(sb);
-            assertNotNull(one);
-        }
-    }
-
-    public static class Three extends RecordingLifecycle {
-        public Three(StringBuffer sb, One one, Two two) {
-            super(sb);
-            assertNotNull(one);
-            assertNotNull(two);
-        }
-    }
-
-    public static class Four extends RecordingLifecycle {
-        public Four(StringBuffer sb, Two two, Three three, One one) {
-            super(sb);
-            assertNotNull(one);
-            assertNotNull(two);
-            assertNotNull(three);
-        }
-    }
-
-    public static class FiveTriesToBeMalicious extends RecordingLifecycle {
-        public FiveTriesToBeMalicious(StringBuffer sb, PicoContainer pc) {
-            super(sb);
-            assertNotNull(pc);
-            sb.append("Whao! Should not get instantiated!!");
-        }
-    }
 
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 

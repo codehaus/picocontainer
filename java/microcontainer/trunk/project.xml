@@ -78,6 +78,14 @@
             <version>${nanocontainer.version}</version>
         </dependency>
 
+        <!-- required for JDK 1.5 -->
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-clover-plugin</artifactId>
+            <version>1.9.1</version>
+            <type>plugin</type>
+        </dependency>		
+
         <dependency>
             <id>junit</id>
             <version>3.8.1</version>

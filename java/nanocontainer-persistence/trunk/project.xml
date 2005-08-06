@@ -38,9 +38,17 @@
             <groupId>maven</groupId>
             <artifactId>maven-scm-plugin</artifactId>
             <type>plugin</type>
-            <version>1.5-beta-3</version>
+            <version>1.5</version>
         </dependency>		
         
+        <!-- required for JDK 1.5 -->
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-clover-plugin</artifactId>
+            <version>1.9.1</version>
+            <type>plugin</type>
+        </dependency>		
+
         <!-- Build/Test time only -->
         <dependency>
             <id>junit</id>

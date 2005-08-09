@@ -28,5 +28,8 @@
 		</sourceModifications>
     </build>
     
+    <reports>
+        <report>maven-license-plugin</report>
+    </reports>
         
 </project>

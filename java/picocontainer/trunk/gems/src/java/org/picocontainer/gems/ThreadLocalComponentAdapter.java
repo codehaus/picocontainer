@@ -12,7 +12,7 @@ package org.picocontainer.gems;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -26,6 +26,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Set;
 
 
 /**
@@ -93,7 +94,8 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
         if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
             interfaces = new Class[]{(Class)componentKey};
         } else {
-            interfaces = ClassHierarchyIntrospector.getAllInterfaces(getComponentImplementation());
+            final Set allInterfaces = ReflectionUtils.getAllInterfaces(getComponentImplementation());
+            interfaces = (Class[]) allInterfaces.toArray(new Class[allInterfaces.size()]);
         }
         if (interfaces.length == 0) {
             throw new PicoIntrospectionException("Can't proxy implementation for "

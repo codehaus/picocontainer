@@ -10,8 +10,14 @@
 package org.nanocontainer.ioc.avalon;
 
 // This dependency might be worthwhile getting rid of. Only one method is used. AH.
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.xstream.XStream;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.xml.sax.SAXException;
+
+import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
@@ -30,9 +36,6 @@ import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
 import org.apache.commons.logging.Log;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,9 +43,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 /**
  * A utility class containing most of the logic to support handling of the Avalon-Framework semantics within a
@@ -276,10 +277,10 @@ public class AvalonUtil {
 
     /**
      * Retrieve a {@link Configuration} from the container. The key used to locate the configuration will be the
-     * provided key, converted to a string, with the {@link CONFIGURATION_POSTFIX} appended to it. If the result of that
+     * provided key, converted to a string, with the {@link #CONFIGURATION_POSTFIX} appended to it. If the result of that
      * retrieval is <code>null</code>, an empty configuration object will be created and returned. If the result of the
      * retrieval is a {@link Configuration} instance, that instance will be returned. If neither is the case, an attempt
-     * will be made to convert the object to a <code>Configuration</code> by making use of the {@link XStream xstream
+     * will be made to convert the object to a <code>Configuration</code> by making use of the {@plainlink XStream xstream
      * library}/
      * 
      * @param key       the key under which the component is registered.
@@ -351,8 +352,7 @@ public class AvalonUtil {
      * @return the proxy wrapped around the provided instance.
      */
     public static Object getActivityLifecycleProxy(final Object instance) {
-        final Class[] allInterfacesArray = ClassHierarchyIntrospector.getAllInterfaces(instance.getClass());
-        final List allInterfaces = new ArrayList(Arrays.asList(allInterfacesArray));
+        final Set allInterfaces = ReflectionUtils.getAllInterfaces(instance.getClass());
         if (allInterfaces.isEmpty())
             throw new PicoLifecycleException("Can't support the type1 lifecycle needs of " + instance.getClass() +
                     ". The class doesn't implement any interfaces so proxying it is not possible.");
@@ -430,11 +430,11 @@ public class AvalonUtil {
 
             final Class declaringClass = method.getDeclaringClass();
             if (declaringClass.equals(Object.class)) {
-                if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+                if (method.equals(ReflectionUtils.hashCode)) {
                     // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                     // return cached proxies. We want a unique hashCode for each created proxy!
                     result = new Integer(System.identityHashCode(this));
-                } else if (method.equals(ClassHierarchyIntrospector.equals)) {
+                } else if (method.equals(ReflectionUtils.equals)) {
                     result = new Boolean(proxy == args[0]);
                 } else {
                     // If it's any other method defined by Object, call on ourself.

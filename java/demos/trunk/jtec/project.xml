@@ -1,6 +1,7 @@
 <project>
     <pomVersion>3</pomVersion>
-    <id>jobdemo</id>
+    <groupId>nanocontainer</groupId>
+    <id>jtec-jobdemo</id>
     <name>J Tec Team demo application</name>
     <currentVersion>0.1-SNAPSHOT</currentVersion>
     <organisation>
@@ -100,8 +101,8 @@
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
-            <artifactId>cglib-full</artifactId>
-            <version>2.0</version>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -190,7 +191,7 @@
         </dependency>
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-hibernate</artifactId>
+            <artifactId>nanocontainer-persistence</artifactId>
             <version>1.0-SNAPSHOT</version>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -198,7 +199,7 @@
         </dependency>
         <dependency>
             <id>xstream</id>
-            <version>1.0.2</version>
+            <version>1.1.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -246,7 +247,7 @@
         </dependency>
         <dependency>
             <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-ant</artifactId>
+            <artifactId>nanocontainer-tools</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- specific plugins -->

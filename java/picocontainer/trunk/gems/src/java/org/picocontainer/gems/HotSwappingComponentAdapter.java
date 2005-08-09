@@ -11,12 +11,16 @@ package org.picocontainer.gems;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.delegate.ObjectReference;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -72,11 +76,13 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     public Object getComponentInstance(final PicoContainer container) {
-        Class[] proxyTypes;
+        final Class[] proxyTypes;
         if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class) getComponentKey())) {
             proxyTypes = new Class[]{(Class) getComponentKey()};
         } else {
-            proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), getComponentImplementation().getInterfaces(), proxyFactory);
+            Set types = new HashSet(Arrays.asList(getComponentImplementation().getInterfaces()));
+            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), types, proxyFactory);
+            proxyTypes = (Class[]) types.toArray(new Class[types.size()]);
         }
         ObjectReference reference = new ImplementationHidingReference(getDelegate(), container);
         return HotSwapping.object(proxyTypes, proxyFactory, reference, true);

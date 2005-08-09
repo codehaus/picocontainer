@@ -13,7 +13,6 @@
 
     <inceptionYear>2004</inceptionYear>
     <package>org.picocontainer.gems</package>
-    <issueTrackingUrl>http://jira.codehaus.org/browse/PICO</issueTrackingUrl>
 
     <dependencies>
         <dependency>
@@ -30,11 +29,12 @@
         <!-- For proxy -->        
         <dependency>
             <id>proxytoys</id>
-            <version>0.1</version>
+            <version>0.2-RC1</version>
         </dependency>
         <dependency>
-            <id>cglib</id>
-            <version>full-2.0</version>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_2</version>
         </dependency>
         <!-- For monitors -->
         <dependency>
@@ -47,14 +47,6 @@
         </dependency>
 
         <!-- test time only -->
-        <dependency>
-            <id>jmock</id>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <id>xstream</id>
-            <version>1.0.2</version>
-        </dependency>
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>

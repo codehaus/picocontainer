@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.pool2;
 
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 
@@ -17,7 +18,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -110,7 +110,7 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
             if (getDelegate().getComponentKey() instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
                 interfaceSet.add(getDelegate().getComponentKey());
             } else {
-                interfaceSet.addAll(Arrays.asList(ClassHierarchyIntrospector.getAllInterfaces(getDelegate().getComponentImplementation())));
+                interfaceSet.addAll(ReflectionUtils.getAllInterfaces(getDelegate().getComponentImplementation()));
             }
             if (interfaceSet.size() == 0) {
                 throw new PicoIntrospectionException("Can't realize auto releasing pool for " + getDelegate().getComponentImplementation().getName() + ". It doesn't implement any interfaces.");
@@ -153,7 +153,7 @@ public class AutoReleasingPoolingComponentAdapter extends PoolingComponentAdapte
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Class declaringClass = method.getDeclaringClass();
             if (declaringClass.equals(Object.class)) {
-                if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+                if (method.equals(ReflectionUtils.hashCode)) {
                     // Return the hashCode of ourself, as Proxy.newProxyInstance() may
                     // return cached proxies. We want a unique hashCode for each created proxy!
                     return new Integer(System.identityHashCode(this));

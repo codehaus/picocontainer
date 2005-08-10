@@ -30,11 +30,11 @@ import java.util.Set;
 
 
 /**
- * A {@link ComponentAdapter}that realizes a {@link ThreadLocal}component instance.
+ * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} component instance.
  * <p>
  * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
  * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
- * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory}for details.
+ * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory} for details.
  * </p>
  * <p>
  * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
@@ -51,8 +51,8 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
     /**
      * Construct a ThreadLocalComponentAdapter.
      * 
-     * @param delegate The {@link ComponentAdapter}to delegate.
-     * @param proxyFactory The {@link ProxyFactory}to use.
+     * @param delegate The {@link ComponentAdapter} to delegate.
+     * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
@@ -63,18 +63,15 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Construct a ThreadLocalComponentAdapter using {@link Proxy}instances.
+     * Construct a ThreadLocalComponentAdapter using {@link Proxy} instances.
      * 
-     * @param delegate The {@link ComponentAdapter}to delegate.
+     * @param delegate The {@link ComponentAdapter} to delegate.
      * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
         this(new CachingComponentAdapter(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
-    /**
-     * @see org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)
-     */
     public Object getComponentInstance(final PicoContainer pico)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException,
             NotConcreteRegistrationException {
@@ -115,9 +112,6 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
             this.delegate = delegate;
         }
 
-        /**
-         * @see com.thoughtworks.proxy.Invoker#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-         */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             final Object delegatedInstance = delegate.getComponentInstance(pico);
             try {

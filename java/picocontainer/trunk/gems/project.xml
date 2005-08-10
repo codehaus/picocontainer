@@ -36,17 +36,18 @@
             <artifactId>cglib-nodep</artifactId>
             <version>2.1_2</version>
         </dependency>
+        
         <!-- For monitors -->
         <dependency>
             <id>commons-logging</id>
             <version>1.0.4</version>
         </dependency>
+
+        <!-- test time only -->
         <dependency>
             <id>log4j</id>
             <version>1.2.8</version>
         </dependency>
-
-        <!-- test time only -->
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>

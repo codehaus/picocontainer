@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 /**
@@ -141,10 +140,18 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         }
         Thread.sleep(300);
         assertEquals(6, list.size());
-        // TODO: Seems a bug in JDK 1.3.1
-        if(!System.getProperty("java.version").startsWith("1.3.")) {
-            assertEquals(3, set.size());
-        }
+        assertEquals(3, set.size());
+    }
+    
+    /**
+     * Test if same proxy instance in equal.
+     * @throws Exception
+     */
+    public void testThreadLocalInstancesEqual() throws Exception {
+        final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(
+                Touchable.class, SimpleTouchable.class, null));
+        final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null);
+        assertEquals(touchable, touchable);
     }
 
     /**

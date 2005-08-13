@@ -99,7 +99,7 @@ public class PicoPoolTestCase extends TestCase {
         }
     }
 
-    public void testBlockOnExhaust() {
+    public void testBlockOnExhaust() throws InterruptedException {
         long poolExpiry = 2000;
 
         DefaultPicoPool pool =
@@ -115,20 +115,22 @@ public class PicoPoolTestCase extends TestCase {
         assertEquals(0, pool.getSize());
         Object borrowed = pool.borrowComponent();
         assertEquals(1, pool.getSize());
-        long starttime = System.currentTimeMillis();
-
+        
+        long starttime;
         long borrowerWait = 1000;
         Borrower borrower = new Borrower(pool, borrowerWait);
-        borrower.start();
-        //Make sure the borrower borrows first
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+        synchronized (borrower) {
+            borrower.start();
+            borrower.wait();
+            starttime = System.currentTimeMillis();
+        }
+        borrowed = pool.borrowComponent();
+        synchronized (borrower) {
+            borrower.notifyAll();
         }
 
-        borrowed = pool.borrowComponent();
         long totalTime = System.currentTimeMillis() - starttime;
-        //Need to allow for alittle variance in system time
+        //Need to allow for a little variance in system time
         assertTrue(totalTime < (borrowerWait + 50) && totalTime > (borrowerWait - 50));
 
         assertNotNull(borrowed);
@@ -252,12 +254,12 @@ public class PicoPoolTestCase extends TestCase {
         /* (non-Javadoc)
          * @see java.lang.Runnable#run()
          */
-        public void run() {
+        public synchronized void run() {
             Object object = pool.borrowComponent();
+            notifyAll();
             try {
-                sleep(time);
+                wait(time);
             } catch (InterruptedException e) {
-                // ignore
             }
             pool.returnComponent(object);
         }

@@ -8,10 +8,11 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
@@ -21,9 +22,10 @@ import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
+
 /**
  * Hides implementation.
- *
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -45,9 +47,7 @@ public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapt
         this.proxyFactory = proxyFactory;
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
         return new HotSwappingComponentAdapter(componentAdapter, proxyFactory);

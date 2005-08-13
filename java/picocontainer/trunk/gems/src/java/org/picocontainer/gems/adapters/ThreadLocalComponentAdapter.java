@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;

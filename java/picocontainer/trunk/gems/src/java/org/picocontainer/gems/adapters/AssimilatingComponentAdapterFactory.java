@@ -8,7 +8,7 @@
  * Original code by Joerg Schaibe                                            *
  *****************************************************************************/
 
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -23,9 +23,8 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
- * Factory for the AssimilatingComponentAdapter. This factory will create
- * {@link AssimilatingComponentAdapter}instances for all {@link ComponentAdapter}instances
- * created by the delegate. This will assimilate every component for a specific type.
+ * Factory for the AssimilatingComponentAdapter. This factory will create {@link AssimilatingComponentAdapter}instances for all
+ * {@link ComponentAdapter}instances created by the delegate. This will assimilate every component for a specific type.
  * 
  * @author J&ouml;rg Schaible
  * @since 1.0
@@ -36,8 +35,8 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
     private final Class assimilationType;
 
     /**
-     * Construct an AssimilatingComponentAdapterFactory. The instance will use the
-     * {@link StandardProxyFactory}using the JDK implementation.
+     * Construct an AssimilatingComponentAdapterFactory. The instance will use the {@link StandardProxyFactory}using the JDK
+     * implementation.
      * 
      * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param type The assimilated type.
@@ -61,11 +60,11 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
     }
 
     /**
-     * Create a {@link AssimilatingComponentAdapter}. This adapter will wrap the returned
-     * {@link ComponentAdapter}of the deleated {@link ComponentAdapterFactory}.
+     * Create a {@link AssimilatingComponentAdapter}. This adapter will wrap the returned {@link ComponentAdapter}of the
+     * deleated {@link ComponentAdapterFactory}.
      * 
      * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
-     *           java.lang.Class, org.picocontainer.Parameter[])
+     *      java.lang.Class, org.picocontainer.Parameter[])
      */
     public ComponentAdapter createComponentAdapter(
             final Object componentKey, final Class componentImplementation, final Parameter[] parameters)

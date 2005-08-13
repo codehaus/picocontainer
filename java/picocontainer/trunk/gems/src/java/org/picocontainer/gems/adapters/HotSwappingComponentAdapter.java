@@ -7,13 +7,14 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
@@ -22,21 +23,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
- * This component adapter makes it possible to hide the implementation
- * of a real subject (behind a proxy).
- * If the key of the component is of type {@link Class} and that class represents an interface, the proxy
- * will only implement the interface represented by that Class. Otherwise (if the key is
- * something else), the proxy will implement all the interfaces of the underlying subject.
- * In any case, the proxy will also implement
- * {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making it possible to swap out the underlying
- * subject at runtime.
- * <p/>
- * <em>
+ * This component adapter makes it possible to hide the implementation of a real subject (behind a proxy). If the key of the
+ * component is of type {@link Class} and that class represents an interface, the proxy will only implement the interface
+ * represented by that Class. Otherwise (if the key is something else), the proxy will implement all the interfaces of the
+ * underlying subject. In any case, the proxy will also implement {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making
+ * it possible to swap out the underlying subject at runtime. <p/> <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link org.picocontainer.defaults.CachingComponentAdapter} around this one.
  * </em>
- *
+ * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -77,12 +74,12 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
 
     public Object getComponentInstance(final PicoContainer container) {
         final Class[] proxyTypes;
-        if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class) getComponentKey())) {
-            proxyTypes = new Class[]{(Class) getComponentKey()};
+        if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class)getComponentKey())) {
+            proxyTypes = new Class[]{(Class)getComponentKey()};
         } else {
             Set types = new HashSet(Arrays.asList(getComponentImplementation().getInterfaces()));
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), types, proxyFactory);
-            proxyTypes = (Class[]) types.toArray(new Class[types.size()]);
+            proxyTypes = (Class[])types.toArray(new Class[types.size()]);
         }
         ObjectReference reference = new ImplementationHidingReference(getDelegate(), container);
         return HotSwapping.object(proxyTypes, proxyFactory, reference, true);

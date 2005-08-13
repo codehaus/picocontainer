@@ -62,7 +62,7 @@ import java.util.Hashtable;
  * <p>
  * If you want to cache the EJB with a
  * {@link org.picocontainer.defaults.CachingComponentAdapter}, you have to use a
- * {@link org.picocontainer.gems.ThreadLocalReference}, since you may not use an instance
+ * {@link org.picocontainer.gems.adapters.ThreadLocalReference}, since you may not use an instance
  * of the EJB in different threads. Use an {@link EJBClientComponentAdapterFactory}for such a
  * completely transparent {@link ThreadLocal}support.
  * </p>

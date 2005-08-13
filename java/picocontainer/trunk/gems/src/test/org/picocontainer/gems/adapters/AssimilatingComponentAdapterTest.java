@@ -8,7 +8,7 @@
  * Original code by Joerg Schaibe                                            *
  *****************************************************************************/
 
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
@@ -42,15 +42,14 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 CompatibleTouchable.class, CompatibleTouchable.class));
         mpc.registerComponent(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter
-                .getComponentInstance(mpc);
-        final Touchable touchable = (Touchable) mpc.getComponentInstanceOfType(Touchable.class);
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
+        final Touchable touchable = (Touchable)mpc.getComponentInstanceOfType(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
         assertTrue(compatibleTouchable.wasTouched());
         assertTrue(Proxy.isProxyClass(touchable.getClass()));
     }
-    
+
     /**
      * Test if the component key is preserved if it is not a class type.
      */
@@ -59,9 +58,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 "Touchy", CompatibleTouchable.class));
         mpc.registerComponent(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable) componentAdapter
-                .getComponentInstance(mpc);
-        final Touchable touchable = (Touchable) mpc.getComponentInstance("Touchy");
+        final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
+        final Touchable touchable = (Touchable)mpc.getComponentInstance("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
         assertTrue(compatibleTouchable.wasTouched());
@@ -74,7 +72,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
-        final TestCase self = (TestCase) mpc.getComponentInstanceOfType(TestCase.class);
+        final TestCase self = (TestCase)mpc.getComponentInstanceOfType(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
     }
@@ -85,11 +83,11 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.registerComponent(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this)));
-        final TestCase self = (TestCase) mpc.getComponentInstance(getClass());
+        final TestCase self = (TestCase)mpc.getComponentInstance(getClass());
         assertNotNull(self);
         assertSame(this, self);
     }
-    
+
     /**
      * Test fail-fast for components without interface.
      */

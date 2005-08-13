@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Leo Simmons & Jörg Schaible                              *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;

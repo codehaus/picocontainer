@@ -8,9 +8,10 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import junit.framework.TestCase;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -22,12 +23,14 @@ import java.util.List;
 
 /**
  * Test ThreadLocalComponentAdapterFactory.
+ * 
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
 
     /**
      * Test creation of a CA ensuring ThreadLocal-behaviour.
+     * 
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
@@ -55,6 +58,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
 
     /**
      * Test creation of a CA failing ThreadLocal-behaviour.
+     * 
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
@@ -83,6 +87,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
 
     /**
      * Test creation of a CA with ThreadLocal-behaviour works if the thread ensures creation.
+     * 
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
@@ -100,7 +105,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
             public void run() {
                 final List newList = (List)componentAdapter.getComponentInstance(null);
                 list2.addAll(newList);
-                final Thread junitThread = Thread.currentThread(); 
+                final Thread junitThread = Thread.currentThread();
                 list2.add(junitThread);
                 if (newList.size() == 0) {
                     synchronized (junitThread) {

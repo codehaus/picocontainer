@@ -19,7 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.gems.ThreadLocalReference;
+import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 import com.opensymphony.xwork.ObjectFactory;
 

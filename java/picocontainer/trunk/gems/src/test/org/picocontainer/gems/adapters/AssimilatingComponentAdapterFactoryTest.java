@@ -8,7 +8,7 @@
  * Original code by Joerg Schaibe                                            *
  *****************************************************************************/
 
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
@@ -21,6 +21,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.util.List;
+
 
 /**
  * @author J&ouml;rg Schaible
@@ -55,7 +56,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
         try {
             picoContainer.registerComponentImplementation(CompatibleTouchable.class);
             fail("DuplicateComponentKeyRegistrationException expected");
-        } catch(final DuplicateComponentKeyRegistrationException e) {
+        } catch (final DuplicateComponentKeyRegistrationException e) {
             // fine
         }
     }

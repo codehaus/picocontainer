@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -29,6 +29,7 @@ import java.util.Set;
 
 /**
  * Unit test for ThreadLocalComponentAdapter.
+ * 
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTestCase {
@@ -82,6 +83,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
         /**
          * Constructs a Runner.
+         * 
          * @param touchable The instance
          * @param list The list to which all instances are added
          * @param set The set to which all instances are added
@@ -113,6 +115,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
     /**
      * Test usage from multiple threads.
+     * 
      * @throws InterruptedException
      */
     public final void testInstancesUsedFromMultipleThreads() throws InterruptedException {
@@ -142,9 +145,10 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         assertEquals(6, list.size());
         assertEquals(3, set.size());
     }
-    
+
     /**
      * Test if same proxy instance in equal.
+     * 
      * @throws Exception
      */
     public void testThreadLocalInstancesEqual() throws Exception {

@@ -7,36 +7,34 @@
  *                                                                           *
  * Original code by Leo Simmons & Joerg Schaible                             *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.adapters;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
-import junit.framework.TestCase;
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class StaticFactoryComponentAdapterTestCase
-        extends TestCase {
+public class StaticFactoryComponentAdapterTestCase extends TestCase {
 
     public void testStaticFactoryInAction() {
-        ComponentAdapter componentAdapter = 
-            new StaticFactoryComponentAdapter(Registry.class, 
-                    new StaticFactory() {
-                        public Object get() {
-                            try {
-                                return LocateRegistry.getRegistry();
-                            } catch (RemoteException e) {
-                                return null;
-                            }
-                        }
-            });
-        
+        ComponentAdapter componentAdapter = new StaticFactoryComponentAdapter(Registry.class, new StaticFactory() {
+            public Object get() {
+                try {
+                    return LocateRegistry.getRegistry();
+                } catch (RemoteException e) {
+                    return null;
+                }
+            }
+        });
+
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(componentAdapter).verify(pico);
         Registry registry = (Registry)pico.getComponentInstance(Registry.class);

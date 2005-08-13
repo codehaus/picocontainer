@@ -21,7 +21,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.gems.ThreadLocalComponentAdapter;
+import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
 
 
 /**

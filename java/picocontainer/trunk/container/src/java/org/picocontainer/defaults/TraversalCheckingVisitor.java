@@ -38,23 +38,14 @@ import org.picocontainer.PicoContainer;
 public class TraversalCheckingVisitor
         extends AbstractPicoVisitor {
 
-    /**
-     * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
-     */
     public void visitContainer(PicoContainer pico) {
         checkTraversal();
     }
 
-    /**
-     * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
-     */
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
         checkTraversal();
     }
 
-    /**
-     * @see org.picocontainer.PicoVisitor#visitParameter(org.picocontainer.Parameter)
-     */
     public void visitParameter(Parameter parameter) {
         checkTraversal();
     }

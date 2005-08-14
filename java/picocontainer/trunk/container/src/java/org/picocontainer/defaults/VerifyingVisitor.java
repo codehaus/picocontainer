@@ -20,20 +20,21 @@ import java.util.Set;
 
 
 /**
- * Visitor to verify {@link PicoContainer}instances. The visitor walks down the logical
- * container hierarchy.
+ * Visitor to verify {@link PicoContainer} instances. The visitor walks down the logical container hierarchy.
  * 
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
-public class VerifyingVisitor
-        extends AbstractPicoVisitor {
+public class VerifyingVisitor extends TraversalCheckingVisitor {
 
     private final List nestedVerificationExceptions;
     private final Set verifiedComponentAdapters;
     private final PicoVisitor componentAdapterCollector;
     private PicoContainer currentPico;
 
+    /**
+     * Construct a VerifyingVisitor.
+     */
     public VerifyingVisitor() {
         nestedVerificationExceptions = new ArrayList();
         verifiedComponentAdapters = new HashSet();
@@ -41,8 +42,7 @@ public class VerifyingVisitor
     }
 
     /**
-     * Traverse through all components of the {@link PicoContainer} hierarchy and verify the
-     * components.
+     * Traverse through all components of the {@link PicoContainer} hierarchy and verify the components.
      * 
      * @throws PicoVerificationException if some components could not be verified.
      * @see org.picocontainer.PicoVisitor#traverse(java.lang.Object)
@@ -62,23 +62,13 @@ public class VerifyingVisitor
         return Void.TYPE;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
-     */
     public void visitContainer(PicoContainer pico) {
-        checkTraversal();
+        super.visitContainer(pico);
         currentPico = pico;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
-     */
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
-        checkTraversal();
+        super.visitComponentAdapter(componentAdapter);
         if (!verifiedComponentAdapters.contains(componentAdapter)) {
             try {
                 componentAdapter.verify(currentPico);
@@ -89,18 +79,8 @@ public class VerifyingVisitor
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.picocontainer.PicoVisitor#visitParameter(org.picocontainer.Parameter)
-     */
-    public void visitParameter(Parameter parameter) {
-        checkTraversal();
-    }
-
-    private class ComponentAdapterCollector
-            implements PicoVisitor {
-        ///CLOVER:OFF
+    private class ComponentAdapterCollector implements PicoVisitor {
+        // /CLOVER:OFF
         public Object traverse(Object node) {
             return null;
         }
@@ -108,7 +88,7 @@ public class VerifyingVisitor
         public void visitContainer(PicoContainer pico) {
         }
 
-        ///CLOVER:ON
+        // /CLOVER:ON
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
             verifiedComponentAdapters.add(componentAdapter);

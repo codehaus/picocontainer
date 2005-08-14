@@ -7,29 +7,27 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.io.Serializable;
 
 
 /**
+ * A PicoVisitor implementation, that calls methods on the components of a specific type.
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @version $Revision$
- * @since 1.1
+ * @since 1.2
  */
-public class LifecycleVisitor extends AbstractPicoVisitor implements Serializable {
+public class MethodCallingVisitor extends TraversalCheckingVisitor implements Serializable {
 
     private transient Method method;
     private Class type;
@@ -37,7 +35,7 @@ public class LifecycleVisitor extends AbstractPicoVisitor implements Serializabl
     private List componentInstances;
     private ComponentMonitor componentMonitor;
 
-    public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
+    public MethodCallingVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
         this.method = method;
         this.type = ofType;
         this.visitInInstantiationOrder = visitInInstantiationOrder;
@@ -45,8 +43,8 @@ public class LifecycleVisitor extends AbstractPicoVisitor implements Serializabl
         this.componentInstances = new ArrayList();
     }
 
-    public LifecycleVisitor(Method method, Class ofType, boolean visiInInstantiationOrder) {
-        this(method, ofType, visiInInstantiationOrder, NullComponentMonitor.getInstance());
+    public MethodCallingVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
+        this(method, ofType, visitInInstantiationOrder, NullComponentMonitor.getInstance());
     }
 
     public Object traverse(Object node) {
@@ -71,7 +69,8 @@ public class LifecycleVisitor extends AbstractPicoVisitor implements Serializabl
                     throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
                 } catch (InvocationTargetException e) {
                     componentMonitor.invocationFailed(method, o, e);
-                    throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e.getTargetException());
+                    throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e
+                            .getTargetException());
                 }
             }
         } finally {
@@ -81,16 +80,7 @@ public class LifecycleVisitor extends AbstractPicoVisitor implements Serializabl
     }
 
     public void visitContainer(PicoContainer pico) {
-        checkTraversal();
+        super.visitContainer(pico);
         componentInstances.addAll(pico.getComponentInstancesOfType(type));
     }
-
-    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
-        checkTraversal();
-    }
-
-    public void visitParameter(Parameter parameter) {
-        checkTraversal();
-    }
-
 }

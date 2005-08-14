@@ -29,12 +29,10 @@ import java.util.List;
  * <li>{@link org.picocontainer.Disposable#dispose()}</li>
  * </ul>
  *
- * It also allows custom lifecycle strategies to be plugged in via {@link #DefaultLifecycleManager(org.picocontainer.PicoVisitor, org.picocontainer.PicoVisitor, org.picocontainer.PicoVisitor)}.
- *
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @since 1.2
  */
 public class DefaultLifecycleManager implements LifecycleManager, Serializable {
 

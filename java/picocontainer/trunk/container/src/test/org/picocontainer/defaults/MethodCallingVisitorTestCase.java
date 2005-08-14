@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class LifecycleVisitorTestCase
+public class MethodCallingVisitorTestCase
         extends MockObjectTestCase {
 
     public abstract static class RecordingLifecycle {
@@ -93,9 +93,9 @@ public class LifecycleVisitorTestCase
     }
 
     public void testShouldAllowCustomLifecycle() throws NoSuchMethodException {
-        LifecycleVisitor starter = new LifecycleVisitor(RecordingLifecycle.class.getMethod("demarrer", null), RecordingLifecycle.class, true);
-        LifecycleVisitor stopper = new LifecycleVisitor(RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class, false);
-        LifecycleVisitor disposer = new LifecycleVisitor(RecordingLifecycle.class.getMethod("ecraser", null), RecordingLifecycle.class, false);
+        MethodCallingVisitor starter = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("demarrer", null), RecordingLifecycle.class, true);
+        MethodCallingVisitor stopper = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class, false);
+        MethodCallingVisitor disposer = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("ecraser", null), RecordingLifecycle.class, false);
 
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
@@ -120,11 +120,11 @@ public class LifecycleVisitorTestCase
 //        MutablePicoContainer pico = new DefaultPicoContainer();
 //        mutableParentMock.expects(once()).method("removeChildContainer").with(same(pico));
 //        pico.addChildContainer((PicoContainer) mutableParentMock.proxy());
-//        LifecycleVisitor.dispose(pico);
+//        MethodCallingVisitor.dispose(pico);
 //    }
 
     public void testPicoIntrospectionExceptionForInvalidMethod() throws NoSuchMethodException {
-        LifecycleVisitor visitor = new LifecycleVisitor(RecordingLifecycle.class.getMethod("uncallableByVisitor", new Class[]{String.class}), RecordingLifecycle.class, true);
+        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("uncallableByVisitor", new Class[]{String.class}), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
@@ -137,7 +137,7 @@ public class LifecycleVisitorTestCase
     }
 
     public void testPicoIntrospectionExceptionForThrownException() throws NoSuchMethodException {
-        LifecycleVisitor visitor = new LifecycleVisitor(RecordingLifecycle.class.getMethod("throwsAtVisit", null), RecordingLifecycle.class, true);
+        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("throwsAtVisit", null), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
@@ -150,7 +150,7 @@ public class LifecycleVisitorTestCase
     }
 
     public void testPicoIntrospectionExceptionForInaccessibleMethod() throws NoSuchMethodException {
-        LifecycleVisitor visitor = new LifecycleVisitor(RecordingLifecycle.class.getDeclaredMethod("callMe", null), RecordingLifecycle.class, true);
+        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getDeclaredMethod("callMe", null), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);

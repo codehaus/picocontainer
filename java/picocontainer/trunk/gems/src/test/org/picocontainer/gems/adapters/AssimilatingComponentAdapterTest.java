@@ -26,6 +26,7 @@ import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 
@@ -100,6 +101,20 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         }
     }
 
+    /**
+     * Test fail-fast for components without matching methods.
+     * @throws NoSuchMethodException 
+     */
+    public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
+        final Method touch = Touchable.class.getMethod("touch", null);
+        try {
+            new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(TestCase.class, this));
+            fail("PicoIntrospectionException expected");
+        } catch (final PicoIntrospectionException e) {
+            assertTrue(e.getMessage().endsWith(touch.toString()));
+        }
+    }
+
     // -------- TCK -----------
 
     protected Class getComponentAdapterType() {
@@ -115,38 +130,23 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
                 CompatibleTouchable.class, CompatibleTouchable.class));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected ComponentAdapter prepDEF_visitable() {
         return createComponentAdapterWithTouchable();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         return new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(
                 CompatibleTouchable.class, new CompatibleTouchable()), new CglibProxyFactory());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }

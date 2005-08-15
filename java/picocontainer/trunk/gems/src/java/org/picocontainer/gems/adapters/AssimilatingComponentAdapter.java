@@ -20,11 +20,13 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 
+import java.lang.reflect.Method;
+
 
 /**
  * ComponentAdapter, that assimilates a component for a specific type.
  * <p>
- * Allows the instance of another {@link ComponentAdapter}to be converted into interfacte <code>type</code>, that the
+ * Allows the instance of another {@link ComponentAdapter} to be converted into interfacte <code>type</code>, that the
  * instance is not assignable from. In other words the instance of the delegated adapter does NOT necessarily implement the
  * <code>type</code> interface.
  * </p>
@@ -32,17 +34,17 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
  * For Example:
  * </p>
  * <code><pre>
- *  public interface Foo {
- *      int size();
- *  }
- *       
- *  public class Bar {
- *      public int size() {
- *          return 1;
- *      }
- *  }
- *       
- *  new AssimilatingComponentAdapter(Foo.class, new InstanceComponentAdapter(new Bar()));
+ * public interface Foo {
+ *     int size();
+ * }
+ *        
+ * public class Bar {
+ *     public int size() {
+ *         return 1;
+ *     }
+ * }
+ *        
+ * new AssimilatingComponentAdapter(Foo.class, new InstanceComponentAdapter(new Bar()));
  * </pre></code>
  * <p>
  * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
@@ -50,7 +52,7 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
  * 
  * @author J&ouml;rg Schaible
  * @author Michael Ward
- * @since 1.0
+ * @since 1.2
  */
 public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
 
@@ -60,11 +62,11 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
 
     /**
      * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
-     * If the component instance <b>does </b> implement the interface, no proxy is used though.
+     * If the component instance <b>does</b> implement the interface, no proxy is used though.
      * 
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
-     * @param proxyFactory The {@link ProxyFactory}to use.
+     * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoIntrospectionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
     public AssimilatingComponentAdapter(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
@@ -72,18 +74,30 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
         super(delegate);
         this.type = type;
         this.proxyFactory = proxyFactory;
-        this.isCompatible = type.isAssignableFrom(delegate.getComponentImplementation());
+        final Class delegationType = delegate.getComponentImplementation();
+        this.isCompatible = type.isAssignableFrom(delegationType);
         if (!isCompatible) {
             if (!proxyFactory.canProxy(type)) {
                 throw new PicoIntrospectionException("Cannot create proxy for type " + type.getName());
             }
-            // TODO: Check method compatiblity
+            final Method[] methods = type.getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                final Method method = methods[i];
+                try {
+                    delegationType.getMethod(method.getName(), method.getParameterTypes());
+                } catch (final NoSuchMethodException e) {
+                    throw new PicoIntrospectionException("Cannot create proxy for type "
+                            + type.getName()
+                            + ", because of incompatible method "
+                            + method.toString());
+                }
+            }
         }
     }
 
     /**
      * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
-     * The implementation will use JDK {@link java.lang.reflect.Proxy}instances. If the component instant <b>does </b>
+     * The implementation will use JDK {@link java.lang.reflect.Proxy} instances. If the component instant <b>does </b>
      * implement the interface, no proxy is used anyway.
      * 
      * @param type The class type used as key.

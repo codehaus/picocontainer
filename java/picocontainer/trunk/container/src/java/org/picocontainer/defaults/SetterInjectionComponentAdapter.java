@@ -28,11 +28,12 @@ import org.picocontainer.PicoIntrospectionException;
  * Instantiates components using empty constructors and
  * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
  * For easy setting of primitive properties, also see {@link BeanPropertyComponentAdapter}.
- * <p/>
+ * <p>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingComponentAdapter} around this one.
  * </em>
+ * </p>
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -55,6 +56,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentMonitor the component monitor used by this adapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
                                            final Class componentImplementation,
@@ -65,12 +67,15 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
     
     /**
-     * Constructs a SetterInjectionComponentAdapter with key, implementation and parameters
+     * Constructs a SetterInjectionComponentAdapter with a {@link DelegatingComponentMonitor} as default.
      * 
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
                                            final Class componentImplementation,
@@ -80,12 +85,14 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     /**
-     * Constructs a SetterInjectionComponentAdapter with key, implementation and parameters
+     * Constructs a SetterInjectionComponentAdapter with key, implementation and parameters.
      * 
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public SetterInjectionComponentAdapter(final Object componentKey,
                                            final Class componentImplementation,

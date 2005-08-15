@@ -66,6 +66,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentMonitor the component monitor used by this adapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(final Object componentKey,
                                                 final Class componentImplementation,
@@ -81,6 +82,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
         this(componentKey, componentImplementation, parameters, false, new DelegatingComponentMonitor());
@@ -91,6 +95,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * 
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(Object componentKey,
                                                 Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {

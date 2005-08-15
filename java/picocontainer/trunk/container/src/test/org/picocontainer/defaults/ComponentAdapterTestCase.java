@@ -11,10 +11,13 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
+
+import java.lang.reflect.Constructor;
 
 /**
  * Test AbstractComponentAdapter behaviour
@@ -24,10 +27,10 @@ public class ComponentAdapterTestCase
         extends TestCase {
 
     private static class TestComponentAdapter extends AbstractComponentAdapter {
-        protected TestComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+        TestComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
             super(componentKey, componentImplementation, componentMonitor);
         }
-        protected TestComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
+        TestComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
             super(componentKey, componentImplementation);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
@@ -39,10 +42,10 @@ public class ComponentAdapterTestCase
     }
 
     private static class TestDecoratingComponentAdapter extends DecoratingComponentAdapter {
-        protected TestDecoratingComponentAdapter(ComponentAdapter adapter, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+        TestDecoratingComponentAdapter(ComponentAdapter adapter, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
             super(adapter, componentMonitor);
         }
-        protected TestDecoratingComponentAdapter(ComponentAdapter adapter) throws AssignabilityRegistrationException {
+        TestDecoratingComponentAdapter(ComponentAdapter adapter) throws AssignabilityRegistrationException {
             super(adapter);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
@@ -51,6 +54,18 @@ public class ComponentAdapterTestCase
         public void verify(PicoContainer container) throws PicoVerificationException {
         }
         
+    }
+    
+    private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
+        TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
+            super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+        }
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            return null;
+        }
+        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+            return null;
+        }
     }
     
     public void testComponentImplementationMayNotBeNull() {
@@ -86,7 +101,15 @@ public class ComponentAdapterTestCase
             assertEquals("componentMonitor", e.getMessage());
         }
     }
-    
+
+    public void testParameterMayNotBeNull() throws Exception {
+        try {
+            new TestInstantiatingComponentAdapter("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null}, false);
+            fail("Thrown " + NullPointerException.class.getName() + " expected");
+        } catch (final NullPointerException e) {
+            assertTrue(e.getMessage().endsWith("1 is null"));
+        }
+    }
     
     public void testStringRepresentation() {
         ComponentAdapter componentAdapter = new TestComponentAdapter("Key", Integer.class);

@@ -10,7 +10,7 @@ using Test.Script;
 namespace NanoContainer.Tests.Attributes
 {
 	[TestFixture]
-	public class AttributeBasedNanoContainerTestCase : AbstractScriptedContainerBuilderTestCase
+	public class AttributeBasedContainerBuilderTestCase : AbstractScriptedContainerBuilderTestCase
 	{
 		private IPicoContainer picoContainer;
 		[SetUp]

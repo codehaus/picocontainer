@@ -119,7 +119,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Attributes\AttributeBasedNanoContainerTestCase.cs"
+                    RelPath = "Attributes\AttributeBasedContainerBuilderTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

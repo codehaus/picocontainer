@@ -14,6 +14,5 @@ namespace NanoContainer.Script.JSharp
 		{
 			get { return new VJSharpCodeProvider(); }
 		}
-
 	}
 }

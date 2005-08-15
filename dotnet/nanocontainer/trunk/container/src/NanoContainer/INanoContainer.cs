@@ -1,9 +1,9 @@
-using NanoContainer.Script;
+using NanoContainer.IntegrationKit;
 
 namespace NanoContainer
 {
 	public interface INanoContainer
 	{
-		ScriptedContainerBuilder ContainerBuilder { get; }
+		ContainerBuilder ContainerBuilder { get; }
 	}
 }

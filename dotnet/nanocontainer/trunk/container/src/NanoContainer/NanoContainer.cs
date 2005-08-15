@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using NanoContainer.IntegrationKit;
 using NanoContainer.Reflection;
 using NanoContainer.Script;
 using PicoContainer;
@@ -14,6 +15,7 @@ namespace NanoContainer
 		public static readonly string VB = ".vb";
 		public static readonly string JS = ".js";
 		public static readonly string JAVA = ".java";
+		public static readonly string XML = ".xml";
 
 		private ScriptedContainerBuilder containerBuilder;
 
@@ -21,17 +23,20 @@ namespace NanoContainer
 
 		static DefaultNanoContainer()
 		{
-			extensionToBuilders.Add(CS, "NanoContainer.Script.CSharp.CSharpBuilder");
-			extensionToBuilders.Add(VB, "NanoContainer.Script.VB.VBBuilder");
-			extensionToBuilders.Add(JS, "NanoContainer.Script.JS.JSBuilder");
-			extensionToBuilders.Add(JAVA, "NanoContainer.Script.JSharp.JSharpBuilder");
+			extensionToBuilders.Add(CS, typeof(NanoContainer.Script.CSharp.CSharpBuilder).FullName);
+			extensionToBuilders.Add(VB, typeof(NanoContainer.Script.VB.VBBuilder).FullName);
+			extensionToBuilders.Add(JS, typeof(NanoContainer.Script.JS.JSBuilder).FullName);
+			extensionToBuilders.Add(JAVA, typeof(NanoContainer.Script.JSharp.JSharpBuilder).FullName);
+			extensionToBuilders.Add(XML, typeof(NanoContainer.Script.Xml.XMLContainerBuilder).FullName);
 		}
 
-		public DefaultNanoContainer(FileStream composition) : this(new StreamReader(composition), GetBuilderClassName(composition))
+		public DefaultNanoContainer(FileStream composition) 
+			: this(new StreamReader(composition), GetBuilderClassName(composition))
 		{
 		}
 
-		public DefaultNanoContainer(Stream composition, String builderClass) : this(new StreamReader(composition), GetBuilderClassName(builderClass))
+		public DefaultNanoContainer(Stream composition, String builderClass) 
+			: this(new StreamReader(composition), GetBuilderClassName(builderClass))
 		{
 		}
 
@@ -46,7 +51,7 @@ namespace NanoContainer
 			containerBuilder = (ScriptedContainerBuilder) componentAdapter.GetComponentInstance(dpc);
 		}
 
-		public ScriptedContainerBuilder ContainerBuilder
+		public ContainerBuilder ContainerBuilder
 		{
 			get { return containerBuilder; }
 		}

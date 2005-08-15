@@ -1,3 +1,4 @@
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.IO;
@@ -15,81 +16,53 @@ namespace NanoContainer.Script.Compiler
 		}
 
 		// overload to compile CodeDom trees
-		public static Assembly Compile(System.CodeDom.Compiler.CodeDomProvider cp, System.CodeDom.CodeCompileUnit scriptCode, IList assemblies ) 
+		public static Assembly Compile(CodeDomProvider cp, object scriptCode, IList assemblies )
 		{
-			ICodeCompiler ic = cp.CreateCompiler();
-			CompilerParameters cpar = GetCompilerParameters(assemblies);
-			CompilerResults cr = ic.CompileAssemblyFromDom(cpar, scriptCode);   
-
-			bool errors = false;
-
-			if (cr.Errors.Count > 0) 
+			ICodeCompiler codeCompiler = cp.CreateCompiler();
+			CompilerParameters compilerParameters = GetCompilerParameters(assemblies);
+			CompilerResults compilerResults = null;
+			
+			if(scriptCode is string) 
 			{
-    
+				compilerResults = codeCompiler.CompileAssemblyFromSource(compilerParameters, (string)scriptCode);
+			}
+			else
+			{
+				compilerResults = codeCompiler.CompileAssemblyFromDom(compilerParameters, (CodeCompileUnit)scriptCode);
+			}
+
+			if (compilerResults.Errors.Count > 0) 
+			{
 				StringBuilder sb = new StringBuilder("Error compiling the composition script:\n");
-				foreach (CompilerError ce in cr.Errors) 
+
+				foreach (CompilerError compilerError in compilerResults.Errors) 
 				{
-					if (!ce.IsWarning) 
+					if (!compilerError.IsWarning) 
 					{
-						errors = true;
 						sb.Append("\nError number:\t")
-							.Append(ce.ErrorNumber)
+							.Append(compilerError.ErrorNumber)
 							.Append("\nMessage:\t ")
-							.Append(ce.ErrorText)
+							.Append(compilerError.ErrorText)
 							.Append("\nLine number:\t")
-							.Append(ce.Line);
+							.Append(compilerError.Line);
 					}
 				}
-				if (errors) 
+				
+				if (!sb.Length.Equals(0)) 
 				{
 					throw new PicoCompositionException(sb.ToString());
 				}
 			}
 
-			return cr.CompiledAssembly;
-		}
-
-
-		public static Assembly Compile(CodeDomProvider cp, string scriptCode, IList assemblies)
-		{
-			ICodeCompiler ic = cp.CreateCompiler();
-			CompilerParameters cpar = GetCompilerParameters(assemblies);
-			CompilerResults cr = ic.CompileAssemblyFromSource(cpar, scriptCode);
-
-			bool errors = false;
-
-			if (cr.Errors.Count > 0)
-			{
-				StringBuilder sb = new StringBuilder("Error compiling the composition script:\n");
-				foreach (CompilerError ce in cr.Errors)
-				{
-					if (!ce.IsWarning)
-					{
-						errors = true;
-
-						sb.Append("\nError number:\t")
-							.Append(ce.ErrorNumber)
-							.Append("\nMessage:\t ")
-							.Append(ce.ErrorText)
-							.Append("\nLine number:\t")
-							.Append(ce.Line);
-					}
-				}
-				if (errors)
-				{
-					throw new PicoCompositionException(sb.ToString());
-				}
-			}
-
-			return cr.CompiledAssembly;
+			return compilerResults.CompiledAssembly;
 		}
 
 		private static CompilerParameters GetCompilerParameters(IList assemblies)
 		{
 			CompilerParameters cpar = new CompilerParameters();
-
 			IList dirs = GetAssemblies();
 			int len = dirs.Count;
+
 			// Add all assemblies in the current working directory
 			for (int i = 0; i < len; i++)
 			{
@@ -134,7 +107,7 @@ namespace NanoContainer.Script.Compiler
 
 		private static string GetScriptAsString(StreamReader stream)
 		{
-			StringBuilder sb = new StringBuilder("");
+			StringBuilder sb = new StringBuilder();
 			string line;
 
 			while ((line = stream.ReadLine()) != null)
@@ -144,6 +117,5 @@ namespace NanoContainer.Script.Compiler
 
 			return sb.ToString();
 		}
-
 	}
 }

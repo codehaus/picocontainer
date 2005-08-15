@@ -14,6 +14,5 @@ namespace NanoContainer.Script.CSharp
 		{
 			get { return new CSharpCodeProvider(); }
 		}
-
 	}
 }

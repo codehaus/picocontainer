@@ -18,6 +18,35 @@ namespace NanoContainer.Reflection
 			return GetType(new ObjectTypeSettings(typeSettings));
 		}
 
+		private static Assembly GetAssemply(ObjectTypeSettings typeSettings)
+		{
+			try
+			{
+				if (typeSettings.Assembly != null)
+				{
+					return Assembly.Load(typeSettings.Assembly);
+				}
+				else
+				{
+					return Assembly.GetExecutingAssembly();
+				}
+			}
+			catch (FileNotFoundException e)
+			{
+				// Maybe it is a in memory assembly try it
+				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+				{
+					if (assembly.FullName.Replace(" ", "") == typeSettings.Assembly)
+					{
+						return assembly;
+					}
+				}
+				
+				// Assembly wasn't found
+				throw new TypeLoadException("Can not load the assembly " + typeSettings.Assembly + " needed for the type: " + typeSettings.Type, e);
+			}
+		}
+
 		public static Type GetType(ObjectTypeSettings typeSettings)
 		{
 			Type type = TypeMap[typeSettings.Name] as Type;
@@ -26,36 +55,7 @@ namespace NanoContainer.Reflection
 				return type;
 			}
 
-			Assembly assemblyInstance = null;
-
-			try
-			{
-				if (typeSettings.Assembly != null)
-				{
-					assemblyInstance = Assembly.Load(typeSettings.Assembly);
-				}
-				else
-				{
-					assemblyInstance = Assembly.GetExecutingAssembly();
-				}
-			}
-			catch (FileNotFoundException e)
-			{
-				// Maybe it is a in memory assembly try it
-				foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-				{
-					if (a.FullName.Replace(" ", "") == typeSettings.Assembly)
-					{
-						assemblyInstance = a;
-						break;
-					}
-				}
-
-				if (assemblyInstance == null)
-				{
-					throw new TypeLoadException("Can not load the assembly " + typeSettings.Assembly + " needed for the type: " + typeSettings.Type, e);
-				}
-			}
+			Assembly assemblyInstance = GetAssemply(typeSettings);
 
 			try
 			{
@@ -78,11 +78,11 @@ namespace NanoContainer.Reflection
 					}
 					catch (Exception)
 					{
+						// ignore
 					}
 				}
 				throw ex;
 			}
-
 		}
 	}
 }

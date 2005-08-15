@@ -104,7 +104,22 @@
         <Files>
             <Include>
                 <File
+                    RelPath = "AbstractContainerBuilderTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\AssemblyUtilTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\AttributeBasedNanoContainerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

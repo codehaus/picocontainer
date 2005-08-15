@@ -50,12 +50,14 @@ namespace NanoContainer.Reflection
 
 				//  set the object assembly name
 				this.assembly = String.Concat(parts[1].Trim() + Comma,
-				                               parts[2].Trim() + Comma,
-				                               parts[3].Trim() + Comma,
-				                               parts[4].Trim());
+					parts[2].Trim() + Comma,
+					parts[3].Trim() + Comma,
+					parts[4].Trim());
 			}
-			else
+			else 
+			{
 				throw new PicoCompositionException("The type " + fullType + "is not qualified enough to load or has an invalid format.");
+			}
 		}
 
 		#region Properties

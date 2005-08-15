@@ -114,6 +114,31 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\AssemblyUtil.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\AttributeBasedContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\ComponentAdapterType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\CustomComponentAdapterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\RegisterWithContainerAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IntegrationKit\ContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -14,6 +14,5 @@ namespace NanoContainer.Script.JS
 		{
 			get { return new JScriptCodeProvider(); }
 		}
-
 	}
 }

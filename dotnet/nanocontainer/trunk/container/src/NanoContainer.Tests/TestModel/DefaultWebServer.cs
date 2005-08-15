@@ -1,8 +1,10 @@
 using System.Text;
+using NanoContainer.Attributes;
 using NUnit.Framework;
 
 namespace NanoContainer.Test.TestModel
 {
+	[RegisterWithContainer("webserver")]
 	public class DefaultWebServer : WebServer
 	{
 		public DefaultWebServer(WebServerConfig wsc)

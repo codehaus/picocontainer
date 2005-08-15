@@ -1,7 +1,9 @@
 using System;
+using NanoContainer.Attributes;
 
 namespace NanoContainer.Test.TestModel
 {
+	[RegisterWithContainer]
 	public class DefaultWebServerConfig : WebServerConfig
 	{
 		private int port = 80;
@@ -16,6 +18,5 @@ namespace NanoContainer.Test.TestModel
 			get { return port; }
 			set { port = value; }
 		}
-
 	}
 }

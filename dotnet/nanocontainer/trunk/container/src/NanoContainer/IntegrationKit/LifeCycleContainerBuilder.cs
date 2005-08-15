@@ -24,7 +24,6 @@ namespace NanoContainer.IntegrationKit
 			container.Start();
 
 			containerRef.Set(container);
-
 		}
 
 		public void KillContainer(IObjectReference containerRef)

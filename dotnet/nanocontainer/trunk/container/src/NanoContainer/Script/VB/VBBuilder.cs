@@ -14,6 +14,5 @@ namespace NanoContainer.Script.VB
 		{
 			get { return new VBCodeProvider(); }
 		}
-
 	}
 }

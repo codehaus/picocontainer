@@ -5,11 +5,11 @@ namespace NanoContainer.Attributes
 	public class RegisterWithContainerAttribute : Attribute
 	{
 		private object key;
-		private ComponentAdapterType componentAdapterType;
+		private ComponentAdapterType componentAdapterType = ComponentAdapterType.Caching;
+		private DependencyInjectionType dependencyInjectionType = DependencyInjectionType.Constructor;
 
 		public RegisterWithContainerAttribute()
 		{ 
-			componentAdapterType = ComponentAdapterType.CACHING;
 		}
 
 		public RegisterWithContainerAttribute(object key)
@@ -36,6 +36,13 @@ namespace NanoContainer.Attributes
 		public ComponentAdapterType ComponentAdapterType
 		{
 			get { return componentAdapterType; }
+			set { componentAdapterType = value; }
+		}
+
+		public DependencyInjectionType DependencyInjection
+		{
+			get { return dependencyInjectionType; }
+			set { dependencyInjectionType = value; }
 		}
 	}
 }

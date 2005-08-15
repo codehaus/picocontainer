@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NanoContainer.Attributes;
 using NanoContainer.IntegrationKit;
@@ -46,5 +47,49 @@ namespace NanoContainer.Tests.Attributes
 			Assert.IsNotNull(ws);
 			Assert.IsNotNull(config);
 		}
+
+		[Test]
+		public void NonCachingCtorBasedInjectionAdapterIsUsed()
+		{
+			IComponentAdapter ca = picoContainer.GetComponentAdapter(typeof(NonCachingCtorBasedComponent));
+
+			Assert.IsTrue(ca is ConstructorInjectionComponentAdapter);
+		}
+
+		[Test]
+		public void NonCachingSetterBasedInjectionAdapterIsUsed()
+		{
+			IComponentAdapter ca = picoContainer.GetComponentAdapter(typeof(NonCachingSetterBasedComponent));
+			Assert.IsTrue(ca is SetterInjectionComponentAdapter);
+
+			ITestComponent component = picoContainer.GetComponentInstance(typeof(NonCachingSetterBasedComponent)) as ITestComponent;
+			Assert.IsNotNull(component.WebServer);
+		}
+
+		[Test]
+		public void CachingCtorBasedInjectionAdapterIsUsed()
+		{
+			Type cachingCtorType = typeof(CachingCtorBasedComponent);
+			IComponentAdapter ca = picoContainer.GetComponentAdapter(cachingCtorType);
+			Assert.IsTrue(ca is CachingComponentAdapter);
+
+			ITestComponent component = picoContainer.GetComponentInstance(cachingCtorType) as ITestComponent;
+			Assert.IsNotNull(component.WebServer);
+
+			Assert.AreSame(component, picoContainer.GetComponentInstance(cachingCtorType));
+		}
+
+		[Test]
+		public void CachingSetterBasedInjectionAdapterIsUsed()
+		{
+			Type cachingSetterType = typeof(CachingSetterBasedComponent);
+			IComponentAdapter ca = picoContainer.GetComponentAdapter(cachingSetterType);
+			Assert.IsTrue(ca is CachingComponentAdapter);
+
+			ITestComponent component = picoContainer.GetComponentInstance(cachingSetterType) as ITestComponent;
+			Assert.IsNotNull(component.WebServer);
+			Assert.AreSame(component, picoContainer.GetComponentInstance(cachingSetterType));
+		}
+
 	}
 }

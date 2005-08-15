@@ -26,17 +26,49 @@ namespace NanoContainer.Attributes
 		{
 			foreach(Type type in registerTypes)
 			{
+				IComponentAdapter componentAdapter = null;
 				RegisterWithContainerAttribute attribute = 
 					type.GetCustomAttributes(registerAttributeType, true)[0] as RegisterWithContainerAttribute;
 				
-				if(attribute.Key == null)
+				if(attribute.DependencyInjection == DependencyInjectionType.Constructor)
 				{
-					container.RegisterComponentImplementation(type);
+					componentAdapter = BuildConstructorInjectionAdapter(attribute, type);
 				}
 				else
 				{
-					container.RegisterComponentImplementation(attribute.Key, type);
+					componentAdapter = BuildSetterInjectionAdapter(attribute, type);
 				}
+
+				if(attribute.ComponentAdapterType == ComponentAdapterType.Caching)
+				{
+					componentAdapter = new CachingComponentAdapter(componentAdapter);
+				}
+
+				container.RegisterComponent(componentAdapter);
+			}
+		}
+
+		private IComponentAdapter BuildSetterInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)
+		{
+			if(attribute.Key == null)
+			{
+				return new SetterInjectionComponentAdapter(type);
+			}
+			else
+			{
+				return new ConstructorInjectionComponentAdapter(attribute.Key, type);
+			}
+		}
+
+		private IComponentAdapter BuildConstructorInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)
+		{
+			if(attribute.Key == null)
+			{
+				return new ConstructorInjectionComponentAdapter(type);
+			}
+			else
+			{
+				return new ConstructorInjectionComponentAdapter(attribute.Key, type);
 			}
 		}
 	}

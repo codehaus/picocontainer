@@ -124,6 +124,31 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\CachingCtorBasedComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\CachingSetterBasedComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\ITestComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\NonCachingCtorBasedComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\NonCachingSetterBasedComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Reflection\DefaultReflectionContainerAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

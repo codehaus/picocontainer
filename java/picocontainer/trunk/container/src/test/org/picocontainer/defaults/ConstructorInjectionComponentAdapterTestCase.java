@@ -31,8 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ConstructorInjectionComponentAdapterTestCase
-        extends AbstractComponentAdapterTestCase {
+public class ConstructorInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
 
     protected Class getComponentAdapterType() {
         return ConstructorInjectionComponentAdapter.class;
@@ -65,8 +64,9 @@ public class ConstructorInjectionComponentAdapterTestCase
 
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.registerComponentImplementation(SimpleTouchable.class);
-        return new ConstructorInjectionComponentAdapter(NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[]{
-            ComponentParameter.DEFAULT, new ConstantParameter("Name")});
+        return new ConstructorInjectionComponentAdapter(
+                NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[]{
+                        ComponentParameter.DEFAULT, new ConstantParameter("Name")});
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
@@ -77,8 +77,7 @@ public class ConstructorInjectionComponentAdapterTestCase
         return prepSER_isSerializable(picoContainer);
     }
 
-    public static class NamedDependsOnTouchable
-            extends DependsOnTouchable {
+    public static class NamedDependsOnTouchable extends DependsOnTouchable {
         public NamedDependsOnTouchable(Touchable t, String name) {
             super(t);
         }
@@ -118,7 +117,8 @@ public class ConstructorInjectionComponentAdapterTestCase
         }
     }
 
-    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
+            MutablePicoContainer picoContainer) {
         return new ConstructorInjectionComponentAdapter(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
     }
 
@@ -258,7 +258,7 @@ public class ConstructorInjectionComponentAdapterTestCase
         pico.registerComponentInstance("Hello");
         assertNotNull(pico.getComponentInstance(Component201.class));
     }
-    
+
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final long beforeTime = System.currentTimeMillis();
 
@@ -267,7 +267,7 @@ public class ConstructorInjectionComponentAdapterTestCase
         monitor.expects(once()).method("instantiating").with(eq(emptyHashMapCtor));
         Constraint startIsAfterBegin = new Constraint() {
             public boolean eval(Object o) {
-                Long startTime = (Long) o;
+                Long startTime = (Long)o;
                 return beforeTime <= startTime.longValue();
             }
 
@@ -277,7 +277,7 @@ public class ConstructorInjectionComponentAdapterTestCase
         };
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
-                Long duration = (Long) o;
+                Long duration = (Long)o;
                 return 0 <= duration.longValue();
             }
 
@@ -286,8 +286,8 @@ public class ConstructorInjectionComponentAdapterTestCase
             }
         };
         monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), durationIsGreaterThanOrEqualToZero);
-        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(Map.class, HashMap.class,
-                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
+        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
+                Map.class, HashMap.class, new Parameter[0], false, (ComponentMonitor)monitor.proxy());
         cica.getComponentInstance(null);
     }
 
@@ -300,7 +300,7 @@ public class ConstructorInjectionComponentAdapterTestCase
 
         Constraint isITE = new Constraint() {
             public boolean eval(Object o) {
-                Exception ex = (Exception) o;
+                Exception ex = (Exception)o;
                 return ex instanceof InvocationTargetException;
             }
 
@@ -310,8 +310,8 @@ public class ConstructorInjectionComponentAdapterTestCase
         };
 
         monitor.expects(once()).method("instantiationFailed").with(eq(barfingActionListenerCtor), isITE);
-        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(ActionListener.class, BarfingActionListener.class,
-                new Parameter[0], false, (ComponentMonitor) monitor.proxy());
+        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
+                ActionListener.class, BarfingActionListener.class, new Parameter[0], false, (ComponentMonitor)monitor.proxy());
         try {
             cica.getComponentInstance(null);
             fail("Should barf");

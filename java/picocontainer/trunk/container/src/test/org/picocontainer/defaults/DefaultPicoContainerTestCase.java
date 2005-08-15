@@ -27,6 +27,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -182,9 +183,14 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
-    public void testMakingOfChildContainerPercolatesLifecycleManager() {
-        super.testMakingOfChildContainerPercolatesLifecycleManager();
-
+    // TODO: PICO-165
+    public void XXXtestComponentKeysFromParentCannotConfuseTheChild() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation("test", SimpleTouchable.class);
+        DefaultPicoContainer child = new DefaultPicoContainer(pico);
+        child.registerComponentImplementation("test", DependsOnTouchable.class);
+        DependsOnTouchable dot = (DependsOnTouchable)child.getComponentInstance("test");
+        assertNotNull(dot);
     }
 
     public void testDefaultPicoContainerCanChangeMonitor() {

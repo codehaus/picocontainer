@@ -149,6 +149,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\Custom\CustomComponent.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\Custom\TestCustomComponentAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Reflection\DefaultReflectionContainerAdapterTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

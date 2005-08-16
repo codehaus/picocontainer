@@ -7,6 +7,7 @@ namespace NanoContainer.Attributes
 		private object key;
 		private ComponentAdapterType componentAdapterType = ComponentAdapterType.Caching;
 		private DependencyInjectionType dependencyInjectionType = DependencyInjectionType.Constructor;
+		private Type componentAdapter;
 
 		public RegisterWithContainerAttribute()
 		{ 
@@ -37,6 +38,12 @@ namespace NanoContainer.Attributes
 		{
 			get { return componentAdapterType; }
 			set { componentAdapterType = value; }
+		}
+
+		public Type ComponentAdapter
+		{
+			get { return componentAdapter; }
+			set { componentAdapter = value; }
 		}
 
 		public DependencyInjectionType DependencyInjection

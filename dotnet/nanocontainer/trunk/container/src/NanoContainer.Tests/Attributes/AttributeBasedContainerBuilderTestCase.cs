@@ -3,15 +3,15 @@ using System.Collections;
 using NanoContainer.Attributes;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Test.TestModel;
+using NanoContainer.Tests.Attributes.Custom;
 using NUnit.Framework;
 using PicoContainer;
 using PicoContainer.Defaults;
-using Test.Script;
 
 namespace NanoContainer.Tests.Attributes
 {
 	[TestFixture]
-	public class AttributeBasedContainerBuilderTestCase : AbstractScriptedContainerBuilderTestCase
+	public class AttributeBasedContainerBuilderTestCase : AbstractContainerBuilderTestCase
 	{
 		private IPicoContainer picoContainer;
 		[SetUp]
@@ -54,6 +54,14 @@ namespace NanoContainer.Tests.Attributes
 			IComponentAdapter ca = picoContainer.GetComponentAdapter(typeof(NonCachingCtorBasedComponent));
 
 			Assert.IsTrue(ca is ConstructorInjectionComponentAdapter);
+		}
+
+		[Test]
+		public void CustomComponentAdapterIsUsed()
+		{
+			IComponentAdapter ca = picoContainer.GetComponentAdapter(typeof(CustomComponent));
+
+			Assert.AreEqual(typeof(TestCustomComponentAdapter),ca.GetType());
 		}
 
 		[Test]

@@ -129,11 +129,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Attributes\CustomComponentAdapterAttribute.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Attributes\DependencyInjectionType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

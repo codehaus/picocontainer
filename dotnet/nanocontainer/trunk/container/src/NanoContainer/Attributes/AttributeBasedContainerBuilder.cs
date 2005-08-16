@@ -29,23 +29,39 @@ namespace NanoContainer.Attributes
 				IComponentAdapter componentAdapter = null;
 				RegisterWithContainerAttribute attribute = 
 					type.GetCustomAttributes(registerAttributeType, true)[0] as RegisterWithContainerAttribute;
-				
-				if(attribute.DependencyInjection == DependencyInjectionType.Constructor)
+				if(attribute.ComponentAdapterType == ComponentAdapterType.Custom)
 				{
-					componentAdapter = BuildConstructorInjectionAdapter(attribute, type);
+					componentAdapter = BuildCustomComponentAdapter(attribute, type);
 				}
 				else
 				{
-					componentAdapter = BuildSetterInjectionAdapter(attribute, type);
+					componentAdapter = BuildComponentAdapter(attribute, type);
 				}
-
-				if(attribute.ComponentAdapterType == ComponentAdapterType.Caching)
-				{
-					componentAdapter = new CachingComponentAdapter(componentAdapter);
-				}
-
 				container.RegisterComponent(componentAdapter);
 			}
+		}
+
+		private IComponentAdapter BuildComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
+		{
+			IComponentAdapter result;
+			if(attribute.DependencyInjection == DependencyInjectionType.Constructor)
+			{
+				result = BuildConstructorInjectionAdapter(attribute, type);
+			}
+			else
+			{
+				result = BuildSetterInjectionAdapter(attribute, type);
+			}
+			if(attribute.ComponentAdapterType == ComponentAdapterType.Caching)
+			{
+				result = new CachingComponentAdapter(result);
+			}
+			return result;
+		}
+
+		private static IComponentAdapter BuildCustomComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
+		{
+			return (IComponentAdapter)Activator.CreateInstance(attribute.ComponentAdapter,new object[] {type});
 		}
 
 		private IComponentAdapter BuildSetterInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)

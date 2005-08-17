@@ -3,13 +3,17 @@ using System.Collections;
 using System.IO;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Reflection;
-using NanoContainer.Script;
+using NanoContainer.Script.CSharp;
+using NanoContainer.Script.JS;
+using NanoContainer.Script.JSharp;
+using NanoContainer.Script.VB;
+using NanoContainer.Script.Xml;
 using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace NanoContainer
 {
-	public class DefaultNanoContainer : INanoContainer
+	public class NanoContainer : INanoContainer
 	{
 		public static readonly string CS = ".cs";
 		public static readonly string VB = ".vb";
@@ -17,30 +21,30 @@ namespace NanoContainer
 		public static readonly string JAVA = ".java";
 		public static readonly string XML = ".xml";
 
-		private ScriptedContainerBuilder containerBuilder;
+		private ContainerBuilder containerBuilder;
 
 		private static readonly Hashtable extensionToBuilders = new Hashtable();
 
-		static DefaultNanoContainer()
+		static NanoContainer()
 		{
-			extensionToBuilders.Add(CS, typeof(NanoContainer.Script.CSharp.CSharpBuilder).FullName);
-			extensionToBuilders.Add(VB, typeof(NanoContainer.Script.VB.VBBuilder).FullName);
-			extensionToBuilders.Add(JS, typeof(NanoContainer.Script.JS.JSBuilder).FullName);
-			extensionToBuilders.Add(JAVA, typeof(NanoContainer.Script.JSharp.JSharpBuilder).FullName);
-			extensionToBuilders.Add(XML, typeof(NanoContainer.Script.Xml.XMLContainerBuilder).FullName);
+			extensionToBuilders.Add(CS, typeof(CSharpBuilder).FullName);
+			extensionToBuilders.Add(VB, typeof(VBBuilder).FullName);
+			extensionToBuilders.Add(JS, typeof(JSBuilder).FullName);
+			extensionToBuilders.Add(JAVA, typeof(JSharpBuilder).FullName);
+			extensionToBuilders.Add(XML, typeof(XMLContainerBuilder).FullName);
 		}
 
-		public DefaultNanoContainer(FileStream composition) 
+		public NanoContainer(FileStream composition) 
 			: this(new StreamReader(composition), GetBuilderClassName(composition))
 		{
 		}
 
-		public DefaultNanoContainer(Stream composition, String builderClass) 
+		public NanoContainer(Stream composition, string builderClass) 
 			: this(new StreamReader(composition), GetBuilderClassName(builderClass))
 		{
 		}
 
-		public DefaultNanoContainer(StreamReader composition, String builderClass)
+		public NanoContainer(StreamReader composition, string builderClass)
 		{
 			DefaultReflectionContainerAdapter defaultReflectionContainerAdapter;
 			DefaultPicoContainer dpc = new DefaultPicoContainer();
@@ -48,7 +52,7 @@ namespace NanoContainer
 
 			defaultReflectionContainerAdapter = new DefaultReflectionContainerAdapter(dpc);
 			IComponentAdapter componentAdapter = defaultReflectionContainerAdapter.RegisterComponentImplementation(builderClass);
-			containerBuilder = (ScriptedContainerBuilder) componentAdapter.GetComponentInstance(dpc);
+			containerBuilder = (ContainerBuilder) componentAdapter.GetComponentInstance(dpc);
 		}
 
 		public ContainerBuilder ContainerBuilder
@@ -64,7 +68,7 @@ namespace NanoContainer
 			return GetBuilderClassName(language);
 		}
 
-		public static String GetBuilderClassName(String extension)
+		public static string GetBuilderClassName(string extension)
 		{
 			return (String) extensionToBuilders[extension];
 		}

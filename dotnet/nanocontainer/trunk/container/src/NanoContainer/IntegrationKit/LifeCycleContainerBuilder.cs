@@ -8,7 +8,7 @@ namespace NanoContainer.IntegrationKit
 	{
 		public void BuildContainer(IObjectReference containerRef,
 		                           IObjectReference parentContainerRef,
-		                           Object assemblyScope)
+		                           object assemblyScope)
 		{
 			IMutablePicoContainer parent = parentContainerRef == null ? null : parentContainerRef.Get() as IMutablePicoContainer;
 			IMutablePicoContainer container = CreateContainer(parent, assemblyScope);
@@ -50,9 +50,9 @@ namespace NanoContainer.IntegrationKit
 			}
 		}
 
-		protected abstract void ComposeContainer(IMutablePicoContainer container, Object assemblyScope);
+		protected abstract void ComposeContainer(IMutablePicoContainer container, object assemblyScope);
 
 		protected abstract IMutablePicoContainer CreateContainer(IPicoContainer parentContainer,
-		                                                         Object assemblyScope);
+		                                                         object assemblyScope);
 	}
 }

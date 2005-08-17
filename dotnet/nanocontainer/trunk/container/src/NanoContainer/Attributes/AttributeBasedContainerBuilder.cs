@@ -17,12 +17,12 @@ namespace NanoContainer.Attributes
 			this.registerTypes = assemblyUtil.GetTypes(assembly, registerAttributeType);
 		}
 
-		protected override IMutablePicoContainer CreateContainer(IPicoContainer parent, Object assemblyScope)
+		protected override IMutablePicoContainer CreateContainer(IPicoContainer parent, object assemblyScope)
 		{
 			return new DefaultPicoContainer(parent);
 		}
 
-		protected override void ComposeContainer(IMutablePicoContainer container, Object assemblyScope)
+		protected override void ComposeContainer(IMutablePicoContainer container, object assemblyScope)
 		{
 			foreach(Type type in registerTypes)
 			{
@@ -59,7 +59,7 @@ namespace NanoContainer.Attributes
 			return result;
 		}
 
-		private static IComponentAdapter BuildCustomComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
+		private IComponentAdapter BuildCustomComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
 			return (IComponentAdapter)Activator.CreateInstance(attribute.ComponentAdapter,new object[] {type});
 		}

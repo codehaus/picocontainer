@@ -5,29 +5,29 @@ namespace NanoContainer.Reflection
 {
 	public interface IReflectionContainerAdapter
 	{
-		IComponentAdapter RegisterComponentImplementation(string componentImplementationClassName);
+		IComponentAdapter RegisterComponentImplementation(string componentImplementationTypeName);
 
-		IComponentAdapter RegisterComponentImplementation(object key, String componentImplementationClassName);
-
-		IComponentAdapter RegisterComponentImplementation(object key,
-		                                                  string componentImplementationClassName,
-		                                                  string[] parameterTypesAsString,
-		                                                  string[] parameterValuesAsString);
-
-		IComponentAdapter RegisterComponentImplementation(String componentImplementationClassName,
-		                                                  string[] parameterTypesAsString,
-		                                                  string[] parameterValuesAsString);
-
-		IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationClassName);
-
-		IComponentAdapter RegisterComponentImplementation(object key, ObjectTypeSettings componentImplementationClassName);
+		IComponentAdapter RegisterComponentImplementation(object key, string componentImplementationTypeName);
 
 		IComponentAdapter RegisterComponentImplementation(object key,
-		                                                  ObjectTypeSettings componentImplementationClassName,
+		                                                  string componentImplementationTypeName,
 		                                                  string[] parameterTypesAsString,
 		                                                  string[] parameterValuesAsString);
 
-		IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationClassName,
+		IComponentAdapter RegisterComponentImplementation(string componentImplementationTypeName,
+		                                                  string[] parameterTypesAsString,
+		                                                  string[] parameterValuesAsString);
+
+		IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationTypeName);
+
+		IComponentAdapter RegisterComponentImplementation(object key, ObjectTypeSettings componentImplementationTypeName);
+
+		IComponentAdapter RegisterComponentImplementation(object key,
+		                                                  ObjectTypeSettings componentImplementationTypeName,
+		                                                  string[] parameterTypesAsString,
+		                                                  string[] parameterValuesAsString);
+
+		IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationTypeName,
 		                                                  string[] parameterTypesAsString,
 		                                                  string[] parameterValuesAsString);
 

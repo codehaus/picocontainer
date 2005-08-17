@@ -17,29 +17,29 @@ namespace NanoContainer.Reflection
 			this.picoContainer = picoContainer;
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(string componentImplementationClassName)
+		public IComponentAdapter RegisterComponentImplementation(string componentImplementationTypeName)
 		{
-			return this.RegisterComponentImplementation(new ObjectTypeSettings(componentImplementationClassName));
+			return this.RegisterComponentImplementation(new ObjectTypeSettings(componentImplementationTypeName));
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(object key, String componentImplementationClassName)
+		public IComponentAdapter RegisterComponentImplementation(object key, string componentImplementationTypeName)
 		{
-			return this.RegisterComponentImplementation(key, new ObjectTypeSettings(componentImplementationClassName));
+			return this.RegisterComponentImplementation(key, new ObjectTypeSettings(componentImplementationTypeName));
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(String componentImplementationClassName,
+		public IComponentAdapter RegisterComponentImplementation(string componentImplementationTypeName,
 		                                                         string[] parameterTypesAsString,
 		                                                         string[] parameterValuesAsString)
 		{
-			return this.RegisterComponentImplementation(new ObjectTypeSettings(componentImplementationClassName), parameterTypesAsString, parameterValuesAsString);
+			return this.RegisterComponentImplementation(new ObjectTypeSettings(componentImplementationTypeName), parameterTypesAsString, parameterValuesAsString);
 		}
 
 		public IComponentAdapter RegisterComponentImplementation(object key,
-		                                                         string componentImplementationClassName,
+		                                                         string componentImplementationTypeName,
 		                                                         string[] parameterTypesAsString,
 		                                                         string[] parameterValuesAsString)
 		{
-			return this.RegisterComponentImplementation(key, new ObjectTypeSettings(componentImplementationClassName), parameterTypesAsString, parameterValuesAsString);
+			return this.RegisterComponentImplementation(key, new ObjectTypeSettings(componentImplementationTypeName), parameterTypesAsString, parameterValuesAsString);
 		}
 
 		public IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings typeSettings)
@@ -47,31 +47,31 @@ namespace NanoContainer.Reflection
 			return picoContainer.RegisterComponentImplementation(TypeLoader.GetType(typeSettings));
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(object key, ObjectTypeSettings componentImplementationClassName)
+		public IComponentAdapter RegisterComponentImplementation(object key, ObjectTypeSettings componentImplementationTypeName)
 		{
-			return picoContainer.RegisterComponentImplementation(key, TypeLoader.GetType(componentImplementationClassName));
+			return picoContainer.RegisterComponentImplementation(key, TypeLoader.GetType(componentImplementationTypeName));
 		}
 
 		public IComponentAdapter RegisterComponentImplementation(object key,
-		                                                         ObjectTypeSettings componentImplementationClassName,
+		                                                         ObjectTypeSettings componentImplementationTypeName,
 		                                                         string[] parameterTypesAsString,
 		                                                         string[] parameterValuesAsString)
 		{
-			Type componentImplementation = TypeLoader.GetType(componentImplementationClassName);
+			Type componentImplementation = TypeLoader.GetType(componentImplementationTypeName);
 
 			return RegisterComponentImplementation(parameterTypesAsString, parameterValuesAsString, key, componentImplementation);
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationClassName,
+		public IComponentAdapter RegisterComponentImplementation(ObjectTypeSettings componentImplementationTypeName,
 		                                                         string[] parameterTypesAsString,
 		                                                         string[] parameterValuesAsString)
 		{
-			Type type = TypeLoader.GetType(componentImplementationClassName);
+			Type type = TypeLoader.GetType(componentImplementationTypeName);
 			return RegisterComponentImplementation(parameterTypesAsString, parameterValuesAsString, type, type);
 		}
 
 
-		private IComponentAdapter RegisterComponentImplementation(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Type componentImplementation)
+		private IComponentAdapter RegisterComponentImplementation(string[] parameterTypesAsString, string[] parameterValuesAsString, object key, Type componentImplementation)
 		{
 			IParameter[] parameters = new IParameter[parameterTypesAsString.Length];
 			for (int i = 0; i < parameters.Length; i++)

@@ -11,13 +11,27 @@ namespace NanoContainer
 		private Hashtable assemblies = new Hashtable();
 		private IMutablePicoContainer picoContainer;
 
-		public DefaultNanoContainer()
+		public DefaultNanoContainer() : this(Assembly.GetCallingAssembly())
 		{
-			AddAssembly(Assembly.GetCallingAssembly());
+		}
+
+		public DefaultNanoContainer(Assembly assembly)
+		{
+			AddAssembly(assembly);
 			this.picoContainer = new DefaultPicoContainer();
 		}
 
-		protected void AddAssembly(Assembly assembly)
+		public IMutablePicoContainer Pico
+		{
+			get { return picoContainer; }
+		}
+
+		/// <summary>
+		/// When adding an assembly it is important to also include its referenced assemblies.
+		/// If this is not done then standard Types will NOT be returned, which would cause all 
+		/// kinds of problems.
+		/// </summary>
+		public virtual void AddAssembly(Assembly assembly)
 		{
 			assemblies.Add(assembly.GetName(), assembly);
 
@@ -27,13 +41,13 @@ namespace NanoContainer
 			}
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(string componentImplementationName)
+		public virtual IComponentAdapter RegisterComponentImplementation(string componentImplementationName)
 		{
 			Type type = findType(componentImplementationName);
 			return picoContainer.RegisterComponentImplementation(type);
 		}
 
-		public IComponentAdapter RegisterComponentImplementation(object key, string componentImplementationName)
+		public virtual IComponentAdapter RegisterComponentImplementation(object key, string componentImplementationName)
 		{
 			Type type = findType(componentImplementationName);
 			return picoContainer.RegisterComponentImplementation(key, type);
@@ -57,11 +71,6 @@ namespace NanoContainer
 			}
 			
 			throw new TypeLoadException("Unable to find type: " + typeName);
-		}
-
-		public IMutablePicoContainer Pico
-		{
-			get { return picoContainer; }
 		}
 	}
 }

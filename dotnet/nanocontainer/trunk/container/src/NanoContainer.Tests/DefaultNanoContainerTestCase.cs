@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NanoContainer.Test.TestModel;
 using NUnit.Framework;
 
@@ -53,6 +54,41 @@ namespace NanoContainer.Tests
 		{
 			DefaultNanoContainer nanoContainer = new DefaultNanoContainer();
 			nanoContainer.RegisterComponentImplementation("TestComp");
+		}
+
+		[Test]
+		public void ConstructWithAssembly()
+		{
+			Assembly assembly = Assembly.Load("TestComp");
+			DefaultNanoContainer nanoContainer = new DefaultNanoContainer(assembly);
+
+			nanoContainer.RegisterComponentImplementation("test", "TestComp");
+			Assert.IsNotNull(nanoContainer.Pico.GetComponentInstance("test"));
+		}
+
+		[Test]
+		[ExpectedException(typeof(TypeLoadException))]
+		public void TypesOutsideTheAssemblyShouldNotBeVisible()
+		{
+			Assembly assembly = Assembly.Load("TestComp");
+			DefaultNanoContainer nanoContainer = new DefaultNanoContainer(assembly);
+
+			// This test should not be visible from the container
+			nanoContainer.RegisterComponentImplementation(this.GetType().FullName);
+			Assert.IsNotNull(nanoContainer.Pico.GetComponentInstance(this.GetType()));
+		}
+
+		[Test]
+		public void FindExternalAssemblies()
+		{
+			Assembly assembly = Assembly.Load("TestComp");
+			Assert.IsNotNull(assembly);
+
+			assembly = Assembly.Load("TestComp2");
+			Assert.IsNotNull(assembly);
+
+			assembly = Assembly.Load("NotStartable");
+			Assert.IsNotNull(assembly);
 		}
 	}
 }

@@ -184,6 +184,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\ScriptFixture.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Script\CSharp\CSharpContainerBuilderTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -204,7 +209,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\Xml\XmlContainerBuilderTestCase.cs"
+                    RelPath = "Script\Xml\XMLContainerBuilderTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Xml\XmlScriptsTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

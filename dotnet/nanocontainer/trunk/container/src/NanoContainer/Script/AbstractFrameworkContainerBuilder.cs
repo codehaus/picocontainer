@@ -14,7 +14,7 @@ namespace NanoContainer.Script
 		private readonly string COMPOSE_METHOD = "Compose";
 		private FrameworkCompiler frameworkCompiler = new FrameworkCompiler();
 
-		public AbstractFrameworkContainerBuilder(StreamReader stream) : base(stream)
+		public AbstractFrameworkContainerBuilder(StreamReader script) : base(script)
 		{
 		}
 
@@ -26,7 +26,7 @@ namespace NanoContainer.Script
 		protected override IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer,
 		                                                                   object assemblyScope)
 		{
-			Type compiledType = GetCompiledType(Script, assemblyScope as IList);
+			Type compiledType = GetCompiledType(StreamReader, assemblyScope as IList);
 			object instance = Activator.CreateInstance(compiledType);
 			
 			RegisterParentToContainerScript(parentContainer, instance);

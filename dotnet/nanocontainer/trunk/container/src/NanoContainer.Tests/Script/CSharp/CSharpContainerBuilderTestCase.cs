@@ -1,5 +1,7 @@
 using System.Collections;
+using NanoContainer.IntegrationKit;
 using NanoContainer.Script.CSharp;
+using NanoContainer.Tests.Script;
 using NUnit.Framework;
 using PicoContainer;
 using PicoContainer.Defaults;
@@ -19,7 +21,7 @@ namespace Test.Script.CSharp
 			Assert.AreEqual("C#", pico.GetComponentInstance("hello"));
 		}
 
-		/*[Test]
+		[Test]
 		public void NanoContainerCanBeBuiltFromCodeOnTheFly()
 		{
 			string code = @"
@@ -43,20 +45,12 @@ namespace Test.Script.CSharp
 				}";
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new CSharpBuilder(BuildStreamReader(code)), parent, new ArrayList());
+			ContainerBuilder containerBuilder = new CSharpBuilder(ScriptFixture.BuildStreamReader(code));
+			IPicoContainer pico = BuildContainer(containerBuilder, parent, new ArrayList());
 
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual(1000, pico.GetComponentInstance(10));
 		}
-
-		private StreamReader BuildStreamReader(string code)
-		{
-			Stream stream = new MemoryStream();
-			IFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(stream, code);
-
-			return new StreamReader(stream);
-		}*/
 	}
 }

@@ -2,21 +2,20 @@ using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Xml;
 using Microsoft.CSharp;
 using NanoContainer.IntegrationKit;
 using PicoContainer.Defaults;
-
 // TODO this needs a major refactoring
+
 namespace NanoContainer.Script.Xml
 {
 	public class XMLContainerBuilder : AbstractFrameworkContainerBuilder
 	{
 		private static readonly string CONTAINER = "container";
-		private static readonly string CLASSPATH = "classpath";
+		private static readonly string ASSEMBLIES = "assemblies";
 		private static readonly string COMPONENT = "component";
 		private static readonly string COMPONENT_IMPLEMENTATION = "component-implementation";
 		private static readonly string COMPONENT_INSTANCE = "component-instance";
@@ -45,66 +44,56 @@ namespace NanoContainer.Script.Xml
 		private XmlElement rootNode;
 		private int registerComponentsRecursions;
 
-		public XMLContainerBuilder(StreamReader script)
-			: base(script)
+		public XMLContainerBuilder(StreamReader streamReader)
+			: base(streamReader)
 		{
 			registerComponentsRecursions = 0;
 		}
 
-		private void ParseStream(TextReader scriptCode)
+		protected void ParseStream(TextReader scriptCode)
 		{
 			XmlDocument doc = new XmlDocument();
-
 			doc.Load(scriptCode);
-
 			rootNode = doc.DocumentElement;
 		}
 
-		private void RegisterClasspath(CodeMemberMethod composeMethod, XmlElement classpathElement, IList assemblies)
+		protected void RegisterAssemblies(XmlElement assembliesElement, IList assemblies)
 		{
-			XmlNodeList children = classpathElement.ChildNodes;
-			for (int i = 0; i < children.Count ; i++) 
+			foreach(XmlElement childElement in assembliesElement.ChildNodes)
 			{
-				if (children[i] is XmlElement) 
+				string fileName = childElement.GetAttribute(FILE);
+				string urlSpec = childElement.GetAttribute(URL);
+
+				if (urlSpec != string.Empty)
 				{
-					XmlElement childElement = (XmlElement) children[i];
-
-					string fileName = childElement.GetAttribute(FILE);
-					string urlSpec = childElement.GetAttribute(URL);
-
-					UriBuilder url = null;
-					if (urlSpec != null && urlSpec.Length > 0) 
+					assemblies.Add(new Uri(urlSpec));
+				}
+				else
+				{
+					if (!File.Exists(fileName))
 					{
-						url = new UriBuilder(urlSpec);
-						assemblies.Add(url.ToString());
-					} 
-					else 
-					{
-						if (!File.Exists(fileName)) 
-						{
-							throw new IOException(Environment.CurrentDirectory + Path.DirectorySeparatorChar + fileName + " doesn't exist");
-						}
-
-						assemblies.Add(fileName);
+						throw new FileNotFoundException(Environment.CurrentDirectory + Path.DirectorySeparatorChar + fileName + " doesn't exist");
 					}
+
+					assemblies.Add(fileName);
 				}
 			}
 		}
 
-		private void RegisterComponentsAndChildContainers(CodeMemberMethod composeMethod, CodeVariableReferenceExpression picoContainerVariableRefr, XmlElement element, IList assemblies)
+		protected void RegisterComponentsAndChildContainers(CodeMemberMethod composeMethod, CodeVariableReferenceExpression picoContainerVariableRefr, XmlElement element, IList assemblies)
 		{
 			XmlNodeList children = element.ChildNodes;
 
-			 // register classpath first, regardless of order in the document.
-			for (int i = 0; i < children.Count; i++) 
+			// register classpath first, regardless of order in the document.
+			for (int i = 0; i < children.Count; i++)
 			{
-				if (children[i] is XmlElement) 
+				if (children[i] is XmlElement)
 				{
 					XmlElement childElement = (XmlElement) children[i];
 					string name = childElement.Name;
-					if (CLASSPATH.Equals(name)) 
+					if (ASSEMBLIES.Equals(name))
 					{
-						RegisterClasspath(composeMethod, childElement, assemblies);
+						RegisterAssemblies(childElement, assemblies);
 					}
 				}
 			}
@@ -141,7 +130,7 @@ namespace NanoContainer.Script.Xml
 
 						RegisterComponentsAndChildContainers(composeMethod, picoParentContainerVariableRefr, childElement, assemblies);
 					}
-					else if (CLASSPATH.Equals(name))
+					else if (ASSEMBLIES.Equals(name))
 					{
 						// Already registered ( Actualy not yet but will be :) )
 					}
@@ -168,7 +157,7 @@ namespace NanoContainer.Script.Xml
 			}
 		}
 
-		private CodeCompileUnit GenerateDomTreeFromXML(TextReader scriptCode, IList assemblies)
+		protected CodeCompileUnit GenerateDomTreeFromXML(TextReader scriptCode, IList assemblies)
 		{
 			CodeCompileUnit domTree;
 			CodeNamespace codeNamespace;
@@ -241,30 +230,29 @@ namespace NanoContainer.Script.Xml
 			return domTree;
 		}
 
-		private void RegisterComponentImplementation(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
+		protected void RegisterComponentImplementation(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
 		{
-			string className = element.GetAttribute(CLASS);
-			if (className.Length == 0)
+			string typeName = element.GetAttribute(CLASS);
+			if (typeName == string.Empty)
 			{
 				throw new PicoCompositionException("'" + CLASS + "' attribute not specified for " + element.Name);
 			}
 
 			string key = element.GetAttribute(KEY);
-
 			XmlNodeList children = element.SelectNodes("child::parameter");
 
-			if (key.Length == 0)
+			if (key == string.Empty)
 			{
 				if (children.Count == 0)
 				{
 					method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
-					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(className)));
+					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(typeName)));
 				}
 				else
 				{
 					method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
-					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(className)));
-					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(className)));
+					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(typeName)));
+					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(typeName)));
 					CreateRegistrationParameters(method.Parameters, children);
 				}
 			}
@@ -274,19 +262,19 @@ namespace NanoContainer.Script.Xml
 				{
 					method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
 					method.Parameters.Add(new CodePrimitiveExpression(key));
-					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(className)));
+					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(typeName)));
 				}
 				else
 				{
 					method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
 					method.Parameters.Add(new CodePrimitiveExpression(key));
-					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(className)));
+					method.Parameters.Add(new CodeTypeOfExpression(new CodeTypeReference(typeName)));
 					CreateRegistrationParameters(method.Parameters, children);
 				}
 			}
 		}
 
-		private void RegisterComponentInstance(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
+		protected void RegisterComponentInstance(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
 		{
 			string instanceName = element.InnerText;
 			string key = element.GetAttribute(KEY);
@@ -304,41 +292,38 @@ namespace NanoContainer.Script.Xml
 			}
 		}
 
-		private void RegisterComponentAdapter(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
+		protected void RegisterComponentAdapter(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
 		{
 			throw new NotImplementedException("Need to implement for ComponentAdapter");
 		}
 
-		private void CreateRegistrationParameters(CodeExpressionCollection methodParameters, XmlNodeList scriptParameters)
+		protected void CreateRegistrationParameters(CodeExpressionCollection methodParameters, XmlNodeList scriptParameters)
 		{
 			CodeExpression[] initializers = new CodeExpression[scriptParameters.Count];
 
 			for (int i = 0; i < scriptParameters.Count; i++)
 			{
-				if (scriptParameters.Item(i) is XmlElement)
+				XmlElement element = scriptParameters.Item(i) as XmlElement;
+
+				if (PARAMETER.Equals(element.Name))
 				{
-					XmlElement element = (XmlElement) scriptParameters.Item(i);
+					string key = element.GetAttribute(KEY);
 
-					if (PARAMETER.Equals(element.Name))
+					if (key != null && key.Length != 0)
 					{
-						string key = element.GetAttribute(KEY);
-
-						if (key != null && key.Length != 0)
-						{
-							initializers[i] = new CodeObjectCreateExpression(
-								typeof (ComponentParameter),
-								new CodeExpression[] {new CodePrimitiveExpression(key)});
-						}
-						else if (element.Value != null && element.Value.Length != 0)
-						{
-							initializers[i] = new CodeObjectCreateExpression(
-								typeof (ConstantParameter),
-								new CodeExpression[] {new CodeTypeOfExpression(element.Value)});
-						}
-						else
-						{
-							throw new PicoCompositionException("Parameter not set");
-						}
+						initializers[i] = new CodeObjectCreateExpression(
+							typeof (ComponentParameter),
+							new CodeExpression[] {new CodePrimitiveExpression(key)});
+					}
+					else if (element.Value != null && element.Value.Length != 0)
+					{
+						initializers[i] = new CodeObjectCreateExpression(
+							typeof (ConstantParameter),
+							new CodeExpression[] {new CodeTypeOfExpression(element.Value)});
+					}
+					else
+					{
+						throw new PicoCompositionException("Parameter not set");
 					}
 				}
 			}
@@ -351,14 +336,13 @@ namespace NanoContainer.Script.Xml
 		protected override Type GetCompiledType(StreamReader scriptCode, IList assemblies)
 		{
 			CodeCompileUnit script = GenerateDomTreeFromXML(scriptCode, assemblies);
-			Assembly created = FrameworkCompiler.Compile(CodeDomProvider, script, assemblies);
+			Assembly createdAssembly = FrameworkCompiler.Compile(CodeDomProvider, script, assemblies);
 
-			Type[] types = created.GetTypes();
-			for (int x = 0; x < types.Length; x++)
+			foreach (Type type in createdAssembly.GetTypes())
 			{
-				if (HasValidConstructorAndComposeMethod(types[x]))
+				if (HasValidConstructorAndComposeMethod(type))
 				{
-					return types[x];
+					return type;
 				}
 			}
 			throw new PicoCompositionException("The script is not usable. Please specify a correct script.");

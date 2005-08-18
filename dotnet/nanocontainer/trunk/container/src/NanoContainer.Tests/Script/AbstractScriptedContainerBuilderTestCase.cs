@@ -8,8 +8,8 @@ namespace Test.Script
 	{
 		public StreamReader GetStreamReader(string scriptName)
 		{
-			Stream strm = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
-			return new StreamReader(strm);
+			Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
+			return new StreamReader(stream);
 		}
 	}
 }

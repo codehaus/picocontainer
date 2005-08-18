@@ -6,16 +6,16 @@ namespace NanoContainer.Script
 {
 	public abstract class ScriptedContainerBuilder : LifeCycleContainerBuilder
 	{
-		private readonly StreamReader script;
+		private readonly StreamReader streamReader;
 
 		public ScriptedContainerBuilder(StreamReader script)
 		{
-			this.script = script;
+			this.streamReader = script;
 		}
 
-		protected StreamReader Script
+		protected StreamReader StreamReader
 		{
-			get { return script; }
+			get { return streamReader; }
 		}
 
 		protected override IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, object assemblyScope)
@@ -28,7 +28,7 @@ namespace NanoContainer.Script
 			{
 				try
 				{
-					Script.Close();
+					StreamReader.Close();
 				}
 				catch (IOException)
 				{

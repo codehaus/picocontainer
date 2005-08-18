@@ -11,32 +11,35 @@
 package org.picocontainer;
 
 /**
+ * A manager for the lifecycle of a container's components.
+ * 
  * @author Paul Hammant
+ * @author J&ouml;rg Schaible
  * @version $Revision$
  */
 public interface LifecycleManager {
 
     /**
-     * Invoke the "start" method on the container's components and child components.
-     * It is up to the implementor to define exactly what a component's "start" method is.
-     *
-     * @param node The node to start the traversal.
+     * Invoke the "start" method on the container's components. It is up to the implementor to define exactly what a
+     * component's "start" method is and what components of the container are affected.
+     * 
+     * @param container the container to "start" its component's lifecylce
      */
-    void start(PicoContainer node);
+    void start(PicoContainer container);
 
     /**
-     * Invoke the "stop" method on the container's components and child components.
-     * It is up to the implementor to define exactly what a component's "stop" method is.
-     *
-     * @param node The node to start the traversal.
+     * Invoke the "stop" method on the container's components. It is up to the implementor to define exactly what a
+     * component's "stop" method is and what components of the container are affected.
+     * 
+     * @param container the container to "stop" its component's lifecylce
      */
-    void stop(PicoContainer node);
+    void stop(PicoContainer container);
 
     /**
-     * Invoke the "dispose" method on the container's components and child components.
-     * It is up to the implementor to define exactly what a component's "dispose" method is.
-     *
-     * @param node The node to start the traversal.
+     * Invoke the "dispose" method on the container's components. It is up to the implementor to define exactly what a
+     * component's "dispose" method is and what components of the container are affected.
+     * 
+     * @param container the container to "dispose" its component's lifecylce
      */
-    void dispose(PicoContainer node);
+    void dispose(PicoContainer container);
 }

@@ -37,15 +37,11 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public class DefaultLifecycleManager implements LifecycleManager, Serializable {
-
-    private ComponentMonitor componentMonitor;
+public class DefaultLifecycleManager extends CustomLifecycleManager {
 
     protected static Method startMethod = null;
     protected static Method stopMethod = null;
     protected static Method disposeMethod = null;
-
-    private static Object[] emptyArray = new Object[0];
 
     static {
         try {
@@ -53,58 +49,16 @@ public class DefaultLifecycleManager implements LifecycleManager, Serializable {
             stopMethod = Startable.class.getMethod("stop", new Class[0]);
             disposeMethod = Disposable.class.getMethod("dispose", new Class[0]);
         } catch (NoSuchMethodException e) {
+            throw new InternalError(e.getMessage());
         }
     }
 
     public DefaultLifecycleManager(ComponentMonitor componentMonitor) {
-        this.componentMonitor = componentMonitor;
+        super(startMethod, stopMethod, disposeMethod, componentMonitor);
     }
 
     public DefaultLifecycleManager() {
-        this.componentMonitor = NullComponentMonitor.getInstance();
-    }
-
-    public void start(PicoContainer node) {
-        List startables = node.getComponentInstancesOfType(Startable.class);
-        for (int i = 0; i < startables.size(); i++) {
-            doMethod(startMethod, startables.get(i));
-        }
-    }
-
-    public void stop(PicoContainer node) {
-        List startables = node.getComponentInstancesOfType(Startable.class);
-        for (int i = startables.size() - 1; 0 <= i; i--) {
-            doMethod(stopMethod, startables.get(i));
-        }
-    }
-
-    public void dispose(PicoContainer node) {
-        List disposables = node.getComponentInstancesOfType(Disposable.class);
-        for (int i = disposables.size() - 1; 0 <= i; i--) {
-            doMethod(disposeMethod, disposables.get(i));
-        }
-    }
-
-    protected void doMethod(Method method, Object instance) {
-        componentMonitor.invoking(method, instance);
-        try {
-            long beginTime = System.currentTimeMillis();
-            method.invoke(instance, emptyArray);
-            componentMonitor.invoked(method, instance, System.currentTimeMillis() - beginTime);
-        } catch (Exception e) {
-            invocationFailed(method, instance, e);
-        }
-    }
-
-    protected void invocationFailed(Method method, Object instance, Exception e) {
-        componentMonitor.invocationFailed(method, instance, e);
-        throw new org.picocontainer.PicoInitializationException("Method '"
-                + method.getName()
-                + "' failed on instance '"
-                + instance
-                + "' for reason '"
-                + e.getMessage()
-                + "'", e);
+        this(NullComponentMonitor.getInstance());
     }
 
 }

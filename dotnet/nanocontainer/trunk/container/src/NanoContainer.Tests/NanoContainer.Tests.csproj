@@ -209,7 +209,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\Xml\XMLContainerBuilderTestCase.cs"
+                    RelPath = "Script\Xml\XmlContainerBuilderTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

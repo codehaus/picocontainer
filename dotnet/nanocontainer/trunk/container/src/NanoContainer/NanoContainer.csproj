@@ -199,7 +199,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\Xml\XMLContainerBuilder.cs"
+                    RelPath = "Script\Xml\XmlContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

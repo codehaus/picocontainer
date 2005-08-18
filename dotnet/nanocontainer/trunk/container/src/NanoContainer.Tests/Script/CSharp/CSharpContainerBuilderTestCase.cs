@@ -22,33 +22,32 @@ namespace Test.Script.CSharp
 		/*[Test]
 		public void NanoContainerCanBeBuiltFromCodeOnTheFly()
 		{
-			string code = 
-				"using PicoContainer.Core;\n" +
-				"using PicoContainer.Defaults;\n" +
-				"namespace Test \n" +
-				"{\n" +
-				"	public class NameTranslator\n" + 
-				"	{\n" +
-				"		private IPicoContainer parent;\n" +
-				"		public IPicoContainer Parent \n{ " +
-				"			set { parent = value; } \n" +
-				"		}\n" +
-				"\n" +
-				"		public IMutablePicoContainer Compose() {\n" +
-				"			DefaultPicoContainer p = new DefaultPicoContainer(parent);\n" +
-				"			p.RegisterComponentInstance(\"hello\", \"C#\");\n" +
-				"			return p;\n" + 
-				"		}\n" +
-				"	}\n" +
-				"}\n";
+			string code = @"
+				using PicoContainer;
+				using PicoContainer.Defaults;
+				namespace Test 
+				{
+					public class NameTranslator 
+					{
+						private IPicoContainer parent;
+						public IPicoContainer Parent {
+							set { parent = value; } 
+						}
+				
+						public IMutablePicoContainer Compose() {
+							DefaultPicoContainer p = new DefaultPicoContainer(parent);
+							p.RegisterComponentInstance(10, 1000);
+							return p; 
+						}
+					}
+				}";
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			IPicoContainer pico = BuildContainer(new CSharpBuilder(BuildStreamReader(code)), parent, new ArrayList());
 
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
-			Assert.AreEqual("C#", pico.GetComponentInstance("hello"));
-
+			Assert.AreEqual(1000, pico.GetComponentInstance(10));
 		}
 
 		private StreamReader BuildStreamReader(string code)
@@ -59,6 +58,5 @@ namespace Test.Script.CSharp
 
 			return new StreamReader(stream);
 		}*/
-
 	}
 }

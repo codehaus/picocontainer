@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Xml;
 using Microsoft.CSharp;
 using NanoContainer.IntegrationKit;
-using NanoContainer.Script.Compiler;
 using PicoContainer.Defaults;
 
+// TODO this needs a major refactoring
 namespace NanoContainer.Script.Xml
 {
 	public class XMLContainerBuilder : AbstractFrameworkContainerBuilder
@@ -356,7 +356,7 @@ namespace NanoContainer.Script.Xml
 			Type[] types = created.GetTypes();
 			for (int x = 0; x < types.Length; x++)
 			{
-				if (TestCompliance(types[x]))
+				if (HasValidConstructorAndComposeMethod(types[x]))
 				{
 					return types[x];
 				}

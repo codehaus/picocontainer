@@ -109,16 +109,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "INanoContainer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NanoContainer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Attributes\AssemblyUtil.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -159,37 +149,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Reflection\DefaultReflectionContainerAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Reflection\IReflectionContainerAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Reflection\ObjectTypeSettings.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Reflection\TypeLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Script\AbstractFrameworkContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\ScriptedContainerBuilder.cs"
+                    RelPath = "Script\FrameworkCompiler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\Compiler\FrameworkCompiler.cs"
+                    RelPath = "Script\ScriptedContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

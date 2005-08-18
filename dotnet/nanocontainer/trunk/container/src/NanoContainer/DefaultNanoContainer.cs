@@ -15,10 +15,22 @@ namespace NanoContainer
 		{
 		}
 
-		public DefaultNanoContainer(Assembly assembly)
+		public DefaultNanoContainer(Assembly assembly) 
+			: this(assembly, new DefaultPicoContainer())
 		{
 			AddAssembly(assembly);
 			this.picoContainer = new DefaultPicoContainer();
+		}
+
+		public DefaultNanoContainer(IMutablePicoContainer picoContainer) 
+			: this(Assembly.GetCallingAssembly(), picoContainer)
+		{
+		}
+
+		public DefaultNanoContainer(Assembly assembly, IMutablePicoContainer picoContainer)
+		{
+			AddAssembly(assembly);
+			this.picoContainer = picoContainer;
 		}
 
 		public IMutablePicoContainer Pico

@@ -14,7 +14,7 @@ namespace NanoContainer.Attributes
 
 		public int GetClassCount(Assembly assembly, Type attributeType)
 		{
-			return GetTypes(assembly,  attributeType).Length;
+			return GetTypes(assembly, attributeType).Length;
 		}
 
 		public Type[] GetTypes(Assembly assembly, Type attributeType)
@@ -23,12 +23,12 @@ namespace NanoContainer.Attributes
 			ArrayList result = new ArrayList();
 			foreach (Type currentType in types)
 			{
-				if (currentType.GetCustomAttributes(attributeType,false).Length>0)
+				if (currentType.GetCustomAttributes(attributeType, false).Length>0)
 				{
 					result.Add(currentType);
 				}
 			}
-			return (Type[])result.ToArray(typeof(Type));
+			return result.ToArray(typeof(Type)) as Type[];
 		}
 	}
 }

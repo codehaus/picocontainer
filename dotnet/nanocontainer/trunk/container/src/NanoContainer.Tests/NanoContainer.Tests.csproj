@@ -99,6 +99,11 @@
                     AssemblyName = "Castle.DynamicProxy"
                     HintPath = "..\..\lib\Castle.DynamicProxy.dll"
                 />
+                <Reference
+                    Name = "nmock"
+                    AssemblyName = "nmock"
+                    HintPath = "..\..\lib\nmock.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -164,22 +169,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Reflection\DefaultReflectionContainerAdapterTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Reflection\ObjectTypeSettingsTestCase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Reflection\TypeLoaderTestCase.cs"
+                    RelPath = "IntegrationKit\LifeCycleContainerBuilderTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Script\AbstractScriptedContainerBuilderTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\FrameworkCompilerTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -215,11 +215,6 @@
                 />
                 <File
                     RelPath = "TestModel\DefaultWebServerConfig.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestModel\ThingThatTakesParametersInConstructor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

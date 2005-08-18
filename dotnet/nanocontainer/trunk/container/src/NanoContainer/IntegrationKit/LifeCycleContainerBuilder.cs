@@ -1,4 +1,3 @@
-using System;
 using PicoContainer;
 using PicoContainer.Defaults;
 
@@ -6,11 +5,16 @@ namespace NanoContainer.IntegrationKit
 {
 	public abstract class LifeCycleContainerBuilder : ContainerBuilder
 	{
+		private IMutablePicoContainer GetInstanceFromReference(IObjectReference objectReference)
+		{
+			return objectReference == null ? null : objectReference.Get() as IMutablePicoContainer;
+		}
+
 		public void BuildContainer(IObjectReference containerRef,
 		                           IObjectReference parentContainerRef,
 		                           object assemblyScope)
 		{
-			IMutablePicoContainer parent = parentContainerRef == null ? null : parentContainerRef.Get() as IMutablePicoContainer;
+			IMutablePicoContainer parent = GetInstanceFromReference(parentContainerRef);
 			IMutablePicoContainer container = CreateContainer(parent, assemblyScope);
 
 			// register the child in the parent so that lifecycle can be propagated down the hierarchy
@@ -28,7 +32,7 @@ namespace NanoContainer.IntegrationKit
 
 		public void KillContainer(IObjectReference containerRef)
 		{
-			IMutablePicoContainer pico = containerRef == null ? null : containerRef.Get() as IMutablePicoContainer;
+			IMutablePicoContainer pico = GetInstanceFromReference(containerRef);
 
 			try
 			{
@@ -52,7 +56,6 @@ namespace NanoContainer.IntegrationKit
 
 		protected abstract void ComposeContainer(IMutablePicoContainer container, object assemblyScope);
 
-		protected abstract IMutablePicoContainer CreateContainer(IPicoContainer parentContainer,
-		                                                         object assemblyScope);
+		protected abstract IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, object assemblyScope);
 	}
 }

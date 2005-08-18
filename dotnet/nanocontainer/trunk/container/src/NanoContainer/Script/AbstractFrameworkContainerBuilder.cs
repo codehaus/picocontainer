@@ -4,50 +4,63 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using NanoContainer.IntegrationKit;
-using NanoContainer.Script.Compiler;
 using PicoContainer;
 
 namespace NanoContainer.Script
 {
 	public abstract class AbstractFrameworkContainerBuilder : ScriptedContainerBuilder
 	{
-		private static readonly string PARENT_PROPERTY = "Parent";
-		private static readonly string COMPOSE_METHOD = "Compose";
+		private readonly string PARENT_PROPERTY = "Parent";
+		private readonly string COMPOSE_METHOD = "Compose";
+		private FrameworkCompiler frameworkCompiler = new FrameworkCompiler();
 
 		public AbstractFrameworkContainerBuilder(StreamReader stream) : base(stream)
 		{
 		}
 
-		protected override IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer, object assemblyScope)
+		protected FrameworkCompiler FrameworkCompiler
 		{
-			Type type = GetCompiledType(this.stream, (IList) assemblyScope);
+			get { return frameworkCompiler; }
+		}
 
-			object creator = Activator.CreateInstance(type);
+		protected override IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer,
+		                                                                   object assemblyScope)
+		{
+			Type compiledType = GetCompiledType(Script, assemblyScope as IList);
+			object instance = Activator.CreateInstance(compiledType);
+			
+			RegisterParentToContainerScript(parentContainer, instance);
+			
+			MethodInfo methodInfo = GetComposeMethod(compiledType);
+			return (IMutablePicoContainer) methodInfo.Invoke(instance, new object[] {});
+		}
+
+		private void RegisterParentToContainerScript(IPicoContainer parentContainer, object instance)
+		{
 			if (parentContainer != null)
 			{
-				PropertyInfo info = GetParentProperty(type);
-				if (info == null)
+				PropertyInfo parentProperty = instance.GetType().GetProperty(PARENT_PROPERTY);
+				if (parentProperty == null)
 				{
-					throw new PicoCompositionException("A parent container is provided but the composition script has no property defined for accepting the parent.\nPlease specify a property called Parent and it should be of the type PicoContainer");
+					string errorMsg = "A parent container is provided but the composition script has no " + 
+								   "property defined for accepting the parent.\n" +
+						           "Please specify a property called Parent and it should be of the " +
+						           "type PicoContainer.";
+					throw new PicoCompositionException(errorMsg);
 				}
-				info.SetValue(creator, parentContainer, new object[] {});
+				parentProperty.SetValue(instance, parentContainer, new object[] {});
 			}
-
-			MethodInfo mi = GetComposeMethod(type);
-
-			return (IMutablePicoContainer) mi.Invoke(creator, new object[] {});
 		}
 
 		protected virtual Type GetCompiledType(StreamReader scriptCode, IList assemblies)
 		{
-			Assembly created = FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
+			Assembly dynamicAssembly = FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
 
-			Type[] types = created.GetTypes();
-			for (int i = 0; i < types.Length; i++)
+			foreach (Type type in dynamicAssembly.GetTypes())
 			{
-				if (TestCompliance(types[i]))
+				if (HasValidConstructorAndComposeMethod(type))
 				{
-					return types[i];
+					return type;
 				}
 			}
 			throw new PicoCompositionException("The script is not usable. Please specify a correct script.");
@@ -55,16 +68,16 @@ namespace NanoContainer.Script
 
 		protected abstract CodeDomProvider CodeDomProvider { get; }
 
-		protected static bool TestCompliance(Type type)
+		protected bool HasValidConstructorAndComposeMethod(Type type)
 		{
-			ConstructorInfo i = type.GetConstructor(new Type[] {});
-			if (i == null)
+			ConstructorInfo constructorInfo = type.GetConstructor(new Type[] {});
+			if (constructorInfo == null)
 			{
 				return false;
 			}
 
-			MethodInfo mi = GetComposeMethod(type);
-			if (mi == null || mi.ReturnType != typeof (IMutablePicoContainer))
+			MethodInfo methodInfo = GetComposeMethod(type);
+			if (methodInfo == null || methodInfo.ReturnType != typeof (IMutablePicoContainer))
 			{
 				return false;
 			}
@@ -72,13 +85,7 @@ namespace NanoContainer.Script
 			return true;
 		}
 
-
-		private static PropertyInfo GetParentProperty(Type type)
-		{
-			return type.GetProperty(PARENT_PROPERTY);
-		}
-
-		private static MethodInfo GetComposeMethod(Type type)
+		private MethodInfo GetComposeMethod(Type type)
 		{
 			return type.GetMethod(COMPOSE_METHOD);
 		}

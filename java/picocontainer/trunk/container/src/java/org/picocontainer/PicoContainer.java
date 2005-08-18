@@ -26,9 +26,6 @@ import java.util.List;
  * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {
-    // TODO: Paul will improve by refactoring to use injected monitor
-//    public static boolean SHOULD_LOG = "true".equals(System.getProperty("org.picocontainer.trace"));
-
     /**
      * Retrieve a component instance registered with a specific key. If a component cannot be found in this container,
      * the parent container (if one exists) will be searched.

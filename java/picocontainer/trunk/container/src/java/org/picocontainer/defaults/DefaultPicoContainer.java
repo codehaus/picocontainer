@@ -9,6 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,20 +30,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Disposable;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 /**
  * <p/>
@@ -404,9 +402,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         lifecycleManager.start(this);
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            if (child instanceof Startable) {
-                child.start();
-            }
+            child.start();
         }
         started = true;
     }
@@ -424,9 +420,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (!started) throw new IllegalStateException("Not started");
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            if (child instanceof Startable) {
-                child.stop();
-            }
+            child.stop();
         }
         lifecycleManager.stop(this);
         started = false;
@@ -444,9 +438,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (disposed) throw new IllegalStateException("Already disposed");
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            if (child instanceof Disposable) {
-                child.dispose();
-            }
+            child.dispose();
         }
         lifecycleManager.dispose(this);
         disposed = true;

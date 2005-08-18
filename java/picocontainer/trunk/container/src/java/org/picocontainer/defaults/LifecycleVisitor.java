@@ -9,18 +9,20 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Startable;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.reflect.Method;
 
 
 /**
- * A PicoVisitor for the life cycle of the components.
+ * A PicoVisitor for the lifecycle methods of the components.
  * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 1.1
- * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+ * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
  */
 public class LifecycleVisitor extends MethodCallingVisitor {
     private static final Method START;
@@ -38,6 +40,8 @@ public class LifecycleVisitor extends MethodCallingVisitor {
         }
     }
 
+    private final ComponentMonitor componentMonitor;
+
     /**
      * Construct a LifecycleVisitor.
      * 
@@ -45,10 +49,14 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * @param ofType the component type
      * @param visitInInstantiationOrder flag for the visiting order
      * @param componentMonitor the {@link ComponentMonitor} to use
-     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
      */
-    public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
-        super(method, ofType, visitInInstantiationOrder, componentMonitor);
+    protected LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
+        super(method, ofType, null, visitInInstantiationOrder);
+        if (componentMonitor == null) {
+            throw new NullPointerException();
+        }
+        this.componentMonitor = componentMonitor;
     }
 
     /**
@@ -57,17 +65,17 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * @param method the method to call
      * @param ofType the component type
      * @param visitInInstantiationOrder flag for the visiting order
-     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
      */
     public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
-        super(method, ofType, visitInInstantiationOrder);
+        this(method, ofType, visitInInstantiationOrder, new NullComponentMonitor());
     }
 
     /**
      * Invoke the standard PicoContainer lifecycle for {@link Startable#start()}.
      * 
      * @param node The node to start the traversal.
-     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
      */
     public static void start(Object node) {
         new LifecycleVisitor(START, Startable.class, true).traverse(node);
@@ -77,7 +85,7 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * Invoke the standard PicoContainer lifecycle for {@link Startable#stop()}.
      * 
      * @param node The node to start the traversal.
-     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
      */
     public static void stop(Object node) {
         new LifecycleVisitor(STOP, Startable.class, false).traverse(node);
@@ -87,10 +95,24 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * Invoke the standard PicoContainer lifecycle for {@link Disposable#dispose()}.
      * 
      * @param node The node to start the traversal.
-     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link DefaultLifecycleManager}
      */
     public static void dispose(Object node) {
         new LifecycleVisitor(DISPOSE, Disposable.class, false).traverse(node);
+    }
+
+    protected Object invoke(final Object target) {
+        final Method method = getMethod();
+        try {
+            componentMonitor.invoking(method, target);
+            final long startTime = System.currentTimeMillis();
+            super.invoke(target);
+            componentMonitor.invoked(method, target, System.currentTimeMillis() - startTime);
+        } catch (final PicoIntrospectionException e) {
+            componentMonitor.invocationFailed(method, target, (Exception)e.getCause());
+            throw e;
+        }
+        return Void.TYPE;
     }
 
 }

@@ -6,7 +6,6 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.MethodCallingVisitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.reflect.Method;
@@ -47,9 +46,9 @@ public class RootVisitingLifecycleManager implements LifecycleManager {
      * @param componentMonitor the monitor that will receive lifecycle events.
      */
     public RootVisitingLifecycleManager(ComponentMonitor componentMonitor) {
-        this(new MethodCallingVisitor(START, Startable.class, true, componentMonitor),
-                new MethodCallingVisitor(STOP, Startable.class, false, componentMonitor),
-                new MethodCallingVisitor(DISPOSE, Disposable.class, false, componentMonitor));
+        this(new LifecycleVisitor(START, Startable.class, true, componentMonitor),
+                new LifecycleVisitor(STOP, Startable.class, false, componentMonitor),
+                new LifecycleVisitor(DISPOSE, Disposable.class, false, componentMonitor));
     }
 
     /**
@@ -59,7 +58,7 @@ public class RootVisitingLifecycleManager implements LifecycleManager {
      * @param stopVisitor the visitor to use on stop()
      * @param disposeVisitor the visitor to use on dispose()
      */
-    public RootVisitingLifecycleManager(PicoVisitor startVisitor, PicoVisitor stopVisitor, PicoVisitor disposeVisitor) {
+    public RootVisitingLifecycleManager(LifecycleVisitor startVisitor, LifecycleVisitor stopVisitor, LifecycleVisitor disposeVisitor) {
         this.startVisitor = startVisitor;
         this.stopVisitor = stopVisitor;
         this.disposeVisitor = disposeVisitor;

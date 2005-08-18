@@ -7,10 +7,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -23,28 +21,52 @@ import java.util.List;
 
 /**
  * A PicoVisitor implementation, that calls methods on the components of a specific type.
+ * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
 public class MethodCallingVisitor extends TraversalCheckingVisitor implements Serializable {
 
+    // TODO: we must serialize method with read/writeObject ... and are our parent serializable ???
     private transient Method method;
-    private Class type;
-    private boolean visitInInstantiationOrder;
-    private List componentInstances;
-    private ComponentMonitor componentMonitor;
+    private final Object[] arguments;
+    private final Class type;
+    private final boolean visitInInstantiationOrder;
+    private final List componentInstances;
 
-    public MethodCallingVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
+    /**
+     * Construct a MethodCallingVisitor for a method with arguments.
+     * 
+     * @param method the {@link Method} to invoke
+     * @param ofType the type of the components, that will be invoked
+     * @param visitInInstantiationOrder <code>true</code> if components are visited in instantiation order
+     * @param arguments the arguments for the method invocation (may be <code>null</code>)
+     * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
+     * @since 1.2
+     */
+    public MethodCallingVisitor(Method method, Class ofType, Object[] arguments, boolean visitInInstantiationOrder) {
+        if (method == null) {
+            throw new NullPointerException();
+        }
         this.method = method;
+        this.arguments = arguments;
         this.type = ofType;
         this.visitInInstantiationOrder = visitInInstantiationOrder;
-        this.componentMonitor = componentMonitor;
         this.componentInstances = new ArrayList();
     }
 
-    public MethodCallingVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
-        this(method, ofType, visitInInstantiationOrder, NullComponentMonitor.getInstance());
+    /**
+     * Construct a MethodCallingVisitor for standard methods visiting the component in instantiation order.
+     * 
+     * @param method the method to invoke
+     * @param ofType the type of the components, that will be invoked
+     * @param arguments the arguments for the method invocation (may be <code>null</code>)
+     * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
+     * @since 1.2
+     */
+    public MethodCallingVisitor(Method method, Class ofType, Object[] arguments) {
+        this(method, ofType, arguments, true);
     }
 
     public Object traverse(Object node) {
@@ -55,23 +77,7 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
                 Collections.reverse(componentInstances);
             }
             for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-                Object o = iterator.next();
-                try {
-                    componentMonitor.invoking(method, o);
-                    long startTime = System.currentTimeMillis();
-                    method.invoke(o, null);
-                    componentMonitor.invoked(method, o, System.currentTimeMillis() - startTime);
-                } catch (IllegalArgumentException e) {
-                    componentMonitor.invocationFailed(method, o, e);
-                    throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
-                } catch (IllegalAccessException e) {
-                    componentMonitor.invocationFailed(method, o, e);
-                    throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + o, e);
-                } catch (InvocationTargetException e) {
-                    componentMonitor.invocationFailed(method, o, e);
-                    throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + o, e
-                            .getTargetException());
-                }
+                invoke(iterator.next());
             }
         } finally {
             componentInstances.clear();
@@ -82,5 +88,34 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     public void visitContainer(PicoContainer pico) {
         super.visitContainer(pico);
         componentInstances.addAll(pico.getComponentInstancesOfType(type));
+    }
+
+    protected Method getMethod() {
+        return method;
+    }
+
+    protected Object[] getArguments() {
+        return arguments;
+    }
+
+    protected void invoke(final Object[] targets) {
+        for (int i = 0; i < targets.length; i++) {
+            invoke(targets[i]);
+        }
+    }
+
+    protected Object invoke(final Object target) {
+        final Method method = getMethod();
+        try {
+            method.invoke(target, getArguments());
+        } catch (IllegalArgumentException e) {
+            throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + target, e);
+        } catch (IllegalAccessException e) {
+            throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + target, e);
+        } catch (InvocationTargetException e) {
+            throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + target, e
+                    .getTargetException());
+        }
+        return Void.TYPE;
     }
 }

@@ -20,8 +20,7 @@ import java.io.FileNotFoundException;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class MethodCallingVisitorTestCase
-        extends MockObjectTestCase {
+public class LifecycleVisitorTestCase extends MockObjectTestCase {
 
     public abstract static class RecordingLifecycle {
         private final StringBuffer recording;
@@ -58,23 +57,20 @@ public class MethodCallingVisitorTestCase
         }
     }
 
-    public static class One
-            extends RecordingLifecycle {
+    public static class One extends RecordingLifecycle {
         public One(StringBuffer sb) {
             super(sb);
         }
     }
 
-    public static class Two
-            extends RecordingLifecycle {
+    public static class Two extends RecordingLifecycle {
         public Two(StringBuffer sb, One one) {
             super(sb);
             assertNotNull(one);
         }
     }
 
-    public static class Three
-            extends RecordingLifecycle {
+    public static class Three extends RecordingLifecycle {
         public Three(StringBuffer sb, One one, Two two) {
             super(sb);
             assertNotNull(one);
@@ -82,8 +78,7 @@ public class MethodCallingVisitorTestCase
         }
     }
 
-    public static class Four
-            extends RecordingLifecycle {
+    public static class Four extends RecordingLifecycle {
         public Four(StringBuffer sb, Two two, Three three, One one) {
             super(sb);
             assertNotNull(one);
@@ -93,9 +88,12 @@ public class MethodCallingVisitorTestCase
     }
 
     public void testShouldAllowCustomLifecycle() throws NoSuchMethodException {
-        MethodCallingVisitor starter = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("demarrer", null), RecordingLifecycle.class, true);
-        MethodCallingVisitor stopper = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class, false);
-        MethodCallingVisitor disposer = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("ecraser", null), RecordingLifecycle.class, false);
+        LifecycleVisitor starter = new LifecycleVisitor(
+                RecordingLifecycle.class.getMethod("demarrer", null), RecordingLifecycle.class, true);
+        LifecycleVisitor stopper = new LifecycleVisitor(
+                RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class, false);
+        LifecycleVisitor disposer = new LifecycleVisitor(
+                RecordingLifecycle.class.getMethod("ecraser", null), RecordingLifecycle.class, false);
 
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
@@ -109,22 +107,23 @@ public class MethodCallingVisitorTestCase
         stopper.traverse(parent);
         disposer.traverse(parent);
 
-        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording")
-                .toString());
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance(
+                "recording").toString());
     }
 
     // TODO: Aslak, this fails, since DPC's parent is *always* an ImmutablePC
     // Perhaps attempts to hand to children that are disposed should silently remove them from maps.
-//    public void XXXtestDisposeRemovesMutablePicoContainerAsChild() {
-//        Mock mutableParentMock = mock(MutablePicoContainer.class);
-//        MutablePicoContainer pico = new DefaultPicoContainer();
-//        mutableParentMock.expects(once()).method("removeChildContainer").with(same(pico));
-//        pico.addChildContainer((PicoContainer) mutableParentMock.proxy());
-//        MethodCallingVisitor.dispose(pico);
-//    }
+    // public void XXXtestDisposeRemovesMutablePicoContainerAsChild() {
+    // Mock mutableParentMock = mock(MutablePicoContainer.class);
+    // MutablePicoContainer pico = new DefaultPicoContainer();
+    // mutableParentMock.expects(once()).method("removeChildContainer").with(same(pico));
+    // pico.addChildContainer((PicoContainer) mutableParentMock.proxy());
+    // LifecycleVisitor.dispose(pico);
+    // }
 
     public void testPicoIntrospectionExceptionForInvalidMethod() throws NoSuchMethodException {
-        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("uncallableByVisitor", new Class[]{String.class}), RecordingLifecycle.class, true);
+        LifecycleVisitor visitor = new LifecycleVisitor(RecordingLifecycle.class.getMethod(
+                "uncallableByVisitor", new Class[]{String.class}), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
@@ -137,7 +136,8 @@ public class MethodCallingVisitorTestCase
     }
 
     public void testPicoIntrospectionExceptionForThrownException() throws NoSuchMethodException {
-        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getMethod("throwsAtVisit", null), RecordingLifecycle.class, true);
+        LifecycleVisitor visitor = new LifecycleVisitor(
+                RecordingLifecycle.class.getMethod("throwsAtVisit", null), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);
@@ -150,7 +150,8 @@ public class MethodCallingVisitorTestCase
     }
 
     public void testPicoIntrospectionExceptionForInaccessibleMethod() throws NoSuchMethodException {
-        MethodCallingVisitor visitor = new MethodCallingVisitor(RecordingLifecycle.class.getDeclaredMethod("callMe", null), RecordingLifecycle.class, true);
+        LifecycleVisitor visitor = new LifecycleVisitor(
+                RecordingLifecycle.class.getDeclaredMethod("callMe", null), RecordingLifecycle.class, true);
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation(StringBuffer.class);
         pico.registerComponentImplementation(One.class);

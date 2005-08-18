@@ -21,14 +21,17 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
 
+
 /**
- * This class implements the default lifecycle based on
+ * This class implements the default lifecycle. It is based on
  * <ul>
  * <li>{@link org.picocontainer.Startable#start()}</li>
  * <li>{@link org.picocontainer.Startable#stop()}</li>
  * <li>{@link org.picocontainer.Disposable#dispose()}</li>
  * </ul>
- *
+ * This LifecycleManager will call the lifecycle methods of the {@link PicoContainer}, which is responsible for
+ * propagating the lifecycle to its components and children.
+ * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
@@ -64,20 +67,20 @@ public class DefaultLifecycleManager implements LifecycleManager, Serializable {
     public void start(PicoContainer node) {
         List startables = node.getComponentInstancesOfType(Startable.class);
         for (int i = 0; i < startables.size(); i++) {
-            doMethod(startMethod ,startables.get(i));
+            doMethod(startMethod, startables.get(i));
         }
     }
 
     public void stop(PicoContainer node) {
         List startables = node.getComponentInstancesOfType(Startable.class);
-        for (int i = startables.size() -1 ; 0 <= i; i--) {
-            doMethod(stopMethod ,startables.get(i));
+        for (int i = startables.size() - 1; 0 <= i; i--) {
+            doMethod(stopMethod, startables.get(i));
         }
     }
 
     public void dispose(PicoContainer node) {
         List disposables = node.getComponentInstancesOfType(Disposable.class);
-        for (int i = disposables.size() -1 ; 0 <= i; i--) {
+        for (int i = disposables.size() - 1; 0 <= i; i--) {
             doMethod(disposeMethod, disposables.get(i));
         }
     }
@@ -95,8 +98,13 @@ public class DefaultLifecycleManager implements LifecycleManager, Serializable {
 
     protected void invocationFailed(Method method, Object instance, Exception e) {
         componentMonitor.invocationFailed(method, instance, e);
-        throw new org.picocontainer.PicoInitializationException("Method '" + method.getName()
-                + "' failed on instance '" + instance+ "' for reason '" + e.getMessage() + "'", e);
+        throw new org.picocontainer.PicoInitializationException("Method '"
+                + method.getName()
+                + "' failed on instance '"
+                + instance
+                + "' for reason '"
+                + e.getMessage()
+                + "'", e);
     }
 
 }

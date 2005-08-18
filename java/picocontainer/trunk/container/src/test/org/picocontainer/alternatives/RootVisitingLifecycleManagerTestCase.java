@@ -10,7 +10,15 @@
 
 package org.picocontainer.alternatives;
 
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Startable;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
 
 /**
  * @author Paul Hammant
@@ -18,38 +26,21 @@ import org.jmock.MockObjectTestCase;
  */
 public class RootVisitingLifecycleManagerTestCase extends MockObjectTestCase {
 
-    public void testNothing() {
-        // My major problem with this testcase (renamed from DefaultLifecycleTestCase) is that is was not testing lifecycle
-        // events.  Specifically start, stop and dispose.  It was insteat testing traversal. The clue is the mocking
-        // only of the invocation of 'traverse' in each of the three nethods below.
-        // As such, the methods should be called things like - testShouldDelegateToTraverseOperationTraverseOnStart
-        // and alike. - Paul.
-    }
+    public void testShouldVisitEveryComponentOnlyOnce() {
+        Mock mockStartable1 = mock(Startable.class, "Startable1");
+        Mock mockStartable2 = mock(Startable.class, "Startable2");
 
-//    public void testShouldDelegateToStartVisitorTraverseOnStart() throws NoSuchMethodException {
-//        Mock visitor = mock(PicoVisitor.class);
-//        Mock pico = mock(PicoContainer.class);
-//        visitor.expects(once()).method("traverse").with(same(pico.proxy()));
-//
-//        LifecycleManager lifecycleManager = new RootVisitingLifecycleManager();
-//        lifecycleManager.start((PicoContainer) pico.proxy());
-//    }
-//
-//    public void testShouldDelegateToStopVisitorTraverseOnStart() throws NoSuchMethodException {
-//        Mock visitor = mock(PicoVisitor.class);
-//        Mock pico = mock(PicoContainer.class);
-//        visitor.expects(once()).method("traverse").with(same(pico.proxy()));
-//
-//        LifecycleManager lifecycleManager = new RootVisitingLifecycleManager();
-//        lifecycleManager.stop((PicoContainer) pico.proxy());
-//    }
-//
-//    public void testShouldDelegateToDisposeVisitorTraverseOnStart() throws NoSuchMethodException {
-//        Mock visitor = mock(PicoVisitor.class);
-//        Mock pico = mock(PicoContainer.class);
-//        visitor.expects(once()).method("traverse").with(same(pico.proxy()));
-//
-//        LifecycleManager lifecycleManager = new RootVisitingLifecycleManager();
-//        lifecycleManager.dispose((PicoContainer) pico.proxy());
-//    }
+        LifecycleManager lifecycleManager = new RootVisitingLifecycleManager();
+        MutablePicoContainer parent = new DefaultPicoContainer(lifecycleManager);
+        MutablePicoContainer child = new DefaultPicoContainer(
+                new DefaultComponentAdapterFactory(), parent, lifecycleManager);
+        parent.addChildContainer(child);
+        parent.registerComponentInstance(mockStartable1.proxy());
+        child.registerComponentInstance(mockStartable2.proxy());
+
+        mockStartable1.expects(once()).method("start").id("1");
+        mockStartable2.expects(once()).method("start").after(mockStartable1, "1");
+
+        parent.start();
+    }
 }

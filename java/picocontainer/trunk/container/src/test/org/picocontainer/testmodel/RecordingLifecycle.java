@@ -15,6 +15,8 @@ import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
+import java.io.FileNotFoundException;
+
 
 public abstract class RecordingLifecycle implements Startable, Disposable {
     private final StringBuffer recording;
@@ -37,9 +39,9 @@ public abstract class RecordingLifecycle implements Startable, Disposable {
 
     private String code() {
         String name = getClass().getName();
-        return name.substring(name.indexOf('$') + 1);
+        int idx = Math.max(name.lastIndexOf('$'), name.lastIndexOf('.'));
+        return name.substring(idx + 1);
     }
-    
 
     public static class One extends RecordingLifecycle {
         public One(StringBuffer sb) {

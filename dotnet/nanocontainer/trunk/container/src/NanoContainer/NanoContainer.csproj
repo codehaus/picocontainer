@@ -184,6 +184,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\Xml\ComposeMethodBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Xml\Constants.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Xml\ContainerStatementBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Script\Xml\XMLContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

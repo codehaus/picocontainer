@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.ejb.testmodel;
 
-
-
 /** EJB implementation */
 public class HelloImpl extends EJBObjectMock implements Hello {
     /** @return Returns &quot;Hello World&quot; */

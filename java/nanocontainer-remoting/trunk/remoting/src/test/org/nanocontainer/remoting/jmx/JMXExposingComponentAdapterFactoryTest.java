@@ -39,7 +39,8 @@ public class JMXExposingComponentAdapterFactoryTest extends MockObjectTestCase {
         final ComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy());
 
-        mockMBeanServer.expects(once()).method("registerMBean").with(isA(DynamicMBeanPerson.class), isA(ObjectName.class));
+        mockMBeanServer.expects(once()).method("registerMBean").with(
+                isA(DynamicMBeanPerson.class), isA(ObjectName.class));
 
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
                 PersonMBean.class, DynamicMBeanPerson.class, null);
@@ -55,8 +56,8 @@ public class JMXExposingComponentAdapterFactoryTest extends MockObjectTestCase {
         } catch (final NullPointerException e) {
         }
         try {
-            new JMXExposingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer
-                    .proxy(), null);
+            new JMXExposingComponentAdapterFactory(
+                    new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }

@@ -65,7 +65,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Touchable touchable = new SimpleTouchable();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(same(touchable), same(Touchable.class), same(mBeanInfo));
+        dynamicMBeanFactory.expects(once()).method("create").with(
+                same(touchable), same(Touchable.class), same(mBeanInfo));
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
@@ -98,7 +99,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
     public void testUsageOfStandardMBeanFactory() {
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider();
         provider.register(PersonMBean.class, objectName);
-        final JMXRegistrationInfo info = provider.provide(null, new InstanceComponentAdapter(PersonMBean.class, new Person()));
+        final JMXRegistrationInfo info = provider.provide(null, new InstanceComponentAdapter(
+                PersonMBean.class, new Person()));
         assertNotNull(info.getMBean());
         assertEquals(objectName, info.getObjectName());
     }

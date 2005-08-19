@@ -10,9 +10,8 @@
 
 package org.nanocontainer.remoting.jmx;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.TraversalCheckingVisitor;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.management.DynamicMBean;
 import javax.management.JMException;
@@ -20,14 +19,14 @@ import javax.management.MBeanServer;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.TraversalCheckingVisitor;
 
 
 /**
- * A {@link org.picocontainer.PicoVisitor} to register JMX components for components of a {@link PicoContainer} tree in a
- * {@link MBeanServer}.
- * 
+ * A {@link org.picocontainer.PicoVisitor} to register JMX components for components of a {@link PicoContainer} tree in
+ * a {@link MBeanServer}.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -41,10 +40,9 @@ public class JMXVisitor extends TraversalCheckingVisitor {
     private PicoContainer picoContainer;
 
     /**
-     * Construct a JMXVisitor. This instance will register by default any component in the {@link MBeanServer}, that is already
-     * a {@link DynamicMBean}. The {@link ObjectName} will use the default domain of the MBeanServer and has a <em>type</em>
-     * key with the class name (without package name) as value.
-     * 
+     * Construct a JMXVisitor. This instance will register by default any component in the {@link MBeanServer}, that is
+     * already a {@link DynamicMBean}. The {@link ObjectName} will use the default domain of the MBeanServer and has a
+     * <em>type</em> key with the class name (without package name) as value.
      * @param server The {@link MBeanServer}to use for registering the MBeans.
      */
     public JMXVisitor(final MBeanServer server) {
@@ -53,7 +51,6 @@ public class JMXVisitor extends TraversalCheckingVisitor {
 
     /**
      * Construct a JMXVisitor.
-     * 
      * @param server The {@link MBeanServer} to use for registering the MBeans.
      * @param providers The providers to deliver the DynamicMBeans.
      */
@@ -75,9 +72,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
 
     /**
      * Entry point for the visitor traversal.
-     * 
-     * @return Returns a {@link Set} with all ObjectInstance instances retrieved from the {@link MBeanServer} for the registered
-     *         MBeans.
+     * @return Returns a {@link Set} with all ObjectInstance instances retrieved from the {@link MBeanServer} for the
+     *         registered MBeans.
      * @see org.picocontainer.defaults.AbstractPicoVisitor#traverse(java.lang.Object)
      */
     public Object traverse(final Object node) {
@@ -90,7 +86,6 @@ public class JMXVisitor extends TraversalCheckingVisitor {
 
     /**
      * Provides the PicoContainer, that can resolve the components to register as MBean.
-     * 
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
     public void visitContainer(final PicoContainer pico) {
@@ -100,9 +95,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
     }
 
     /**
-     * Register the component as MBean. The implementation uses the known DynamicMBeanProvider instances to get the MBean from
-     * the component.
-     * 
+     * Register the component as MBean. The implementation uses the known DynamicMBeanProvider instances to get the
+     * MBean from the component.
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
     public void visitComponentAdapter(final ComponentAdapter componentAdapter) {
@@ -125,13 +119,13 @@ public class JMXVisitor extends TraversalCheckingVisitor {
 
     /**
      * Register a MBean in the MBeanServer.
-     * 
      * @param dynamicMBean the {@link DynamicMBean} to register.
      * @param objectName the {@link ObjectName} of the MBean registered the {@link MBeanServer}.
      * @return Returns the {@link ObjectInstance} returned from the MBeanServer after registration.
      * @throws JMXRegistrationException Thrown if MBean cannot be registered.
      */
-    protected ObjectInstance register(final DynamicMBean dynamicMBean, final ObjectName objectName) throws JMXRegistrationException {
+    protected ObjectInstance register(final DynamicMBean dynamicMBean, final ObjectName objectName)
+            throws JMXRegistrationException {
         try {
             return mBeanServer.registerMBean(dynamicMBean, objectName);
         } catch (final JMException e) {

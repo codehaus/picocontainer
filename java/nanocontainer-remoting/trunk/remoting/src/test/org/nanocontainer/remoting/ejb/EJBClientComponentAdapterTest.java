@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.ejb;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.net.SocketTimeoutException;
 import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
@@ -25,10 +26,6 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.NoInitialContextException;
 
-import junit.framework.Test;
-
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.remoting.ejb.testmodel.BarHomeImpl;
 import org.nanocontainer.remoting.ejb.testmodel.FooBar;
 import org.nanocontainer.remoting.ejb.testmodel.FooBarHome;
@@ -41,7 +38,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+
+import junit.framework.Test;
+
+import org.jmock.Mock;
+import org.jmock.cglib.MockObjectTestCase;
 
 
 /**
@@ -124,11 +125,12 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof ClassCastException);
         }
-        m_initialContextMock.expects(once()).method("lookup").with(eq("NoEntry")).will(throwException(new NameNotFoundException()));
+        m_initialContextMock.expects(once()).method("lookup").with(eq("NoEntry")).will(
+                throwException(new NameNotFoundException()));
         try {
             new EJBClientComponentAdapter("NoEntry", Hello.class, m_environment, true);
-            fail("Should have thrown a ServiceUnavailableException");
-        } catch (ServiceUnavailableException e) {
+            fail("Should have thrown a UndeclaredThrowableException with a NamingException as cause");
+        } catch (UndeclaredThrowableException e) {
             assertTrue(e.getCause() instanceof NamingException);
         }
         final Properties systemProperties = System.getProperties();
@@ -144,7 +146,7 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
             System.setProperties(systemProperties);
         }
     }
-    
+
     /**
      * Test failures creating the EJB.
      * @throws ClassNotFoundException
@@ -182,11 +184,12 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         helloHomeMock.expects(once()).method("create").withNoArguments().will(throwException(t));
         try {
             new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
-            fail("Should have thrown a PicoInvocationTargetInitializationException");
-        } catch (PicoInvocationTargetInitializationException e) {
+            fail("Should have thrown a UndeclaredThrowableException");
+        } catch (UndeclaredThrowableException e) {
             assertSame(t, e.getCause());
         }
-        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, false);
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter(
+                "Hello", Hello.class, m_environment, false);
         helloHomeMock.expects(once()).method("create").withNoArguments().will(returnValue(helloMock.proxy()));
         final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         t = new RemoteException("junit");
@@ -202,9 +205,9 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         helloMock.expects(once()).method("getHelloWorld").withNoArguments().will(throwException(t));
         try {
             hello.getHelloWorld();
-            fail("Should have thrown a ServiceUnavailableException");
-        } catch (ServiceUnavailableException e) {
-            assertSame(t, e.getCause());
+            fail("Should have thrown a NoSuchObjectException");
+        } catch (NoSuchObjectException e) {
+            assertSame(t, e);
         }
     }
 
@@ -214,7 +217,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
      * @throws RemoteException
      */
     public final void testFailover() throws ClassNotFoundException, RemoteException {
-        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, false);
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter(
+                "Hello", Hello.class, m_environment, false);
         final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
         NamingException exception = new CommunicationException();
@@ -223,8 +227,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
                 onConsecutiveCalls(throwException(exception), returnValue(new HelloHomeImpl())));
         try {
             hello.getHelloWorld();
-            fail("Should have thrown a ServiceUnavailableException");
-        } catch (ServiceUnavailableException e) {
+            fail("Should have thrown a UndeclaredThrowableException");
+        } catch (UndeclaredThrowableException e) {
             assertTrue(((NamingException)e.getCause()).getRootCause() instanceof SocketTimeoutException);
         }
         exception.setRootCause(new NoSuchObjectException("Hello"));
@@ -232,8 +236,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
                 onConsecutiveCalls(throwException(exception), returnValue(new HelloHomeImpl())));
         try {
             hello.getHelloWorld();
-            fail("Should have thrown a ServiceUnavailableException");
-        } catch (ServiceUnavailableException e) {
+            fail("Should have thrown a UndeclaredThrowableException");
+        } catch (UndeclaredThrowableException e) {
             assertTrue(((NamingException)e.getCause()).getRootCause() instanceof NoSuchObjectException);
         }
         assertEquals("Hello World!", hello.getHelloWorld());
@@ -246,7 +250,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
      */
     public final void testGetComponentInstance() throws ClassNotFoundException, RemoteException {
         m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
-        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter(
+                "Hello", Hello.class, m_environment, true);
         componentAdapter.verify(null); // Dummy call, done for coverage
         final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
@@ -259,7 +264,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
      */
     public final void testGetComponentKey() throws ClassNotFoundException {
         m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
-        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter(
+                "Hello", Hello.class, m_environment, true);
         assertSame("Hello", componentAdapter.getComponentKey());
     }
 
@@ -269,7 +275,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
      */
     public final void testGetComponentImplementation() throws ClassNotFoundException {
         m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
-        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter("Hello", Hello.class, m_environment, true);
+        final ComponentAdapter componentAdapter = new EJBClientComponentAdapter(
+                "Hello", Hello.class, m_environment, true);
         assertSame(Hello.class, componentAdapter.getComponentImplementation());
     }
 }

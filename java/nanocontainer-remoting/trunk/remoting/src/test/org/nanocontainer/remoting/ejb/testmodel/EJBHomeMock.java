@@ -21,8 +21,7 @@ import javax.ejb.HomeHandle;
  * @author J&ouml;rg Schaible
  */
 
-public class EJBHomeMock
-        implements EJBHome {
+public class EJBHomeMock implements EJBHome {
 
     /**
      * @see javax.ejb.EJBHome#remove(java.lang.Object)
@@ -53,4 +52,3 @@ public class EJBHomeMock
     }
 
 }
-

@@ -14,5 +14,5 @@ import javax.ejb.EJBHome;
 
 /** EJB Home interface */
 public interface FooBarHome extends EJBHome {
-    // "create" method intentionally left 
+    // "create" method intentionally left
 }

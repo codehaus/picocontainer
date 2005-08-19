@@ -1,13 +1,5 @@
 package org.nanocontainer.remoting.rmi;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import junit.framework.TestCase;
-import org.nanocontainer.remoting.rmi.testmodel.Thang;
-import org.nanocontainer.remoting.rmi.testmodel.Thing;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -15,6 +7,16 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.nanocontainer.remoting.rmi.testmodel.Thang;
+import org.nanocontainer.remoting.rmi.testmodel.Thing;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+
+import junit.framework.TestCase;
 
 /**
  * @author Aslak Helles&oslash;y

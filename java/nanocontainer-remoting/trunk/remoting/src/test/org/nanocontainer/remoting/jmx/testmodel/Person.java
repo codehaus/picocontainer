@@ -24,7 +24,8 @@ public class Person extends PersonBean implements PersonMBean {
 
     private static MBeanAttributeInfo[] attributes;
     static {
-        attributes = new MBeanAttributeInfo[]{new MBeanAttributeInfo("Name", String.class.getName(), "desc", true, true, false)};
+        attributes = new MBeanAttributeInfo[]{new MBeanAttributeInfo(
+                "Name", String.class.getName(), "desc", true, true, false)};
     }
 
     /**

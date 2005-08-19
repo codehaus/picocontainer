@@ -49,10 +49,10 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     }
 
     /**
-     * Provide a DynamicMBean for the given Pico component. The implementation will lookup the component's key in the internal
-     * registry. Only components that were registered with additional information will be considered and a {@link DynamicMBean}
-     * will be created for them using the {@link DynamicMBeanFactory}. If the component key is of type class, it is used as
-     * management interface.
+     * Provide a DynamicMBean for the given Pico component. The implementation will lookup the component's key in the
+     * internal registry. Only components that were registered with additional information will be considered and a
+     * {@link DynamicMBean} will be created for them using the {@link DynamicMBeanFactory}. If the component key is of
+     * type class, it is used as management interface.
      * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(PicoContainer, ComponentAdapter)
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {
@@ -62,8 +62,10 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
             final Class management = wrapper.getManagementInterface() != null
                                                                              ? wrapper.getManagementInterface()
-                                                                             : key instanceof Class ? (Class)key : instance
-                                                                                     .getClass();
+                                                                             : key instanceof Class
+                                                                                                   ? (Class)key
+                                                                                                   : instance
+                                                                                                           .getClass();
             final DynamicMBean mBean = factory.create(instance, management, wrapper.getMBeanInfo());
             return new JMXRegistrationInfo(wrapper.getObjectName(), mBean);
         }
@@ -77,7 +79,8 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
      * @param management The management interface.
      * @param mBeanInfo The {@link MBeanInfo} of the MBean.
      */
-    public void register(final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
+    public void register(
+            final Object componentKey, final ObjectName objectName, final Class management, final MBeanInfo mBeanInfo) {
         registry.put(componentKey, new MBeanInfoWrapper(mBeanInfo, objectName, management));
     }
 

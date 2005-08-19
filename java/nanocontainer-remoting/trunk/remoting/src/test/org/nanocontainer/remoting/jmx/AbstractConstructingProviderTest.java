@@ -52,7 +52,8 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
             return (DynamicMBeanFactory)mockDynamicMBeanFactory.proxy();
         }
 
-        protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo) throws ClassNotFoundException {
+        protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
+                throws ClassNotFoundException {
             if (implementation.equals(Person.class)) {
                 return PersonMBean.class;
             }
@@ -96,8 +97,8 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
     }
 
     public void testObjectNameMustBeGiven() {
-        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL).will(
-                returnValue(Dummy.newDummy(DynamicMBean.class)));
+        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL)
+                .will(returnValue(Dummy.newDummy(DynamicMBean.class)));
         mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
                 returnValue(null));
 
@@ -107,8 +108,8 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
     }
 
     public void testMalformedObjectNameThrowsJMXRegistrationException() {
-        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL).will(
-                returnValue(Dummy.newDummy(DynamicMBean.class)));
+        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL)
+                .will(returnValue(Dummy.newDummy(DynamicMBean.class)));
         mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
                 throwException(new MalformedObjectNameException("JUnit")));
 

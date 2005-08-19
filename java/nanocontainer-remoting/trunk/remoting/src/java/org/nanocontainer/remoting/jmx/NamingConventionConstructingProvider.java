@@ -14,12 +14,12 @@ import javax.management.MBeanInfo;
 
 
 /**
- * A DynamicMBeanProvider that constructs StandardMBean instances that follow the JMX naming conventions. The name of the
- * management interface must follow the naming conventions with an <em>MBean</em> appended to the MBean's type. The
- * implementation will use the registered MBeanInfoProvider instances of type {@link ComponentKeyConventionMBeanInfoProvider}
- * and {@link ComponentTypeConventionMBeanInfoProvider} to provide a {@link MBeanInfo} for the component's MBean. If a
- * {@link MBeanInfo} was found, the MBean's type is used from the MBeanInfo otherwise the type is the implementation class of
- * the component.
+ * A DynamicMBeanProvider that constructs StandardMBean instances that follow the JMX naming conventions. The name of
+ * the management interface must follow the naming conventions with an <em>MBean</em> appended to the MBean's type.
+ * The implementation will use the registered MBeanInfoProvider instances of type
+ * {@link ComponentKeyConventionMBeanInfoProvider} and {@link ComponentTypeConventionMBeanInfoProvider} to provide a
+ * {@link MBeanInfo} for the component's MBean. If a {@link MBeanInfo} was found, the MBean's type is used from the
+ * MBeanInfo otherwise the type is the implementation class of the component.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -30,8 +30,8 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
     private final StandardMBeanFactory mBeanFactory;
 
     /**
-     * Construct a NamingConventionConstructingProvider. Following {@link MBeanInfoProvider} instances are registered with this
-     * constructor:
+     * Construct a NamingConventionConstructingProvider. Following {@link MBeanInfoProvider} instances are registered
+     * with this constructor:
      * <ul>
      * <li>{@link ComponentKeyConventionMBeanInfoProvider}</li>
      * <li>{@link ComponentTypeConventionMBeanInfoProvider}</li>
@@ -79,7 +79,8 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
      * @return Returns the management interface.
      * @throws ClassNotFoundException Thrown if no interface can be determined.
      */
-    protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo) throws ClassNotFoundException {
+    protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
+            throws ClassNotFoundException {
         return mBeanFactory.getDefaultManagementInterface(implementation, mBeanInfo);
     }
 }

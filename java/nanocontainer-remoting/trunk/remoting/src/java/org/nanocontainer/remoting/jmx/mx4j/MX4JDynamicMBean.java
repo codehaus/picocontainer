@@ -9,13 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.jmx.mx4j;
 
+import javax.management.MBeanInfo;
+
 import mx4j.AbstractDynamicMBean;
 
-import javax.management.MBeanInfo;
 
 /**
  * DynamicMBean implementation based on MX4J.
- *
  * @author James Strachan
  * @author Michael Ward
  * @version $Revision$
@@ -29,6 +29,6 @@ public class MX4JDynamicMBean extends AbstractDynamicMBean {
      */
     public MX4JDynamicMBean(Object componentInstance, MBeanInfo mBeanInfo) {
         setResource(componentInstance);
-		setMBeanInfo(mBeanInfo);
+        setMBeanInfo(mBeanInfo);
     }
 }

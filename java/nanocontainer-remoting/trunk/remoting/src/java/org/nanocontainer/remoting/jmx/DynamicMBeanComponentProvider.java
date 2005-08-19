@@ -28,8 +28,8 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
     private final ObjectNameFactory objectNameFactory;
 
     /**
-     * Construct a DynamicMBeanComponentProvider. This instance will use a {@link TypedObjectNameFactory} and register all
-     * MBeans in the default domain of the {@link javax.management.MBeanServer}.
+     * Construct a DynamicMBeanComponentProvider. This instance will use a {@link TypedObjectNameFactory} and register
+     * all MBeans in the default domain of the {@link javax.management.MBeanServer}.
      */
     public DynamicMBeanComponentProvider() {
         this(new TypedObjectNameFactory());
@@ -49,7 +49,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
     /**
      * Provide the component itself as {@link DynamicMBean} if it is one and if an {@link ObjectName} can be created.
      * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter)
+     *      org.picocontainer.ComponentAdapter)
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {
         if (DynamicMBean.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {

@@ -13,6 +13,7 @@ package org.nanocontainer.remoting.jmx.testmodel;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
+
 /**
  * PersonMBean that is already a DynamicMBean.
  * @author J&ouml;rg Schaible

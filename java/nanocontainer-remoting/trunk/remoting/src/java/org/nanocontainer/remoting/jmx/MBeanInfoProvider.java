@@ -24,7 +24,8 @@ import org.picocontainer.PicoContainer;
 public interface MBeanInfoProvider {
 
     /**
-     * Provide a MBeanInfo for the given component. An implementation should not create an instance of the component though.
+     * Provide a MBeanInfo for the given component. An implementation should not create an instance of the component
+     * though.
      * @param picoContainer The picoContainer to resolve dependencies or other services necessary to get the MBeanInfo.
      * @param componentAdapter The ComponentAdapter of the component.
      * @return Returns the MBeanInfo for the compoennt or <code>null</code> if none could be found or created.

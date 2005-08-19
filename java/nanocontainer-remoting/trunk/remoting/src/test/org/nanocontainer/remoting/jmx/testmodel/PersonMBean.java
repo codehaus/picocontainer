@@ -15,5 +15,6 @@ package org.nanocontainer.remoting.jmx.testmodel;
  */
 public interface PersonMBean {
     public void setName(String name);
+
     public String getName();
 }

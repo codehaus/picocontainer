@@ -125,13 +125,14 @@ public class JMXExposingComponentAdapterTest extends MockObjectTestCase {
 
     public void testConstructorThrowsNPE() {
         try {
-            new JMXExposingComponentAdapter(new InstanceComponentAdapter(TestCase.class, this), null, new DynamicMBeanProvider[]{});
+            new JMXExposingComponentAdapter(
+                    new InstanceComponentAdapter(TestCase.class, this), null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
-            new JMXExposingComponentAdapter(new InstanceComponentAdapter(TestCase.class, this), (MBeanServer)mockMBeanServer
-                    .proxy(), null);
+            new JMXExposingComponentAdapter(
+                    new InstanceComponentAdapter(TestCase.class, this), (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }

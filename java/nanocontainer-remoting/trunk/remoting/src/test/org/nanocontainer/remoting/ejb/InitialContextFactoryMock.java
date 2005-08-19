@@ -19,9 +19,9 @@ import javax.naming.spi.InitialContextFactory;
 
 
 /**
- * Mock for an InitialContextFactory. Such a factory has to be provided in the environment creating an InitialContext for the
- * entry Context.INITIAL_CONTEXT_FACTORY. This factory uses a static InitialContext instance, that can be a mock itself.
- * 
+ * Mock for an InitialContextFactory. Such a factory has to be provided in the environment creating an InitialContext
+ * for the entry Context.INITIAL_CONTEXT_FACTORY. This factory uses a static InitialContext instance, that can be a mock
+ * itself.
  * @author J&ouml;rg Schaible
  */
 public class InitialContextFactoryMock implements InitialContextFactory {

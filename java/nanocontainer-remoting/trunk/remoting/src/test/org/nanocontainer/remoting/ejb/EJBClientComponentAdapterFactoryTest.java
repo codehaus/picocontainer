@@ -15,15 +15,16 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import junit.framework.Test;
-
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.remoting.ejb.testmodel.Hello;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+
+import junit.framework.Test;
+
+import org.jmock.Mock;
+import org.jmock.cglib.MockObjectTestCase;
 
 
 /**

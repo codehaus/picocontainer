@@ -1,19 +1,21 @@
 package org.nanocontainer.remoting.rmi;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import junit.framework.TestCase;
+import java.lang.reflect.InvocationTargetException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.nanocontainer.remoting.rmi.testmodel.Thang;
 import org.nanocontainer.remoting.rmi.testmodel.Thing;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import java.lang.reflect.InvocationTargetException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+
+import junit.framework.TestCase;
 
 /**
  * @author Aslak Helles&oslash;y

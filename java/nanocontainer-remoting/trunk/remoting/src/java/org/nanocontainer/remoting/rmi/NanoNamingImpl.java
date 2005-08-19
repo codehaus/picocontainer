@@ -1,13 +1,14 @@
 package org.nanocontainer.remoting.rmi;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

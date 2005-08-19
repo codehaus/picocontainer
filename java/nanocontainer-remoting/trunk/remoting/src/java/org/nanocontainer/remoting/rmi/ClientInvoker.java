@@ -1,8 +1,8 @@
 package org.nanocontainer.remoting.rmi;
 
-import com.thoughtworks.proxy.Invoker;
-
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
 
 /**
  * @author Neil Clayton

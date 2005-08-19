@@ -65,8 +65,8 @@ public class StandardMBeanFactoryTestCase extends TestCase {
 
     public void testMBeanCreationWithoutManagementInterfaceWorksForModelMBeanInfo() {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
-        final ModelMBeanAttributeInfo[] attributes = new ModelMBeanAttributeInfo[]{new ModelMBeanAttributeInfo("Name", String.class
-                .getName(), "desc", true, false, false)};
+        final ModelMBeanAttributeInfo[] attributes = new ModelMBeanAttributeInfo[]{new ModelMBeanAttributeInfo(
+                "Name", String.class.getName(), "desc", true, false, false)};
         final MBeanInfo mBeanInfo = new ModelMBeanInfoSupport(
                 Person.class.getName(), "Description of Person", attributes, null, null, null);
 

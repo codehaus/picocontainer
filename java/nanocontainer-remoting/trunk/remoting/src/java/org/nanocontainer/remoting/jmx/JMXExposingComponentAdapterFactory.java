@@ -36,14 +36,14 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
      * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @param providers An array with providers for converting the component instance into a
-     *                   {@link javax.management.DynamicMBean}.
+     *            {@link javax.management.DynamicMBean}.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
-     *                    instances is null.
+     *             instances is null.
      * @since 1.0
      */
     public JMXExposingComponentAdapterFactory(
-            final ComponentAdapterFactory delegate, final MBeanServer mBeanServer, final DynamicMBeanProvider[] providers)
-            throws NullPointerException {
+            final ComponentAdapterFactory delegate, final MBeanServer mBeanServer,
+            final DynamicMBeanProvider[] providers) throws NullPointerException {
         super(delegate);
         if (mBeanServer == null || providers == null) {
             throw new NullPointerException();
@@ -53,12 +53,13 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
     }
 
     /**
-     * Construct a JMXExposingComponentAdapterFactory. This instance uses a {@link DynamicMBeanComponentProvider} as default to
-     * register any component instance in the {@link MBeanServer}, that is already a {@link javax.management.DynamicMBean}.
+     * Construct a JMXExposingComponentAdapterFactory. This instance uses a {@link DynamicMBeanComponentProvider} as
+     * default to register any component instance in the {@link MBeanServer}, that is already a
+     * {@link javax.management.DynamicMBean}.
      * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
-     *                    instances is null.
+     *             instances is null.
      * @since 1.0
      */
     public JMXExposingComponentAdapterFactory(final ComponentAdapterFactory delegate, final MBeanServer mBeanServer)
@@ -70,11 +71,13 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingComponentAdapter}.
      * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
-     *           java.lang.Class, org.picocontainer.Parameter[])
+     *      java.lang.Class, org.picocontainer.Parameter[])
      */
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(
+            Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        final ComponentAdapter componentAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
+        final ComponentAdapter componentAdapter = super.createComponentAdapter(
+                componentKey, componentImplementation, parameters);
         return new JMXExposingComponentAdapter(componentAdapter, mBeanServer, providers);
     }
 

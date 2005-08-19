@@ -13,6 +13,7 @@ package org.nanocontainer.remoting.jmx;
 import javax.management.DynamicMBean;
 import javax.management.ObjectName;
 
+
 /**
  * Helper class to associate a MBean with an ObjectName.
  * @author J&ouml;rg Schaible

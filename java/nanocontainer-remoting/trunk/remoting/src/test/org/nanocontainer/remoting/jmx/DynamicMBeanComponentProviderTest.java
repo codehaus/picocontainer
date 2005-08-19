@@ -30,7 +30,8 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
     public void testDynamicMBeansAreIdentified() throws NotCompliantMBeanException {
         final PersonMBean person = new DynamicMBeanPerson();
         final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider();
-        JMXRegistrationInfo info = provider.provide(null, new InstanceComponentAdapter(PersonMBean.class, new Person()));
+        JMXRegistrationInfo info = provider
+                .provide(null, new InstanceComponentAdapter(PersonMBean.class, new Person()));
         assertNull(info);
         info = provider.provide(null, new InstanceComponentAdapter("JUnit", person));
         assertNotNull(info);
@@ -43,7 +44,8 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
         final Mock objectNameFactoryMock = mock(ObjectNameFactory.class);
         objectNameFactoryMock.expects(once()).method("create").with(eq("JUnit"), same(person)).will(returnValue(null));
 
-        final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider((ObjectNameFactory)objectNameFactoryMock.proxy());
+        final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider(
+                (ObjectNameFactory)objectNameFactoryMock.proxy());
         final JMXRegistrationInfo info = provider.provide(null, new InstanceComponentAdapter("JUnit", person));
         assertNull(info);
     }
@@ -53,13 +55,15 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
         final Exception exception = new MalformedObjectNameException("JUnit");
 
         final Mock objectNameFactoryMock = mock(ObjectNameFactory.class);
-        objectNameFactoryMock.expects(once()).method("create").with(eq("JUnit"), same(person)).will(throwException(exception));
+        objectNameFactoryMock.expects(once()).method("create").with(eq("JUnit"), same(person)).will(
+                throwException(exception));
 
-        final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider((ObjectNameFactory)objectNameFactoryMock.proxy());
+        final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider(
+                (ObjectNameFactory)objectNameFactoryMock.proxy());
         try {
             provider.provide(null, new InstanceComponentAdapter("JUnit", person));
             fail("JMXRegistrationException expected");
-        } catch(final JMXRegistrationException e) {
+        } catch (final JMXRegistrationException e) {
             assertSame(exception, e.getCause());
         }
     }

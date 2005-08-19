@@ -14,6 +14,7 @@ import javax.management.DynamicMBean;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+
 /**
  * Core interface for generating ObjectName instances for a DynamicMBean.
  * @author J&ouml;rg Schaible

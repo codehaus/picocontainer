@@ -10,7 +10,6 @@
 
 package org.nanocontainer.remoting.jmx.testmodel;
 
-
 public final class OtherPerson implements PersonMBean {
     public void setName(String name) {
     }

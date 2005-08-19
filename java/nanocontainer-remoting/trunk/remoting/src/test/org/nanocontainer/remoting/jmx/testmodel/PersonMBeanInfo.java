@@ -21,8 +21,8 @@ public class PersonMBeanInfo extends MBeanInfo {
     final static MBeanInfo INFO = Person.createMBeanInfo();
 
     public PersonMBeanInfo() {
-        super(INFO.getClassName(), INFO.getDescription(), INFO.getAttributes(), INFO.getConstructors(), INFO.getOperations(), INFO
-                .getNotifications());
+        super(INFO.getClassName(), INFO.getDescription(), INFO.getAttributes(), INFO.getConstructors(), INFO
+                .getOperations(), INFO.getNotifications());
     }
 
 }

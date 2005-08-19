@@ -19,8 +19,7 @@ import javax.ejb.Handle;
  * Mock class for an EJBObject.
  * @author J&ouml;rg Schaible
  */
-public class EJBObjectMock
-        implements EJBObject {
+public class EJBObjectMock implements EJBObject {
 
     /**
      * @see javax.ejb.EJBObject#remove()
@@ -58,4 +57,3 @@ public class EJBObjectMock
         return null;
     }
 }
-

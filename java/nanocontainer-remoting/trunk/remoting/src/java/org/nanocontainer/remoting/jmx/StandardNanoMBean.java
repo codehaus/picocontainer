@@ -14,6 +14,7 @@ import javax.management.MBeanInfo;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 
+
 /**
  * StandardMBean with a provided MBeanInfo.
  * @author J&ouml;rg Schaible
@@ -23,13 +24,15 @@ public final class StandardNanoMBean extends StandardMBean {
     private final MBeanInfo mBeanInfo;
 
     /**
-     * Construct a StandardNanoMBean. The only difference to a {@link StandardMBean} of the JSR 3 is the user provided {@link MBeanInfo}.
+     * Construct a StandardNanoMBean. The only difference to a {@link StandardMBean} of the JSR 3 is the user provided
+     * {@link MBeanInfo}.
      * @param implementation
      * @param management
      * @param mBeanInfo
      * @throws NotCompliantMBeanException
      */
-    public StandardNanoMBean(final Object implementation, final Class management, final MBeanInfo mBeanInfo) throws NotCompliantMBeanException {
+    public StandardNanoMBean(final Object implementation, final Class management, final MBeanInfo mBeanInfo)
+            throws NotCompliantMBeanException {
         super(implementation, management);
         this.mBeanInfo = mBeanInfo;
     }

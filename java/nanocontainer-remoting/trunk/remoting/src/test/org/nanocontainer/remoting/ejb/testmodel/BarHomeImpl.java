@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.ejb.testmodel;
 
-
-
 /** EJB implementation */
 public class BarHomeImpl extends EJBHomeMock implements FooBarHome {
     /** @return Returns an object. */

@@ -56,23 +56,25 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
 
     /**
      * Construct a JMXExposingComponentAdapter. This instance uses a {@link DynamicMBeanComponentProvider} as default to
-     * register any component instance in the {@link MBeanServer}, that is already a {@link javax.management.DynamicMBean}.
+     * register any component instance in the {@link MBeanServer}, that is already a
+     * {@link javax.management.DynamicMBean}.
      * @param delegate The delegated {@link ComponentAdapter}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingComponentAdapter(final ComponentAdapter delegate, final MBeanServer mBeanServer) throws NullPointerException {
+    public JMXExposingComponentAdapter(final ComponentAdapter delegate, final MBeanServer mBeanServer)
+            throws NullPointerException {
         this(delegate, mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
 
     /**
-     * Retrieve the component instance. The implementation will automatically register it in the {@link MBeanServer}, if a
-     * provider can return a {@link javax.management.DynamicMBean} for it.
+     * Retrieve the component instance. The implementation will automatically register it in the {@link MBeanServer},
+     * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingComponentAdapter} to avoid the
-     * registration of the same component again.
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingComponentAdapter} to avoid
+     * the registration of the same component again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.

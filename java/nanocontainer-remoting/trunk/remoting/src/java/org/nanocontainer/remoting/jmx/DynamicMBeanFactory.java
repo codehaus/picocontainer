@@ -13,10 +13,10 @@ package org.nanocontainer.remoting.jmx;
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
+
 /**
  * This factory is responsible for creating instances of DynamicMBean without being dependent on one particular
  * implementation or external dependency.
- *
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @since 1.0

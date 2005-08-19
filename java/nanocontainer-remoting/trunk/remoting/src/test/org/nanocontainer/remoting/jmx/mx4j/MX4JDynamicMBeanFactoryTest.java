@@ -19,6 +19,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 
 import junit.framework.TestCase;
 
+
 /**
  * @author J&ouml;rg Schaible
  */

@@ -31,7 +31,6 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 
@@ -63,9 +62,9 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * Construct a {@link ComponentAdapter} for an EJB. This constructor implies the home interface follows normal
-     * naming conventions. The adapter will use late binding and JDK {@link java.lang.reflect.Proxy} instances.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
+     * naming conventions. The adapter will use the default {@link InitialContext} and will also do late binding.
+     * @param name the EJB's JNDI name
+     * @param type the implemented interface of the EJB
      * @throws ClassNotFoundException if the home interface could not be found
      */
     public EJBClientComponentAdapter(final String name, final Class type) throws ClassNotFoundException {
@@ -74,23 +73,23 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * Construct a {@link ComponentAdapter} for an EJB. This constructor implies the home interface follows normal
-     * naming conventions. The adapter will use late bining.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
-     * @param factory the {@link ProxyFactory} to use.
+     * naming conventions. The implementation will use the default {@link InitialContext}.
+     * @param name the EJB's JNDI name
+     * @param type the implemented interface of the EJB
+     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor
      * @throws ClassNotFoundException if the home interface could not be found
      */
-    public EJBClientComponentAdapter(final String name, final Class type, final ProxyFactory factory)
+    public EJBClientComponentAdapter(final String name, final Class type, final boolean earlyBinding)
             throws ClassNotFoundException {
-        this(name, type, null, false, factory);
+        this(name, type, null, earlyBinding);
     }
 
     /**
      * Construct a {@link ComponentAdapter} for an EJB. This constructor implies the home interface follows normal
-     * naming conventions. The adapter will use late binding and JDK {@link java.lang.reflect.Proxy} instances.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
-     * @param environment the environment {@link InitialContext} to use.
+     * naming conventions.
+     * @param name the EJB's JNDI name
+     * @param type the implemented interface of the EJB
+     * @param environment the environment {@link InitialContext} to use
      * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
      * @throws ClassNotFoundException if the home interface could not be found
      */
@@ -101,49 +100,17 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
     }
 
     /**
-     * Construct a {@link ComponentAdapter} for an EJB. This constructor implies the home interface follows normal
-     * naming conventions. The adapter will use late binding.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
-     * @param environment the environment {@link InitialContext} to use.
-     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
-     * @param factory the {@link ProxyFactory}to use.
-     * @throws ClassNotFoundException if the home interface could not be found
-     */
-    public EJBClientComponentAdapter(
-            final String name, final Class type, final Hashtable environment, final boolean earlyBinding,
-            final ProxyFactory factory) throws ClassNotFoundException {
-        this(name, type, type.getClassLoader().loadClass(type.getName() + "Home"), environment, earlyBinding, factory);
-    }
-
-    /**
-     * Construct a {@link ComponentAdapter} for an EJB using JDK {@link java.lang.reflect.Proxy} instances.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
-     * @param homeInterface the home interface of the EJB.
-     * @param environment the environment {@link InitialContext} to use.
-     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
-     * @throws PicoIntrospectionException if lookup of home interface fails.
+     * Construct a {@link ComponentAdapter} for an EJB.
+     * @param name the EJB's JNDI name
+     * @param type the implemented interface of the EJB
+     * @param homeInterface the home interface of the EJB
+     * @param environment the environment {@link InitialContext} to use
+     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor
+     * @throws PicoIntrospectionException if lookup of home interface fails
      */
     public EJBClientComponentAdapter(
             final String name, final Class type, final Class homeInterface, final Hashtable environment,
             final boolean earlyBinding) {
-        this(name, type, homeInterface, environment, earlyBinding, new StandardProxyFactory());
-    }
-
-    /**
-     * Construct a {@link ComponentAdapter} for an EJB.
-     * @param name the EJB's JNDI name.
-     * @param type the implemented interface of the EJB.
-     * @param homeInterface the home interface of the EJB.
-     * @param environment the environment {@link InitialContext} to use.
-     * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor.
-     * @param factory the {@link ProxyFactory} to use.
-     * @throws PicoIntrospectionException if lookup of home interface fails.
-     */
-    public EJBClientComponentAdapter(
-            final String name, final Class type, final Class homeInterface, final Hashtable environment,
-            final boolean earlyBinding, final ProxyFactory factory) {
         super(name, type);
         if (!EJBHome.class.isAssignableFrom(homeInterface)) {
             throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
@@ -155,7 +122,7 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
             throw new PicoIntrospectionException(type.getName() + " must be an interface");
         }
         final Invoker invoker = new EJBClientInvoker(name, type, homeInterface, environment);
-        proxy = factory.createProxy(new Class[]{type}, invoker);
+        proxy = new StandardProxyFactory().createProxy(new Class[]{type}, invoker);
         if (earlyBinding) {
             proxy.hashCode();
         }

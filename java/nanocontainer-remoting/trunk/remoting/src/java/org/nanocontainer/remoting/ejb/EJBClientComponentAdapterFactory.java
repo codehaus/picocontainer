@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.ejb;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Hashtable;
 
 import javax.naming.InitialContext;
@@ -32,65 +34,34 @@ public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory
 
     private final Hashtable environment;
     private final boolean earlyBinding;
-    private final ProxyFactory proxyFactory;
-
-    /**
-     * Construct an EJBClientComponentAdapterFactory using the default {@link InitialContext} and late binding and JDK
-     * {@link java.lang.reflect.Proxy} instances.
-     */
-    public EJBClientComponentAdapterFactory() {
-        this(new StandardProxyFactory());
-    }
+    private transient ProxyFactory proxyFactory;
 
     /**
      * Construct an EJBClientComponentAdapterFactory using the default {@link InitialContext} and late binding.
-     * @param proxyFactory the {@link ProxyFactory} to use.
      */
-    public EJBClientComponentAdapterFactory(final ProxyFactory proxyFactory) {
-        this(null, proxyFactory);
+    public EJBClientComponentAdapterFactory() {
+        this(null);
     }
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment and JDK
-     * {@link java.lang.reflect.Proxy} instances.
-     * @param environment the environment and late binding.
+     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment.
+     * @param environment the environment and late binding
      */
     public EJBClientComponentAdapterFactory(final Hashtable environment) {
         this(environment, false);
     }
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment.
-     * @param environment the environment and late binding.
-     * @param proxyFactory the {@link ProxyFactory} to use.
-     */
-    public EJBClientComponentAdapterFactory(final Hashtable environment, final ProxyFactory proxyFactory) {
-        this(environment, false, proxyFactory);
-    }
-
-    /**
      * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment and
-     * binding type and JDK {@link java.lang.reflect.Proxy} instances.
+     * binding.
      * @param environment the environment.
      * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientComponentAdapter}.
      */
     public EJBClientComponentAdapterFactory(final Hashtable environment, final boolean earlyBinding) {
-        this(environment, earlyBinding, new StandardProxyFactory());
-    }
-
-    /**
-     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment and
-     * binding type.
-     * @param environment the environment.
-     * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientComponentAdapter}.
-     * @param proxyFactory the {@link ProxyFactory} to use.
-     */
-    public EJBClientComponentAdapterFactory(
-            final Hashtable environment, final boolean earlyBinding, final ProxyFactory proxyFactory) {
         super();
         this.environment = environment;
         this.earlyBinding = earlyBinding;
-        this.proxyFactory = proxyFactory;
+        this.proxyFactory = new StandardProxyFactory();
     }
 
     public ComponentAdapter createComponentAdapter(
@@ -113,13 +84,15 @@ public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory
     public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
             throws PicoIntrospectionException, AssignabilityRegistrationException {
         try {
-            return new ThreadLocalComponentAdapter(
-                    new EJBClientComponentAdapter(
-                            componentKey.toString(), componentImplementation, environment, earlyBinding, proxyFactory),
-                    proxyFactory);
+            return new ThreadLocalComponentAdapter(new EJBClientComponentAdapter(
+                    componentKey.toString(), componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
             throw new PicoIntrospectionException("Home interface not found", e);
         }
     }
 
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.proxyFactory = new StandardProxyFactory();
+    }
 }

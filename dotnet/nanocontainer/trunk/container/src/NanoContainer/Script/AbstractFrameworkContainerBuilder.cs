@@ -26,13 +26,15 @@ namespace NanoContainer.Script
 		protected override IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer,
 		                                                                   object assemblyScope)
 		{
-			Type compiledType = GetCompiledType(StreamReader, assemblyScope as IList);
-			object instance = Activator.CreateInstance(compiledType);
-			
+			IList assemblies = assemblyScope as IList;
+			Assembly dynamicAssembly = this.GetCompiledAssembly(StreamReader, assemblies);
+			Type compiledType = GetCompiledType(dynamicAssembly);
+			object instance = dynamicAssembly.CreateInstance(compiledType.FullName);
+
 			RegisterParentToContainerScript(parentContainer, instance);
-			
+
 			MethodInfo methodInfo = GetComposeMethod(compiledType);
-			return (IMutablePicoContainer) methodInfo.Invoke(instance, new object[] {});
+			return methodInfo.Invoke(instance, new object[] {}) as IMutablePicoContainer;
 		}
 
 		private void RegisterParentToContainerScript(IPicoContainer parentContainer, object instance)
@@ -52,11 +54,14 @@ namespace NanoContainer.Script
 			}
 		}
 
-		protected virtual Type GetCompiledType(StreamReader scriptCode, IList assemblies)
+		protected virtual Assembly GetCompiledAssembly(StreamReader scriptCode, IList assemblies)
 		{
-			Assembly dynamicAssembly = FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
+			return FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
+		}
 
-			foreach (Type type in dynamicAssembly.GetTypes())
+		protected virtual Type GetCompiledType(Assembly assembly)
+		{
+			foreach (Type type in assembly.GetTypes())
 			{
 				if (HasValidConstructorAndComposeMethod(type))
 				{

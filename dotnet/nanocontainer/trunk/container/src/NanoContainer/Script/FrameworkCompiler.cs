@@ -60,14 +60,30 @@ namespace NanoContainer.Script
 			}
 		}
 
-		private CompilerParameters GetCompilerParameters(IList assemblies)
+		protected CompilerParameters GetCompilerParameters(IList assemblies)
 		{
 			CompilerParameters compilerParameters = new CompilerParameters();
 			AddAssembliesFromWorkingDirectory(compilerParameters);
 
 			foreach (string assembly in assemblies)
 			{
-				compilerParameters.ReferencedAssemblies.Add(assembly);
+				// TODO mward ....
+				// This should be replaced with a better solution than copying files into current working directoy
+				// looking into creating an additional AppDomain so assemblies can be added and removed whic is
+				// NOT possible with the current approach.
+				int dirpos = assembly.LastIndexOf(Path.DirectorySeparatorChar);
+
+				if ( dirpos > 0 )
+				{
+					string dest = string.Format("{0}{1}{2}", Directory.GetCurrentDirectory(), Path.DirectorySeparatorChar, assembly.Substring(dirpos + 1, assembly.Length - dirpos - 1));
+					File.Copy(assembly, dest, true);
+					
+					compilerParameters.ReferencedAssemblies.Add(assembly.Substring(dirpos + 1, assembly.Length - dirpos - 1));
+				}
+				else
+				{
+					compilerParameters.ReferencedAssemblies.Add(assembly);
+				}
 			}
 
 			compilerParameters.GenerateInMemory = true;
@@ -76,7 +92,7 @@ namespace NanoContainer.Script
 			return compilerParameters;
 		}
 
-		private void AddAssembliesFromWorkingDirectory(CompilerParameters compilerParameters)
+		protected void AddAssembliesFromWorkingDirectory(CompilerParameters compilerParameters)
 		{
 			DirectoryInfo directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory());
 

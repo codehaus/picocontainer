@@ -46,5 +46,25 @@ namespace NanoContainer.Tests.Script
 
 			frameworkCompiler.Compile(codeDomProvider, script, new ArrayList());
 		}
+
+		[Test]
+		public void AddAssembliesFromWorkingDirectory()
+		{
+			CompilerParameters compilerParameters = new CompilerParameters();
+			Assert.AreEqual(0, compilerParameters.ReferencedAssemblies.Count);
+
+			MockFrameworkCompiler frameworkCompiler = new MockFrameworkCompiler();
+			frameworkCompiler.CallAddAssembliesFromWorkingDirectory(compilerParameters);
+
+			Assert.IsTrue(compilerParameters.ReferencedAssemblies.Count > 0);
+		}
+
+		public class MockFrameworkCompiler : FrameworkCompiler
+		{
+			public void CallAddAssembliesFromWorkingDirectory(CompilerParameters compilerParameters)
+			{
+				AddAssembliesFromWorkingDirectory(compilerParameters);
+			}
+		}
 	}
 }

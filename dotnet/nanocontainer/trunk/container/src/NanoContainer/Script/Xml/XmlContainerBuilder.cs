@@ -26,18 +26,14 @@ namespace NanoContainer.Script.Xml
 		//private static readonly string COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
 		private static readonly string CLASS = "class";
 		//private static readonly string FACTORY = "factory";
-		private static readonly string FILE = "file";
 		private static readonly string KEY = "key";
 		private static readonly string PARAMETER = "parameter";
-		private static readonly string URL = "url";
 
 		private static readonly string NAMESPACE_IMPORT0 = "PicoContainer";
 		private static readonly string NAMESPACE_IMPORT1 = "PicoContainer.Defaults";
 		private static readonly string PARENT_PROPERTY = "Parent";
 		private static readonly string PARENT_ARGUMENT = "parent";
 		private static readonly string PARENT_TYPE = "IPicoContainer";
-
-		
 
 		private XmlElement rootNode;
 		private int registerComponentsRecursions;
@@ -72,8 +68,8 @@ namespace NanoContainer.Script.Xml
 		{
 			foreach(XmlElement childElement in assembliesElement.ChildNodes)
 			{
-				string fileName = childElement.GetAttribute(FILE);
-				string urlSpec = childElement.GetAttribute(URL);
+				string fileName = childElement.GetAttribute("file");
+				string urlSpec = childElement.GetAttribute("url");
 
 				if (urlSpec != string.Empty)
 				{
@@ -195,15 +191,15 @@ namespace NanoContainer.Script.Xml
 			codeCompileUnit.Namespaces.Add(codeNamespace);
 
 			//Uncomment to see generated code
-				ICodeGenerator cg =  CodeDomProvider.CreateGenerator();
-				StreamWriter sm = new StreamWriter("generated.cs");
-				CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
-				genOptions.BlankLinesBetweenMembers = true;
-				genOptions.BracingStyle = "C";
-				genOptions.ElseOnClosing = true;
-				genOptions.IndentString = "    ";
-				cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions );
-				sm.Close();
+			ICodeGenerator cg =  CodeDomProvider.CreateGenerator();
+			StreamWriter sm = new StreamWriter("generated.cs");
+			CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
+			genOptions.BlankLinesBetweenMembers = true;
+			genOptions.BracingStyle = "C";
+			genOptions.ElseOnClosing = true;
+			genOptions.IndentString = "    ";
+			cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions );
+			sm.Close();
 
 			return codeCompileUnit;
 		}
@@ -321,19 +317,10 @@ namespace NanoContainer.Script.Xml
 				initializers));
 		}
 
-		protected override Type GetCompiledType(StreamReader scriptCode, IList assemblies)
+		protected override Assembly GetCompiledAssembly(StreamReader scriptCode, IList assemblies)
 		{
 			CodeCompileUnit script = GenerateCodeCompileUnitFromXml(scriptCode, assemblies);
-			Assembly createdAssembly = FrameworkCompiler.Compile(CodeDomProvider, script, assemblies);
-
-			foreach (Type type in createdAssembly.GetTypes())
-			{
-				if (HasValidConstructorAndComposeMethod(type))
-				{
-					return type;
-				}
-			}
-			throw new PicoCompositionException("The script is not usable. Please specify a correct script.");
+			return FrameworkCompiler.Compile(CodeDomProvider, script, assemblies);
 		}
 
 		protected override CodeDomProvider CodeDomProvider

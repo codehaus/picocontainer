@@ -59,7 +59,7 @@ namespace NanoContainer.Tests
 		[Test]
 		public void ConstructWithAssembly()
 		{
-			Assembly assembly = Assembly.Load("TestComp");
+			Assembly assembly = Assembly.LoadFrom(@"../../../TestComp/bin/Debug/TestComp.dll");
 			DefaultNanoContainer nanoContainer = new DefaultNanoContainer(assembly);
 
 			nanoContainer.RegisterComponentImplementation("test", "TestComp");
@@ -70,7 +70,7 @@ namespace NanoContainer.Tests
 		[ExpectedException(typeof(TypeLoadException))]
 		public void TypesOutsideTheAssemblyShouldNotBeVisible()
 		{
-			Assembly assembly = Assembly.Load("TestComp");
+			Assembly assembly = Assembly.LoadFrom(@"../../../TestComp/bin/Debug/TestComp.dll");
 			DefaultNanoContainer nanoContainer = new DefaultNanoContainer(assembly);
 
 			// This test should not be visible from the container
@@ -81,13 +81,13 @@ namespace NanoContainer.Tests
 		[Test]
 		public void FindExternalAssemblies()
 		{
-			Assembly assembly = Assembly.Load("TestComp");
+			Assembly assembly = Assembly.LoadFrom(@"../../../TestComp/bin/Debug/TestComp.dll");
 			Assert.IsNotNull(assembly);
 
-			assembly = Assembly.Load("TestComp2");
+			assembly = Assembly.LoadFrom(@"../../../TestComp2/bin/Debug/TestComp2.dll");
 			Assert.IsNotNull(assembly);
 
-			assembly = Assembly.Load("NotStartable");
+			assembly = Assembly.LoadFrom(@"../../../NotStartable/bin/Debug/NotStartable.dll");
 			Assert.IsNotNull(assembly);
 		}
 	}

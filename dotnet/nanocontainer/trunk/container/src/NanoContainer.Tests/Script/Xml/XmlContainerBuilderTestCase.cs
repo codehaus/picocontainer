@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Reflection;
 using System.Xml;
 using NanoContainer.Script.Xml;
 using NUnit.Framework;
@@ -30,10 +29,12 @@ namespace NanoContainer.Tests.Script.Xml
 		public void RegisterAssemblies()
 		{
 			MockXMLContainerBuilder containerBuilder = new MockXMLContainerBuilder(null);
+			FileInfo testCompDll = new FileInfo(@"../../../TestComp/bin/Debug/TestComp.dll");
+			FileInfo testComp2Dll = new FileInfo(@"../../../TestComp2/bin/Debug/TestComp2.dll");
 			
 			string xml = @"<assemblies>
-						      <element file='" + Assembly.Load("TestComp").Location + @"'/>
-						      <element url='" + new Uri("file://" + Assembly.Load("TestComp2").Location) + @"'/>
+						      <element file='" + testCompDll.FullName + @"'/>
+						      <element url='" + new Uri("file://" + testComp2Dll) + @"'/>
 						  </assemblies>";
 
 			XmlElement classpathElement = ConvertToXml(xml);
@@ -79,7 +80,7 @@ namespace NanoContainer.Tests.Script.Xml
 
 		public Type CallGetCompiledType(IList assemblies)
 		{
-			return GetCompiledType(this.StreamReader, assemblies);
+			return GetCompiledType(GetCompiledAssembly(this.StreamReader, assemblies));
 		}
 	}
 }

@@ -129,6 +129,29 @@ namespace Test.Script.Xml
 		}
 
 		[Test]
+		public void LoadFromAnExternalAssembly()
+		{
+			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");
+			Assert.IsTrue(testCompDll.Exists);
+			
+			string xmlScript = @"
+				<container>
+				  <assemblies>
+				    <element file='" + testCompDll.FullName + @"'/>
+				  </assemblies>
+				  <component-implementation key='foo' class='TestComp'/>
+				</container>";
+
+			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
+
+			IMutablePicoContainer parent = new DefaultPicoContainer();
+			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+
+			object fooTestComp = pico.GetComponentInstance("foo");
+			Assert.IsNotNull(fooTestComp, "Container should have a 'foo' component");
+		}
+
+		[Test]
 		public void TypeLoaderHierarchy()
 		{
 			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");
@@ -156,7 +179,7 @@ namespace Test.Script.Xml
 					"  <component-implementation class='System.Text.StringBuilder'/>" +
 					"</container>";
 
-			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
+			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());

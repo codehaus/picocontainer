@@ -63,8 +63,8 @@ public class ImmutablePicoContainerProxyFactoryTest extends MockObjectTestCase {
         ComponentAdapter componentAdapter = pico.registerComponentInstance(foo);
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
-        fooVisitor.expects(once()).method("visitContainer").with(eq(pico));
-        fooVisitor.expects(once()).method("visitComponentAdapter").with(eq(componentAdapter));
+        fooVisitor.expects(once()).method("visitContainer").with(same(pico));
+        fooVisitor.expects(once()).method("visitComponentAdapter").with(same(componentAdapter));
 
         PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance(pico);
         ipc.accept((PicoVisitor)fooVisitor.proxy());

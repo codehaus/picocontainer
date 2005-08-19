@@ -17,7 +17,7 @@ package org.picocontainer;
  * and can further be called after every {@link Startable#start()}. If a component implements the {@link Disposable}
  * interface as well, {@link Startable#stop()} should be called before {@link Disposable#dispose()}.</p>
  * <p/>
- * <p>For more advanced and pluggable lifecycle support, see the functionality offered by the nanocontainer-proxytoys
+ * <p>For more advanced and pluggable lifecycle support, see the functionality offered by picocontainer-gems
  * subproject.</p>
  * @version $Revision$
  * @see org.picocontainer.Disposable the Disposable interface if you need to <code>dispose()</code> semantics.

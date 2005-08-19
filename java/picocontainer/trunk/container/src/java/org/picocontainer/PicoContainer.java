@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * This is the core interface for PicoContainer. It is used to retrieve component instances from the container; it only
- * has accessor methods (in addition to  the {@link #verify()} method). In order to register components in a
+ * has accessor methods (in addition to  the {@link #accept()} method). In order to register components in a
  * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
  *
  * @author Paul Hammant
@@ -26,6 +26,7 @@ import java.util.List;
  * @since 1.0
  */
 public interface PicoContainer extends Startable, Disposable {
+    
     /**
      * Retrieve a component instance registered with a specific key. If a component cannot be found in this container,
      * the parent container (if one exists) will be searched.

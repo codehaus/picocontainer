@@ -10,8 +10,10 @@ import org.picocontainer.Startable;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.UndeclaredThrowableException;
 
 
 /**
@@ -26,12 +28,14 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
     protected static Method startMethod = null;
     protected static Method stopMethod = null;
     protected static Method disposeMethod = null;
+    protected static Method equalsMethod = null;
 
     static {
         try {
             startMethod = Startable.class.getMethod("start", new Class[0]);
             stopMethod = Startable.class.getMethod("stop", new Class[0]);
             disposeMethod = Disposable.class.getMethod("dispose", new Class[0]);
+            equalsMethod = Object.class.getMethod("equals", new Class[]{Object.class});
         } catch (final NoSuchMethodException e) {
             throw new InternalError(e.getMessage());
         }
@@ -43,9 +47,13 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
      * Construct a ImmutablePicoContainerProxyFactory.
      * 
      * @param pico the container to hide
+     * @throws NullPointerException if <tt>pico</tt> is <code>null</code>
      * @since 1.2
      */
     protected ImmutablePicoContainerProxyFactory(final PicoContainer pico) {
+        if (pico == null) {
+            throw new NullPointerException();
+        }
         this.pico = pico;
     }
 
@@ -54,8 +62,14 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
             throw new UnsupportedOperationException("This container is immutable, "
                     + method.getName()
                     + " is not allowed");
+        } else if (method.equals(equalsMethod)) { // necessary for JDK 1.3
+            return new Boolean(args[0] == null || args[0].equals(pico));
         }
-        return method.invoke(pico, args);
+        try {
+            return method.invoke(pico, args);
+        } catch (final InvocationTargetException e) {
+            throw e.getTargetException();
+        }
     }
 
     /**
@@ -65,6 +79,7 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
      * 
      * @param pico
      * @return the new proxy
+     * @throws NullPointerException if <tt>pico</tt> is <code>null</code>
      * @since 1.2
      */
     public static PicoContainer newProxyInstance(final PicoContainer pico) {

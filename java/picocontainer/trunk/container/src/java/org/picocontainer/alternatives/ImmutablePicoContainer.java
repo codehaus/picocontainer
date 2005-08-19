@@ -14,6 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.VerifyingVisitor;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -26,6 +27,7 @@ import java.util.List;
  * @author Paul Hammant
  * @version $Revision$
  * @since 1.1
+ * @deprecated since 1.2, use the {@link org.picocontainer.defaults.ImmutablePicoContainerProxyFactory}
  */
 public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
@@ -69,10 +71,10 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     }
 
     /**
-     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
+     * @deprecated since 1.1 - Use "new VerifyingVisitor().traverse(this)"
      */
     public void verify() throws PicoVerificationException {
-        delegate.verify();
+        new VerifyingVisitor().traverse(this);
     }
 
     public List getComponentInstancesOfType(Class type) throws PicoException {

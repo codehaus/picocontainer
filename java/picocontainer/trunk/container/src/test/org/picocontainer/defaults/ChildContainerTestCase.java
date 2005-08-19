@@ -65,7 +65,7 @@ public class ChildContainerTestCase extends TestCase {
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.registerComponentImplementation(DependsOnTouchable.class, DependsOnTouchable.class,
-                new Parameter[]{new ComponentParameter((Object) Touchable.class)});
+                new Parameter[]{new ComponentParameter(Touchable.class)});
 
         assertNotNull(child.getComponentInstance(DependsOnTouchable.class));
     }
@@ -90,7 +90,7 @@ public class ChildContainerTestCase extends TestCase {
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.registerComponentImplementation(DependsOnTouchable.class, DependsOnTouchable.class,
-                new Parameter[]{new ComponentParameter((Object) Touchable.class)});
+                new Parameter[]{new ComponentParameter(Touchable.class)});
 
         assertNotNull(child.getComponentInstance(DependsOnTouchable.class));
     }

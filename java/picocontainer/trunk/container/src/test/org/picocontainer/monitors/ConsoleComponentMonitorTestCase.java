@@ -16,7 +16,6 @@ import org.picocontainer.ComponentMonitor;
 public class ConsoleComponentMonitorTestCase extends TestCase {
     private PrintStream out;
     private ComponentMonitor componentMonitor;
-    private static final String NL = System.getProperty("line.separator");
     private Constructor constructor;
     private Method method;
 
@@ -27,27 +26,27 @@ public class ConsoleComponentMonitorTestCase extends TestCase {
         componentMonitor = new ConsoleComponentMonitor(out);
     }
 
-    public void testShouldTraceInstantiating() throws NoSuchMethodException {
+    public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(constructor);
     }
 
-    public void testShouldTraceInstantiated() throws NoSuchMethodException {
+    public void testShouldTraceInstantiated() {
         componentMonitor.instantiated(constructor, 543);
     }
 
-    public void testShouldTraceInstantiationFailed() throws NoSuchMethodException {
+    public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
     }
 
-    public void testShouldTraceInvoking() throws NoSuchMethodException {
+    public void testShouldTraceInvoking() {
         componentMonitor.invoking(method, this);
     }
 
-    public void testShouldTraceInvoked() throws NoSuchMethodException {
+    public void testShouldTraceInvoked() {
         componentMonitor.invoked(method, this, 543);
     }
 
-    public void testShouldTraceInvocatiationFailed() throws NoSuchMethodException {
+    public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
     }
 

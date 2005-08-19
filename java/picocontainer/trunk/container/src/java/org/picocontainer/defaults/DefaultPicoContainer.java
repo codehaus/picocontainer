@@ -18,7 +18,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         this.lifecycleManager = lifecycleManager;
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
         this.componentAdapterFactory = componentAdapterFactory;
-        this.parent = parent == null ? null : new ImmutablePicoContainer(parent);
+        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
     }
 
 
@@ -119,6 +118,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
      * and a parent container.
+     * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);

@@ -28,32 +28,32 @@ public class WriterComponentMonitorTestCase extends TestCase {
         componentMonitor = new WriterComponentMonitor(out);
     }
 
-    public void testShouldTraceInstantiating() throws NoSuchMethodException {
+    public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(constructor);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATING, new Object[]{constructor}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInstantiated() throws NoSuchMethodException {
+    public void testShouldTraceInstantiated() {
         componentMonitor.instantiated(constructor, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInstantiationFailed() throws NoSuchMethodException {
+    public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInvoking() throws NoSuchMethodException {
+    public void testShouldTraceInvoking() {
         componentMonitor.invoking(method, this);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKING, new Object[]{method, this}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInvoked() throws NoSuchMethodException {
+    public void testShouldTraceInvoked() {
         componentMonitor.invoked(method, this, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInvocatiationFailed() throws NoSuchMethodException {
+    public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}) +NL,  out.toString());
     }

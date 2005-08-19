@@ -292,8 +292,6 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     }
 
     public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
-        final long beforeTime = System.currentTimeMillis();
-
         Mock monitor = mock(ComponentMonitor.class);
         Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor(new Class[0]);
         monitor.expects(once()).method("instantiating").with(eq(barfingActionListenerCtor));

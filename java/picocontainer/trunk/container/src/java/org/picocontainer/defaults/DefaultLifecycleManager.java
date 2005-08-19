@@ -12,14 +12,11 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.List;
 
 
 /**

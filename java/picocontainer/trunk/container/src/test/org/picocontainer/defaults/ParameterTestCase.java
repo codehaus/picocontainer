@@ -9,18 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import junit.framework.TestCase;
 
 
 /**
@@ -29,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class ParameterTestCase extends TestCase {
 
-    public void testComponentParameterFetches() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
+    public void testComponentParameterFetches() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
 
@@ -38,7 +37,7 @@ public class ParameterTestCase extends TestCase {
         assertNotNull(touchable);
     }
 
-    public void testComponentParameterExcludesSelf() throws PicoInstantiationException, PicoRegistrationException, PicoInitializationException {
+    public void testComponentParameterExcludesSelf() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
 

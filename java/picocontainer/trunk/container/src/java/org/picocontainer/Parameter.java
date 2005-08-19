@@ -36,8 +36,7 @@ public interface Parameter {
      * @throws PicoInitializationException if a referenced component could not be instantiated.
      * @since 1.1
      */
-    Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
-            throws PicoInitializationException;
+    Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType);
 
     /**
      * Check if the Parameter can statisfy the expected type using the container.
@@ -59,7 +58,7 @@ public interface Parameter {
      * @throws PicoIntrospectionException if parameter and its dependencies cannot be resolved
      * @since 1.1
      */
-    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException;
+    void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType);
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that

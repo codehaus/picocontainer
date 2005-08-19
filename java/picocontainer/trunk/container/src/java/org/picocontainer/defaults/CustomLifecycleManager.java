@@ -141,22 +141,22 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeObject(startMethod.getDeclaringClass());
-        out.writeObject(startMethod.getName());
+        out.writeUTF(startMethod.getName());
         out.writeObject(stopMethod.getDeclaringClass());
-        out.writeObject(stopMethod.getName());
+        out.writeUTF(stopMethod.getName());
         out.writeObject(disposeMethod.getDeclaringClass());
-        out.writeObject(disposeMethod.getName());
+        out.writeUTF(disposeMethod.getName());
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         try {
             Class type = (Class)in.readObject();
-            startMethod = type.getMethod((String)in.readObject(), null);
+            startMethod = type.getMethod(in.readUTF(), null);
             type = (Class)in.readObject();
-            stopMethod = type.getMethod((String)in.readObject(), null);
+            stopMethod = type.getMethod(in.readUTF(), null);
             type = (Class)in.readObject();
-            disposeMethod = type.getMethod((String)in.readObject(), null);
+            disposeMethod = type.getMethod(in.readUTF(), null);
         } catch (NoSuchMethodException e) {
             throw new InvalidObjectException("Cannot find lifecylce method: " + e.getMessage());
         }

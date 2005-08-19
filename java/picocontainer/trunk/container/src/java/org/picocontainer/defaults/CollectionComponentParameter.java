@@ -13,7 +13,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 
@@ -115,10 +114,9 @@ public class CollectionComponentParameter
      * @param adapter {@inheritDoc}
      * @param expectedType {@inheritDoc}
      * @return the instance of the collection type or <code>null</code>
-     * @throws PicoInstantiationException {@inheritDoc}
+     * @throws PicoInitializationException {@inheritDoc}
      */
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
-            throws PicoInstantiationException {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         // type check is done in isResolvable
         Object result = null;
         final Class collectionType = getCollectionType(expectedType);
@@ -166,7 +164,7 @@ public class CollectionComponentParameter
      * @param expectedType {@inheritDoc}
      * @throws PicoIntrospectionException {@inheritDoc}
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);

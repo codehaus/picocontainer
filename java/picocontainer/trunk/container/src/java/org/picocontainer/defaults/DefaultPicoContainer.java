@@ -16,7 +16,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.alternatives.ImmutablePicoContainer;
@@ -163,7 +162,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return Collections.unmodifiableList(componentAdapters);
     }
 
-    public final ComponentAdapter getComponentAdapter(Object componentKey) throws AmbiguousComponentResolutionException {
+    public final ComponentAdapter getComponentAdapter(Object componentKey) {
         ComponentAdapter adapter = (ComponentAdapter) componentKeyToAdapterCache.get(componentKey);
         if (adapter == null && parent != null) {
             adapter = parent.getComponentAdapter(componentKey);
@@ -218,7 +217,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
      * passed to the constructor of this container.
      */
-    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws DuplicateComponentKeyRegistrationException {
+    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
@@ -239,7 +238,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * {@inheritDoc}
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
-    public ComponentAdapter registerComponentInstance(Object component) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object component) {
         return registerComponentInstance(component.getClass(), component);
     }
 
@@ -247,7 +246,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * {@inheritDoc}
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
-    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
         registerComponent(componentAdapter);
         return componentAdapter;
@@ -258,7 +257,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponentImplementation(Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Class componentImplementation) {
         return registerComponentImplementation(componentImplementation, componentImplementation);
     }
 
@@ -267,7 +266,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) {
         return registerComponentImplementation(componentKey, componentImplementation, (Parameter[]) null);
     }
 
@@ -276,7 +275,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) {
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
         registerComponent(componentAdapter);
         return componentAdapter;
@@ -286,7 +285,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Same as {@link #registerComponentImplementation(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])}
      * but with parameters as a {@link List}. Makes it possible to use with Groovy arrays (which are actually Lists).
      */
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) throws PicoRegistrationException {
+    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) {
         Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
         return registerComponentImplementation(componentKey, componentImplementation, parametersAsArray);
     }
@@ -301,7 +300,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return getComponentInstancesOfType(Object.class);
     }
 
-    public List getComponentInstancesOfType(Class componentType) throws PicoException {
+    public List getComponentInstancesOfType(Class componentType) {
         if (componentType == null) {
             return Collections.EMPTY_LIST;
         }
@@ -331,7 +330,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public Object getComponentInstance(Object componentKey) throws PicoException {
+    public Object getComponentInstance(Object componentKey) {
         ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
         if (componentAdapter != null) {
             return getInstance(componentAdapter);
@@ -360,8 +359,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return parent.getComponentInstance(componentAdapter.getComponentKey());
         }
 
-        // TODO: decide .. exception or null?
-        // exceptrion: mx: +1, joehni +1
         return null;
     }
 
@@ -382,7 +379,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
+     * @deprecated since 1.1 - Use "new VerifyingVisitor().traverse(this)"
      */
     public void verify() throws PicoVerificationException {
         new VerifyingVisitor().traverse(this);

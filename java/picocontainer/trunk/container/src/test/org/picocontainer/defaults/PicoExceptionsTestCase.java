@@ -9,6 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,15 +25,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 
 /**
  * Unit tests for the several PicoException classes.
@@ -72,10 +71,6 @@ public class PicoExceptionsTestCase
 
     public void testPicoInitializationException() {
         executeTestOfStandardException(PicoInitializationException.class);
-    }
-
-    public void testPicoInstantiationException() {
-        executeTestOfStandardException(PicoInstantiationException.class);
     }
 
     public void testPicoIntrospectionException() {

@@ -7,9 +7,11 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 
 import java.io.FileNotFoundException;
@@ -110,16 +112,6 @@ public class LifecycleVisitorTestCase extends MockObjectTestCase {
         assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance(
                 "recording").toString());
     }
-
-    // TODO: Aslak, this fails, since DPC's parent is *always* an ImmutablePC
-    // Perhaps attempts to hand to children that are disposed should silently remove them from maps.
-    // public void XXXtestDisposeRemovesMutablePicoContainerAsChild() {
-    // Mock mutableParentMock = mock(MutablePicoContainer.class);
-    // MutablePicoContainer pico = new DefaultPicoContainer();
-    // mutableParentMock.expects(once()).method("removeChildContainer").with(same(pico));
-    // pico.addChildContainer((PicoContainer) mutableParentMock.proxy());
-    // LifecycleVisitor.dispose(pico);
-    // }
 
     public void testPicoIntrospectionExceptionForInvalidMethod() throws NoSuchMethodException {
         LifecycleVisitor visitor = new LifecycleVisitor(RecordingLifecycle.class.getMethod(

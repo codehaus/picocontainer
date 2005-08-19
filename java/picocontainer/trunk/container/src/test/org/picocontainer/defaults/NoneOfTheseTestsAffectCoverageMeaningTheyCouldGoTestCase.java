@@ -11,10 +11,10 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -93,7 +93,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         assertNull("Lookup of unknown key should return null", pico.getComponentInstance("unknown"));
     }
 
-    public void testDuplicateRegistrationWithTypeAndObject() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testDuplicateRegistrationWithTypeAndObject() throws PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.registerComponentImplementation(SimpleTouchable.class);
@@ -108,7 +108,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
     }
 
 
-    public void testComponentRegistrationMismatch() throws PicoInstantiationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testComponentRegistrationMismatch() throws PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

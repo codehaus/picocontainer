@@ -17,6 +17,7 @@ package org.picocontainer;
  * 
  * @version $Revision$
  * @since 1.0
+ * @deprecated since 1.2; it was actually not instantiated anywhere
  */
 public class PicoInstantiationException extends PicoInitializationException {
     /**
@@ -24,6 +25,7 @@ public class PicoInstantiationException extends PicoInitializationException {
      *
      * @param message the message detailing the exception.
      * @param cause   the exception that caused this one.
+     * @deprecated since 1.2; it was actually not instantiated anywhere
      */
     protected PicoInstantiationException(final String message, final Throwable cause) {
         super(message, cause);

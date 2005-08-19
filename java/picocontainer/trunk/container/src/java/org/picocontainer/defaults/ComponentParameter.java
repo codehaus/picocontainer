@@ -12,8 +12,6 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 
 
@@ -111,8 +109,7 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
-            throws PicoInstantiationException {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         // type check is done in isResolvable
         Object result = super.resolveInstance(container, adapter, expectedType);
         if (result == null && collectionParameter != null) {
@@ -131,13 +128,7 @@ public class ComponentParameter
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter, java.lang.Class)
-     */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         try {
             super.verify(container, adapter, expectedType);
         } catch (UnsatisfiableDependenciesException e) {

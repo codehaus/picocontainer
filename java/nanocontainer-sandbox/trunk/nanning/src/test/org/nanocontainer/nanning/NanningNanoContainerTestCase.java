@@ -10,6 +10,7 @@
 package org.nanocontainer.nanning;
 
 import junit.framework.TestCase;
+
 import org.codehaus.nanning.AspectInstance;
 import org.codehaus.nanning.Aspects;
 import org.codehaus.nanning.Invocation;
@@ -20,7 +21,6 @@ import org.codehaus.nanning.config.P;
 import org.codehaus.nanning.config.Pointcut;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -155,7 +155,7 @@ public class NanningNanoContainerTestCase extends TestCase {
     /**
      * The 'acceptance-test' for the example.
      */
-    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
+    public void testTransactionAspectStartsAndCommitsTransaction() throws PicoRegistrationException, Exception {
         container.registerComponentImplementation(TransactionManager.class, LoggingTransactionManager.class);
         container.registerComponentImplementation(TransactionAspect.class, TransactionAspect.class);
         container.registerComponentImplementation(Component.class, SucceedingComponent.class);
@@ -169,7 +169,7 @@ public class NanningNanoContainerTestCase extends TestCase {
         assertEquals("instantiateComponents commit ", transactionManager.transactionLog.toString());
     }
 
-    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, PicoInstantiationException, Exception {
+    public void testTransactionAspectStartsAndRollsBackTransaction() throws PicoRegistrationException, Exception {
         container.registerComponentImplementation(TransactionManager.class, LoggingTransactionManager.class);
         container.registerComponentImplementation(TransactionAspect.class);
         container.registerComponentImplementation(Component.class, FailingComponent.class);

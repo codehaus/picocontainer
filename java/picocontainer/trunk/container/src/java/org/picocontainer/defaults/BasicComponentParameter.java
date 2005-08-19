@@ -12,16 +12,14 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInstantiationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -66,6 +64,7 @@ public class BasicComponentParameter
      * Check wether the given Parameter can be statisfied by the container.
      *
      * @return <code>true</code> if the Parameter can be verified.
+     * @throws org.picocontainer.PicoInitializationException {@inheritDoc}
      * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,
      *           org.picocontainer.ComponentAdapter, java.lang.Class)
      */
@@ -73,8 +72,7 @@ public class BasicComponentParameter
         return resolveAdapter(container, adapter, expectedType) != null;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType)
-            throws PicoInstantiationException {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
         if (componentAdapter != null) {
             return container.getComponentInstance(componentAdapter.getComponentKey());
@@ -82,7 +80,7 @@ public class BasicComponentParameter
         return null;
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
         if (componentAdapter == null) {
             final HashSet set = new HashSet();

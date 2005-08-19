@@ -10,9 +10,9 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoInitializationException;
 
-public class PicoInvocationTargetInitializationException extends PicoInstantiationException {
+public class PicoInvocationTargetInitializationException extends PicoInitializationException {
     public PicoInvocationTargetInitializationException(Throwable cause) {
         super("InvocationTargetException: "
                 + cause.getClass().getName()

@@ -231,5 +231,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length() );
     }
 
-    
+    public void testMakeChildContainer(){
+        MutablePicoContainer parent = new DefaultPicoContainer();
+        parent.registerComponentImplementation("t1", SimpleTouchable.class);
+        MutablePicoContainer child = parent.makeChildContainer();
+        Object t1 = child.getParent().getComponentInstance("t1");        
+        assertNotNull(t1);
+        assertTrue(t1 instanceof SimpleTouchable);        
+    }
+
 }

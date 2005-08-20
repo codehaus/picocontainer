@@ -18,6 +18,7 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
+import org.picocontainer.testmodel.SimpleTouchable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -52,5 +53,14 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
         assertTrue(list1 == list2);
     }
 
+
+    public void testMakeChildContainer(){
+        MutablePicoContainer parent = new ImplementationHidingCachingPicoContainer();
+        parent.registerComponentImplementation("t1", SimpleTouchable.class);
+        MutablePicoContainer child = parent.makeChildContainer();
+        Object t1 = child.getParent().getComponentInstance("t1");        
+        assertNotNull(t1);
+        assertTrue(t1 instanceof SimpleTouchable);        
+    }    
 
 }

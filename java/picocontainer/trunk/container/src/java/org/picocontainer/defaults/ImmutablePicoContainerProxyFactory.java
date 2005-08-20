@@ -1,19 +1,23 @@
-/*
- * Copyright (C) 2005 Jörg Schaible
- * Created on 20.08.2005 by Jörg Schaible
- */
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Joerg Schaible                                           * 
+ *****************************************************************************/
 package org.picocontainer.defaults;
-
-import org.picocontainer.Disposable;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.Startable;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.lang.reflect.UndeclaredThrowableException;
+
+import org.picocontainer.Disposable;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
 
 
 /**

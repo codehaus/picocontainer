@@ -21,7 +21,6 @@ import org.picocontainer.ComponentMonitor;
  */
 public class LoggingComponentMonitorTestCase extends TestCase {
     private ComponentMonitor componentMonitor;
-    private static final String NL = System.getProperty("line.separator");
     private Constructor constructor;
     private Method method;
     private File logFile;

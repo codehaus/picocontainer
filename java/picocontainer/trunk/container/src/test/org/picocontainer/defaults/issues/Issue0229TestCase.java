@@ -29,8 +29,12 @@ public class Issue0229TestCase extends TestCase {
     public static class MockRunner {
         private final Runnable[] _runners;
 
-        public MockRunner(Runnable[] runnable) {
-            _runners = runnable;
+        public MockRunner(Runnable[] runnables) {
+            _runners = runnables;
+        }
+        
+        public Runnable[] getRunners(){
+            return _runners;
         }
     }
 

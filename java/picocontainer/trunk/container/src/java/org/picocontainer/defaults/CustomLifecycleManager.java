@@ -112,7 +112,7 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         componentMonitor.invoking(method, instance);
         try {
             long beginTime = System.currentTimeMillis();
-            method.invoke(instance, null);
+            method.invoke(instance, (Object[])null);
             componentMonitor.invoked(method, instance, System.currentTimeMillis() - beginTime);
         } catch (Exception e) {
             invocationFailed(method, instance, e);
@@ -152,11 +152,11 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         in.defaultReadObject();
         try {
             Class type = (Class)in.readObject();
-            startMethod = type.getMethod(in.readUTF(), null);
+            startMethod = type.getMethod(in.readUTF(), (Class[])null);
             type = (Class)in.readObject();
-            stopMethod = type.getMethod(in.readUTF(), null);
+            stopMethod = type.getMethod(in.readUTF(), (Class[])null);
             type = (Class)in.readObject();
-            disposeMethod = type.getMethod(in.readUTF(), null);
+            disposeMethod = type.getMethod(in.readUTF(), (Class[])null);
         } catch (NoSuchMethodException e) {
             throw new InvalidObjectException("Cannot find lifecylce method: " + e.getMessage());
         }

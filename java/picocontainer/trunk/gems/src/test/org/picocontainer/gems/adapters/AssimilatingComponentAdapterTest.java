@@ -106,7 +106,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      * @throws NoSuchMethodException 
      */
     public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
-        final Method touch = Touchable.class.getMethod("touch", null);
+        final Method touch = Touchable.class.getMethod("touch", (Class[])null);
         try {
             new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(TestCase.class, this));
             fail("PicoIntrospectionException expected");

@@ -15,8 +15,6 @@ import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
-import java.io.FileNotFoundException;
-
 
 public abstract class RecordingLifecycle implements Startable, Disposable {
     private final StringBuffer recording;

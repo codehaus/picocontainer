@@ -31,7 +31,7 @@ public class ParameterTestCase extends TestCase {
     public void testComponentParameterFetches() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
-
+        assertNotNull(adapter);
         assertNotNull(pico.getComponentInstance(Touchable.class));
         Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, null, Touchable.class);
         assertNotNull(touchable);
@@ -72,6 +72,7 @@ public class ParameterTestCase extends TestCase {
 	public void testComponentParameterResolvesPrimitiveType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         ComponentAdapter adapter = picoContainer.registerComponentInstance("glarch", new Integer(239));
+        assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
 		assertNotNull(parameter.resolveInstance(picoContainer,null,Integer.TYPE));
 		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,null,Integer.TYPE)).intValue());

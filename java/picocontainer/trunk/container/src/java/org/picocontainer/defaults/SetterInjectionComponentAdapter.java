@@ -109,7 +109,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     private Constructor getConstructor() throws PicoInvocationTargetInitializationException {
         final Constructor constructor;
         try {
-            constructor = getComponentImplementation().getConstructor(null);
+            constructor = getComponentImplementation().getConstructor((Class[])null);
         } catch (NoSuchMethodException e) {
             throw new PicoInvocationTargetInitializationException(e);
         } catch (SecurityException e) {

@@ -96,8 +96,8 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
 
     public void testShouldApplyLifecylceInInstantiationOrder() throws NoSuchMethodException {
         CustomLifecycleManager lifecylceManager = new CustomLifecycleManager(RecordingLifecycle.class.getMethod(
-                "demarrer", null), RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class
-                .getMethod("ecraser", null), new NullComponentMonitor());
+                "demarrer", (Class[])null), RecordingLifecycle.class.getMethod("arreter", (Class[])null), RecordingLifecycle.class
+                .getMethod("ecraser", (Class[])null), new NullComponentMonitor());
 
         MutablePicoContainer parent = new DefaultPicoContainer(lifecylceManager);
         MutablePicoContainer child = parent.makeChildContainer();
@@ -143,8 +143,8 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
 
     public void testIsSerializable() throws NoSuchMethodException, IOException, ClassNotFoundException {
         LifecycleManager lifecylceManager = new CustomLifecycleManager(RecordingLifecycle.class.getMethod(
-                "demarrer", null), RecordingLifecycle.class.getMethod("arreter", null), RecordingLifecycle.class
-                .getMethod("ecraser", null), new NullComponentMonitor());
+                "demarrer", (Class[])null), RecordingLifecycle.class.getMethod("arreter", (Class[])null), RecordingLifecycle.class
+                .getMethod("ecraser", (Class[])null), new NullComponentMonitor());
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(buffer);
@@ -167,10 +167,10 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
     public void testSupportComponentMonitor() throws Exception {
         Mock mockComponentMonitor = mock(ComponentMonitor.class);
 
-        Method demarrerMethod = RecordingLifecycle.class.getMethod("demarrer", null);
-        Method throwsAtCallMethod = RecordingLifecycle.class.getMethod("throwsAtCall", null);
+        Method demarrerMethod = RecordingLifecycle.class.getMethod("demarrer", (Class[])null);
+        Method throwsAtCallMethod = RecordingLifecycle.class.getMethod("throwsAtCall", (Class[])null);
         LifecycleManager lifecylceManager = new CustomLifecycleManager(
-                demarrerMethod, throwsAtCallMethod, RecordingLifecycle.class.getMethod("ecraser", null),
+                demarrerMethod, throwsAtCallMethod, RecordingLifecycle.class.getMethod("ecraser", (Class[])null),
                 (ComponentMonitor)mockComponentMonitor.proxy());
 
         MutablePicoContainer parent = new DefaultPicoContainer(lifecylceManager);

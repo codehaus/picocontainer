@@ -31,7 +31,7 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         add = List.class.getMethod("add", new Class[]{Object.class});
-        touch = Touchable.class.getMethod("touch", null);
+        touch = Touchable.class.getMethod("touch", (Class[])null);
     }
 
     public void testVisitorWillTraverseAndCall() throws Exception {

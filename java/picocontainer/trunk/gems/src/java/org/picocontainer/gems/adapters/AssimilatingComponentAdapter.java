@@ -84,7 +84,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
             for (int i = 0; i < methods.length; i++) {
                 final Method method = methods[i];
                 try {
-                    delegationType.getMethod(method.getName(), method.getParameterTypes());
+                    delegationType.getMethod(method.getName(), (Class[])method.getParameterTypes());
                 } catch (final NoSuchMethodException e) {
                     throw new PicoIntrospectionException("Cannot create proxy for type "
                             + type.getName()

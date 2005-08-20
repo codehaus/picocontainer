@@ -30,9 +30,9 @@ public class LifecycleVisitor extends MethodCallingVisitor {
     private static final Method DISPOSE;
     static {
         try {
-            START = Startable.class.getMethod("start", null);
-            STOP = Startable.class.getMethod("stop", null);
-            DISPOSE = Disposable.class.getMethod("dispose", null);
+            START = Startable.class.getMethod("start", (Class[])null);
+            STOP = Startable.class.getMethod("stop", (Class[])null);
+            DISPOSE = Disposable.class.getMethod("dispose", (Class[])null);
         } catch (NoSuchMethodException e) {
             // /CLOVER:OFF
             throw new InternalError(e.getMessage());

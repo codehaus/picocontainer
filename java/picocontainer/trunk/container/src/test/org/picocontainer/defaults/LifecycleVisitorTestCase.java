@@ -7,14 +7,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.jmock.Mock;
+import java.io.FileNotFoundException;
+
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-
-import java.io.FileNotFoundException;
 
 
 /**

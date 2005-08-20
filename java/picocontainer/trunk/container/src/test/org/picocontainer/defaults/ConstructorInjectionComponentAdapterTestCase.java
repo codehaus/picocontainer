@@ -260,21 +260,9 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     }
 
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
-        final long beforeTime = System.currentTimeMillis();
-
         Mock monitor = mock(ComponentMonitor.class);
         Constructor emptyHashMapCtor = HashMap.class.getConstructor(new Class[0]);
         monitor.expects(once()).method("instantiating").with(eq(emptyHashMapCtor));
-        Constraint startIsAfterBegin = new Constraint() {
-            public boolean eval(Object o) {
-                Long startTime = (Long)o;
-                return beforeTime <= startTime.longValue();
-            }
-
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("The startTime wasn't after the begin of the test");
-            }
-        };
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;

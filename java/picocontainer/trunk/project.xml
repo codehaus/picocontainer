@@ -75,16 +75,25 @@
             <type>plugin</type>
             <version>1.5</version>
         </dependency>	
-	<!-- Commented until it is deployed in dist.codehaus.org 
+
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-multiproject-plugin</artifactId>
+            <version>1.4.1</version>
+            <type>plugin</type>
+        </dependency>		
+           
+        <!-- Do not use for the moment - we need to probably move container/site to it's separate top-level component
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picodocs-maven-plugin</artifactId>
             <type>plugin</type>
             <version>${picocontainer.version}</version>
         </dependency>		
-	-->        	
+		-->
+		
         <!-- required for JDK 1.5 -->
-	<dependency>
+		<dependency>
             <groupId>maven</groupId>
             <artifactId>maven-clover-plugin</artifactId>
             <version>1.10</version>

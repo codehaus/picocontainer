@@ -469,17 +469,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             child.accept(visitor);
         }
     }
-
     /**
-         * Changes monitor in the ComponentAdapterFactory and the child containers
-         * if these support a ComponentMonitorStrategy.
-         *
-         * @see ComponentMonitorStrategy#changeMonitor(ComponentMonitor)
-         */
+     * Changes monitor in the ComponentAdapterFactory, the component adapters 
+     * and the child containers, if these support a ComponentMonitorStrategy.
+     */
     public void changeMonitor(ComponentMonitor monitor) {
         if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy) this.componentAdapterFactory).changeMonitor(monitor);
         }
+        for ( Iterator i = componentAdapters.iterator(); i.hasNext(); ){
+            Object adapter = i.next();
+            if ( adapter instanceof ComponentMonitorStrategy ) {
+                ((ComponentMonitorStrategy)adapter).changeMonitor(monitor);
+            }
+        }        
         for (Iterator i = children.iterator(); i.hasNext();) {
             Object child = i.next();
             if (child instanceof ComponentMonitorStrategy) {

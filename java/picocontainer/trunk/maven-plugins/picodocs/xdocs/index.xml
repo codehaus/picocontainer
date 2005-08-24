@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>PicoDocs Maven Plugin</title>
+        <author>Mauro Talevi</author>
+    </properties>
+
+    <body>
+        <section name="PicoDocs Maven Plugin">
+            <p>
+            		Plugin to generate PicoDocs by taking the zip archive of the Confluence docs
+            		(http://www.picocontainer.org) and massaging the the site to remove google ads
+            		and modifies links to point to the local reports in static html.
+            </p>
+            <p>
+            		Plugin goals picodocs:generate and picodocs:deploy extend the Maven Site Plugin goals 
+				(http://maven.apache.org/reference/plugins/site/goals.html) by invoking picodocs:massage
+				which massages the site zip archive.
+            </p>
+            <p>
+            		Plugin looks for site zip archive in property maven.picodocs.site.zip which defaults to 
+            		${basedir}/picosite.zip.  If not found, it does nothing more than execute the site goals.
+            	</p>
+        </section>
+    </body>
+</document>

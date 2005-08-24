@@ -3,29 +3,42 @@
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant" xmlns:artifact="artifact" xmlns:license="license" xmlns:util="jelly:util">
 
     <!--==================================================================-->
-    <!-- Default goal: Deploys PicoDocs                                   -->
+    <!-- Default goal: Generates PicoDocs                                 -->
     <!--==================================================================-->
-    <goal name="picodocs" prereqs="picodocs:deploy" description="Deploys PicoDocs"/>
+    <goal name="picodocs" prereqs="picodocs:generate" description="Generates PicoDocs"/>
+
+    <!--==================================================================-->
+    <!-- Generates PicoDocs                              				  -->
+    <!--==================================================================-->
+    <goal name="picodocs:generate" prereqs="site:generate" description="Generates PicoDocs"/>
 
     <!--==================================================================-->
     <!-- Deploys PicoDocs                                 				  -->
     <!--==================================================================-->
     <goal name="picodocs:deploy" prereqs="site:deploy" description="Deploys PicoDocs"/>
 
+    <!--==================================================================-->
+    <!-- Adds postGoal to xdoc:transform to massage picodocs			  -->
+    <!--==================================================================-->	
     <postGoal name="xdoc:transform">
         <attainGoal name="picodocs:massage"/>
     </postGoal>
 
     <!--==================================================================-->
-    <!-- Massages PicoDocs - executing ruby scripts        				  -->
+    <!-- Massages PicoDocs - executes massage_site.rb ruby script		  -->
     <!--==================================================================-->
     <goal name="picodocs:massage">
-        <unzip src="${maven.picodocs.site.zip}"
-            dest="${maven.docs.dest}"/>
-
-        <exec dir="${maven.docs.dest}" executable="ruby">
-            <arg line="${plugin.dir}/plugin-resources/massage_site.rb"/>
-        </exec>
+    
+		<!-- massage site if it exists -->
+    		<j:set var="siteZip" value="${maven.picodocs.site.zip}" />
+	    <util:file var="file" name="${siteZip}"/>
+    	    <j:if test="${file.exists()}">
+    	    		<unzip src="${siteZip}"
+            		dest="${maven.docs.dest}"/>
+        		<exec dir="${maven.docs.dest}" executable="ruby">
+            		<arg line="${plugin.dir}/plugin-resources/massage_site.rb"/>
+        		</exec>
+	    </j:if>       
 
     </goal>
     

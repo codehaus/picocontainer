@@ -198,6 +198,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);        
         pico.registerComponentImplementation("t1", SimpleTouchable.class);
+        pico.registerComponentImplementation("t3", SimpleTouchable.class);
         Touchable t1 = (Touchable)pico.getComponentInstance("t1");
         assertNotNull(t1);
         assertTrue("writer not empty", writer1.toString().length() > 0 );
@@ -209,6 +210,9 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertNotNull(t2);
         assertTrue("writer not empty", writer2.toString().length() > 0 );
         assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length() );
+        Touchable t3 = (Touchable)pico.getComponentInstance("t3");
+        assertNotNull(t3);
+        assertTrue("old writer was used", writer1.toString().length() < writer2.toString().length() );
     }
 
     public void testDefaultPicoContainerCanChangeMonitorOfChildContainers() {

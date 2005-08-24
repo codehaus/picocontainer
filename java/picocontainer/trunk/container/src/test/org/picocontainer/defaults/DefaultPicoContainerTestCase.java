@@ -168,16 +168,6 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
-    // TODO: PICO-165
-    public void XXXtestComponentKeysFromParentCannotConfuseTheChild() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation("test", SimpleTouchable.class);
-        DefaultPicoContainer child = new DefaultPicoContainer(pico);
-        child.registerComponentImplementation("test", DependsOnTouchable.class);
-        DependsOnTouchable dot = (DependsOnTouchable) child.getComponentInstance("test");
-        assertNotNull(dot);
-    }
-
     public void testDefaultPicoContainerCanChangeMonitor() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);

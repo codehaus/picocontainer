@@ -83,15 +83,6 @@
             <type>plugin</type>
         </dependency>		
            
-        <!-- Do not use for the moment - we need to probably move container/site to it's separate top-level component
-        <dependency>
-            <groupId>picocontainer</groupId>
-            <artifactId>picodocs-maven-plugin</artifactId>
-            <type>plugin</type>
-            <version>${picocontainer.version}</version>
-        </dependency>		
-		-->
-		
         <!-- required for JDK 1.5 -->
 		<dependency>
             <groupId>maven</groupId>

@@ -18,11 +18,18 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 
 /**
- * @author Jon Tirsen (tirsen@codehaus.org)
+ * Component adapter which decorates another adapter.
+ * This adapter support a {@link ComponentMonitorStrategy component monitor strategy}
+ * and will propagate change of monitor to the delegate if the delegate itself
+ * support the monitor strategy.
+ * 
+ * @author Jon Tirsen
  * @author Aslak Hellesoy
+ * @author Mauro Talevi
  * @version $Revision$
  */
-public class DecoratingComponentAdapter extends MonitoringComponentAdapter {
+public class DecoratingComponentAdapter extends MonitoringComponentAdapter 
+                                implements ComponentMonitorStrategy {
 
     private ComponentAdapter delegate;
 
@@ -60,6 +67,16 @@ public class DecoratingComponentAdapter extends MonitoringComponentAdapter {
         delegate.accept(visitor);
     }
 
+    /**
+     * Delegates change of monitor if the delegate supports 
+     * a component monitor strategy.
+     */
+    public void changeMonitor(ComponentMonitor monitor) {
+        if ( delegate instanceof ComponentMonitorStrategy ){
+            ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
+        }
+    }
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer(this.getClass().getName());
         buffer.append("[");

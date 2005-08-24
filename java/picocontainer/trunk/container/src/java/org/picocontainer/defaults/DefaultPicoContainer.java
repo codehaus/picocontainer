@@ -9,25 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p/>
@@ -44,11 +29,11 @@ import java.util.Map;
  * registered with a {@link java.lang.Class} key of the corresponding type, this component
  * will take precedence over other components during type resolution.
  * </p>
- * <p>
+ * <p/>
  * Another place where keys that are classes make a subtle difference is in
  * {@link org.picocontainer.alternatives.ImplementationHidingComponentAdapter}.
  * </p>
- * <p>
+ * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
  * {@link ComponentMonitorStrategy}.
  * </p>
@@ -61,7 +46,6 @@ import java.util.Map;
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
-
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
@@ -116,10 +100,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
-     * and a parent container.
-     * @param parent                  the parent container (used for component dependency lookups).
-     */
+         * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
+         * and a parent container.
+         *
+         * @param parent the parent container (used for component dependency lookups).
+         */
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
@@ -134,14 +119,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the DefaultComponentAdapterFactory using a
-     * custom ComponentMonitor
-     * @param componentMonitor the ComponentMonitor
-     */
+         * Creates a new container with the DefaultComponentAdapterFactory using a
+         * custom ComponentMonitor
+         *
+         * @param componentMonitor the ComponentMonitor
+         */
     public DefaultPicoContainer(ComponentMonitor componentMonitor) {
         this(new DefaultComponentAdapterFactory(componentMonitor), null);
     }
-    
+
     /**
      * Creates a new container with a custom LifecycleManger and no parent container.
      *
@@ -350,8 +336,22 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         final boolean isLocal = componentAdapters.contains(componentAdapter);
 
         if (isLocal) {
-            Object instance = componentAdapter.getComponentInstance(this);
+            Object instance = null;
+            try {
+                instance = componentAdapter.getComponentInstance(this);
+            } catch (PicoInitializationException e) {
+                if (parent != null) {
+                    return parent.getComponentInstance(componentAdapter.getComponentKey());
+                }
 
+                throw e;
+            } catch (PicoIntrospectionException e) {
+                if (parent != null) {
+                    return parent.getComponentInstance(componentAdapter.getComponentKey());
+                }
+
+                throw e;
+            }
             addOrderedComponentAdapter(componentAdapter);
 
             return instance;
@@ -471,20 +471,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Changes monitor in the ComponentAdapterFactory and the child containers
-     * if these support a ComponentMonitorStrategy.
-     * 
-     * @see ComponentMonitorStrategy#changeMonitor(ComponentMonitor)
-     */
-    public void changeMonitor(ComponentMonitor monitor){
-        if ( componentAdapterFactory instanceof ComponentMonitorStrategy ){
-            ((ComponentMonitorStrategy)this.componentAdapterFactory).changeMonitor(monitor);
+         * Changes monitor in the ComponentAdapterFactory and the child containers
+         * if these support a ComponentMonitorStrategy.
+         *
+         * @see ComponentMonitorStrategy#changeMonitor(ComponentMonitor)
+         */
+    public void changeMonitor(ComponentMonitor monitor) {
+        if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
+            ((ComponentMonitorStrategy) this.componentAdapterFactory).changeMonitor(monitor);
         }
-        for ( Iterator i = children.iterator(); i.hasNext(); ){
+        for (Iterator i = children.iterator(); i.hasNext();) {
             Object child = i.next();
-            if ( child instanceof ComponentMonitorStrategy ) {
-                ((ComponentMonitorStrategy)child).changeMonitor(monitor);
+            if (child instanceof ComponentMonitorStrategy) {
+                ((ComponentMonitorStrategy) child).changeMonitor(monitor);
             }
         }
-     }
+    }
 }

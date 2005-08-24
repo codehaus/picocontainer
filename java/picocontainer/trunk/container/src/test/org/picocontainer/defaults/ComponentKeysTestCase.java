@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 
 import java.util.Collections;
 
@@ -31,8 +32,8 @@ public class ComponentKeysTestCase extends TestCase {
          * By using a class as key, this should take precedence over the other Touchable
          */
         pico.registerComponentImplementation(Touchable.class, DecoratedTouchable.class, new Parameter[]{
-            new ComponentParameter("default")
-        });
+                            new ComponentParameter("default")
+                    });
 
         Touchable touchable = (Touchable) pico.getComponentInstanceOfType(Touchable.class);
         assertEquals(DecoratedTouchable.class, touchable.getClass());
@@ -50,6 +51,19 @@ public class ComponentKeysTestCase extends TestCase {
         Touchable touchable = (Touchable) grandChild.getComponentInstanceOfType(Touchable.class);
         assertEquals(DecoratedTouchable.class, touchable.getClass());
 
+    }
+
+    public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentImplementation("test", SimpleTouchable.class);
+
+        DefaultPicoContainer child = new DefaultPicoContainer(pico);
+
+        child.registerComponentImplementation("test", DependsOnTouchable.class);
+
+        DependsOnTouchable dot = (DependsOnTouchable) child.getComponentInstance("test");
+
+        assertNotNull(dot);
     }
 
 }

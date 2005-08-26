@@ -10,6 +10,12 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -22,12 +28,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 
 /**
  * Instantiates components using Constructor Injection.
@@ -77,6 +77,24 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     /**
+     * Creates a ConstructorInjectionComponentAdapter
+     *
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters the parameters to use for the initialization
+     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
+     */
+    public ConstructorInjectionComponentAdapter(final Object componentKey,
+                                                final Class componentImplementation,
+                                                Parameter[] parameters,
+                                                boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DelegatingComponentMonitor());
+    }
+
+    /**
      * Creates a ConstructorInjectionComponentAdapter with key, implementation and parameters
      *
      * @param componentKey the search key for this implementation
@@ -87,7 +105,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        this(componentKey, componentImplementation, parameters, false, new DelegatingComponentMonitor());
+        this(componentKey, componentImplementation, parameters, false );
     }
 
     /**

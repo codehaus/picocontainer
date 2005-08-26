@@ -14,20 +14,19 @@
  */
 package org.nanocontainer.tools.deployer;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSelector;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * This class is capable of deploying an application from any kind of file system
@@ -83,11 +82,36 @@ import java.io.Reader;
  * @author Aslak Helles&oslash;y
  */
 public class NanoContainerDeployer implements Deployer {
+
+    /**
+     * VFS file system manager.
+     */
     private final FileSystemManager fileSystemManager;
 
-    public NanoContainerDeployer(FileSystemManager fileSystemManager) {
-        this.fileSystemManager = fileSystemManager;
+    /**
+     * File system basename.  Defaults to 'nanocontainer'.  May be set differently
+     * for other applications.
+     */
+    private final String fileBasename;
+
+    /**
+     * Constructs a nanocontainer deployer with the specified file system manager.
+     * @param fileSystemManager A VFS FileSystemManager.
+     */
+    public NanoContainerDeployer(final FileSystemManager fileSystemManager) {
+        this(fileSystemManager,"nanocontainer");
     }
+
+    /**
+     * Constructs a nanocontainer deployer with the specified file system manager
+     * and specifies a 'base name' for the configuration file that will be loaded.
+     * @param fileSystemManager A VFS FileSystemManager.
+     */
+    public NanoContainerDeployer(final FileSystemManager fileSystemManager, String baseFileName) {
+        this.fileSystemManager = fileSystemManager;
+        fileBasename = baseFileName;
+    }
+
 
     /**
      * Deploys an application.
@@ -110,6 +134,11 @@ public class NanoContainerDeployer implements Deployer {
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
         String builderClassName = ScriptedContainerBuilderFactory.getBuilderClassName(extension);
 
+        if (builderClassName == null) {
+          throw new FileSystemException("Could not find a suitable builder for: " + deploymentScript.getName()
+              + ".  Known extensions are: [groovy|bsh|js|py|xml]");
+        }
+
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, applicationClassLoader);
         ContainerBuilder builder = scriptedContainerBuilderFactory.getContainerBuilder();
         builder.buildContainer(result, parentContainerRef, null, true);
@@ -117,22 +146,56 @@ public class NanoContainerDeployer implements Deployer {
         return result;
     }
 
+    /**
+     * Given the base application folder, return a file object that represents the
+     * nanocontainer configuration script.
+     * @param applicationFolder FileObject
+     * @return FileObject
+     * @throws FileSystemException
+     */
     private FileObject getDeploymentScript(FileObject applicationFolder) throws FileSystemException {
         final FileObject metaInf = applicationFolder.getChild("META-INF");
         if(metaInf == null) {
             throw new FileSystemException("Missing META-INF folder in " + applicationFolder.getName().getPath());
         }
         final FileObject[] nanocontainerScripts = metaInf.findFiles(new FileSelector(){
+
             public boolean includeFile(FileSelectInfo fileSelectInfo) throws Exception {
-                return fileSelectInfo.getFile().getName().getBaseName().startsWith("nanocontainer");
+                return fileSelectInfo.getFile().getName().getBaseName().startsWith(getFileBasename());
             }
+
             public boolean traverseDescendents(FileSelectInfo fileSelectInfo) throws Exception {
+              //
+              //nanocontainer.* can easily be deep inside a directory tree and
+              //we end up not picking up our desired script.
+              //
+              if (fileSelectInfo.getDepth() > 1) {
+                return false;
+              } else {
                 return true;
+              }
             }
         });
+
         if(nanocontainerScripts == null || nanocontainerScripts.length < 1) {
-            throw new FileSystemException("No deployment script (nanocontainer.[groovy|bsh|js|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
+            throw new FileSystemException("No deployment script ("+ getFileBasename() +".[groovy|bsh|js|py|xml]) in " + applicationFolder.getName().getPath() + "/META-INF");
         }
-        return nanocontainerScripts[0];
+
+        if (nanocontainerScripts.length == 1) {
+          return nanocontainerScripts[0];
+        } else {
+          throw new FileSystemException("Found more than one candidate config script in : " + applicationFolder.getName().getPath() + "/META-INF."
+              + "Please only have one " + getFileBasename() + ".[groovy|bsh|js|py|xml] this directory.");
+        }
+
+    }
+
+
+    /**
+     * Retrieve the file base name.
+     * @return String
+     */
+    public String getFileBasename() {
+        return fileBasename;
     }
 }

@@ -35,7 +35,7 @@ import org.picocontainer.PicoIntrospectionException;
 public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private Map properties;
     private transient Map setters = null;
-    
+
     /**
      * Construct a BeanPropertyComponentAdapter.
      *
@@ -56,7 +56,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
         this(delegate, new DelegatingComponentMonitor());
     }
-    
+
     /**
      * Get a component instance and set given property values.
      *
@@ -80,18 +80,15 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             Set propertyNames = properties.keySet();
             for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
                 final String propertyName = (String) iterator.next();
-                final String propertyValue = (String) properties.get(propertyName);
+                final Object propertyValue = properties.get(propertyName);
                 Method setter = (Method) setters.get(propertyName);
-                Object value = null;
-                try {
-                    value = convertType(container, setter, propertyValue);
-                } catch (ClassNotFoundException e) {
-                    throw new PicoInvocationTargetInitializationException(e);
-                }
+
+                Object valueToInvoke = this.getSetterParameter(propertyName,propertyValue,componentInstance,container);
+
                 try {
                     componentMonitor.invoking(setter, componentInstance);
-                    long startTime = System.currentTimeMillis();                                   
-                    setter.invoke(componentInstance, new Object[]{value});
+                    long startTime = System.currentTimeMillis();
+                    setter.invoke(componentInstance, new Object[]{valueToInvoke});
                     componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);
@@ -177,5 +174,60 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      */
     public void setProperties(Map properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Converts and validates the given property value to an appropriate object
+     * for calling the bean's setter.
+     * @param propertyName String the property name on the component that
+     * we will be setting the value to.
+     * @param propertyValue Object the property value that we've been given. It
+     * may need conversion to be formed into the value we need for the
+     * component instance setter.
+     * @param componentInstance the component that we're looking to provide
+     * the setter to.
+     * @return Object: the final converted object that can
+     * be used in the setter.
+     */
+    private Object getSetterParameter(final String propertyName, final Object propertyValue,
+        final Object componentInstance, PicoContainer container) throws PicoInitializationException, ClassCastException {
+
+        if (propertyValue == null) {
+            return null;
+        }
+
+        Method setter = (Method) setters.get(propertyName);
+
+        //We can assume that there is only one object (as per typical setters)
+        //because the Setter introspector does that job for us earlier.
+        Class setterParameter = setter.getParameterTypes()[0];
+
+        Object convertedValue = null;
+
+        Class givenParameterClass = propertyValue.getClass();
+
+        //
+        //If property value is a string or a true primative then convert it to whatever
+        //we need.  (String will convert to string).
+        //
+        try {
+            convertedValue = convertType(container, setter, propertyValue.toString());
+        }
+        catch (ClassNotFoundException e) {
+            throw new PicoInvocationTargetInitializationException(e);
+        }
+
+        //Otherwise, check the parameter type to make sure we can
+        //assign it properly.
+        if (convertedValue == null) {
+            if (setterParameter.isAssignableFrom(givenParameterClass)) {
+                convertedValue = propertyValue;
+            } else {
+                throw new ClassCastException("Setter: " + setter.getName() + " for component: "
+                    + componentInstance.toString() + " can only take objects of: " + setterParameter.getName()
+                    + " instead got: " + givenParameterClass.getName());
+            }
+        }
+        return convertedValue;
     }
 }

@@ -15,12 +15,14 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.*;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -224,5 +226,81 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
         assertNotNull(a);
         assertNotNull(a.b);
+    }
+
+    public void testSetBeanPropertiesWithValueObjects() {
+      BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
+
+      Map properties = new HashMap();
+      properties.put("lenient", Boolean.FALSE);
+      properties.put("2DigitYearStart", new Date(0));
+
+      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(SimpleDateFormat.class,SimpleDateFormat.class,null);
+      adapter.setProperties(properties);
+      picoContainer.registerComponent(adapter);
+
+
+      SimpleDateFormat dateFormat = (SimpleDateFormat)picoContainer.getComponentInstance(SimpleDateFormat.class);
+      assertNotNull(dateFormat);
+      assertEquals(false, dateFormat.isLenient());
+      assertEquals(new Date(0), dateFormat.get2DigitYearStart());
+    }
+
+
+    /**
+     * todo Is this test duplicated elsewhere?  --MR
+     */
+    public void testSetBeanPropertiesWithWrongNumberOfParametersThrowsPicoInitializationException() {
+        Object testBean = new Object() {
+            public void setMultiValues(String val1, String Val2) {
+                throw new IllegalStateException("Setter should never have been called");
+            }
+
+            public void setSomeString(String val1) {
+                throw new IllegalStateException("Setter should never have been called");
+            }
+        };
+
+        BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
+
+
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter("TestBean",testBean.getClass(),null);
+
+        Map properties = new HashMap();
+        properties.put("multiValues","abcdefg");
+        adapter.setProperties(properties);
+
+        picoContainer.registerComponent(adapter);
+
+        try {
+            Object testResult = picoContainer.getComponentInstance("TestBean");
+            fail("Getting a bad test result through BeanPropertyComponentAdapter should have thrown exception.  Instead got:" + testResult);
+        } catch (PicoInitializationException ex) {
+            //A-ok
+        }
+
+    }
+
+
+    public void testSetBeanPropertiesWithInvalidValueTypes() {
+        BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
+
+
+        Map properties = new HashMap();
+
+        // Set two digit year to a boolean (should throw error)
+        properties.put("2DigitYearStart", Boolean.FALSE);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(SimpleDateFormat.class,SimpleDateFormat.class,null);
+        adapter.setProperties(properties);
+        picoContainer.registerComponent(adapter);
+
+
+        try {
+            SimpleDateFormat dateFormat = (SimpleDateFormat) picoContainer.getComponentInstance(SimpleDateFormat.class);
+            fail("Getting a bad test result through BeanPropertyComponentAdapter should have thrown exception.  Instead got:" + dateFormat);
+        } catch (ClassCastException ex) {
+            //A-ok
+        }
+
     }
 }

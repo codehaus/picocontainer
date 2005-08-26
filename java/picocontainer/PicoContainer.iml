@@ -35,7 +35,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xstream/jars/xstream-1.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -44,7 +44,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xstream/jars/xstream-1.0.2.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.2-RC1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -123,12 +123,12 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        Constructor greediestConstructor = null;
         final Set conflicts = new HashSet();
         final Set unsatisfiableDependencyTypes = new HashSet();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
+        Constructor greediestConstructor = null;
         int lastSatisfiableConstructorSize = -1;
         Class unsatisfiedDependencyType = null;
         for (int i = 0; i < sortedMatchingConstructors.size(); i++) {

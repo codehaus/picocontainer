@@ -16,8 +16,6 @@ import com.thoughtworks.proxy.toys.pool.Resetter;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 
@@ -173,8 +171,16 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         this.pool = new Pool(type, context.getResetter(), context.getProxyFactory());
     }
 
-    public Object getComponentInstance(PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException {
+    /**
+     * {@inheritDoc}
+     * <p>
+     * As long as the maximum size of the pool is not reached and the pool is exhausted, the implementation will request its
+     * delegate for a new instance, that will be managed by the pool. Only if the maximum size of the pool is reached, the 
+     * implementation may wait (depends on the initializing {@link Context}) for a returning object.
+     * </p>
+     * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or was interrupted
+     */
+    public Object getComponentInstance(PicoContainer container) {
         Object componentInstance = null;
         long now = System.currentTimeMillis();
         synchronized (pool) {
@@ -184,20 +190,17 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
                 } else {
                     long after = System.currentTimeMillis();
                     if (waitMilliSeconds < 0) {
-                        // @todo: Use correct exception
-                        throw new RuntimeException("EXHAUSTED!");
+                        throw new PoolException("Pool exhausted");
                     }
                     if (waitMilliSeconds > 0 && after - now > waitMilliSeconds) {
-                        // @todo: Use correct exception
-                        throw new RuntimeException("TIMED OUT!");
+                        throw new PoolException("Time ot wating for returning object into pool");
                     }
                     try {
-                        wait(waitMilliSeconds);
+                        wait(waitMilliSeconds); // Note, the pool notifies after an object was returned
                     } catch (InterruptedException e) {
                         // give the client code of the current thread a chance to abort also
                         Thread.currentThread().interrupt();
-                        // @todo: Use correct exception
-                        throw new RuntimeException("INTERRUPTED!");
+                        throw new PoolException("Interrupted waiting for returning object into the pool", e);
                     }
                 }
             }

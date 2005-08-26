@@ -21,7 +21,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -42,25 +41,13 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     private final boolean strict;
 
     /**
-     * Creates an ImplementationHidingComponentAdapter with a delegate and a monitor
+     * Creates an ImplementationHidingComponentAdapter with a delegate 
      * @param delegate the component adapter to which this adapter delegates
-     * @param strictMode the scrict mode boolean
-     * @param componentMonitor the component monitor used by this adapter
-     */
-    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strictMode, 
-                                                ComponentMonitor componentMonitor) {
-        super(delegate, componentMonitor);
-        this.strict = strictMode;
-    }
-    
-    /**
-     * Creates an ImplementationHidingComponentAdapter with a delegate and a monitor
-     * @param delegate the component adapter to which this adapter delegates
-     * @param strictMode the scrict mode boolean
-     * @param componentMonitor the component monitor used by this adapter
+     * @param strict the scrict mode boolean
      */
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
-        this(delegate, strict, new DelegatingComponentMonitor());
+        super(delegate);
+        this.strict = strict;
     }
 
     public Object getComponentInstance(final PicoContainer container)

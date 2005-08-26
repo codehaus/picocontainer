@@ -41,7 +41,7 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
-        BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter, currentMonitor());
+        BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter);
         adapterCache.put(componentKey, propertyAdapter);
         return propertyAdapter;
     }

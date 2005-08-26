@@ -36,4 +36,10 @@ public interface ComponentMonitorStrategy {
      */
     void changeMonitor(ComponentMonitor monitor);
 
+    /**
+     * Returns the monitor currently used
+     * @return The ComponentMonitor currently used
+     */
+    ComponentMonitor currentMonitor();
+
 }

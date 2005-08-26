@@ -9,10 +9,27 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.*;
-
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 
 /**
  * <p/>
@@ -469,13 +486,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             child.accept(visitor);
         }
     }
+    
     /**
      * Changes monitor in the ComponentAdapterFactory, the component adapters 
      * and the child containers, if these support a ComponentMonitorStrategy.
+     * {@inheritDoc}
      */
     public void changeMonitor(ComponentMonitor monitor) {
         if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) this.componentAdapterFactory).changeMonitor(monitor);
+            ((ComponentMonitorStrategy) componentAdapterFactory).changeMonitor(monitor);
         }
         for ( Iterator i = componentAdapters.iterator(); i.hasNext(); ){
             Object adapter = i.next();
@@ -490,4 +509,30 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
     }
+
+    /**
+     * Returns the first current monitor found in the ComponentAdapterFactory, the component adapters 
+     * and the child containers, if these support a ComponentMonitorStrategy.
+     * {@inheritDoc}
+     * @throws PicoIntrospectionException if no component monitor is found in container or its children
+     */    
+    public ComponentMonitor currentMonitor() {
+        if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
+            return ((ComponentMonitorStrategy) componentAdapterFactory).currentMonitor();
+        }
+        for ( Iterator i = componentAdapters.iterator(); i.hasNext(); ){
+            Object adapter = i.next();
+            if ( adapter instanceof ComponentMonitorStrategy ) {
+                return ((ComponentMonitorStrategy)adapter).currentMonitor();
+            }
+        }        
+        for (Iterator i = children.iterator(); i.hasNext();) {
+            Object child = i.next();
+            if (child instanceof ComponentMonitorStrategy) {
+                return ((ComponentMonitorStrategy) child).currentMonitor();
+            }
+        }
+        throw new PicoIntrospectionException("No component monitor found in container or its children");
+    }
+
 }

@@ -92,10 +92,19 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         }
     }
 
+    public ComponentMonitor currentMonitor() {
+        if ( delegate instanceof ComponentMonitorStrategy ){
+            return ((ComponentMonitorStrategy)delegate).currentMonitor();
+        } else {
+            return delegate;
+        }
+    }
+    
     private void checkMonitor(ComponentMonitor monitor) {
         if ( monitor == null ){
             throw new NullPointerException("monitor");
         }
     }
+
 
 }

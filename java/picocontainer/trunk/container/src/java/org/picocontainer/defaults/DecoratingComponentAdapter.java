@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import java.io.Serializable;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
@@ -28,18 +30,12 @@ import org.picocontainer.PicoVisitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class DecoratingComponentAdapter extends MonitoringComponentAdapter 
-                                implements ComponentMonitorStrategy {
+public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, Serializable {
 
     private ComponentAdapter delegate;
 
-    public DecoratingComponentAdapter(ComponentAdapter delegate, ComponentMonitor monitor) {
-        super(monitor);
-        this.delegate = delegate;
-    }
-    
     public DecoratingComponentAdapter(ComponentAdapter delegate) {
-        this(delegate, new DelegatingComponentMonitor());
+        this.delegate = delegate;
     }
 
     public Object getComponentKey() {
@@ -70,11 +66,25 @@ public class DecoratingComponentAdapter extends MonitoringComponentAdapter
     /**
      * Delegates change of monitor if the delegate supports 
      * a component monitor strategy.
+     * {@inheritDoc}
      */
     public void changeMonitor(ComponentMonitor monitor) {
         if ( delegate instanceof ComponentMonitorStrategy ){
             ((ComponentMonitorStrategy)delegate).changeMonitor(monitor);
         }
+    }
+
+    /**
+     * Returns delegate's current monitor if the delegate supports 
+     * a component monitor strategy.
+     * {@inheritDoc}
+     * @throws PicoIntrospectionException if no component monitor is found in delegate
+     */
+    public ComponentMonitor currentMonitor() {
+        if ( delegate instanceof ComponentMonitorStrategy ){
+            return ((ComponentMonitorStrategy)delegate).currentMonitor();
+        }
+        throw new PicoIntrospectionException("No component monitor found in delegate");
     }
     
     public String toString() {

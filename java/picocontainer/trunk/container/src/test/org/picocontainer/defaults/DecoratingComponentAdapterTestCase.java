@@ -4,6 +4,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoIntrospectionException;
 
 /**
  * @author Mauro Talevi
@@ -14,11 +15,18 @@ public class DecoratingComponentAdapterTestCase extends MockObjectTestCase {
     public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
         DecoratingComponentAdapter dca = new DecoratingComponentAdapter(mockComponentAdapterThatDoesSupportStrategy());
         dca.changeMonitor(mockMonitorWithNoExpectedMethods());
+        assertNotNull(dca.currentMonitor());
     }
     
     public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
         DecoratingComponentAdapter dca = new DecoratingComponentAdapter(mockComponentAdapterThatDoesNotSupportStrategy());
         dca.changeMonitor(mockMonitorWithNoExpectedMethods());
+        try {
+            dca.currentMonitor();
+            fail("PicoIntrospectionException expected");
+        } catch (PicoIntrospectionException e) {
+            assertEquals("No component monitor found in delegate", e.getMessage());
+        }
     }
     
     private ComponentMonitor mockMonitorWithNoExpectedMethods() {
@@ -29,6 +37,7 @@ public class DecoratingComponentAdapterTestCase extends MockObjectTestCase {
     private ComponentAdapter mockComponentAdapterThatDoesSupportStrategy() {
         Mock mock = mock(ComponentAdapterThatSupportsStrategy.class);
         mock.expects(once()).method("changeMonitor").withAnyArguments();
+        mock.expects(once()).method("currentMonitor").will(returnValue(mockMonitorWithNoExpectedMethods()));
         return (ComponentAdapter)mock.proxy();
     }
 

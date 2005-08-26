@@ -7,6 +7,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.lang.reflect.Constructor;
+
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
@@ -16,8 +18,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
-
-import java.lang.reflect.Constructor;
+import org.picocontainer.PicoVisitor;
 
 /**
  * Test AbstractComponentAdapter behaviour
@@ -41,19 +42,23 @@ public class ComponentAdapterTestCase
         
     }
 
-    private static class TestDecoratingComponentAdapter extends DecoratingComponentAdapter {
-        TestDecoratingComponentAdapter(ComponentAdapter adapter, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
-            super(adapter, componentMonitor);
-        }
-        TestDecoratingComponentAdapter(ComponentAdapter adapter) throws AssignabilityRegistrationException {
-            super(adapter);
+    private static class TestMonitoringComponentAdapter extends MonitoringComponentAdapter {
+        TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+            super(componentMonitor);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
         }
-        
+        public Object getComponentKey() {
+            return null;
+        }
+        public Class getComponentImplementation() {
+            return null;
+        }
+        public void accept(PicoVisitor visitor) {
+        }        
     }
     
     private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
@@ -95,7 +100,7 @@ public class ComponentAdapterTestCase
             assertEquals("componentMonitor", e.getMessage());
         }
         try {
-            new TestDecoratingComponentAdapter(new TestComponentAdapter("Key", String.class), null);
+            new TestMonitoringComponentAdapter(null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
             assertEquals("componentMonitor", e.getMessage());

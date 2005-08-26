@@ -40,21 +40,10 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      * Construct a BeanPropertyComponentAdapter.
      *
      * @param delegate the wrapped {@link ComponentAdapter}
-     * @param componentMonitor the component monitor used by this adapter
-     * @throws PicoInitializationException {@inheritDoc}
-     */
-    public BeanPropertyComponentAdapter(ComponentAdapter delegate, ComponentMonitor componentMonitor) throws PicoInitializationException {
-        super(delegate, componentMonitor);
-    }
-
-    /**
-     * Construct a BeanPropertyComponentAdapter.
-     *
-     * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoInitializationException {@inheritDoc}
      */
     public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
-        this(delegate, new DelegatingComponentMonitor());
+        super(delegate);
     }
 
     /**

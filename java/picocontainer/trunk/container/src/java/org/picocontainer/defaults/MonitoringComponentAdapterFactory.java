@@ -53,7 +53,7 @@ public abstract class MonitoringComponentAdapterFactory implements ComponentAdap
      * Returns the monitor currently used
      * @return The ComponentMonitor currently used
      */
-    protected ComponentMonitor currentMonitor(){
+    public ComponentMonitor currentMonitor(){
         return componentMonitor;
     }
 

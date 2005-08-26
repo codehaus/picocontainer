@@ -13,6 +13,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
     public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
         try {
             new DelegatingComponentMonitor(null);
+            fail("NPE expected");
         } catch (NullPointerException e) {
             assertEquals("NPE", "monitor", e.getMessage());
         }
@@ -22,15 +23,24 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         DelegatingComponentMonitor dcm = new DelegatingComponentMonitor();
         try {
             dcm.changeMonitor(null);
+            fail("NPE expected");
         } catch (NullPointerException e) {
             assertEquals("NPE", "monitor", e.getMessage());
         }
     }
 
-    public void testDelegatingMonitorReplacedDelegateThatDoesSupportMonitorStrategy() {
-        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(mockMonitorThatSupportsStrategy());
-        dcm.changeMonitor(mockMonitorWithNoExpectedMethods());
+    public void testDelegatingMonitorCanChangeMonitorInDelegateThatDoesSupportMonitorStrategy() {
+        ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
+        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
+        dcm.changeMonitor(monitor);
+        assertEquals(monitor, dcm.currentMonitor());
         dcm.instantiating(null);
+    }
+
+    public void testDelegatingMonitorReturnsDelegateThatDoesNotSupportMonitorStrategy() {
+        ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
+        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(delegate);
+        assertEquals(delegate, dcm.currentMonitor());
     }
     
     private ComponentMonitor mockMonitorWithNoExpectedMethods() {
@@ -38,9 +48,10 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         return (ComponentMonitor)mock.proxy();
     }
 
-    private ComponentMonitor mockMonitorThatSupportsStrategy() {
+    private ComponentMonitor mockMonitorThatSupportsStrategy(ComponentMonitor currentMonitor) {
         Mock mock = mock(MonitorThatSupportsStrategy.class);
-        mock.expects(once()).method("changeMonitor").withAnyArguments();
+        mock.expects(once()).method("changeMonitor").with(eq(currentMonitor));
+        mock.expects(once()).method("currentMonitor").withAnyArguments().will(returnValue(currentMonitor));
         mock.expects(once()).method("instantiating").withAnyArguments();
         return (ComponentMonitor)mock.proxy();
     }

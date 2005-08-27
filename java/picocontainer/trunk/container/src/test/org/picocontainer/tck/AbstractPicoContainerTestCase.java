@@ -349,7 +349,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testSameInstanceCanBeUsedAsDifferentType() {
+    public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponentImplementation("wt", WashableTouchable.class);
         pico.registerComponentImplementation("nw", NeedsWashable.class);

@@ -155,6 +155,48 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         // assertTrue(newMan.hashCode() == man.hashCode());
     }
 
+
+    public void testTheThingThatPaulDoesNotLikeAboutTheCurrentHotSwapper() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory());
+
+        HotSwappingComponentAdapter ca = (HotSwappingComponentAdapter) pico.registerComponentImplementation(List.class, ArrayList.class);
+
+        List list = (List) pico.getComponentInstanceOfType(List.class);
+
+        // I do not like that I can cast the object to something that is mutable beyond the scope
+        // of its design (list functions)
+        List list2 = (List) ((Swappable) list).hotswap(new ArrayList());
+
+        MutablePicoContainer child = pico.makeChildContainer();
+        child.registerComponentImplementation(ExposesListMember.class, ExposesListMemberImpl.class);
+        Object componentInstance = child.getComponentInstanceOfType(ExposesListMember.class);
+        ExposesListMember exposer = (ExposesListMember) componentInstance;
+
+        // still mutable for children :-(
+        List list3 = (List) ((Swappable) exposer.getList()).hotswap(new ArrayList());
+
+        // what I really want ...
+        //ca.swapInstance(...);
+    }
+
+    public static interface ExposesListMember {
+        List getList();
+    }
+
+    public static class ExposesListMemberImpl implements ExposesListMember {
+        private final List list;
+
+        public ExposesListMemberImpl(List l) {
+            list = l;
+        }
+
+        public List getList() {
+            return list;
+        }
+
+    }
+
+
     public void testHighLevelCheating() {
         MutablePicoContainer pico = new DefaultPicoContainer(createComponentAdapterFactory());
 

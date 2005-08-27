@@ -18,7 +18,7 @@ import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**
  * This is a demonstration that functionality equivalent to {@link ImplementationHidingPicoContainer}
- * can be obtained by composing a DPC with aIHCAF.
+ * can be obtained by composing a DPC with a IHCAF.
  *
  * @author Aslak Helles&oslash;y
  */
@@ -29,14 +29,14 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false)), parent);
+        return new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false), parent);
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        return new DefaultPicoContainer(new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false)), parent, lifecycleManager);
+        return new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), false), parent, lifecycleManager);
     }
 
-    public void testStartStopAndDisposeNotCascadedtoRemovedChildren() {
-        super.testStartStopAndDisposeNotCascadedtoRemovedChildren();
+    public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
+        // we're choosing a CAF for DPC, thus Caching (a default) not enabled.
     }
 }

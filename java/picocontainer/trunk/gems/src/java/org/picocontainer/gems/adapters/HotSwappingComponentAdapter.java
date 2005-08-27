@@ -43,7 +43,7 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
 
     private static class ImplementationHidingReference implements ObjectReference {
         private final ComponentAdapter delegate;
-        private Object value;
+        private Object componentInstance;
         private final PicoContainer container;
 
         public ImplementationHidingReference(ComponentAdapter delegate, PicoContainer container) {
@@ -52,14 +52,14 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
         }
 
         public Object get() {
-            if (value == null) {
-                value = delegate.getComponentInstance(container);
+            if (componentInstance == null) {
+                componentInstance = delegate.getComponentInstance(container);
             }
-            return value;
+            return componentInstance;
         }
 
         public void set(Object item) {
-            value = item;
+            componentInstance = item;
         }
     }
 

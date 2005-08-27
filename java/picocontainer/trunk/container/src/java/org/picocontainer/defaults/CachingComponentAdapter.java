@@ -39,4 +39,9 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
         }
         return instanceReference.get();
     }
+
+    public void flush() {
+        instanceReference.set(null);
+    }
+
 }

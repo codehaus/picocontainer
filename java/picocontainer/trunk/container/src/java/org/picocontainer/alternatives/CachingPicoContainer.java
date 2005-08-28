@@ -12,11 +12,7 @@ package org.picocontainer.alternatives;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.CachingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultLifecycleManager;
+import org.picocontainer.defaults.*;
 
 import java.io.Serializable;
 
@@ -30,47 +26,52 @@ import java.io.Serializable;
  */
 public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
     private LifecycleManager lifecycleManager;
-    private CachingComponentAdapterFactory caf;
 
     /**
      * Creates a new container with a parent container.
      */
-    public CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
-        super(new DefaultPicoContainer(caf, parent, lifecycleManager));
+    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
+        super(new DefaultPicoContainer(makeComponentAdapterFactory(caf), parent, lifecycleManager));
         this.lifecycleManager = lifecycleManager;
-        this.caf = caf;
     }
 
     /**
      * Creates a new container with a parent container.
      */
-    public CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent) {
+    private CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent) {
         this(caf, parent, new DefaultLifecycleManager());
     }
 
+    private static CachingComponentAdapterFactory makeComponentAdapterFactory(ComponentAdapterFactory caf) {
+        if (caf instanceof CachingComponentAdapterFactory) {
+            return (CachingComponentAdapterFactory) caf;
+        }
+        return new CachingComponentAdapterFactory(caf);
+    }
+
     public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(new CachingComponentAdapterFactory(caf), parent);
+        this(makeComponentAdapterFactory(caf), parent);
     }
 
     /**
      * Creates a new container with a parent container.
      */
     public CachingPicoContainer(PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(), parent);
+        this(makeComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent);
     }
 
     /**
      * Creates a new container with a parent container.
      */
     public CachingPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        this(new CachingComponentAdapterFactory(new DefaultComponentAdapterFactory()), parent, lifecycleManager);
+        this(makeComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent, lifecycleManager);
     }
     
     /**
      * Creates a new container with a parent container.
      */
     public CachingPicoContainer(ComponentAdapterFactory caf) {
-        this(caf, null);
+        this(makeComponentAdapterFactory(caf), null);
     }
 
 

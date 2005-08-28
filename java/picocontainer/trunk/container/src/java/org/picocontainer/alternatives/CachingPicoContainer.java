@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
+    private final ComponentAdapterFactory caf;
     private LifecycleManager lifecycleManager;
 
     /**
@@ -32,6 +33,7 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
      */
     public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
         super(new DefaultPicoContainer(makeComponentAdapterFactory(caf), parent, lifecycleManager));
+        this.caf = caf;
         this.lifecycleManager = lifecycleManager;
     }
 
@@ -84,7 +86,7 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
 
 
     public MutablePicoContainer makeChildContainer() {
-        ImplementationHidingCachingPicoContainer pc = new ImplementationHidingCachingPicoContainer(caf, this, lifecycleManager);
+        CachingPicoContainer pc = new CachingPicoContainer(caf, this, lifecycleManager);
         getDelegate().addChildContainer(pc);
         return pc;
     }

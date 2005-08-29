@@ -50,7 +50,7 @@ task :pretest do
 	def _pretest(files)
 		files.each {|f| cp(build(f),nanoVsOutput) unless uptodate?(nanoVsOutput(f), build(f))}
 	end
-	_pretest(%w(NMock.dll PicoContainer.dll Castle.DynamicProxy.dll NUnit.Framework.dll NanoContainer.dll NanoContainer.Tests.dll))
+	_pretest(%w(NMock.dll PicoContainer.dll Castle.DynamicProxy.dll NUnit.Framework.dll NanoContainer.dll NanoContainer.Tests.dll Boo.Lang.CodeDom.dll Boo.Lang.Parser.dll Boo.Lang.Compiler.dll Boo.Lang.dll))
 end
 
 task :test => [:compile,:pretest] do

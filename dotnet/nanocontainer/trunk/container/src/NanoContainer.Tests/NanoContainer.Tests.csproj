@@ -189,6 +189,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\Boo\BooContainerBuilderTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Script\CSharp\CSharpContainerBuilderTestCase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -237,6 +242,10 @@
                     RelPath = "TestModel\WebServerConfig.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestScripts\test.boo"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "TestScripts\test.cs"

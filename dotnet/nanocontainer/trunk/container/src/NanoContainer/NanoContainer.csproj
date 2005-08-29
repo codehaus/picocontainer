@@ -94,6 +94,26 @@
                     AssemblyName = "VJSharpCodeProvider"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\VJSharpCodeProvider.DLL"
                 />
+                <Reference
+                    Name = "Boo.Lang.CodeDom"
+                    AssemblyName = "Boo.Lang.CodeDom"
+                    HintPath = "..\..\lib\Boo.Lang.CodeDom.dll"
+                />
+                <Reference
+                    Name = "Boo.Lang.Compiler"
+                    AssemblyName = "Boo.Lang.Compiler"
+                    HintPath = "..\..\lib\Boo.Lang.Compiler.dll"
+                />
+                <Reference
+                    Name = "Boo.Lang"
+                    AssemblyName = "Boo.Lang"
+                    HintPath = "..\..\lib\Boo.Lang.dll"
+                />
+                <Reference
+                    Name = "Boo.Lang.Parser"
+                    AssemblyName = "Boo.Lang.Parser"
+                    HintPath = "..\..\lib\Boo.Lang.Parser.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -160,6 +180,11 @@
                 />
                 <File
                     RelPath = "Script\ScriptedContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Boo\BooContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

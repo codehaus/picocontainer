@@ -21,7 +21,7 @@ task :precompile do
 	def _precomp(files)
 		files.each {|f| cp(_lib(f), build) unless uptodate?(build(f), _lib(f))}
 	end
-	_precomp(%w(NUnit.Framework.dll PicoContainer.dll Castle.DynamicProxy.dll NMock.dll))
+	_precomp(%w(NUnit.Framework.dll PicoContainer.dll Castle.DynamicProxy.dll NMock.dll Boo.Lang.CodeDom.dll Boo.Lang.Parser.dll Boo.Lang.Compiler.dll Boo.Lang.dll))
 end
 
 task :compile => :precompile do

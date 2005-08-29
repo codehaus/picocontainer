@@ -11,6 +11,10 @@ using PicoContainer.Defaults;
 
 namespace NanoContainer.Script.Xml
 {
+	/// <summary>
+	/// This class is responsible for parsing the xml script to build PicoContainer.  The xml is
+	/// parsed and C# code is dynamically created and compiled.
+	/// </summary>
 	public class XMLContainerBuilder : AbstractFrameworkContainerBuilder
 	{
 		private static readonly string CONTAINER = "container";
@@ -19,12 +23,11 @@ namespace NanoContainer.Script.Xml
 		private static readonly string COMPONENT_IMPLEMENTATION = "component-implementation";
 		private static readonly string COMPONENT_INSTANCE = "component-instance";
 		private static readonly string COMPONENT_ADAPTER = "component-adapter";
-		private static readonly string REGISTER_COMPONENT_IMPLEMENTATION = "RegisterComponentImplementation";
 		
 		//private static readonly string REGISTER_COMPONENT_ADAPTER = "RegisterComponentAdapter";
 		//private static readonly string COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
 		//private static readonly string COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
-		private static readonly string CLASS = "class";
+		private static readonly string TYPE = "type";
 		//private static readonly string FACTORY = "factory";
 		private static readonly string KEY = "key";
 		private static readonly string PARAMETER = "parameter";
@@ -41,10 +44,10 @@ namespace NanoContainer.Script.Xml
 		private ComposeMethodBuilder composeMethodBuilder = new ComposeMethodBuilder();
 		private ContainerStatementBuilder containerStatementBuilder = new ContainerStatementBuilder();
 
-		public delegate void CallBack(CodeMemberMethod composeMethod, 
-			CodeVariableReferenceExpression picoContainerVariableRefr, 
-			XmlElement element, 
-			IList assemblies);
+		public delegate void CallBack(CodeMemberMethod composeMethod,
+		                              CodeVariableReferenceExpression picoContainerVariableRefr,
+		                              XmlElement element,
+		                              IList assemblies);
 
 		public XMLContainerBuilder(StreamReader streamReader)
 			: base(streamReader)
@@ -54,7 +57,7 @@ namespace NanoContainer.Script.Xml
 
 		protected CodeVariableReferenceExpression PicoParentVariableReference
 		{
-			get { return new CodeVariableReferenceExpression("p" + registerComponentsRecursions);}
+			get { return new CodeVariableReferenceExpression("p" + registerComponentsRecursions); }
 		}
 
 		protected void ParseStream(TextReader scriptCode)
@@ -63,10 +66,10 @@ namespace NanoContainer.Script.Xml
 			doc.Load(scriptCode);
 			rootNode = doc.DocumentElement;
 		}
-		
+
 		protected void RegisterAssemblies(XmlElement assembliesElement, IList assemblies)
 		{
-			foreach(XmlElement childElement in assembliesElement.ChildNodes)
+			foreach (XmlElement childElement in assembliesElement.ChildNodes)
 			{
 				string fileName = childElement.GetAttribute("file");
 				string urlSpec = childElement.GetAttribute("url");
@@ -87,15 +90,15 @@ namespace NanoContainer.Script.Xml
 			}
 		}
 
-		protected void RegisterComponentsAndChildContainers(CodeMemberMethod composeMethod, 
-			CodeVariableReferenceExpression picoContainerVariableRefr, 
-			XmlElement element, 
-			IList assemblies)
+		protected void RegisterComponentsAndChildContainers(CodeMemberMethod composeMethod,
+		                                                    CodeVariableReferenceExpression picoContainerVariableRefr,
+		                                                    XmlElement element,
+		                                                    IList assemblies)
 		{
 			XmlNodeList children = element.ChildNodes;
 
 			// register assemblies first, regardless of order in the document.
-			foreach(XmlElement child in children)
+			foreach (XmlElement child in children)
 			{
 				if (ASSEMBLIES.Equals(child.Name))
 				{
@@ -103,7 +106,7 @@ namespace NanoContainer.Script.Xml
 				}
 			}
 
-			foreach(XmlElement child in children)
+			foreach (XmlElement child in children)
 			{
 				CodeMethodInvokeExpression registerComponent = new CodeMethodInvokeExpression();
 
@@ -146,7 +149,7 @@ namespace NanoContainer.Script.Xml
 
 		private CodeNamespace BuildCodeNamespace()
 		{
-			CodeNamespace codeNamespace = new CodeNamespace("GeneratedNamespaceFromXmlScript"); //??Read from XML
+			CodeNamespace codeNamespace = new CodeNamespace(/*"GeneratedNamespaceFromXmlScript"*/); //??Read from XML
 			codeNamespace.Imports.Add(new CodeNamespaceImport(NAMESPACE_IMPORT0));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(NAMESPACE_IMPORT1));
 
@@ -191,14 +194,14 @@ namespace NanoContainer.Script.Xml
 			codeCompileUnit.Namespaces.Add(codeNamespace);
 
 			//Uncomment to see generated code
-			ICodeGenerator cg =  CodeDomProvider.CreateGenerator();
+			ICodeGenerator cg = CodeDomProvider.CreateGenerator();
 			StreamWriter sm = new StreamWriter("generated.cs");
 			CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
 			genOptions.BlankLinesBetweenMembers = true;
 			genOptions.BracingStyle = "C";
 			genOptions.ElseOnClosing = true;
 			genOptions.IndentString = "    ";
-			cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions );
+			cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions);
 			sm.Close();
 
 			return codeCompileUnit;
@@ -206,29 +209,30 @@ namespace NanoContainer.Script.Xml
 
 		protected void RegisterComponentImplementation(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)
 		{
-			string typeName = element.GetAttribute(CLASS);
+			string typeName = element.GetAttribute(TYPE);
 			if (typeName == string.Empty)
 			{
-				throw new PicoCompositionException("'" + CLASS + "' attribute not specified for " + element.Name);
+				throw new PicoCompositionException("'" + TYPE + "' attribute not specified for " + element.Name);
 			}
 
 			CodeTypeOfExpression typeOfExpression = new CodeTypeOfExpression(new CodeTypeReference(typeName));
 			string key = element.GetAttribute(KEY);
 			XmlNodeList children = element.SelectNodes("child::parameter");
 
+			method.Method = new CodeMethodReferenceExpression(objectRef, Constants.REGISTER_COMPONENT_IMPLEMENTATION);
+
 			if (key == string.Empty)
 			{
-				RegisterComponentImplementationWithoutKey(children, objectRef, method, typeOfExpression);
+				RegisterComponentImplementationWithoutKey(children, method, typeOfExpression);
 			}
 			else
 			{
-				RegisterComponentImplementationWithKey(children, objectRef, method, key, typeOfExpression);
+				RegisterComponentImplementationWithKey(children, method, key, typeOfExpression);
 			}
 		}
 
-		private void RegisterComponentImplementationWithKey(XmlNodeList children, CodeVariableReferenceExpression objectRef, CodeMethodInvokeExpression method, string key, CodeTypeOfExpression typeOfExpression)
+		private void RegisterComponentImplementationWithKey(XmlNodeList children, CodeMethodInvokeExpression method, string key, CodeTypeOfExpression typeOfExpression)
 		{
-			method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
 			method.Parameters.Add(new CodePrimitiveExpression(key));
 
 			if (children.Count == 0)
@@ -242,10 +246,8 @@ namespace NanoContainer.Script.Xml
 			}
 		}
 
-		private void RegisterComponentImplementationWithoutKey(XmlNodeList children, CodeVariableReferenceExpression objectRef, CodeMethodInvokeExpression method, CodeTypeOfExpression typeOfExpression)
+		private void RegisterComponentImplementationWithoutKey(XmlNodeList children, CodeMethodInvokeExpression method, CodeTypeOfExpression typeOfExpression)
 		{
-			method.Method = new CodeMethodReferenceExpression(objectRef, REGISTER_COMPONENT_IMPLEMENTATION);
-
 			if (children.Count == 0)
 			{
 				method.Parameters.Add(typeOfExpression);
@@ -263,14 +265,14 @@ namespace NanoContainer.Script.Xml
 			string instanceName = element.InnerText;
 			string key = element.GetAttribute(KEY);
 
+			method.Method = new CodeMethodReferenceExpression(objectRef, Constants.REGISTER_COMPONENT_INSTANCE);
+
 			if (key.Length == 0)
 			{
-				method.Method = new CodeMethodReferenceExpression(objectRef, Constants.REGISTER_COMPONENT_INSTANCE);
 				method.Parameters.Add(new CodePrimitiveExpression(instanceName));
 			}
 			else
 			{
-				method.Method = new CodeMethodReferenceExpression(objectRef, Constants.REGISTER_COMPONENT_INSTANCE);
 				method.Parameters.Add(new CodePrimitiveExpression(key));
 				method.Parameters.Add(new CodePrimitiveExpression(instanceName));
 			}

@@ -37,9 +37,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 				<container>
-					<component-implementation class='System.Text.StringBuilder'/>
-					<component-implementation class='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
-					<component-implementation key='NanoContainer.Test.TestModel.WebServer' class='NanoContainer.Test.TestModel.DefaultWebServer'/>
+					<component-implementation type='System.Text.StringBuilder'/>
+					<component-implementation type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
+					<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'/>
 				</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
@@ -56,9 +56,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
-						<component-implementation key='aBuffer' class='System.Text.StringBuilder'/>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' class='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServer' class='NanoContainer.Test.TestModel.DefaultWebServer'>
+						<component-implementation key='aBuffer' type='System.Text.StringBuilder'/>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
 				 				<parameter key='NanoContainer.Test.TestModel.WebServerConfig'/>
 				 				<parameter key='aBuffer'/>
 						</component-implementation>
@@ -80,9 +80,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
-						<component-implementation key='aBuffer' class='System.Text.StringBuilder'/>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' class='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServer' class='NanoContainer.Test.TestModel.DefaultWebServer'>
+						<component-implementation key='aBuffer' type='System.Text.StringBuilder'/>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
 				 				<parameter key='NanoContainer.Test.TestModel.WebServerConfig'/>
 				 				<parameter key='aBuffer'/>
 								<any-old-stuff/>
@@ -105,10 +105,10 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' class='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
-						<component-implementation class='System.Text.StringBuilder'/>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
+						<component-implementation type='System.Text.StringBuilder'/>
 						<container>
-							<component-implementation key='NanoContainer.Test.TestModel.WebServer' class='NanoContainer.Test.TestModel.DefaultWebServer'/>
+							<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'/>
 						</container>
 					</container>";
 
@@ -139,7 +139,7 @@ namespace Test.Script.Xml
 				  <assemblies>
 				    <element file='" + testCompDll.FullName + @"'/>
 				  </assemblies>
-				  <component-implementation key='foo' class='TestComp'/>
+				  <component-implementation key='foo' type='TestComp'/>
 				</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
@@ -167,16 +167,16 @@ namespace Test.Script.Xml
 					"  <assemblies>" +
 					"    <element file='" + testCompDll.FullName + "'/>" +
 					"  </assemblies>" +
-					"  <component-implementation key='foo' class='TestComp'/>" +
+					"  <component-implementation key='foo' type='TestComp'/>" +
 					"  <container>" +
 					"    <assemblies>" +
 					"      <element file='" + testCompDll2.FullName + "'/>" +
 					"      <element file='" + notStartableDll.FullName + "'/>" +
 					"    </assemblies>" +
-					"    <component-implementation key='bar' class='TestComp2'/>" +
-					"    <component-implementation key='phony' class='NotStartable'/>" +
+					"    <component-implementation key='bar' type='TestComp2'/>" +
+					"    <component-implementation key='phony' type='NotStartable'/>" +
 					"  </container>" +
-					"  <component-implementation class='System.Text.StringBuilder'/>" +
+					"  <component-implementation type='System.Text.StringBuilder'/>" +
 					"</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
@@ -199,7 +199,7 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
-						<component-implementation class='Foo'/>
+						<component-implementation type='Foo'/>
 					</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
@@ -213,7 +213,7 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
-						<component-implementation key='NanoContainer.Test.TestModel.WebServer' class='NanoContainer.Test.TestModel.DefaultWebServer'>
+						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
 				 			<parameter/>
 				 			<parameter/>
 					</component-implementation>

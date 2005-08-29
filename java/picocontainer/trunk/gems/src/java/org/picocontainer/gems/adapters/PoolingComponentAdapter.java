@@ -20,12 +20,34 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
 
 
 /**
- * @todo Auto-generated JavaDoc
+ * {@link ComponentAdapter} implementation that pools components.
+ * <p>
+ * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The pool can be
+ * configured to grow unlimited or to a maximum size. If a component is requested from this adapter, the implementation
+ * returns an availailabe instance from the pool or will create a new one, if the maximum pool size is not reached yet.
+ * If none is available, the implementation can wait a defined time for a returned object before it throws a
+ * {@link PoolException}.
+ * </p>
+ * <p>
+ * This implementation uses the {@link Pool} toy from the <a href="http://proxytoys.codehaus.org">ProxyToys</a>
+ * project. This ensures, that any component, that is out of scope will be automatically returned to the pool by the
+ * garbage collector. Additionally will every component instance also implement
+ * {@link com.thoughtworks.proxy.toys.pool.Poolable}, that can be used to return the instance manually. After returning
+ * an instance it should not be used in client code anymore.
+ * </p>
+ * <p>
+ * Before a returning object is added to the available instances of the pool again, it should be reinitialized to a
+ * normalized state. By providing a proper Resetter implementation this can be done automatically. If the object cannot
+ * be reused anymore it can also be dropped and the pool may request a new instance.
+ * </p>
+ * 
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
 public class PoolingComponentAdapter extends DecoratingComponentAdapter {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Context of the PoolingComponentAdapter used to initialize it.
@@ -153,7 +175,10 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Construct a PoolingComponentAdapter.
+     * Construct a PoolingComponentAdapter. Remember, that the implementation will request new components from the
+     * delegate as long as no component instance is available in the pool and the maximum pool size is not reached.
+     * Therefore the delegate may not return the same component instance twice. Ensure, that the used
+     * {@link ComponentAdapter} does not cache.
      * 
      * @param delegate the delegated ComponentAdapter
      * @param context the {@link Context} of the pool
@@ -174,10 +199,11 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     /**
      * {@inheritDoc}
      * <p>
-     * As long as the maximum size of the pool is not reached and the pool is exhausted, the implementation will request its
-     * delegate for a new instance, that will be managed by the pool. Only if the maximum size of the pool is reached, the 
-     * implementation may wait (depends on the initializing {@link Context}) for a returning object.
+     * As long as the maximum size of the pool is not reached and the pool is exhausted, the implementation will request
+     * its delegate for a new instance, that will be managed by the pool. Only if the maximum size of the pool is
+     * reached, the implementation may wait (depends on the initializing {@link Context}) for a returning object.
      * </p>
+     * 
      * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or was interrupted
      */
     public Object getComponentInstance(PicoContainer container) {

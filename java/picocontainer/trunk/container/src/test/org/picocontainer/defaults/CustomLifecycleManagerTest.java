@@ -94,10 +94,10 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
         }
     }
 
-    public void testShouldApplyLifecylceInInstantiationOrder() throws NoSuchMethodException {
+    public void testShouldApplyLifecycleInInstantiationOrder() throws NoSuchMethodException {
         CustomLifecycleManager lifecylceManager = new CustomLifecycleManager(RecordingLifecycle.class.getMethod(
                 "demarrer", (Class[])null), RecordingLifecycle.class.getMethod("arreter", (Class[])null), RecordingLifecycle.class
-                .getMethod("ecraser", (Class[])null), new NullComponentMonitor());
+                .getMethod("ecraser", (Class[])null), new NullComponentMonitor(), new DefaultLifecycleStrategy());
 
         MutablePicoContainer parent = new DefaultPicoContainer(lifecylceManager);
         MutablePicoContainer child = parent.makeChildContainer();
@@ -118,13 +118,13 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
     public void testNullPointerExceptionForNullAsParameter() throws NoSuchMethodException {
         Method uncallable = RecordingLifecycle.class.getMethod("uncallableByVisitor", new Class[]{String.class});
         try {
-            new CustomLifecycleManager(uncallable, uncallable, null, new NullComponentMonitor());
+            new CustomLifecycleManager(uncallable, uncallable, null, new NullComponentMonitor(), new DefaultLifecycleStrategy());
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
             // ok
         }
         try {
-            new CustomLifecycleManager(uncallable, uncallable, uncallable, null);
+            new CustomLifecycleManager(uncallable, uncallable, uncallable, null, new DefaultLifecycleStrategy());
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
             // ok
@@ -134,7 +134,7 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
     public void testIllegalArgumentExceptionForInvalidMethod() throws NoSuchMethodException {
         Method uncallable = RecordingLifecycle.class.getMethod("uncallableByVisitor", new Class[]{String.class});
         try {
-            new CustomLifecycleManager(uncallable, uncallable, uncallable, new NullComponentMonitor());
+            new CustomLifecycleManager(uncallable, uncallable, uncallable, new NullComponentMonitor(), new DefaultLifecycleStrategy());
             fail("Thrown " + IllegalArgumentException.class.getName() + " expected");
         } catch (final IllegalArgumentException e) {
             // ok
@@ -142,13 +142,13 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
     }
 
     public void testIsSerializable() throws NoSuchMethodException, IOException, ClassNotFoundException {
-        LifecycleManager lifecylceManager = new CustomLifecycleManager(RecordingLifecycle.class.getMethod(
+        LifecycleManager lifecycleManager = new CustomLifecycleManager(RecordingLifecycle.class.getMethod(
                 "demarrer", (Class[])null), RecordingLifecycle.class.getMethod("arreter", (Class[])null), RecordingLifecycle.class
-                .getMethod("ecraser", (Class[])null), new NullComponentMonitor());
+                .getMethod("ecraser", (Class[])null), new NullComponentMonitor(), new DefaultLifecycleStrategy());
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(buffer);
-        out.writeObject(lifecylceManager);
+        out.writeObject(lifecycleManager);
         out.close();
         LifecycleManager serializedLifecylceManager = (LifecycleManager)new ObjectInputStream(new ByteArrayInputStream(
                 buffer.toByteArray())).readObject();
@@ -171,7 +171,7 @@ public class CustomLifecycleManagerTest extends MockObjectTestCase {
         Method throwsAtCallMethod = RecordingLifecycle.class.getMethod("throwsAtCall", (Class[])null);
         LifecycleManager lifecylceManager = new CustomLifecycleManager(
                 demarrerMethod, throwsAtCallMethod, RecordingLifecycle.class.getMethod("ecraser", (Class[])null),
-                (ComponentMonitor)mockComponentMonitor.proxy());
+                (ComponentMonitor)mockComponentMonitor.proxy(), new DefaultLifecycleStrategy());
 
         MutablePicoContainer parent = new DefaultPicoContainer(lifecylceManager);
         parent.registerComponentImplementation("recording", StringBuffer.class);

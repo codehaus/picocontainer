@@ -36,10 +36,11 @@ import java.util.List;
  */
 public class CustomLifecycleManager implements LifecycleManager, Serializable {
 
-    private final ComponentMonitor componentMonitor;
     private transient Method startMethod;
     private transient Method stopMethod;
     private transient Method disposeMethod;
+    private final ComponentMonitor componentMonitor;
+    private LifecycleStrategy lifecycleStrategy;
 
     /**
      * Construct a CustomLifecycleManager.
@@ -48,12 +49,14 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
      * @param stopMethod the method called when the component instances are stopped
      * @param disposeMethod the method called when the component instances are disposed
      * @param componentMonitor the {@link ComponentMonitor} receiving the invocation events
+     * @param lifecycleStrategy the {@link LifecycleStrategy} controlling the lifecycle
      * @throws NullPointerException if one of the arguments is null
      * @throws IllegalArgumentException if one of the methods has parameters
      * @since 1.2
      */
     public CustomLifecycleManager(
-            Method startMethod, Method stopMethod, Method disposeMethod, ComponentMonitor componentMonitor) {
+            Method startMethod, Method stopMethod, Method disposeMethod, 
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
         if (startMethod == null || stopMethod == null || disposeMethod == null || componentMonitor == null) {
             throw new NullPointerException();
         }
@@ -66,6 +69,7 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         this.stopMethod = stopMethod;
         this.disposeMethod = disposeMethod;
         this.componentMonitor = componentMonitor;
+        this.lifecycleStrategy = lifecycleStrategy;
     }
 
     /**
@@ -101,12 +105,15 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         }
     }
 
+    public LifecycleStrategy currentLifecycleStrategy() {
+        return lifecycleStrategy;
+    }
+
     /**
      * Execute the method call. The implementation will fire the monitoring events.
      * 
      * @param method
      * @param instance
-     * @since 1.2
      */
     protected void doMethod(Method method, Object instance) {
         componentMonitor.invoking(method, instance);
@@ -125,7 +132,6 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
      * @param method the called method
      * @param instance the component instance
      * @param e the thrown exception
-     * @since 1.2
      */
     protected void invocationFailed(Method method, Object instance, Exception e) {
         componentMonitor.invocationFailed(method, instance, e);
@@ -161,4 +167,5 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
             throw new InvalidObjectException("Cannot find lifecylce method: " + e.getMessage());
         }
     }
+
 }

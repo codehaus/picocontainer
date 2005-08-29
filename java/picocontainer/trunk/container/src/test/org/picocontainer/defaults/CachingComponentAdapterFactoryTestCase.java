@@ -26,7 +26,7 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
         return new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
     }
 
-    public void testContainerReturnsSameInstaceEachCall() {
+    public void testContainerReturnsSameInstanceEachCall() {
         picoContainer.registerComponentImplementation(Touchable.class, SimpleTouchable.class);
         Touchable t1 = (Touchable) picoContainer.getComponentInstance(Touchable.class);
         Touchable t2 = (Touchable) picoContainer.getComponentInstance(Touchable.class);

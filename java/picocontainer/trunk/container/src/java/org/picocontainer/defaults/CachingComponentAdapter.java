@@ -11,15 +11,23 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoContainer;
 
 /**
- * This ComponentAdapter caches the instance.
+ * <p>
+ * This ComponentAdapter caches the instance
+ * </p>
+ * <p>
+ * This adapter is also a {@link LifecycleManager lifecycle manager} which will apply
+ * its  {@link LifecycleStrategy lifecycle strategy} to the cached component instance.
+ * </p>
+ * 
  * @version $Revision$
  */
-public class CachingComponentAdapter extends DecoratingComponentAdapter {
+public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
 
     private ObjectReference instanceReference;
 
@@ -32,6 +40,11 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
         this.instanceReference = instanceReference;
     }
 
+    public CachingComponentAdapter(ComponentAdapter delegate, ObjectReference instanceReference, LifecycleStrategy lifecycleStrategy) {
+        super(delegate);
+        this.instanceReference = instanceReference;
+    }
+    
     public Object getComponentInstance(PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
@@ -42,6 +55,30 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter {
 
     public void flush() {
         instanceReference.set(null);
+    }
+
+    /**
+     * Starts the cached component instance
+     * {@inheritDoc}
+     */
+    public void start(PicoContainer container) {
+        currentLifecycleStrategy().start(getComponentInstance(container));
+    }
+
+    /**
+     * Stops the cached component instance
+     * {@inheritDoc}
+     */
+    public void stop(PicoContainer container) {
+        currentLifecycleStrategy().stop(getComponentInstance(container));
+    }
+
+    /**
+     * Disposes the cached component instance
+     * {@inheritDoc}
+     */
+    public void dispose(PicoContainer container) {
+        currentLifecycleStrategy().dispose(getComponentInstance(container));
     }
 
 }

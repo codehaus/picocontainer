@@ -50,8 +50,12 @@ public class DefaultLifecycleManager extends CustomLifecycleManager {
         }
     }
 
+    public DefaultLifecycleManager(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+        super(startMethod, stopMethod, disposeMethod, componentMonitor, lifecycleStrategy);
+    }
+
     public DefaultLifecycleManager(ComponentMonitor componentMonitor) {
-        super(startMethod, stopMethod, disposeMethod, componentMonitor);
+        super(startMethod, stopMethod, disposeMethod, componentMonitor, new DefaultLifecycleStrategy());
     }
 
     public DefaultLifecycleManager() {

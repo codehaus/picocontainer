@@ -14,30 +14,40 @@ import java.io.Serializable;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 
 /**
+ * <p>
  * Component adapter which decorates another adapter.
- * This adapter support a {@link ComponentMonitorStrategy component monitor strategy}
+ * </p>
+ * <p>
+ * This adapter supports a {@link ComponentMonitorStrategy component monitor strategy}
  * and will propagate change of monitor to the delegate if the delegate itself
  * support the monitor strategy.
+ * </p>
+ * <p>
+ * This adapter is also {@link LifecycleManager lifecycle manager} and will 
+ * propagate the delegate's {@link LifecycleStrategy lifecycle strategy} if the delegate 
+ * is also a lifecycle manager.
+ * </p>
  * 
  * @author Jon Tirsen
  * @author Aslak Hellesoy
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, Serializable {
+public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, LifecycleManager, Serializable {
 
     private ComponentAdapter delegate;
 
     public DecoratingComponentAdapter(ComponentAdapter delegate) {
-        this.delegate = delegate;
+         this.delegate = delegate;
     }
-
+    
     public Object getComponentKey() {
         return delegate.getComponentKey();
     }
@@ -87,11 +97,52 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
         throw new PicoIntrospectionException("No component monitor found in delegate");
     }
     
+    /**
+     * Invokes delegate start method if the delegate is a LifecycleManager
+     * {@inheritDoc}
+     */
+    public void start(PicoContainer container) {
+        if ( delegate instanceof LifecycleManager ){
+            ((LifecycleManager)delegate).start(container);
+        }
+    }
+
+    /**
+     * Invokes delegate stop method if the delegate is a LifecycleManager
+     * {@inheritDoc}
+     */
+    public void stop(PicoContainer container) {
+        if ( delegate instanceof LifecycleManager ){
+            ((LifecycleManager)delegate).stop(container);
+        }
+    }
+    
+    /**
+     * Invokes delegate dispose method if the delegate is a LifecycleManager
+     * {@inheritDoc}
+     */
+    public void dispose(PicoContainer container) {
+        if ( delegate instanceof LifecycleManager ){
+            ((LifecycleManager)delegate).dispose(container);
+        }
+    }
+
+    public LifecycleStrategy currentLifecycleStrategy() {
+        if ( delegate instanceof LifecycleManager ){
+            return ((LifecycleManager)delegate).currentLifecycleStrategy();
+        }
+        throw new PicoIntrospectionException("No lifecycle strategy found in delegate");
+    }
+
     public String toString() {
-        StringBuffer buffer = new StringBuffer(this.getClass().getName());
+        StringBuffer buffer = new StringBuffer();
         buffer.append("[");
-        buffer.append(delegate.toString());
+        buffer.append(this.getClass().getName());
+        buffer.append(" delegate=");
+        buffer.append(delegate);
         buffer.append("]");
         return buffer.toString();
     }
+
 }
+

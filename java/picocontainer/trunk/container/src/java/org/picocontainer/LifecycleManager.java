@@ -10,12 +10,18 @@
 
 package org.picocontainer;
 
+import org.picocontainer.defaults.LifecycleStrategy;
+
 /**
  * A manager for the lifecycle of a container's components.
+ * The manager will use a {@link LifecycleStrategy lifecycle strategy}
+ * to control the lifecycle of the component. 
  * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  * @version $Revision$
+ * @see LifecycleStrategy 
  */
 public interface LifecycleManager {
 
@@ -42,4 +48,10 @@ public interface LifecycleManager {
      * @param container the container to "dispose" its component's lifecylce
      */
     void dispose(PicoContainer container);
+
+    /**
+     * Returns the lifecycle strategy currently used by the manager
+     * @return The LifecycleStrategy instance
+     */
+    LifecycleStrategy currentLifecycleStrategy();
 }

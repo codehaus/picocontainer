@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: 2024 $
  */
-public class LoggingComponentMonitorTestCase extends TestCase {
+public class CommonsLoggingComponentMonitorTestCase extends TestCase {
     private ComponentMonitor componentMonitor;
     private Constructor constructor;
     private Method method;
@@ -28,7 +28,7 @@ public class LoggingComponentMonitorTestCase extends TestCase {
     protected void setUp() throws Exception {
         constructor = getClass().getConstructor((Class[])null);
         method = getClass().getDeclaredMethod("setUp", (Class[])null);
-        componentMonitor = new LoggingComponentMonitor();
+        componentMonitor = new CommonsLoggingComponentMonitor();
         logFile = new File("target/monitor.log");
     }
     
@@ -37,32 +37,32 @@ public class LoggingComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInstantiating() throws Exception {
         componentMonitor.instantiating(constructor);        
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INSTANTIATING, new Object[]{constructor}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATING, new Object[]{constructor}));
     }
 
     public void testShouldTraceInstantiated() throws Exception {
         componentMonitor.instantiated(constructor, 543);
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
     }
 
     public void testShouldTraceInstantiationFailed() throws Exception {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
     }
 
     public void testShouldTraceInvoking() throws Exception {
         componentMonitor.invoking(method, this);
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INVOKING, new Object[]{method, this}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKING, new Object[]{method, this}));
     }
 
     public void testShouldTraceInvoked() throws Exception {
         componentMonitor.invoked(method, this, 543);
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}));
     }
 
     public void testShouldTraceInvocatiationFailed() throws Exception {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(LoggingComponentMonitor.format(LoggingComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}));
+        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}));
     }
     
     private void assertFileContent(String line) throws IOException{        

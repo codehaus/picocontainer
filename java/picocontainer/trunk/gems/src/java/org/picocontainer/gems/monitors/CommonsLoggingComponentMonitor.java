@@ -19,29 +19,50 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
- * A {@link ComponentMonitor} which writes to a {@link Log} instance. 
+ * A {@link ComponentMonitor} which writes to a Commons Logging {@link Log} instance. 
  * 
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class LoggingComponentMonitor extends AbstractComponentMonitor {
+public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor {
 
     private Log log;
     
     /**
-     * Creates a LoggingComponentMonitor with a given log instance
-     * @param log the Log to write to
+     * Creates a CommonsLoggingComponentMonitor using the 
+     * CommonsLoggingComponentMonitor class instance.
      */
-    public LoggingComponentMonitor(Log log) {
-        this.log = log;
+    public CommonsLoggingComponentMonitor() {
+        this(CommonsLoggingComponentMonitor.class);
     }
 
     /**
-     * Creates a LoggingComponentMonitor using the LogFactory to create
-     * the default log 
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance class.
+     * The class name is used to retrieve the Log instance.
+     * 
+     * @param logClass the class of the Log 
      */
-    public LoggingComponentMonitor() {
-        this.log = LogFactory.getLog(LoggingComponentMonitor.class);
+    public CommonsLoggingComponentMonitor(Class logClass) {
+        this(logClass.getName());
+    }
+
+    /**
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance name.
+     * It uses the {@link LogFactory LogFactory} to create the Log instance.
+     * 
+     * @param logName the name of the Log 
+     */
+    public CommonsLoggingComponentMonitor(String logName) {
+        this(LogFactory.getLog(logName));
+    }
+
+    /**
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance
+     *
+     * @param log the Log to write to
+     */
+    public CommonsLoggingComponentMonitor(Log log) {
+        this.log = log;
     }
     
     public void instantiating(Constructor constructor) {

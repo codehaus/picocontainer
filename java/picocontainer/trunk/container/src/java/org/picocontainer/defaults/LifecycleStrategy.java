@@ -16,8 +16,8 @@ package org.picocontainer.defaults;
  * @author Peter Royal
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
- * @see Startable
- * @see Disposable
+ * @see org.picocontainer.Startable
+ * @see org.picocontainer.Disposable
  */
 public interface LifecycleStrategy {
     

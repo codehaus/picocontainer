@@ -37,6 +37,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 				<container>
+					<assemblies>
+						<element file='NanoContainer.Tests.dll'/>
+					</assemblies>
 					<component-implementation type='System.Text.StringBuilder'/>
 					<component-implementation type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
 					<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'/>
@@ -56,6 +59,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
+						<assemblies>
+							<element file='NanoContainer.Tests.dll'/>
+						</assemblies>
 						<component-implementation key='aBuffer' type='System.Text.StringBuilder'/>
 						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
 						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
@@ -80,6 +86,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
+						<assemblies>
+							<element file='NanoContainer.Tests.dll'/>
+						</assemblies>
 						<component-implementation key='aBuffer' type='System.Text.StringBuilder'/>
 						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
 						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
@@ -105,6 +114,9 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = @"
 					<container>
+						<assemblies>
+							<element file='NanoContainer.Tests.dll'/>
+						</assemblies>
 						<component-implementation key='NanoContainer.Test.TestModel.WebServerConfig' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
 						<component-implementation type='System.Text.StringBuilder'/>
 						<container>

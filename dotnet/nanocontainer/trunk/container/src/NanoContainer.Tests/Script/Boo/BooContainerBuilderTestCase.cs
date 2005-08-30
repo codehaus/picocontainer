@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using NanoContainer.IntegrationKit;
@@ -305,7 +306,12 @@ class BooInjector:
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			ContainerBuilder containerBuilder = new BooContainerBuilder(ScriptFixture.BuildStreamReader(script));
-			return base.BuildContainer(containerBuilder, parent, new ArrayList());
+			
+			// register "this" test dll as an assembly to use
+			StringCollection assemblies = new StringCollection();
+			assemblies.Add("NanoContainer.Tests.dll");
+
+			return base.BuildContainer(containerBuilder, parent, assemblies);
 		}
 	}
 }

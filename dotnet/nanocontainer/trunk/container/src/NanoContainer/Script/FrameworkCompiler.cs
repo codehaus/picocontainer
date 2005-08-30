@@ -1,6 +1,8 @@
+using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
+using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,6 +12,13 @@ namespace NanoContainer.Script
 {
 	public class FrameworkCompiler
 	{
+		private static AssemblyReferenceCache assemblyReferenceCache = new AssemblyReferenceCache();
+
+		static FrameworkCompiler()
+		{
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(assemblyReferenceCache.FindAssembly);
+		}
+
 		public Assembly Compile(CodeDomProvider cp, StreamReader reader, IList assemblies)
 		{
 			return Compile(cp, GetScriptAsString(reader), assemblies);
@@ -63,22 +72,21 @@ namespace NanoContainer.Script
 		protected CompilerParameters GetCompilerParameters(IList assemblies)
 		{
 			CompilerParameters compilerParameters = new CompilerParameters();
-			AddAssembliesFromWorkingDirectory(compilerParameters);
+			StringCollection compilerOptionPaths = new StringCollection();
+			AddAssemblies(compilerParameters, compilerOptionPaths);
 
 			foreach (string assembly in assemblies)
 			{
-				// TODO mward ....
-				// This should be replaced with a better solution than copying files into current working directoy
-				// looking into creating an additional AppDomain so assemblies can be added and removed whic is
-				// NOT possible with the current approach.
-				int dirpos = assembly.LastIndexOf(Path.DirectorySeparatorChar);
+				string[] directories = assembly.Split(Path.DirectorySeparatorChar);
 
-				if ( dirpos > 0 )
+				if(directories.Length > 1)
 				{
-					string dest = string.Format("{0}{1}{2}", Directory.GetCurrentDirectory(), Path.DirectorySeparatorChar, assembly.Substring(dirpos + 1, assembly.Length - dirpos - 1));
-					File.Copy(assembly, dest, true);
-					
-					compilerParameters.ReferencedAssemblies.Add(assembly.Substring(dirpos + 1, assembly.Length - dirpos - 1));
+					string dllName = getDllName(assembly);
+					string dllPath = getDllPath(assembly);
+
+					compilerParameters.ReferencedAssemblies.Add(dllName);
+					compilerOptionPaths.Add(dllPath);
+					assemblyReferenceCache.add(dllName, assembly);
 				}
 				else
 				{
@@ -86,20 +94,46 @@ namespace NanoContainer.Script
 				}
 			}
 
+			setCompilerOptions(compilerParameters, compilerOptionPaths);
 			compilerParameters.GenerateInMemory = true;
 			compilerParameters.GenerateExecutable = false;
 
 			return compilerParameters;
 		}
 
-		protected void AddAssembliesFromWorkingDirectory(CompilerParameters compilerParameters)
+		private string getDllName(string location)
 		{
-			DirectoryInfo directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory());
+			string[] directories = location.Split(Path.DirectorySeparatorChar);
+			return directories[directories.Length - 1];
+		}
 
-			foreach(FileInfo fileInfo in directoryInfo.GetFiles("*.dll"))
+		private string getDllPath(string location)
+		{
+			int index = location.LastIndexOf(Path.DirectorySeparatorChar);
+			return location.Substring(0, index);
+		}
+
+		/// <summary>
+		/// appends the directories paths for external assemblies as a compiler option
+		/// </summary>
+		private void setCompilerOptions(CompilerParameters compilerParameters, IList compilerOptionPaths)
+		{
+			if(compilerOptionPaths.Count > 0)
 			{
-				compilerParameters.ReferencedAssemblies.Add(fileInfo.Name);
+				StringBuilder sb = new StringBuilder("/lib:");
+				foreach(string path in compilerOptionPaths)
+				{
+					sb.AppendFormat("{0};", path);
+				}
+
+				compilerParameters.CompilerOptions = sb.ToString();
 			}
+		}
+
+		protected virtual void AddAssemblies(CompilerParameters compilerParameters, IList compilerOptionPaths)
+		{
+			compilerParameters.ReferencedAssemblies.Add("PicoContainer.dll");
+			compilerParameters.ReferencedAssemblies.Add("NanoContainer.dll");
 		}
 
 		private string GetScriptAsString(StreamReader stream)

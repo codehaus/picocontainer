@@ -54,16 +54,16 @@ namespace NanoContainer.Tests.Script
 			Assert.AreEqual(0, compilerParameters.ReferencedAssemblies.Count);
 
 			MockFrameworkCompiler frameworkCompiler = new MockFrameworkCompiler();
-			frameworkCompiler.CallAddAssembliesFromWorkingDirectory(compilerParameters);
+			frameworkCompiler.CallAddAssemblies(compilerParameters);
 
 			Assert.IsTrue(compilerParameters.ReferencedAssemblies.Count > 0);
 		}
 
 		public class MockFrameworkCompiler : FrameworkCompiler
 		{
-			public void CallAddAssembliesFromWorkingDirectory(CompilerParameters compilerParameters)
+			public void CallAddAssemblies(CompilerParameters compilerParameters)
 			{
-				AddAssembliesFromWorkingDirectory(compilerParameters);
+				AddAssemblies(compilerParameters, new ArrayList());
 			}
 		}
 	}

@@ -27,7 +27,8 @@ namespace NanoContainer.Script
 		                                                                   object assemblyScope)
 		{
 			IList assemblies = assemblyScope as IList;
-			Assembly dynamicAssembly = this.GetCompiledAssembly(StreamReader, assemblies);
+			Assembly dynamicAssembly = GetCompiledAssembly(StreamReader, assemblies);
+
 			Type compiledType = GetCompiledType(dynamicAssembly);
 			object instance = dynamicAssembly.CreateInstance(compiledType.FullName);
 

@@ -75,6 +75,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         int getMaxWaitInMilliseconds();
 
         /**
+         * Allow the implementation to invoke the garbace collector manually if the pool is exhausted.
+         * 
+         * @return <code>true</code> for an internal call to {@link System#gc()}
+         * @since 1.2
+         */
+        boolean autostartGC();
+
+        /**
          * Retrieve the ProxyFactory to use to create the pooling proxies.
          * 
          * @return the {@link ProxyFactory}
@@ -111,6 +119,13 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
          */
         public int getMaxWaitInMilliseconds() {
             return FAIL_ON_WAIT;
+        }
+
+        /**
+         * {@inheritDoc} Returns <code>false</code>.
+         */
+        public boolean autostartGC() {
+            return false;
         }
 
         /**
@@ -163,6 +178,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     private final int maxPoolSize;
     private final int waitMilliSeconds;
     private final Pool pool;
+    private final boolean autostartGC;
 
     /**
      * Construct a PoolingComponentAdapter with default settings.
@@ -188,6 +204,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         super(delegate);
         this.maxPoolSize = context.getMaxSize();
         this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
+        this.autostartGC = context.autostartGC();
         if (maxPoolSize <= 0) {
             throw new IllegalArgumentException("Invalid maximum pool size");
         }
@@ -209,28 +226,46 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     public Object getComponentInstance(PicoContainer container) {
         Object componentInstance = null;
         long now = System.currentTimeMillis();
-        synchronized (pool) {
-            while ((componentInstance = pool.get()) == null) {
+        boolean gc = autostartGC;
+        while (true) {
+            synchronized (pool) {
+                componentInstance = pool.get();
+                if (componentInstance != null) {
+                    break;
+                }
                 if (maxPoolSize > pool.size()) {
                     pool.add(super.getComponentInstance(container));
-                } else {
+                } else if (!gc) {
                     long after = System.currentTimeMillis();
                     if (waitMilliSeconds < 0) {
                         throw new PoolException("Pool exhausted");
                     }
                     if (waitMilliSeconds > 0 && after - now > waitMilliSeconds) {
-                        throw new PoolException("Time ot wating for returning object into pool");
+                        throw new PoolException("Time out wating for returning object into pool");
                     }
                     try {
-                        wait(waitMilliSeconds); // Note, the pool notifies after an object was returned
+                        pool.wait(waitMilliSeconds); // Note, the pool notifies after an object was returned
                     } catch (InterruptedException e) {
                         // give the client code of the current thread a chance to abort also
                         Thread.currentThread().interrupt();
                         throw new PoolException("Interrupted waiting for returning object into the pool", e);
                     }
+                } else {
+                    System.gc();
+                    gc = false;
                 }
             }
         }
         return componentInstance;
+    }
+
+    /**
+     * Retrieve the current size of the pool. The returned value reflects the number of all managed components.
+     * 
+     * @return the number of components.
+     * @since 1.2
+     */
+    public int size() {
+        return pool.size();
     }
 }

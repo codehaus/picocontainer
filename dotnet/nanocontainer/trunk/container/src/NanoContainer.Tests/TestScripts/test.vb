@@ -1,7 +1,7 @@
 Imports PicoContainer
 Imports PicoContainer.Defaults
 
-Public Class Class1
+Public Class Test
 
     Dim p As IPicoContainer
 

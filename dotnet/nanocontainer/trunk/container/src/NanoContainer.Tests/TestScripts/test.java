@@ -2,7 +2,7 @@ package test;
 import PicoContainer.*;
 import PicoContainer.Defaults.*;
 
-class test
+class Test
 {
 	private IMutablePicoContainer container;
 	private IPicoContainer parent;

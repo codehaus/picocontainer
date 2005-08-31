@@ -1,7 +1,7 @@
 import PicoContainer;
 import PicoContainer.Defaults;
 
-class Class1 {
+class Test {
 
 	protected var parent : IPicoContainer;
 	protected var container : IMutablePicoContainer;

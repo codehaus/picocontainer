@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Xml;
 using Microsoft.CSharp;
 using NanoContainer.IntegrationKit;
+using PicoContainer;
 using PicoContainer.Defaults;
 
 namespace NanoContainer.Script.Xml
@@ -28,18 +29,15 @@ namespace NanoContainer.Script.Xml
 		//private static readonly string COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
 		//private static readonly string COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
 		private static readonly string TYPE = "type";
-		//private static readonly string FACTORY = "factory";
 		private static readonly string KEY = "key";
 		private static readonly string PARAMETER = "parameter";
 
-		private static readonly string NAMESPACE_IMPORT0 = "PicoContainer";
-		private static readonly string NAMESPACE_IMPORT1 = "PicoContainer.Defaults";
 		private static readonly string PARENT_PROPERTY = "Parent";
 		private static readonly string PARENT_ARGUMENT = "parent";
-		private static readonly string PARENT_TYPE = "IPicoContainer";
+		private static readonly Type PARENT_TYPE = typeof(IPicoContainer);
 
-		private XmlElement rootNode;
-		private int registerComponentsRecursions;
+		private XmlElement rootNode = null;
+		private int registerComponentsRecursions = 0;
 
 		private ComposeMethodBuilder composeMethodBuilder = new ComposeMethodBuilder();
 		private ContainerStatementBuilder containerStatementBuilder = new ContainerStatementBuilder();
@@ -49,10 +47,8 @@ namespace NanoContainer.Script.Xml
 		                              XmlElement element,
 		                              IList assemblies);
 
-		public XMLContainerBuilder(StreamReader streamReader)
-			: base(streamReader)
+		public XMLContainerBuilder(StreamReader streamReader) : base(streamReader)
 		{
-			registerComponentsRecursions = 0;
 		}
 
 		protected CodeVariableReferenceExpression PicoParentVariableReference
@@ -150,8 +146,8 @@ namespace NanoContainer.Script.Xml
 		private CodeNamespace BuildCodeNamespace()
 		{
 			CodeNamespace codeNamespace = new CodeNamespace(/*"GeneratedNamespaceFromXmlScript"*/); //??Read from XML
-			codeNamespace.Imports.Add(new CodeNamespaceImport(NAMESPACE_IMPORT0));
-			codeNamespace.Imports.Add(new CodeNamespaceImport(NAMESPACE_IMPORT1));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IPicoContainer).Namespace));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DefaultPicoContainer).Namespace));
 
 			return codeNamespace;
 		}
@@ -182,6 +178,7 @@ namespace NanoContainer.Script.Xml
 
 			//TODO ?Read name from XML?
 			CodeTypeDeclaration classDeclaration = new CodeTypeDeclaration("GeneratedClassFromXmlScript");
+			classDeclaration.BaseTypes.Add(typeof(IScript));
 			classDeclaration.Members.Add(new CodeMemberField(PARENT_TYPE, PARENT_ARGUMENT));
 			classDeclaration.Members.Add(BuildParentProperty());
 
@@ -193,16 +190,17 @@ namespace NanoContainer.Script.Xml
 			codeNamespace.Types.Add(classDeclaration);
 			codeCompileUnit.Namespaces.Add(codeNamespace);
 
-			//Uncomment to see generated code
-			ICodeGenerator cg = CodeDomProvider.CreateGenerator();
-			StreamWriter sm = new StreamWriter("generated.cs");
-			CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
-			genOptions.BlankLinesBetweenMembers = true;
-			genOptions.BracingStyle = "C";
-			genOptions.ElseOnClosing = true;
-			genOptions.IndentString = "    ";
-			cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions);
-			sm.Close();
+			#if DEBUG
+				ICodeGenerator cg = CodeDomProvider.CreateGenerator();
+				StreamWriter sm = new StreamWriter("generated.cs");
+				CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
+				genOptions.BlankLinesBetweenMembers = true;
+				genOptions.BracingStyle = "C";
+				genOptions.ElseOnClosing = true;
+				genOptions.IndentString = "    ";
+				cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions);
+				sm.Close();
+			#endif
 
 			return codeCompileUnit;
 		}

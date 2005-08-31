@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using NanoContainer.IntegrationKit;
 using PicoContainer;
@@ -22,7 +23,7 @@ namespace NanoContainer.Script
 		{
 			try
 			{
-				return CreateContainerFromScript(parentContainer, assemblyScope);
+				return CreateContainerFromScript(parentContainer, assemblyScope as IList);
 			}
 			finally
 			{
@@ -37,7 +38,7 @@ namespace NanoContainer.Script
 			}
 		}
 
-		protected abstract IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer, object assemblyScope);
+		protected abstract IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer, IList assemblyScope);
 
 		protected override void ComposeContainer(IMutablePicoContainer container, object assemblyScope)
 		{

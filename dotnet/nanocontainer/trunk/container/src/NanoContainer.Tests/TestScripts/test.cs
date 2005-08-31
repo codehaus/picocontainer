@@ -1,9 +1,9 @@
 using PicoContainer;
 using PicoContainer.Defaults;
 
-namespace Test
+namespace Test 
 {
-	public class NameTranslator
+	public class Test
 	{
 		private IPicoContainer parent;
 

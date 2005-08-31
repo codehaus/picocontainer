@@ -1,9 +1,11 @@
 using System;
 using System.CodeDom;
 using System.Collections;
+using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using NanoContainer.IntegrationKit;
+using NanoContainer.Script;
 using NanoContainer.Script.Xml;
 using NUnit.Framework;
 
@@ -22,9 +24,9 @@ namespace NanoContainer.Tests.Script.Xml
 				</container>";
 
 			MockXMLContainerBuilder containerBuilder = new MockXMLContainerBuilder(ScriptFixture.BuildStreamReader(xml));
-			Type type = containerBuilder.CallGetCompiledType(new ArrayList());
+			IScript script = containerBuilder.CallCreateScript(new StringCollection());
 
-			Assert.IsNotNull(type);
+			Assert.IsNotNull(script);
 		}
 
 		[Test] 
@@ -165,9 +167,9 @@ namespace NanoContainer.Tests.Script.Xml
 			RegisterAssemblies(classpathElement, assemblies);
 		}
 
-		public Type CallGetCompiledType(IList assemblies)
+		public IScript CallCreateScript(IList assemblies)
 		{
-			return GetCompiledType(GetCompiledAssembly(this.StreamReader, assemblies));
+			return CreateScript(assemblies);
 		}
 
 		public void CallRegisterComponentInstance(XmlElement element, CodeMethodInvokeExpression method, CodeVariableReferenceExpression objectRef)

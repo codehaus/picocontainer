@@ -101,12 +101,6 @@ namespace NanoContainer.Script
 			return compilerParameters;
 		}
 
-		private string getDllPath(string location)
-		{
-			int index = location.LastIndexOf(Path.DirectorySeparatorChar);
-			return location.Substring(0, index);
-		}
-
 		/// <summary>
 		/// appends the directories paths for external assemblies as a compiler option
 		/// </summary>

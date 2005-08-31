@@ -63,7 +63,7 @@ namespace NanoContainer.Tests.Script
 		{
 			public void CallAddAssemblies(CompilerParameters compilerParameters)
 			{
-				AddAssemblies(compilerParameters, new ArrayList());
+				AddAssemblies(compilerParameters);
 			}
 		}
 	}

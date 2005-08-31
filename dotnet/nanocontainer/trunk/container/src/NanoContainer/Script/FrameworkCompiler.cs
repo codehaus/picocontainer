@@ -73,7 +73,7 @@ namespace NanoContainer.Script
 		{
 			CompilerParameters compilerParameters = new CompilerParameters();
 			StringCollection compilerOptionPaths = new StringCollection();
-			AddAssemblies(compilerParameters, compilerOptionPaths);
+			AddAssemblies(compilerParameters);
 
 			foreach (string assembly in assemblies)
 			{
@@ -81,8 +81,8 @@ namespace NanoContainer.Script
 
 				if(directories.Length > 1)
 				{
-					string dllName = getDllName(assembly);
-					string dllPath = getDllPath(assembly);
+					string dllName = directories[directories.Length - 1];
+					string dllPath = assembly.Replace(dllName, string.Empty);
 
 					compilerParameters.ReferencedAssemblies.Add(dllName);
 					compilerOptionPaths.Add(dllPath);
@@ -99,12 +99,6 @@ namespace NanoContainer.Script
 			compilerParameters.GenerateExecutable = false;
 
 			return compilerParameters;
-		}
-
-		private string getDllName(string location)
-		{
-			string[] directories = location.Split(Path.DirectorySeparatorChar);
-			return directories[directories.Length - 1];
 		}
 
 		private string getDllPath(string location)
@@ -130,7 +124,7 @@ namespace NanoContainer.Script
 			}
 		}
 
-		protected virtual void AddAssemblies(CompilerParameters compilerParameters, IList compilerOptionPaths)
+		protected virtual void AddAssemblies(CompilerParameters compilerParameters)
 		{
 			compilerParameters.ReferencedAssemblies.Add("PicoContainer.dll");
 			compilerParameters.ReferencedAssemblies.Add("NanoContainer.dll");

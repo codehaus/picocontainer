@@ -1,3 +1,4 @@
+using System.Collections;
 using PicoContainer.Defaults;
 
 namespace NanoContainer.IntegrationKit
@@ -8,9 +9,9 @@ namespace NanoContainer.IntegrationKit
 		/// Create, assemble, init and start a new PicoContainer and store it at a given reference.
 		/// </summary>
 		/// <param name="parentContainerRef">reference to a container that may be used as a parent to the new container (may be null).</param>
-		/// <param name="compositionScope">Hint about the scope for composition.</param>
+		/// <param name="assemblies"></param>
 		/// <returns></returns>
-		void BuildContainer(IObjectReference contrainerRef, IObjectReference parentContainerRef, object compositionScope);
+		void BuildContainer(IObjectReference contrainerRef, IObjectReference parentContainerRef, IList assemblies);
 
 		/// <summary>
 		/// Locate a container at the given reference so it can be stopped, destroyed and removed.

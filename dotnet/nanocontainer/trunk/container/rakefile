@@ -33,7 +33,7 @@ task :compile => :precompile do
 			cd "../.."
 		end
 	end
-	%w(NanoContainer NanoContainer.Tests TestComp TestComp2 NotStartable).each {|project| _compile(project)}
+	%w(NanoContainer NanoContainer.Tests TestComp TestComp2 NotStartable TestCompWithAttributes).each {|project| _compile(project)}
 end
 
 task :pretest do

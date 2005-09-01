@@ -4,7 +4,7 @@ using Microsoft.VisualBasic;
 
 namespace NanoContainer.Script.VB
 {
-	public class VBBuilder : AbstractFrameworkContainerBuilder
+	public class VBBuilder : ScriptedContainerBuilder
 	{
 		public VBBuilder(StreamReader stream) : base(stream)
 		{

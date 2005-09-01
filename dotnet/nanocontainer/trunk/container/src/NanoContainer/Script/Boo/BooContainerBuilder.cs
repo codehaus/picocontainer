@@ -7,7 +7,7 @@ namespace NanoContainer.Script.Boo
 	/// <summary>
 	/// Builds a container using the Boo scripting language.
 	/// </summary>
-	public class BooContainerBuilder : AbstractFrameworkContainerBuilder
+	public class BooContainerBuilder : ScriptedContainerBuilder
 	{
 		/// <summary>
 		/// Initializes an object of this class.

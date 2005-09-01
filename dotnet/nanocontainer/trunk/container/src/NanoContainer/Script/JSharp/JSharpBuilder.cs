@@ -4,7 +4,7 @@ using Microsoft.VJSharp;
 
 namespace NanoContainer.Script.JSharp
 {
-	public class JSharpBuilder : AbstractFrameworkContainerBuilder
+	public class JSharpBuilder : ScriptedContainerBuilder
 	{
 		public JSharpBuilder(StreamReader stream) : base(stream)
 		{

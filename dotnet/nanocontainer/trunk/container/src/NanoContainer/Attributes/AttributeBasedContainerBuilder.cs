@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Reflection;
 using NanoContainer.IntegrationKit;
 using PicoContainer;
@@ -8,22 +9,39 @@ namespace NanoContainer.Attributes
 {
 	public class AttributeBasedContainerBuilder : LifeCycleContainerBuilder
 	{
+		private AssemblyUtil assemblyUtil = null;
 		private Type registerAttributeType = typeof(RegisterWithContainerAttribute);
-		private Type[] registerTypes;
-
-		public AttributeBasedContainerBuilder(Assembly assembly)
+		
+		public AttributeBasedContainerBuilder()
 		{
-			AssemblyUtil assemblyUtil = new AssemblyUtil();
-			this.registerTypes = assemblyUtil.GetTypes(assembly, registerAttributeType);
+			assemblyUtil = new AssemblyUtil();
 		}
 
-		protected override IMutablePicoContainer CreateContainer(IPicoContainer parent, object assemblyScope)
+		protected IList FindTypesToRegister(IList assemblies)
+		{
+			IList registerTypes = new ArrayList();
+
+			foreach(string assembly in assemblies)
+			{
+				Type[] types = assemblyUtil.GetTypes(Assembly.LoadFrom(assembly), registerAttributeType);
+
+				foreach(Type type in types)
+				{
+					registerTypes.Add(type);
+				}
+			}
+
+			return registerTypes;
+		}
+
+		protected override IMutablePicoContainer CreateContainer(IPicoContainer parent, IList assemblies)
 		{
 			return new DefaultPicoContainer(parent);
 		}
 
-		protected override void ComposeContainer(IMutablePicoContainer container, object assemblyScope)
+		protected override void ComposeContainer(IMutablePicoContainer container, IList assemblies)
 		{
+			IList registerTypes = FindTypesToRegister(assemblies);
 			foreach(Type type in registerTypes)
 			{
 				IComponentAdapter componentAdapter = null;

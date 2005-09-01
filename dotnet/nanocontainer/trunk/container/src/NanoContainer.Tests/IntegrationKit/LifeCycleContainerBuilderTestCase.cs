@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NanoContainer.IntegrationKit;
 using NMock;
 using NUnit.Framework;
@@ -31,12 +32,12 @@ namespace NanoContainer.Tests.IntegrationKit
 
 	public class StubLifeCycleContainerBuilder : LifeCycleContainerBuilder
 	{
-		protected override void ComposeContainer(IMutablePicoContainer container, object assemblyScope)
+		protected override void ComposeContainer(IMutablePicoContainer container, IList assemblies)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, object assemblyScope)
+		protected override IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, IList assemblies)
 		{
 			throw new NotImplementedException();
 		}

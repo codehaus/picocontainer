@@ -16,7 +16,7 @@ namespace NanoContainer.Script.Xml
 	/// This class is responsible for parsing the xml script to build PicoContainer.  The xml is
 	/// parsed and C# code is dynamically created and compiled.
 	/// </summary>
-	public class XMLContainerBuilder : AbstractFrameworkContainerBuilder
+	public class XMLContainerBuilder : ScriptedContainerBuilder
 	{
 		private static readonly string CONTAINER = "container";
 		private static readonly string ASSEMBLIES = "assemblies";

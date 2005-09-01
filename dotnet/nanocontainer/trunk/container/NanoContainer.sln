@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotStartable", "src\NotStar
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCompWithAttributes", "src\TestCompWithAttributes\TestCompWithAttributes.csproj", "{8315D156-8536-4D1E-B13C-3765A174E6BB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -45,6 +49,10 @@ Global
 		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Debug.Build.0 = Debug|.NET
 		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Release.ActiveCfg = Release|.NET
 		{331078E9-335D-461C-A88B-6EE8A92A6C58}.Release.Build.0 = Release|.NET
+		{8315D156-8536-4D1E-B13C-3765A174E6BB}.Debug.ActiveCfg = Debug|.NET
+		{8315D156-8536-4D1E-B13C-3765A174E6BB}.Debug.Build.0 = Debug|.NET
+		{8315D156-8536-4D1E-B13C-3765A174E6BB}.Release.ActiveCfg = Release|.NET
+		{8315D156-8536-4D1E-B13C-3765A174E6BB}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

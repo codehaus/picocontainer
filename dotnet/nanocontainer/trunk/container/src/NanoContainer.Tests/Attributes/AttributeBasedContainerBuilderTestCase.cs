@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Specialized;
 using NanoContainer.Attributes;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Test.TestModel;
@@ -14,12 +14,16 @@ namespace NanoContainer.Tests.Attributes
 	public class AttributeBasedContainerBuilderTestCase : AbstractContainerBuilderTestCase
 	{
 		private IPicoContainer picoContainer;
+
 		[SetUp]
 		public void SetUp()
 		{
-			ContainerBuilder containerBuilder = new AttributeBasedContainerBuilder(this.GetType().Assembly);
+			ContainerBuilder containerBuilder = new AttributeBasedContainerBuilder();
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			picoContainer = BuildContainer(containerBuilder, parent, new ArrayList());
+
+			StringCollection assemblies = new StringCollection();
+			assemblies.Add("NanoContainer.Tests.dll");
+			picoContainer = BuildContainer(containerBuilder, parent, assemblies);
 
 			Assert.IsNotNull(picoContainer);
 			Assert.AreSame(parent, picoContainer.Parent);

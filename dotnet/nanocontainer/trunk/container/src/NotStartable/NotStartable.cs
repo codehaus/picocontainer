@@ -1,6 +1,8 @@
 using System;
 using System.Text;
+using NanoContainer.Attributes;
 
+[RegisterWithContainer("notstartable")]
 public class NotStartable 
 {
 	public NotStartable(TestComp tc, StringBuilder sb) 

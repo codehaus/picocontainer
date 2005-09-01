@@ -1,3 +1,4 @@
+using System.Collections;
 using PicoContainer;
 using PicoContainer.Defaults;
 
@@ -12,10 +13,10 @@ namespace NanoContainer.IntegrationKit
 
 		public void BuildContainer(IObjectReference containerRef,
 		                           IObjectReference parentContainerRef,
-		                           object assemblyScope)
+		                           IList assemblies)
 		{
 			IMutablePicoContainer parent = GetInstanceFromReference(parentContainerRef);
-			IMutablePicoContainer container = CreateContainer(parent, assemblyScope);
+			IMutablePicoContainer container = CreateContainer(parent, assemblies);
 
 			// register the child in the parent so that lifecycle can be propagated down the hierarchy
 			if (parent != null)
@@ -24,9 +25,8 @@ namespace NanoContainer.IntegrationKit
 				parent.RegisterComponentInstance(container, container);
 			}
 
-			ComposeContainer(container, assemblyScope);
+			ComposeContainer(container, assemblies);
 			container.Start();
-
 			containerRef.Set(container);
 		}
 
@@ -54,8 +54,8 @@ namespace NanoContainer.IntegrationKit
 			}
 		}
 
-		protected abstract void ComposeContainer(IMutablePicoContainer container, object assemblyScope);
+		protected abstract void ComposeContainer(IMutablePicoContainer container, IList assemblies);
 
-		protected abstract IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, object assemblyScope);
+		protected abstract IMutablePicoContainer CreateContainer(IPicoContainer parentContainer, IList assemblies);
 	}
 }

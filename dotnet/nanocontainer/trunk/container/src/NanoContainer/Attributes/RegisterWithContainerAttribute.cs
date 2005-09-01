@@ -2,6 +2,7 @@ using System;
 
 namespace NanoContainer.Attributes
 {
+	[AttributeUsage(AttributeTargets.Class)]
 	public class RegisterWithContainerAttribute : Attribute
 	{
 		private object key;

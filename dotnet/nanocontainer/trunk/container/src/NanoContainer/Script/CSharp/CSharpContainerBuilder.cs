@@ -4,9 +4,9 @@ using Microsoft.CSharp;
 
 namespace NanoContainer.Script.CSharp
 {
-	public class CSharpBuilder : ScriptedContainerBuilder
+	public class CSharpContainerBuilder : ScriptedContainerBuilder
 	{
-		public CSharpBuilder(StreamReader stream) : base(stream)
+		public CSharpContainerBuilder(StreamReader stream) : base(stream)
 		{
 		}
 

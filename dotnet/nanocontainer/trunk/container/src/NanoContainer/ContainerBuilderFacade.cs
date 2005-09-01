@@ -3,13 +3,13 @@ using NanoContainer.IntegrationKit;
 using PicoContainer;
 using PicoContainer.Defaults;
 
-namespace NanoContainer.Script
+namespace NanoContainer
 {
-	public class ContainerBuilderHelper
+	public class ContainerBuilderFacade
 	{
 		private ContainerBuilder containerBuilder;
 
-		public ContainerBuilderHelper(ContainerBuilder containerBuilder)
+		public ContainerBuilderFacade(ContainerBuilder containerBuilder)
 		{
 			this.containerBuilder = containerBuilder;
 		}

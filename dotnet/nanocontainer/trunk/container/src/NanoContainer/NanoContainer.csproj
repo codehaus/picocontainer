@@ -129,6 +129,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ContainerBuilderFacade.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DefaultNanoContainer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -179,11 +184,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\ContainerBuilderHelper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Script\FrameworkCompiler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -204,7 +204,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\CSharp\CSharpBuilder.cs"
+                    RelPath = "Script\CSharp\CSharpContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\CSharp\CSharpContainerBuilderFacade.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

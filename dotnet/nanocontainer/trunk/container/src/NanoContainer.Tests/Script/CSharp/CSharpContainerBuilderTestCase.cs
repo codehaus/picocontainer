@@ -17,7 +17,7 @@ namespace Test.Script.CSharp
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new CSharpBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.cs")), parent, new ArrayList());
+			IPicoContainer pico = BuildContainer(new CSharpContainerBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.cs")), parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("C#", pico.GetComponentInstance("hello"));
@@ -47,7 +47,7 @@ namespace Test.Script.CSharp
 				}";
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			ContainerBuilder containerBuilder = new CSharpBuilder(ScriptFixture.BuildStreamReader(code));
+			ContainerBuilder containerBuilder = new CSharpContainerBuilder(ScriptFixture.BuildStreamReader(code));
 			IPicoContainer pico = BuildContainer(containerBuilder, parent, new ArrayList());
 
 			Assert.IsNotNull(pico);
@@ -76,7 +76,7 @@ namespace Test.Script.CSharp
 					}
 				}";
 
-			ContainerBuilder containerBuilder = new CSharpBuilder(ScriptFixture.BuildStreamReader(code));
+			ContainerBuilder containerBuilder = new CSharpContainerBuilder(ScriptFixture.BuildStreamReader(code));
 			StringCollection assemblies = new StringCollection();
 
 			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");

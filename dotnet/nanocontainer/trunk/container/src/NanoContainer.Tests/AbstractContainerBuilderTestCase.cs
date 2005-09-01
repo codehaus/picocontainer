@@ -1,6 +1,5 @@
 using System.Collections;
 using NanoContainer.IntegrationKit;
-using NanoContainer.Script;
 using PicoContainer;
 
 namespace NanoContainer.Tests
@@ -10,16 +9,16 @@ namespace NanoContainer.Tests
 		protected IMutablePicoContainer BuildContainer(ContainerBuilder containerBuilder,
 			IList assemblies)
 		{
-			ContainerBuilderHelper cbh = new ContainerBuilderHelper(containerBuilder);
-			return cbh.Build(assemblies);
+			ContainerBuilderFacade cbf = new ContainerBuilderFacade(containerBuilder);
+			return cbf.Build(assemblies);
 		}
 
 		protected IMutablePicoContainer BuildContainer(ContainerBuilder containerBuilder,
 		                                        IMutablePicoContainer parentContainer,
 		                                        IList assemblies)
 		{
-			ContainerBuilderHelper cbh = new ContainerBuilderHelper(containerBuilder);
-			return cbh.Build(parentContainer, assemblies);
+			ContainerBuilderFacade cbf = new ContainerBuilderFacade(containerBuilder);
+			return cbf.Build(parentContainer, assemblies);
 		}
 	}
 }

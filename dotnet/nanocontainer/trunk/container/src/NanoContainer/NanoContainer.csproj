@@ -149,6 +149,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\AttributeBasedContainerBuilderFacade.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Attributes\ComponentAdapterType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -204,6 +209,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\Boo\BooContainerBuilderFacade.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Script\CSharp\CSharpContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -214,17 +224,32 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\JS\JSBuilder.cs"
+                    RelPath = "Script\JS\JSContainerBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\JSharp\JSharpBuilder.cs"
+                    RelPath = "Script\JS\JSContainerBuilderFacade.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Script\VB\VBBuilder.cs"
+                    RelPath = "Script\JSharp\JSharpContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\JSharp\JSharpContainerBuilderFacade.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\VB\VBContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\VB\VBContainerBuilderFacade.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -250,6 +275,11 @@
                 />
                 <File
                     RelPath = "Script\Xml\XmlContainerBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Xml\XmlContainerBuilderFacade.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

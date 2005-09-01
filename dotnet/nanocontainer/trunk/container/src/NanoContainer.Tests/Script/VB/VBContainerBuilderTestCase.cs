@@ -1,4 +1,5 @@
 using System.Collections;
+using NanoContainer;
 using NanoContainer.Script.VB;
 using NUnit.Framework;
 using PicoContainer;
@@ -13,7 +14,8 @@ namespace Test.Script.VB
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new VBBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.vb")), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new VBContainerBuilderFacade(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.vb"));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("VB", pico.GetComponentInstance("hello"));

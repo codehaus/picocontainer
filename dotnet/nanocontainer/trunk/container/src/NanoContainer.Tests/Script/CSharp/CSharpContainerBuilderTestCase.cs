@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.IO;
-using NanoContainer.IntegrationKit;
+using NanoContainer;
 using NanoContainer.Script.CSharp;
 using NanoContainer.Tests.Script;
 using NUnit.Framework;
@@ -17,7 +17,8 @@ namespace Test.Script.CSharp
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new CSharpContainerBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.cs")), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new CSharpContainerBuilderFacade(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.cs"));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("C#", pico.GetComponentInstance("hello"));
@@ -47,8 +48,8 @@ namespace Test.Script.CSharp
 				}";
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			ContainerBuilder containerBuilder = new CSharpContainerBuilder(ScriptFixture.BuildStreamReader(code));
-			IPicoContainer pico = BuildContainer(containerBuilder, parent, new ArrayList());
+			ContainerBuilderFacade cbf = new CSharpContainerBuilderFacade(ScriptFixture.BuildStreamReader(code));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
@@ -76,12 +77,13 @@ namespace Test.Script.CSharp
 					}
 				}";
 
-			ContainerBuilder containerBuilder = new CSharpContainerBuilder(ScriptFixture.BuildStreamReader(code));
+
+			ContainerBuilderFacade cbf = new CSharpContainerBuilderFacade(ScriptFixture.BuildStreamReader(code));
 			StringCollection assemblies = new StringCollection();
 
 			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");
 			assemblies.Add(testCompDll.FullName);
-			IPicoContainer pico = BuildContainer(containerBuilder, assemblies);
+			IPicoContainer pico = cbf.Build(assemblies);
 
 			Assert.IsNotNull(pico);
 			Assert.IsNotNull(pico.GetComponentInstance("testcomp"));

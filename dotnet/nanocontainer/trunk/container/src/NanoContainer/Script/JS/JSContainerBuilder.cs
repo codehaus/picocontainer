@@ -4,9 +4,9 @@ using Microsoft.JScript;
 
 namespace NanoContainer.Script.JS
 {
-	public class JSBuilder : ScriptedContainerBuilder
+	public class JSContainerBuilder : ScriptedContainerBuilder
 	{
-		public JSBuilder(StreamReader stream) : base(stream)
+		public JSContainerBuilder(StreamReader stream) : base(stream)
 		{
 		}
 

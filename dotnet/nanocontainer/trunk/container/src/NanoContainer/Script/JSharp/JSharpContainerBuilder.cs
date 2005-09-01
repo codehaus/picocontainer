@@ -4,9 +4,9 @@ using Microsoft.VJSharp;
 
 namespace NanoContainer.Script.JSharp
 {
-	public class JSharpBuilder : ScriptedContainerBuilder
+	public class JSharpContainerBuilder : ScriptedContainerBuilder
 	{
-		public JSharpBuilder(StreamReader stream) : base(stream)
+		public JSharpContainerBuilder(StreamReader stream) : base(stream)
 		{
 		}
 

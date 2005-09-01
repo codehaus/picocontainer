@@ -8,7 +8,7 @@ using PicoContainer.Defaults;
 namespace NanoContainer.Tests.Attributes
 {
 	[TestFixture]
-	public class ExternalAssemblyWithAttributesTest : AbstractContainerBuilderTestCase
+	public class ExternalAssemblyWithAttributesTest
 	{
 		[Test]
 		public void InstantiateATypeFromAssemblyThatHasReferenceToAnotherAssembly()
@@ -16,8 +16,8 @@ namespace NanoContainer.Tests.Attributes
 			StringCollection assemblies = new StringCollection();
 			assemblies.Add("../../../TestCompWithAttributes/bin/Debug/TestCompWithAttributes.dll");
 			
-			AttributeBasedContainerBuilder abcb = new AttributeBasedContainerBuilder();
-			IMutablePicoContainer picoContainer = BuildContainer(abcb, assemblies);
+			ContainerBuilderFacade cbf = new AttributeBasedContainerBuilderFacade();
+			IMutablePicoContainer picoContainer = cbf.Build(assemblies);
 			Assert.AreEqual(1, picoContainer.ComponentInstances.Count);
 			object instance = picoContainer.GetComponentInstance("testcomp3-key");
 			
@@ -35,8 +35,8 @@ namespace NanoContainer.Tests.Attributes
 			IMutablePicoContainer parent = new DefaultPicoContainer();
 			parent.RegisterComponentInstance(new StringBuilder("This is needed for type NotStartable"));
 
-			AttributeBasedContainerBuilder abcb = new AttributeBasedContainerBuilder();
-			IMutablePicoContainer picoContainer = BuildContainer(abcb, parent, assemblies);
+			ContainerBuilderFacade cbf = new AttributeBasedContainerBuilderFacade();
+			IMutablePicoContainer picoContainer = cbf.Build(parent, assemblies);
 
 			Assert.IsNotNull(picoContainer.GetComponentInstance("testcomp3-key"));
 			Assert.IsNotNull(picoContainer.GetComponentInstance("notstartable"));

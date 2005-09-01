@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using NanoContainer.Attributes;
-using NanoContainer.IntegrationKit;
 using NanoContainer.Test.TestModel;
 using NanoContainer.Tests.Attributes.Custom;
 using NUnit.Framework;
@@ -11,19 +10,19 @@ using PicoContainer.Defaults;
 namespace NanoContainer.Tests.Attributes
 {
 	[TestFixture]
-	public class AttributeBasedContainerBuilderTestCase : AbstractContainerBuilderTestCase
+	public class AttributeBasedContainerBuilderTestCase
 	{
 		private IPicoContainer picoContainer;
 
 		[SetUp]
 		public void SetUp()
 		{
-			ContainerBuilder containerBuilder = new AttributeBasedContainerBuilder();
+			ContainerBuilderFacade containerBuilderFacade = new AttributeBasedContainerBuilderFacade();
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-
 			StringCollection assemblies = new StringCollection();
 			assemblies.Add("NanoContainer.Tests.dll");
-			picoContainer = BuildContainer(containerBuilder, parent, assemblies);
+
+			picoContainer = containerBuilderFacade.Build(parent, assemblies);
 
 			Assert.IsNotNull(picoContainer);
 			Assert.AreSame(parent, picoContainer.Parent);

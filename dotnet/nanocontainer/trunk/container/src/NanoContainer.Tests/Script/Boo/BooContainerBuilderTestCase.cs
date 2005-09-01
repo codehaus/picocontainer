@@ -23,7 +23,8 @@ namespace NanoContainer.Tests.Script.Boo
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new BooContainerBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.boo")), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new BooContainerBuilderFacade(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.boo"));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("Boo", pico.GetComponentInstance("foo"));
@@ -50,8 +51,8 @@ class BooInjector:
 			";
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			ContainerBuilder containerBuilder = new BooContainerBuilder(ScriptFixture.BuildStreamReader(code));
-			IPicoContainer pico = BuildContainer(containerBuilder, parent, new ArrayList());
+			ContainerBuilderFacade cbf = new BooContainerBuilderFacade(ScriptFixture.BuildStreamReader(code));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
@@ -250,7 +251,8 @@ class BooInjector:
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(script)));
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new BooContainerBuilder(scriptStream), parent, assemblies);
+			ContainerBuilderFacade cbf = new BooContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, assemblies);
 
 			object fooTestComp = pico.GetComponentInstance("foo");
 			Assert.IsNotNull(fooTestComp, "Container should have a 'foo' component");
@@ -299,19 +301,20 @@ class BooInjector:
 		{
 			string script = null;
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(script)));
-			BuildContainer(new BooContainerBuilder(scriptStream), null, new ArrayList());
+			ContainerBuilderFacade cbf = new BooContainerBuilderFacade(scriptStream);
+			cbf.Build(new ArrayList());
 		}
 
 		private IPicoContainer BuildContainer(string script)
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			ContainerBuilder containerBuilder = new BooContainerBuilder(ScriptFixture.BuildStreamReader(script));
+			ContainerBuilderFacade containerBuilderFacade = new BooContainerBuilderFacade(ScriptFixture.BuildStreamReader(script));
 			
 			// register "this" test dll as an assembly to use
 			StringCollection assemblies = new StringCollection();
 			assemblies.Add("NanoContainer.Tests.dll");
 
-			return base.BuildContainer(containerBuilder, parent, assemblies);
+			return containerBuilderFacade.Build(parent, assemblies);
 		}
 	}
 }

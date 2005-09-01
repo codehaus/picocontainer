@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
+using NanoContainer;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Script.Xml;
 using NanoContainer.Test.TestModel;
@@ -26,7 +27,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.AreEqual("XML", pico.GetComponentInstance("Hello"));
 			Assert.AreEqual("XMLContinerBuilder", pico.GetComponentInstance("Hei"));
@@ -47,7 +49,8 @@ namespace Test.Script.Xml
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (StringBuilder)));
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (DefaultWebServerConfig)));
@@ -73,7 +76,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.AreEqual(3, pico.ComponentInstances.Count);
 			Assert.IsNotNull(pico.GetComponentInstance("aBuffer"));
@@ -101,7 +105,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.AreEqual(3, pico.ComponentInstances.Count);
 			Assert.IsNotNull(pico.GetComponentInstance("aBuffer"));
@@ -127,7 +132,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.IsNotNull(pico.GetComponentInstance("NanoContainer.Test.TestModel.WebServerConfig"));
 
@@ -157,7 +163,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			object fooTestComp = pico.GetComponentInstance("foo");
 			Assert.IsNotNull(fooTestComp, "Container should have a 'foo' component");
@@ -194,7 +201,8 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
 
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			object fooTestComp = pico.GetComponentInstance("foo");
 			Assert.IsNotNull(fooTestComp, "Container should have a 'foo' component");
@@ -216,7 +224,8 @@ namespace Test.Script.Xml
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			cbf.Build(parent, new ArrayList());
 		}
 
 		[Test]
@@ -233,7 +242,9 @@ namespace Test.Script.Xml
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			BuildContainer(new XMLContainerBuilder(scriptStream), parent, new ArrayList());
+
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			cbf.Build(parent, new ArrayList());
 		}
 
 		[Test]
@@ -242,7 +253,8 @@ namespace Test.Script.Xml
 			string xmlScript = @"<container/>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
-			BuildContainer(new XMLContainerBuilder(scriptStream), null, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			cbf.Build(null, new ArrayList());
 		}
 
 		[Test]
@@ -251,7 +263,8 @@ namespace Test.Script.Xml
 		{
 			string xmlScript = null;
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
-			BuildContainer(new XMLContainerBuilder(scriptStream), null, new ArrayList());
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			cbf.Build(null, new ArrayList());
 		}
 	}
 }

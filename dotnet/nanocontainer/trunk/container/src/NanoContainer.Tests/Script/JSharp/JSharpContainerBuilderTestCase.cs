@@ -1,4 +1,5 @@
 using System.Collections;
+using NanoContainer;
 using NanoContainer.Script.JSharp;
 using NUnit.Framework;
 using PicoContainer;
@@ -13,7 +14,8 @@ namespace Test.Script.JSharp
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new JSharpBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.java")), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new JSharpContainerBuilderFacade(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.java"));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("J#", pico.GetComponentInstance("hello"));

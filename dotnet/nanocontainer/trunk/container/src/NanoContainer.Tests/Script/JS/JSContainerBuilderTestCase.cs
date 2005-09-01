@@ -1,4 +1,5 @@
 using System.Collections;
+using NanoContainer;
 using NanoContainer.Script.JS;
 using NUnit.Framework;
 using PicoContainer;
@@ -13,7 +14,8 @@ namespace Test.Script.JS
 		public void ContainerCanBeBuiltWithParent()
 		{
 			IMutablePicoContainer parent = new DefaultPicoContainer();
-			IPicoContainer pico = BuildContainer(new JSBuilder(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.js")), parent, new ArrayList());
+			ContainerBuilderFacade cbf = new JSContainerBuilderFacade(GetStreamReader(@"NanoContainer.Tests.TestScripts.test.js"));
+			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual("JScript", pico.GetComponentInstance("hello"));

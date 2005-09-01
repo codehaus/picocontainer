@@ -1,10 +1,9 @@
 using System.IO;
 using System.Reflection;
-using NanoContainer.Tests;
 
 namespace Test.Script
 {
-	public abstract class AbstractScriptedContainerBuilderTestCase : AbstractContainerBuilderTestCase
+	public abstract class AbstractScriptedContainerBuilderTestCase
 	{
 		public StreamReader GetStreamReader(string scriptName)
 		{

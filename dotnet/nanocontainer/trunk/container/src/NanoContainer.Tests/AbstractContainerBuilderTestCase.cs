@@ -1,21 +1,25 @@
 using System.Collections;
 using NanoContainer.IntegrationKit;
+using NanoContainer.Script;
 using PicoContainer;
-using PicoContainer.Defaults;
 
 namespace NanoContainer.Tests
 {
 	public class AbstractContainerBuilderTestCase
 	{
-		protected IPicoContainer BuildContainer(ContainerBuilder builder,
-		                                        IPicoContainer parentContainer,
+		protected IMutablePicoContainer BuildContainer(ContainerBuilder containerBuilder,
+			IList assemblies)
+		{
+			ContainerBuilderHelper cbh = new ContainerBuilderHelper(containerBuilder);
+			return cbh.Build(assemblies);
+		}
+
+		protected IMutablePicoContainer BuildContainer(ContainerBuilder containerBuilder,
+		                                        IMutablePicoContainer parentContainer,
 		                                        IList assemblies)
 		{
-			SimpleReference simpleReference = new SimpleReference();
-			SimpleReference parentReference = new SimpleReference();
-			parentReference.Set(parentContainer);
-			builder.BuildContainer(simpleReference, parentReference, assemblies);
-			return simpleReference.Get() as IPicoContainer;
+			ContainerBuilderHelper cbh = new ContainerBuilderHelper(containerBuilder);
+			return cbh.Build(parentContainer, assemblies);
 		}
 	}
 }

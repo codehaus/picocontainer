@@ -9,7 +9,7 @@ namespace NanoContainer
 	public class DefaultNanoContainer
 	{
 		private Hashtable assemblies = new Hashtable();
-		private IMutablePicoContainer picoContainer;
+		private IMutablePicoContainer picoContainer = null;
 
 		public DefaultNanoContainer() : this(Assembly.GetCallingAssembly())
 		{

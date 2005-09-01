@@ -1,23 +1,20 @@
 using PicoContainer;
 using PicoContainer.Defaults;
 
-namespace Test 
+public class Test
 {
-	public class Test
+	private IPicoContainer parent;
+
+	public IPicoContainer Parent
 	{
-		private IPicoContainer parent;
+		set { parent = value; }
+	}
 
-		public IPicoContainer Parent
-		{
-			set { parent = value; }
-		}
+	public IMutablePicoContainer Compose()
+	{
+		DefaultPicoContainer p = new DefaultPicoContainer(parent);
 
-		public IMutablePicoContainer Compose()
-		{
-			DefaultPicoContainer p = new DefaultPicoContainer(parent);
-
-			p.RegisterComponentInstance("hello", "C#");
-			return p;
-		}
+		p.RegisterComponentInstance("hello", "C#");
+		return p;
 	}
 }

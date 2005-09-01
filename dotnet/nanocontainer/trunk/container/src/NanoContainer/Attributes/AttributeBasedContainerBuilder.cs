@@ -61,7 +61,7 @@ namespace NanoContainer.Attributes
 
 		private IComponentAdapter BuildCustomComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
-			return (IComponentAdapter)Activator.CreateInstance(attribute.ComponentAdapter,new object[] {type});
+			return (IComponentAdapter)Activator.CreateInstance(attribute.ComponentAdapter, new object[] {type});
 		}
 
 		private IComponentAdapter BuildSetterInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)

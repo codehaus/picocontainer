@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Specialized;
+using System.IO;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Script.CSharp;
 using NanoContainer.Tests.Script;
@@ -51,6 +53,38 @@ namespace Test.Script.CSharp
 			Assert.IsNotNull(pico);
 			Assert.AreSame(parent, pico.Parent);
 			Assert.AreEqual(1000, pico.GetComponentInstance(10));
+		}
+
+		[Test]
+		public void ReferenceExternalAssembly()
+		{
+			string code = @"
+				using PicoContainer;
+				using PicoContainer.Defaults;
+				
+				public class MyNanoScript
+				{
+					private IPicoContainer parent;
+					public IPicoContainer Parent {
+						set { parent = value; } 
+					}
+				
+					public IMutablePicoContainer Compose() {
+						DefaultPicoContainer p = new DefaultPicoContainer(parent);
+						p.RegisterComponentImplementation(""testcomp"", typeof(TestComp));
+						return p; 
+					}
+				}";
+
+			ContainerBuilder containerBuilder = new CSharpBuilder(ScriptFixture.BuildStreamReader(code));
+			StringCollection assemblies = new StringCollection();
+
+			FileInfo testCompDll = new FileInfo("../../../TestComp/bin/Debug/TestComp.dll");
+			assemblies.Add(testCompDll.FullName);
+			IPicoContainer pico = BuildContainer(containerBuilder, assemblies);
+
+			Assert.IsNotNull(pico);
+			Assert.IsNotNull(pico.GetComponentInstance("testcomp"));
 		}
 	}
 }

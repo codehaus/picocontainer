@@ -184,6 +184,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Script\ContainerBuilderHelper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Script\FrameworkCompiler.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -235,6 +240,11 @@
                 />
                 <File
                     RelPath = "Script\Xml\ContainerStatementBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Script\Xml\ParentMemberAndPropertyBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -32,14 +32,11 @@ namespace NanoContainer.Script.Xml
 		private static readonly string KEY = "key";
 		private static readonly string PARAMETER = "parameter";
 
-		private static readonly string PARENT_PROPERTY = "Parent";
-		private static readonly string PARENT_ARGUMENT = "parent";
-		private static readonly Type PARENT_TYPE = typeof(IPicoContainer);
-
 		private XmlElement rootNode = null;
 		private int registerComponentsRecursions = 0;
 
 		private ComposeMethodBuilder composeMethodBuilder = new ComposeMethodBuilder();
+		private ParentMemberAndPropertyBuilder parentMemberAndPropertyBuilder = new ParentMemberAndPropertyBuilder();
 		private ContainerStatementBuilder containerStatementBuilder = new ContainerStatementBuilder();
 
 		public delegate void CallBack(CodeMemberMethod composeMethod,
@@ -143,7 +140,7 @@ namespace NanoContainer.Script.Xml
 			RegisterComponentsAndChildContainers(composeMethod, PicoParentVariableReference, child, assemblies);
 		}
 
-		private CodeNamespace BuildCodeNamespace()
+		private CodeNamespace buildCodeNamespace()
 		{
 			CodeNamespace codeNamespace = new CodeNamespace(/*"GeneratedNamespaceFromXmlScript"*/); //??Read from XML
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IPicoContainer).Namespace));
@@ -152,35 +149,16 @@ namespace NanoContainer.Script.Xml
 			return codeNamespace;
 		}
 
-		private CodeMemberProperty BuildParentProperty()
-		{
-			// Define property
-			CodeMemberProperty parentProperty = new CodeMemberProperty();
-			parentProperty.Name = PARENT_PROPERTY;
-			parentProperty.Type = new CodeTypeReference(PARENT_TYPE);
-			parentProperty.Attributes = MemberAttributes.Public;
-
-			// build setter expression
-			CodeExpression leftSide = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), PARENT_ARGUMENT);
-			CodeExpression rightSide = new CodePropertySetValueReferenceExpression();
-			CodeStatement setter = new CodeAssignStatement(leftSide, rightSide);
-			parentProperty.SetStatements.Add(setter);
-
-			return parentProperty;
-		}
-
 		protected CodeCompileUnit GenerateCodeCompileUnitFromXml(TextReader scriptCode, IList assemblies)
 		{
 			ParseStream(scriptCode);
-
+			CodeNamespace codeNamespace = buildCodeNamespace();
 			CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
-			CodeNamespace codeNamespace = BuildCodeNamespace();
+			codeCompileUnit.Namespaces.Add(codeNamespace);
 
-			//TODO ?Read name from XML?
-			CodeTypeDeclaration classDeclaration = new CodeTypeDeclaration("GeneratedClassFromXmlScript");
+			CodeTypeDeclaration classDeclaration = new CodeTypeDeclaration("GeneratedClassFromXmlScript"); // Read name from XML?
 			classDeclaration.BaseTypes.Add(typeof(IScript));
-			classDeclaration.Members.Add(new CodeMemberField(PARENT_TYPE, PARENT_ARGUMENT));
-			classDeclaration.Members.Add(BuildParentProperty());
+			classDeclaration.Members.Add(parentMemberAndPropertyBuilder.Build());
 
 			// Build the "Compose" Method
 			CallBack callBack = new CallBack(RegisterComponentsAndChildContainers);
@@ -188,20 +166,6 @@ namespace NanoContainer.Script.Xml
 			classDeclaration.Members.Add(composeMethod);
 
 			codeNamespace.Types.Add(classDeclaration);
-			codeCompileUnit.Namespaces.Add(codeNamespace);
-
-			#if DEBUG
-				ICodeGenerator cg = CodeDomProvider.CreateGenerator();
-				StreamWriter sm = new StreamWriter("generated.cs");
-				CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
-				genOptions.BlankLinesBetweenMembers = true;
-				genOptions.BracingStyle = "C";
-				genOptions.ElseOnClosing = true;
-				genOptions.IndentString = "    ";
-				cg.GenerateCodeFromCompileUnit(codeCompileUnit, sm, genOptions);
-				sm.Close();
-			#endif
-
 			return codeCompileUnit;
 		}
 
@@ -320,7 +284,23 @@ namespace NanoContainer.Script.Xml
 		protected override Assembly GetCompiledAssembly(StreamReader scriptCode, IList assemblies)
 		{
 			CodeCompileUnit script = GenerateCodeCompileUnitFromXml(scriptCode, assemblies);
+			outputGeneratedCodeToFile(script);
 			return FrameworkCompiler.Compile(CodeDomProvider, script, assemblies);
+		}
+
+		private void outputGeneratedCodeToFile(CodeCompileUnit script)
+		{
+			#if DEBUG
+				ICodeGenerator cg = CodeDomProvider.CreateGenerator();
+				StreamWriter sm = new StreamWriter("generated.cs");
+				CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
+				genOptions.BlankLinesBetweenMembers = true;
+				genOptions.BracingStyle = "C";
+				genOptions.ElseOnClosing = true;
+				genOptions.IndentString = "    ";
+				cg.GenerateCodeFromCompileUnit(script, sm, genOptions);
+				sm.Close();
+			#endif
 		}
 
 		protected override CodeDomProvider CodeDomProvider

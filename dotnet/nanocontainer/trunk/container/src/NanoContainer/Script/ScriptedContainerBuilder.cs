@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.IO;
 using NanoContainer.IntegrationKit;
@@ -37,6 +38,8 @@ namespace NanoContainer.Script
 				}
 			}
 		}
+
+		protected abstract CodeDomProvider CodeDomProvider { get; }
 
 		protected abstract IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer, IList assemblyScope);
 

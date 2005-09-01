@@ -1,5 +1,4 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -26,8 +25,6 @@ namespace NanoContainer.Script
 		{
 			return FrameworkCompiler.Compile(CodeDomProvider, scriptCode, assemblies);
 		}
-
-		protected abstract CodeDomProvider CodeDomProvider { get; }
 
 		protected override IMutablePicoContainer CreateContainerFromScript(IPicoContainer parentContainer,
 		                                                                   IList assemblies)

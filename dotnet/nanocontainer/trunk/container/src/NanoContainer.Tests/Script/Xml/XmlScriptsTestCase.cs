@@ -174,22 +174,22 @@ namespace Test.Script.Xml
 			Assert.IsTrue(testCompDll2.Exists);
 			Assert.IsTrue(notStartableDll.Exists);
 			
-			string xmlScript = "" +
-					"<container>" +
-					"  <assemblies>" +
-					"    <element file='" + testCompDll.FullName + "'/>" +
-					"  </assemblies>" +
-					"  <component-implementation key='foo' type='TestComp'/>" +
-					"  <container>" +
-					"    <assemblies>" +
-					"      <element file='" + testCompDll2.FullName + "'/>" +
-					"      <element file='" + notStartableDll.FullName + "'/>" +
-					"    </assemblies>" +
-					"    <component-implementation key='bar' type='TestComp2'/>" +
-					"    <component-implementation key='phony' type='NotStartable'/>" +
-					"  </container>" +
-					"  <component-implementation type='System.Text.StringBuilder'/>" +
-					"</container>";
+			string xmlScript = @"
+					<container>
+					  <assemblies>
+					    <element file='" + testCompDll.FullName + @"'/>
+					  </assemblies>
+					  <component-implementation key='foo' type='TestComp'/>
+					  <container>
+					    <assemblies>
+					      <element file='" + testCompDll2.FullName + @"'/>
+					      <element file='" + notStartableDll.FullName + @"'/>
+					    </assemblies>
+					    <component-implementation key='bar' type='TestComp2'/>
+					    <component-implementation key='phony' type='NotStartable'/>
+					  </container>
+					  <component-implementation type='System.Text.StringBuilder'/>
+					</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlScript)));
 
@@ -228,7 +228,7 @@ namespace Test.Script.Xml
 						<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'>
 				 			<parameter/>
 				 			<parameter/>
-					</component-implementation>
+						</component-implementation>
 					</container>";
 
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));

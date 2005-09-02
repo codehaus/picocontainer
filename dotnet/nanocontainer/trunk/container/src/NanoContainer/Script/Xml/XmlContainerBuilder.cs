@@ -195,7 +195,15 @@ namespace NanoContainer.Script.Xml
 
 		private void RegisterComponentImplementationWithKey(XmlNodeList children, CodeMethodInvokeExpression method, string key, CodeTypeOfExpression typeOfExpression)
 		{
-			method.Parameters.Add(new CodePrimitiveExpression(key));
+			if(key.StartsWith("typeof("))
+			{
+				method.Parameters.Add(new CodeSnippetExpression(key));
+			}
+			else
+			{
+				method.Parameters.Add(new CodePrimitiveExpression(key));
+			}
+			
 
 			if (children.Count == 0)
 			{

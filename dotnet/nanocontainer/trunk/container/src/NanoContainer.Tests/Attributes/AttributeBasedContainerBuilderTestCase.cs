@@ -93,7 +93,5 @@ namespace NanoContainer.Tests.Attributes
 			Assert.IsNotNull(component.WebServer);
 			Assert.AreSame(component, picoContainer.GetComponentInstance(cachingSetterType));
 		}
-
-		
 	}
 }

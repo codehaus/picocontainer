@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using NanoContainer;
@@ -44,7 +45,7 @@ namespace Test.Script.Xml
 						<element file='NanoContainer.Tests.dll'/>
 					</assemblies>
 					<component-implementation type='System.Text.StringBuilder'/>
-					<component-implementation type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
+					<component-implementation key='typeof(NanoContainer.Test.TestModel.WebServerConfig)' type='NanoContainer.Test.TestModel.DefaultWebServerConfig'/>
 					<component-implementation key='NanoContainer.Test.TestModel.WebServer' type='NanoContainer.Test.TestModel.DefaultWebServer'/>
 				</container>";
 
@@ -54,7 +55,7 @@ namespace Test.Script.Xml
 			IPicoContainer pico = cbf.Build(parent, new ArrayList());
 
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (StringBuilder)));
-			Assert.IsNotNull(pico.GetComponentInstance(typeof (DefaultWebServerConfig)));
+			Assert.IsNotNull(pico.GetComponentInstance(typeof (WebServerConfig)));
 			Assert.IsNotNull(pico.GetComponentInstance("NanoContainer.Test.TestModel.WebServer"));
 		}
 
@@ -75,7 +76,9 @@ namespace Test.Script.Xml
 			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
 
 			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
-			IPicoContainer pico = cbf.Build(new ArrayList());
+			StringCollection assemblies = new StringCollection();
+			assemblies.Add("NanoContainer.Tests.dll");
+			IPicoContainer pico = cbf.Build(assemblies);
 
 			Assert.AreEqual(1, pico.ComponentInstances.Count);
 

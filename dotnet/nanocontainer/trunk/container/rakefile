@@ -4,24 +4,27 @@ def build(*relative_path)
 	File.join("src","build",relative_path)
 end
 
+def lib(relative_path)
+	File.join("lib",relative_path)
+end
+
+projects = %w(NanoContainer NanoContainer.Tests TestComp TestComp2 NotStartable TestCompWithAttributes)
+library = %w(NUnit.Framework PicoContainer Castle.DynamicProxy NMock Boo.Lang.CodeDom Boo.Lang.Parser Boo.Lang.Compiler Boo.Lang)
+
 task :default => [:compile, :test]
 task :all => [:clean, :default]
 
 task :clean do 
 	rm_rf(build)
-	rm_rf("src/NanoContainer.Tests/bin")
-	rm_rf("src/TestComp/bin")
+	projects.each {|project| rm_rf("src/#{project}/bin")}
 end
 
 task :precompile do
 	mkdir_p(build) unless File.exists?(build)
-	def _lib(relative_path)
-		File.join("lib",relative_path)
+	library.each do |f|
+		libFile = f + ".dll"
+		cp(lib(libFile), build) unless uptodate?(build(libFile), lib(libFile))
 	end
-	def _precomp(files)
-		files.each {|f| cp(_lib(f), build) unless uptodate?(build(f), _lib(f))}
-	end
-	_precomp(%w(NUnit.Framework.dll PicoContainer.dll Castle.DynamicProxy.dll NMock.dll Boo.Lang.CodeDom.dll Boo.Lang.Parser.dll Boo.Lang.Compiler.dll Boo.Lang.dll))
 end
 
 task :compile => :precompile do
@@ -33,27 +36,25 @@ task :compile => :precompile do
 			cd "../.."
 		end
 	end
-	%w(NanoContainer NanoContainer.Tests TestComp TestComp2 NotStartable TestCompWithAttributes).each {|project| _compile(project)}
+	projects.each {|project| _compile(project)}
 end
 
 task :pretest do
-	def tcVsOutput(*relative_path)
-		File.join("src","TestComp","bin","Debug",relative_path)
+	def copyTo(file, dir)
+		cp("#{file}.dll", dir)
 	end
-	mkdir_p(tcVsOutput) unless File.exists?(tcVsOutput)
-	tcdll = "TestComp.dll"
-	cp(build(tcdll), tcVsOutput) unless uptodate?(tcVsOutput(tcdll), build(tcdll))
-	def nanoVsOutput(*relative_path)
-		File.join("src","NanoContainer.Tests","bin","Debug",relative_path)
+	projects.each do |project|
+		debugDir = "src/#{project}/bin/Debug"
+		projectDll = "#{project}.dll"
+		mkdir_p(debugDir) unless File.exists?(debugDir)
+		unless uptodate?("#{debugDir}/#{projectDll}",build(projectDll))
+			library.each {|file| copyTo(lib(file),debugDir)}
+			projects.each {|file| copyTo(build(file),debugDir)}
+		end
 	end
-	mkdir_p(nanoVsOutput) unless File.exists?(nanoVsOutput)
-	def _pretest(files)
-		files.each {|f| cp(build(f),nanoVsOutput) unless uptodate?(nanoVsOutput(f), build(f))}
-	end
-	_pretest(%w(NMock.dll PicoContainer.dll Castle.DynamicProxy.dll NUnit.Framework.dll NanoContainer.dll NanoContainer.Tests.dll Boo.Lang.CodeDom.dll Boo.Lang.Parser.dll Boo.Lang.Compiler.dll Boo.Lang.dll))
 end
 
 task :test => [:compile,:pretest] do
-	cd nanoVsOutput
+	cd "src/NanoContainer.Tests/bin/Debug"
 	sh "../../../../lib/nunit-console.exe NanoContainer.Tests.dll"
 end

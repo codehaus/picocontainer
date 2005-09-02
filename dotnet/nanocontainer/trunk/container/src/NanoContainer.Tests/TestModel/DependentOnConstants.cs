@@ -2,10 +2,10 @@ using NanoContainer.Attributes;
 
 namespace NanoContainer.Tests.TestModel
 {
-	[RegisterWithContainer]
-	[ConstantParameter(0, "Hello World")]
-	[ConstantParameter(1, 70)]
-	[ConstantParameter(2, 99.9f)]
+	[RegisterWithContainer,
+		ConstantParameter(0, "Hello World"),
+		ConstantParameter(1, 70),
+		ConstantParameter(2, 99.9f)]
 	public class DependentOnConstants
 	{
 		private string name;

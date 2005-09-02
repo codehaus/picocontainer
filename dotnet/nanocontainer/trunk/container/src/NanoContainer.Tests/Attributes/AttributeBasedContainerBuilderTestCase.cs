@@ -122,5 +122,20 @@ namespace NanoContainer.Tests.Attributes
 			Assert.AreEqual(70, doc.Count);
 			Assert.AreEqual(99.9f, doc.Percentage);
 		}
+
+		[Test]
+		public void TypeWithBothComponentAndConstantParametersDependencies()
+		{
+			Airplane airplane = picoContainer.GetComponentInstanceOfType(typeof(Airplane)) as Airplane;
+			Assert.AreEqual("Boeing", airplane.Manufacturer);
+			Assert.AreEqual("Jet Propelled", airplane.Engine.Name);
+		}
+
+		[Test]
+		public void AttributeBasedComponentWithArrayDependency()
+		{
+			EngineFactory engineFactory = picoContainer.GetComponentInstanceOfType(typeof(EngineFactory)) as EngineFactory;
+			Assert.AreEqual(2, engineFactory.Engines.Length);
+		}
 	}
 }

@@ -229,6 +229,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestModel\Airplane.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestModel\DefaultWebServer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -245,6 +250,26 @@
                 />
                 <File
                     RelPath = "TestModel\DependentOnStrings.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\EngineFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\IEngine.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\JetEngine.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestModel\TurboPropEngine.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

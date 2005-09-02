@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Specialized;
 using NanoContainer.Attributes;
 using NanoContainer.Test.TestModel;
 using NanoContainer.Tests.Attributes.Custom;
-using NanoContainer.Tests.TestModel;
 using NUnit.Framework;
 using PicoContainer;
 using PicoContainer.Defaults;
@@ -19,14 +17,7 @@ namespace NanoContainer.Tests.Attributes
 		public void SetUp()
 		{
 			ContainerBuilderFacade containerBuilderFacade = new AttributeBasedContainerBuilderFacade();
-			IMutablePicoContainer parent = new DefaultPicoContainer();
-			StringCollection assemblies = new StringCollection();
-			assemblies.Add("NanoContainer.Tests.dll");
-
-			picoContainer = containerBuilderFacade.Build(parent, assemblies);
-
-			Assert.IsNotNull(picoContainer);
-			Assert.AreSame(parent, picoContainer.Parent);
+			picoContainer = containerBuilderFacade.Build(new string[] {"NanoContainer.Tests.dll"});
 		}
 
 		[Test]
@@ -103,39 +94,6 @@ namespace NanoContainer.Tests.Attributes
 			Assert.AreSame(component, picoContainer.GetComponentInstance(cachingSetterType));
 		}
 
-		[Test]
-		public void BuildStringDependentComponent()
-		{
-			DependentOnStrings component = picoContainer.GetComponentInstanceOfType(typeof(DependentOnStrings)) as DependentOnStrings;
-			Assert.IsNotNull(component);
-
-			Assert.AreEqual("ONE", component.One);
-			Assert.AreEqual("TWO", component.Two);
-		}
-
-		[Test]
-		public void BuildConstantDependentComponent()
-		{
-			DependentOnConstants doc = picoContainer.GetComponentInstance(typeof(DependentOnConstants)) as DependentOnConstants;
-
-			Assert.AreEqual("Hello World", doc.Name);
-			Assert.AreEqual(70, doc.Count);
-			Assert.AreEqual(99.9f, doc.Percentage);
-		}
-
-		[Test]
-		public void TypeWithBothComponentAndConstantParametersDependencies()
-		{
-			Airplane airplane = picoContainer.GetComponentInstanceOfType(typeof(Airplane)) as Airplane;
-			Assert.AreEqual("Boeing", airplane.Manufacturer);
-			Assert.AreEqual("Jet Propelled", airplane.Engine.Name);
-		}
-
-		[Test]
-		public void AttributeBasedComponentWithArrayDependency()
-		{
-			EngineFactory engineFactory = picoContainer.GetComponentInstanceOfType(typeof(EngineFactory)) as EngineFactory;
-			Assert.AreEqual(2, engineFactory.Engines.Length);
-		}
+		
 	}
 }

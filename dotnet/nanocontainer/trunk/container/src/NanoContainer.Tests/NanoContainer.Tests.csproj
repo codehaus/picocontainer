@@ -159,6 +159,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\PicoParameterTestCase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Attributes\Custom\CustomComponent.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

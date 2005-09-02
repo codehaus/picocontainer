@@ -61,7 +61,7 @@ namespace NanoContainer.Attributes
 			}
 		}
 
-		private IComponentAdapter BuildComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
+		protected IComponentAdapter BuildComponentAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
 			IComponentAdapter result;
 			if(attribute.DependencyInjection == DependencyInjectionType.Constructor)

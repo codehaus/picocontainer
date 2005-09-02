@@ -6,6 +6,7 @@ using NanoContainer;
 using NanoContainer.IntegrationKit;
 using NanoContainer.Script.Xml;
 using NanoContainer.Test.TestModel;
+using NanoContainer.Tests.TestModel;
 using NUnit.Framework;
 using PicoContainer;
 using PicoContainer.Defaults;
@@ -55,6 +56,54 @@ namespace Test.Script.Xml
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (StringBuilder)));
 			Assert.IsNotNull(pico.GetComponentInstance(typeof (DefaultWebServerConfig)));
 			Assert.IsNotNull(pico.GetComponentInstance("NanoContainer.Test.TestModel.WebServer"));
+		}
+
+		[Test]
+		public void CreateContainerAndUseConstantParameters()
+		{
+			string xmlScript = @"
+					<container>
+						<assemblies>
+							<element file='NanoContainer.Tests.dll'/>
+						</assemblies>
+						<component-implementation key='fooBar' type='NanoContainer.Tests.TestModel.DependentOnStrings'>
+				 				<parameter>""ONE""</parameter>
+				 				<parameter>""TWO""</parameter>
+						</component-implementation>
+					</container>";
+
+			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
+
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			IPicoContainer pico = cbf.Build(new ArrayList());
+
+			Assert.AreEqual(1, pico.ComponentInstances.Count);
+
+			DependentOnStrings dependentOnStrings = pico.GetComponentInstance("fooBar") as DependentOnStrings;
+
+			Assert.AreEqual("ONE", dependentOnStrings.One);
+			Assert.AreEqual("TWO", dependentOnStrings.Two);
+		}
+
+		[Test]
+		[ExpectedException(typeof(PicoCompositionException))]
+		public void InvalidConstantParameterThrowsException()
+		{
+			string xmlScript = @"
+					<container>
+						<assemblies>
+							<element file='NanoContainer.Tests.dll'/>
+						</assemblies>
+						<component-implementation type='NanoContainer.Tests.TestModel.DependentOnStrings'>
+				 				<parameter>this should cause the test to fail</parameter>
+				 				<parameter>""TWO""</parameter>
+						</component-implementation>
+					</container>";
+
+			StreamReader scriptStream = new StreamReader(new MemoryStream(new ASCIIEncoding().GetBytes(xmlScript)));
+
+			ContainerBuilderFacade cbf = new XmlContainerBuilderFacade(scriptStream);
+			cbf.Build(new ArrayList());
 		}
 
 		[Test]

@@ -239,6 +239,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestModel\DependentOnStrings.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestModel\WebServer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -24,7 +24,7 @@ namespace NanoContainer.Script.Xml
 		private static readonly string COMPONENT_IMPLEMENTATION = "component-implementation";
 		private static readonly string COMPONENT_INSTANCE = "component-instance";
 		private static readonly string COMPONENT_ADAPTER = "component-adapter";
-		
+
 		//private static readonly string REGISTER_COMPONENT_ADAPTER = "RegisterComponentAdapter";
 		//private static readonly string COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
 		//private static readonly string COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
@@ -142,9 +142,9 @@ namespace NanoContainer.Script.Xml
 
 		private CodeNamespace buildCodeNamespace()
 		{
-			CodeNamespace codeNamespace = new CodeNamespace(/*"GeneratedNamespaceFromXmlScript"*/); //??Read from XML
-			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IPicoContainer).Namespace));
-			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DefaultPicoContainer).Namespace));
+			CodeNamespace codeNamespace = new CodeNamespace( /*"GeneratedNamespaceFromXmlScript"*/); //??Read from XML
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof (IPicoContainer).Namespace));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof (DefaultPicoContainer).Namespace));
 
 			return codeNamespace;
 		}
@@ -157,7 +157,7 @@ namespace NanoContainer.Script.Xml
 			codeCompileUnit.Namespaces.Add(codeNamespace);
 
 			CodeTypeDeclaration classDeclaration = new CodeTypeDeclaration("GeneratedClassFromXmlScript"); // Read name from XML?
-			classDeclaration.BaseTypes.Add(typeof(IScript));
+			classDeclaration.BaseTypes.Add(typeof (IScript));
 			classDeclaration.Members.Add(parentMemberAndPropertyBuilder.Build());
 
 			// Build the "Compose" Method
@@ -257,17 +257,17 @@ namespace NanoContainer.Script.Xml
 				{
 					string key = element.GetAttribute(KEY);
 
-					if (key != null && key.Length != 0)
+					if (key != string.Empty)
 					{
 						initializers[i] = new CodeObjectCreateExpression(
 							typeof (ComponentParameter),
 							new CodeExpression[] {new CodePrimitiveExpression(key)});
 					}
-					else if (element.Value != null && element.Value.Length != 0)
+					else if (element.InnerText != string.Empty)
 					{
 						initializers[i] = new CodeObjectCreateExpression(
 							typeof (ConstantParameter),
-							new CodeExpression[] {new CodeTypeOfExpression(element.Value)});
+							new CodeExpression[] {new CodeSnippetExpression(element.InnerText)});
 					}
 					else
 					{
@@ -290,17 +290,17 @@ namespace NanoContainer.Script.Xml
 
 		private void outputGeneratedCodeToFile(CodeCompileUnit script)
 		{
-			#if DEBUG
-				ICodeGenerator cg = CodeDomProvider.CreateGenerator();
-				StreamWriter sm = new StreamWriter("generated.cs");
-				CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
-				genOptions.BlankLinesBetweenMembers = true;
-				genOptions.BracingStyle = "C";
-				genOptions.ElseOnClosing = true;
-				genOptions.IndentString = "    ";
-				cg.GenerateCodeFromCompileUnit(script, sm, genOptions);
-				sm.Close();
-			#endif
+#if DEBUG
+			ICodeGenerator cg = CodeDomProvider.CreateGenerator();
+			StreamWriter sm = new StreamWriter("generated.cs");
+			CodeGeneratorOptions genOptions = new CodeGeneratorOptions();
+			genOptions.BlankLinesBetweenMembers = true;
+			genOptions.BracingStyle = "C";
+			genOptions.ElseOnClosing = true;
+			genOptions.IndentString = "    ";
+			cg.GenerateCodeFromCompileUnit(script, sm, genOptions);
+			sm.Close();
+#endif
 		}
 
 		protected override CodeDomProvider CodeDomProvider

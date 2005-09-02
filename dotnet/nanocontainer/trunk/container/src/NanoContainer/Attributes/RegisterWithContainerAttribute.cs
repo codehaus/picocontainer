@@ -5,11 +5,11 @@ namespace NanoContainer.Attributes
 	[AttributeUsage(AttributeTargets.Class)]
 	public class RegisterWithContainerAttribute : Attribute
 	{
-		private object key;
+		private object key = null;
 		private ComponentAdapterType componentAdapterType = ComponentAdapterType.Caching;
 		private DependencyInjectionType dependencyInjectionType = DependencyInjectionType.Constructor;
-		private Type componentAdapter;
-
+		private Type componentAdapter = null;
+		
 		public RegisterWithContainerAttribute()
 		{ 
 		}

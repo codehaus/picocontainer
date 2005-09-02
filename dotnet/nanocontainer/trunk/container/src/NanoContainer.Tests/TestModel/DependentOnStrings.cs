@@ -1,5 +1,10 @@
+using NanoContainer.Attributes;
+
 namespace NanoContainer.Tests.TestModel
 {
+	[RegisterWithContainer("dependent-on-strings")]
+	[ConstantParameter(0, "ONE")]
+	[ConstantParameter(1, "TWO")]
 	public class DependentOnStrings
 	{
 		private string one;

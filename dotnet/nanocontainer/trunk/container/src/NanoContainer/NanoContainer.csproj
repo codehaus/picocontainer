@@ -159,7 +159,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Attributes\ComponentParameterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\ConstantParameterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Attributes\DependencyInjectionType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\PicoParameterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Attributes\PicoParameterType.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

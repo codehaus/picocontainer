@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Specialized;
+using System.Reflection;
 using NanoContainer.Attributes;
 using NanoContainer.Test.TestModel;
 using NanoContainer.Tests.Attributes.Custom;
+using NanoContainer.Tests.TestModel;
 using NUnit.Framework;
 using PicoContainer;
 using PicoContainer.Defaults;
@@ -102,5 +104,14 @@ namespace NanoContainer.Tests.Attributes
 			Assert.AreSame(component, picoContainer.GetComponentInstance(cachingSetterType));
 		}
 
+		[Test]
+		public void BuildComponentWithConstantParameters()
+		{
+			DependentOnStrings component = picoContainer.GetComponentInstance("dependent-on-strings") as DependentOnStrings;
+			Assert.IsNotNull(component);
+
+			Assert.AreEqual("ONE", component.One);
+			Assert.AreEqual("TWO", component.Two);
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace NanoContainer.Attributes
 	{
 		private AssemblyUtil assemblyUtil = null;
 		private Type registerAttributeType = typeof(RegisterWithContainerAttribute);
+		private Type picoParameterAttributeType = typeof(PicoParameterAttribute);
 		
 		public AttributeBasedContainerBuilder()
 		{
@@ -47,6 +48,7 @@ namespace NanoContainer.Attributes
 				IComponentAdapter componentAdapter = null;
 				RegisterWithContainerAttribute attribute = 
 					type.GetCustomAttributes(registerAttributeType, true)[0] as RegisterWithContainerAttribute;
+				
 				if(attribute.ComponentAdapterType == ComponentAdapterType.Custom)
 				{
 					componentAdapter = BuildCustomComponentAdapter(attribute, type);
@@ -82,6 +84,33 @@ namespace NanoContainer.Attributes
 			return (IComponentAdapter)Activator.CreateInstance(attribute.ComponentAdapter, new object[] {type});
 		}
 
+		private IParameter[] createParametersArray(Type type)
+		{
+			object[] attributes = type.GetCustomAttributes(picoParameterAttributeType, true);
+
+			if(attributes == null || attributes.Length == 0)
+			{
+				return null;
+			}
+
+			IParameter[] parameters = new IParameter[attributes.Length];
+
+			foreach(PicoParameterAttribute attribute in attributes)
+			{
+				if(attribute is ConstantParameterAttribute)
+				{
+					parameters[attribute.Index] = new ConstantParameter(attribute.Value);
+				}
+				else
+				{
+					// TODO mward: need to support more ComponentParameter ctor types
+					parameters[attribute.Index] = new ComponentParameter(attribute.Value);
+				}
+			}
+			
+			return parameters;
+		}
+
 		private IComponentAdapter BuildSetterInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
 			if(attribute.Key == null)
@@ -90,7 +119,14 @@ namespace NanoContainer.Attributes
 			}
 			else
 			{
-				return new ConstructorInjectionComponentAdapter(attribute.Key, type);
+				IParameter[] parameters = createParametersArray(type);
+
+				if(parameters == null)
+				{
+					return new SetterInjectionComponentAdapter(attribute.Key, type);	
+				}
+
+				return new SetterInjectionComponentAdapter(attribute.Key, type, parameters);
 			}
 		}
 
@@ -102,7 +138,14 @@ namespace NanoContainer.Attributes
 			}
 			else
 			{
-				return new ConstructorInjectionComponentAdapter(attribute.Key, type);
+				IParameter[] parameters = createParametersArray(type);
+
+				if(parameters == null)
+				{
+					return new ConstructorInjectionComponentAdapter(attribute.Key, type);	
+				}
+
+				return new ConstructorInjectionComponentAdapter(attribute.Key, type, parameters);
 			}
 		}
 	}

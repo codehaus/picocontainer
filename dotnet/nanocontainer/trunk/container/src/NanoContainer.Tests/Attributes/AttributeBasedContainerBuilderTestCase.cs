@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-using System.Reflection;
 using NanoContainer.Attributes;
 using NanoContainer.Test.TestModel;
 using NanoContainer.Tests.Attributes.Custom;
@@ -105,13 +104,23 @@ namespace NanoContainer.Tests.Attributes
 		}
 
 		[Test]
-		public void BuildComponentWithConstantParameters()
+		public void BuildStringDependentComponent()
 		{
-			DependentOnStrings component = picoContainer.GetComponentInstance("dependent-on-strings") as DependentOnStrings;
+			DependentOnStrings component = picoContainer.GetComponentInstanceOfType(typeof(DependentOnStrings)) as DependentOnStrings;
 			Assert.IsNotNull(component);
 
 			Assert.AreEqual("ONE", component.One);
 			Assert.AreEqual("TWO", component.Two);
+		}
+
+		[Test]
+		public void BuildConstantDependentComponent()
+		{
+			DependentOnConstants doc = picoContainer.GetComponentInstance(typeof(DependentOnConstants)) as DependentOnConstants;
+
+			Assert.AreEqual("Hello World", doc.Name);
+			Assert.AreEqual(70, doc.Count);
+			Assert.AreEqual(99.9f, doc.Percentage);
 		}
 	}
 }

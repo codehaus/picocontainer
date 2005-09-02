@@ -113,40 +113,47 @@ namespace NanoContainer.Attributes
 
 		private IComponentAdapter BuildSetterInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
+			IParameter[] parameters = createParametersArray(type);
+
 			if(attribute.Key == null)
 			{
-				return new SetterInjectionComponentAdapter(type);
-			}
-			else
-			{
-				IParameter[] parameters = createParametersArray(type);
-
 				if(parameters == null)
 				{
-					return new SetterInjectionComponentAdapter(attribute.Key, type);	
+					return new SetterInjectionComponentAdapter(type);
 				}
 
-				return new SetterInjectionComponentAdapter(attribute.Key, type, parameters);
+				return new SetterInjectionComponentAdapter(type, parameters);
 			}
+			else if(parameters == null)
+			{
+				return new SetterInjectionComponentAdapter(attribute.Key, type);	
+			}
+
+			return new SetterInjectionComponentAdapter(attribute.Key, type, parameters);
+			
 		}
 
 		private IComponentAdapter BuildConstructorInjectionAdapter(RegisterWithContainerAttribute attribute, Type type)
 		{
+			IParameter[] parameters = createParametersArray(type);
+
 			if(attribute.Key == null)
 			{
-				return new ConstructorInjectionComponentAdapter(type);
-			}
-			else
-			{
-				IParameter[] parameters = createParametersArray(type);
-
 				if(parameters == null)
 				{
-					return new ConstructorInjectionComponentAdapter(attribute.Key, type);	
+					return new ConstructorInjectionComponentAdapter(type);	
 				}
 
-				return new ConstructorInjectionComponentAdapter(attribute.Key, type, parameters);
+				return new ConstructorInjectionComponentAdapter(type, type, parameters);
+				
 			}
+			else if(parameters == null)
+			{
+				return new ConstructorInjectionComponentAdapter(attribute.Key, type);	
+			}
+
+			return new ConstructorInjectionComponentAdapter(attribute.Key, type, parameters);
+			
 		}
 	}
 }

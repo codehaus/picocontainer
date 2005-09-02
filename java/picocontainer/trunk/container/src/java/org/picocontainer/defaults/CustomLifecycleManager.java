@@ -40,7 +40,6 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
     private transient Method stopMethod;
     private transient Method disposeMethod;
     private final ComponentMonitor componentMonitor;
-    private LifecycleStrategy lifecycleStrategy;
 
     /**
      * Construct a CustomLifecycleManager.
@@ -49,14 +48,13 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
      * @param stopMethod the method called when the component instances are stopped
      * @param disposeMethod the method called when the component instances are disposed
      * @param componentMonitor the {@link ComponentMonitor} receiving the invocation events
-     * @param lifecycleStrategy the {@link LifecycleStrategy} controlling the lifecycle
      * @throws NullPointerException if one of the arguments is null
      * @throws IllegalArgumentException if one of the methods has parameters
      * @since 1.2
      */
     public CustomLifecycleManager(
             Method startMethod, Method stopMethod, Method disposeMethod, 
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+            ComponentMonitor componentMonitor) {
         if (startMethod == null || stopMethod == null || disposeMethod == null || componentMonitor == null) {
             throw new NullPointerException();
         }
@@ -69,7 +67,6 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         this.stopMethod = stopMethod;
         this.disposeMethod = disposeMethod;
         this.componentMonitor = componentMonitor;
-        this.lifecycleStrategy = lifecycleStrategy;
     }
 
     /**
@@ -103,10 +100,6 @@ public class CustomLifecycleManager implements LifecycleManager, Serializable {
         for (int i = disposables.size() - 1; 0 <= i; i--) {
             doMethod(disposeMethod, disposables.get(i));
         }
-    }
-
-    public LifecycleStrategy currentLifecycleStrategy() {
-        return lifecycleStrategy;
     }
 
     /**

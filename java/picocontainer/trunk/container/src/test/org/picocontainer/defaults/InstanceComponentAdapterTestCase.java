@@ -41,8 +41,10 @@ public class InstanceComponentAdapterTestCase
         componentAdapter.stop(pico);
         componentAdapter.dispose(pico);
         assertEquals("start>stop>dispose>", component.buffer.toString());
-        assertNotNull(componentAdapter.currentLifecycleStrategy());
-        assertTrue(componentAdapter.currentLifecycleStrategy() instanceof DefaultLifecycleStrategy);
+        componentAdapter.start(component);
+        componentAdapter.stop(component);
+        componentAdapter.dispose(component);
+        assertEquals("start>stop>dispose>start>stop>dispose>", component.buffer.toString());
     }
 
     public void testComponentAdapterHandlesLifecycleWithCustomLifecycleStrategy() {
@@ -54,8 +56,10 @@ public class InstanceComponentAdapterTestCase
         componentAdapter.stop(pico);
         componentAdapter.dispose(pico);
         assertEquals("<start<stop<dispose", customLifecycleStrategy.buffer.toString());
-        assertNotNull(componentAdapter.currentLifecycleStrategy());
-        assertTrue(componentAdapter.currentLifecycleStrategy() instanceof CustomLifecycleStrategy);
+        componentAdapter.start(component);
+        componentAdapter.stop(component);
+        componentAdapter.dispose(component);
+        assertEquals("<start<stop<dispose<start<stop<dispose", customLifecycleStrategy.buffer.toString());
     }
     
     private static class LifecycleComponent implements Startable, Disposable {
@@ -97,8 +101,9 @@ public class InstanceComponentAdapterTestCase
         componentAdapter.start(pico);
         componentAdapter.stop(pico);
         componentAdapter.dispose(pico);
-        assertNotNull(componentAdapter.currentLifecycleStrategy());
-        assertTrue(componentAdapter.currentLifecycleStrategy() instanceof DefaultLifecycleStrategy);
+        componentAdapter.start(touchable);
+        componentAdapter.stop(touchable);
+        componentAdapter.dispose(touchable);
     }
         
     

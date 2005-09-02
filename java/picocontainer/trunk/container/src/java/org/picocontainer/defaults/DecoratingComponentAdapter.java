@@ -30,9 +30,8 @@ import org.picocontainer.PicoVisitor;
  * support the monitor strategy.
  * </p>
  * <p>
- * This adapter is also {@link LifecycleManager lifecycle manager} and will 
- * propagate the delegate's {@link LifecycleStrategy lifecycle strategy} if the delegate 
- * is also a lifecycle manager.
+ * This adapter also supports a {@link LifecycleManager lifecycle manager} and a 
+ * {@link LifecycleStrategy lifecycle strategy} if the delegate does. 
  * </p>
  * 
  * @author Jon Tirsen
@@ -40,7 +39,8 @@ import org.picocontainer.PicoVisitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, LifecycleManager, Serializable {
+public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMonitorStrategy, 
+                                                    LifecycleManager, LifecycleStrategy, Serializable {
 
     private ComponentAdapter delegate;
 
@@ -127,13 +127,36 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
         }
     }
 
-    public LifecycleStrategy currentLifecycleStrategy() {
-        if ( delegate instanceof LifecycleManager ){
-            return ((LifecycleManager)delegate).currentLifecycleStrategy();
+    /**
+     * Invokes delegate start method if the delegate is a LifecycleStrategy
+     * {@inheritDoc}
+     */
+    public void start(Object component) {
+        if ( delegate instanceof LifecycleStrategy ){
+            ((LifecycleStrategy)delegate).start(component);
         }
-        throw new PicoIntrospectionException("No lifecycle strategy found in delegate");
     }
 
+    /**
+     * Invokes delegate stop method if the delegate is a LifecycleStrategy
+     * {@inheritDoc}
+     */
+    public void stop(Object component) {
+        if ( delegate instanceof LifecycleStrategy ){
+            ((LifecycleStrategy)delegate).stop(component);
+        }
+    }
+
+    /**
+     * Invokes delegate dispose method if the delegate is a LifecycleStrategy
+     * {@inheritDoc}
+     */
+    public void dispose(Object component) {
+        if ( delegate instanceof LifecycleStrategy ){
+            ((LifecycleStrategy)delegate).dispose(component);
+        }
+    }
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[");

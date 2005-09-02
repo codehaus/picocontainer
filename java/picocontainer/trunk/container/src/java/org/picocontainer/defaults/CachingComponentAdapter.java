@@ -22,12 +22,12 @@ import org.picocontainer.PicoIntrospectionException;
  * </p>
  * <p>
  * This adapter is also a {@link LifecycleManager lifecycle manager} which will apply
- * its  {@link LifecycleStrategy lifecycle strategy} to the cached component instance.
+ * the delegate's {@link LifecycleStrategy lifecycle strategy} to the cached component instance.
  * </p>
  * 
  * @version $Revision$
  */
-public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
+public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager, LifecycleStrategy {
 
     private ObjectReference instanceReference;
 
@@ -62,7 +62,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
      * {@inheritDoc}
      */
     public void start(PicoContainer container) {
-        currentLifecycleStrategy().start(getComponentInstance(container));
+        start(getComponentInstance(container));
     }
 
     /**
@@ -70,7 +70,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
      * {@inheritDoc}
      */
     public void stop(PicoContainer container) {
-        currentLifecycleStrategy().stop(getComponentInstance(container));
+        stop(getComponentInstance(container));
     }
 
     /**
@@ -78,7 +78,8 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
      * {@inheritDoc}
      */
     public void dispose(PicoContainer container) {
-        currentLifecycleStrategy().dispose(getComponentInstance(container));
+        dispose(getComponentInstance(container));
     }
 
+    
 }

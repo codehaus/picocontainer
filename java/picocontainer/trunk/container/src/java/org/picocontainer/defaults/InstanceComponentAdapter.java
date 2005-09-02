@@ -17,9 +17,10 @@ import org.picocontainer.PicoContainer;
  * Component adapter which wraps a component instance.
  * </p>
  * <p>
- * This component adapter is a {@link LifecycleManager LifecycleManager}
- * which uses the {@link LifecycleStrategy LifecycleStrategy} to control the lifecycle
- * of the component.
+ * This component adapter supports both a {@link LifecycleManager LifecycleManager} and a 
+ * {@link LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
+ * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
+ * on the component instance.
  * </p>
  * 
  * @author Aslak Helles&oslash;y
@@ -27,7 +28,7 @@ import org.picocontainer.PicoContainer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class InstanceComponentAdapter extends AbstractComponentAdapter implements LifecycleManager {
+public class InstanceComponentAdapter extends AbstractComponentAdapter implements LifecycleManager, LifecycleStrategy {
     private Object componentInstance;
     private LifecycleStrategy lifecycleStrategy;
 
@@ -49,18 +50,27 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
     }
 
     public void start(PicoContainer container) {
-        lifecycleStrategy.start(componentInstance);
+        start(componentInstance);
     }
 
     public void stop(PicoContainer container) {
-        lifecycleStrategy.stop(componentInstance);
+        stop(componentInstance);
     }
 
     public void dispose(PicoContainer container) {
+        dispose(componentInstance);
+    }
+
+    public void start(Object component) {
+        lifecycleStrategy.start(componentInstance);
+    }
+
+    public void stop(Object component) {
+        lifecycleStrategy.stop(componentInstance);
+    }
+
+    public void dispose(Object component) {
         lifecycleStrategy.dispose(componentInstance);
     }
 
-    public LifecycleStrategy currentLifecycleStrategy() {
-        return lifecycleStrategy;
-    }
 }

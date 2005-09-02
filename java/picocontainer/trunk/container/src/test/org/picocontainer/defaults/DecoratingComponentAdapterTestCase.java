@@ -7,6 +7,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Mauro Talevi
@@ -37,7 +39,10 @@ public class DecoratingComponentAdapterTestCase extends MockObjectTestCase {
         adapter.start(pico);
         adapter.stop(pico);
         adapter.dispose(pico);
-        assertNotNull(adapter.currentLifecycleStrategy());
+        Touchable touchable = new SimpleTouchable();
+        adapter.start(touchable);
+        adapter.stop(touchable);
+        adapter.dispose(touchable);
     }
 
     public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
@@ -46,12 +51,10 @@ public class DecoratingComponentAdapterTestCase extends MockObjectTestCase {
         adapter.start(pico);
         adapter.stop(pico);
         adapter.dispose(pico);
-        try {
-            adapter.currentLifecycleStrategy();
-            fail("PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
-            assertEquals("No lifecycle strategy found in delegate", e.getMessage());
-        }
+        Touchable touchable = new SimpleTouchable();
+        adapter.start(touchable);
+        adapter.stop(touchable);
+        adapter.dispose(touchable);
     }
     
     ComponentMonitor mockMonitorWithNoExpectedMethods() {
@@ -76,18 +79,15 @@ public class DecoratingComponentAdapterTestCase extends MockObjectTestCase {
 
     private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {
         Mock mock = mock(ComponentAdapterThatCanManageLifecycle.class);
-        mock.expects(once()).method("start");
-        mock.expects(once()).method("stop");
-        mock.expects(once()).method("dispose");
-        mock.expects(once()).method("currentLifecycleStrategy").will(returnValue(mockLifecycleStrategyWithNoExpectedMethods()));
+        mock.expects(once()).method("start").with(isA(PicoContainer.class));
+        mock.expects(once()).method("stop").with(isA(PicoContainer.class));
+        mock.expects(once()).method("dispose").with(isA(PicoContainer.class));
+        mock.expects(once()).method("start").with(isA(Touchable.class));
+        mock.expects(once()).method("stop").with(isA(Touchable.class));
+        mock.expects(once()).method("dispose").with(isA(Touchable.class));
         return (ComponentAdapter)mock.proxy();
     }
 
-    private LifecycleStrategy mockLifecycleStrategyWithNoExpectedMethods() {
-        Mock mock = mock(LifecycleStrategy.class);
-        return (LifecycleStrategy)mock.proxy();
-    }
-
-    static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, LifecycleManager {
+    static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, LifecycleManager, LifecycleStrategy {
     }
 }

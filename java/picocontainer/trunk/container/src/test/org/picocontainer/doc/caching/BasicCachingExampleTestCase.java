@@ -82,20 +82,20 @@ public class BasicCachingExampleTestCase extends TestCase {
 
     }
 
-//    public void testFlushingOfCache() {
-//        // START SNIPPET: caching
-//        CachingPicoContainer pico = new CachingPicoContainer();
-//        CachingComponentAdapter cca = (CachingComponentAdapter) pico.registerComponentImplementation(List.class, ArrayList.class);
-//        // other resitrations
-//
-//        Object one = pico.getComponentInstanceOfType(List.class);
-//        cca.flush();
-//        Object two = pico.getComponentInstanceOfType(List.class);
-//
-//        assertNotSame("instances should NOT be the same", one, two);
-//        // END SNIPPET: caching
-//
-//    }
+    public void testFlushingOfCache() {
+        // START SNIPPET: caching
+        CachingPicoContainer pico = new CachingPicoContainer();
+        CachingComponentAdapter cca = (CachingComponentAdapter) pico.registerComponentImplementation(List.class, ArrayList.class);
+        // other resitrations
+
+        Object one = pico.getComponentInstanceOfType(List.class);
+        cca.flush();
+        Object two = pico.getComponentInstanceOfType(List.class);
+
+        assertNotSame("instances should NOT be the same", one, two);
+        // END SNIPPET: caching
+
+    }
 
 
 }

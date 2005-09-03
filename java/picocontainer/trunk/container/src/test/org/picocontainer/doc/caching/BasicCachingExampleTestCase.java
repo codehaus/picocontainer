@@ -6,6 +6,7 @@ import org.picocontainer.alternatives.ImplementationHidingCachingPicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.CachingComponentAdapter;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -60,6 +61,21 @@ public class BasicCachingExampleTestCase extends TestCase {
 
         assertSame("instances are be the same by default", one, two);
         // END SNIPPET: default
+
+    }
+
+    public void testDefaulCachingtheHardWay() {
+        // START SNIPPET: default2
+        DefaultPicoContainer pico = new DefaultPicoContainer(
+                        new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
+        pico.registerComponentImplementation(List.class, ArrayList.class);
+        // other resitrations
+
+        Object one = pico.getComponentInstanceOfType(List.class);
+        Object two = pico.getComponentInstanceOfType(List.class);
+
+        assertSame("instances are be the same by default", one, two);
+        // END SNIPPET: default2
 
     }
 

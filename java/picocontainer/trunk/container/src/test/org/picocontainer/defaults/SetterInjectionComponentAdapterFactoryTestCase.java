@@ -9,8 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
+import org.picocontainer.testmodel.NullLifecycle;
 
 /**
  * @author J&ouml;rg Schaible</a>
@@ -78,4 +82,15 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
         } catch (PicoInitializationException e) {
         }
     }
+
+    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
+        SetterInjectionComponentAdapterFactory caf = new SetterInjectionComponentAdapterFactory(false, strategy);
+        SetterInjectionComponentAdapter sica = (SetterInjectionComponentAdapter)caf.createComponentAdapter(NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
+        PicoContainer pico = null;
+        sica.start(pico);
+        sica.stop(pico);
+        sica.dispose(pico);
+        assertEquals("<start<stop<dispose", strategy.recording());
+    }    
 }

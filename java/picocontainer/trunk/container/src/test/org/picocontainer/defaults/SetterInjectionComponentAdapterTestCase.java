@@ -9,15 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SetterInjectionComponentAdapterTestCase
@@ -300,4 +302,17 @@ public class SetterInjectionComponentAdapterTestCase
         assertSame(yin, yang.getYin());
         assertSame(yang, yin.getYang());
     }
+    
+    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
+        SetterInjectionComponentAdapter sica = new SetterInjectionComponentAdapter(
+                NullLifecycle.class, NullLifecycle.class, new Parameter[0], false, 
+                new DelegatingComponentMonitor(), strategy);
+        PicoContainer pico = null;
+        sica.start(pico);
+        sica.stop(pico);
+        sica.dispose(pico);
+        assertEquals("<start<stop<dispose", strategy.recording());
+    }
+
 }

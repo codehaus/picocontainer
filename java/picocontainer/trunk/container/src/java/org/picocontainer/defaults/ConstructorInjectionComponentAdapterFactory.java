@@ -21,14 +21,25 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private final boolean allowNonPublicClasses;
+    private LifecycleStrategy lifecycleStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, 
+                        ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
         this.allowNonPublicClasses = allowNonPublicClasses;
         this.changeMonitor(componentMonitor);
+        this.lifecycleStrategy = lifecycleStrategy;
+    }
+
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
+        this(allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy());
+    }
+
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, LifecycleStrategy lifecycleStrategy) {
+        this(allowNonPublicClasses, new DelegatingComponentMonitor(), lifecycleStrategy);
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
-        this.allowNonPublicClasses = allowNonPublicClasses;
+        this(allowNonPublicClasses, new DelegatingComponentMonitor(), new DefaultLifecycleStrategy());
     }
 
     public ConstructorInjectionComponentAdapterFactory() {
@@ -39,6 +50,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
                                                    Class componentImplementation,
                                                    Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitor());
+        return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
+                allowNonPublicClasses, currentMonitor(), lifecycleStrategy);
     }
 }

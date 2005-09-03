@@ -24,13 +24,20 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class SetterInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private final boolean allowNonPublicClasses;
+    private LifecycleStrategy lifecycleStrategy;
+
+    public SetterInjectionComponentAdapterFactory(boolean allowNonPublicClasses, 
+                                                LifecycleStrategy lifecycleStrategy) {
+        this.allowNonPublicClasses = allowNonPublicClasses;
+        this.lifecycleStrategy = lifecycleStrategy;
+    }
 
     public SetterInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
-        this.allowNonPublicClasses = allowNonPublicClasses;
+        this(allowNonPublicClasses, new DefaultLifecycleStrategy());
     }
 
     public SetterInjectionComponentAdapterFactory() {
-        this(false);
+        this(false, new DefaultLifecycleStrategy());
     }
 
     /**
@@ -52,6 +59,7 @@ public class SetterInjectionComponentAdapterFactory extends MonitoringComponentA
      */
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, allowNonPublicClasses, currentMonitor());
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
+                allowNonPublicClasses, currentMonitor(), lifecycleStrategy);
     }
 }

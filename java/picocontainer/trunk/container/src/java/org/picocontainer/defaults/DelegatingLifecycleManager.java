@@ -17,15 +17,17 @@ import org.picocontainer.PicoContainer;
 
 
 /**
+ * <p>
  * Implementation of lifecycle manager which delegates to the container's component adapters. 
  * This LifecycleManager will delegate calls on the lifecycle methods to the component adapters
  * if these are themselves LifecycleManagers.
+ * </p>
  * 
  * @author Mauro Talevi
  * @since 1.2
  */
 public class DelegatingLifecycleManager implements LifecycleManager, Serializable {
-    
+        
     /**
      * {@inheritDoc} 
      * Loops over all component adapters and invokes 

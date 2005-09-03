@@ -9,34 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.core.JVM;
-import com.thoughtworks.xstream.io.xml.XppDriver;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AbstractPicoVisitor;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.CyclicDependencyException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
-import org.picocontainer.defaults.SimpleReference;
-
-import org.jmock.MockObjectTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,6 +22,35 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Disposable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.Startable;
+import org.picocontainer.defaults.AbstractPicoVisitor;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.SimpleReference;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.core.JVM;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 
 /**
@@ -566,6 +567,30 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
                 set.add(this);
             }
             return super.getComponentInstance(container);
+        }
+    }
+
+    static public class RecordingLifecycleStrategy implements LifecycleStrategy {
+        private StringBuffer recorder;
+        
+        public RecordingLifecycleStrategy(StringBuffer recorder) {
+            this.recorder = recorder;
+        }
+    
+        public void start(Object component) {
+            recorder.append("<start");
+        }
+    
+        public void stop(Object component) {
+            recorder.append("<stop");
+        }
+    
+        public void dispose(Object component) {
+            recorder.append("<dispose");
+        }
+        
+        public String recording() {
+            return recorder.toString();
         }
     }
 

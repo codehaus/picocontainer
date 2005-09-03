@@ -9,26 +9,28 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.jmock.Mock;
-import org.jmock.core.Constraint;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.jmock.Mock;
+import org.jmock.core.Constraint;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.NullLifecycle;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 
 public class ConstructorInjectionComponentAdapterTestCase extends AbstractComponentAdapterTestCase {
@@ -313,5 +315,17 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
         public void actionPerformed(ActionEvent e) {
         }
+    }
+
+    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
+        ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
+                NullLifecycle.class, NullLifecycle.class, new Parameter[0], false, 
+                new DelegatingComponentMonitor(), strategy);
+        PicoContainer pico = null;
+        cica.start(pico);
+        cica.stop(pico);
+        cica.dispose(pico);
+        assertEquals("<start<stop<dispose", strategy.recording());
     }
 }

@@ -15,6 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -33,9 +34,10 @@ public class InstanceComponentAdapterTestCase
         assertSame(touchable, componentAdapter.getComponentInstance(null));
     }
 
-    public void testComponentAdapterHandlesLifecycleWithDefaultLifecycleStrategy() {
+    public void testDefaultLifecycleStrategy() {
         LifecycleComponent component = new LifecycleComponent();
-        InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(LifecycleComponent.class, component);
+        InstanceComponentAdapter componentAdapter = 
+            new InstanceComponentAdapter(LifecycleComponent.class, component);
         PicoContainer pico = new DefaultPicoContainer();
         componentAdapter.start(pico);
         componentAdapter.stop(pico);
@@ -47,21 +49,6 @@ public class InstanceComponentAdapterTestCase
         assertEquals("start>stop>dispose>start>stop>dispose>", component.buffer.toString());
     }
 
-    public void testComponentAdapterHandlesLifecycleWithCustomLifecycleStrategy() {
-        LifecycleComponent component = new LifecycleComponent();
-        CustomLifecycleStrategy customLifecycleStrategy = new CustomLifecycleStrategy();
-        InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(LifecycleComponent.class, component, customLifecycleStrategy);
-        PicoContainer pico = new DefaultPicoContainer();
-        componentAdapter.start(pico);
-        componentAdapter.stop(pico);
-        componentAdapter.dispose(pico);
-        assertEquals("<start<stop<dispose", customLifecycleStrategy.buffer.toString());
-        componentAdapter.start(component);
-        componentAdapter.stop(component);
-        componentAdapter.dispose(component);
-        assertEquals("<start<stop<dispose<start<stop<dispose", customLifecycleStrategy.buffer.toString());
-    }
-    
     private static class LifecycleComponent implements Startable, Disposable {
         StringBuffer buffer = new StringBuffer();
         
@@ -78,23 +65,22 @@ public class InstanceComponentAdapterTestCase
         }       
     }
     
-    private static class CustomLifecycleStrategy implements LifecycleStrategy {
-        StringBuffer buffer = new StringBuffer();
-
-        public void start(Object component) {
-            buffer.append("<start");
-        }
-
-        public void stop(Object component) {
-            buffer.append("<stop");
-        }
-
-        public void dispose(Object component) {
-            buffer.append("<dispose");
-        }    
+    public void testCustomLifecycleStrategyCanBeInjected() {
+        NullLifecycle component = new NullLifecycle();
+        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
+        InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(NullLifecycle.class, component, strategy);
+        PicoContainer pico = new DefaultPicoContainer();
+        componentAdapter.start(pico);
+        componentAdapter.stop(pico);
+        componentAdapter.dispose(pico);
+        assertEquals("<start<stop<dispose", strategy.recording());
+        componentAdapter.start(component);
+        componentAdapter.stop(component);
+        componentAdapter.dispose(component);
+        assertEquals("<start<stop<dispose<start<stop<dispose", strategy.recording());
     }
-
-    public void testComponentAdapterIgnoresLifecycle() {
+    
+    public void testComponentAdapterCanIgnoreLifecycle() {
         final Touchable touchable = new SimpleTouchable();
         InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(Touchable.class, touchable);
         PicoContainer pico = new DefaultPicoContainer();

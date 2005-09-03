@@ -59,7 +59,7 @@ public class BasicCachingExampleTestCase extends TestCase {
         Object one = pico.getComponentInstanceOfType(List.class);
         Object two = pico.getComponentInstanceOfType(List.class);
 
-        assertSame("instances are be the same by default", one, two);
+        assertSame("instances should be the same by default", one, two);
         // END SNIPPET: default
 
     }
@@ -74,7 +74,7 @@ public class BasicCachingExampleTestCase extends TestCase {
         Object one = pico.getComponentInstanceOfType(List.class);
         Object two = pico.getComponentInstanceOfType(List.class);
 
-        assertSame("instances are be the same by default", one, two);
+        assertSame("instances should be the same", one, two);
         // END SNIPPET: default2
 
     }

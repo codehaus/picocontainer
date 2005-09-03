@@ -8,18 +8,16 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
+import java.io.Serializable;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DefaultLifecycleManager;
-
-import java.io.Serializable;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -33,20 +31,13 @@ import java.io.Serializable;
 public class ImplementationHidingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
 
     private ComponentAdapterFactory caf;
-    private LifecycleManager lifecycleManager;
 
     /**
      * Creates a new container with a parent container.
      */
-    public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
-        super(new DefaultPicoContainer(caf, parent, lifecycleManager));
-        this.caf = caf;
-        this.lifecycleManager = lifecycleManager;
-    }
-
-
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(caf, parent, new DefaultLifecycleManager());
+        super(new DefaultPicoContainer(caf, parent));
+        this.caf = caf;
     }
 
     /**
@@ -88,7 +79,7 @@ public class ImplementationHidingPicoContainer extends AbstractDelegatingMutable
     }
 
     public MutablePicoContainer makeChildContainer() {
-        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(caf, this, lifecycleManager);
+        ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(caf, this);
         getDelegate().addChildContainer(pc);
         return pc;
     }

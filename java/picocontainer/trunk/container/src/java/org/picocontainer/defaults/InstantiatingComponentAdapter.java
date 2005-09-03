@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -28,10 +29,12 @@ import org.picocontainer.PicoVisitor;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  * @version $Revision$
  * @since 1.0
  */
-public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter {
+public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter 
+                                implements LifecycleManager, LifecycleStrategy {
     /** The cycle guard for the verification. */ 
     protected transient Guard verifyingGuard;
     /** The parameters to use for initialization. */ 
@@ -46,6 +49,37 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             this.guardedContainer = container;
         }
     }
+    
+    /** The strategy used to control the lifecycle */
+    protected LifecycleStrategy lifecycleStrategy;
+    
+    /**
+     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * @param componentKey the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters the parameters to use for the initialization
+     * @param allowNonPublicClasses flag to allow instantiation of non-public classes
+     * @param componentMonitor the component monitor used by this ComponentAdapter
+     * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
+     * @throws NotConcreteRegistrationException if the implementation is not a concrete class
+     * @throws NullPointerException if one of the parameters is <code>null</code>
+     */
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses,
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+        super(componentKey, componentImplementation, componentMonitor);
+        checkConcrete();
+        if (parameters != null) {
+            for (int i = 0; i < parameters.length; i++) {
+                if(parameters[i] == null) {
+                    throw new NullPointerException("Parameter " + i + " is null");
+                }
+            }
+        }
+        this.parameters = parameters;
+        this.allowNonPublicClasses = allowNonPublicClasses;
+        this.lifecycleStrategy = lifecycleStrategy;
+    }
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 
@@ -58,19 +92,10 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses,
+    protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, 
+            Parameter[] parameters, boolean allowNonPublicClasses,
             ComponentMonitor componentMonitor) {
-        super(componentKey, componentImplementation, componentMonitor);
-		checkConcrete();
-        if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                if(parameters[i] == null) {
-                    throw new NullPointerException("Parameter " + i + " is null");
-                }
-            }
-        }
-        this.parameters = parameters;
-        this.allowNonPublicClasses = allowNonPublicClasses;
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy());
     }
 
     /**
@@ -135,6 +160,31 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
             }
         }
     }
+  
+    public void start(PicoContainer container) {
+        start(getComponentInstance(container));
+    }
+
+    public void stop(PicoContainer container) {
+        stop(getComponentInstance(container));
+    }
+
+    public void dispose(PicoContainer container) {
+        dispose(getComponentInstance(container));
+    }
+
+    public void start(Object component) {
+        lifecycleStrategy.start(component);
+    }
+
+    public void stop(Object component) {
+        lifecycleStrategy.stop(component);
+    }
+
+    public void dispose(Object component) {
+        lifecycleStrategy.dispose(component);
+    }
+
     
     /**
      * Instantiate an object with given parameters and respect the accessible flag.

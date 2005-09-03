@@ -13,37 +13,36 @@ package org.picocontainer;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
- * A manager for the lifecycle of a container's components.
+ * A manager for the lifecycle of a container's components.  
+ * The lifecycle manager is implemented by the component adapters
+ * which will resolve the dependencies of the component instance and 
+ * delegate the implementation of the lifecycle control to the 
+ * {@link LifecycleStrategy lifecycle strategy}.
  * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  * @version $Revision$
  * @see LifecycleStrategy 
+ * @since 1.2
  */
 public interface LifecycleManager {
 
     /**
-     * Invoke the "start" method on the container's components. It is up to the implementor to define exactly what a
-     * component's "start" method is and what components of the container are affected.
-     * 
-     * @param container the container to "start" its component's lifecylce
+     * Invoke the "start" method on the container's components. 
+     * @param container the container to "start" its components' lifecycle
      */
     void start(PicoContainer container);
 
     /**
-     * Invoke the "stop" method on the container's components. It is up to the implementor to define exactly what a
-     * component's "stop" method is and what components of the container are affected.
-     * 
-     * @param container the container to "stop" its component's lifecylce
+     * Invoke the "stop" method on the container's components. 
+     * @param container the container to "stop" its components' lifecycle
      */
     void stop(PicoContainer container);
 
     /**
-     * Invoke the "dispose" method on the container's components. It is up to the implementor to define exactly what a
-     * component's "dispose" method is and what components of the container are affected.
-     * 
-     * @param container the container to "dispose" its component's lifecylce
+     * Invoke the "dispose" method on the container's components. 
+     * @param container the container to "dispose" its components' lifecycle
      */
     void dispose(PicoContainer container);
 

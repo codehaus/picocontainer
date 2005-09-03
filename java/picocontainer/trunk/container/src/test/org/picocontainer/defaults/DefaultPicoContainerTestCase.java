@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -42,10 +41,6 @@ import org.picocontainer.testmodel.Touchable;
 public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
-    }
-
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        return new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager);
     }
 
     // to go to parent testcase ?

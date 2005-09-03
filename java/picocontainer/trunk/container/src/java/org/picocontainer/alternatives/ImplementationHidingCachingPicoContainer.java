@@ -9,19 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
+import java.io.Serializable;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultLifecycleManager;
-
-import java.io.Serializable;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
@@ -35,24 +33,18 @@ import java.io.Serializable;
 public class ImplementationHidingCachingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
 
     private CachingComponentAdapterFactory caf;
-    private LifecycleManager lifecycleManager;
 
     /**
      * Creates a new container with a parent container.
      */
 
     public ImplementationHidingCachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(parent, new CachingComponentAdapterFactory(caf), new DefaultLifecycleManager());
+        this(parent, new CachingComponentAdapterFactory(caf));
     }
 
-    public ImplementationHidingCachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecyleManager) {
-        this(parent, new CachingComponentAdapterFactory(caf), lifecyleManager);
-    }
-
-    private ImplementationHidingCachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf, LifecycleManager lifecycleManager) {
-        super(new ImplementationHidingPicoContainer(caf, parent, lifecycleManager));
+    private ImplementationHidingCachingPicoContainer(PicoContainer parent, CachingComponentAdapterFactory caf) {
+        super(new ImplementationHidingPicoContainer(caf, parent));
         this.caf = caf;
-        this.lifecycleManager = lifecycleManager;
     }
 
     /**
@@ -95,7 +87,7 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
 
 
     public MutablePicoContainer makeChildContainer() {
-        ImplementationHidingCachingPicoContainer pc = new ImplementationHidingCachingPicoContainer(this, caf, lifecycleManager);
+        ImplementationHidingCachingPicoContainer pc = new ImplementationHidingCachingPicoContainer(this, caf);
         getDelegate().addChildContainer(pc);
         return pc;
 

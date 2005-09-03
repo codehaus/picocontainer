@@ -9,41 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Disposable;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.AbstractPicoVisitor;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.BasicComponentParameter;
-import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-import org.picocontainer.defaults.CyclicDependencyException;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
-import org.picocontainer.defaults.InstanceComponentAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.VerifyingVisitor;
-import org.picocontainer.defaults.DefaultLifecycleManager;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.Washable;
-import org.picocontainer.testmodel.WashableTouchable;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,13 +25,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Disposable;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.defaults.AbstractPicoVisitor;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.BasicComponentParameter;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+import org.picocontainer.defaults.CyclicDependencyException;
+import org.picocontainer.defaults.DelegatingLifecycleManager;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
+import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.VerifyingVisitor;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.Washable;
+import org.picocontainer.testmodel.WashableTouchable;
+
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
  */
 public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
-    protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager);
 
     protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
             PicoRegistrationException, PicoIntrospectionException {
@@ -550,16 +549,30 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     public void testStartStopAndDisposeCascadedtoChildren() {
         final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentInstance(new StringBuffer());
-        StringBuffer sb = (StringBuffer) ((ComponentAdapter) parent.getComponentAdaptersOfType(StringBuffer.class).get(0)).getComponentInstance(parent);
         final MutablePicoContainer child = createPicoContainer(parent);
         parent.addChildContainer(child);
         child.registerComponentImplementation(LifeCycleMonitoring.class);
         parent.start();
-        assertTrue(sb.toString().indexOf("-started") != -1);
+        try {
+            child.start();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child already started", "Already started", e.getMessage());
+        }
         parent.stop();
-        assertTrue(sb.toString().indexOf("-stopped") != -1);
+        try {
+            child.stop();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child not started", "Not started", e.getMessage());
+        }
         parent.dispose();
-        assertTrue(sb.toString().indexOf("-disposed") != -1);
+        try {
+            child.dispose();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child already disposed", "Already disposed", e.getMessage());
+        }
 
     }
 
@@ -570,24 +583,24 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
 
     public void testMakingOfChildContainerPercolatesLifecycleManager() {
-        TestLifecycleManager lifecycleManager = new TestLifecycleManager();
-        final MutablePicoContainer parent = createPicoContainer(null, lifecycleManager);
+        final MutablePicoContainer parent = createPicoContainer(null);
         parent.registerComponentImplementation("one", TestLifecycleComponent.class);
         MutablePicoContainer child = parent.makeChildContainer();
         assertNotNull(child);
         child.registerComponentImplementation("two", TestLifecycleComponent.class);
         parent.start();
-
+        try {
+            child.start();
+        } catch (IllegalStateException e) {
+            assertEquals("child already started", "Already started", e.getMessage());
+        }
         //TODO - The LifecycleManager reference in child containers is not used. Thus is is almost pointless
-        // The reason is becuase DefaultPicoContainer's accept() method visits child containerson its own.
+        // The reason is because DefaultPicoContainer's accept() method visits child containers' on its own.
         // This may be file for visiting components in a tree for general cases, but for lifecycle, we
         // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
-
-        assertEquals(2, lifecycleManager.started.size());
-        //assertEquals(1, lifecycleManager.started.size());
     }
 
-    public static class TestLifecycleManager extends DefaultLifecycleManager {
+    public static class TestLifecycleManager extends DelegatingLifecycleManager {
         public ArrayList started = new ArrayList();
         public void start(PicoContainer node) {
             started.add(node);
@@ -641,14 +654,27 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
         Map map = (Map) parent.getComponentInstance(Map.class);
         assertNotNull(map);
-        assertTrue(sb.toString().indexOf("-started") == -1);
-
         parent.start();
-        assertTrue(sb.toString().indexOf("-started") != -1);
+        try {
+            child.start();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child already started", "Already started", e.getMessage());
+        }
         parent.stop();
-        assertTrue(sb.toString().indexOf("-stopped") != -1);
+        try {
+            child.stop();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child not started", "Not started", e.getMessage());
+        }
         parent.dispose();
-        assertTrue(sb.toString().indexOf("-disposed") != -1);
+        try {
+            child.dispose();
+            fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            assertEquals("child already disposed", "Already disposed", e.getMessage());
+        }
     }
 
     public static class LifeCycleMonitoring implements Startable, Disposable {

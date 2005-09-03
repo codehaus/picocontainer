@@ -10,18 +10,17 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 /**
  * @author Thomas Heller
@@ -30,11 +29,6 @@ import java.io.ObjectOutputStream;
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         DefaultPicoContainer child = new DefaultPicoContainer(parent);
-        return child;
-    }
-
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        DefaultPicoContainer child = new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent, lifecycleManager);
         return child;
     }
 

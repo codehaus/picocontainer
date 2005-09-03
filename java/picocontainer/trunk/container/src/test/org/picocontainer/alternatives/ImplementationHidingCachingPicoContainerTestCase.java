@@ -10,18 +10,15 @@
 
 package org.picocontainer.alternatives;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
-import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
-
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Paul Hammant
@@ -31,10 +28,6 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
         return new ImplementationHidingCachingPicoContainer();
-    }
-
-    protected MutablePicoContainer createPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        return new ImplementationHidingCachingPicoContainer(new CachingComponentAdapterFactory(new DefaultComponentAdapterFactory()), parent, lifecycleManager);
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {

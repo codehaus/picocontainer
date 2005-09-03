@@ -74,31 +74,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private boolean started = false;
     private boolean disposed = false;
     private HashSet children = new HashSet();
-    private LifecycleManager lifecycleManager;
-
-    /**
-     * Creates a new container with a custom ComponentAdapterFactory and a parent container.
-     * <p/>
-     * <em>
-     * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link CachingComponentAdapter} instances, such as for example
-     * {@link CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
-     * other ComponentAdapterFactories.
-     * </em>
-     *
-     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param parent                  the parent container (used for component dependency lookups).
-     * @param lifecycleManager        the lifecycle manager used to handle start/stop etc.
-     */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent,
-                                LifecycleManager lifecycleManager) {
-        this.lifecycleManager = lifecycleManager;
-        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
-        this.componentAdapterFactory = componentAdapterFactory;
-        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
-    }
-
-
+    
+    private LifecycleManager lifecycleManager = new DelegatingLifecycleManager();
+    
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
      * <p/>
@@ -113,7 +91,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, parent, new DefaultLifecycleManager());
+        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        this.componentAdapterFactory = componentAdapterFactory;
+        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
     }
 
     /**
@@ -143,15 +123,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          */
     public DefaultPicoContainer(ComponentMonitor componentMonitor) {
         this(new DefaultComponentAdapterFactory(componentMonitor), null);
-    }
-
-    /**
-     * Creates a new container with a custom LifecycleManger and no parent container.
-     *
-     * @param lifecycleManager the lifecycle manager to manage start/stop/dispose calls on the container.
-     */
-    public DefaultPicoContainer(LifecycleManager lifecycleManager) {
-        this(new DefaultComponentAdapterFactory(), null, lifecycleManager);
     }
 
     /**
@@ -404,8 +375,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Start the components of this PicoContainer and all its logical child containers.
-     * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be started.
+     * The lifecycle operation is delegated to the component adapter,
+     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * depends on the concrete implementation of the adapter.
      *
+     * @see LifecycleManager
+     * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
@@ -413,7 +389,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
-        lifecycleManager.start(this);
+        this.lifecycleManager.start(this);
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
             child.start();
@@ -423,8 +399,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Stop the components of this PicoContainer and all its logical child containers.
-     * Any component implementing the lifecycle interface {@link org.picocontainer.Startable} will be stopped.
+     * The lifecycle operation is delegated to the component adapter,
+     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * depends on the concrete implementation of the adapter.
      *
+     * @see LifecycleManager
+     * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
@@ -436,14 +417,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             PicoContainer child = (PicoContainer) iterator.next();
             child.stop();
         }
-        lifecycleManager.stop(this);
+        this.lifecycleManager.stop(this);
         started = false;
     }
 
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
-     * Any component implementing the lifecycle interface {@link org.picocontainer.Disposable} will be disposed.
+     * The lifecycle operation is delegated to the component adapter,
+     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * depends on the concrete implementation of the adapter.
      *
+     * @see LifecycleManager
+     * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
      * @see #removeChildContainer(PicoContainer)
@@ -454,12 +440,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             PicoContainer child = (PicoContainer) iterator.next();
             child.dispose();
         }
-        lifecycleManager.dispose(this);
+        this.lifecycleManager.dispose(this);
         disposed = true;
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this, lifecycleManager);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
         addChildContainer(pc);
         return pc;
     }

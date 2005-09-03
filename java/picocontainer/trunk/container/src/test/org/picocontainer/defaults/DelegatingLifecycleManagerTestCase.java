@@ -21,9 +21,10 @@ import java.util.Arrays;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Ward Cunningham
+ * @author Mauro Talevi
  * @version $Revision$
  */
-public class DefaultLifecycleManagerTestCase extends MockObjectTestCase {
+public class DelegatingLifecycleManagerTestCase extends MockObjectTestCase {
 
     StringBuffer events = new StringBuffer();
     Object one;
@@ -53,9 +54,9 @@ public class DefaultLifecycleManagerTestCase extends MockObjectTestCase {
 
     }
     protected void setUp() throws Exception {
-        one = new TestComponent("One");
-        two = new TestComponent("Two");
-        three = new TestComponent("Three");
+        one = new InstanceComponentAdapter(TestComponent.class, new TestComponent("One"));
+        two = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Two"));
+        three = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Three"));
 
         pico = mock(PicoContainer.class);
         node = (PicoContainer) pico.proxy();
@@ -64,27 +65,27 @@ public class DefaultLifecycleManagerTestCase extends MockObjectTestCase {
 
     public void testStartingInInOrder() {
 
-        pico.expects(once()).method("getComponentInstancesOfType").with(same(Startable.class)).will(returnValue(Arrays.asList(new Object[] {one,two,three})));
+        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
 
-        DefaultLifecycleManager dlm = new DefaultLifecycleManager();
+        DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
         dlm.start(node);
         assertEquals("<One<Two<Three", events.toString());
     }
 
     public void testStoppingInInOrder() {
 
-        pico.expects(once()).method("getComponentInstancesOfType").with(same(Startable.class)).will(returnValue(Arrays.asList(new Object[] {one,two,three})));
+        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
 
-        DefaultLifecycleManager dlm = new DefaultLifecycleManager();
+        DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
         dlm.stop(node);
         assertEquals("Three>Two>One>", events.toString());
     }
 
     public void testDisposingInInOrder() {
 
-        pico.expects(once()).method("getComponentInstancesOfType").with(same(Disposable.class)).will(returnValue(Arrays.asList(new Object[] {one,two,three})));
+        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
 
-        DefaultLifecycleManager dlm = new DefaultLifecycleManager();
+        DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
         dlm.dispose(node);
         assertEquals("!Three!Two!One", events.toString());
     }

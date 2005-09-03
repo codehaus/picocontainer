@@ -69,7 +69,8 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.stop();
         parent.dispose();
 
-        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", parent.getComponentInstance("recording").toString());
+        assertEquals("<Two<One<Four<ThreeThree>Four>One>Two>!Three!Four!One!Two", parent.getComponentInstance("recording").toString());
+
     }
 
     public void testStartStartShouldFail() throws Exception {
@@ -179,7 +180,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.stop();
         parent.dispose();
 
-        assertEquals("<One<Two<ThreeThree>Two>One>!Three!Two!One", parent.getComponentInstance("recording").toString());
+        assertEquals("<Two<One<ThreeThree>One>Two>!Three!One!Two", parent.getComponentInstance("recording").toString());
     }
 
     public void testMaliciousComponentCannotExistInAChildContainerAndSeeAnyElementOfContainerHierarchy() {
@@ -190,24 +191,29 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         MutablePicoContainer child = parent.makeChildContainer();
         child.registerComponentImplementation(Three.class);
         child.registerComponentImplementation(FiveTriesToBeMalicious.class);
-        parent.start();
+        try {
+            parent.start();
+            fail("UnsatisfiableDependenciesException expected");
+        } catch ( UnsatisfiableDependenciesException e) {
+            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set   
+        }
         String recording = parent.getComponentInstance("recording").toString();
-        assertEquals("<One<Two<Three", recording);
+        assertEquals("<Two<One<Three", recording);
         Object five = child.getComponentInstanceOfType(FiveTriesToBeMalicious.class);
         assertNull(five); // can't get instantiated as there is no PicoContainer in any component set.
         recording = parent.getComponentInstance("recording").toString();
-        assertEquals("<One<Two<Three", recording); // still the same
+        assertEquals("<Two<One<Three", recording); // still the same
 
     }
 
 
     public static class NotStartable {
-        public NotStartable() {
-            Assert.fail("Shouldn't be instantiated");
+         public void start(){
+            Assert.fail("start() should not get invoked on NonStartable");
         }
     }
 
-    public void testOnlyStartableComponentsAreInstantiatedOnStart() {
+    public void testOnlyStartableComponentsAreStartedOnStart() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponentImplementation("recording", StringBuffer.class);
         pico.registerComponentImplementation(One.class);

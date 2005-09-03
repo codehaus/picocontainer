@@ -9,12 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
+import java.io.Serializable;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.defaults.*;
-
-import java.io.Serializable;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * <p/>
@@ -26,22 +28,13 @@ import java.io.Serializable;
  */
 public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
     private final ComponentAdapterFactory caf;
-    private LifecycleManager lifecycleManager;
 
     /**
      * Creates a new container with a parent container.
      */
-    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent, LifecycleManager lifecycleManager) {
-        super(new DefaultPicoContainer(makeComponentAdapterFactory(caf), parent, lifecycleManager));
+    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
+        super(new DefaultPicoContainer(makeComponentAdapterFactory(caf), parent));
         this.caf = caf;
-        this.lifecycleManager = lifecycleManager;
-    }
-
-    /**
-     * Creates a new container with a parent container.
-     */
-    private CachingPicoContainer(CachingComponentAdapterFactory caf, PicoContainer parent) {
-        this(caf, parent, new DefaultLifecycleManager());
     }
 
     private static CachingComponentAdapterFactory makeComponentAdapterFactory(ComponentAdapterFactory caf) {
@@ -51,22 +44,11 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
         return new CachingComponentAdapterFactory(caf);
     }
 
-    public CachingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        this(makeComponentAdapterFactory(caf), parent);
-    }
-
     /**
      * Creates a new container with a parent container.
      */
     public CachingPicoContainer(PicoContainer parent) {
         this(makeComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent);
-    }
-
-    /**
-     * Creates a new container with a parent container.
-     */
-    public CachingPicoContainer(PicoContainer parent, LifecycleManager lifecycleManager) {
-        this(makeComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent, lifecycleManager);
     }
     
     /**
@@ -86,7 +68,7 @@ public class CachingPicoContainer extends AbstractDelegatingMutablePicoContainer
 
 
     public MutablePicoContainer makeChildContainer() {
-        CachingPicoContainer pc = new CachingPicoContainer(caf, this, lifecycleManager);
+        CachingPicoContainer pc = new CachingPicoContainer(caf, this);
         getDelegate().addChildContainer(pc);
         return pc;
     }

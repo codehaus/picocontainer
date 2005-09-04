@@ -96,16 +96,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
     }
 
-    /**
-         * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
-         * and a parent container.
-         *
-         * @param parent the parent container (used for component dependency lookups).
-         */
-    public DefaultPicoContainer(PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(), parent);
-    }
 
+    /**
+      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * custom ComponentMonitor
+      *
+      * @param componentMonitor the ComponentMonitor to use
+      * @param parent the parent container (used for component dependency lookups).
+      */
+    public DefaultPicoContainer(ComponentMonitor componentMonitor, PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(componentMonitor), parent);
+    }
+    
     /**
      * Creates a new container with a custom ComponentAdapterFactory and no parent container.
      *
@@ -116,15 +118,25 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-         * Creates a new container with the DefaultComponentAdapterFactory using a
-         * custom ComponentMonitor
-         *
-         * @param componentMonitor the ComponentMonitor
-         */
+      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * custom ComponentMonitor
+      *
+      * @param componentMonitor the ComponentMonitor to use
+      */
     public DefaultPicoContainer(ComponentMonitor componentMonitor) {
         this(new DefaultComponentAdapterFactory(componentMonitor), null);
     }
 
+    /**
+     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
+     * and a parent container.
+     *
+     * @param parent the parent container (used for component dependency lookups).
+     */
+    public DefaultPicoContainer(PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(), parent);
+    }
+    
     /**
      * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and no parent container.
      */

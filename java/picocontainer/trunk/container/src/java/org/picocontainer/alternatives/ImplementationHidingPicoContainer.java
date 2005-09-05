@@ -17,6 +17,7 @@ import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.

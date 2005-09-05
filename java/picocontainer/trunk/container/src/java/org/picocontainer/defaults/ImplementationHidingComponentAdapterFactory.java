@@ -1,12 +1,8 @@
-package org.picocontainer.alternatives;
+package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Aslak Helles&oslash;y

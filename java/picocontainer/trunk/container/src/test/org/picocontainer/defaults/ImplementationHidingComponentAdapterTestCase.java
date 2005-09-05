@@ -1,4 +1,4 @@
-package org.picocontainer.alternatives;
+package org.picocontainer.defaults;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.ImplementationHidingComponentAdapter;
+import org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory;
 
 public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 

@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.alternatives;
+package org.picocontainer.defaults;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -19,9 +19,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -101,41 +98,4 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         return classes;
     }
 
-    // These two methods are copied from ProxyToys' ClassHierarchyIntrospector
-    // TODO: Why? These two are currently not called in the complete Pico/Nano/Micro codebase ...
-    // they just decrease coverage significantly ...
-    /* *
-     * Get all interfaces of the given type.
-     * If the type is a class, the returned list contains any interface, that is
-     * implemented by the class. If the type is an interface, the all
-     * superinterfaces and the interface itself are included.
-     *
-     * @param clazz type to explore.
-     * @return an array with all interfaces. The array may be empty.
-     */
-    /*
-    public static Class[] getAllInterfaces(Class clazz) {
-        Set interfaces = new HashSet();
-        getInterfaces(clazz, interfaces);
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
-    }
-
-    private static void getInterfaces(Class clazz, Set interfaces) {
-        if (clazz.isInterface()) {
-            interfaces.add(clazz);
-        }
-        // Class.getInterfaces will return only the interfaces that are
-        // implemented by the current class. Therefore we must loop up
-        // the hierarchy for the superclasses and the superinterfaces.
-        while (clazz != null) {
-            Class[] implemented = clazz.getInterfaces();
-            for (int i = 0; i < implemented.length; i++) {
-                if (!interfaces.contains(implemented[i])) {
-                    getInterfaces(implemented[i], interfaces);
-                }
-            }
-            clazz = clazz.getSuperclass();
-        }
-    }
-    */
 }

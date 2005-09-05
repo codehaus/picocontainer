@@ -10,20 +10,18 @@
 
 package org.picocontainer;
 
-import org.picocontainer.defaults.LifecycleStrategy;
-
 /**
  * A manager for the lifecycle of a container's components.  
  * The lifecycle manager is implemented by the component adapters
  * which will resolve the dependencies of the component instance and 
  * delegate the implementation of the lifecycle control to the 
- * {@link LifecycleStrategy lifecycle strategy}.
+ * {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy}.
  * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  * @version $Revision$
- * @see LifecycleStrategy 
+ * @see org.picocontainer.defaults.LifecycleStrategy 
  * @since 1.2
  */
 public interface LifecycleManager {

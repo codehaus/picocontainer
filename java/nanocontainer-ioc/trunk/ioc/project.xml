@@ -10,7 +10,7 @@
         Only needed in one line of code in AvalonUtil. AH. -->
         <dependency>
             <id>proxytoys</id>
-            <version>0.2-RC1</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>avalon-framework</groupId>

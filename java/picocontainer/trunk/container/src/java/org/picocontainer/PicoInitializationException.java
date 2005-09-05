@@ -21,6 +21,7 @@ public class PicoInitializationException extends PicoException {
     /**
      * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
      * that caused this one.
+     * @deprecated Use public constructors
      */
     protected PicoInitializationException() {
     }

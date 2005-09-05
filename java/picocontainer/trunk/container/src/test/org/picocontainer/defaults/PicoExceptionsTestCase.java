@@ -9,14 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -25,6 +17,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoInstantiationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 
 /**
  * Unit tests for the several PicoException classes.
@@ -73,10 +74,24 @@ public class PicoExceptionsTestCase
         executeTestOfStandardException(PicoInitializationException.class);
     }
 
+    public void testPicoInitializationExceptionWithDefaultConstructor() {
+        TestException e = new TestException();
+        assertNull(e.getMessage());
+        assertNull(e.getCause());
+    }
+    
+    private static class TestException extends PicoInitializationException {
+        
+    }
+
+    public void testPicoInstantiationException() {
+        executeTestOfStandardException(PicoInstantiationException.class);
+    }
+
     public void testPicoIntrospectionException() {
         executeTestOfStandardException(PicoIntrospectionException.class);
     }
-
+    
     public void testPicoRegistrationException() {
         executeTestOfStandardException(PicoRegistrationException.class);
     }
@@ -109,5 +124,6 @@ public class PicoExceptionsTestCase
         writer.flush();
         out.close();
         assertTrue(out.toString().indexOf("Caused by:") > 0);
+        simpleException.printStackTrace();
     }
 }

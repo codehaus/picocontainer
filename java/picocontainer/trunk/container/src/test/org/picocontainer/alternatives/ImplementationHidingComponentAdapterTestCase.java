@@ -1,14 +1,18 @@
 package org.picocontainer.alternatives;
 
-import junit.framework.TestCase;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 
 public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 
@@ -26,18 +30,31 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
         try {
             ihca.getComponentInstance(null);
-            fail("Oh no.");
+            fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
+            // expected        
         }
     }
 
+    public void testFactoryWithDefaultStrictMode(){
+        ComponentAdapterFactory factory = new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());        
+        ComponentAdapter ihca = factory.createComponentAdapter("ww", Footle.class, new Parameter[0]);
+        try {
+            ihca.getComponentInstance(null);
+            fail("PicoIntrospectionException expected");
+        } catch (PicoIntrospectionException e) {
+            // expected        
+        }
+    }
+    
     public void testShouldThrowExceptionWhenAccessingNonInterfaceKeyedComponentInStrictMode() {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww", Footle.class);
         ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
         try {
             ihca.getComponentInstance(null);
-            fail("Oh no.");
+            fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
+            // expected        
         }
     }
 
@@ -61,4 +78,5 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         }
 
     }
+
 }

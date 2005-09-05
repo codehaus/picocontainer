@@ -135,8 +135,14 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         mpc.registerComponentImplementation(Iterator.class, UnsatisfiableIterator.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         try {
-            new VerifyingVisitor().traverse(ipc);;
-            fail("wrong!");
+            new VerifyingVisitor().traverse(ipc);
+            fail("PicoVerificationException expected");
+        } catch (PicoVerificationException e) {
+            // expected
+        }
+        try {
+            ipc.verify();
+            fail("PicoVerificationException expected");
         } catch (PicoVerificationException e) {
             // expected
         }

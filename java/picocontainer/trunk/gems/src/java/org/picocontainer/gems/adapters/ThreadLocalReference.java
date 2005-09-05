@@ -12,6 +12,8 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.defaults.ObjectReference;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 
@@ -21,4 +23,14 @@ import java.io.Serializable;
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalReference extends ThreadLocal implements ObjectReference, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private void writeObject(final ObjectOutputStream out) {
+        if(out != null); // eliminate warning because of unused parameter
+    }
+
+    private void readObject(final ObjectInputStream in) {
+        if(in != null); // eliminate warning because of unused parameter
+    }
 }

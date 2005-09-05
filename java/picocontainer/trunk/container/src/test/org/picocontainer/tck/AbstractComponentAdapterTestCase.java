@@ -9,24 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
-import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
@@ -48,9 +37,21 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.SimpleReference;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.JVM;
-import com.thoughtworks.xstream.io.xml.XppDriver;
+import org.jmock.MockObjectTestCase;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -229,26 +230,37 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
+    final public void testSER_isXStreamSerializableWithPureReflection() {
+        if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
+            assertSame(getComponentAdapterType(), componentAdapter.getClass());
+            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            assertNotNull(instance);
+            final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
+            final String xml = xstream.toXML(componentAdapter);
+            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
+            assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
+            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+            assertNotNull(instanceAfterSerialization);
+            assertSame(instance.getClass(), instanceAfterSerialization.getClass());
+        }
+    }
+
     final public void testSER_isXStreamSerializable() {
-        if (JVM.is14()) {
-            if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
-                final MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                        createDefaultComponentAdapterFactory());
-                final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
-                assertSame(getComponentAdapterType(), componentAdapter.getClass());
-                final Object instance = componentAdapter.getComponentInstance(picoContainer);
-                assertNotNull(instance);
-                // @todo: Ensure XStream works with PureJRP ==> jdk 1.3 compatibility
-                // final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
-                final XStream xstream = new XStream(new XppDriver());
-                final String xml = xstream.toXML(componentAdapter);
-                final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
-                assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
-                final Object instanceAfterSerialization = serializedComponentAdapter
-                        .getComponentInstance(picoContainer);
-                assertNotNull(instanceAfterSerialization);
-                assertSame(instance.getClass(), instanceAfterSerialization.getClass());
-            }
+        if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
+            assertSame(getComponentAdapterType(), componentAdapter.getClass());
+            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            assertNotNull(instance);
+            final XStream xstream = new XStream(new XppDriver());
+            final String xml = xstream.toXML(componentAdapter);
+            final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
+            assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
+            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+            assertNotNull(instanceAfterSerialization);
+            assertSame(instance.getClass(), instanceAfterSerialization.getClass());
         }
     }
 

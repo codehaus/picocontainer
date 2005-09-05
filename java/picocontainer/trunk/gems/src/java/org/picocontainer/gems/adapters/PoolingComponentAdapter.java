@@ -12,7 +12,8 @@ package org.picocontainer.gems.adapters;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.toys.pool.Pool;
-import com.thoughtworks.proxy.toys.pool.Resetter;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -97,6 +98,19 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
          * @since 1.2
          */
         Resetter getResetter();
+
+        /**
+         * Retrieve the serialization mode of the pool. Following values are possible:
+         * <ul>
+         * <li>{@link Pool#SERIALIZATION_STANDARD}</li>
+         * <li>{@link Pool#SERIALIZATION_NONE}</li>
+         * <li>{@link Pool#SERIALIZATION_FORCE}</li>
+         * </ul>
+         * 
+         * @return the serialization mode
+         * @since 1.2
+         */
+        int getSerializationMode();
     }
 
     /**
@@ -142,6 +156,13 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
             return DEFAULT_RESETTER;
         }
 
+        /**
+         * {@inheritDoc} Returns {@link Pool#SERIALIZATION_STANDARD}.
+         */
+        public int getSerializationMode() {
+            return Pool.SERIALIZATION_STANDARD;
+        }
+
     }
 
     /**
@@ -163,22 +184,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
      */
     public static final int FAIL_ON_WAIT = -1;
     /**
-     * <code>DEFAULT_RESETTER</code> is the Resetter used by default.
-     * 
-     * @todo Use a NoOperationResetter from ptoys.
+     * <code>DEFAULT_RESETTER</code> is a {@link NoOperationResetter} that is used by default.
      */
-    public static final Resetter DEFAULT_RESETTER = new Resetter() {
+    public static final Resetter DEFAULT_RESETTER = new NoOperationResetter();
 
-        public boolean reset(Object object) {
-            return true;
-        }
-
-    };
-
-    private final int maxPoolSize;
-    private final int waitMilliSeconds;
-    private final Pool pool;
-    private final boolean autostartGC;
+    private int maxPoolSize;
+    private int waitMilliSeconds;
+    private Pool pool;
+    private boolean autostartGC;
 
     /**
      * Construct a PoolingComponentAdapter with default settings.
@@ -198,6 +211,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
      * 
      * @param delegate the delegated ComponentAdapter
      * @param context the {@link Context} of the pool
+     * @throws IllegalArgumentException if the maximum pool size or the serialization mode is invalid
      * @since 1.2
      */
     public PoolingComponentAdapter(ComponentAdapter delegate, Context context) {
@@ -210,7 +224,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         }
         Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate.getComponentKey() : delegate
                 .getComponentImplementation();
-        this.pool = new Pool(type, context.getResetter(), context.getProxyFactory());
+        this.pool = new Pool(type, context.getResetter(), context.getProxyFactory(), context.getSerializationMode());
     }
 
     /**

@@ -15,6 +15,7 @@ import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -25,13 +26,13 @@ import java.util.Set;
  */
 public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCase {
 
-    static public interface Identifiable {
+    public static interface Identifiable {
         int getId();
     }
 
-    static public class InstanceCounter implements Identifiable {
+    public static class InstanceCounter implements Identifiable, Serializable {
         private static int counter = 0;
-        final private int id;
+        private int id;
 
         public InstanceCounter() {
             id = counter++;
@@ -167,7 +168,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void XXXtestGrowsAlways() {
+    public void testGrowsAlways() {
         PoolingComponentAdapter componentAdapter = new PoolingComponentAdapter(
                 new ConstructorInjectionComponentAdapter("foo", Object.class),
                 new PoolingComponentAdapter.DefaultContext() {
@@ -219,9 +220,9 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                 });
 
         assertEquals(0, componentAdapter.size());
-        Object borrowed0 = componentAdapter.getComponentInstance(null);
+        Identifiable borrowed0 = (Identifiable)componentAdapter.getComponentInstance(null);
         assertEquals(1, componentAdapter.size());
-        Object borrowed1 = componentAdapter.getComponentInstance(null);
+        Identifiable borrowed1 = (Identifiable)componentAdapter.getComponentInstance(null);
         assertEquals(2, componentAdapter.size());
         try {
             componentAdapter.getComponentInstance(null);
@@ -230,7 +231,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
             assertTrue(e.getMessage().indexOf("exhausted") >= 0);
         }
 
-        //assertNotSame(borrowed0, borrowed1);
+        assertFalse(borrowed0.getId() == borrowed1.getId());
     }
 
     public void testInternalGCCall() {
@@ -260,7 +261,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
 
     protected int getComponentAdapterNature() {
         // @todo: It is serializable ...
-        return super.getComponentAdapterNature() & ~(INSTANTIATING | RESOLVING | VERIFYING | SERIALIZABLE);
+        return super.getComponentAdapterNature() & ~(INSTANTIATING | RESOLVING | VERIFYING);
     }
 
     private ComponentAdapter createPoolOfTouchables() {
@@ -279,4 +280,15 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
     protected ComponentAdapter prepDEF_visitable() {
         return createPoolOfTouchables();
     }
+
+    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+        return new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                Identifiable.class, InstanceCounter.class));
+    }
+
+    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
+        return new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                Identifiable.class, InstanceCounter.class));
+    }
+
 }

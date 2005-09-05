@@ -56,9 +56,9 @@ import java.lang.reflect.Method;
  */
 public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
 
-    private final Class type;
-    private final ProxyFactory proxyFactory;
-    private final boolean isCompatible;
+    private Class type;
+    private ProxyFactory proxyFactory;
+    private boolean isCompatible;
 
     /**
      * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.

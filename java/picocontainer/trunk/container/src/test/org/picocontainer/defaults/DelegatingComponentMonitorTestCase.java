@@ -37,6 +37,15 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         dcm.instantiating(null);
     }
 
+    public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
+        ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
+        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(delegate);
+        ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
+        assertEquals(delegate, dcm.currentMonitor());
+        dcm.changeMonitor(monitor);
+        assertEquals(monitor, dcm.currentMonitor());
+    }
+    
     public void testDelegatingMonitorReturnsDelegateThatDoesNotSupportMonitorStrategy() {
         ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
         DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(delegate);

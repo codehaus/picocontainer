@@ -104,7 +104,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                                            final Class componentImplementation,
                                            Parameter[] parameters,
                                            boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DelegatingComponentMonitor());
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
     /**

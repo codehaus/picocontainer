@@ -9,13 +9,14 @@
 
 package org.picocontainer.defaults;
 
+import java.util.Arrays;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-
-import java.util.Arrays;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -27,13 +28,9 @@ import java.util.Arrays;
 public class DelegatingLifecycleManagerTestCase extends MockObjectTestCase {
 
     StringBuffer events = new StringBuffer();
-    Object one;
-    Object two;
-    Object three;
 
-    Mock pico;
-    PicoContainer node;
-
+    Object[] lifecycleManagers;
+    
     class TestComponent implements Startable, Disposable{
         String code;
 
@@ -54,40 +51,39 @@ public class DelegatingLifecycleManagerTestCase extends MockObjectTestCase {
 
     }
     protected void setUp() throws Exception {
-        one = new InstanceComponentAdapter(TestComponent.class, new TestComponent("One"));
-        two = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Two"));
-        three = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Three"));
-
-        pico = mock(PicoContainer.class);
-        node = (PicoContainer) pico.proxy();
-
+        InstanceComponentAdapter one = new InstanceComponentAdapter(TestComponent.class, new TestComponent("One"));
+        InstanceComponentAdapter two = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Two"));
+        InstanceComponentAdapter three = new InstanceComponentAdapter(TestComponent.class, new TestComponent("Three"));
+        lifecycleManagers = new Object[] {one,two,three}; 
     }
 
-    public void testStartingInInOrder() {
-
-        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
-
+    public void testLifecycleOrderIsMaintained() {
         DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
-        dlm.start(node);
-        assertEquals("<One<Two<Three", events.toString());
+        PicoContainer pico = mockPicoContainer(lifecycleManagers);
+        dlm.start(pico);
+        dlm.stop(pico);
+        dlm.dispose(pico);
+        assertEquals("<One<Two<ThreeThree>Two>One>!Three!Two!One", events.toString());
     }
 
-    public void testStoppingInInOrder() {
-
-        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
-
+    public void testLifecycleIsIgnoredIfAdaptersAreNotLifecycleManagers() {
         DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
-        dlm.stop(node);
-        assertEquals("Three>Two>One>", events.toString());
+        PicoContainer pico = mockPicoContainer(new Object[] {mockComponentAdapterThatIsNotALifecycleManager()});
+        dlm.start(pico);
+        dlm.stop(pico);
+        dlm.dispose(pico);
+        assertEquals("", events.toString());        
     }
 
-    public void testDisposingInInOrder() {
+    private ComponentAdapter mockComponentAdapterThatIsNotALifecycleManager() {
+        Mock mock = mock(ComponentAdapter.class);
+        return (ComponentAdapter) mock.proxy();
+    }
 
-        pico.expects(once()).method("getComponentAdapters").will(returnValue(Arrays.asList(new Object[] { one,two,three})));
-
-        DelegatingLifecycleManager dlm = new DelegatingLifecycleManager();
-        dlm.dispose(node);
-        assertEquals("!Three!Two!One", events.toString());
+    private PicoContainer mockPicoContainer(Object[] adapters) {
+        Mock mock = mock(PicoContainer.class);
+        mock.expects(atLeastOnce()).method("getComponentAdapters").will(returnValue(Arrays.asList(adapters)));
+        return (PicoContainer) mock.proxy();
     }
 
 }

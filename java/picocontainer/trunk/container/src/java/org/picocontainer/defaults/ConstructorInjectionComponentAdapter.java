@@ -113,7 +113,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                                                 final Class componentImplementation,
                                                 Parameter[] parameters,
                                                 boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, new DelegatingComponentMonitor());
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
     /**

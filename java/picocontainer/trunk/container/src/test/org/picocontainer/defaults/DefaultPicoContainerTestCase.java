@@ -75,6 +75,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(HashMap.class, pico.getComponentInstanceOfType(Serializable.class).getClass());
     }
 
+    public void testComponentInstancesListIsReturnedForNullType(){
+        MutablePicoContainer pico = createPicoContainer(null);
+        List componentInstances = pico.getComponentInstancesOfType(null);
+        assertNotNull(componentInstances);
+        assertEquals(0, componentInstances.size());
+    }
+    
     /*
     When pico tries to instantiate ArrayList, it will attempt to use the constructor that takes a
     java.util.Collection. Since both the ArrayList and LinkedList are Collection, it will fail with
@@ -219,7 +226,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertNotNull(t3);
         assertTrue("old writer was used", writer1.toString().length() < writer2.toString().length());
     }
-
+    
     public void testCanReturnCurrentMonitor() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);

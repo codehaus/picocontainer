@@ -82,6 +82,11 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         return pico;
     }
 
+    public void testBasicInstantiationAndContainment() throws PicoException, PicoRegistrationException {
+        PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();    
+        assertTrue("Component should be instance of Touchable", Touchable.class.isAssignableFrom(pico.getComponentAdapterOfType(Touchable.class).getComponentImplementation()));
+    }
+
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException, PicoRegistrationException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         assertNotNull("Container should have Touchable component",
@@ -773,6 +778,7 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
             assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);
         }
     }
+
 
     public static class DerivedTouchable extends SimpleTouchable {
         public DerivedTouchable() {

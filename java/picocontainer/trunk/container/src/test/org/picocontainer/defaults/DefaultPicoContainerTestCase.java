@@ -22,12 +22,14 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -43,13 +45,14 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         return new DefaultPicoContainer(parent);
     }
 
-    // to go to parent testcase ?
-    public void testBasicInstantiationAndContainment() throws PicoException, PicoRegistrationException {
-        DefaultPicoContainer pico = (DefaultPicoContainer) createPicoContainerWithTouchableAndDependsOnTouchable();
-
-        assertTrue("Component should be instance of Touchable", Touchable.class.isAssignableFrom(pico.getComponentAdapterOfType(Touchable.class).getComponentImplementation()));
+    public void testInstantiationWithNullComponentAdapterFactory(){
+        try {
+            new DefaultPicoContainer((ComponentAdapterFactory)null, (PicoContainer)null);
+            fail("NPE expected");
+        } catch (Exception e) {
+            // expected
+        }
     }
-
     public void testUpDownDependenciesCannotBeFollowed() {
         MutablePicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = createPicoContainer(parent);
@@ -130,16 +133,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertNotNull(pico.getComponentInstance(Thingie.class));
     }
 
-    public void getComponentAdaptersOfTypeReturnsUnmodifiableList() {
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponentImplementation(Thingie.class);
-        try {
-            pico.getComponentAdaptersOfType(Thingie.class).add("blah");
-            fail("Expected an exception!");
-        } catch (UnsupportedOperationException th) {
-        }
+    public void testGetComponentAdaptersOfTypeNullReturnsEmptyList() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        List adapters = pico.getComponentAdaptersOfType(null);
+        assertNotNull(adapters);
+        assertEquals(0, adapters.size());
     }
-
+    
 
     public static class Service {
     }
@@ -181,6 +181,18 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
+    public void testInstantiationWithMonitorAndParent() {
+        StringWriter writer = new StringWriter();
+        ComponentMonitor monitor = new WriterComponentMonitor(writer);
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        DefaultPicoContainer child = new DefaultPicoContainer(monitor, parent);
+        parent.registerComponentImplementation("st", SimpleTouchable.class);
+        child.registerComponentImplementation("dot", DependsOnTouchable.class);
+        DependsOnTouchable dot = (DependsOnTouchable) child.getComponentInstance("dot");
+        assertNotNull(dot);
+        assertTrue("writer not empty", writer.toString().length() > 0);
+    }
+    
     public void testCanChangeMonitor() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
@@ -226,8 +238,18 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertNotNull(t3);
         assertTrue("old writer was used", writer1.toString().length() < writer2.toString().length());
     }
+
+    public void testChangeMonitorIsIgnoredIfNotSupportingStrategy(){
+        StringWriter writer = new StringWriter();
+        ComponentMonitor monitor = new WriterComponentMonitor(writer);
+        DefaultPicoContainer parent = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
+        parent.addChildContainer(new EmptyPicoContainer());
+        parent.registerComponentImplementation("t1", SimpleTouchable.class);
+        parent.changeMonitor(monitor);
+        assertTrue("writer empty", writer.toString().length() == 0);
+    }
     
-    public void testCanReturnCurrentMonitor() {
+    public void testCanReturnCurrentMonitorFromComponentAdapterFactory() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
@@ -238,8 +260,38 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(monitor2, pico.currentMonitor());
     }
 
+    public void testCanReturnCurrentMonitorFromComponentAdapter() {
+        StringWriter writer1 = new StringWriter();
+        ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
+        InstanceComponentAdapter adapterWithMonitor = new InstanceComponentAdapter(SimpleTouchable.class.getName(), new SimpleTouchable());
+        adapterWithMonitor.changeMonitor(monitor1);
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(adapterWithMonitor));
+        pico.registerComponentImplementation("t1", SimpleTouchable.class);
+        assertEquals(monitor1, pico.currentMonitor());
+        StringWriter writer2 = new StringWriter();
+        ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
+        pico.changeMonitor(monitor2);
+        assertEquals(monitor2, pico.currentMonitor());
+    }
+
+    public void testCanReturnCurrentMonitorFromChildContainer() {
+        StringWriter writer1 = new StringWriter();
+        ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
+        pico.registerComponentImplementation("t1", SimpleTouchable.class);
+        // first child does not support ComponentMonitorStrategy
+        pico.addChildContainer(new EmptyPicoContainer());
+        // second child does support ComponentMonitorStrategy
+        pico.addChildContainer(new DefaultPicoContainer(monitor1));
+        assertEquals(monitor1, pico.currentMonitor());
+        StringWriter writer2 = new StringWriter();
+        ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
+        pico.changeMonitor(monitor2);
+        assertEquals(monitor2, pico.currentMonitor());
+    }
+    
     public void testCannotReturnCurrentMonitor() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(null));
         try {
             pico.currentMonitor();
             fail("PicoIntrospectionException expected");
@@ -249,11 +301,35 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     private static class ComponentAdapterFactoryWithNoMonitor implements ComponentAdapterFactory {
-        public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-            return null;
+        private ComponentAdapter adapter;
+        public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
+            this.adapter = adapter;
         }
-        
+        public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            return adapter;
+        }        
     }
+    
+    private static class ComponentAdapterWithNoMonitor implements ComponentAdapter {
+        private Object instance;
+        public ComponentAdapterWithNoMonitor(Object instance){
+            this.instance = instance;
+        }
+        public Object getComponentKey() {
+            return instance.getClass();
+        }
+        public Class getComponentImplementation() {
+            return instance.getClass();
+        }
+        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+            return instance;
+        }
+        public void verify(PicoContainer container) throws PicoIntrospectionException {
+        }
+        public void accept(PicoVisitor visitor) {
+        }
+    }
+    
     public void testMakeChildContainer() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.registerComponentImplementation("t1", SimpleTouchable.class);

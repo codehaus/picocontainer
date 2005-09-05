@@ -65,7 +65,7 @@ public class InstanceComponentAdapterTestCase
         }       
     }
     
-    public void testCustomLifecycleStrategyCanBeInjected() {
+    public void testCustomLifecycleCanBeInjected() {
         NullLifecycle component = new NullLifecycle();
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(NullLifecycle.class, component, strategy);

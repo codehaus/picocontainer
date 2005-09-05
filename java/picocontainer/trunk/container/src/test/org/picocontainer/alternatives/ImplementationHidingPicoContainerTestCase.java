@@ -56,6 +56,8 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         List list2 = (List) pico.getComponentInstanceOfType(List.class);
         assertNotNull(list1);
         assertNotNull(list2);
+        assertFalse(list1 instanceof ArrayList);
+        assertFalse(list2 instanceof ArrayList);
         assertFalse(list1 == list2);
     }
    
@@ -67,4 +69,10 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         assertNotNull(t1);
         assertTrue(t1 instanceof SimpleTouchable);        
     }
+
+    public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
+        // IHPC does not cache by default.
+    }
+
+
 }

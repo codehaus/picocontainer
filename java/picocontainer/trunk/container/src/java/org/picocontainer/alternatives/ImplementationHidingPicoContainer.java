@@ -5,46 +5,59 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
+ * Original code by the committers                                           *
  *****************************************************************************/
 package org.picocontainer.alternatives;
 
 import java.io.Serializable;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.
  * It's very simple. Instances that are registered directly and components registered without key
- * are not hidden.
+ * are not hidden. Hiding is achieved with dynamic proxies from Java's reflection api.
  *
+ * @see CachingPicoContainer
+ * @see ImplementationHidingCachingPicoContainer 
  * @author Paul Hammant
  * @version $Revision$
- * @since 1.1
  */
 public class ImplementationHidingPicoContainer extends AbstractDelegatingMutablePicoContainer implements Serializable {
-
-    private ComponentAdapterFactory caf;
+    private final ComponentAdapterFactory caf;
 
     /**
      * Creates a new container with a parent container.
      */
     public ImplementationHidingPicoContainer(ComponentAdapterFactory caf, PicoContainer parent) {
-        super(new DefaultPicoContainer(caf, parent));
+        super(new DefaultPicoContainer(makeComponentAdapterFactory(caf), parent));
         this.caf = caf;
+    }
+
+    private static ImplementationHidingComponentAdapterFactory makeComponentAdapterFactory(ComponentAdapterFactory caf) {
+        if (caf instanceof ImplementationHidingComponentAdapterFactory) {
+            return (ImplementationHidingComponentAdapterFactory) caf;
+        }
+        return new ImplementationHidingComponentAdapterFactory(caf, false);
     }
 
     /**
      * Creates a new container with a parent container.
      */
     public ImplementationHidingPicoContainer(PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(), parent);
+        this(makeComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent);
+    }
+
+    /**
+     * Creates a new container with a parent container.
+     */
+    public ImplementationHidingPicoContainer(ComponentAdapterFactory caf) {
+        this(makeComponentAdapterFactory(caf), null);
     }
 
 
@@ -52,31 +65,9 @@ public class ImplementationHidingPicoContainer extends AbstractDelegatingMutable
      * Creates a new container with no parent container.
      */
     public ImplementationHidingPicoContainer() {
-        this(null);
+        this((PicoContainer) null);
     }
 
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        if (componentKey instanceof Class) {
-            Class clazz = (Class) componentKey;
-            if (clazz.isInterface()) {
-                ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, null);
-                return getDelegate().registerComponent(new ImplementationHidingComponentAdapter(delegate, true));
-            }
-        }
-        return getDelegate().registerComponentImplementation(componentKey, componentImplementation);
-    }
-
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
-        if (componentKey instanceof Class) {
-            Class clazz = (Class) componentKey;
-            if (clazz.isInterface()) {
-                ComponentAdapter delegate = caf.createComponentAdapter(componentKey, componentImplementation, parameters);
-                ImplementationHidingComponentAdapter ihDelegate = new ImplementationHidingComponentAdapter(delegate, true);
-                return getDelegate().registerComponent(ihDelegate);
-            }
-        }
-        return getDelegate().registerComponentImplementation(componentKey, componentImplementation, parameters);
-    }
 
     public MutablePicoContainer makeChildContainer() {
         ImplementationHidingPicoContainer pc = new ImplementationHidingPicoContainer(caf, this);

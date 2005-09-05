@@ -19,10 +19,10 @@ import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
- * <p/>
- * The Cacing version of  {@link org.picocontainer.defaults.DefaultPicoContainer}
- * </p>
+ * The Caching version of  {@link org.picocontainer.defaults.DefaultPicoContainer}
  *
+ * @see ImplementationHidingCachingPicoContainer
+ * @see ImplementationHidingPicoContainer
  * @author Paul Hammant
  * @version $Revision$
  */

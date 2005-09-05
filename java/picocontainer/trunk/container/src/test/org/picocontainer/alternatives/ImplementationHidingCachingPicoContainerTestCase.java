@@ -43,7 +43,9 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
         List list2 = (List) pico.getComponentInstanceOfType(List.class);
         assertNotNull(list1);
         assertNotNull(list2);
-        assertTrue(list1 == list2);
+        assertFalse(list1 instanceof ArrayList);
+        assertFalse(list2 instanceof ArrayList);
+        assertSame(list1, list2);
     }
 
 
@@ -54,6 +56,6 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
         Object t1 = child.getParent().getComponentInstance("t1");        
         assertNotNull(t1);
         assertTrue(t1 instanceof SimpleTouchable);        
-    }    
+    }
 
 }

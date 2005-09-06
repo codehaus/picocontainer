@@ -8,7 +8,7 @@
     <dependencies>
         <dependency>
             <id>ant</id>
-            <version>1.5.3-1</version>
+            <version>1.6.5</version>
             <url>http://ant.apache.org/</url>
         </dependency>
 

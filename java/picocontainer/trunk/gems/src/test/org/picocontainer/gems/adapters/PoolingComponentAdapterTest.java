@@ -9,9 +9,12 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -253,6 +256,35 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         }
     }
 
+    public void testDEF_lifecycleManager() {
+        final Class type = getComponentAdapterType();
+        if (LifecycleManager.class.isAssignableFrom(type)) {
+            final StringBuffer buffer = new StringBuffer();
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            picoContainer.registerComponentInstance(buffer);
+            final ComponentAdapter componentAdapter = prepDEF_lifecylceManager(picoContainer);
+            assertSame(getComponentAdapterType(), componentAdapter.getClass());
+            assertEquals(0, buffer.length());
+            picoContainer.start();
+            picoContainer.stop();
+            picoContainer.dispose();
+            //@todo Good general test
+            //assertEquals("<OneOne>One!", buffer.toString());
+        }
+    }
+
+    /**
+     * @todo Auto-generated JavaDoc
+     * @param picoContainer
+     * @param buffer
+     * @return
+     * @since 0.0
+     */
+    private ComponentAdapter prepDEF_lifecylceManager(MutablePicoContainer picoContainer) {
+        return picoContainer.registerComponent(new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.One.class)));
+    }
+
     // -------- TCK -----------
 
     protected Class getComponentAdapterType() {
@@ -260,7 +292,6 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
     }
 
     protected int getComponentAdapterNature() {
-        // @todo: It is serializable ...
         return super.getComponentAdapterNature() & ~(INSTANTIATING | RESOLVING | VERIFYING);
     }
 

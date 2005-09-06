@@ -582,7 +582,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class RecordingLifecycleStrategy implements LifecycleStrategy {
+    public static class RecordingLifecycleStrategy implements LifecycleStrategy {
         private StringBuffer recorder;
         
         public RecordingLifecycleStrategy(StringBuffer recorder) {

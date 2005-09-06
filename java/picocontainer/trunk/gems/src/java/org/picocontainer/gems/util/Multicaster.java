@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Aslak Hellesoy & Joerg Schaible                                       *
+ *****************************************************************************/
 package org.picocontainer.gems.util;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -10,15 +19,23 @@ import java.util.List;
 
 /**
  * Factory for creating a multicaster object that multicasts calls to all
- * components in a PicoContainer instance. This can be used to support additional
- * lifecycle interfaces than PicoContainer's built-in support for Startable and Stoppable.
+ * components in a PicoContainer instance.
  *
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
  * @author Paul Hammant
- * @version $Revision$
+ * @since 1.2
  */
 public class Multicaster {
+    /**
+     * Create a {@link Multicasting} proxy for the components of a {@link PicoContainer}.
+     * 
+     * @param pico the container
+     * @param callInInstantiationOrder <code>true</code> if the components will be called in instantiation order
+     * @param proxyFactory the ProxyFactory to use
+     * @return the Multicasting proxy
+     * @since 1.2
+     */
     public static Object object(PicoContainer pico, boolean callInInstantiationOrder, ProxyFactory proxyFactory) {
         List copy = new ArrayList(pico.getComponentInstances());
 

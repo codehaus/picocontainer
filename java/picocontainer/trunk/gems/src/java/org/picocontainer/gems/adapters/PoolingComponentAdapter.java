@@ -16,8 +16,12 @@ import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.defaults.LifecycleStrategy;
+
+import java.io.Serializable;
 
 
 /**
@@ -41,12 +45,19 @@ import org.picocontainer.defaults.DecoratingComponentAdapter;
  * normalized state. By providing a proper Resetter implementation this can be done automatically. If the object cannot
  * be reused anymore it can also be dropped and the pool may request a new instance.
  * </p>
+ * <p>
+ * The pool supports components with a lifecylce. If the delegated {@link ComponentAdapter} implements a
+ * {@link LifecycleStrategy}, any component retrieved form the pool will be started before and stopped again, when it
+ * returns back into the pool. Also if a component cannot be resetted it will automatically be disposed. If the
+ * container of the pool is disposed, that any returning object is also disposed and will not return to the pool
+ * anymore. Note, that current implementation cannot dispose pooled objects.
+ * </p>
  * 
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public class PoolingComponentAdapter extends DecoratingComponentAdapter {
+public class PoolingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
 
     private static final long serialVersionUID = 1L;
 
@@ -192,6 +203,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
     private int waitMilliSeconds;
     private Pool pool;
     private boolean autostartGC;
+    private boolean disposed;
 
     /**
      * Construct a PoolingComponentAdapter with default settings.
@@ -201,6 +213,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
      */
     public PoolingComponentAdapter(ComponentAdapter delegate) {
         this(delegate, new DefaultContext());
+        disposed = false;
     }
 
     /**
@@ -224,7 +237,10 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
         }
         Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate.getComponentKey() : delegate
                 .getComponentImplementation();
-        this.pool = new Pool(type, context.getResetter(), context.getProxyFactory(), context.getSerializationMode());
+        final Resetter resetter = context.getResetter();
+        this.pool = new Pool(
+                type, delegateSupportsLifecycle() ? new LifecycleResetter(this, resetter) : resetter, context
+                        .getProxyFactory(), context.getSerializationMode());
     }
 
     /**
@@ -238,6 +254,9 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
      * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or was interrupted
      */
     public Object getComponentInstance(PicoContainer container) {
+        if (delegateSupportsLifecycle()) {
+            if (disposed) throw new IllegalStateException("Already disposed");
+        }
         Object componentInstance = null;
         long now = System.currentTimeMillis();
         boolean gc = autostartGC;
@@ -270,6 +289,9 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
                 }
             }
         }
+        if (delegateSupportsLifecycle()) {
+            start(componentInstance);
+        }
         return componentInstance;
     }
 
@@ -281,5 +303,71 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter {
      */
     public int size() {
         return pool.size();
+    }
+
+    private boolean delegateSupportsLifecycle() {
+        return getDelegate() instanceof LifecycleStrategy;
+    }
+
+    static class LifecycleResetter implements Resetter, Serializable {
+        private static final long serialVersionUID = 1L;
+        private Resetter delegate;
+        private PoolingComponentAdapter adapter;
+
+        LifecycleResetter(final PoolingComponentAdapter adapter, final Resetter delegate) {
+            this.adapter = adapter;
+            this.delegate = delegate;
+        }
+
+        public boolean reset(Object object) {
+            final boolean result = delegate.reset(object);
+            adapter.stop(object);
+            if (!result || adapter.disposed) {
+                adapter.dispose(object);
+            }
+            return result && !adapter.disposed;
+        }
+
+    }
+
+    /**
+     * Start of the container ensures that at least one pooled component has been started. Applies only if the delegated
+     * {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * 
+     * @throws IllegalStateException if pool was already disposed
+     */
+    public void start(final PicoContainer container) {
+        if (delegateSupportsLifecycle()) {
+            if (disposed) throw new IllegalStateException("Already disposed");
+            if (pool.size() == 0) {
+                getComponentInstance(container);
+            }
+        }
+    }
+
+    /**
+     * Stop of the container has no effect for the pool. Applies only if the delegated {@link ComponentAdapter} supports
+     * a lifecylce by implementing {@link LifecycleStrategy}.
+     * 
+     * @throws IllegalStateException if pool was already disposed
+     */
+    public void stop(final PicoContainer container) {
+        if (delegateSupportsLifecycle()) {
+            if (disposed) throw new IllegalStateException("Already disposed");
+        }
+    }
+
+    /**
+     * Dispose of the container will dispose all returning objects. They will not be added to the pool anymore. Applies
+     * only if the delegated {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * 
+     * @throws IllegalStateException if pool was already disposed
+     */
+    public void dispose(final PicoContainer container) {
+        if (delegateSupportsLifecycle()) {
+            if (disposed) throw new IllegalStateException("Already disposed");
+            disposed = true;
+            // @todo Dispose all pooled objects.
+        }
     }
 }

@@ -34,14 +34,22 @@ public abstract class RecordingLifecycle implements Startable, Disposable {
     public void dispose() {
         recording.append("!" + code());
     }
+    
+    public String recording() {
+        return recording.toString();
+    }
 
     private String code() {
         String name = getClass().getName();
         int idx = Math.max(name.lastIndexOf('$'), name.lastIndexOf('.'));
         return name.substring(idx + 1);
     }
+    
+    public interface Recorder extends  Startable, Disposable {
+        String recording();
+    }
 
-    public static class One extends RecordingLifecycle {
+    public static class One extends RecordingLifecycle implements Recorder {
         public One(StringBuffer sb) {
             super(sb);
         }

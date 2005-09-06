@@ -21,7 +21,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public abstract class AbstractComponentMonitor implements ComponentMonitor, Serializable {
+public abstract class AbstractComponentMonitor implements ComponentMonitor {
 
     public final static String INSTANTIATING = "PicoContainer: instantiating {0}";
     public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";

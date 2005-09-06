@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -34,7 +33,7 @@ import org.picocontainer.PicoVisitor;
  * @since 1.0
  */
 public abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter 
-                                implements LifecycleManager, LifecycleStrategy {
+                                implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
     protected transient Guard verifyingGuard;
     /** The parameters to use for initialization. */ 
@@ -161,18 +160,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         }
     }
   
-    public void start(PicoContainer container) {
-        start(getComponentInstance(container));
-    }
-
-    public void stop(PicoContainer container) {
-        stop(getComponentInstance(container));
-    }
-
-    public void dispose(PicoContainer container) {
-        dispose(getComponentInstance(container));
-    }
-
     public void start(Object component) {
         lifecycleStrategy.start(component);
     }

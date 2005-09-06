@@ -27,7 +27,7 @@ import org.picocontainer.PicoIntrospectionException;
  * 
  * @version $Revision$
  */
-public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager, LifecycleStrategy {
+public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
 
     private ObjectReference instanceReference;
 

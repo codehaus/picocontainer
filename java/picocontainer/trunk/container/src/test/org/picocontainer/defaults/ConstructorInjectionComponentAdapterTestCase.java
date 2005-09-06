@@ -22,7 +22,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
@@ -322,10 +321,10 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0], false, 
                 new DelegatingComponentMonitor(), strategy);
-        PicoContainer pico = null;
-        cica.start(pico);
-        cica.stop(pico);
-        cica.dispose(pico);
+        Touchable touchable = new SimpleTouchable();
+        cica.start(touchable);
+        cica.stop(touchable);
+        cica.dispose(touchable);
         assertEquals("<start<stop<dispose", strategy.recording());
     }
 }

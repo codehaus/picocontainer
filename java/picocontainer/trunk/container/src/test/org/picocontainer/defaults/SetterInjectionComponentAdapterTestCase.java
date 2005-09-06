@@ -20,6 +20,8 @@ import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 
 public class SetterInjectionComponentAdapterTestCase
@@ -308,10 +310,10 @@ public class SetterInjectionComponentAdapterTestCase
         SetterInjectionComponentAdapter sica = new SetterInjectionComponentAdapter(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0], false, 
                 new DelegatingComponentMonitor(), strategy);
-        PicoContainer pico = null;
-        sica.start(pico);
-        sica.stop(pico);
-        sica.dispose(pico);
+        Touchable touchable = new SimpleTouchable();
+        sica.start(touchable);
+        sica.stop(touchable);
+        sica.dispose(touchable);
         assertEquals("<start<stop<dispose", strategy.recording());
     }
 

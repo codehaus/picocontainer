@@ -7,37 +7,39 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.alternatives;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @see org.picocontainer.gems.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
- * @since 1.2, moved from package {@link org.picocontainer.alternatives}
+ * @since 1.1
+ * @deprecated since 1.2, moved to package {@link org.picocontainer.defaults}
  */
-public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    private final boolean strict;
+public class ImplementationHidingComponentAdapterFactory extends
+        org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory {
 
     /**
-     * For serialisation only. Do not use this constructor explicitly.
+     * @deprecated since 1.2, moved to package {@link org.picocontainer.defaults}
      */
-    public ImplementationHidingComponentAdapterFactory() {
-        this(null);
+    ImplementationHidingComponentAdapterFactory() {
+        super();
     }
 
+    /**
+     * @deprecated since 1.2, moved to package {@link org.picocontainer.defaults}
+     */
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate, boolean strict) {
-        super(delegate);
-        this.strict = strict;
+        super(delegate, strict);
     }
 
+    /**
+     * @deprecated since 1.2, moved to package {@link org.picocontainer.defaults}
+     */
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        this(delegate, true);
+        super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ImplementationHidingComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters), strict);
-    }
 }

@@ -29,10 +29,8 @@ import org.picocontainer.PicoIntrospectionException;
  *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
- * @version $Revision$
  * @see org.picocontainer.gems.HotSwappingComponentAdapter for a more feature-rich version of this class.
- * @see org.picocontainer.gems.HotSwappingComponentAdapterFactory
- * @since 1.1
+ * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
     private final boolean strict;

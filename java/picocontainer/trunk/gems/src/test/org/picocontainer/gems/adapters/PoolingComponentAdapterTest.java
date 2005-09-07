@@ -257,33 +257,73 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testDEF_lifecycleManager() {
-        final Class type = getComponentAdapterType();
-        if (LifecycleManager.class.isAssignableFrom(type)) {
-            final StringBuffer buffer = new StringBuffer();
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
-            picoContainer.registerComponentInstance(buffer);
-            final ComponentAdapter componentAdapter = prepDEF_lifecylceManager(picoContainer);
-            assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            assertEquals(0, buffer.length());
-            picoContainer.start();
-            picoContainer.stop();
-            picoContainer.dispose();
-            //@todo Good general test
-            assertEquals("<OneOne>!One", buffer.toString());
+    /**
+     * Prepare the test <em>lifecycleManagerSupport</em>. Prepare the delivered PicoContainer with an adapter, that
+     * has a lifecycle and use a StringBuffer registered in the container to record the lifecycle method invocations.
+     * The recorded String in the buffer must result in <strong>&qout;&lt;OneOne&gt;!One&qout;</strong>. The adapter
+     * top test should be registered in the container and delivered as return value.
+     * @param picoContainer the container
+     * @return the adapter to test
+     */
+    private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(RecordingLifecycle.One.class);
+        return picoContainer.registerComponent(new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class)));
+    }
+
+    public void testDEF_lifecycleManagerSupport() {
+        if ((getComponentAdapterNature() & RESOLVING) > 0) {
+            final Class type = getComponentAdapterType();
+            if (LifecycleManager.class.isAssignableFrom(type)) {
+                final StringBuffer buffer = new StringBuffer();
+                final MutablePicoContainer picoContainer = new DefaultPicoContainer(
+                        createDefaultComponentAdapterFactory());
+                picoContainer.registerComponentInstance(buffer);
+                final ComponentAdapter componentAdapter = prepDEF_lifecycleManagerSupport(picoContainer);
+                assertSame(getComponentAdapterType(), componentAdapter.getClass());
+                assertEquals(0, buffer.length());
+                picoContainer.start();
+                picoContainer.stop();
+                picoContainer.dispose();
+                // @todo Move test to AbstractAbstractCATC
+                assertEquals("<OneOne>!One", buffer.toString());
+            }
         }
     }
 
     /**
-     * @todo Auto-generated JavaDoc
-     * @param picoContainer
-     * @param buffer
-     * @return
-     * @since 0.0
+     * Prepare the test <em>lifecycleManagerHonorsInstantiationSequence</em>. Prepare the delivered PicoContainer
+     * with adapter(s), that have dependend components, have a lifecycle and use a StringBuffer registered in the
+     * container to record the lifecycle method invocations. The recorded String in the buffer must result in
+     * <strong>&qout;&lt;One&lt;TwoTwo&gt;One&gt;!Two!One&qout;</strong>. The adapter top test should be registered in
+     * the container and delivered as return value.
+     * @param picoContainer the container
+     * @return the adapter to test
      */
-    private ComponentAdapter prepDEF_lifecylceManager(MutablePicoContainer picoContainer) {
+    private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
+        picoContainer.registerComponentImplementation(RecordingLifecycle.One.class);
         return picoContainer.registerComponent(new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.One.class)));
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class)));
+    }
+
+    public void testRES_lifecycleManagerHonorsInstantiationSequence() {
+        if ((getComponentAdapterNature() & RESOLVING) > 0) {
+            final Class type = getComponentAdapterType();
+            if (LifecycleManager.class.isAssignableFrom(type)) {
+                final StringBuffer buffer = new StringBuffer();
+                final MutablePicoContainer picoContainer = new DefaultPicoContainer(
+                        createDefaultComponentAdapterFactory());
+                picoContainer.registerComponentInstance(buffer);
+                final ComponentAdapter componentAdapter = prepRES_lifecycleManagerHonorsInstantiationSequence(picoContainer);
+                assertSame(getComponentAdapterType(), componentAdapter.getClass());
+                assertEquals(0, buffer.length());
+                picoContainer.start();
+                picoContainer.stop();
+                picoContainer.dispose();
+                // @todo Move test to AbstractAbstractCATC
+                assertEquals("<One<TwoTwo>One>!Two!One", buffer.toString());
+            }
+        }
     }
 
     // -------- TCK -----------

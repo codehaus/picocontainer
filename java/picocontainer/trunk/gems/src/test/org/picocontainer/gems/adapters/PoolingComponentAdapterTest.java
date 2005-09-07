@@ -6,6 +6,7 @@ package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.pool.Pool;
 import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import org.picocontainer.ComponentAdapter;
@@ -269,7 +270,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
             picoContainer.stop();
             picoContainer.dispose();
             //@todo Good general test
-            //assertEquals("<OneOne>One!", buffer.toString());
+            assertEquals("<OneOne>!One", buffer.toString());
         }
     }
 
@@ -312,14 +313,17 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         return createPoolOfTouchables();
     }
 
-    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+    private ComponentAdapter createSerializable() {
         return new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 Identifiable.class, InstanceCounter.class));
     }
 
+    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+        return createSerializable();
+    }
+
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
-        return new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
-                Identifiable.class, InstanceCounter.class));
+        return createSerializable();
     }
 
 }

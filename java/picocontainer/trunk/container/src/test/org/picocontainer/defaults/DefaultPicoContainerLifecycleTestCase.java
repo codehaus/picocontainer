@@ -55,7 +55,6 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
     }
 
     public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
-
         DefaultPicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
 
@@ -69,10 +68,29 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.stop();
         parent.dispose();
 
-        assertEquals("<Two<One<Four<ThreeThree>Four>One>Two>!Three!Four!One!Two", parent.getComponentInstance("recording").toString());
-
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", 
+                parent.getComponentInstance("recording").toString());
     }
 
+
+    public void testLifecycleIsIgnoredIfAdaptersAreNotLifecycleManagers() {
+        DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
+        MutablePicoContainer child = parent.makeChildContainer();
+
+        parent.registerComponentImplementation("recording", StringBuffer.class);
+        child.registerComponentImplementation(Four.class);
+        parent.registerComponentImplementation(Two.class);
+        parent.registerComponentImplementation(One.class);
+        child.registerComponentImplementation(Three.class);
+        
+        parent.start();
+        parent.stop();
+        parent.dispose();
+
+        assertEquals("", 
+                parent.getComponentInstance("recording").toString());
+    }
+    
     public void testStartStartShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.start();
@@ -180,7 +198,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.stop();
         parent.dispose();
 
-        assertEquals("<Two<One<ThreeThree>One>Two>!Three!One!Two", parent.getComponentInstance("recording").toString());
+        assertEquals("<One<Two<ThreeThree>Two>One>!Three!Two!One", parent.getComponentInstance("recording").toString());
     }
 
     public void testMaliciousComponentCannotExistInAChildContainerAndSeeAnyElementOfContainerHierarchy() {
@@ -198,12 +216,11 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
             // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set   
         }
         String recording = parent.getComponentInstance("recording").toString();
-        assertEquals("<Two<One<Three", recording);
+        assertEquals("<One<Two<Three", recording);
         Object five = child.getComponentInstanceOfType(FiveTriesToBeMalicious.class);
         assertNull(five); // can't get instantiated as there is no PicoContainer in any component set.
         recording = parent.getComponentInstance("recording").toString();
-        assertEquals("<Two<One<Three", recording); // still the same
-
+        assertEquals("<One<Two<Three", recording); // still the same
     }
 
 

@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -47,7 +48,6 @@ import org.picocontainer.defaults.BasicComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
-import org.picocontainer.defaults.DelegatingLifecycleManager;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
@@ -605,19 +605,16 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
     }
 
-    public static class TestLifecycleManager extends DelegatingLifecycleManager {
+    public static class TestLifecycleManager implements LifecycleManager {
         public ArrayList started = new ArrayList();
         public void start(PicoContainer node) {
             started.add(node);
-            super.start(node);
         }
 
         public void stop(PicoContainer node) {
-            super.stop(node);
         }
 
         public void dispose(PicoContainer node) {
-            super.dispose(node);
         }
     }
 

@@ -20,7 +20,35 @@ import org.picocontainer.testmodel.Touchable;
  */
 public class CachingComponentAdapterTestCase extends MockObjectTestCase {
 
-    public void testCannotStartDisposedComponent() {
+    //MT: uncomment this test when the decision has been taken on the desidered behaviour
+    //should the component be started when cached?
+    //if so - how do we prevent the failure when adapter.start() is invoked?
+    public void TODO_testComponentIsStartedWhenCachedAndCannotBeRestarted() {
+        CachingComponentAdapter adapter = new CachingComponentAdapter(
+                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true));
+        PicoContainer pico = new DefaultPicoContainer();
+        adapter.getComponentInstance(pico);
+        try {
+            adapter.start(pico);
+            fail("IllegalStateException expected");
+        } catch (Exception e) {
+            assertEquals("Already started", e.getMessage());
+        }
+    }
+
+    public void testComponentCanBeStartedAgainAfterBeingStopped() {
+        CachingComponentAdapter adapter = new CachingComponentAdapter(
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true));
+        PicoContainer pico = new DefaultPicoContainer();
+        adapter.start(pico);
+        Object instanceAfterFirstStart = adapter.getComponentInstance(pico);
+        adapter.stop(pico);
+        adapter.start(pico);
+        Object instanceAfterSecondStart = adapter.getComponentInstance(pico);
+        assertSame(instanceAfterFirstStart, instanceAfterSecondStart);
+    }
+    
+    public void testComponentCannotBeStartedIfDisposed() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
         PicoContainer pico = new DefaultPicoContainer();
@@ -33,7 +61,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testCannotRestartComponent() {
+    public void testComponentCannotBeStartedIfAlreadyStarted() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true));
         PicoContainer pico = new DefaultPicoContainer();
@@ -46,7 +74,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
         }
     }
     
-    public void testCannotStopDisposedComponent() {
+    public void testComponentCannotBeStoppeddIfDisposed() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
         PicoContainer pico = new DefaultPicoContainer();
@@ -59,7 +87,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testCannotRestopComponent() {
+    public void testComponentCannotBeStoppedIfNotStarted() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true));
         PicoContainer pico = new DefaultPicoContainer();
@@ -73,7 +101,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testCannotRedisposeComponent() {
+    public void testComponentCannotBeDisposedIfAlreadyDisposed() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
@@ -126,7 +154,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
             boolean start, boolean stop, boolean dispose, boolean getInstance) {
         Mock mock = mock(ComponentAdapterSupportingLifecycleStrategy.class);
         if ( start ){
-            mock.expects(once()).method("start").with(isA(Touchable.class));
+            mock.expects(atLeastOnce()).method("start").with(isA(Touchable.class));
         }
         if ( stop ) {
             mock.expects(once()).method("stop").with(isA(Touchable.class));

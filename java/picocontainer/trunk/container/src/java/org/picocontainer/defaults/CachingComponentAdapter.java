@@ -18,25 +18,25 @@ import org.picocontainer.PicoIntrospectionException;
 
 /**
  * <p>
- * This ComponentAdapter caches the instance
+ * {@link ComponentAdapter} implementation that caches the component instance.
  * </p>
  * <p>
- * This adapter is also a {@link LifecycleManager lifecycle manager} which will apply
- * the delegate's {@link LifecycleStrategy lifecycle strategy} to the cached component instance.
- * The lifecycle state is maintained so that the component instance behaves in the expected way,
- * eg it can't be started if already started, it can't be started or stopped if disposed, it can't
+ * This adapter supports components with a lifecycle, as it is a {@link LifecycleManager lifecycle manager} 
+ * which will apply the delegate's {@link LifecycleStrategy lifecycle strategy} to the cached component instance.
+ * The lifecycle state is maintained so that the component instance behaves in the expected way:
+ * it can't be started if already started, it can't be started or stopped if disposed, it can't
  * be stopped if not started, it can't be disposed if already disposed.
  * </p>
- * 
+ *   
  * @author Mauro Talevi
  * @version $Revision$
  */
 public class CachingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
 
     private ObjectReference instanceReference;
-    private boolean disposed = false;
-    private boolean started = false;
-    
+    private boolean disposed;
+    private boolean started;
+        
     public CachingComponentAdapter(ComponentAdapter delegate) {
         this(delegate, new SimpleReference());
     }
@@ -44,14 +44,23 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     public CachingComponentAdapter(ComponentAdapter delegate, ObjectReference instanceReference) {
         super(delegate);
         this.instanceReference = instanceReference;
+        this.disposed = false;
+        this.started = false;
     }
     
     public Object getComponentInstance(PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
-            instanceReference.set(super.getComponentInstance(container));
-            //TODO decide if component should always be started upon initialisation
-            //start(container);
+            Object instance = super.getComponentInstance(container);
+            // TODO decide if instance should be started automatically
+            // seems not necessary because now the DPC.OrderedComponentAdapterLM returns the 
+            // CAs in the order of dependency (and instantiation) and all is needed is 
+            // to invoke LM on all CAs
+//            if (delegateSupportsLifecycle() && !started) {
+//                start(instance);
+//                started = true;
+//            }
+            instanceReference.set(instance);
         }
         return instanceReference.get();
     }

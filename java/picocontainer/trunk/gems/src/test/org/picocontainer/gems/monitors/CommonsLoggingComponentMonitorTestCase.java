@@ -26,48 +26,64 @@ public class CommonsLoggingComponentMonitorTestCase extends TestCase {
     private File logFile;
     
     protected void setUp() throws Exception {
-        constructor = getClass().getConstructor((Class[])null);
-        method = getClass().getDeclaredMethod("setUp", (Class[])null);
-        componentMonitor = new CommonsLoggingComponentMonitor();
+        constructor = getConstructor();
+        method = getMethod();
+        componentMonitor = makeComponentMonitor();
         logFile = new File("target/monitor.log");
     }
-    
+
+    protected Constructor getConstructor() throws NoSuchMethodException {
+        return getClass().getConstructor((Class[])null);
+    }
+
+    protected Method getMethod() throws NoSuchMethodException {
+        return getClass().getDeclaredMethod("setUp", (Class[])null);
+    }
+
+    protected CommonsLoggingComponentMonitor makeComponentMonitor() {
+        return new CommonsLoggingComponentMonitor();
+    }
+
     protected void tearDown() throws Exception {
     }
 
     public void testShouldTraceInstantiating() throws Exception {
         componentMonitor.instantiating(constructor);        
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATING, new Object[]{constructor}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATING, new Object[]{constructor}));
+    }
+
+    protected String getCategory() {
+        return "[" + CommonsLoggingComponentMonitor.class.getName() + "] ";
     }
 
     public void testShouldTraceInstantiated() throws Exception {
         componentMonitor.instantiated(constructor, 543);
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
     }
 
     public void testShouldTraceInstantiationFailed() throws Exception {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
     }
 
     public void testShouldTraceInvoking() throws Exception {
         componentMonitor.invoking(method, this);
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKING, new Object[]{method, this}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKING, new Object[]{method, this}));
     }
 
     public void testShouldTraceInvoked() throws Exception {
         componentMonitor.invoked(method, this, 543);
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}));
     }
 
     public void testShouldTraceInvocatiationFailed() throws Exception {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}));
+        assertFileContent(getCategory() + CommonsLoggingComponentMonitor.format(CommonsLoggingComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}));
     }
     
     private void assertFileContent(String line) throws IOException{        
         List lines = toLines( new FileReader( logFile ) );
-        assertTrue(lines.toString().indexOf(line) > 0);
+        assertTrue("Line '" + line + "' not found", lines.toString().indexOf(line) > 0);
     }
     
     public List toLines(Reader resource) throws IOException {

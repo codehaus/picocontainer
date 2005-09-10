@@ -23,7 +23,12 @@
 		<level value="DEBUG"/>
 		<appender-ref ref="FILE"/>
 	</logger>
-	
+
+    <logger additivity="true" name="java.lang">
+        <level value="DEBUG"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
 	<root>
 		<level value="DEBUG"/>
 	</root>

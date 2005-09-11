@@ -10,6 +10,8 @@ package org.picocontainer.gems.monitors;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.picocontainer.ComponentMonitor;
+
 /**
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -20,7 +22,7 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractCompone
         super.setUp();
     }
 
-    protected Log4JComponentMonitor makeComponentMonitor() {
+    protected ComponentMonitor makeComponentMonitor() {
         return new Log4JComponentMonitor();
     }
 

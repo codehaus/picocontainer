@@ -30,6 +30,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * <p/>
@@ -76,7 +77,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private HashSet children = new HashSet();
     
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
-    
+    private LifecycleStrategy lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy();
+
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
      * <p/>
@@ -110,14 +112,29 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
       * Creates a new container with the DefaultComponentAdapterFactory using a
-      * custom ComponentMonitor
+      * custom ComponentMonitor and lifecycle strategy
       *
       * @param componentMonitor the ComponentMonitor to use
+      * @param lifecycleStrategy the lifecycle strategy to use.
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(componentMonitor, lifecycleStrategy), parent);
+        lifecycleStrategyForInstanceRegistrations = lifecycleStrategy;
     }
+
+    /**
+      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * custom lifecycle strategy
+      *
+      * @param lifecycleStrategy the lifecycle strategy to use.
+      * @param parent the parent container (used for component dependency lookups).
+      */
+    public DefaultPicoContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(new NullComponentMonitor(), lifecycleStrategy, parent);
+    }
+
+
     /**
      * Creates a new container with a custom ComponentAdapterFactory and no parent container.
      *
@@ -243,7 +260,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) {
-        ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance);
+        ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance, lifecycleStrategyForInstanceRegistrations);
         registerComponent(componentAdapter);
         return componentAdapter;
     }

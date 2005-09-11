@@ -333,20 +333,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertTrue(t1 instanceof SimpleTouchable);
     }
 
-    public void testCanUseCustomLifecycleStrategy() {
-        LifecycleStrategy lcs = new LifecycleStrategy() {
-            public void start(Object component) {
-                throw new RuntimeException("foo");
-            }
-
-            public void stop(Object component) {
-            }
-
-            public void dispose(Object component) {
-            }
-        };
-
-        DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor(), lcs, null);
+    public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
         dpc.registerComponentImplementation(Startable.class, MyStartable.class);
         try {
             dpc.start();
@@ -356,6 +344,30 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
+    public void testCanUseCustomLifecycleStrategyForInstanceRegistrations() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
+        Startable myStartable = new MyStartable();
+        dpc.registerComponentInstance(Startable.class, myStartable);
+        try {
+            dpc.start();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertEquals("foo", e.getMessage());
+        }
+    }
+
+    public static class FailingLifecycleStrategy implements LifecycleStrategy {
+            public void start(Object component) {
+                throw new RuntimeException("foo");
+            }
+
+            public void stop(Object component) {
+            }
+
+            public void dispose(Object component) {
+            }
+
+    }
     public static class MyStartable implements Startable {
         public MyStartable() {
         }

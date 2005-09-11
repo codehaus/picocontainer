@@ -107,7 +107,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public DefaultPicoContainer(ComponentMonitor componentMonitor, PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(componentMonitor), parent);
     }
-    
+
+    /**
+      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * custom ComponentMonitor
+      *
+      * @param componentMonitor the ComponentMonitor to use
+      * @param parent the parent container (used for component dependency lookups).
+      */
+    public DefaultPicoContainer(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(componentMonitor, lifecycleStrategy), parent);
+    }
     /**
      * Creates a new container with a custom ComponentAdapterFactory and no parent container.
      *
@@ -544,7 +554,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     * @author Mauro Talevi
     * @since 1.2
     */    
-    class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
+    private class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
         
         /**
          * {@inheritDoc} 

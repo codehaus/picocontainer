@@ -25,15 +25,26 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
+    private final LifecycleStrategy lifecycleStrategy;
+
     public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
+        changeMonitor(componentMonitor);
+        this.lifecycleStrategy = new DefaultLifecycleStrategy();
+    }
+
+    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+        this.lifecycleStrategy = lifecycleStrategy;
         changeMonitor(componentMonitor);
     }
 
     public DefaultComponentAdapterFactory() {
+        this.lifecycleStrategy = new DefaultLifecycleStrategy();
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitor()));
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
+            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey,
+                        componentImplementation, parameters, false, currentMonitor(), lifecycleStrategy));
     }
     
 }

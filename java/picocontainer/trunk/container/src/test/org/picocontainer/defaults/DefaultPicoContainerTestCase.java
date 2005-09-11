@@ -17,16 +17,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -337,6 +331,40 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         Object t1 = child.getParent().getComponentInstance("t1");
         assertNotNull(t1);
         assertTrue(t1 instanceof SimpleTouchable);
+    }
+
+    public void testCanUseCustomLifecycleStrategy() {
+        LifecycleStrategy lcs = new LifecycleStrategy() {
+            public void start(Object component) {
+                throw new RuntimeException("foo");
+            }
+
+            public void stop(Object component) {
+            }
+
+            public void dispose(Object component) {
+            }
+        };
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor(), lcs, null);
+        dpc.registerComponentImplementation(Startable.class, MyStartable.class);
+        try {
+            dpc.start();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertEquals("foo", e.getMessage());
+        }
+    }
+
+    public static class MyStartable implements Startable {
+        public MyStartable() {
+        }
+
+        public void start() {
+        }
+
+        public void stop() {
+        }
     }
 
 }

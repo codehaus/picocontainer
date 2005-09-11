@@ -179,9 +179,9 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
                 final Object ref = context.lookup(name);
                 final Object proxy = PortableRemoteObject.narrow(ref, home);
                 final Class homeClass = proxy.getClass();
-                final Method create = homeClass.getMethod("create", null);
+                final Method create = homeClass.getMethod("create", (Class[])null);
                 if (type.isAssignableFrom(create.getReturnType())) {
-                    return create.invoke(proxy, null);
+                    return create.invoke(proxy, (Object[])null);
                 }
                 throw new PicoIntrospectionException(
                         "Wrong return type of EJBHome implementation", new ClassCastException(create.getReturnType()

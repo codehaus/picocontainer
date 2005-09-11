@@ -1,0 +1,19 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <extend>${basedir}/../project.xml</extend>
+    <groupId>picocontainer</groupId>
+    <id>picocontainer-site</id>
+    <name>PicoContainer Site</name>
+    <currentVersion>${picocontainer.version}</currentVersion>
+
+    <dependencies>
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picodocs-maven-plugin</artifactId>
+            <type>plugin</type>
+            <version>1.0</version>
+        </dependency>				
+    </dependencies>
+
+</project>

@@ -1,0 +1,20 @@
+<project default="pico:install">
+
+    <goal name="pico:install">
+		<attainGoal name="multiproject:install"/>
+    </goal>
+
+    <goal name="pico:deploy">
+        <attainGoal name="multiproject:deploy"/>
+    </goal>
+
+    <goal name="pico:clean">
+        <attainGoal name="multiproject:clean"/>
+    </goal>
+    
+    <preGoal name="dist:build-src">
+        <attainGoal name="scm:checkout"/>
+    </preGoal>
+
+</project>
+

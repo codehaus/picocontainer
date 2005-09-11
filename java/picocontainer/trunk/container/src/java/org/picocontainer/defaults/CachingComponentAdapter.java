@@ -52,14 +52,6 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
             Object instance = super.getComponentInstance(container);
-            // TODO decide if instance should be started automatically
-            // seems not necessary because now the DPC.OrderedComponentAdapterLM returns the 
-            // CAs in the order of dependency (and instantiation) and all is needed is 
-            // to invoke LM on all CAs
-//            if (delegateSupportsLifecycle() && !started) {
-//                start(instance);
-//                started = true;
-//            }
             instanceReference.set(instance);
         }
         return instanceReference.get();

@@ -20,20 +20,12 @@ import org.picocontainer.testmodel.Touchable;
  */
 public class CachingComponentAdapterTestCase extends MockObjectTestCase {
 
-    //MT: uncomment this test when the decision has been taken on the desidered behaviour
-    //should the component be started when cached?
-    //if so - how do we prevent the failure when adapter.start() is invoked?
-    public void TODO_testComponentIsStartedWhenCachedAndCannotBeRestarted() {
+    public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
         CachingComponentAdapter adapter = new CachingComponentAdapter(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico);
-        try {
-            adapter.start(pico);
-            fail("IllegalStateException expected");
-        } catch (Exception e) {
-            assertEquals("Already started", e.getMessage());
-        }
+        adapter.start(pico);
     }
 
     public void testComponentCanBeStartedAgainAfterBeingStopped() {

@@ -10,10 +10,11 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
+import org.picocontainer.testmodel.RecordingLifecycle;
+import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
  * @author Mauro Talevi
@@ -34,10 +35,11 @@ public class ConstructorInjectionComponentAdapterFactoryTestCase extends Abstrac
             new ConstructorInjectionComponentAdapterFactory(false, strategy);
         ConstructorInjectionComponentAdapter cica =  (ConstructorInjectionComponentAdapter)
         caf.createComponentAdapter(NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
-        PicoContainer pico = null;
-        cica.start(pico);
-        cica.stop(pico);
-        cica.dispose(pico);
+        One one = new RecordingLifecycle.One(new StringBuffer());
+        cica.start(one);
+        cica.stop(one);        
+        cica.dispose(one);
         assertEquals("<start<stop<dispose", strategy.recording());
     }    
+
 }

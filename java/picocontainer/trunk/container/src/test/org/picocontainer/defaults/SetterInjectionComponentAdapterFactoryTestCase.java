@@ -15,6 +15,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
+import org.picocontainer.testmodel.RecordingLifecycle;
+import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
  * @author J&ouml;rg Schaible</a>
@@ -87,10 +89,10 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjectionComponentAdapterFactory caf = new SetterInjectionComponentAdapterFactory(false, strategy);
         SetterInjectionComponentAdapter sica = (SetterInjectionComponentAdapter)caf.createComponentAdapter(NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
-        PicoContainer pico = null;
-        sica.start(pico);
-        sica.stop(pico);
-        sica.dispose(pico);
+        One one = new RecordingLifecycle.One(new StringBuffer());
+        sica.start(one);
+        sica.stop(one);        
+        sica.dispose(one);
         assertEquals("<start<stop<dispose", strategy.recording());
     }    
 }

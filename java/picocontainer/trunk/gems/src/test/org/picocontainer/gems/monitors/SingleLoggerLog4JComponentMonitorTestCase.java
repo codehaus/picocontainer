@@ -17,7 +17,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: 2024 $
  */
-public class SingleLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
+public class SingleLoggerLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();

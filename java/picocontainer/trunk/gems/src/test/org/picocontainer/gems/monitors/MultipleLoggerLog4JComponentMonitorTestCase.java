@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public class MultipleLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
+public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();

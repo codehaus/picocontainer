@@ -5,20 +5,21 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.lifecycle;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
- * Reflection lifecycle strategy.  Starts, stops, disposes of component if appropriate methods are present
+ * Reflection lifecycle strategy.  Starts, stops, disposes of component 
+ * if appropriate methods are present.  If not, a 
+ * {@link org.picocontainer.gems.lifecycle.ReflectionLifecycleException} is thrown.
  * 
  * @author Paul Hammant
+ * @author Mauro Talevi
  * @see org.picocontainer.Startable
  * @see org.picocontainer.Disposable
  * @see org.picocontainer.defaults.DefaultLifecycleStrategy
@@ -40,10 +41,10 @@ public class ReflectionLifecycleStrategy implements LifecycleStrategy, Serializa
     private void invokeMethod(Object component, String methodName) {
         if ( component != null){
             try {
-                Method start = component.getClass().getMethod(methodName, new Class[0]);
-                start.invoke(component, new Object[0]);
+                Method method = component.getClass().getMethod(methodName, new Class[0]);
+                method.invoke(component, new Object[0]);
             } catch (NoSuchMethodException e) {
-                // not startable.
+                throw new ReflectionLifecycleException(methodName, e);
             } catch (IllegalAccessException e) {
                 throw new ReflectionLifecycleException(methodName, e);
             } catch (InvocationTargetException e) {

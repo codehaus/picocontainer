@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.gems;
+package org.picocontainer.gems.lifecycle;
 
 import java.io.Serializable;
 
@@ -13,10 +13,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.DefaultLifecycleStrategy;
 
 /**
  * 
+ * @author Paul Hammant
  * @author Mauro Talevi
  */
 public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
@@ -38,11 +38,26 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy.dispose(startable);
     }
 
-    public void testSerializable(){
+    public void testNotStartableNorDisposable(){
         Object serializable = mockComponent(false, false);
-        strategy.start(serializable);
-        strategy.stop(serializable);
-        strategy.dispose(serializable);
+        try {
+            strategy.start(serializable);
+            fail("Expected ReflectionLifecycleException");
+        } catch ( ReflectionLifecycleException e) {
+            assertEquals("start", e.getMessage());
+        }
+        try {
+            strategy.stop(serializable);
+            fail("Expected ReflectionLifecycleException");
+        } catch ( ReflectionLifecycleException e) {
+            assertEquals("stop", e.getMessage());
+        }
+        try {
+            strategy.dispose(serializable);
+            fail("Expected ReflectionLifecycleException");
+        } catch ( ReflectionLifecycleException e) {
+            assertEquals("dispose", e.getMessage());
+        }
     }
     
     private Object mockComponent(boolean startable, boolean disposeable) {

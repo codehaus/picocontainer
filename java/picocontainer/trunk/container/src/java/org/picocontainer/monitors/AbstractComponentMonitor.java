@@ -10,7 +10,6 @@
 
 package org.picocontainer.monitors;
 
-import java.io.Serializable;
 import java.text.MessageFormat;
 
 import org.picocontainer.ComponentMonitor;

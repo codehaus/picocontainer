@@ -11,12 +11,12 @@ package org.picocontainer.alternatives;
 
 import java.io.Serializable;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.*;
+import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * This special MutablePicoContainer hides implementations of components if the key is an interface.

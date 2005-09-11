@@ -12,19 +12,22 @@ package org.picocontainer.gems.monitors;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 
-import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 
 /**
  * A {@link org.picocontainer.ComponentMonitor} which writes to a Log4J {@link org.apache.log4j.Logger} instance.
+ * The Logger instance can either be injected or, if not set, the {@link LogManager LogManager}
+ * will be used to retrieve it at every invocation of the monitor.
  *
  * @author Paul Hammant
+ * @author Mauro Talevi
  * @version $Revision: $
  */
 public class Log4JComponentMonitor extends AbstractComponentMonitor implements Serializable {
@@ -32,15 +35,17 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     private Logger logger;
 
     /**
-     * Creates a Log4JComponentMonitor using the Log4JComponentMonitor class instance.
+     * Creates a Log4JComponentMonitor with no Logger instance set.
+     * The {@link LogManager LogManager} will be used to retrieve the Logger instance
+     * at every invocation of the monitor.
      */
     public Log4JComponentMonitor() {
-        this(Log4JComponentMonitor.class);
+        // no logger set
     }
-
+    
     /**
-     * Creates a Log4JComponentMonitor with a given Logger instance class. The class name is used to retrieve the
-     * Logger instance.
+     * Creates a Log4JComponentMonitor with a given Logger instance class. 
+     * The class name is used to retrieve the Logger instance.
      *
      * @param loggerClass the class of the Logger
      */
@@ -110,7 +115,10 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     }
 
     protected Logger getLogger(Member member) {
-        return logger;
+        if ( logger != null ){
+            return logger;
+        } 
+        return LogManager.getLogger(member.getDeclaringClass());
     }
 
 }

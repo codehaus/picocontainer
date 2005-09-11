@@ -22,8 +22,11 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
 
 
 /**
- * A {@link ComponentMonitor} which writes to a Commons Logging {@link Log} instance.
+ * A {@link ComponentMonitor} which writes to a Commons Logging {@link Log Log} instance.
+ * The Log instance can either be injected or, if not set, the {@link LogFactory LogFactory}
+ * will be used to retrieve it at every invocation of the monitor.
  * 
+ * @author Paul Hammant
  * @author Mauro Talevi
  * @version $Revision: $
  */
@@ -32,15 +35,17 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     private Log log;
 
     /**
-     * Creates a CommonsLoggingComponentMonitor using the CommonsLoggingComponentMonitor class instance.
+     * Creates a CommonsLoggingComponentMonitor with no Log instance set.
+     * The {@link LogFactory LogFactory} will be used to retrieve the Log instance
+     * at every invocation of the monitor.
      */
     public CommonsLoggingComponentMonitor() {
-        this(CommonsLoggingComponentMonitor.class);
+        // no log set
     }
 
     /**
-     * Creates a CommonsLoggingComponentMonitor with a given Log instance class. The class name is used to retrieve the
-     * Log instance.
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance class. 
+     * The class name is used to retrieve the Log instance.
      * 
      * @param logClass the class of the Log
      */
@@ -110,7 +115,10 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     }
 
     protected Log getLog(Member member) {
-        return log;
+        if ( log != null ){
+            return log;
+        } 
+        return LogFactory.getLog(member.getDeclaringClass());
     }
 
 }

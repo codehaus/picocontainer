@@ -1,13 +1,19 @@
-/*
- * Copyright (C) 2004 Joerg Schaible
- * Created on 07.09.2004 by joehni
- */
+/*****************************************************************************
+ * Copyright (c) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Joerg Schaible                                           *
+ *****************************************************************************/
+
 package org.picocontainer.defaults;
 
 /**
- * TODO Auto-generated JavaDoc
+ * Interface for a guard implementation looking after cyclic dependencies.
  * 
- * @author joehni
+ * @author J&ouml;rg Schaible
  * @since 1.1
  */
 public interface CyclicDependencyGuard {

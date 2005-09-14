@@ -22,13 +22,10 @@ package org.picocontainer.defaults;
  */
 public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal implements CyclicDependencyGuard {
 
-    /**
-     * {@inheritDoc}
-     * @see java.lang.ThreadLocal#initialValue()
-     */
     protected Object initialValue() {
         return Boolean.FALSE;
     }
+
     /**
      * Derive from this class and implement this function with the functionality 
      * to observe for a dependency cycle.

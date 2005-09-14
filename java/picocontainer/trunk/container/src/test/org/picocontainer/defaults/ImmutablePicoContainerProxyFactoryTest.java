@@ -82,4 +82,10 @@ public class ImmutablePicoContainerProxyFactoryTest extends MockObjectTestCase {
         PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance(pico);
         assertEquals(ipc.hashCode(), ImmutablePicoContainerProxyFactory.newProxyInstance(pico).hashCode());
     }
+    
+    public void testDoesNotEqualsToNull() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance(pico);
+        assertFalse(ipc.equals(null));
+    }
 }

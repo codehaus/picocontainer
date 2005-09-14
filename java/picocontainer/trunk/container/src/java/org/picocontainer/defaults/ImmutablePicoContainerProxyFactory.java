@@ -67,7 +67,7 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
                     + method.getName()
                     + " is not allowed");
         } else if (method.equals(equalsMethod)) { // necessary for JDK 1.3
-            return new Boolean(pico.equals(args[0]));
+            return new Boolean(args[0] != null && args[0].equals(pico));
         }
         try {
             return method.invoke(pico, args);

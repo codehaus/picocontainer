@@ -10,34 +10,34 @@
 
 package org.microcontainer.jmx;
 
-import org.nanocontainer.script.NanoContainerBuilderDecorationDelegate;
-import org.nanocontainer.script.NanoContainerMarkupException;
-import org.nanocontainer.remoting.jmx.DynamicMBeanFactory;
-import org.nanocontainer.remoting.jmx.JMXRegistrationException;
-import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.MutablePicoContainer;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.management.DynamicMBean;
 import javax.management.JMException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
-import javax.management.ObjectName;
 import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
 import javax.management.modelmbean.ModelMBeanInfoSupport;
 import javax.management.modelmbean.ModelMBeanOperationInfo;
 
-import java.util.Map;
-import java.util.List;
-import java.util.LinkedList;
-import java.lang.reflect.Method;
+import org.nanocontainer.remoting.jmx.DynamicMBeanFactory;
+import org.nanocontainer.remoting.jmx.JMXRegistrationException;
+import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
+import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.NodeBuilderDecorationDelegate;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 
 /**
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class JmxDecorationDelegate implements NanoContainerBuilderDecorationDelegate {
+public class JmxDecorationDelegate implements NodeBuilderDecorationDelegate {
 
 	protected MBeanServer mBeanServer;
 	protected Object currentKey; // the key the parent component is mapped too

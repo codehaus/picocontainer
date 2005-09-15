@@ -91,6 +91,8 @@
             </includes>
             <excludes>
                 <exclude>**/Abstract*.*</exclude>
+                <!-- excluded until NANOWAR-18 is fixed -->
+                <exclude>**/ServletContainerProxyFilterTest.*</exclude>
             </excludes>
             <resources>
                 <resource>

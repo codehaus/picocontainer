@@ -39,7 +39,7 @@
         
         <dependency>
             <id>groovy</id>
-            <version>1.0-jsr-02</version>
+            <version>1.0-jsr-03</version>
         </dependency>
 
         <dependency>
@@ -79,20 +79,21 @@
         </dependency>
 
         <dependency>
-            <id>jmock</id>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
             <version>1.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-full</artifactId>
-            <version>2.0</version>
         </dependency>
 
         <dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock-cglib</artifactId>
             <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_2</version>
         </dependency>
 
         <dependency>
@@ -163,10 +164,6 @@
             <version>1.2.1</version>
         </dependency>
         
-        <dependency>
-            <id>xml-apis</id>
-            <version>1.0.b2</version>
-        </dependency>
     </dependencies>
 
 </project>

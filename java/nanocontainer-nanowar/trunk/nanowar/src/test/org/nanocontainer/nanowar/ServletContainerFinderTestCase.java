@@ -8,15 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

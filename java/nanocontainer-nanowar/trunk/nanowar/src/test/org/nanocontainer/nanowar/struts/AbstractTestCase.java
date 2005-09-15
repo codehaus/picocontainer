@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
-import org.apache.struts.action.ActionMapping;
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts.action.ActionMapping;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

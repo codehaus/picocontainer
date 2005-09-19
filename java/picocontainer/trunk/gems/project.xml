@@ -2,7 +2,7 @@
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <extend>${basedir}/../project.xml</extend>
-    <groupId>picocontainer</groupId>
+    <pomVersion>3</pomVersion>
     <id>picocontainer-gems</id>
     <name>PicoContainer Gems</name>
     <currentVersion>${picocontainer.version}</currentVersion>

@@ -8,8 +8,9 @@
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <pomVersion>3</pomVersion>
-    <id>picocontainer</id>
+    <id>picocontainer-root</id>
     <name>PicoContainer</name>
+    <groupId>picocontainer</groupId>
     <currentVersion>${picocontainer.version}</currentVersion>
 
     <organization>
@@ -72,11 +73,11 @@
         <dependency>
             <groupId>maven</groupId>
             <artifactId>maven-scm-plugin</artifactId>
-            <type>plugin</type>
             <version>1.5</version>
+            <type>plugin</type>
         </dependency>	
 
-		<dependency>
+	<dependency>
             <groupId>maven</groupId>
             <artifactId>maven-multiproject-plugin</artifactId>
             <version>1.4.1</version>
@@ -84,7 +85,7 @@
         </dependency>		
            
         <!-- required for JDK 1.5 -->
-		<dependency>
+	<dependency>
             <groupId>maven</groupId>
             <artifactId>maven-clover-plugin</artifactId>
             <version>1.10</version>
@@ -119,7 +120,7 @@
         <report>maven-simian-plugin</report>
         <report>maven-javadoc-plugin</report>
         <report>maven-clover-plugin</report>
-        <report>maven-junit-report-plugin</report>        
+        <report>maven-junit-report-plugin</report>
     </reports>
 
 </project>

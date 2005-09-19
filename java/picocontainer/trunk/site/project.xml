@@ -2,7 +2,7 @@
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <extend>${basedir}/../project.xml</extend>
-    <groupId>picocontainer</groupId>
+    <pomVersion>3</pomVersion>
     <id>picocontainer-site</id>
     <name>PicoContainer Site</name>
     <currentVersion>${picocontainer.version}</currentVersion>
@@ -11,8 +11,8 @@
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picodocs-maven-plugin</artifactId>
-            <type>plugin</type>
             <version>1.0</version>
+            <type>plugin</type>
         </dependency>				
     </dependencies>
 

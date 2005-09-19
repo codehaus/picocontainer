@@ -1,1 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project>    <extend>${basedir}/../project.xml</extend>    <id>guantanamo-maven-plugin</id>    <name>Guantanamo Maven Plugin</name>    <description>Guantanamo Maven Plugin</description>    <shortDescription>Guantanamo Maven Plugin</shortDescription>    <siteDirectory>/home/projects/picocontainer/public_html/plugins/guantanamo-maven-plugin</siteDirectory></project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>guantanamo-maven-plugin</id>
+    <name>Guantanamo Maven Plugin</name>
+    <description>Guantanamo Maven Plugin</description>
+    <shortDescription>Guantanamo Maven Plugin</shortDescription>
+    <siteDirectory>/home/projects/picocontainer/public_html/plugins/guantanamo-maven-plugin</siteDirectory>
+</project>

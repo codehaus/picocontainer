@@ -2,13 +2,13 @@
 
 <project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
     <extend>${basedir}/../project.xml</extend>
-    <groupId>picocontainer</groupId>
+    <pomVersion>3</pomVersion>
     <id>picocontainer-tck</id>
     <name>PicoContainer TCK</name>
     <currentVersion>${picocontainer.version}</currentVersion>
 
     <dependencies>
-    		<dependency>
+ 	<dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
             <version>${picocontainer.version}</version>

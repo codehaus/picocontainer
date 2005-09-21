@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
     <pomVersion>3</pomVersion>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/PICOPLUGINS</issueTrackingUrl>
+  	<url>http://www.picocontainer.org/plugins</url>
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/picocontainer/public_html/plugins/${pom.artifactId}</siteDirectory>
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/maven-plugins/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/maven-plugins//trunk</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/maven-plugins/trunk</url>
+    </repository>
+    
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>

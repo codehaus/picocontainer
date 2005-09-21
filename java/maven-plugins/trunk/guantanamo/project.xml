@@ -2,8 +2,11 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>guantanamo-maven-plugin</id>
+    <groupId>picocontainer</groupId>
     <name>Guantanamo Maven Plugin</name>
     <description>Guantanamo Maven Plugin</description>
     <shortDescription>Guantanamo Maven Plugin</shortDescription>
+    <currentVersion>1.0-SNAPSHOT</currentVersion>
+    
     <siteDirectory>/home/projects/picocontainer/public_html/plugins/guantanamo-maven-plugin</siteDirectory>
 </project>

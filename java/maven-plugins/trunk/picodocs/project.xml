@@ -2,6 +2,7 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>picodocs-maven-plugin</id>
+    <groupId>picocontainer</groupId>
     <name>PicoDocs Maven Plugin</name>
     <description>PicoDocs Maven Plugin</description>
     <shortDescription>PicoDocs Maven Plugin</shortDescription>

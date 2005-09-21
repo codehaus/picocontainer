@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
-    <extend>${basedir}/../project.xml</extend>
     <pomVersion>3</pomVersion>
-    <name>PicoContainer Plugins</name>
-    <currentVersion>${picocontainer.version}</currentVersion>
-
     <build>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>
         <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>picodocs-maven-plugin</id>
+    <groupId>picocontainer</groupId>
+    <name>PicoDocs Maven Plugin</name>
+    <description>PicoDocs Maven Plugin</description>
+    <shortDescription>PicoDocs Maven Plugin</shortDescription>
+    <currentVersion>1.0</currentVersion>
+    <siteDirectory>/home/projects/picocontainer/public_html/plugins/picodocs-maven-plugin</siteDirectory>
+</project>

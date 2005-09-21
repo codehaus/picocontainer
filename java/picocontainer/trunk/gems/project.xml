@@ -5,19 +5,18 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer-gems</id>
     <name>PicoContainer Gems</name>
-    <currentVersion>${picocontainer.version}</currentVersion>
 
     <dependencies>
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
-            <version>${picocontainer.version}</version>
+            <version>${pom.currentVersion}</version>
         </dependency>
         
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
-            <version>${picocontainer.version}</version>
+            <version>${pom.currentVersion}</version>
         </dependency>
         
         <!-- For proxy -->        

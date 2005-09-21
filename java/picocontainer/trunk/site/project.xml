@@ -5,7 +5,6 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer-site</id>
     <name>PicoContainer Site</name>
-    <currentVersion>${picocontainer.version}</currentVersion>
 
     <dependencies>
         <dependency>

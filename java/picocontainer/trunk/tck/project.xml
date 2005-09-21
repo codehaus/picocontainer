@@ -5,13 +5,12 @@
     <pomVersion>3</pomVersion>
     <id>picocontainer-tck</id>
     <name>PicoContainer TCK</name>
-    <currentVersion>${picocontainer.version}</currentVersion>
 
     <dependencies>
  	<dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
-            <version>${picocontainer.version}</version>
+            <version>${pom.currentVersion}</version>
         </dependency>
     </dependencies>
     

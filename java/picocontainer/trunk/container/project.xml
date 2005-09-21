@@ -4,6 +4,6 @@
     <extend>${basedir}/../project.xml</extend>
     <pomVersion>3</pomVersion>
     <id>picocontainer</id>
-    <name>PicoContainer</name>
-    <currentVersion>${picocontainer.version}</currentVersion>
+    <name>PicoContainer Core</name>
+
 </project>

@@ -1,4 +1,4 @@
-<project default="pico:install">
+<project>
 
     <goal name="pico:install">
 		<attainGoal name="multiproject:install"/>
@@ -16,5 +16,10 @@
         <attainGoal name="scm:checkout"/>
     </preGoal>
 
+	<postGoal name="xdoc">
+		<copy file="${maven.pico.theme}"
+				todir="${maven.docs.dest}/style"/>
+	</postGoal>
+	
 </project>
 

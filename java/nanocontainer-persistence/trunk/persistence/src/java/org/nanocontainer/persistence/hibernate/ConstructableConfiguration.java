@@ -18,11 +18,12 @@ import org.hibernate.cfg.Configuration;
 import org.w3c.dom.Document;
 
 /**
- * Constructable hibernate configuration. not a rocket science, just a wrapper aroung various
- * configure() methods... see respective hibernate javadocs.
+ * Constructable Hibernate configuration. Just a wrapper around various
+ * configure() methods. See respective {@link org.hibernate.cfg.Configuration configure methods}.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision: 2043 $
+ * @see org.hibernate.cfg.Configuration
  */
 public class ConstructableConfiguration extends Configuration {
 

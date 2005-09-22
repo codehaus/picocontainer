@@ -1,11 +1,11 @@
-package org.nanocontainer.persistence.e;
+package org.nanocontainer.persistence;
 
 /**
- * A specialization of {@link org.nanocontainer.persistence.e.ConcurrencyFailureException ConcurrencyFailureException}
+ * A specialization of {@link org.nanocontainer.persistence.ConcurrencyFailureException ConcurrencyFailureException}
  * which is thrown when a version number or timestamp check failed or try delete or update a row that does not exist
  * anymore.
  * 
- * @version $Id$
+ * @version $Revision: $
  */
 public class StaleObjectStateException extends ConcurrencyFailureException {
 

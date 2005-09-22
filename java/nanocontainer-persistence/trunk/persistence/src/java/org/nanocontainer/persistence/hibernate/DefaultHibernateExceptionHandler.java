@@ -6,15 +6,16 @@ import org.hibernate.UnresolvableObjectException;
 import org.hibernate.WrongClassException;
 import org.hibernate.exception.LockAcquisitionException;
 import org.nanocontainer.persistence.ExceptionFactory;
+import org.nanocontainer.persistence.ExceptionHandler;
 
 /**
  * Default Hibernate 3 ExceptionHandler.
  * 
- * @see org.nanocontainer.persistence.hibernate.HibernateExceptionHandler
+ * @see org.nanocontainer.persistence.ExceptionHandler
  * 
  * @version $Id$
  */
-public class DefaultHibernateExceptionHandler implements HibernateExceptionHandler {
+public class DefaultHibernateExceptionHandler implements ExceptionHandler {
 
     private ExceptionFactory exceptionFactory;
 
@@ -51,8 +52,8 @@ public class DefaultHibernateExceptionHandler implements HibernateExceptionHandl
         	return exceptionFactory.createTransactionException(ex); 
         }
 
-        // Otherwise, return an UnknowException kind.
-        return exceptionFactory.createDAOException(ex);
+        // Otherwise, return a generic persistence exception
+        return exceptionFactory.createPersistenceException(ex);
     }
 
 }

@@ -1,11 +1,11 @@
-package org.nanocontainer.persistence.e;
+package org.nanocontainer.persistence;
 
 /**
- * Thrown when, guess what, an object retrieval failure happens.
+ * Thrown when an object retrieval failure occurs.
  * 
- * @version $Id$
+ * @version $Revision: $
  */
-public class ObjectRetrievalFailureException extends PicoDAOException implements EntityInfo {
+public class ObjectRetrievalFailureException extends PersistenceException implements EntityInfo {
 
 	private String entityName;
 	private Object objectId;

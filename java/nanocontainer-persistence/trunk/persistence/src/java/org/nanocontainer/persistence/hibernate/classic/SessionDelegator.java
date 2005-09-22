@@ -29,12 +29,13 @@ import net.sf.hibernate.Transaction;
 import net.sf.hibernate.type.Type;
 
 /**
- * abstract base class for session delegators. delegates all calls to session obtained by implementing class. error
- * handling is also there. All methods are just delegations to hibernate session.
+ * Abstract base class for session delegators, which delegates all calls to 
+ * session obtained by implementing class. 
+ * Also does error handling. All methods are just delegations to a Hibernate session.
  * 
  * @author Konstantin Pribluda
  * @author Jose Peleteiro
- * @version $Id$
+ * @version $Version: $
  */
 public abstract class SessionDelegator implements Session {
 
@@ -63,7 +64,7 @@ public abstract class SessionDelegator implements Session {
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
-	 * a {@link HibernateExceptionHandler} if it's available otherwise throws the <code>cause</code> back.
+	 * a {@link ExceptionHandler} if it's available otherwise throws the <code>cause</code> back.
 	 */
 	protected RuntimeException handleException(HibernateException cause) throws HibernateException {
 		try {
@@ -81,7 +82,7 @@ public abstract class SessionDelegator implements Session {
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
-	 * a {@link HibernateExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
+	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
 	 */
 	protected RuntimeException handleException(RuntimeException cause) {
 		try {

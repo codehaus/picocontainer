@@ -1,4 +1,4 @@
-package org.nanocontainer.persistence.e;
+package org.nanocontainer.persistence;
 
 public interface EntityInfo {
 

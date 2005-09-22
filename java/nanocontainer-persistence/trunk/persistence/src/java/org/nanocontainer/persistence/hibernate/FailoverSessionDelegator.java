@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.nanocontainer.persistence.ExceptionHandler;
 
 /**
  * Session delegator with failover behaviour in case of hibernate exception. Old session is disposed
@@ -41,7 +42,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 	 * @param sessionFactory session factory to obtain session from 
 	 * @param exceptionHandler Exception handler component to use with created session
 	 */
-    public FailoverSessionDelegator(SessionFactory sessionFactory, HibernateExceptionHandler exceptionHandler) {
+    public FailoverSessionDelegator(SessionFactory sessionFactory, ExceptionHandler exceptionHandler) {
     	super(exceptionHandler);
         this.sessionFactory = sessionFactory;
     }
@@ -60,7 +61,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 	 * @param interceptor interceptor to use with created session
 	 * @param exceptionHandler Exception handler component to use with created session
 	 */
-    public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor, HibernateExceptionHandler exceptionHandler) {
+    public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor, ExceptionHandler exceptionHandler) {
     	this(sessionFactory, exceptionHandler);
     	setInterceptor(interceptor);
     }

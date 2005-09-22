@@ -1,21 +1,21 @@
 package org.nanocontainer.persistence;
 
 /**
- * This component creates your own exceptions. It'll be used for ExceptionHandler in order to create exceptions.
+ * Factory component used by ExceptionHandler in order to create exceptions.
  * 
- * @see org.nanocontainer.persistence.ExceptionFactory
- * @version $Id$
+ * @version $Revision: $
  */
 public interface ExceptionFactory {
 
 	/**
-	 * Creates an instance of the DAO base exception. You should return <code>cause</code> if it is already an
-	 * instance of DAO's exception.
+	 * Creates an instance of the persistence exception. 
+     * You should return <code>cause</code> if it is already an
+	 * instance of Persistence's exception.
 	 * 
 	 * @param cause Original exception.
 	 * @return The desired exception instance.
 	 */
-	public RuntimeException createDAOException(Throwable cause);
+	public RuntimeException createPersistenceException(Throwable cause);
 
 	/**
 	 * Creates an instance of the exception which indicates concurrency failure.

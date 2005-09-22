@@ -27,6 +27,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
+import org.nanocontainer.persistence.ExceptionHandler;
 import org.picocontainer.Startable;
 
 /**
@@ -42,7 +43,7 @@ public class SessionComponent implements Session, Startable {
     
 	private SessionFactory sessionFactory;
     private Interceptor interceptor;
-    protected HibernateExceptionHandler hibernateExceptionHandler;
+    protected ExceptionHandler hibernateExceptionHandler;
 
 	public SessionComponent(final SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -50,7 +51,7 @@ public class SessionComponent implements Session, Startable {
 		interceptor = null;
 	}
 
-	public SessionComponent(final SessionFactory sessionFactory, final HibernateExceptionHandler hibernateExceptionHandler) {
+	public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler) {
         this.sessionFactory = sessionFactory;
 		this.hibernateExceptionHandler = hibernateExceptionHandler;
 		interceptor = null;
@@ -62,7 +63,7 @@ public class SessionComponent implements Session, Startable {
 		this.interceptor = interceptor;
 	}
 
-	public SessionComponent(final SessionFactory sessionFactory, final HibernateExceptionHandler hibernateExceptionHandler, final Interceptor interceptor) {
+	public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler, final Interceptor interceptor) {
         this.sessionFactory = sessionFactory;
 		this.hibernateExceptionHandler = hibernateExceptionHandler;
 		this.interceptor = interceptor;
@@ -108,7 +109,7 @@ public class SessionComponent implements Session, Startable {
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
-	 * a {@link HibernateExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
+	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
 	 */
 	protected RuntimeException handleException(RuntimeException cause) throws HibernateException {
 		try {
@@ -676,9 +677,9 @@ public class SessionComponent implements Session, Startable {
 	}
 
 	/**
-	 * A not to do "if (handler == null)" ping-pong HibernateExceptionHandler version.
+	 * A not to do "if (handler == null)" ping-pong ExceptionHandler version.
 	 */
-	private class PingPongExceptionHandler implements HibernateExceptionHandler {
+	private class PingPongExceptionHandler implements ExceptionHandler {
 
 		public RuntimeException handle(Throwable ex) {
 			return (RuntimeException) ex;

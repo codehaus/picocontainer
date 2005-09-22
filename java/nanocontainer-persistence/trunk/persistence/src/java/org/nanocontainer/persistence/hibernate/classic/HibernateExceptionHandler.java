@@ -12,9 +12,8 @@ import org.nanocontainer.persistence.ExceptionFactory;
 /**
  * ExceptionHandler version for Hibernate 2.
  * 
+ * @version $Revision: $
  * @see org.nanocontainer.persistence.ExceptionHandler
- * 
- * @version $Id$
  */
 public class HibernateExceptionHandler {
 
@@ -53,8 +52,8 @@ public class HibernateExceptionHandler {
         	return exceptionFactory.createTransactionException(ex); 
         }
 
-        // Otherwise, return an UnknowException kind.
-        return exceptionFactory.createDAOException(ex);
+        // Otherwise, return a generic persistence exception
+        return exceptionFactory.createPersistenceException(ex);
     }
 
 }

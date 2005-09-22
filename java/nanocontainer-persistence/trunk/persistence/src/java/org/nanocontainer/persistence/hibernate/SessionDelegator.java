@@ -27,6 +27,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
+import org.nanocontainer.persistence.ExceptionHandler;
 
 /**
  * Abstract base class for session delegators. delegates all calls to session obtained by implementing class. error
@@ -36,13 +37,13 @@ import org.hibernate.stat.SessionStatistics;
  */
 public abstract class SessionDelegator implements Session {
 
-	protected HibernateExceptionHandler hibernateExceptionHandler;
+	protected ExceptionHandler hibernateExceptionHandler;
 
 	public SessionDelegator() {
 		hibernateExceptionHandler = new PingPongExceptionHandler();
 	}
 
-	public SessionDelegator(HibernateExceptionHandler hibernateExceptionHandler) {
+	public SessionDelegator(ExceptionHandler hibernateExceptionHandler) {
 		this.hibernateExceptionHandler = hibernateExceptionHandler;
 	}
 
@@ -58,7 +59,7 @@ public abstract class SessionDelegator implements Session {
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
-	 * a {@link HibernateExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
+	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
 	 */
 	protected RuntimeException handleException(RuntimeException cause) throws HibernateException {
 		try {
@@ -599,9 +600,9 @@ public abstract class SessionDelegator implements Session {
 	}
 
 	/**
-	 * A not to do "if (handler == null)" ping-pong HibernateExceptionHandler version.
+	 * A not to do "if (handler == null)" ping-pong ExceptionHandler version.
 	 */
-	private class PingPongExceptionHandler implements HibernateExceptionHandler {
+	private class PingPongExceptionHandler implements ExceptionHandler {
 
 		public RuntimeException handle(Throwable ex) {
 			return (RuntimeException) ex;

@@ -68,7 +68,7 @@
     <build>
 		<defaultGoal>multiproject:install</defaultGoal>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>       
-        <!-- Resources tat are packaged up inside the JAR file -->
+        <!-- Resources that are packaged up inside the JAR file -->
         <resources>
             <resource>
                 <directory>${basedir}/src/java</directory>
@@ -92,8 +92,6 @@
             </includes>
             <excludes>
                 <exclude>**/Abstract*.*</exclude>
-                <!-- excluded until NANOWAR-18 is fixed -->
-                <exclude>**/ServletContainerProxyFilterTest.*</exclude>
             </excludes>
             <resources>
                 <resource>

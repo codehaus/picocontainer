@@ -71,7 +71,8 @@ public class AbstractServletTestCase extends TestCase {
         sb.append("<context-param>\n" +
                 "  <param-name>nanocontainer.groovy</param-name>\n" +
                 "  <param-value>" + //<![CDATA[\n" +
-                "    pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
+                "    caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory()\n" +
+                "    pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n" +
                 "    if(assemblyScope instanceof javax.servlet.ServletContext) {\n" +
                 ctxScope +
                 "    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {\n" +

@@ -1,4 +1,4 @@
-<project default="micro:install">
+<project>
 
     <goal name="micro:install">
         <attainGoal name="multiproject:install"/>

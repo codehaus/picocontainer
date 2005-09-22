@@ -13,7 +13,7 @@ import org.nanocontainer.nanowar.ServletContainerProxyFilter;
 /**
  * @author Grégory Joseph
  */
-public class ServletContainerProxyFilterTest extends AbstractServletTestCase {
+public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase {
     protected void tearDown() throws Exception {
         FooFilter.resetInitCounter();
     }

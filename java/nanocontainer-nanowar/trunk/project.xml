@@ -66,6 +66,7 @@
     </dependencies>
 
     <build>
+		<defaultGoal>multiproject:install</defaultGoal>
         <sourceDirectory>${basedir}/src/java</sourceDirectory>       
         <!-- Resources tat are packaged up inside the JAR file -->
         <resources>

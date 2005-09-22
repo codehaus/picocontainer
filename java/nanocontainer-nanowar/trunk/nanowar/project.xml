@@ -132,8 +132,8 @@
 
         <dependency>
             <groupId>opensymphony</groupId>
-            <artifactId>webwork</artifactId>
-            <version>1.4</version>
+            <artifactId>webwork1</artifactId>
+            <jar>webwork-1.4.jar</jar>
         </dependency>
 
         <dependency>
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>webwork2</artifactId>
-            <version>2.1</version>
+            <jar>webwork-2.1.jar</jar>
         </dependency>
 
         <dependency>

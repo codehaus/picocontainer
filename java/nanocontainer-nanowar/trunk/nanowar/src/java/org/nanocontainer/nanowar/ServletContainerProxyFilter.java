@@ -50,7 +50,6 @@ public class ServletContainerProxyFilter implements Filter {
 
     private static final String CONTEXT_INIT_TYPE = "context";
     private static final String REQUEST_INIT_TYPE = "request";
-    private static final String NEVER_INIT_TYPE = "never";
 
     private String initType;
     private boolean lookupOnlyOnce;

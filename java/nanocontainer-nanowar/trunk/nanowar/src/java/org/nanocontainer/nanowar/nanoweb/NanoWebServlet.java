@@ -166,14 +166,14 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     private String execute(Object actionObject, String actionMethodName) throws ServletException {
         Method actionMethod = null;
         try {
-            actionMethod = actionObject.getClass().getMethod(actionMethodName, null);
+            actionMethod = actionObject.getClass().getMethod(actionMethodName, (Class[])null);
         } catch (NoSuchMethodException e) {
             String message = "The " + actionObject.getClass().getName() + " doesn't have the method " + actionMethodName + "()";
             log(message, e);
             throw new ServletException(message, e);
         }
         try {
-            String view = (String) actionMethod.invoke(actionObject, null);
+            String view = (String) actionMethod.invoke(actionObject, (Object[])null);
             return view;
         } catch (IllegalAccessException e) {
             String message = actionObject.getClass().getName() + "." + actionMethodName + "() isn't public";

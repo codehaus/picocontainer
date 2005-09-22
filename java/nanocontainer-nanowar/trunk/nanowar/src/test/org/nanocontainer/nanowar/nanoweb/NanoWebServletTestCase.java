@@ -167,8 +167,8 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
         Object action = requestContainer.getComponentInstance("/test.groovy");
-        Method getYear = action.getClass().getMethod("getYear", null);
-        Object resultYear = getYear.invoke(action, null);
+        Method getYear = action.getClass().getMethod("getYear", (Class[])null);
+        Object resultYear = getYear.invoke(action, (Object[])null);
         assertEquals("2004", resultYear);
     }
 }

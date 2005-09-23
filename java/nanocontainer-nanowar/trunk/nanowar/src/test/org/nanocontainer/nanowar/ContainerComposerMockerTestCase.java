@@ -13,18 +13,18 @@ import junit.framework.TestCase;
 
 
 /**
- * test case for TestContainerMock
+ * TestCase for ContainerComposerMocker
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version $Revision$
  */
-public class TestContainerMockerTestCase extends TestCase implements KeyConstants {
+public class ContainerComposerMockerTestCase extends TestCase implements KeyConstants {
 
     // TODO test what mock properly ?
     // Hmmm, a stop() is being called on DPC, when it already disposed.
     public void doNot_testThatItMocksProperly() throws Exception {
 
-        TestContainerMocker mocker = new TestContainerMocker(XStreamContainerComposer.class);
+        ContainerComposerMocker mocker = new ContainerComposerMocker(XStreamContainerComposer.class);
         assertNull(mocker.getApplicationContainer());
         assertNull(mocker.getSessionContainer());
         assertNull(mocker.getRequestContainer());

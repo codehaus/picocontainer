@@ -56,7 +56,7 @@ import org.picocontainer.defaults.SimpleReference;
  *   </li>
  * </ol>
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  * @author Aslak Helles&oslash;y
  * @author Philipp Meier
  * @author Paul Hammant
@@ -64,7 +64,6 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Konstantin Pribluda
  */
 public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
-    private transient ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
 
     public static final String KILLER_HELPER = "KILLER_HELPER";
     public static final String NANOCONTAINER_PREFIX = "nanocontainer";
@@ -165,7 +164,6 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
                 HttpSession session = bindingEvent.getSession();
                 containerRef = new SimpleReference();
                 containerRef.set(new SessionScopeObjectReference(session, SESSION_CONTAINER).get());
-                //System.err.println("**** bound container to:" + containerRef.get());
             }
 
             public void valueUnbound(HttpSessionBindingEvent event) {
@@ -197,6 +195,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     }
 
     private void killContainer(ObjectReference containerRef) {
+        ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
         if (containerRef.get() != null) {
             containerKiller.killContainer(containerRef);
         }

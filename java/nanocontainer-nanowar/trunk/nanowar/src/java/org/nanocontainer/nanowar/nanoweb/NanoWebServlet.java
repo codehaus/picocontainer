@@ -157,7 +157,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             try {
                 Ognl.setValue(parameterName, action, parameterValue);
             } catch (OgnlException e) {
-                log("Failed to set property with OGNL", e);
+                log("Failed to set property with OGNL ('" + parameterName +"', '" + action + "', '" + parameterValue + "')", e);
                 throw new ServletException(e);
             }
         }

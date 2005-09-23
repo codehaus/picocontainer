@@ -51,7 +51,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
                          .method("getServletContext")
                          .withNoArguments()
                          .will(returnValue(servletContextMock.proxy()));
-        servletConfigMock.expects(once())
+        servletConfigMock.expects(atLeastOnce())
                          .method("getServletName")
                          .withNoArguments()
                          .will(returnValue("NanoWeb"));
@@ -151,7 +151,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
     }
 
     //TODO NANOWAR-19
-    public void FIXME_testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         servletConfigMock.expects(once())
                          .method("getServletContext")
                          .withNoArguments()
@@ -167,8 +167,8 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
         Object action = requestContainer.getComponentInstance("/test.groovy");
-        Method getYear = action.getClass().getMethod("getYear", (Class[])null);
-        Object resultYear = getYear.invoke(action, (Object[])null);
-        assertEquals("2004", resultYear);
+        Method getYear = action.getClass().getMethod("getProperty", (new Class[] {String.class}));
+        Object resultYear = getYear.invoke(action, (new Object[]{"year"}));
+        assertEquals("2004", resultYear.toString());
     }
 }

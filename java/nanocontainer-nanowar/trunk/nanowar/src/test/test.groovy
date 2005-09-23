@@ -6,7 +6,7 @@ package org.nanocontainer.dynaweb;
  */
 public class MyGroovyAction {
 
-    property year
+    public @property int year
 
     public doit() {
         if(year > 2003) {

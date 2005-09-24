@@ -20,6 +20,15 @@ public class NanoNamingImpl extends UnicastRemoteObject implements NanoNaming {
     private final ProxyFactory proxyFactory;
 
     public NanoNamingImpl(Registry registry, PicoContainer pico, ProxyFactory proxyFactory) throws RemoteException {
+        if (registry == null) {
+            throw new IllegalArgumentException("'registry' should not be null");
+        }
+        if (pico == null) {
+            throw new IllegalArgumentException("'pico' should not be null");
+        }
+        if (proxyFactory == null) {
+            throw new IllegalArgumentException("'proxyfactory' should not be null");
+        }
         this.registry = registry;
         this.pico = pico;
         this.proxyFactory = proxyFactory;

@@ -8,6 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.sample.service.defaults;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.nanocontainer.nanowar.sample.dao.CheeseDao;
@@ -21,7 +22,7 @@ import org.nanocontainer.nanowar.sample.service.CheeseService;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public class DefaultCheeseService implements CheeseService {
+public class DefaultCheeseService implements CheeseService, Serializable {
 
     private final CheeseDao dao;
 

@@ -6,7 +6,8 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
+        	   caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory() 	
+            pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 println("**** Webapp-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {

@@ -1,5 +1,2 @@
 <container>
-    <component-instance key='sessionScope'>
-    	<string>session</string>
-    </component-instance>
 </container>

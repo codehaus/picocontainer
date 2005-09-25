@@ -8,13 +8,13 @@
 
   <form-beans>
     <form-bean name="cheeseForm"
-               type="org.nanocontainer.sample.nanowar.struts.CheeseForm">
+               type="org.nanocontainer.nanowar.sample.struts.CheeseForm">
     </form-bean>
   </form-beans>
 
   <action-mappings>
     <action path="/cheese"
-            type="org.nanocontainer.sample.nanowar.struts.CheeseAction"
+            type="org.nanocontainer.nanowar.sample.struts.CheeseAction"
             name="cheeseForm"
             scope="request">
       <forward name="next" path="/index.jsp"/>

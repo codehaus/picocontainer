@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.webwork;
 
 import com.opensymphony.webwork.WebWorkStatics;
 import com.opensymphony.xwork.Action;
@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
+ * Implementation of {@link com.opensymphony.xwork.ActionInvocation ActionInvocation}
+ * which uses a PicoContainer to create Action instances.
+ * 
  * @author Chris Sturm
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -43,15 +46,13 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
     }
 
     protected void createAction() {
-        Class actionClass = proxy.getConfig().getClass();// changed from getClazz() as of XWork 1.0
-
+        Class actionClass = proxy.getConfig().getClass();
+        
         PicoContainer requestContainer = getRequestContainer();
         Object actionInstance = requestContainer.getComponentInstance(actionClass);
         if (actionInstance == null) {
-            // The action wasn't registered. Do it ad-hoc here.
-            MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
-            tempContainer.registerComponentImplementation(actionClass);
-            actionInstance = tempContainer.getComponentInstance(actionClass);
+            // The action wasn't registered. Attempt to instantiate it.
+            actionInstance = createComponentInstance(requestContainer, actionClass);
         }
         try {
 	        action = (Action) actionInstance;
@@ -64,5 +65,11 @@ public class PicoActionInvocation extends DefaultActionInvocation implements Key
         HttpServletRequest request = (HttpServletRequest) getStack().getContext().get(WebWorkStatics.HTTP_REQUEST);
         ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
         return (PicoContainer) ref.get();
+    }
+    
+    private Object createComponentInstance(PicoContainer parentContainer, Class clazz) {
+        MutablePicoContainer pico = new DefaultPicoContainer(parentContainer);
+        pico.registerComponentImplementation(clazz);
+        return pico.getComponentInstance(clazz);
     }
 }

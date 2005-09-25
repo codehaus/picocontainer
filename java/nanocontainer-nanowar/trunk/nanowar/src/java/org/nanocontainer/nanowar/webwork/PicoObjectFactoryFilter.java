@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.webwork;
 
 import java.io.IOException;
 
@@ -24,11 +24,14 @@ import org.picocontainer.gems.adapters.ThreadLocalReference;
 import com.opensymphony.xwork.ObjectFactory;
 
 /**
+ * Filter which initialises a PicoObjectFactory as the XWork ObjectFactory
+ * and passes to it the HttpServletRequest.
+ * 
  * @author Jonas Engman
  */
 public class PicoObjectFactoryFilter implements Filter {
 
-	private final static String ALREADY_FILTERED_KEY = "nanocontainer_objectfactory_filter_already_filtered";
+	private final static String ALREADY_FILTERED_KEY = "nanocontainer_objectfactory_filtered";
 
 	private ObjectReference objectReference;
 

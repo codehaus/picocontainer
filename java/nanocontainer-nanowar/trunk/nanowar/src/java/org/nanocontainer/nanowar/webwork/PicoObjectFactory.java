@@ -6,13 +6,14 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.webwork;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.nanocontainer.nanowar.ServletContainerFinder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
@@ -20,11 +21,12 @@ import com.opensymphony.xwork.ObjectFactory;
 
 /**
  * <p>
- * PicoContainer based object factory
+ * XWork ObjectFactory which uses a PicoContainer to create component instances.
  * </p>
  * 
- * @author <a href="mailto:cleclerc@pobox.com">Cyrille Le Clerc </a>
+ * @author Cyrille Le Clerc
  * @author Jonas Engman
+ * @author Mauro Talevi
  */
 public class PicoObjectFactory extends ObjectFactory {
 
@@ -32,32 +34,38 @@ public class PicoObjectFactory extends ObjectFactory {
 	private ObjectReference objectReference;
 
 	public PicoObjectFactory(ObjectReference objectReference) {
-		super();
 		this.objectReference = objectReference;
-		containerFinder = new ServletContainerFinder();
+		this.containerFinder = new ServletContainerFinder();
 	}
 
 	/**
 	 * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
 	 */
 	public Object buildBean(Class clazz) throws Exception {
-		PicoContainer requestContainer = containerFinder.findContainer((HttpServletRequest) objectReference.get());
-
+		PicoContainer requestContainer = findRequestContainer();
+        
 		Object bean = requestContainer.getComponentInstance(clazz);
 		if (bean == null) {
-			// The action wasn't registered. Do it ad-hoc here.
-			MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
-			tempContainer.registerComponentImplementation(clazz);
-			bean = tempContainer.getComponentInstance(clazz);
-		}
+             // The action wasn't registered.  Attempt to instantiate it.
+             bean = createComponentInstance(requestContainer, clazz);
+		}        
 		if (bean == null) {
-			//TODO check the exception type (should it subclass PicoException)
-			throw new NullPointerException("No component instance found for " + clazz);
+			throw new PicoIntrospectionException("No component instance found for " + clazz);
 		}
 		return bean;
 	}
 
-	/**
+    private PicoContainer findRequestContainer() {
+        return containerFinder.findContainer((HttpServletRequest) objectReference.get());
+    }
+    
+	private Object createComponentInstance(PicoContainer parentContainer, Class clazz) {
+        MutablePicoContainer pico = new DefaultPicoContainer(parentContainer);
+        pico.registerComponentImplementation(clazz);
+        return pico.getComponentInstance(clazz);
+    }
+
+    /**
 	 * <p>
 	 * As {@link ObjectFactory#buildBean(java.lang.String)}does not delegate to
 	 * {@link ObjectFactory#buildBean(java.lang.Class)}but directly calls

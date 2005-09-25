@@ -8,37 +8,11 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import com.opensymphony.webwork.dispatcher.ServletDispatcher;
-import com.opensymphony.xwork.ActionProxyFactory;
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.nanocontainer.nanowar.webwork.PicoWebWork2ServletDispatcher;
 
 /**
- * Extension to the standard WebWork2 ServletDispatcher that instantiates a new container in the request
- * scope for each request and disposes of it correctly at the end of the request.
- * <p/>
- * To use, replace the WebWork ServletDispatcher in web.xml with this.
- *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @deprecated Use PicoWebWork2ServletDispatcher
  */
-public class PicoServletDispatcher extends ServletDispatcher {
-
-    public PicoServletDispatcher() {
-        super();
-        ActionProxyFactory.setFactory(new PicoActionProxyFactory());
-    }
-
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
-        try {
-            containerLauncher.startContainer();
-            // process the servlet using webwork2
-            super.service(request, response);
-        } finally {
-            containerLauncher.killContainer();
-        }
-    }
+public class PicoServletDispatcher extends PicoWebWork2ServletDispatcher {
+    
 }

@@ -8,43 +8,10 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import webwork.action.factory.ActionFactory;
-import webwork.dispatcher.ServletDispatcher;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Extension to the standard WebWork DispatcherServlet that instantiates a new container in the request
- * scope for each request and disposes of it correctly at the end of the request.
- * <p/>
- * To use, replace the WebWork ServletDispatcher in web.xml with this.
- *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @deprecated Use PicoWebWork1ServetDispatcher
  */
-public class PicoServletDispatcher extends ServletDispatcher {
+public class PicoServletDispatcher extends PicoWebWork1ServletDispatcher {
 
-    public PicoServletDispatcher() {
-        super();
-        ActionFactory.setActionFactory(new WebWorkActionFactory());
-    }
-
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
-        try {
-            containerLauncher.startContainer();
-            // process the servlet using webwork
-            super.service(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        } finally {
-            try {
-                containerLauncher.killContainer();
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
-        }
-    }
 }

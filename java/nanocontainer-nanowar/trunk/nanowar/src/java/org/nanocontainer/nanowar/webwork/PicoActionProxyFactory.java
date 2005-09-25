@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.webwork;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.ActionProxy;
@@ -15,7 +15,11 @@ import com.opensymphony.xwork.DefaultActionProxyFactory;
 import java.util.Map;
 
 /**
+ * Extension of XWork's {@link com.opensymphony.xwork.ActionProxyFactory ActionProxyFactory}
+ * which creates PicoActionInvocations.
+ * 
  * @author Chris Sturm
+ * @see PicoActionInvocation
  */
 public class PicoActionProxyFactory extends DefaultActionProxyFactory {
     public ActionInvocation createActionInvocation(ActionProxy actionProxy) throws Exception {

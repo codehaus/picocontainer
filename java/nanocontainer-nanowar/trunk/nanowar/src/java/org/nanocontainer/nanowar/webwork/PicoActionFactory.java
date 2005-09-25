@@ -67,13 +67,17 @@ public class PicoActionFactory extends ActionFactory implements KeyConstants {
         PicoContainer requestContainer = getParentContainer();
         Action result = (Action) requestContainer.getComponentInstance(actionClass);
         if (result == null) {
-            // The action wasn't registered. Do it ad-hoc here.
-            MutablePicoContainer tempContainer = new DefaultPicoContainer(requestContainer);
-            tempContainer.registerComponentImplementation(actionClass);
-            result = (Action) tempContainer.getComponentInstance(actionClass);
+            // The action wasn't registered. Attempt to instantiate it.
+            result = (Action) createComponentInstance(requestContainer, actionClass);
         }
         return result;
     }
+    
+    private Object createComponentInstance(PicoContainer parentContainer, Class clazz) {
+        MutablePicoContainer pico = new DefaultPicoContainer(parentContainer);
+        pico.registerComponentImplementation(clazz);
+        return pico.getComponentInstance(clazz);
+    }    
 
     /**
      * obtain parent container. first try in servlet, than in action context

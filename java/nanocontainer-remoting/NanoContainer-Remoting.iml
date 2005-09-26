@@ -7,7 +7,20 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/trunk/remoting/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/remoting/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/client/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/client/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/common/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/common/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/server/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/server/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/tools/src/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/tags" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/client/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/common/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/server/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/tools/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -71,6 +84,51 @@
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/jars/mx4j-2.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/jars/log4j-1.2.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/bcel/jars/bcel-5.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/ant/jars/ant-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-attributes/jars/commons-attributes-api-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

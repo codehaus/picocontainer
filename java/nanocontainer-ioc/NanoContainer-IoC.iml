@@ -60,15 +60,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xstream/jars/xstream-1.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -88,6 +79,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/avalon-logkit/jars/avalon-logkit-2.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

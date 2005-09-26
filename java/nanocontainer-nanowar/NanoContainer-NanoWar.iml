@@ -38,15 +38,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/trunk/nanowar/lib/webwork-2.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/opensymphony/jars/webwork-1.4.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -138,6 +129,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/httpunit/jars/httpunit-1.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/opensymphony/jars/webwork-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

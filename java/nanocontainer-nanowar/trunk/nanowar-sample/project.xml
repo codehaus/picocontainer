@@ -126,7 +126,15 @@
             <id>commons-logging</id>
             <version>1.0.4</version>
             <properties>
-                <war.bundle>false</war.bundle>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+            <properties>
+                <war.bundle>true</war.bundle>
             </properties>
         </dependency>
         
@@ -176,6 +184,15 @@
             <groupId>opensymphony</groupId>
             <artifactId>xwork</artifactId>
             <version>1.0.5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>oscore</artifactId>
+            <version>2.2.4</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -234,21 +251,6 @@
             </properties>
         </dependency>
 
-        <dependency>
-            <id>log4j</id>
-            <version>1.2.8</version>
-            <properties>
-                <war.bundle>false</war.bundle>
-            </properties>
-        </dependency>
-
-        <dependency>
-            <id>xml-apis</id>
-            <version>1.0.b2</version>
-            <properties>
-                <war.bundle>false</war.bundle>
-            </properties>
-        </dependency>
     </dependencies>
 
 </project>

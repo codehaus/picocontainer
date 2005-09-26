@@ -34,7 +34,7 @@
 
     <servlet>
         <servlet-name>WebWork</servlet-name>
-        <servlet-class>org.nanocontainer.nanowar.webwork.PicoServletDispatcher</servlet-class>
+        <servlet-class>org.nanocontainer.nanowar.webwork.PicoWebWork1ServletDispatcher</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

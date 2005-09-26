@@ -44,14 +44,14 @@
     <postGoal name="war:install">
         <sample:installWar framework="nanoweb"/>
         <sample:installWar framework="struts"/>
-        <sample:installWar framework="webwork"/>
+        <sample:installWar framework="webwork1"/>
         <sample:installWar framework="webwork2"/>
     </postGoal>
 
     <postGoal name="war:deploy">    		
         <sample:deployWar framework="nanoweb"/>
         <sample:deployWar framework="struts"/>
-        <sample:deployWar framework="webwork"/>
+        <sample:deployWar framework="webwork1"/>
         <sample:deployWar framework="webwork2"/>
     </postGoal>
 
@@ -64,7 +64,7 @@
         </ant:copy>
         <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-nanoweb" failonerror="false"/>
         <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-struts" failonerror="false"/>
-        <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-webwork" failonerror="false"/>
+        <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-webwork1" failonerror="false"/>
         <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-webwork2" failonerror="false"/>
     </goal>
 

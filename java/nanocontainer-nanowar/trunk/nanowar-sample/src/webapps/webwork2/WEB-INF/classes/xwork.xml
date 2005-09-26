@@ -1,15 +1,26 @@
-<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" 
-"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<!DOCTYPE xwork
+    PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+    "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 
 <xwork>
-	<!-- Include webwork defaults (from WebWork JAR). -->
-	<include file="webwork-default.xml" />
-	
-	<!-- Configuration for the default package. -->
-	<package name="default" extends="webwork-default">
-    		<action name="cheese" class="org.nanocontainer.nanowar.sample.webwork.CheeseXWorkAction">
-      		<result name="success" type="dispatcher">cheese.jsp</result>
-    	  		<result name="error" type="dispatcher">cheese.jsp</result>
-	    </action>
-	</package>
+
+    <include file="webwork-default.xml"/>
+
+    <package name="default" extends="webwork-default">
+
+        <default-interceptor-ref name="defaultStack"/>
+        
+        <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork.CheeseXWorkAction">
+	        <result name="input" type="dispatcher">
+		        <param name="location">/cheese.jsp</param>
+	        </result>
+            <result name="success" type="dispatcher">
+                <param name="location">/cheese.jsp</param>
+            </result>
+	        <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="validation"/>
+        </action>
+        
+    </package>
+
 </xwork>

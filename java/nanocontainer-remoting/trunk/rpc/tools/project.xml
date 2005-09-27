@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+    <extend>${basedir}/../project.xml</extend>
+
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-remoting-tools</id>
+    <name>NanoContainer Remoting Tools</name>
+    <package>org.nanocontainer.remoting.tools</package>
+
+    <inceptionYear>2005</inceptionYear>
+    <shortDescription>
+    NanoContainer Remoting Tools.(Generator,JavaCompiler,Ant Tasks,Maven Tasks)
+    </shortDescription>
+
+    <dependencies>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting-common</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <id>bcel</id>
+            <version>5.1</version>
+        </dependency>
+        <dependency>
+            <id>ant</id>
+            <version>1.6.2</version>
+        </dependency>
+        <!--
+      <dependency>
+          <id>tools</id>
+          <jar>tools.jar</jar>
+          <version>included in JDK/JRE</version>
+      </dependency>
+            -->
+    </dependencies>
+
+</project>

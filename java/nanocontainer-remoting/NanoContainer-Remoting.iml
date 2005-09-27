@@ -12,13 +12,17 @@
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/common/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/common/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target/genjava" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/server/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/server/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/rpc/tools/src/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/tags" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/client/target" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/common/target" />
-      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target/dynamic-gen-dir" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/integrationtests/target/test-reports" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/server/target" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/rpc/tools/target" />
     </content>

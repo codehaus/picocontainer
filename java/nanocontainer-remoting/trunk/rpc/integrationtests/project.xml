@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+    <extend>${basedir}/../project.xml</extend>
+
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-remoting-integration-tests</id>
+    <name>NanoContainer Remoting Integration tests</name>
+    <package>org.nanocontainer.remoting.tests</package>
+
+    <inceptionYear>2005</inceptionYear>
+    <shortDescription>
+    NanoContainer Remoting Integration Test Cases.
+    </shortDescription>
+
+    <dependencies>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting-common</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting-client</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting-server</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting-tools</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <id>commons-attributes</id>
+            <artifactId>commons-attributes-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <id>commons-attributes</id>
+            <artifactId>commons-attributes-compiler</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <id>qdox</id>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
+            <id>bcel</id>
+            <version>5.1</version>
+        </dependency>
+        <!--
+        <dependency>
+            <id>tools</id>
+            <jar>tools.jar</jar>
+            <version>included in JDK/JRE</version>
+        </dependency>
+
+        <dependency>
+            <id>xdoclet+xjavadoc</id>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javadoc</groupId>
+            <artifactId>javadoc</artifactId>
+            <version>1.4</version>
+        </dependency>
+        -->
+
+    </dependencies>
+
+    <reports>
+        <report>maven-junit-report-plugin</report>
+    </reports>
+
+</project>

@@ -258,7 +258,7 @@ public class DefaultKernelTestCase extends TestCase { // LSD: extends PicoTCKTes
         // application's hidden classloader.
     }
 
-    public void testExportComponentsUsingAltRMI()
+    public void testExportComponentsUsingNanoContainerRpc()
     {
         // what mechanism? Support one by default?
     }

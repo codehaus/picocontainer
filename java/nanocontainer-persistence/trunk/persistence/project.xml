@@ -1,7 +1,7 @@
 <project>
     <extend>${basedir}/../project.xml</extend>
     <id>nanocontainer-persistence</id>
-    <name>nanocontainer-persistence</name>
+    <name>NanoContainer Persistence</name>
 
     <dependencies>
         <dependency>

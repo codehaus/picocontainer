@@ -14,7 +14,7 @@
     </organization>
     <inceptionYear>2003</inceptionYear>
     <package>org.picocontainer</package>
-    <logo>/images/pico-logo.png</logo>
+    <logo>http://picocontainer.org/images/pico-logo.png</logo>
     <description>
         Please refer to the &lt;a href="http://picocontainer.org/"&gt;main website&lt;/a&gt; for documentation.    
     </description>

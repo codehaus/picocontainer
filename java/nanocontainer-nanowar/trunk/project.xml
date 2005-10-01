@@ -12,6 +12,7 @@
         <url>http://codehaus.org/</url>
         <logo>http://codehaus.org/codehaus-small.gif</logo>
     </organization>
+    <logo>http://nanocontainer.org/images/nano-logo.png</logo>
     <inceptionYear>2003</inceptionYear>
     <package>org.nanocontainer.nanowar</package>
     <description>
@@ -19,10 +20,10 @@
     </description>
     <shortDescription>NanoContainer</shortDescription>
 
-    <issueTrackingUrl>http://jira.codehaus.org/browse/NANO</issueTrackingUrl>
+    <issueTrackingUrl>http://jira.codehaus.org/browse/NANOWAR</issueTrackingUrl>
 
     <siteAddress>beaver.codehaus.org</siteAddress>
-    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/${maven.multiproject.aggregateDir}${pom.artifactId}</siteDirectory>
+    <siteDirectory>/home/projects/nanocontainer/public_html/versions/${pom.currentVersion}/${pom.artifactId}</siteDirectory>
 
     <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>
@@ -35,11 +36,20 @@
 
     <dependencies>
 
-       <dependency>
+  
+        <!-- Maven plugins -->
+        <dependency>
             <groupId>maven</groupId>
             <artifactId>maven-scm-plugin</artifactId>
-            <type>plugin</type>
             <version>1.5</version>
+            <type>plugin</type>
+        </dependency>	
+
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-multiproject-plugin</artifactId>
+            <version>1.4.1</version>
+            <type>plugin</type>
         </dependency>		
 
         <!-- required for JDK 1.5 -->

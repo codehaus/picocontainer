@@ -51,8 +51,10 @@ import org.picocontainer.defaults.SimpleReference;
  * 	     either an inlined script (enclosed in <![CDATA[]>), or a resource path for 
  * 	  	 the script.
  *   </li>
- *   <li>A ContainerComposer class via the parameter name {@link CONTAINER_COMPOSER},
- * 		which can be configured via an optional parameter {@link CONTAINER_COMPOSER_CONFIGURATION}.
+ *   <li>A ContainerComposer class via the parameter name 
+ *   {@link ServletContainerListener#CONTAINER_COMPOSER CONTAINER_COMPOSER},
+ * 	 which can be configured via an optional parameter 
+ *   {@link ServletContainerListener#CONTAINER_COMPOSER_CONFIGURATION CONTAINER_COMPOSER_CONFIGURATION}.
  *   </li>
  * </ol>
  *

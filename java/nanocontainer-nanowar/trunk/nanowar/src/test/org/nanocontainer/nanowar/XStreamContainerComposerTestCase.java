@@ -50,5 +50,23 @@ public class XStreamContainerComposerTestCase extends MockObjectTestCase impleme
 
         assertNotNull(request.getComponentInstance("requestScopedInstance"));
     }
+    
+    public void testComposedHierarchy() throws ClassNotFoundException {
+        XStreamContainerComposer composer = new XStreamContainerComposer();
+
+        MutablePicoContainer applicationContainer = new DefaultPicoContainer();
+        Mock servletContextMock = mock(ServletContext.class);
+
+        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+
+        MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
+        Mock httpSessionMock = mock(HttpSession.class);
+        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
+        Mock httpRequestMock = mock(HttpServletRequest.class);
+        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        assertNotNull(requestContainer.getComponentInstance("testFooHierarchy"));
+    }
 }
 

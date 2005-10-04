@@ -2,4 +2,7 @@
     <instance key="requestScopedInstance">
         <string>foo bar</string>
     </instance>
+    <implementation class="org.nanocontainer.nanowar.FooHierarchy" key="testFooHierarchy">
+    	<parameter key="testFoo" />
+    </implementation>
 </container>

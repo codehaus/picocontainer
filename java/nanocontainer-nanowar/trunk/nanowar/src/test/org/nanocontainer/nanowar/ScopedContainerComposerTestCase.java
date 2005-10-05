@@ -86,7 +86,25 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance"));
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance2"));
     }
+    
+    public void testComposedHierarchy() throws ClassNotFoundException {
+        ScopedContainerComposer composer = new ScopedContainerComposer();
 
+        MutablePicoContainer applicationContainer = new DefaultPicoContainer();
+        Mock servletContextMock = mock(ServletContext.class);
+
+        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+
+        MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
+        Mock httpSessionMock = mock(HttpSession.class);
+        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
+        Mock httpRequestMock = mock(HttpServletRequest.class);
+        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        assertNotNull(requestContainer.getComponentInstance("testFooHierarchy"));
+    }
+    
     private PicoContainer createPicoContainerWithConfiguredComponents() throws ClassNotFoundException{
         Reader scriptReader = new StringReader("" +
                 "<container>" +

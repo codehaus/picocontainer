@@ -2,4 +2,7 @@
     <component-instance key="requestScopedInstance">
         <string>foo bar</string>
     </component-instance>
+    <component-implementation class="org.nanocontainer.nanowar.FooHierarchy" key="testFooHierarchy">
+    		<parameter key="testFoo"/>
+    </component-implementation>    
 </container>

@@ -2,4 +2,5 @@
     <component-instance key="applicationScopedInstance">
         <string>foo bar</string>
     </component-instance>
+    <component-implementation class="org.nanocontainer.nanowar.Foo"  key="testFoo"/>    
 </container>

@@ -10,7 +10,7 @@
     <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
     <property name="connection.username">sa</property>
     <property name="connection.password"/>
-    <property name="connection.url">jdbc:hsqldb:.</property>
+    <property name="connection.url">jdbc:hsqldb:test</property>
     <property name="dialect">net.sf.hibernate.dialect.HSQLDialect</property>
     <mapping resource="de/jtec/jobdemo/beans/Profile.hbm.xml"/>
     <mapping resource="de/jtec/jobdemo/beans/Project.hbm.xml"/>

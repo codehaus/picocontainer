@@ -3,16 +3,20 @@
     <!--
         hibernate configuration
     -->
-    <implementation  key="dbConfig" class="org.nanocontainer.hibernate.ConstructableConfiguration"/>
+    <implementation  key="dbConfig" class="org.nanocontainer.persistence.hibernate.classic.ConstructableConfiguration">
+        <constant>
+            <string>/hibernate.cfg.xml</string>
+        </constant>
+    </implementation>
     <!--
        session factory
     -->
-    <implementation class="org.nanocontainer.hibernate.SessionFactoryDelegator"/>
+    <implementation class="org.nanocontainer.persistence.hibernate.classic.SessionFactoryDelegator"/>
 
     <!--
         schema export to recreate database
     -->
-    <implementation class="de.jtec.jobdemo.tools.SchemaExport">
+    <implementation key="schemaExport" class="de.jtec.jobdemo.tools.SchemaExport">
         <dependency key="dbConfig"/>
     </implementation>
     
@@ -36,7 +40,7 @@
     <!--
         proeprties for rendering of search documents
     -->
-    <implementation key="renderProperties" class="org.nanocontainer.util.ConstructableProperties">  
+    <implementation key="renderProperties" class="org.picocontainer.gems.util.ConstructableProperties">  
         <constant>
             <string>search.properties</string>
         </constant>

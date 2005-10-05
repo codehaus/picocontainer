@@ -1,13 +1,14 @@
-<project>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project  xmlns:j="jelly:core">
     <pomVersion>3</pomVersion>
     <groupId>nanocontainer</groupId>
     <id>jtec-jobdemo</id>
     <name>J Tec Team demo application</name>
     <currentVersion>0.1-SNAPSHOT</currentVersion>
-    <organisation>
+    <organization>
         <name>J Tec Team</name>
         <url>http://www.j-tec-team.de</url>
-    </organisation>
+    </organization>
     <inceptionYear>2004</inceptionYear>
     <package>de.jtec.jobdemo</package>
     <repository>
@@ -48,7 +49,8 @@
             <version>1.4</version>
             <properties>
                 <war.bundle>true</war.bundle>
-            </properties>
+                <xdoclet.dependency>true</xdoclet.dependency>
+             </properties>
         </dependency>
         <dependency>
             <id>servletapi</id>
@@ -62,7 +64,8 @@
             </properties>
         </dependency>
         <dependency>
-            <id>velocity</id>
+            <groupId>velocity</groupId>
+            <artifactId>velocity</artifactId>
             <version>1.5-dev</version>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -115,6 +118,14 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
+        <dependency>
+            <groupId>ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
         <!--dependency>
             <id>jta</id>
             <version>1.0.1B</version>
@@ -150,9 +161,11 @@
         <dependency>
             <id>log4j</id>
             <version>1.2.8</version>
+            <!--
            <properties>
                 <war.bundle>true</war.bundle>
             </properties>
+            -->
         </dependency>
 
 
@@ -161,7 +174,7 @@
         -->
         <dependency>
             <id>picocontainer</id>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2-beta-1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -169,14 +182,14 @@
         <dependency>
             <groupId>picocontainer</groupId>
             <artifactId>picocontainer-gems</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2-beta-1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
         <dependency>
             <id>nanocontainer</id>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-RC-1</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -204,69 +217,30 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-    <!-- those are for xdoclet 2 -->
+       <!-- those are for xdoclet 2 -->
         <dependency>
-            <id>xdoclet</id>
-            <version>20050206.203044</version>
+          <groupId>xdoclet</groupId>
+          <artifactId>maven-xdoclet2-plugin</artifactId>
+          <version>1.0.2</version>
+          <type>plugin</type>
         </dependency>
         <dependency>
-            <id>qfork</id>
-            <version>1.7-SNAPSHOT</version>
-            <url>http://qdox.codehaus.org/</url>
-        </dependency>
-        <dependency>
-            <id>antlr</id>
-            <version>2.7.2</version>
-            <url>http://www.antlr.org/</url>
-        </dependency>
-        <dependency>
-            <id>generama</id>
-            <version>20050206.202559</version>
-            <url>http://xdoclet.codehaus.org/generama/</url>
-        </dependency>
-        <dependency>
-            <id>commons-jelly</id>
-            <version>1.0-beta-4</version>
-            <url>http://jakarta.apache.org/jelly/</url>
-        </dependency>
-        <dependency>
-            <groupId>commons-jelly</groupId>
-            <artifactId>commons-jelly-tags-xml</artifactId>
-            <version>1.0</version>
-            <url>http://jakarta.apache.org/jelly/</url>
-        </dependency>
-        <dependency>
-            <groupId>commons-jelly</groupId>
-            <artifactId>commons-jelly-tags-define</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <id>commons-jexl</id>
-            <version>1.0-beta-2</version>
-            <url>http://jakarta.apache.org/jexl/</url>
-        </dependency>
-        <dependency>
-            <groupId>nanocontainer</groupId>
-            <artifactId>nanocontainer-tools</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!-- specific plugins -->
-        <dependency>
-            <groupId>xdoclet-plugins</groupId>
-            <artifactId>xdoclet-plugin-hibernate</artifactId>
-            <version>20050206.203645</version>
+          <groupId>xdoclet-plugins</groupId>
+          <artifactId>xdoclet-plugin-hibernate</artifactId>
+          <version>1.0.1</version>
+          <properties>
+            <xdoclet.dependency>true</xdoclet.dependency>
+          </properties>
         </dependency>
         <dependency>
             <groupId>xdoclet-plugins</groupId>
             <artifactId>xdoclet-plugin-webwork</artifactId>
-            <version>20050206.204030</version>
+            <version>1.0.2</version>
+          <properties>
+            <xdoclet.dependency>true</xdoclet.dependency>
+          </properties>
         </dependency>
-        <dependency>
-            <groupId>xdoclet-plugins</groupId>
-            <artifactId>xdoclet-plugin-externalizer</artifactId>
-            <version>20050206.203712</version>
-        </dependency>
-    </dependencies>
+        </dependencies>
  <!-- build information for the project -->
     <build>
         <sourceDirectory>src/java</sourceDirectory>
@@ -326,5 +300,5 @@
         <report>maven-jcoverage-plugin</report>
         <report>maven-jdepend-plugin</report>
         <report>maven-jxr-plugin</report>
-    </reports>
+    </reports> 
 </project>

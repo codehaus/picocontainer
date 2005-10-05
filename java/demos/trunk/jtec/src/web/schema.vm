@@ -1,0 +1,8 @@
+<html>
+    <head>
+        <title>schema exporter</title>
+    </head>
+    <body>
+        $schemaExport.start()
+    </body>
+</html>

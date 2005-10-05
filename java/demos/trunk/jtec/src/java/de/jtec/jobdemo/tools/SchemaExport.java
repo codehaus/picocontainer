@@ -47,8 +47,10 @@ public class SchemaExport extends net.sf.hibernate.tool.hbm2ddl.SchemaExport imp
      */
     public void start() {
         try {
+            System.err.println("********************** exporting schema***************");
             drop(false, true);
             create(false, true);
+            System.err.println("**********************done ***************");
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
             throw new RuntimeException(ex);

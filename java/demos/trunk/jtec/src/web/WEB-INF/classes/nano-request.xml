@@ -3,10 +3,10 @@
      <!--
         hibernate session 
      -->
-    <implementation class="org.nanocontainer.hibernate.FailoverSessionDelegator"/>
+    <implementation class="org.nanocontainer.persistence.hibernate.classic.FailoverSessionDelegator"/>
    
 
-    <implementation class="org.nanocontainer.hibernate.SessionLifecycle"/>
+    <implementation class="org.nanocontainer.persistence.hibernate.classic.SessionLifecycle"/>
      
  
     

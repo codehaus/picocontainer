@@ -14,8 +14,7 @@ import java.util.HashMap;
  * @created           November 20, 2004
  * @version           $Revision$
  * @hibernate.class
- * @hibernate.query   name="allByLogin" query="from
- *      de.jtec.jobdemo.beans.Profile p order by p.lastName , p.firstName"
+ * @hibernate.query   name="allByLogin" query="from de.jtec.jobdemo.beans.Profile p order by p.lastName , p.firstName"
  */
 public class Profile extends BaseEntity {
 

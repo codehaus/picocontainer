@@ -25,6 +25,12 @@
             <dd>
                 User information and help
             </dd>
+            <dt>
+                 <a href="$url.setPage('/schema.vm')">Drop schema</a>
+            </dt>
+            <dd>
+               Recreate database
+            </dd>
         </dl>
     </body>
 </html>

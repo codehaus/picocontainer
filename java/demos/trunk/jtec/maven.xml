@@ -5,39 +5,9 @@
         default="jar:jar">
         
     <goal name="binary:install" prereqs="war:install"/>
-    <goal name="xdoclet">
-        <path id="xdoclet.task.classpath">
-            <path refid="maven.dependency.classpath"/>
-        </path>
-
-        <taskdef
-                name="xdoclet"
-                classname="org.xdoclet.ant.XDocletTask"
-                classpathref="xdoclet.task.classpath"/>
-        <xdoclet>
-            <fileset dir="${pom.build.sourceDirectory}">
-                <include name="**/*.java"/>
-            </fileset>
-            <component classname="org.generama.VelocityTemplateEngine"/>
-            <component classname="org.generama.JellyTemplateEngine"/>
-
-            <component
-                    classname="org.xdoclet.plugin.hibernate.HibernateMappingPlugin"
-                    destdir="${basedir}/target/xdoclet/hibernatedoclet" />
-            <component
-                    classname="org.xdoclet.plugin.webwork.ViewsPropertiesPlugin"
-                    destdir="${basedir}/target/xdoclet/webwork"/>
-        </xdoclet>
-
-    </goal>
-
+ 
     <preGoal name="java:compile">
-        <!--
-        <attainGoal name="jrefactory:pretty"/> 
-        <path id="xdoclet.java.compile.src.set" location="${basedir}/target/xdoclet/xdoclet"/>
-        <maven:addPath id="maven.compile.src.set" refid="xdoclet.java.compile.src.set"/>
-        -->
-        <attainGoal name="xdoclet"/>
+         <attainGoal name="xdoclet2:run"/>
     </preGoal>
     
       <!--

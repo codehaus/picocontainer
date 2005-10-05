@@ -14,8 +14,7 @@ import java.util.HashMap;
  * @created           November 20, 2004
  * @version           $Revision$
  * @hibernate.class
- * @hibernate.query   name="allByName" query="from de.jtec.jobdemo.beans.Project
- *      p order by p.name"
+ * @hibernate.query   name="allByName" query="from de.jtec.jobdemo.beans.Project p order by p.name"
  */
 public class Project extends BaseEntity {
     /**

@@ -27,27 +27,29 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
     private final ComponentAdapter instantiatingComponentAdapter;
     private final Set unsatisfiableDependencies;
     private final Class unsatisfiedDependencyType;
-    private final PicoContainer leafContainerWhenDepWasNotFound;
+    private final PicoContainer leafContainer;
 
     public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
-                                              Set unsatisfiableDependencies, PicoContainer leafContainerWhenDepWasNotFound) {
+                                              Set unsatisfiableDependencies, PicoContainer leafContainer) {
         super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: "
-                + unsatisfiableDependencies + " where " + leafContainerWhenDepWasNotFound + " was the leaf container being asked for deps.");
+                + unsatisfiableDependencies + " where " + leafContainer 
+                + " was the leaf container being asked for dependencies.");
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.unsatisfiableDependencies = unsatisfiableDependencies;
         this.unsatisfiedDependencyType = null;
-        this.leafContainerWhenDepWasNotFound = leafContainerWhenDepWasNotFound;
+        this.leafContainer = leafContainer;
     }
 
     public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
                                               Class unsatisfiedDependencyType, Set unsatisfiableDependencies,
-                                              PicoContainer leafContainerWhenDepWasNotFound) {
+                                              PicoContainer leafContainer) {
         super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
-                +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainerWhenDepWasNotFound + " was the leaf container being asked for deps.");
+                +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer 
+                + " was the leaf container being asked for dependenciess.");
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.unsatisfiableDependencies = unsatisfiableDependencies;
         this.unsatisfiedDependencyType = unsatisfiedDependencyType;
-        this.leafContainerWhenDepWasNotFound = leafContainerWhenDepWasNotFound;
+        this.leafContainer = leafContainer;
     }
     
     public ComponentAdapter getUnsatisfiableComponentAdapter() {
@@ -62,8 +64,8 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
         return unsatisfiedDependencyType;
     }
 
-    public PicoContainer getLeafContainerWhenDepWasNotFound() {
-        return leafContainerWhenDepWasNotFound;
+    public PicoContainer getLeafContainer() {
+        return leafContainer;
     }
 
 }

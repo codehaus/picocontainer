@@ -49,8 +49,15 @@
     -->
     <dependencies>
 
-        <!-- Build/Test time only -->
+        <!-- Maven plugins -->
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-artifact-plugin</artifactId>
+            <version>1.6</version>
+            <type>plugin</type>
+        </dependency>	
 
+        <!-- Build/Test time only -->
         <dependency>
             <id>junit</id>
             <version>3.8.1</version>
@@ -58,7 +65,7 @@
         </dependency>
 
         <!-- required for JDK 1.5 -->
-	<dependency>
+		<dependency>
             <groupId>maven</groupId>
             <artifactId>maven-clover-plugin</artifactId>
             <version>1.10</version>

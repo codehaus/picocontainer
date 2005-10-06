@@ -15,7 +15,15 @@
     </repository>
     
     <dependencies>
-	<dependency>
+        <!-- Maven plugins -->
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-artifact-plugin</artifactId>
+            <version>1.6</version>
+            <type>plugin</type>
+        </dependency>	
+        
+		<dependency>
             <groupId>maven</groupId>
             <artifactId>maven-multiproject-plugin</artifactId>
             <version>1.4.1</version>

@@ -172,7 +172,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
-            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes);
+            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes, container);
         } else  if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoInitializationException("Following parameters do not match any of the setters for "
                     + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());

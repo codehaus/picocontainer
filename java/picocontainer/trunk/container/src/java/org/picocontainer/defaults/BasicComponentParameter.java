@@ -85,7 +85,7 @@ public class BasicComponentParameter
         if (componentAdapter == null) {
             final HashSet set = new HashSet();
             set.add(Arrays.asList(new Class[] {expectedType}));
-            throw new UnsatisfiableDependenciesException(adapter, set);
+            throw new UnsatisfiableDependenciesException(adapter, set, container);
         }
         componentAdapter.verify(container);
     }

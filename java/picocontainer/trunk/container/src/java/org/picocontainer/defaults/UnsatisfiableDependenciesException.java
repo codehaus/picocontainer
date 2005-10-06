@@ -11,6 +11,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoContainer;
 
 import java.util.Set;
 
@@ -26,20 +27,27 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
     private final ComponentAdapter instantiatingComponentAdapter;
     private final Set unsatisfiableDependencies;
     private final Class unsatisfiedDependencyType;
+    private final PicoContainer leafContainerWhenDepWasNotFound;
 
-    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Set unsatisfiableDependencies) {
-        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: " + unsatisfiableDependencies);
+    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
+                                              Set unsatisfiableDependencies, PicoContainer leafContainerWhenDepWasNotFound) {
+        super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfiable dependencies: "
+                + unsatisfiableDependencies + " where " + leafContainerWhenDepWasNotFound + " was the leaf container being asked for deps.");
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.unsatisfiableDependencies = unsatisfiableDependencies;
         this.unsatisfiedDependencyType = null;
+        this.leafContainerWhenDepWasNotFound = leafContainerWhenDepWasNotFound;
     }
 
-    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter, Class unsatisfiedDependencyType, Set unsatisfiableDependencies) {
+    public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
+                                              Class unsatisfiedDependencyType, Set unsatisfiableDependencies,
+                                              PicoContainer leafContainerWhenDepWasNotFound) {
         super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
-                +" among unsatisfiable dependencies: "+unsatisfiableDependencies);
+                +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainerWhenDepWasNotFound + " was the leaf container being asked for deps.");
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.unsatisfiableDependencies = unsatisfiableDependencies;
         this.unsatisfiedDependencyType = unsatisfiedDependencyType;
+        this.leafContainerWhenDepWasNotFound = leafContainerWhenDepWasNotFound;
     }
     
     public ComponentAdapter getUnsatisfiableComponentAdapter() {
@@ -54,5 +62,8 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
         return unsatisfiedDependencyType;
     }
 
-    
+    public PicoContainer getLeafContainerWhenDepWasNotFound() {
+        return leafContainerWhenDepWasNotFound;
+    }
+
 }

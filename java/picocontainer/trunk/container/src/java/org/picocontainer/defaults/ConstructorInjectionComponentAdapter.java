@@ -191,7 +191,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         if (!conflicts.isEmpty()) {
             throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
-            throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes);
+            throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out 
             final Set nonMatching = new HashSet();

@@ -64,6 +64,14 @@
             <version>${nanocontainer.version}</version>
         </dependency>
 
+        <!-- Maven plugins -->
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-artifact-plugin</artifactId>
+            <version>1.6</version>
+            <type>plugin</type>
+        </dependency>	
+
         <!-- required for JDK 1.5 -->
 		<dependency>
             <groupId>maven</groupId>

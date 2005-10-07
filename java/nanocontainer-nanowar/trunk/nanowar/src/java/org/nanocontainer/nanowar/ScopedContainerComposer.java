@@ -14,9 +14,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
@@ -29,6 +31,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**
@@ -72,15 +75,15 @@ public class ScopedContainerComposer implements ContainerComposer {
 
         MutablePicoContainer applicationContainerPrototype = new DefaultPicoContainer();
         applicationRecorder = new DefaultContainerRecorder(applicationContainerPrototype);
-        populateContainer(config.getApplicationConfig(), applicationRecorder);
+        populateContainer(config.getApplicationConfig(), applicationRecorder, null);
 
         MutablePicoContainer sessionContainerPrototype = new DefaultPicoContainer(applicationContainerPrototype);
         sessionRecorder = new DefaultContainerRecorder(sessionContainerPrototype);
-        populateContainer(config.getSessionConfig(), sessionRecorder);
+        populateContainer(config.getSessionConfig(), sessionRecorder, applicationContainerPrototype);
 
         MutablePicoContainer requestContainerPrototype = new DefaultPicoContainer(sessionContainerPrototype);
         requestRecorder = new DefaultContainerRecorder(requestContainerPrototype);
-        populateContainer(config.getRequestConfig(), requestRecorder);
+        populateContainer(config.getRequestConfig(), requestRecorder, sessionContainerPrototype);
 	}    
 
     public void composeContainer(MutablePicoContainer container, Object scope) {
@@ -101,11 +104,11 @@ public class ScopedContainerComposer implements ContainerComposer {
         return configurator;
     }
     
-	private void populateContainer(String resources, ContainerRecorder recorder) throws ClassNotFoundException {
+	private void populateContainer(String resources, ContainerRecorder recorder, MutablePicoContainer parent) throws ClassNotFoundException {
 	    MutablePicoContainer container = recorder.getContainerProxy();
 	    String[] resourcePaths = toCSV(resources);
 		for ( int i = 0; i < resourcePaths.length; i++ ){
-			ContainerPopulator populator = createContainerPopulator(getResource(resourcePaths[i]));
+			ContainerPopulator populator = createContainerPopulator(getResource(resourcePaths[i]), parent);
 			populator.populateContainer(container);
 		}
 	}
@@ -119,7 +122,7 @@ public class ScopedContainerComposer implements ContainerComposer {
 	    return (String[])tokens.toArray(new String[tokens.size()]);
 	}
 	
-	private ContainerPopulator createContainerPopulator(Reader reader)
+	private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent)
             throws ClassNotFoundException {
         NanoContainer nano = new DefaultNanoContainer(getClassLoader());
         Parameter[] parameters = new Parameter[] {
@@ -129,7 +132,9 @@ public class ScopedContainerComposer implements ContainerComposer {
                 containerBuilderClassName, parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getPico().getComponentInstance(containerBuilderClassName);
-        containerBuilder.buildContainer(new SimpleReference(), null, null, false);
+        ObjectReference parentRef = new SimpleReference();
+        parentRef.set(parent);
+        containerBuilder.buildContainer(new SimpleReference(), parentRef, null, false);
         return (ContainerPopulator) containerBuilder;
     }
 

@@ -86,12 +86,18 @@
             <id>junit</id>
             <version>3.8.1</version>
             <url>http://junit.org</url>
+        		<properties>
+        			<scope>test</scope>
+        		</properties>
         </dependency>
 
         <dependency>
             <id>jmock</id>
             <version>1.0.1</version>
             <url>http://jmock.org</url>
+        		<properties>
+        			<scope>test</scope>
+        		</properties>
         </dependency>
         
     </dependencies>

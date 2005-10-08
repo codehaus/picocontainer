@@ -150,7 +150,6 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
         assertEquals("success", action.doit());
     }
 
-    //TODO NANOWAR-19
     public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         servletConfigMock.expects(once())
                          .method("getServletContext")

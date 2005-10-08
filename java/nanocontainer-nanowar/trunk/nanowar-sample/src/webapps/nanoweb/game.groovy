@@ -1,4 +1,4 @@
-package org.nanocontainer.sample.nanoweb;
+package org.nanocontainer.nanowar.sample.nanoweb;
 
 /**
  * Simple NanoWeb Groovy action using Constructor Injection.
@@ -8,17 +8,17 @@ package org.nanocontainer.sample.nanoweb;
  */
 // START SNIPPET: class
 class Game {
-    GUESS_NEW_HINT = "Guess a number between 1 and 20"
+    public String GUESS_NEW_HINT = "Guess a number between 1 and 20"
+    public NumberToGuess numberToGuess
+    
+    public @property int guess = Integer.MIN_VALUE
+    public @property String hint = GUESS_NEW_HINT
 
-    NumberToGuess numberToGuess
-    int guess = Integer.MIN_VALUE
-    hint = GUESS_NEW_HINT
-
-    Game(NumberToGuess n) {
+    public Game(NumberToGuess n) {
         numberToGuess = n
     }
 
-    play() {
+    public play() {
         if (guess == Integer.MIN_VALUE || guess.equals(numberToGuess.getNumber())) {
             hint = GUESS_NEW_HINT
             numberToGuess.newRandom()

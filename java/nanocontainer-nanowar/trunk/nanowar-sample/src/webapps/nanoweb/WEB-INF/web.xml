@@ -9,12 +9,12 @@
         	   caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory() 	
             pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
-                println("**** Webapp-level pico components registered by Groovy")
+                println("**** Application-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 println("**** Session-level pico components registered by Groovy")
-                pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.nanoweb.NumberToGuess)
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                 println("**** Request-level pico components registered by Groovy")
+                pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
             }
 
         ]]></param-value>
@@ -52,6 +52,12 @@
         <servlet-name>NanoVelocity</servlet-name>
         <url-pattern>*.vm</url-pattern>
     </servlet-mapping>
+    
+    <!-- Welcome File -->
+    <welcome-file-list>
+      <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
 </web-app>
 
 

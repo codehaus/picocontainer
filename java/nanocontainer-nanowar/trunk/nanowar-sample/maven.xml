@@ -1,10 +1,7 @@
 <project 
     xmlns:j="jelly:core"
-    xmlns:license="license"
-    xmlns:util="jelly:util"
     xmlns:ant="jelly:ant"
     xmlns:artifact="artifact"
-    xmlns:deploy="deploy"
     xmlns:define="jelly:define"
     xmlns:sample="sample">
 
@@ -24,20 +21,12 @@
         </define:tag>
         <define:tag name="deployWar">
             <j:set var="framework" value="${framework}"/>
-            <!--
-            <deploy:artifact
+            <!-- Need to defined a different pom for each framework
+            <artifact:deploy
                 artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
-                type="wars"
-                assureDirectoryCommand="mkdir -p"
-                siteCommand="cd @deployDirectory@"
-                />
-
-                -->
-        <copy
-            file="${maven.build.dir}/${pom.artifactId}.war"
-            todir="${maven.repo.CruiseControl}/nanocontainer/wars/${pom.artifactId}-${framework}-sample-${pom.currentVersion}.war"
-            overwrite="true"
-            />
+                type="war"
+                project="${pom}"/>
+            -->
         </define:tag>
     </define:taglib>
 

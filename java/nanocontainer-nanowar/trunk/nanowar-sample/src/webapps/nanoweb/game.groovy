@@ -31,5 +31,13 @@ class Game {
         }
         return "input"
     }
+    
+    public int getGuess(){
+    		return guess;
+    }
+    
+    public String getHint(){
+    		return hint;
+    }
 }
 // END SNIPPET: class

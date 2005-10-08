@@ -139,13 +139,13 @@
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>xwork</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.5</version>
         </dependency>
 
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>webwork2</artifactId>
-            <jar>webwork-2.1.jar</jar>
+            <jar>webwork-2.1.7.jar</jar>
         </dependency>
 
         <dependency>

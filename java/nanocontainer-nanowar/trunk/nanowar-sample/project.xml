@@ -174,7 +174,7 @@
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>webwork2</artifactId>
-            <jar>webwork-2.1.jar</jar>
+            <jar>webwork-2.1.7.jar</jar>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

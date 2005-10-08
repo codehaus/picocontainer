@@ -6,7 +6,7 @@
         <p>
             ${action.hint}
         </p>
-        <form action="game/play.groovy">
+        <form action="play.groovy">
             <input name="guess" type="text" value="${action.guess}"/>
             <input type="submit" value="Guess"/>
         </form>

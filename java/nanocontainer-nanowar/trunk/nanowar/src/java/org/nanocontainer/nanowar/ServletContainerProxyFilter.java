@@ -57,10 +57,6 @@ public class ServletContainerProxyFilter implements Filter {
     private Filter delegate;
     private ServletContainerFinder containerFinder;
 
-    /**
-     * {@inheritDoc}
-     *  @see Filter#init(javax.servlet.FilterConfig)
-     */
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
         initType = filterConfig.getInitParameter("init-type");        
@@ -70,10 +66,6 @@ public class ServletContainerProxyFilter implements Filter {
         lookupOnlyOnce = new Boolean(filterConfig.getInitParameter("lookup-only-once")).booleanValue();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
-     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (delegate == null || !lookupOnlyOnce) {            
             delegate = lookupDelegate((HttpServletRequest) request);
@@ -87,10 +79,6 @@ public class ServletContainerProxyFilter implements Filter {
         delegate.doFilter(request, response, filterChain);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see Filter#destroy()
-     */
     public void destroy() {
         if (delegate != null) {
             delegate.destroy();

@@ -82,7 +82,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             // Not all servlet containers print the nested exception. Do it here.
             event.getServletContext().log(e.getMessage(), e);
             throw new PicoCompositionException(e);
@@ -161,7 +161,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         ObjectReference webappContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
         containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session, false);
 
-        session.setAttribute(KILLER_HELPER, new ContainerKillerHelper() {
+        session.setAttribute(KILLER_HELPER, new SessionContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
                 HttpSession session = bindingEvent.getSession();
                 containerRef = new SimpleReference();
@@ -189,6 +189,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
+        // no implementation - session scoped container killed by SessionContainerKillerHelper
     }
 
     private ContainerBuilder getBuilder(ServletContext context) {
@@ -203,7 +204,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         }
     }
 
-    private abstract class ContainerKillerHelper implements HttpSessionBindingListener, Serializable {
+    private abstract class SessionContainerKillerHelper implements HttpSessionBindingListener, Serializable {
         SimpleReference containerRef;
     }
 }

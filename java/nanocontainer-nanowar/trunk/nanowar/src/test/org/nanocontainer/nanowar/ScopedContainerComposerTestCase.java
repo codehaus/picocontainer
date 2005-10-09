@@ -86,6 +86,14 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance"));
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance2"));
     }
+
+    public void testCompositionWithInvalidScope() throws ClassNotFoundException {
+        ScopedContainerComposer composer = new ScopedContainerComposer();
+
+        MutablePicoContainer applicationContainer = new DefaultPicoContainer();
+        composer.composeContainer(applicationContainer, "invalid-scope");
+        assertNull(applicationContainer.getComponentInstance("applicationScopedInstance"));
+    }
     
     public void testComposedHierarchy() throws ClassNotFoundException {
         ScopedContainerComposer composer = new ScopedContainerComposer();

@@ -49,7 +49,9 @@ import org.picocontainer.defaults.SimpleReference;
  */
 public class ScopedContainerComposer implements ContainerComposer {
 
-	// ContainerBuilder class name
+	private static final String COMMA = ",";
+    
+    // ContainerBuilder class name
 	private String containerBuilderClassName;
     // scoped container recorders
 	private ContainerRecorder applicationRecorder;
@@ -114,7 +116,7 @@ public class ScopedContainerComposer implements ContainerComposer {
 	}
 
 	private String[] toCSV(String resources){
-	    StringTokenizer st = new StringTokenizer(resources, ",");
+	    StringTokenizer st = new StringTokenizer(resources, COMMA);
 	    List tokens = new ArrayList();
 	    while ( st.hasMoreTokens() ){
 	        tokens.add(st.nextToken().trim());	        

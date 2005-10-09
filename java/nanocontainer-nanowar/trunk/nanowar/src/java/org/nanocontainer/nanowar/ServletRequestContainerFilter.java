@@ -28,20 +28,20 @@ import java.io.IOException;
 public class ServletRequestContainerFilter implements Filter {
     private ServletContext context;
 
-    private final static String ALREADY_FILTERED_KEY = "nanocontainer_request_filter_already_filtered";
+    final static String ALREADY_FILTERED_KEY = "nanocontainer_request_filter_already_filtered";
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest hrequest = (HttpServletRequest) request;
-        HttpServletResponse hresponse = (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (hrequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
+        if (httpRequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
             // we were not here, filter
-            hrequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
-            ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, hrequest);
+            httpRequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
+            ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(this.context, httpRequest);
 
             try {
                 launcher.startContainer();
-                chain.doFilter(hrequest, hresponse);
+                chain.doFilter(httpRequest, httpResponse);
             } finally {
                 launcher.killContainer();
             }
@@ -49,7 +49,7 @@ public class ServletRequestContainerFilter implements Filter {
 
         } else {
             // do not filter, passthrough
-            chain.doFilter(hrequest, hresponse);
+            chain.doFilter(httpRequest, httpResponse);
         }
     }
 

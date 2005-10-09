@@ -34,7 +34,7 @@ public class ServletRequestContainerLauncher {
 
     public void startContainer() throws ServletException {
         if (containerBuilder == null) {
-            throw new ServletException("org.nanocontainer.nanowar.ServletContainerListener not deployed");
+            throw new ServletException(ServletContainerListener.class.getName()+" not deployed");
         }
         HttpSession session = request.getSession(true);
         ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);

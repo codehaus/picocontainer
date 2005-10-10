@@ -9,6 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -16,16 +33,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.picocontainer.*;
-import org.picocontainer.alternatives.EmptyPicoContainer;
-import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
-import org.picocontainer.testmodel.DecoratedTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -51,14 +58,18 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         MutablePicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = createPicoContainer(parent);
 
-        // ComponentF -> ComponentA -> ComponentB+c
+        // ComponentF -> ComponentA -> ComponentB+C
         child.registerComponentImplementation(ComponentF.class);
         parent.registerComponentImplementation(ComponentA.class);
         child.registerComponentImplementation(ComponentB.class);
         child.registerComponentImplementation(ComponentC.class);
 
-        Object o = child.getComponentInstance(ComponentF.class);
-        assertNull(o);
+        try {
+            child.getComponentInstance(ComponentF.class);
+            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch (final UnsatisfiableDependenciesException e) {
+            assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());
+        }
     }
 
     public void testComponentsCanBeRemovedByInstance() {

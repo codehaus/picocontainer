@@ -194,26 +194,15 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         assertNull(pico.getComponentInstance(String.class));
     }
 
+    public void testLookupWithUnregisteredTypeReturnsNull() throws PicoIntrospectionException, PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        MutablePicoContainer pico = createPicoContainer(null);
+        assertNull(pico.getComponentInstanceOfType(String.class));
+    }
+
     public static class ListAdder {
         public ListAdder(Collection list) {
             list.add("something");
         }
-    }
-
-    public void TODOtestMulticasterResolution() throws PicoRegistrationException, PicoInitializationException {
-        MutablePicoContainer pico = createPicoContainer(null);
-
-        pico.registerComponentImplementation(ListAdder.class);
-        pico.registerComponentImplementation("a", ArrayList.class);
-        pico.registerComponentImplementation("l", LinkedList.class);
-
-        pico.getComponentInstance(ListAdder.class);
-
-        List a = (List) pico.getComponentInstance("a");
-        assertTrue(a.contains("something"));
-
-        List l = (List) pico.getComponentInstance("l");
-        assertTrue(l.contains("something"));
     }
 
     public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
@@ -280,7 +269,10 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
     }
     
     public void testCyclicDependencyThrowsCyclicDependencyException() {
-        MutablePicoContainer pico = createPicoContainer(null);
+        assertCyclicDependencyThrowsCyclicDependencyException(createPicoContainer(null));
+    }
+
+    private static void assertCyclicDependencyThrowsCyclicDependencyException(MutablePicoContainer pico) {
         pico.registerComponentImplementation(ComponentB.class);
         pico.registerComponentImplementation(ComponentD.class);
         pico.registerComponentImplementation(ComponentE.class);
@@ -297,6 +289,11 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         } catch (StackOverflowError e) {
             fail();
         }
+    }
+
+    public void testCyclicDependencyThrowsCyclicDependencyExceptionWithParentContainer() {
+        MutablePicoContainer pico = createPicoContainer(createPicoContainer(null));
+        assertCyclicDependencyThrowsCyclicDependencyException(pico);
     }
 
     public void testRemovalNonRegisteredComponentAdapterWorksAndReturnsNull() {

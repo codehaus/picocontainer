@@ -206,19 +206,23 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation(Two.class);
         parent.registerComponentImplementation("recording", StringBuffer.class);
         parent.registerComponentImplementation(One.class);
+        parent.registerComponentImplementation(Three.class);
         MutablePicoContainer child = parent.makeChildContainer();
-        child.registerComponentImplementation(Three.class);
         child.registerComponentImplementation(FiveTriesToBeMalicious.class);
         try {
             parent.start();
-            fail("UnsatisfiableDependenciesException expected");
+            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch ( UnsatisfiableDependenciesException e) {
             // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set   
         }
         String recording = parent.getComponentInstance("recording").toString();
         assertEquals("<One<Two<Three", recording);
-        Object five = child.getComponentInstanceOfType(FiveTriesToBeMalicious.class);
-        assertNull(five); // can't get instantiated as there is no PicoContainer in any component set.
+        try {
+            child.getComponentInstanceOfType(FiveTriesToBeMalicious.class);
+            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch (final UnsatisfiableDependenciesException e) {
+            // can't get instantiated as there is no PicoContainer in any component set
+        }
         recording = parent.getComponentInstance("recording").toString();
         assertEquals("<One<Two<Three", recording); // still the same
     }

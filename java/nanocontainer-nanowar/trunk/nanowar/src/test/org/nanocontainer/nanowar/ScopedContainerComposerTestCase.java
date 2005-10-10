@@ -67,6 +67,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         composer.composeContainer(applicationContainer, servletContextMock.proxy());
         assertNotNull(applicationContainer.getComponentInstance("applicationScopedInstance"));
         assertNotNull(applicationContainer.getComponentInstance("applicationScopedInstance2"));
+        assertNotNull(applicationContainer.getComponentInstance("testFoo"));
 
         MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
         Mock httpSessionMock = mock(HttpSession.class);
@@ -85,6 +86,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertNotNull(requestContainer.getComponentInstance("sessionScopedInstance2"));
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance"));
         assertNotNull(requestContainer.getComponentInstance("requestScopedInstance2"));
+        assertNotNull(requestContainer.getComponentInstance("testFooHierarchy"));
     }
 
     public void testCompositionWithInvalidScope() throws ClassNotFoundException {
@@ -102,6 +104,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         Mock servletContextMock = mock(ServletContext.class);
 
         composer.composeContainer(applicationContainer, servletContextMock.proxy());
+        assertNotNull(applicationContainer.getComponentInstance("testFoo"));
 
         MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
         Mock httpSessionMock = mock(HttpSession.class);

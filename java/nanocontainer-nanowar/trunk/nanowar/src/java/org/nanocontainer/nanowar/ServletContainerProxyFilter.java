@@ -16,10 +16,10 @@ import org.picocontainer.PicoInitializationException;
 /**
 * <p>
 * A Filter which delegates to another Filter which is registered in a PicoContainer,
-* in any of the web scopes, context, session or request.
+* in any of the web scopes: context, session or request.
 *</p>
 *
-* <p>The delegate Filter must be registered via the "delegate-key" or "delegate-class" 
+* <p>The delegate Filter must be registered via the <code>delegate-key</code> or <code>delegate-class</code>
 * init-params of this Filter.  
 *
 * <p>The initialization is done lazily, using the <code>init-type</code> init-param
@@ -33,13 +33,13 @@ import org.picocontainer.PicoInitializationException;
 * </p>
 * 
 * <p>The lookup in the PicoContainer is by default done for each request, but you
-* can control that behaviour with the <code>lookup-only-once</code> init parameter.
-* If set to "true", then PicoFilterProxy will only lookup your delegate filter
+* can control that behaviour with the <code>lookup-only-once</code> init-param.
+* If set to "true", ServletContainerProxyFilter will only lookup your delegate filter
 * at the first request.
 * </p>
 * 
 * <p><b>Note</b>: Be aware that any dependency on your filter, in this setup, will stay
-* referenced by your filter for its whole lifetime, eventhough this dependency
+* referenced by your filter for its whole lifetime, even though this dependency
 * might have been set up at request level in your composer!
 * </p>
 *
@@ -68,7 +68,7 @@ public class ServletContainerProxyFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (delegate == null || !lookupOnlyOnce) {            
-            delegate = lookupDelegate((HttpServletRequest) request);
+            lookupDelegate((HttpServletRequest) request);
             if (initType.equals(CONTEXT_INIT_TYPE) ) {
                 initDelegate();
             }
@@ -85,34 +85,39 @@ public class ServletContainerProxyFilter implements Filter {
         }
     }
     
+    protected void initDelegate() throws ServletException {
+        if (delegate == null) {
+            throw new IllegalStateException("Delegate filter was not set up");
+        }
+        delegate.init(filterConfig);
+    }
+    
     /**
      * Looks up delegate Filter in PicoContainer found in any of the web scopes.
+     * 
      * @param request the HttpServletRequest used to find the PicoContainer
-     * @return A Filter 
-     * @throws ServletException
+     * @throws PicoInitializationException if the delegate Filter cannot be found
      */
-    private Filter lookupDelegate(HttpServletRequest request) throws ServletException {
+    protected void lookupDelegate(HttpServletRequest request) {
         PicoContainer pico = findContainer(request);
         String delegateClassName = filterConfig.getInitParameter("delegate-class");
         String delegateKey = filterConfig.getInitParameter("delegate-key");
-        Filter filter = null;
         if (delegateClassName != null) {
             try {
                 Class delegateClass = getClassLoader().loadClass(delegateClassName);
-                filter = (Filter) pico.getComponentInstanceOfType(delegateClass);
+                delegate = (Filter) pico.getComponentInstanceOfType(delegateClass);
             } catch (ClassNotFoundException e) {
                 throw new PicoInitializationException("Cannot load " + delegateClassName, e);
             }
         } else if (delegateKey != null) {
-            filter = (Filter) pico.getComponentInstance(delegateKey);
+            delegate = (Filter) pico.getComponentInstance(delegateKey);
         } else {
-            throw new PicoInitializationException("You must specify one of delegate-class or delegate-key in the filter config, and you must register the corresponding component in your PicoContainer");
+            throw new PicoInitializationException("You must specify one of delegate-class or delegate-key in the filter config");
         }
 
-        if (filter == null) {
+        if (delegate == null) {
             throw new PicoInitializationException("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey);
         }
-        return filter;
     }
 
     /**
@@ -133,11 +138,5 @@ public class ServletContainerProxyFilter implements Filter {
         return this.getClass().getClassLoader();
     }
     
-    private void initDelegate() throws ServletException {
-        if (delegate == null) {
-            throw new IllegalStateException("Delegate filter was not set up");
-        }
-        delegate.init(filterConfig);
-    }
 
 }

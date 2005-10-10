@@ -14,15 +14,18 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 
 /**
-* <p>
-* A Filter which delegates to another Filter which is registered in a PicoContainer,
+*<p>
+* ServletContainerProxyFilter is a Filter which delegates to any Filter which is registered in a PicoContainer,
 * in any of the web scopes: context, session or request.
+* This form of delegation is particularly useful as it brings dependency injections to filters.
+* In fact the delegate filter may be implemented via any form of dependency injection.
 *</p>
 *
-* <p>The delegate Filter must be registered via the <code>delegate-key</code> or <code>delegate-class</code>
+*<p>The delegate Filter must be registered via the <code>delegate-key</code> or <code>delegate-class</code>
 * init-params of this Filter.  
-*
-* <p>The initialization is done lazily, using the <code>init-type</code> init-param
+*</p>
+* 
+*<p>The initialization is done lazily, using the <code>init-type</code> init-param
 * to control it.  Allowed values are:
 * <ul>
 *   <li>"context": will call init() on the filter only once</li>

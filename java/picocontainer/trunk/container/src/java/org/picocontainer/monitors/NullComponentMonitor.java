@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
 /**
  * A {@link ComponentMonitor} which does nothing. 
  * 
- * @author Paul Hamman
+ * @author Paul Hammant
  * @author Obie Fernandez
  * @version $Revision$
  */

@@ -46,6 +46,7 @@
 
     <goal name="deploy:tomcat" prereqs="war:install">
         <ant:property environment="env"/>
+        <ant:echo message="Tomcat Home is ${env.TOMCAT_HOME}"/>
         <ant:copy todir="${env.TOMCAT_HOME}/webapps">
             <ant:fileset dir="${maven.build.dir}">
                 <ant:include name="${pom.artifactId}-*.war"/>

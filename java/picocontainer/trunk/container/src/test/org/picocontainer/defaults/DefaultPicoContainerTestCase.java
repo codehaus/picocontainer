@@ -390,4 +390,32 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
+    public static interface A {
+
+    }
+
+    public static class SimpleA implements A
+    {
+
+    }
+
+    public static class WrappingA implements A
+    {
+        private final A wrapped;
+
+        public WrappingA(A wrapped) {
+            this.wrapped = wrapped;
+        }
+    }
+
+    public void testCanRegisterTwoComponentsImplementingSameInterfaceOneWithInterfaceAsKey() throws Exception {
+        MutablePicoContainer container = createPicoContainer(null);
+
+        container.registerComponentImplementation(SimpleA.class);
+        container.registerComponentImplementation(A.class, WrappingA.class);
+
+        container.start();
+
+        assertEquals(WrappingA.class, container.getComponentInstance(A.class).getClass());
+    }
 }

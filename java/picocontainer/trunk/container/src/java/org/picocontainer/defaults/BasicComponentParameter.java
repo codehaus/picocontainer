@@ -135,17 +135,13 @@ public class BasicComponentParameter
         } else {
             Object excludeKey = excludeAdapter.getComponentKey();
             ComponentAdapter byKey = container.getComponentAdapter(expectedType);
-            if(byKey != null ) {
-                if( byKey.getComponentKey().equals(excludeKey)) {
-                    return null;
-                }
+            if(byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 return byKey;
             }
             List found = container.getComponentAdaptersOfType(expectedType);
             ComponentAdapter exclude = null;
-            ComponentAdapter work;
             for(Iterator iterator = found.iterator(); iterator.hasNext();) {
-                work = (ComponentAdapter) iterator.next();
+                ComponentAdapter work = (ComponentAdapter) iterator.next();
                 if( work.getComponentKey().equals(excludeKey)) {
                     exclude = work;
                 }

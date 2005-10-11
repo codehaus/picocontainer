@@ -6,7 +6,7 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-        	   caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory() 	
+        	caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory()
             pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 println("**** Webapp-level pico components registered by Groovy")
@@ -19,11 +19,13 @@
             }
         ]]></param-value>
     </context-param>
+
     <filter>
         <filter-name>picoRequest</filter-name>
         <filter-class>org.nanocontainer.nanowar.ServletRequestContainerFilter</filter-class>
     </filter>
-   <filter-mapping>
+            
+    <filter-mapping>
         <filter-name>picoRequest</filter-name>
         <url-pattern>*.vm</url-pattern>
     </filter-mapping>
@@ -52,10 +54,10 @@
         <servlet-name>velocity</servlet-name>
         <url-pattern>*.vm</url-pattern>
     </servlet-mapping>
-    
-   <welcome-file-list>
+
+    <welcome-file-list>
         <welcome-file>index.vm</welcome-file>
-   </welcome-file-list>
+    </welcome-file-list>
 
 </web-app>
 

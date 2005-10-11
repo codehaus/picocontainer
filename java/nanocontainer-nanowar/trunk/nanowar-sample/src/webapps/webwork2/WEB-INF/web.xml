@@ -8,6 +8,16 @@
         <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
     </context-param>
 
+    <filter>
+        <filter-name>picoObjectFactory</filter-name>
+        <filter-class>org.nanocontainer.nanowar.webwork.PicoObjectFactoryFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>picoObjectFactory</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
     <listener>
         <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
     </listener>
@@ -30,7 +40,7 @@
         <taglib-uri>webwork</taglib-uri>
         <taglib-location>/WEB-INF/webwork.tld</taglib-location>
     </taglib>
-   
+
 </web-app>
 
 

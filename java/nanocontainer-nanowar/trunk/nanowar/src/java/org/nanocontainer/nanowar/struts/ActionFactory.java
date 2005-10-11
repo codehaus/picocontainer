@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
-import org.nanocontainer.nanowar.AbstractActionFactory;
+import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -27,7 +27,9 @@ import org.picocontainer.PicoIntrospectionException;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public class ActionFactory extends AbstractActionFactory {
+public class ActionFactory {
+    
+     private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
 
     /**
      * Gets the <code>Action</code> specified by the mapping type from a PicoContainer. 
@@ -55,9 +57,9 @@ public class ActionFactory extends AbstractActionFactory {
     public Action getAction(HttpServletRequest request, ActionMapping mapping, ActionServlet servlet)
             throws PicoIntrospectionException, PicoInitializationException {
 
-        MutablePicoContainer actionsContainer = getActionsContainer(request);
+        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer(request);
         Object actionKey = mapping.getPath();
-        Class actionType = getActionClass(mapping.getType());
+        Class actionType = actionsContainerFactory.getActionClass(mapping.getType());
 
         Action action = (Action) actionsContainer.getComponentInstance(actionKey);
         if (action == null) {

@@ -26,7 +26,7 @@ public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends Abstra
         return String.class.getMethod("toString",new Class[0]);
     }
 
-    protected Constructor getConstructor() throws NoSuchMethodException {
+    protected Constructor getConstructor() {
         return String.class.getConstructors()[0];
     }
 

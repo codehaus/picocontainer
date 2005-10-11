@@ -505,27 +505,14 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     }
 
-    public void testContainerCascadesStart() {
+    public void testContainerCascadesDefaultLifecycle() {
         final MutablePicoContainer picoContainer = createPicoContainer(null);
         Foo foo = new Foo();
         picoContainer.registerComponentInstance(foo);
         picoContainer.start();
         assertEquals(true, foo.started);
-    }
-
-    public void testContainerCascadesStop() {
-        final MutablePicoContainer picoContainer = createPicoContainer(null);
-        Foo foo = new Foo();
-        picoContainer.registerComponentInstance(foo);
-        picoContainer.start();
         picoContainer.stop();
         assertEquals(true, foo.stopped);
-    }
-
-    public void testContainerCascadesDispose() {
-        final MutablePicoContainer picoContainer = createPicoContainer(null);
-        Foo foo = new Foo();
-        picoContainer.registerComponentInstance(foo);
         picoContainer.dispose();
         assertEquals(true, foo.disposed);
     }
@@ -612,6 +599,10 @@ public abstract class AbstractPicoContainerTestCase extends TestCase {
         }
 
         public void dispose(PicoContainer node) {
+        }
+
+        public boolean hasLifecycle() {
+            return true;
         }
     }
 

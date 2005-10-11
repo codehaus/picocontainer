@@ -6,7 +6,6 @@ package org.picocontainer.gems.adapters;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.pool.Pool;
 import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import org.picocontainer.ComponentAdapter;
@@ -146,7 +145,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         assertFalse(borrowed[1].getId() == borrowed[2].getId());
     }
 
-    public void testTimeoutWhenExhausted() throws InterruptedException {
+    public void testTimeoutWhenExhausted() {
         final ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 Identifiable.class, InstanceCounter.class), new PoolingComponentAdapter.DefaultContext() {
             public int getMaxSize() {

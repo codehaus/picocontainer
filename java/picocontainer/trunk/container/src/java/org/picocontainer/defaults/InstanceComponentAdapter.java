@@ -45,9 +45,11 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
     public Object getComponentInstance(PicoContainer container) {
         return componentInstance;
     }
-
+    
     public void verify(PicoContainer container) {
     }
+
+    // ~~~~~~~~ LifecylceManager ~~~~~~~~
 
     public void start(PicoContainer container) {
         start(componentInstance);
@@ -61,6 +63,12 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
         dispose(componentInstance);
     }
 
+    public boolean hasLifecycle() {
+        return hasLifecycle(componentInstance.getClass());
+    }
+
+    // ~~~~~~~~ LifecylceStrategy ~~~~~~~~
+    
     public void start(Object component) {
         lifecycleStrategy.start(componentInstance);
     }
@@ -71,6 +79,10 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
 
     public void dispose(Object component) {
         lifecycleStrategy.dispose(componentInstance);
+    }
+
+    public boolean hasLifecycle(Class type) {
+        return lifecycleStrategy.hasLifecycle(type);
     }
 
 }

@@ -585,9 +585,21 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * start(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void start(PicoContainer node) {
-            List adapters = getOrderedComponentAdapters();
-            for ( int i = 0; i < adapters.size(); i++ ){
-                Object adapter = adapters.get(i);
+            Collection adapters = getComponentAdapters();
+            for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
+                final ComponentAdapter adapter = (ComponentAdapter)iter.next();
+                if ( adapter instanceof LifecycleManager ){
+                    LifecycleManager manager = (LifecycleManager)adapter;
+                    if (manager.hasLifecycle()) {
+                        // create an instance, it will be added to the ordered CA list
+                        adapter.getComponentInstance(node);
+                        addOrderedComponentAdapter(adapter);
+                    }
+                }
+            }
+            adapters = orderedComponentAdapters;
+            for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
+                final Object adapter = iter.next();
                 if ( adapter instanceof LifecycleManager ){
                     LifecycleManager manager = (LifecycleManager)adapter;
                     manager.start(node);
@@ -601,7 +613,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * stop(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void stop(PicoContainer node) {
-            List adapters = getOrderedComponentAdapters();
+            List adapters = orderedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 Object adapter = adapters.get(i);
                 if ( adapter instanceof LifecycleManager ){
@@ -617,7 +629,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * dispose(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void dispose(PicoContainer node) {
-            List adapters = getOrderedComponentAdapters();
+            List adapters = orderedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 Object adapter = adapters.get(i);
                 if ( adapter instanceof LifecycleManager ){
@@ -626,14 +638,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
             }
         }
-        
-        /**
-         * Returns the list of component adapters ordered by dependency
-         * @return The list of component adapters ordered by dependency
-         */
-        private List getOrderedComponentAdapters() {
-            getComponentInstances();
-            return orderedComponentAdapters;
+
+        public boolean hasLifecycle() {
+            throw new UnsupportedOperationException("Should not have been called");
         }
 
     }

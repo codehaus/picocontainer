@@ -378,6 +378,10 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
             public void dispose(Object component) {
             }
 
+            public boolean hasLifecycle(Class type) {
+                return true;
+            }
+
     }
     public static class MyStartable implements Startable {
         public MyStartable() {

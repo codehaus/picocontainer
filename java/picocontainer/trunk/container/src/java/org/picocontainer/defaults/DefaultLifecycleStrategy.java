@@ -17,6 +17,7 @@ import org.picocontainer.Startable;
  * and disposes it if Disposable.
  * 
  * @author Mauro Talevi
+ * @author J&ouml;rg Schaible
  * @see Startable
  * @see Disposable
  */
@@ -38,6 +39,10 @@ public class DefaultLifecycleStrategy implements LifecycleStrategy, Serializable
         if ( component != null && component instanceof Disposable ){
             ((Disposable)component).dispose();
         }
+    }
+
+    public boolean hasLifecycle(Class type) {
+        return Startable.class.isAssignableFrom(type) || Disposable.class.isAssignableFrom(type);
     }
 
 }

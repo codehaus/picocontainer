@@ -601,6 +601,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             recorder.append("<dispose");
         }
         
+        public boolean hasLifecycle(Class type) {
+            return true;
+        }
+        
         public String recording() {
             return recorder.toString();
         }

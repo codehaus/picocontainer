@@ -172,7 +172,10 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         lifecycleStrategy.dispose(component);
     }
 
-    
+    public boolean hasLifecycle(Class type) {
+        return lifecycleStrategy.hasLifecycle(type);
+    }
+
     /**
      * Instantiate an object with given parameters and respect the accessible flag.
      * 

@@ -44,4 +44,9 @@ public interface LifecycleManager {
      */
     void dispose(PicoContainer container);
 
+    /**
+     * Test if a container's component has a lifecycle.
+     * @return <code>true</code> if the component has a lifecycle
+     */
+    boolean hasLifecycle();
 }

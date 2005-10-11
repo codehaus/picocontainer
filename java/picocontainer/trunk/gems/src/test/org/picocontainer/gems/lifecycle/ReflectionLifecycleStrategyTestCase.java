@@ -15,9 +15,9 @@ import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 
 /**
- * 
  * @author Paul Hammant
  * @author Mauro Talevi
+ * @author J&ouml;rg Schaible
  */
 public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
 
@@ -31,43 +31,32 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         Object startable = mockComponent(true, false);
         strategy.start(startable);
         strategy.stop(startable);
-    }
-
-    public void testDisposable(){
-        Object startable = mockComponent(false, true);
         strategy.dispose(startable);
     }
 
+    public void testDisposable(){
+        Object disposable = mockComponent(false, true);
+        strategy.start(disposable);
+        strategy.stop(disposable);
+        strategy.dispose(disposable);
+    }
+
     public void testNotStartableNorDisposable(){
-        Object serializable = mockComponent(false, false);
-        try {
-            strategy.start(serializable);
-            fail("Expected ReflectionLifecycleException");
-        } catch ( ReflectionLifecycleException e) {
-            assertEquals("start", e.getMessage());
-        }
-        try {
-            strategy.stop(serializable);
-            fail("Expected ReflectionLifecycleException");
-        } catch ( ReflectionLifecycleException e) {
-            assertEquals("stop", e.getMessage());
-        }
-        try {
-            strategy.dispose(serializable);
-            fail("Expected ReflectionLifecycleException");
-        } catch ( ReflectionLifecycleException e) {
-            assertEquals("dispose", e.getMessage());
-        }
+        Object serializable = mock(Serializable.class);
+        assertFalse(strategy.hasLifecycle(serializable.getClass()));
+        strategy.start(serializable);
+        strategy.stop(serializable);
+        strategy.dispose(serializable);
     }
     
-    private Object mockComponent(boolean startable, boolean disposeable) {
+    private Object mockComponent(boolean startable, boolean disposable) {
         Mock mock = mock(Serializable.class);
         if ( startable ) {
             mock = mock(Startable.class);
             mock.expects(atLeastOnce()).method("start");
             mock.expects(atLeastOnce()).method("stop");
         }
-        if ( disposeable ) {
+        if ( disposable ) {
             mock = mock(Disposable.class);
             mock.expects(atLeastOnce()).method("dispose");
         }

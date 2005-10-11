@@ -13,6 +13,7 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 
 import org.picocontainer.ComponentAdapter;
@@ -82,6 +83,6 @@ public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
             proxyTypes = (Class[])types.toArray(new Class[types.size()]);
         }
         ObjectReference reference = new ImplementationHidingReference(getDelegate(), container);
-        return HotSwapping.object(proxyTypes, proxyFactory, reference, true);
+        return HotSwapping.object(proxyTypes, proxyFactory, reference, Delegating.MODE_DIRECT);
     }
 }

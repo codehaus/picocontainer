@@ -96,7 +96,9 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
         }
         throw new PicoIntrospectionException("No component monitor found in delegate");
     }
-    
+
+    // ~~~~~~~~ LifecylceManager ~~~~~~~~
+   
     /**
      * Invokes delegate start method if the delegate is a LifecycleManager
      * {@inheritDoc}
@@ -128,6 +130,22 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
     }
 
     /**
+     * Invokes delegate hasLifecylce method if the delegate is a LifecycleManager
+     * {@inheritDoc}
+     */
+    public boolean hasLifecycle() {
+        if ( delegate instanceof LifecycleManager ){
+            return ((LifecycleManager)delegate).hasLifecycle();
+        }
+        if ( delegate instanceof LifecycleStrategy ){
+            return ((LifecycleStrategy)delegate).hasLifecycle(delegate.getComponentImplementation());
+        }
+        return false;
+    }
+
+    // ~~~~~~~~ LifecylceStrategy ~~~~~~~~
+
+    /**
      * Invokes delegate start method if the delegate is a LifecycleStrategy
      * {@inheritDoc}
      */
@@ -156,15 +174,35 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
             ((LifecycleStrategy)delegate).dispose(component);
         }
     }
+
+    /**
+     * Invokes delegate hasLifecylce(Class) method if the delegate is a LifecycleStrategy
+     * {@inheritDoc}
+     */
+    public boolean hasLifecycle(Class type) {
+        if ( delegate instanceof LifecycleStrategy ){
+            return ((LifecycleStrategy)delegate).hasLifecycle(type);
+        }
+        return false;
+    }
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[");
-        buffer.append(this.getClass().getName());
+        buffer.append(getPrintableClassName());
         buffer.append(" delegate=");
         buffer.append(delegate);
         buffer.append("]");
         return buffer.toString();
+    }
+    
+    private String getPrintableClassName() {
+        String name = getClass().getName();
+        name = name.substring(name.lastIndexOf('.')+1);
+        if (name.endsWith("ComponentAdapter")) {
+            name = name.substring(0, name.length() - "ComponentAdapter".length()) + "CA";
+        }
+        return name;
     }
 
 }

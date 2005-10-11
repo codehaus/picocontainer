@@ -69,13 +69,19 @@
             <artifactId>geronimo-spec-jta</artifactId>
             <version>1.0.1B-rc4</version>
         </dependency>
-        <!--dependency>
-            <id>jta</id>
-            <version>1.0.1B</version>
-        </dependency-->
         <dependency>
             <id>xml-apis</id>
             <version>1.0.b2</version>
+        </dependency>
+        <dependency>
+	        <groupId>commons-dbcp</groupId>
+        	<artifactId>commons-dbcp</artifactId>
+        	<version>1.2</version>
+        </dependency>
+        <dependency>
+        	<groupId>commons-pool</groupId>
+        	<artifactId>commons-pool</artifactId>
+        	<version>1.2</version>
         </dependency>
        
     </dependencies>

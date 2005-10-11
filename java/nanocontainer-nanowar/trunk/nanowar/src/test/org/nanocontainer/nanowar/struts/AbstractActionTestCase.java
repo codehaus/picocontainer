@@ -14,17 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionMapping;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.nanocontainer.nanowar.KeyConstants;
+import org.nanocontainer.nanowar.TestService;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractTestCase extends MockObjectTestCase {
+public abstract class AbstractActionTestCase extends MockObjectTestCase {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected ActionMapping mapping;
-    protected MyDao dao;
+    protected TestService service;
 
     private Mock requestMock;
     private Mock responseMock;
@@ -37,14 +39,14 @@ public abstract class AbstractTestCase extends MockObjectTestCase {
         responseMock = mock(HttpServletResponse.class);
         response = (HttpServletResponse) responseMock.proxy();
 
-        String actionType = MyAction.class.getName();
+        String actionType = StrutsTestAction.class.getName();
         mapping = new ActionMapping();
         mapping.setPath("/myPath1");
         mapping.setType(actionType);
 
-        dao = new MyDao();
+        service = new TestService();
         container = new DefaultPicoContainer();
-        container.registerComponentInstance(MyDao.class, dao);
+        container.registerComponentInstance(TestService.class, service);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
     }

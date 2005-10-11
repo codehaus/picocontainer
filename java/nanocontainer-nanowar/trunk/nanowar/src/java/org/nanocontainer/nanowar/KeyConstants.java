@@ -9,11 +9,14 @@
 package org.nanocontainer.nanowar;
 
 /**
+ * Attribute keys used to store containers in various webapp scopes.
+ * 
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public interface KeyConstants {
+    String BUILDER = "nanocontainer.builder";    
+    String ACTIONS_CONTAINER = "nanocontainer.actions";
     String APPLICATION_CONTAINER = "nanocontainer.application";
     String SESSION_CONTAINER = "nanocontainer.session";
     String REQUEST_CONTAINER = "nanocontainer.request";
-    String BUILDER = "nanocontainer.builder";
 }

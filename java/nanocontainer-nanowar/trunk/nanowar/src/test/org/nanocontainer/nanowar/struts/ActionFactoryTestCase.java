@@ -16,6 +16,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.nanocontainer.nanowar.KeyConstants;
+import org.nanocontainer.nanowar.TestAction;
+import org.nanocontainer.nanowar.TestService;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
@@ -42,11 +45,11 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
     private ActionMapping mapping2;
 
     private ActionFactory actionFactory;
-    private MyDao dao;
+    private TestService service;
 
     public void testActionContainerCreatedOnlyOncePerRequest() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponentImplementation(MyDao.class);
+        requestContainer.registerComponentImplementation(TestService.class);
         MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
@@ -67,16 +70,16 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testGetActionWhenActionsContainerAlreadyExists() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponentInstance(MyDao.class, dao);
+        requestContainer.registerComponentInstance(TestService.class, service);
         MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(actionsContainer));
 
-        MyAction action1 = (MyAction) actionFactory.getAction(request, mapping1, servlet);
-        MyAction action2 = (MyAction) actionFactory.getAction(request, mapping2, servlet);
-        MyAction action3 = (MyAction) actionFactory.getAction(request, mapping1, servlet);
-        MyAction action4 = (MyAction) actionFactory.getAction(request, mapping2, servlet);
+        StrutsTestAction action1 = (StrutsTestAction) actionFactory.getAction(request, mapping1, servlet);
+        StrutsTestAction action2 = (StrutsTestAction) actionFactory.getAction(request, mapping2, servlet);
+        TestAction action3 = (TestAction) actionFactory.getAction(request, mapping1, servlet);
+        TestAction action4 = (TestAction) actionFactory.getAction(request, mapping2, servlet);
 
         assertNotNull(action1);
         assertNotNull(action2);
@@ -87,8 +90,8 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
         assertSame(action1, actionsContainer.getComponentInstance("/myPath1"));
         assertSame(action2, actionsContainer.getComponentInstance("/myPath2"));
 
-        assertSame(dao, action1.getDao());
-        assertSame(dao, action2.getDao());
+        assertSame(service, action1.getService());
+        assertSame(service, action2.getService());
 
         assertNotNull(action1.getServlet());
         assertNotNull(action2.getServlet());
@@ -98,7 +101,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testRequestContainerExists() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponentInstance(MyDao.class, dao);
+        requestContainer.registerComponentInstance(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));
@@ -107,14 +110,14 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
         requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
 
-        MyAction action = (MyAction) actionFactory.getAction(request, mapping1, servlet);
+        TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
-        assertSame(dao, action.getDao());
+        assertSame(service, action.getService());
     }
 
     public void testSessionContainerExists() {
         MutablePicoContainer sessionContainer = new DefaultPicoContainer();
-        sessionContainer.registerComponentInstance(MyDao.class, dao);
+        sessionContainer.registerComponentInstance(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));
@@ -125,14 +128,14 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
         requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
 
-        MyAction action = (MyAction) actionFactory.getAction(request, mapping1, servlet);
+        TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
-        assertSame(dao, action.getDao());
+        assertSame(service, action.getService());
     }
 
     public void testApplicationContainerExists() {
         MutablePicoContainer appContainer = new DefaultPicoContainer();
-        appContainer.registerComponentInstance(MyDao.class, dao);
+        appContainer.registerComponentInstance(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));
@@ -145,9 +148,9 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
         requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
 
-        MyAction action = (MyAction) actionFactory.getAction(request, mapping1, servlet);
+        TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
-        assertSame(dao, action.getDao());
+        assertSame(service, action.getService());
     }
 
     public void testNoContainerExists() {
@@ -183,7 +186,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
     }
 
     protected void setUp() {
-        String actionType = MyAction.class.getName();
+        String actionType = StrutsTestAction.class.getName();
 
         mapping1 = new ActionMapping();
         mapping1.setPath("/myPath1");
@@ -197,7 +200,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
         sessionMock.stubs().method("getServletContext").will(returnValue(servletContext));
 
         actionFactory = new ActionFactory();
-        dao = new MyDao();
+        service = new TestService();
     }
 
 }

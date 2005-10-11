@@ -10,16 +10,18 @@ package org.nanocontainer.nanowar.struts;
 
 import java.io.IOException;
 
+import org.nanocontainer.nanowar.TestAction;
+
 /**
  * @author Stephen Molitor
  */
-public class PicoRequestProcessorTestCase extends AbstractTestCase {
+public class PicoRequestProcessorTestCase extends AbstractActionTestCase {
 
     public void testProcessActionCreate() throws IOException {
         PicoRequestProcessor requestProcessor = new PicoRequestProcessor();
-        MyAction action = (MyAction) requestProcessor.processActionCreate(request, response, mapping);
+        TestAction action = (TestAction) requestProcessor.processActionCreate(request, response, mapping);
         assertNotNull(action);
-        assertSame(dao, action.getDao());
+        assertSame(service, action.getService());
     }
 
 }

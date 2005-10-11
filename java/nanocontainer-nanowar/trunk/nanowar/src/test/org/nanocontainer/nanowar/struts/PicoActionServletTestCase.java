@@ -13,13 +13,13 @@ import java.io.IOException;
 /**
  * @author Stephen Molitor
  */
-public class PicoActionServletTestCase extends AbstractTestCase {
+public class PicoActionServletTestCase extends AbstractActionTestCase {
 
     public void testProcessActionCreate() throws IOException {
         PicoActionServlet servlet = new PicoActionServlet();
-        MyAction action = (MyAction) servlet.processActionCreate(mapping, request);
+        StrutsTestAction action = (StrutsTestAction) servlet.processActionCreate(mapping, request);
         assertNotNull(action);
-        assertSame(dao, action.getDao());
+        assertSame(service, action.getService());
         assertSame(servlet, action.getServlet());
     }
 

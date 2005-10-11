@@ -9,19 +9,21 @@
 package org.nanocontainer.nanowar.struts;
 
 import org.apache.struts.action.Action;
+import org.nanocontainer.nanowar.TestAction;
+import org.nanocontainer.nanowar.TestService;
 
 /**
  * @author Stephen Molitor
  */
-public class MyAction extends Action {
-    private final MyDao dao;
+public class StrutsTestAction extends Action implements TestAction {
+    private final TestService service;
 
-    public MyAction(MyDao dao) {
-        this.dao = dao;
+    public StrutsTestAction(TestService service) {
+        this.service = service;
     }
 
-    public MyDao getDao() {
-        return dao;
+    public TestService getService() {
+        return service;
     }
 
 }

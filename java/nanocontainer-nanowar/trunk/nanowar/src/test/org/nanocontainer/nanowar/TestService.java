@@ -6,10 +6,10 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.struts;
+package org.nanocontainer.nanowar;
 
 /**
  * @author Stephen Molitor
  */
-public class MyDao {
+public class TestService {
 }

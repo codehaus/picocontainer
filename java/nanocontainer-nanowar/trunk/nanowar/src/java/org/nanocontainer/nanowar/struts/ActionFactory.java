@@ -8,16 +8,17 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
+import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.ServletContainerFinder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Uses Pico to produce Actions and inject dependencies into them. This class

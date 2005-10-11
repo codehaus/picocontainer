@@ -13,19 +13,20 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
- * test capabilities of pico action factory
- * 
  * @author Konstantin Pribluda
+ * @author Mauro Talevi
  */
 public class PicoActionFactoryTestCase extends TestCase {
 
-	/**
-	 * test that action is instantiated and receives construtor parameters from
-	 * container
-	 */
-	public void testActionInstantiation() throws Exception {
-		PicoActionFactory factory = new PicoActionFactory();
-		DefaultPicoContainer container = new DefaultPicoContainer();
+    private PicoActionFactory factory;
+    private DefaultPicoContainer container;
+    
+    public void setUp(){
+        factory = new PicoActionFactory();
+        container = new DefaultPicoContainer();
+    }
+    
+	public void testActionInstantiationWithValidClassName() throws Exception {
 		container.registerComponentInstance("foo");
 		(new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
 				.set(container);
@@ -34,4 +35,43 @@ public class PicoActionFactoryTestCase extends TestCase {
 		assertNotNull(action);
 		assertEquals("foo", action.getFoo());
 	}
+    
+    public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
+        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
+                .set(container);
+        TestAction action = (TestAction) factory
+                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+        assertNull(action);
+    }
+
+    public void testActionInstantiationWithInvalidClassName() throws Exception {
+        container.registerComponentInstance("foo");
+        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
+                .set(container);
+        TestAction action = (TestAction) factory
+                .getActionImpl("invalidAction");
+        assertNull(action);
+    }
+
+    public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
+        container.registerComponentInstance("foo");
+        container.registerComponentImplementation(TestAction.class);
+        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
+                .set(container);
+        TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
+        TestAction action2 = (TestAction) factory
+                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+        assertSame(action1, action2);
+    }
+
+    public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
+        container.registerComponentInstance("foo");
+        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
+                .set(container);
+        TestAction action1 = (TestAction) factory
+                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+        TestAction action2 = (TestAction) factory
+                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+        assertNotSame(action1, action2);
+    }
 }

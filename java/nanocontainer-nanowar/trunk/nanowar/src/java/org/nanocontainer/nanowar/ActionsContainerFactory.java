@@ -36,8 +36,7 @@ public class ActionsContainerFactory {
         try {
             return loadClass(className);
         } catch (ClassNotFoundException e) {
-            throw new PicoIntrospectionException("Action class + '" + className + "' not found.  "
-                    + "Check the spelling of the 'type' element of the action mapping.");
+            throw new PicoIntrospectionException("Action class '" + className + "' not found", e);
         }
     }
     

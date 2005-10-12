@@ -20,6 +20,7 @@ import java.util.Map;
  * 
  * @author Chris Sturm
  * @see PicoActionInvocation
+ * @deprecated Use DefaultActionProxyFactory 
  */
 public class PicoActionProxyFactory extends DefaultActionProxyFactory {
     public ActionInvocation createActionInvocation(ActionProxy actionProxy) throws Exception {

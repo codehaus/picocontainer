@@ -8,14 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-import com.opensymphony.webwork.dispatcher.ServletDispatcher;
-import com.opensymphony.xwork.ActionProxyFactory;
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-import org.nanocontainer.nanowar.webwork.PicoActionProxyFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
+
+import com.opensymphony.webwork.dispatcher.ServletDispatcher;
+import com.opensymphony.xwork.ActionProxyFactory;
+import com.opensymphony.xwork.DefaultActionProxyFactory;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates 
@@ -30,7 +31,7 @@ public class PicoWebWork2ServletDispatcher extends ServletDispatcher {
 
     public PicoWebWork2ServletDispatcher() {
         super();
-        ActionProxyFactory.setFactory(new PicoActionProxyFactory());
+       ActionProxyFactory.setFactory(new DefaultActionProxyFactory());
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {

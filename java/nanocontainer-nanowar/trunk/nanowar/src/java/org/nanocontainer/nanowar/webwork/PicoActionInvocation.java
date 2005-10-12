@@ -19,7 +19,7 @@ import com.opensymphony.xwork.DefaultActionInvocation;
  * 
  * @author Chris Sturm
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @deprecated Use DefaultActionInvocation 
  */
 public class PicoActionInvocation extends DefaultActionInvocation {
 

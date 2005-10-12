@@ -8,15 +8,21 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-import junit.framework.TestCase;
+import javax.servlet.http.HttpServletRequest;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+
+import webwork.action.ServletActionContext;
 
 /**
  * @author Konstantin Pribluda
  * @author Mauro Talevi
  */
-public class PicoActionFactoryTestCase extends TestCase {
+public class PicoActionFactoryTestCase extends MockObjectTestCase {
 
     private PicoActionFactory factory;
     private DefaultPicoContainer container;
@@ -24,12 +30,11 @@ public class PicoActionFactoryTestCase extends TestCase {
     public void setUp(){
         factory = new PicoActionFactory();
         container = new DefaultPicoContainer();
+        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     
 	public void testActionInstantiationWithValidClassName() throws Exception {
 		container.registerComponentInstance("foo");
-		(new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-				.set(container);
 		TestAction action = (TestAction) factory
 				.getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
 		assertNotNull(action);
@@ -37,8 +42,6 @@ public class PicoActionFactoryTestCase extends TestCase {
 	}
     
     public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
-        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-                .set(container);
         TestAction action = (TestAction) factory
                 .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
         assertNull(action);
@@ -46,8 +49,6 @@ public class PicoActionFactoryTestCase extends TestCase {
 
     public void testActionInstantiationWithInvalidClassName() throws Exception {
         container.registerComponentInstance("foo");
-        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-                .set(container);
         TestAction action = (TestAction) factory
                 .getActionImpl("invalidAction");
         assertNull(action);
@@ -56,8 +57,6 @@ public class PicoActionFactoryTestCase extends TestCase {
     public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
         container.registerComponentInstance("foo");
         container.registerComponentImplementation(TestAction.class);
-        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-                .set(container);
         TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
         TestAction action2 = (TestAction) factory
                 .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
@@ -66,12 +65,27 @@ public class PicoActionFactoryTestCase extends TestCase {
 
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         container.registerComponentInstance("foo");
-        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER))
-                .set(container);
         TestAction action1 = (TestAction) factory
                 .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
         TestAction action2 = (TestAction) factory
                 .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
-        assertNotSame(action1, action2);
+        assertSame(action1, action2);
     }
+    
+    public void testActionContainerIsFoundInRequest() throws Exception {
+        Mock requestMock = mock(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
+                returnValue(null));
+        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
+                returnValue(container));
+        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
+                isA(MutablePicoContainer.class));
+        ServletActionContext.setRequest(request);
+        container.registerComponentInstance("foo");
+        TestAction action = (TestAction) factory
+                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+        assertNotNull(action);        
+    }
+
 }

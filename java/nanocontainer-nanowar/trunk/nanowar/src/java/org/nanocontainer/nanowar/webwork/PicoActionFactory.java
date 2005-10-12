@@ -8,88 +8,68 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.ObjectReference;
+
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Replacement for the standard WebWork JavaActionFactory that resolves all of the
- * dependencies an Action may have in the constructor.
+ * Replacement for the standard WebWork JavaActionFactory that uses a 
+ * PicoContainer to resolve all of the dependencies an Action may have.
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Mauro Talevi
  */
-public class PicoActionFactory extends ActionFactory implements KeyConstants {
+public class PicoActionFactory extends ActionFactory {
 
-    private Map classCache = new HashMap();
-
+    private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
+    
     public Action getActionImpl(String className) throws Exception {
-        Class actionClass = loadClass(className);
-        if (actionClass == null) {
-            return null;
-        } else {
+        try {
+            Class actionClass = actionsContainerFactory.getActionClass(className);
             Action action = null;
             try {
                 action = instantiateAction(actionClass);
             } catch (Exception e) {
-                // todo: what? webwork seems to swallow these exceptions - I think.
-                e.printStackTrace();
+                //swallow these exceptions and return null action
             }
             return action;
-        }
-    }
-
-    protected Class loadClass(String className) {
-        if (classCache.containsKey(className)) {
-            return (Class) classCache.get(className);
-        } else {
-            try {
-                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                Class result = classLoader.loadClass(className);
-                classCache.put(className, result);
-                return result;
-            } catch (ClassNotFoundException e) {
-                return null;
-            }
+        } catch (PicoIntrospectionException e) {
+            return null;
         }
     }
 
     protected Action instantiateAction(Class actionClass) {
-        PicoContainer requestContainer = getParentContainer();
-        Action result = (Action) requestContainer.getComponentInstance(actionClass);
-        if (result == null) {
+        MutablePicoContainer actionsContainer = getActionsContainer();
+        Action action = (Action) actionsContainer.getComponentInstance(actionClass);
+        
+        if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
-            result = (Action) createComponentInstance(requestContainer, actionClass);
+            actionsContainer.registerComponentImplementation(actionClass);
+            action = (Action) actionsContainer.getComponentInstance(actionClass);
         }
-        return result;
+        return action;
     }
     
-    private Object createComponentInstance(PicoContainer parentContainer, Class clazz) {
-        MutablePicoContainer pico = new DefaultPicoContainer(parentContainer);
-        pico.registerComponentImplementation(clazz);
-        return pico.getComponentInstance(clazz);
-    }    
 
     /**
-     * obtain parent container. first try in servlet, than in action context
+     *  Return actions container, first try using the ActionsContainerFactory, 
+     *  than in WebWork ActionContext.
      */
-    private PicoContainer getParentContainer() {
+    private MutablePicoContainer getActionsContainer() {
         HttpServletRequest request = ServletActionContext.getRequest();
-        ObjectReference ref;
-        if (request != null) {
-            ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+        if ( request != null ) {
+            return actionsContainerFactory.getActionsContainer(request);
         } else {
-            ref = new ActionContextScopeObjectReference(REQUEST_CONTAINER);
+            ObjectReference ref = new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER);
+            return (MutablePicoContainer) ref.get();
         }
-        return (PicoContainer) ref.get();
     }
 }

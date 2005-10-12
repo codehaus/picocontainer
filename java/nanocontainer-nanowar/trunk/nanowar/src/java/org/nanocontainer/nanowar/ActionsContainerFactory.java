@@ -1,5 +1,8 @@
 package org.nanocontainer.nanowar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.MutablePicoContainer;
@@ -17,7 +20,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class ActionsContainerFactory {
 
     private final ServletContainerFinder containerFinder = new ServletContainerFinder();
-
+    private Map classCache = new HashMap();
+    
     public MutablePicoContainer getActionsContainer(HttpServletRequest request) {
         MutablePicoContainer actionsContainer = 
             (MutablePicoContainer) request.getAttribute(KeyConstants.ACTIONS_CONTAINER);
@@ -30,11 +34,22 @@ public class ActionsContainerFactory {
 
     public Class getActionClass(String className) throws PicoIntrospectionException {
         try {
-            return Class.forName(className);
+            return loadClass(className);
         } catch (ClassNotFoundException e) {
             throw new PicoIntrospectionException("Action class + '" + className + "' not found.  "
                     + "Check the spelling of the 'type' element of the action mapping.");
         }
     }
+    
+    protected Class loadClass(String className) throws ClassNotFoundException {
+        if (classCache.containsKey(className)) {
+            return (Class) classCache.get(className);
+        } else {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Class result = classLoader.loadClass(className);
+            classCache.put(className, result);
+            return result;
+        }
+    }    
 
 }

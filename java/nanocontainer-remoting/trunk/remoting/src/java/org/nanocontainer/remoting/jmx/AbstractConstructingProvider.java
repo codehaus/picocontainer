@@ -48,7 +48,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
 
         // create MBean
         try {
-            // thows ClassNotFoundException if not successful
+            // throws ClassNotFoundException if not successful
             final Class management = getManagementInterface(componentAdapter.getComponentImplementation(), mBeanInfo);
             final DynamicMBean mBean = getMBeanFactory().create(
                     componentAdapter.getComponentInstance(picoContainer), management, mBeanInfo);

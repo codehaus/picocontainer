@@ -28,7 +28,7 @@ import org.picocontainer.testmodel.RecordingLifecycle.Two;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Ward Cunningham
@@ -68,7 +68,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.stop();
         parent.dispose();
 
-        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One", 
+        assertEquals("<One<Two<Three<FourFour>Three>Two>One>!Four!Three!Two!One",
                 parent.getComponentInstance("recording").toString());
     }
 
@@ -82,15 +82,15 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         parent.registerComponentImplementation(Two.class);
         parent.registerComponentImplementation(One.class);
         child.registerComponentImplementation(Three.class);
-        
+
         parent.start();
         parent.stop();
         parent.dispose();
 
-        assertEquals("", 
+        assertEquals("",
                 parent.getComponentInstance("recording").toString());
     }
-    
+
     public void testStartStartShouldFail() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.start();
@@ -213,7 +213,7 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
             parent.start();
             fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch ( UnsatisfiableDependenciesException e) {
-            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set   
+            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set
         }
         String recording = parent.getComponentInstance("recording").toString();
         assertEquals("<One<Two<Three", recording);
@@ -282,6 +282,73 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         }
     }
 
+    public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentAdapterFactory()
+        throws Exception
+    {
+        LifecycleStrategy strategy = new LifecycleStrategy() {
+            public void start(Object component) {
+                ((StringBuffer)component).append("start>");
+            }
+
+            public void stop(Object component) {
+                ((StringBuffer)component).append("stop>");
+            }
+
+            public void dispose(Object component) {
+                ((StringBuffer)component).append("dispose>");
+            }
+
+            public boolean hasLifecycle(Class type) {
+                return true;
+            }
+        };
+        MutablePicoContainer pico = new DefaultPicoContainer( new DefaultComponentAdapterFactory(), strategy, null );
+
+        StringBuffer sb = new StringBuffer();
+
+        pico.registerComponentInstance(sb);
+
+        pico.start();
+        pico.stop();
+        pico.dispose();
+
+        assertEquals("start>stop>dispose>", sb.toString());
+    }
+
+    public void testLifeCycleStrategyForInstanceRegistrationPassedToChildContainers()
+        throws Exception
+    {
+        LifecycleStrategy strategy = new LifecycleStrategy() {
+            public void start(Object component) {
+                ((StringBuffer)component).append("start>");
+            }
+
+            public void stop(Object component) {
+                ((StringBuffer)component).append("stop>");
+            }
+
+            public void dispose(Object component) {
+                ((StringBuffer)component).append("dispose>");
+            }
+
+            public boolean hasLifecycle(Class type) {
+                return true;
+            }
+        };
+        MutablePicoContainer parent = new DefaultPicoContainer(strategy, null);
+        MutablePicoContainer pico = parent.makeChildContainer();
+
+        pico.registerComponentImplementation(StringBuffer.class);
+
+        pico.start();
+
+        StringBuffer sb = (StringBuffer) pico.getComponentInstanceOfType(StringBuffer.class);
+
+        pico.stop();
+        pico.dispose();
+
+        assertEquals("start>stop>dispose>", sb.toString());
+    }
 
 
 }

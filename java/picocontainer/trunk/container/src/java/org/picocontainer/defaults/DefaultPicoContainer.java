@@ -75,7 +75,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private boolean started = false;
     private boolean disposed = false;
     private HashSet children = new HashSet();
-    
+
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy();
 
@@ -93,11 +93,33 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
-        this.componentAdapterFactory = componentAdapterFactory;
-        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
+        this(componentAdapterFactory, null, parent);
     }
 
+    /**
+     * Creates a new container with a custom ComponentAdapterFactory, LifecycleStrategy for instance registration,
+     *  and a parent container.
+     * <p/>
+     * <em>
+     * Important note about caching: If you intend the components to be cached, you should pass
+     * in a factory that creates {@link CachingComponentAdapter} instances, such as for example
+     * {@link CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
+     * other ComponentAdapterFactories.
+     * </em>
+     *
+     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param parent                  the parent container (used for component dependency lookups).
+     */
+    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory,
+                                LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
+                                PicoContainer parent) {
+        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        this.componentAdapterFactory = componentAdapterFactory;
+        if( null != lifecycleStrategyForInstanceRegistrations ) {
+            this.lifecycleStrategyForInstanceRegistrations = lifecycleStrategyForInstanceRegistrations;
+        }
+        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
+    }
 
     /**
       * Creates a new container with the DefaultComponentAdapterFactory using a
@@ -163,7 +185,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public DefaultPicoContainer(PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(), parent);
     }
-    
+
     /**
      * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and no parent container.
      */
@@ -422,7 +444,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Start the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
-     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
@@ -446,7 +468,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Stop the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
-     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
@@ -470,7 +492,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Dispose the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
-     * The actual {@link LifecycleStrategy lifecycle strategy} supported 
+     * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
@@ -490,7 +512,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory,
+                                                           lifecycleStrategyForInstanceRegistrations,
+                                                           this);
         addChildContainer(pc);
         return pc;
     }
@@ -517,9 +541,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             child.accept(visitor);
         }
     }
-    
+
     /**
-     * Changes monitor in the ComponentAdapterFactory, the component adapters 
+     * Changes monitor in the ComponentAdapterFactory, the component adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      */
@@ -532,7 +556,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             if ( adapter instanceof ComponentMonitorStrategy ) {
                 ((ComponentMonitorStrategy)adapter).changeMonitor(monitor);
             }
-        }        
+        }
         for (Iterator i = children.iterator(); i.hasNext();) {
             Object child = i.next();
             if (child instanceof ComponentMonitorStrategy) {
@@ -542,11 +566,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Returns the first current monitor found in the ComponentAdapterFactory, the component adapters 
+     * Returns the first current monitor found in the ComponentAdapterFactory, the component adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      * @throws PicoIntrospectionException if no component monitor is found in container or its children
-     */    
+     */
     public ComponentMonitor currentMonitor() {
         if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
             return ((ComponentMonitorStrategy) componentAdapterFactory).currentMonitor();
@@ -556,7 +580,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             if ( adapter instanceof ComponentMonitorStrategy ) {
                 return ((ComponentMonitorStrategy)adapter).currentMonitor();
             }
-        }        
+        }
         for (Iterator i = children.iterator(); i.hasNext();) {
             Object child = i.next();
             if (child instanceof ComponentMonitorStrategy) {
@@ -568,20 +592,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
    /**
     * <p>
-    * Implementation of lifecycle manager which delegates to the container's component adapters. 
+    * Implementation of lifecycle manager which delegates to the container's component adapters.
     * The component adapters will be ordered by dependency as registered in the container.
     * This LifecycleManager will delegate calls on the lifecycle methods to the component adapters
     * if these are themselves LifecycleManagers.
     * </p>
-    * 
+    *
     * @author Mauro Talevi
     * @since 1.2
-    */    
+    */
     private class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
-        
+
         /**
-         * {@inheritDoc} 
-         * Loops over all component adapters and invokes 
+         * {@inheritDoc}
+         * Loops over all component adapters and invokes
          * start(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void start(PicoContainer node) {
@@ -609,7 +633,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         /**
          * {@inheritDoc}
-         * Loops over all component adapters (in inverse order) and invokes 
+         * Loops over all component adapters (in inverse order) and invokes
          * stop(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void stop(PicoContainer node) {
@@ -625,7 +649,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         /**
          * {@inheritDoc}
-         * Loops over all component adapters (in inverse order) and invokes 
+         * Loops over all component adapters (in inverse order) and invokes
          * dispose(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void dispose(PicoContainer node) {

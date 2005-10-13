@@ -90,21 +90,9 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(0, componentInstances.size());
     }
     
-    /*
-    When pico tries to instantiate ArrayList, it will attempt to use the constructor that takes a
-    java.util.Collection. Since both the ArrayList and LinkedList are Collection, it will fail with
-    AmbiguousComponentResolutionException.
-
-    Pico should be smart enough to figure out that it shouldn't consider a component as a candidate parameter for
-    its own instantiation. This may be fixed by adding an additional parameter to ComponentParameter.resolveAdapter -
-    namely the ComponentAdapter instance that should be excluded.
-    AH
-    Pico-222 is fixed, but activating this will lead to cyclic dependency...
-    KP
-     */
-    public void TODOtestComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
+    public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponentImplementation(LinkedList.class);
+        pico.registerComponentImplementation(LinkedList.class, LinkedList.class, new Parameter[0]);
         pico.registerComponentImplementation(ArrayList.class);
         assertEquals(ArrayList.class, pico.getComponentInstanceOfType(ArrayList.class).getClass());
     }

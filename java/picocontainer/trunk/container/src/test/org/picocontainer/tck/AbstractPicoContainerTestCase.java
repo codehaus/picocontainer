@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
@@ -60,10 +59,12 @@ import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Washable;
 import org.picocontainer.testmodel.WashableTouchable;
 
+import org.jmock.MockObjectTestCase;
+
 /**
  * This test tests (at least it should) all the methods in MutablePicoContainer.
  */
-public abstract class AbstractPicoContainerTestCase extends TestCase {
+public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 

@@ -108,6 +108,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param lifecycleStrategyForInstanceRegistrations the lifecylce strategy chosen for regiered 
+     *          instance (not implementations!)
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory,
@@ -130,6 +132,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       */
     public DefaultPicoContainer(ComponentMonitor componentMonitor, PicoContainer parent) {
         this(new DefaultComponentAdapterFactory(componentMonitor), parent);
+        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(componentMonitor);
     }
 
     /**
@@ -174,6 +177,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       */
     public DefaultPicoContainer(ComponentMonitor componentMonitor) {
         this(new DefaultComponentAdapterFactory(componentMonitor), null);
+        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(componentMonitor);
     }
 
     /**

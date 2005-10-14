@@ -28,6 +28,8 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import org.jmock.Mock;
+
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -53,7 +55,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         try {
             new DefaultPicoContainer((ComponentAdapterFactory)null, (PicoContainer)null);
             fail("NPE expected");
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             // expected
         }
     }
@@ -202,7 +204,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
     }
 
-    public void testCanChangeMonitor() {        StringWriter writer1 = new StringWriter();
+    public void testCanChangeMonitor() {
+        StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         pico.registerComponentImplementation("t1", SimpleTouchable.class);

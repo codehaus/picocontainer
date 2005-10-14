@@ -338,17 +338,15 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         MutablePicoContainer parent = new DefaultPicoContainer(strategy, null);
         MutablePicoContainer pico = parent.makeChildContainer();
 
-        pico.registerComponentImplementation(StringBuffer.class);
+        StringBuffer sb = new StringBuffer();
+
+        pico.registerComponentInstance(sb);
 
         pico.start();
-
-        StringBuffer sb = (StringBuffer) pico.getComponentInstanceOfType(StringBuffer.class);
-
         pico.stop();
         pico.dispose();
 
         assertEquals("start>stop>dispose>", sb.toString());
     }
-
 
 }

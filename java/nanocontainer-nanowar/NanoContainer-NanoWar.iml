@@ -47,15 +47,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/opensymphony/jars/xwork-1.0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -147,6 +138,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jtidy/jars/jtidy-4aug2000r7-dev.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/opensymphony/jars/xwork-1.0.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

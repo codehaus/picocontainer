@@ -20,6 +20,8 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -33,6 +35,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.lang.reflect.Method;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -186,8 +189,20 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertTrue("writer not empty", writer.toString().length() > 0);
     }
     
-    public void testCanChangeMonitor() {
-        StringWriter writer1 = new StringWriter();
+    public void testStartCapturedByMonitor() {
+        final StringBuffer sb = new StringBuffer();
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor() {
+            public void invoking(Method method, Object instance) {
+                sb.append(method.toString());
+            }
+        });
+        dpc.registerComponentImplementation(DefaultPicoContainer.class);
+        dpc.start();
+        assertEquals("ComponentMonitor should have been notified that the component had been started",
+                "public abstract void org.picocontainer.Startable.start()", sb.toString());
+    }
+
+    public void testCanChangeMonitor() {        StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         pico.registerComponentImplementation("t1", SimpleTouchable.class);

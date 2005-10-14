@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * Creates instances of {@link ConstructorInjectionComponentAdapter} decorated by
@@ -29,7 +30,7 @@ public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFa
 
     public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
         changeMonitor(componentMonitor);
-        this.lifecycleStrategy = new DefaultLifecycleStrategy();
+        this.lifecycleStrategy = new DefaultLifecycleStrategy(componentMonitor);
     }
 
     public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
@@ -38,7 +39,7 @@ public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFa
     }
 
     public DefaultComponentAdapterFactory() {
-        this.lifecycleStrategy = new DefaultLifecycleStrategy();
+        this.lifecycleStrategy = new DefaultLifecycleStrategy(new NullComponentMonitor());
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)

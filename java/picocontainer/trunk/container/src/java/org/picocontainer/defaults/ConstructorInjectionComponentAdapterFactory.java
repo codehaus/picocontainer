@@ -31,7 +31,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
-        this(allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy());
+        this(allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy(componentMonitor));
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, LifecycleStrategy lifecycleStrategy) {
@@ -39,7 +39,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
-        this(allowNonPublicClasses, new DelegatingComponentMonitor(), new DefaultLifecycleStrategy());
+        this(allowNonPublicClasses, new DelegatingComponentMonitor());
     }
 
     public ConstructorInjectionComponentAdapterFactory() {

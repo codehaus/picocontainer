@@ -94,7 +94,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, 
             Parameter[] parameters, boolean allowNonPublicClasses,
             ComponentMonitor componentMonitor) {
-        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy());
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy(componentMonitor));
     }
 
     /**

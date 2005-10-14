@@ -77,7 +77,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private HashSet children = new HashSet();
 
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
-    private LifecycleStrategy lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy();
+    private LifecycleStrategy lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(new NullComponentMonitor());
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.

@@ -21,8 +21,10 @@ import javax.servlet.http.HttpSessionEvent;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -37,6 +39,11 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     private ServletContainerListener listener;
 
+    private String groovyScript =
+        "nano = builder.container(parent:parent, scope:assemblyScope) {\n" +
+        "   component(key:'string', instance:'A String')\n" +
+        "}";
+    
     private String xmlScript =
             "<container>" +
             "<component-instance key='string'>" +
@@ -48,21 +55,27 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener = new ServletContainerListener();
     }
     
-    public void testApplicationScopeContainerIsCreatedWithInlinedXMLScript() {
+    public void testApplicationScopeContainerIsCreatedWithInlinedScripts() {
+        assertApplicationScopeContainerIsCreatedWithInlinedScript("nanocontainer.groovy", groovyScript, GroovyContainerBuilder.class);
+        assertApplicationScopeContainerIsCreatedWithInlinedScript("nanocontainer.xml", xmlScript, XMLContainerBuilder.class);
+    }
+
+    private void assertApplicationScopeContainerIsCreatedWithInlinedScript(String scriptName, String script, 
+            Class containerBuilder) {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
-        initParams.add("nanocontainer.xml");
+        initParams.add(scriptName);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
         servletContextMock.expects(once())
                 .method("getInitParameter")
-                .with(eq("nanocontainer.xml"))
-                .will(returnValue(xmlScript));
+                .with(eq(scriptName))
+                .will(returnValue(script));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(XMLContainerBuilder.class));
+                .with(eq(BUILDER), isA(containerBuilder));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
@@ -70,25 +83,31 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
     }
     
-    public void testApplicationScopeContainerIsCreatedWithSeparateXMLScript() {
+    public void testApplicationScopeContainerIsCreatedWithInSeparateScripts() {
+        assertApplicationScopeContainerIsCreatedWithSeparateScript("nanocontainer.groovy", groovyScript, GroovyContainerBuilder.class);
+        assertApplicationScopeContainerIsCreatedWithSeparateScript("nanocontainer.xml", xmlScript, XMLContainerBuilder.class);
+    }
+
+    private void assertApplicationScopeContainerIsCreatedWithSeparateScript(String scriptName, String script, 
+            Class containerBuilder) {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
-        initParams.add("nanocontainer.xml");
+        initParams.add(scriptName);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
         servletContextMock.expects(once())
                 .method("getInitParameter")
-                .with(eq("nanocontainer.xml"))
-                .will(returnValue("/config/nanocontainer.xml"));
+                .with(eq(scriptName))
+                .will(returnValue("/config/"+scriptName));
         servletContextMock.expects(once())
                 .method("getResourceAsStream")
-                .with(eq("/config/nanocontainer.xml"))
-                .will(returnValue(new ByteArrayInputStream(xmlScript.getBytes())));
+                .with(eq("/config/"+scriptName))
+                .will(returnValue(new ByteArrayInputStream(script.getBytes())));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(XMLContainerBuilder.class));
+                .with(eq(BUILDER), isA(containerBuilder));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
@@ -183,7 +202,13 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
                     (ServletContext) servletContextMock.proxy()));
     }       
         
-    public void testSessionScopeContainerWithApplicationScopeContainerAsParentIsCreated() {
+    public void testSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(){
+        assertSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(groovyScript, GroovyContainerBuilder.class);
+        assertSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(xmlScript, XMLContainerBuilder.class);
+    }
+    
+    private void assertSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(
+            String script, Class containerBuilder) {
         Mock servletContextMock = mock(ServletContext.class);
         MutablePicoContainer appScopeContainer = new DefaultPicoContainer();
         servletContextMock.expects(once())
@@ -193,8 +218,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
                 .method("getAttribute")
                 .with(eq(BUILDER))
-                .will(returnValue(new XMLContainerBuilder(new StringReader(xmlScript), getClass().getClassLoader())));
-
+                .will(returnValue(createContainerBuilder(containerBuilder, script)));
         Mock httpSessionMock = mock(HttpSession.class);
         httpSessionMock.expects(once())
                 .method("getServletContext")
@@ -211,6 +235,14 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     }
     
     
+    private ContainerBuilder createContainerBuilder(Class containerBuilder, String script) {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentInstance(new StringReader(script));
+        pico.registerComponentInstance(getClass().getClassLoader());
+        pico.registerComponentImplementation(containerBuilder);
+        return (ContainerBuilder)pico.getComponentInstanceOfType(ContainerBuilder.class);
+    }
+
     public void testSessionDestroyedMethodIsIgnored() {
         Mock httpSession = mock(HttpSession.class);
         listener.sessionDestroyed(new HttpSessionEvent((HttpSession)httpSession.proxy()));
@@ -241,11 +273,16 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
     }
 
-    public void testScopedContainerComposerIsCreatedWithXMLConfiguration() {
-        Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
-        initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
-        String script =
+    public void testScopedContainerComposerIsCreatedWithConfiguration() {
+        String groovyConfig =
+            "nano = builder.container(parent:parent, scope:assemblyScope) {\n" +
+            "   component(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+
+            "             parameters:['org.nanocontainer.script.groovy.GroovyContainerBuilder', " +
+            "                         'nanowar-application.groovy', 'nanowar-session.groovy', " +
+            "                         'nanowar-request.groovy' ])\n" +
+            "}";
+        assertScopedContainerComposerIsCreatedWithConfiguration("composer-config.groovy", groovyConfig);
+        String xmlConfig =
             "<container>" +
             "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>" +
             "      <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>" +
@@ -254,7 +291,13 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
             "      <parameter><string>nanowar-request.xml,nanowar/request.xml</string></parameter> " +
             "</component-implementation>" +
             "</container>";
-
+        assertScopedContainerComposerIsCreatedWithConfiguration("composer-config.xml", xmlConfig);
+    }
+    
+    private void assertScopedContainerComposerIsCreatedWithConfiguration(String scriptName, String script) {
+        Mock servletContextMock = mock(ServletContext.class);
+        final Vector initParams = new Vector();
+        initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
                 .withNoArguments()
@@ -266,10 +309,10 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq(ServletContainerListener.CONTAINER_COMPOSER_CONFIGURATION))
-                .will(returnValue("nanowar/composer-config.xml"));
+                .will(returnValue("nanowar/"+scriptName));
         servletContextMock.expects(once())
                 .method("getResourceAsStream")
-                .with(eq("nanowar/composer-config.xml"))
+                .with(eq("nanowar/"+scriptName))
                 .will(returnValue(new ByteArrayInputStream(script.getBytes())));
         servletContextMock.expects(once())
                 .method("setAttribute")
@@ -277,7 +320,9 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
-        listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
+        listener.contextInitialized(new ServletContextEvent(
+                    (ServletContext) servletContextMock.proxy()));
     }
 
 }
+

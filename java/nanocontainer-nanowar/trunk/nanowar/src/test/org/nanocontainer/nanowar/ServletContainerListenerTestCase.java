@@ -48,7 +48,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener = new ServletContainerListener();
     }
     
-    public void testApplicationScopeContainerIsCreatedWithInlinedScript() {
+    public void testApplicationScopeContainerIsCreatedWithInlinedXMLScript() {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add("nanocontainer.xml");
@@ -70,7 +70,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
     }
     
-    public void testApplicationScopeContainerIsCreatedWithSeparateScript() {
+    public void testApplicationScopeContainerIsCreatedWithSeparateXMLScript() {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add("nanocontainer.xml");
@@ -184,15 +184,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     }       
         
     public void testSessionScopeContainerWithApplicationScopeContainerAsParentIsCreated() {
-        Mock httpSessionMock = mock(HttpSession.class);
         Mock servletContextMock = mock(ServletContext.class);
-        httpSessionMock.expects(once())
-                .method("getServletContext")
-                .withNoArguments()
-                .will(returnValue(servletContextMock.proxy()));
-        httpSessionMock.expects(once())
-                .method("setAttribute")
-                .with(eq(ServletContainerListener.KILLER_HELPER), isA(HttpSessionBindingListener.class));
         MutablePicoContainer appScopeContainer = new DefaultPicoContainer();
         servletContextMock.expects(once())
                 .method("getAttribute")
@@ -203,6 +195,14 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
                 .with(eq(BUILDER))
                 .will(returnValue(new XMLContainerBuilder(new StringReader(xmlScript), getClass().getClassLoader())));
 
+        Mock httpSessionMock = mock(HttpSession.class);
+        httpSessionMock.expects(once())
+                .method("getServletContext")
+                .withNoArguments()
+                .will(returnValue(servletContextMock.proxy()));
+        httpSessionMock.expects(once())
+                .method("setAttribute")
+                .with(eq(ServletContainerListener.KILLER_HELPER), isA(HttpSessionBindingListener.class));
         httpSessionMock.expects(once())
                 .method("setAttribute")
                 .with(eq(SESSION_CONTAINER), isA(PicoContainer.class));
@@ -216,7 +216,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.sessionDestroyed(new HttpSessionEvent((HttpSession)httpSession.proxy()));
     }
     
-    public void testContainerComposerIsCreatedWithNoConfiguration() {
+    public void testScopedContainerComposerIsCreatedWithDefaultConfiguration() {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
@@ -241,7 +241,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.contextInitialized(new ServletContextEvent((ServletContext) servletContextMock.proxy()));
     }
 
-    public void testContainerComposerIsCreatedWithConfiguration() {
+    public void testScopedContainerComposerIsCreatedWithXMLConfiguration() {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();
         initParams.add(ServletContainerListener.CONTAINER_COMPOSER);

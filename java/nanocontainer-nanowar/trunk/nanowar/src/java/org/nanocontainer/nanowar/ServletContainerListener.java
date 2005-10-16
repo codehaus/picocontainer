@@ -37,19 +37,24 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**
+ * <p>
  * Servlet listener class that hooks into the underlying servlet
  * container and instantiates, assembles, starts, stores and
  * disposes the appropriate pico containers when
  * applications/sessions start/stop.
- * <p/>
- * To use, add this as a listener-class to web.xml.
+ * </p>
+ * <p>
+ * To use, simply add as a listener to web.xml the listener-class 
+ * <code>org.nanocontainer.nanowar.ServletContainerListener</code>.
+ * </p>
+ * <p>
  * The containers are configured via context-params in web.xml, in two ways: 
  * <ol>
  * 	 <li>A NanoContainer script via a parameter whose name is nanocontainer.<language>, 
  *       where <language> is one of the supported scripting languages,
- *       see {@link ScriptedContainerBuilderFactory}.  The parameter value can be
- * 	     either an inlined script (enclosed in <![CDATA[]>), or a resource path for 
- * 	  	 the script.
+ *       see {@link org.nanocontainer.script.ScriptedContainerBuilderFactory ScriptedContainerBuilderFactory}.  
+ *       The parameter value can be either an inlined script (enclosed in <![CDATA[]>), or a resource path for 
+ * 	  	 the script (relative to the webapp context).
  *   </li>
  *   <li>A ContainerComposer class via the parameter name 
  *   {@link ServletContainerListener#CONTAINER_COMPOSER CONTAINER_COMPOSER},
@@ -57,7 +62,7 @@ import org.picocontainer.defaults.SimpleReference;
  *   {@link ServletContainerListener#CONTAINER_COMPOSER_CONFIGURATION CONTAINER_COMPOSER_CONFIGURATION}.
  *   </li>
  * </ol>
- *
+ *</p>
  * @author Joe Walnes
  * @author Aslak Helles&oslash;y
  * @author Philipp Meier
@@ -75,7 +80,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         try {
-            ContainerBuilder containerBuilder = createBuilder(context);
+            ContainerBuilder containerBuilder = createContainerBuilder(context);
 
             ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
             builderRef.set(containerBuilder);
@@ -89,7 +94,7 @@ public class ServletContainerListener implements ServletContextListener, HttpSes
         }
     }
 
-    private ContainerBuilder createBuilder(ServletContext context) throws ClassNotFoundException {
+    private ContainerBuilder createContainerBuilder(ServletContext context) throws ClassNotFoundException {
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();

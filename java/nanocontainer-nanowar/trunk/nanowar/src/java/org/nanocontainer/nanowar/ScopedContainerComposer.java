@@ -35,13 +35,25 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**
- * ScopedContainerComposer is a ContainerComposer which 
- * can build a PicoContainer for different web context scopes:
+ * <p>
+ * ScopedContainerComposer is a 
+ * {@link org.nanocontainer.integrationkit.ContainerComposer ContainerComposer} 
+ * which can build PicoContainers for different web context scopes: 
  * application, session and request. 
+ * </p>
+ * <p>
  * The configuration for each scope is contained in one of more 
  * NanoContainer scripts.
- * The ContainerBuilder used to build the PicoContainer and the 
- * names of scoped script files are configurable via a ScopedContainerConfigurator.
+ * The {@link org.nanocontainer.integrationkit.ContainerBuilder ContainerBuilder} 
+ * used to build the PicoContainer and the names of scoped script files are configurable 
+ * via a ScopedContainerConfigurator.
+ * </p>
+ * <p>
+ * <b>Note:</b> ScopedContainerComposer requires ContainerBuilders that also implement
+ * {@link org.nanocontainer.integrationkit.ContainerPopulator ContainerPopulator},
+ * as this is used by the 
+ * {@link org.nanocontainer.integrationkit.ContainerRecorder ContainerRecorder} proxy.
+ * </p>
  * 
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
@@ -99,7 +111,7 @@ public class ScopedContainerComposer implements ContainerComposer {
     }
 
     private ScopedContainerConfigurator getConfigurator(PicoContainer pico){
-        ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponentInstance(ScopedContainerConfigurator.class);
+        ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponentInstanceOfType(ScopedContainerConfigurator.class);
         if ( configurator == null ){
             configurator = new ScopedContainerConfigurator();
         }

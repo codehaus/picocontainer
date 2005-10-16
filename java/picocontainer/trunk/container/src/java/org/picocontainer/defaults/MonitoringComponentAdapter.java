@@ -35,7 +35,7 @@ public abstract class MonitoringComponentAdapter implements ComponentAdapter, Co
      */
     protected MonitoringComponentAdapter(ComponentMonitor monitor) {
         if (monitor == null){
-            throw new NullPointerException("componentMonitor");
+            throw new NullPointerException("monitor");
         }
         this.componentMonitor = monitor;
     }

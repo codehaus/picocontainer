@@ -77,7 +77,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private HashSet children = new HashSet();
 
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
-    private LifecycleStrategy lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(new NullComponentMonitor());
+    private LifecycleStrategy lifecycleStrategyForInstanceRegistrations;
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -93,7 +93,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, null, parent);
+        this(componentAdapterFactory, new DefaultLifecycleStrategy(new NullComponentMonitor()), parent);
     }
 
     /**
@@ -116,10 +116,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                 LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
                                 PicoContainer parent) {
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        if (lifecycleStrategyForInstanceRegistrations == null) throw new NullPointerException("lifecycleStrategyForInstanceRegistrations");
         this.componentAdapterFactory = componentAdapterFactory;
-        if( null != lifecycleStrategyForInstanceRegistrations ) {
-            this.lifecycleStrategyForInstanceRegistrations = lifecycleStrategyForInstanceRegistrations;
-        }
+        this.lifecycleStrategyForInstanceRegistrations = lifecycleStrategyForInstanceRegistrations;
         this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
     }
 
@@ -127,25 +126,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * Creates a new container with the DefaultComponentAdapterFactory using a
       * custom ComponentMonitor
       *
-      * @param componentMonitor the ComponentMonitor to use
+      * @param monitor the ComponentMonitor to use
       * @param parent the parent container (used for component dependency lookups).
       */
-    public DefaultPicoContainer(ComponentMonitor componentMonitor, PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(componentMonitor), parent);
-        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(componentMonitor);
+    public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(monitor), parent);
+        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(monitor);
     }
 
     /**
       * Creates a new container with the DefaultComponentAdapterFactory using a
       * custom ComponentMonitor and lifecycle strategy
       *
-      * @param componentMonitor the ComponentMonitor to use
+      * @param monitor the ComponentMonitor to use
       * @param lifecycleStrategy the lifecycle strategy to use.
       * @param parent the parent container (used for component dependency lookups).
       */
-    public DefaultPicoContainer(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(componentMonitor, lifecycleStrategy), parent);
-        lifecycleStrategyForInstanceRegistrations = lifecycleStrategy;
+    public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(new DefaultComponentAdapterFactory(monitor, lifecycleStrategy), lifecycleStrategy,  parent);
     }
 
     /**
@@ -173,11 +171,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * Creates a new container with the DefaultComponentAdapterFactory using a
       * custom ComponentMonitor
       *
-      * @param componentMonitor the ComponentMonitor to use
+      * @param monitor the ComponentMonitor to use
       */
-    public DefaultPicoContainer(ComponentMonitor componentMonitor) {
-        this(new DefaultComponentAdapterFactory(componentMonitor), null);
-        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(componentMonitor);
+    public DefaultPicoContainer(ComponentMonitor monitor) {
+        this(monitor, new DefaultLifecycleStrategy(monitor), null);
     }
 
     /**
@@ -555,6 +552,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy) componentAdapterFactory).changeMonitor(monitor);
         }
+//        if (lifecycleStrategyForInstanceRegistrations instanceof ComponentMonitorStrategy) {
+  //          ((ComponentMonitorStrategy) lifecycleStrategyForInstanceRegistrations).changeMonitor(monitor);
+    //    }
         for ( Iterator i = componentAdapters.iterator(); i.hasNext(); ){
             Object adapter = i.next();
             if ( adapter instanceof ComponentMonitorStrategy ) {

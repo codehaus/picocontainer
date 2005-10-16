@@ -24,14 +24,14 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
     private LifecycleStrategy lifecycleStrategy;
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, 
-                        ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+                        ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         this.allowNonPublicClasses = allowNonPublicClasses;
-        this.changeMonitor(componentMonitor);
+        this.changeMonitor(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor componentMonitor) {
-        this(allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy(componentMonitor));
+    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor monitor) {
+        this(allowNonPublicClasses, monitor, new DefaultLifecycleStrategy(monitor));
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, LifecycleStrategy lifecycleStrategy) {

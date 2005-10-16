@@ -28,24 +28,30 @@ public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFa
 
     private final LifecycleStrategy lifecycleStrategy;
 
-    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor) {
-        changeMonitor(componentMonitor);
-        this.lifecycleStrategy = new DefaultLifecycleStrategy(componentMonitor);
+    public DefaultComponentAdapterFactory(ComponentMonitor monitor) {
+        super(monitor);
+        changeMonitor(monitor); // TODO Redundant ?
+        this.lifecycleStrategy = new DefaultLifecycleStrategy(monitor);
     }
 
-    public DefaultComponentAdapterFactory(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+    public DefaultComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+        super(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
-        changeMonitor(componentMonitor);
     }
 
     public DefaultComponentAdapterFactory() {
         this.lifecycleStrategy = new DefaultLifecycleStrategy(new NullComponentMonitor());
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey,
-                        componentImplementation, parameters, false, currentMonitor(), lifecycleStrategy));
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitor(), lifecycleStrategy));
     }
-    
+
+    public void changeMonitor(ComponentMonitor monitor) {
+        super.changeMonitor(monitor);
+        if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
+            ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
+        }
+    }
+
 }

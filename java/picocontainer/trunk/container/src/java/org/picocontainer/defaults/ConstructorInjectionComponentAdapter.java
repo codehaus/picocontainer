@@ -63,7 +63,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @param componentMonitor the component monitor used by this adapter
+     * @param monitor the component monitor used by this adapter
      * @param lifecycleStrategy the component lifecycle strategy used by this adapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
@@ -73,9 +73,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                                                 final Class componentImplementation,
                                                 Parameter[] parameters,
                                                 boolean allowNonPublicClasses,
-                                                ComponentMonitor componentMonitor,
+                                                ComponentMonitor monitor,
                                                 LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor, lifecycleStrategy);
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, lifecycleStrategy);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @param componentMonitor the component monitor used by this adapter
+     * @param monitor the component monitor used by this adapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -94,8 +94,8 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                                                 final Class componentImplementation,
                                                 Parameter[] parameters,
                                                 boolean allowNonPublicClasses,
-                                                ComponentMonitor componentMonitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses,componentMonitor);
+                                                ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor);
     }
 
     /**

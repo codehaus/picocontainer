@@ -48,15 +48,15 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * @param method the method to call
      * @param ofType the component type
      * @param visitInInstantiationOrder flag for the visiting order
-     * @param componentMonitor the {@link ComponentMonitor} to use
+     * @param monitor the {@link ComponentMonitor} to use
      * @deprecated since 1.2 in favour of {@link LifecycleManager}
      */
-    protected LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor componentMonitor) {
+    protected LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder, ComponentMonitor monitor) {
         super(method, ofType, null, visitInInstantiationOrder);
-        if (componentMonitor == null) {
+        if (monitor == null) {
             throw new NullPointerException();
         }
-        this.componentMonitor = componentMonitor;
+        this.componentMonitor = monitor;
     }
 
     /**

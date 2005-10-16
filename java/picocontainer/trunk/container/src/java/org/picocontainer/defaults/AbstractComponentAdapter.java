@@ -43,11 +43,11 @@ public abstract class AbstractComponentAdapter extends MonitoringComponentAdapte
      * Constructs a new ComponentAdapter for the given key and implementation. 
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param componentMonitor the component monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      */
-    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
-        super(componentMonitor);
+    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) throws AssignabilityRegistrationException {
+        super(monitor);
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }

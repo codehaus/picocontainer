@@ -58,15 +58,15 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes
-     * @param componentMonitor the component monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses,
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
-        super(componentKey, componentImplementation, componentMonitor);
+            ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+        super(componentKey, componentImplementation, monitor);
         checkConcrete();
         if (parameters != null) {
             for (int i = 0; i < parameters.length; i++) {
@@ -86,15 +86,15 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param allowNonPublicClasses flag to allow instantiation of non-public classes
-     * @param componentMonitor the component monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, 
             Parameter[] parameters, boolean allowNonPublicClasses,
-            ComponentMonitor componentMonitor) {
-        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, componentMonitor, new DefaultLifecycleStrategy(componentMonitor));
+            ComponentMonitor monitor) {
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, new DefaultLifecycleStrategy(monitor));
     }
 
     /**

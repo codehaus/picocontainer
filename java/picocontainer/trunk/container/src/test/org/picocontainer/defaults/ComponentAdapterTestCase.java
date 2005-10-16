@@ -97,13 +97,13 @@ public class ComponentAdapterTestCase
             new TestComponentAdapter("Key", String.class, null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assertEquals("componentMonitor", e.getMessage());
+            assertEquals("monitor", e.getMessage());
         }
         try {
             new TestMonitoringComponentAdapter(null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assertEquals("componentMonitor", e.getMessage());
+            assertEquals("monitor", e.getMessage());
         }
     }
 

@@ -10,6 +10,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
+import org.picocontainer.LifecycleManager;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -23,22 +24,22 @@ import java.lang.reflect.Method;
  * @see Startable
  * @see Disposable
  */
-public class DefaultLifecycleStrategy implements LifecycleStrategy, Serializable {
+public class DefaultLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
 
     private ComponentMonitor componentMonitor;
     private static Method start, stop, dispose;
 
     {
         try {
-            start = Startable.class.getMethod("start", new Class[0]);
-            stop = Startable.class.getMethod("stop", new Class[0]);
-            dispose = Disposable.class.getMethod("dispose", new Class[0]);
+            start = Startable.class.getMethod("start", null);
+            stop = Startable.class.getMethod("stop", null);
+            dispose = Disposable.class.getMethod("dispose", null);
         } catch (NoSuchMethodException e) {
         }
     }
 
-    public DefaultLifecycleStrategy(ComponentMonitor componentMonitor) {
-        this.componentMonitor = componentMonitor;
+    public DefaultLifecycleStrategy(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
 
     }
 
@@ -73,4 +74,12 @@ public class DefaultLifecycleStrategy implements LifecycleStrategy, Serializable
         return Startable.class.isAssignableFrom(type) || Disposable.class.isAssignableFrom(type);
     }
 
+
+    public void changeMonitor(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
+    }
+
+    public ComponentMonitor currentMonitor() {
+        return componentMonitor;
+    }
 }

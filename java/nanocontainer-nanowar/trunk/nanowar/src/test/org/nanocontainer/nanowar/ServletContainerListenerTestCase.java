@@ -40,7 +40,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     private ServletContainerListener listener;
 
     private String groovyScript =
-        "nano = builder.container(parent:parent, scope:assemblyScope) {\n" +
+        "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
         "   component(key:'string', instance:'A String')\n" +
         "}";
     
@@ -275,7 +275,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     public void testScopedContainerComposerIsCreatedWithConfiguration() {
         String groovyConfig =
-            "nano = builder.container(parent:parent, scope:assemblyScope) {\n" +
+            "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
             "   component(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+
             "             parameters:['org.nanocontainer.script.groovy.GroovyContainerBuilder', " +
             "                         'nanowar-application.groovy', 'nanowar-session.groovy', " +
@@ -286,9 +286,9 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
             "<container>" +
             "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>" +
             "      <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>" +
-            "      <parameter><string>nanowar-application.xml,nanowar/application.xml</string></parameter> " +
-            "      <parameter><string>nanowar-session.xml,nanowar/session.xml</string></parameter>        " +
-            "      <parameter><string>nanowar-request.xml,nanowar/request.xml</string></parameter> " +
+            "      <parameter><string>nanowar-application.xml</string></parameter> " +
+            "      <parameter><string>nanowar-session.xml</string></parameter>        " +
+            "      <parameter><string>nanowar-request.xml</string></parameter> " +
             "</component-implementation>" +
             "</container>";
         assertScopedContainerComposerIsCreatedWithConfiguration("composer-config.xml", xmlConfig);

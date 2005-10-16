@@ -20,7 +20,7 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class JNDIDataSourceComponentTestCase extends MockObjectTestCase {
+public class JNDIDataSourceTestCase extends MockObjectTestCase {
 
 	public void testDataSource() throws SQLException {
 		final String NAME = "aeiou";
@@ -33,7 +33,7 @@ public class JNDIDataSourceComponentTestCase extends MockObjectTestCase {
 		context.expects(once()).method("lookup").with(eq(NAME)).will(returnValue(dataSource.proxy()));
 		dataSource.expects(once()).method("getLoginTimeout").will(returnValue(123));
 
-		JNDIDataSourceComponent component = new JNDIDataSourceComponent(NAME, (Context) context.proxy());
+		JNDIDataSource component = new JNDIDataSource(NAME, (Context) context.proxy());
 
 		component.start();
 

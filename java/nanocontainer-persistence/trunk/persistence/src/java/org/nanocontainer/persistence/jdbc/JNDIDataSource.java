@@ -19,7 +19,7 @@ import org.picocontainer.Startable;
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class JNDIDataSourceComponent extends AbstractDataSourceComponent implements Startable {
+public class JNDIDataSource extends AbstractDataSource implements Startable {
 
 	private final String name;
 
@@ -31,7 +31,7 @@ public class JNDIDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param name JNDI name where the original DataSource is.
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
-	public JNDIDataSourceComponent(final String name) {
+	public JNDIDataSource(final String name) {
 		this.name = name;
 		this.context = null;
 	}
@@ -40,7 +40,7 @@ public class JNDIDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param name JNDI name where the original DataSource is.
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
-	public JNDIDataSourceComponent(final String name, final ExceptionHandler jdbcExceptionHandler) {
+	public JNDIDataSource(final String name, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
 		this.name = name;
 		this.context = null;
@@ -50,7 +50,7 @@ public class JNDIDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param name JNDI name where the original DataSource is.
 	 * @param context JNDI context.
 	 */
-	public JNDIDataSourceComponent(final String name, final Context context) {
+	public JNDIDataSource(final String name, final Context context) {
 		this.name = name;
 		this.context = context;
 	}
@@ -60,14 +60,14 @@ public class JNDIDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param context JNDI context.
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
-	public JNDIDataSourceComponent(final String name, final Context context, final ExceptionHandler jdbcExceptionHandler) {
+	public JNDIDataSource(final String name, final Context context, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
 		this.name = name;
 		this.context = context;
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSourceComponent#getDelegatedDataSource()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#getDelegatedDataSource()
 	 */
 	protected DataSource getDelegatedDataSource() throws Exception {
 		if (dataSource == null) {
@@ -85,7 +85,7 @@ public class JNDIDataSourceComponent extends AbstractDataSourceComponent impleme
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSourceComponent#invalidateDelegatedDataSource()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#invalidateDelegatedDataSource()
 	 */
 	protected void invalidateDelegatedDataSource() throws Exception {
 		dataSource = null;

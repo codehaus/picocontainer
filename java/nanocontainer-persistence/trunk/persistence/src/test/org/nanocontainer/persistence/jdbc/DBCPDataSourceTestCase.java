@@ -17,10 +17,10 @@ import junit.framework.TestCase;
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class DBCPDataSourceComponentTestCase extends TestCase {
+public class DBCPDataSourceTestCase extends TestCase {
 
 	public void testDBCP() throws SQLException {
-		DBCPDataSourceComponent component = new DBCPDataSourceComponent("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:test", "sa", "");
+		DBCPDataSource component = new DBCPDataSource("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:test", "sa", "");
 
 		component.start();
 

@@ -20,7 +20,7 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class FailoverDataSourceConnectionComponentTestCase extends MockObjectTestCase {
+public class FailoverDataSourceConnectionTestCase extends MockObjectTestCase {
 
 	public void testFailover() throws SQLException {
 		Mock dataSource = mock(DataSource.class);
@@ -34,7 +34,7 @@ public class FailoverDataSourceConnectionComponentTestCase extends MockObjectTes
 		connection.expects(once()).method("getAutoCommit").will(returnValue(true));
 		connection.expects(once()).method("close");
 
-		FailoverDataSourceConnectionComponent component = new FailoverDataSourceConnectionComponent((DataSource) dataSource.proxy());
+		FailoverDataSourceConnection component = new FailoverDataSourceConnection((DataSource) dataSource.proxy());
 
 		component.start();
 		

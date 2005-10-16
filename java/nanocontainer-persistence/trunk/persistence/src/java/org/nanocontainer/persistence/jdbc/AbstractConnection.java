@@ -28,15 +28,15 @@ import org.nanocontainer.persistence.ExceptionHandler;
  * @version $Id$
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public abstract class AbstractConnectionComponent implements Connection {
+public abstract class AbstractConnection implements Connection {
 
 	private ExceptionHandler jdbcExceptionHandler;
 
-	protected AbstractConnectionComponent(ExceptionHandler jdbcExceptionHandler) {
+	protected AbstractConnection(ExceptionHandler jdbcExceptionHandler) {
 		this.jdbcExceptionHandler = jdbcExceptionHandler;
 	}
 
-	protected AbstractConnectionComponent() {
+	protected AbstractConnection() {
 		jdbcExceptionHandler = null;
 	}
 

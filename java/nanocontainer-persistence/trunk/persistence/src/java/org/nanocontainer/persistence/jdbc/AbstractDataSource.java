@@ -24,15 +24,15 @@ import org.nanocontainer.persistence.ExceptionHandler;
  * @version $Id$
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public abstract class AbstractDataSourceComponent implements DataSource {
+public abstract class AbstractDataSource implements DataSource {
 
 	private final ExceptionHandler jdbcExceptionHandler;
 
-	protected AbstractDataSourceComponent(final ExceptionHandler jdbcExceptionHandler) {
+	protected AbstractDataSource(final ExceptionHandler jdbcExceptionHandler) {
 		this.jdbcExceptionHandler = jdbcExceptionHandler;
 	}
 
-	protected AbstractDataSourceComponent() {
+	protected AbstractDataSource() {
 		jdbcExceptionHandler = null;
 	}
 

@@ -23,7 +23,7 @@ import org.picocontainer.Startable;
  * 
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class DBCPDataSourceComponent extends AbstractDataSourceComponent implements Startable {
+public class DBCPDataSource extends AbstractDataSource implements Startable {
 
 	private BasicDataSource dataSource;
 
@@ -35,7 +35,7 @@ public class DBCPDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param username The connection username.
 	 * @param password The connection password. 
 	 */
-	public DBCPDataSourceComponent(final String driver, final String connectionURL,  final String username, final String password) {
+	public DBCPDataSource(final String driver, final String connectionURL,  final String username, final String password) {
 		properties = new Properties();
 		properties.put("driverClassName", driver);
 		properties.put("url", connectionURL);
@@ -50,7 +50,7 @@ public class DBCPDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param password The connection password.
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance. 
 	 */
-	public DBCPDataSourceComponent(final String driver, final String connectionURL, final String username, final String password, final ExceptionHandler jdbcExceptionHandler) {
+	public DBCPDataSource(final String driver, final String connectionURL, final String username, final String password, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
 		properties = new Properties();
 		properties.put("driverClassName", driver);
@@ -62,7 +62,7 @@ public class DBCPDataSourceComponent extends AbstractDataSourceComponent impleme
 	/**
 	 * @param properties DBCP properties. See at @{link http://jakarta.apache.org/commons/dbcp/configuration.html}
 	 */
-	public DBCPDataSourceComponent(final Properties properties) {
+	public DBCPDataSource(final Properties properties) {
 		this.properties = properties;
 	}
 
@@ -70,13 +70,13 @@ public class DBCPDataSourceComponent extends AbstractDataSourceComponent impleme
 	 * @param properties DBCP properties. See at @{link http://jakarta.apache.org/commons/dbcp/configuration.html}
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance. 
 	 */
-	public DBCPDataSourceComponent(final Properties properties, final ExceptionHandler jdbcExceptionHandler) {
+	public DBCPDataSource(final Properties properties, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
 		this.properties = properties;
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSourceComponent#getDelegatedDataSource()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#getDelegatedDataSource()
 	 */
 	protected DataSource getDelegatedDataSource() throws Exception {
 		if (dataSource == null) {
@@ -87,7 +87,7 @@ public class DBCPDataSourceComponent extends AbstractDataSourceComponent impleme
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSourceComponent#invalidateDelegatedDataSource()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#invalidateDelegatedDataSource()
 	 */
 	protected void invalidateDelegatedDataSource() throws Exception {
 		dataSource.close();

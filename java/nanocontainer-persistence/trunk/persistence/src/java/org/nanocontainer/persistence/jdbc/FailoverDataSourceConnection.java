@@ -23,7 +23,7 @@ import org.picocontainer.Startable;
  * 
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class FailoverDataSourceConnectionComponent extends AbstractConnectionComponent implements Startable {
+public class FailoverDataSourceConnection extends AbstractConnection implements Startable {
 
 	private DataSource dataSource;
 
@@ -32,7 +32,7 @@ public class FailoverDataSourceConnectionComponent extends AbstractConnectionCom
 	/**
 	 * @param dataSource The DataSource instance where connections will be requested.
 	 */
-	public FailoverDataSourceConnectionComponent(DataSource dataSource) {
+	public FailoverDataSourceConnection(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
@@ -40,13 +40,13 @@ public class FailoverDataSourceConnectionComponent extends AbstractConnectionCom
 	 * @param dataSource The DataSource instance where connections will be requested.
 	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
-	public FailoverDataSourceConnectionComponent(DataSource dataSource, ExceptionHandler exceptionHandler) {
+	public FailoverDataSourceConnection(DataSource dataSource, ExceptionHandler exceptionHandler) {
 		super(exceptionHandler);
 		this.dataSource = dataSource;
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractConnectionComponent#getDelegatedConnection()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractConnection#getDelegatedConnection()
 	 */
 	protected Connection getDelegatedConnection() throws SQLException {
 		if (connection == null) {
@@ -57,7 +57,7 @@ public class FailoverDataSourceConnectionComponent extends AbstractConnectionCom
 	}
 
 	/**
-	 * @see org.nanocontainer.persistence.jdbc.AbstractConnectionComponent#invalidateDelegatedConnection()
+	 * @see org.nanocontainer.persistence.jdbc.AbstractConnection#invalidateDelegatedConnection()
 	 */
 	protected void invalidateDelegatedConnection() {
 		try {

@@ -24,11 +24,14 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.SimpleReference;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -248,6 +251,65 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.sessionDestroyed(new HttpSessionEvent((HttpSession)httpSession.proxy()));
     }
     
+    //NANOWAR-22:  even though the session scope container has the parent with appropriate dependency
+    //it does not seem to pick it up.
+    public void FIXME_testGroovyContainerBuilderCanBeScopedWithInlinedScript() throws Exception {
+        String script =
+            "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
+            "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
+            "      System.out.println('Application scope parent '+parent)\n "+
+            "      component(key:'testFoo', class:org.nanocontainer.nanowar.Foo)" +
+            "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
+            "      System.out.println('Session scope parent '+parent)\n "+
+            "      System.out.println(parent.getComponentInstance('testFoo'))\n"+
+            "      component(key:'testFooHierarchy', class:org.nanocontainer.nanowar.FooHierarchy)\n"+
+            "   }\n "+
+            "}";
+
+        Class containerBuilder = GroovyContainerBuilder.class;
+        PicoContainer applicationContainer = buildApplicationContainer(script, containerBuilder);
+        Mock servletContextMock = mock(ServletContext.class);
+        servletContextMock.expects(atLeastOnce())
+                .method("getAttribute")
+                .with(eq(APPLICATION_CONTAINER))
+                .will(returnValue(applicationContainer));
+        servletContextMock.expects(once())
+                .method("getAttribute")
+                .with(eq(BUILDER)).will(returnValue(createContainerBuilder(script, containerBuilder)));
+
+        Mock httpSessionMock = mock(HttpSession.class);
+        httpSessionMock.expects(once())
+                .method("getServletContext")
+                .withNoArguments()
+                .will(returnValue(servletContextMock.proxy()));
+        httpSessionMock.expects(once())
+                .method("setAttribute")
+                .with(eq(ServletContainerListener.KILLER_HELPER), isA(HttpSessionBindingListener.class));
+        httpSessionMock.expects(once())
+                .method("setAttribute")
+                .with(eq(SESSION_CONTAINER), isA(PicoContainer.class));
+
+        listener.sessionCreated(new HttpSessionEvent((HttpSession) httpSessionMock.proxy()));
+
+    }    
+
+    private PicoContainer buildApplicationContainer(String script, Class containerBuilderClass) throws ClassNotFoundException {
+        Mock servletContextMock = mock(ServletContext.class);
+        ServletContext context = (ServletContext)servletContextMock.proxy();
+        ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);
+        
+        ObjectReference containerRef = new SimpleReference();
+        containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
+        return (PicoContainer) containerRef.get();
+    }
+
+    private ContainerBuilder createContainerBuilder(String script, Class containerBuilderClass) throws ClassNotFoundException {
+        ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = 
+            new ScriptedContainerBuilderFactory(new StringReader(script), containerBuilderClass.getName(), 
+                    Thread.currentThread().getContextClassLoader());
+        return (ContainerBuilder)scriptedContainerBuilderFactory.getContainerBuilder();
+    }
+
     public void testScopedContainerComposerIsCreatedWithDefaultConfiguration() {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector initParams = new Vector();

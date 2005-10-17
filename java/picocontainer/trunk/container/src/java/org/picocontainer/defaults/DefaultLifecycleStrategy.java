@@ -10,9 +10,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.LifecycleManager;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
@@ -24,11 +22,9 @@ import java.lang.reflect.Method;
  * @see Startable
  * @see Disposable
  */
-public class DefaultLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+public class DefaultLifecycleStrategy extends AbstractMonitoringLifecylceStrategy {
 
-    private ComponentMonitor componentMonitor;
     private static Method start, stop, dispose;
-
     {
         try {
             start = Startable.class.getMethod("start", null);
@@ -39,47 +35,37 @@ public class DefaultLifecycleStrategy implements LifecycleStrategy, ComponentMon
     }
 
     public DefaultLifecycleStrategy(ComponentMonitor monitor) {
-        this.componentMonitor = monitor;
-
+        super(monitor);
     }
 
     public void start(Object component) {
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
-            componentMonitor.invoking(start, component);
+            currentMonitor().invoking(start, component);
             ((Startable) component).start();
-            componentMonitor.invoked(start, component, System.currentTimeMillis() - str);
+            currentMonitor().invoked(start, component, System.currentTimeMillis() - str);
         }
     }
 
     public void stop(Object component) {
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
-            componentMonitor.invoking(stop, component);
+            currentMonitor().invoking(stop, component);
             ((Startable) component).stop();
-            componentMonitor.invoked(stop, component, System.currentTimeMillis() - str);
+            currentMonitor().invoked(stop, component, System.currentTimeMillis() - str);
         }
     }
 
     public void dispose(Object component) {
         if (component != null && component instanceof Disposable) {
             long str = System.currentTimeMillis();
-            componentMonitor.invoking(dispose, component);
+            currentMonitor().invoking(dispose, component);
             ((Disposable) component).dispose();
-            componentMonitor.invoked(dispose, component, System.currentTimeMillis() - str);
+            currentMonitor().invoked(dispose, component, System.currentTimeMillis() - str);
         }
     }
 
     public boolean hasLifecycle(Class type) {
         return Startable.class.isAssignableFrom(type) || Disposable.class.isAssignableFrom(type);
-    }
-
-
-    public void changeMonitor(ComponentMonitor monitor) {
-        this.componentMonitor = monitor;
-    }
-
-    public ComponentMonitor currentMonitor() {
-        return componentMonitor;
     }
 }

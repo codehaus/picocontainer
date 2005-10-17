@@ -7,12 +7,16 @@
  *****************************************************************************/
 package org.picocontainer.gems.lifecycle;
 
-import java.io.Serializable;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Disposable;
+import org.picocontainer.Startable;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
+import org.jmock.core.Constraint;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  * @author Paul Hammant
@@ -22,9 +26,11 @@ import org.picocontainer.Startable;
 public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
 
     private ReflectionLifecycleStrategy strategy;
+    private Mock componentMonitorMock;
     
     public void setUp(){
-        strategy = new ReflectionLifecycleStrategy();
+        componentMonitorMock = mock(ComponentMonitor.class);
+        strategy = new ReflectionLifecycleStrategy((ComponentMonitor)componentMonitorMock.proxy());
     }
 
     public void testStartable(){
@@ -49,17 +55,62 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy.dispose(serializable);
     }
     
+    public void testMonitorChanges() {
+        Mock componentMonitorMock2 = mock(ComponentMonitor.class);
+        Mock mock = mock(Disposable.class);
+        Object disposable = mock.proxy();
+        mock.expects(once()).method("dispose");
+        componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
+        strategy.dispose(disposable);
+        strategy.changeMonitor((ComponentMonitor)componentMonitorMock2.proxy());
+        mock.expects(once()).method("dispose");
+        componentMonitorMock2.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
+        componentMonitorMock2.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
+        strategy.dispose(disposable);
+    }
+    
     private Object mockComponent(boolean startable, boolean disposable) {
         Mock mock = mock(Serializable.class);
         if ( startable ) {
             mock = mock(Startable.class);
             mock.expects(atLeastOnce()).method("start");
             mock.expects(atLeastOnce()).method("stop");
+            componentMonitorMock.expects(once()).method("invoking").with(method("start"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(method("start"), same(mock.proxy()), ANYTHING);
+            componentMonitorMock.expects(once()).method("invoking").with(method("stop"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(method("stop"), same(mock.proxy()), ANYTHING);
         }
         if ( disposable ) {
             mock = mock(Disposable.class);
             mock.expects(atLeastOnce()).method("dispose");
+            componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
         }
         return mock.proxy();
+    }
+    
+    MethodNameIsEqual method(String name) {
+        return new MethodNameIsEqual(name);
+    }
+    
+    static class MethodNameIsEqual implements Constraint {
+
+        private final String name;
+
+        public MethodNameIsEqual(String name) {
+            this.name = name;
+        }
+        
+        public boolean eval(Object o) {
+            return o instanceof Method && ((Method)o).getName().equals(name);
+        }
+
+        public StringBuffer describeTo(StringBuffer buffer) {
+            buffer.append("a method with name <");
+            buffer.append(name);
+            return buffer.append('>');
+        }
+        
     }
 }

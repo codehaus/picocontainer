@@ -7,11 +7,11 @@
  *****************************************************************************/
 package org.picocontainer.gems.lifecycle;
 
-import java.io.Serializable;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.AbstractMonitoringLifecylceStrategy;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.picocontainer.defaults.LifecycleStrategy;
 
 
 /**
@@ -24,14 +24,25 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @see org.picocontainer.Startable
  * @see org.picocontainer.Disposable
  * @see org.picocontainer.defaults.DefaultLifecycleStrategy
+ * @since 1.2
  */
-public class ReflectionLifecycleStrategy implements LifecycleStrategy, Serializable {
+public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStrategy {
 
     private final static int START = 0;
     private final static int STOP = 1;
     private final static int DISPOSE = 2;
     private final static String[] METHOD_NAMES = new String[]{"start", "stop", "dispose"};
     private transient Method[] methods;
+
+    /**
+     * Construct a ReflectionLifecycleStrategy.
+     * 
+     * @param monitor the monitor to use
+     * @throws NullPointerException if the monitor is <code>null</code>
+     */
+    public ReflectionLifecycleStrategy(ComponentMonitor monitor) {
+        super(monitor);
+    }
 
     public void start(Object component) {
         init(component.getClass());
@@ -51,7 +62,10 @@ public class ReflectionLifecycleStrategy implements LifecycleStrategy, Serializa
     private void invokeMethod(Object component, Method method) {
         if (component != null && method != null) {
             try {
+                long str = System.currentTimeMillis();
+                currentMonitor().invoking(method, component);
                 method.invoke(component, new Object[0]);
+                currentMonitor().invoked(method, component, System.currentTimeMillis() - str);
             } catch (IllegalAccessException e) {
                 throw new ReflectionLifecycleException(method.getName(), e);
             } catch (InvocationTargetException e) {

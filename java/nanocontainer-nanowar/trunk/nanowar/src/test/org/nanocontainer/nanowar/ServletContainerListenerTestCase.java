@@ -251,20 +251,36 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         listener.sessionDestroyed(new HttpSessionEvent((HttpSession)httpSession.proxy()));
     }
     
-    //NANOWAR-22:  even though the session scope container has the parent with appropriate dependency
-    //it does not seem to pick it up.
-    public void FIXME_testGroovyContainerBuilderCanBeScopedWithInlinedScript() throws Exception {
-        String script =
-            "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
-            "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
-            "      System.out.println('Application scope parent '+parent)\n "+
-            "      component(key:'testFoo', class:org.nanocontainer.nanowar.Foo)" +
-            "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
-            "      System.out.println('Session scope parent '+parent)\n "+
-            "      System.out.println(parent.getComponentInstance('testFoo'))\n"+
-            "      component(key:'testFooHierarchy', class:org.nanocontainer.nanowar.FooHierarchy)\n"+
-            "   }\n "+
-            "}";
+    public void testGroovyContainerBuilderCanBeScopedWithInlineScripts() throws Exception{
+      String picoScript =
+          "caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory()\n"+
+          "pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n"+
+          "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
+          "      System.out.println('Application scope parent '+parent)\n "+
+          "      pico.registerComponentImplementation('testFoo', org.nanocontainer.nanowar.Foo)\n" +
+          "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
+          "      System.out.println('Session scope parent '+parent)\n "+
+          "      System.out.println(parent.getComponentInstance('testFoo'))\n"+
+          "      pico.registerComponentImplementation('testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
+          "   }\n "+
+          "";
+      assertGroovyContainerBuilderCanBeScopedWithInlinedScript(picoScript);
+      String builderScript =
+          "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
+          "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
+          "      System.out.println('Application scope parent '+parent)\n "+
+          "      component(key:'testFoo', class:org.nanocontainer.nanowar.Foo)\n " +
+          "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
+          "      System.out.println('Session scope parent '+parent)\n "+
+          "      System.out.println(parent.getComponentInstance('testFoo'))\n"+
+          "      component(key:'testFooHierarchy', class:org.nanocontainer.nanowar.FooHierarchy)\n"+
+          "   }\n "+
+          "}";
+      //NANOWAR-22:  the node builder syntax is failing
+      //assertGroovyContainerBuilderCanBeScopedWithInlinedScript(builderScript);      
+    }
+    
+    public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws Exception {
 
         Class containerBuilder = GroovyContainerBuilder.class;
         PicoContainer applicationContainer = buildApplicationContainer(script, containerBuilder);

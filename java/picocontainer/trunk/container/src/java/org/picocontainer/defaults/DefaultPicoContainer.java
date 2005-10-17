@@ -549,12 +549,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * {@inheritDoc}
      */
     public void changeMonitor(ComponentMonitor monitor) {
+        // will also change monitor in lifecycleStrategyForInstanceRegistrations
         if (componentAdapterFactory instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy) componentAdapterFactory).changeMonitor(monitor);
         }
-//        if (lifecycleStrategyForInstanceRegistrations instanceof ComponentMonitorStrategy) {
-  //          ((ComponentMonitorStrategy) lifecycleStrategyForInstanceRegistrations).changeMonitor(monitor);
-    //    }
         for ( Iterator i = componentAdapters.iterator(); i.hasNext(); ){
             Object adapter = i.next();
             if ( adapter instanceof ComponentMonitorStrategy ) {

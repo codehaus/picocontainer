@@ -30,7 +30,6 @@ public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFa
 
     public DefaultComponentAdapterFactory(ComponentMonitor monitor) {
         super(monitor);
-        changeMonitor(monitor); // TODO Redundant ?
         this.lifecycleStrategy = new DefaultLifecycleStrategy(monitor);
     }
 

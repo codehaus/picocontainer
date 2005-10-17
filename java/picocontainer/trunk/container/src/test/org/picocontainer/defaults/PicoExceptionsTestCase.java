@@ -124,6 +124,6 @@ public class PicoExceptionsTestCase
         writer.flush();
         out.close();
         assertTrue(out.toString().indexOf("Caused by:") > 0);
-        simpleException.printStackTrace();
+        //simpleException.printStackTrace();
     }
 }

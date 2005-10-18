@@ -84,7 +84,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
             if (disposed) throw new IllegalStateException("Already disposed");
             if (started) throw new IllegalStateException("Already started");
             start(getComponentInstance(container));
-            started = true;        
+            started = true;
         }
     }
 
@@ -94,11 +94,12 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
      */
     public void stop(PicoContainer container) {
         if ( delegateSupportsLifecycle() ){
+            Object comp = getComponentInstance(container);
             if (disposed)
                 throw new IllegalStateException("Already disposed");
-            if (!started)
+            if (!started && ((LifecycleStrategy) getDelegate()).hasLifecycle(comp.getClass()))
                 throw new IllegalStateException("Not started");
-            stop(getComponentInstance(container));
+            stop(comp);
             started = false;
         }
     }

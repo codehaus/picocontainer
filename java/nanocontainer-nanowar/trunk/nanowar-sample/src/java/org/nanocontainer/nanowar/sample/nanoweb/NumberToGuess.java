@@ -8,13 +8,14 @@ import java.util.Random;
  * @version $Revision$
  */
 public class NumberToGuess implements Serializable {
-    private Random random = new Random();
+    private Random random;
     private int number;
 
-    public NumberToGuess() {
+    public NumberToGuess(Random random) {
+        this.random = random;
         newRandom();
     }
-
+    
     public int getNumber() {
         return number;
     }

@@ -10,10 +10,13 @@
             pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 println("**** Application-level pico components registered by Groovy")
+                println("java.util.Random")
+                pico.registerComponentImplementation(java.util.Random)
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 println("**** Session-level pico components registered by Groovy")
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                 println("**** Request-level pico components registered by Groovy")
+                println("org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess")
                 pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
             }
 

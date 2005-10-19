@@ -50,15 +50,15 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStra
      * 
      * @param monitor the monitor to use
      * @param startMethodName the name of the start method
-     * @param stopMethodName the name of the start method
-     * @param dosposeMethodName the name of the start method
+     * @param stopMethodName the name of the stop method
+     * @param disposeMethodName the name of the dispose method
      * @throws NullPointerException if the monitor is <code>null</code>
      */
     public ReflectionLifecycleStrategy(
             ComponentMonitor monitor, String startMethodName, String stopMethodName,
-            String dosposeMethodName) {
+            String disposeMethodName) {
         super(monitor);
-        methodNames = new String[]{startMethodName, stopMethodName, dosposeMethodName};
+        methodNames = new String[]{startMethodName, stopMethodName, disposeMethodName};
     }
 
     public void start(Object component) {

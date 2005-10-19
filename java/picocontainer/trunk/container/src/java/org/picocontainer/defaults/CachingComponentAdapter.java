@@ -111,5 +111,9 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
             disposed = true;
         }
     }
+
+    public boolean hasLifecycle() {
+        return delegateHasLifecylce;
+    }
     
 }
